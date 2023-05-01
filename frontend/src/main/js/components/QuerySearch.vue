@@ -132,20 +132,20 @@ export default {
       autocomplete: {
         city: {
           items: [],
-          queryFunction: (table, lang) => { return this.$query.citiesQuery(table, lang) }
+          queryFunction: (table, lang) => { return this.$wikibase.$query.citiesQuery(table, lang) }
         },
         subject: {
           items: [],
-          queryFunction: (table, lang) => { return this.$query.subjectsQuery(table, lang) },
+          queryFunction: (table, lang) => { return this.$wikibase.$query.subjectsQuery(table, lang) },
           resultFunction: (result) => { return { text: result.label, value: { item: result.item, property: result.property } } }
         },
         institution_type: {
           items: [],
-          queryFunction: (table, lang) => { return this.$query.institutionTypesQuery(table, lang) }
+          queryFunction: (table, lang) => { return this.$wikibase.$query.institutionTypesQuery(table, lang) }
         },
         institution: {
           items: [],
-          queryFunction: (table, lang) => { return this.$query.institutionQuery(table, lang) }
+          queryFunction: (table, lang) => { return this.$wikibase.$query.institutionQuery(table, lang) }
         }
       }
     }

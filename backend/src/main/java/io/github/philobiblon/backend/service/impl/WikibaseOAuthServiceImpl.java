@@ -34,9 +34,9 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
     public WikibaseOAuthServiceImpl(@Value("${oauth.consumerKey}") String oauthConsumerKey,
                                     @Value("${oauth.consumerSecret}") String oauthConsumerSecret,
                                     @Value("${oauth.callbackUrl}") String oauthCallbackUrl,
-                                    @Value("${oauth.wikibaseIndexUrl}") String wikibaseIndexUrl,
-                                    @Value("${oauth.wikibaseNiceUrlBase}") String wikibaseNiceUrlBase,
-                                    @Value("${oauth.wikibaseApiUrl}") String wikibaseApiUrl) {
+                                    @Value("${wikibase.apiUrl}") String wikibaseApiUrl,
+                                    @Value("${wikibase.indexUrl}") String wikibaseIndexUrl,
+                                    @Value("${wikibase.niceUrlBase}") String wikibaseNiceUrlBase) {
         this.service = new ServiceBuilder(oauthConsumerKey)
                 .apiSecret(oauthConsumerSecret)
                 .callback(oauthCallbackUrl)

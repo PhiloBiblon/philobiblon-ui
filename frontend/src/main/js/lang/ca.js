@@ -32,6 +32,16 @@ export default {
       }
     }
   },
+  auth: {
+    login: {
+      label: 'Iniciar sessió',
+      success: 'Benvingut {name}!'
+    },
+    logout: {
+      label: 'Tancar sessió',
+      success: 'Fins aviat!'
+    }
+  },
   welcome: {
     title: 'Benvingut'
   },

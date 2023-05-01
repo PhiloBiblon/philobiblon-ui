@@ -6,15 +6,16 @@ export default {
   },
 
   env: {
-    wikibaseApiUrl: process.env.WIKIBASE_API_URL,
-    sparqlEndpoint: process.env.SPARQL_ENDPOINT,
-    prefixSparqlQuery: process.env.PREFIX_SPARQL_QUERY,
     debug: process.env.DEBUG==='true'
   },
 
   publicRuntimeConfig: {
+    apiBaseUrl: process.env.API_BASE_URL,
+    wikibaseBaseUrl: process.env.WIKIBASE_BASE_URL,
     sparqlBaseUrl: process.env.SPARQL_BASE_URL,
-    wikibaseBaseUrl: process.env.WIKIBASE_BASE_URL
+    wikibaseApiUrl: process.env.WIKIBASE_API_URL,
+    sparqlEndpoint: process.env.SPARQL_ENDPOINT,
+    sparqlQueryPrefix: process.env.SPARQL_QUERY_PREFIX
   },
 
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -45,6 +46,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/config.js',
     '~/plugins/wikibase.js',
     '~/plugins/notification.js'
   ],

@@ -89,13 +89,13 @@ export default {
     },
 
     count () {
-      this.$wikibase.runSparqlQuery(this.$query.countQuery(this.table, this.form), true)
+      this.$wikibase.runSparqlQuery(this.$wikibase.$query.countQuery(this.table, this.form), true)
         .then((results) => { this.totalResults = results[0] })
     },
 
     search () {
       this.waitingResults = true
-      this.sparqlQuery = this.$query.itemsQuery(this.table, this.form, this.$i18n.locale, this.resultsPerPage)
+      this.sparqlQuery = this.$wikibase.$query.itemsQuery(this.table, this.form, this.$i18n.locale, this.resultsPerPage)
       this.results = []
       this.$wikibase.runSparqlQuery(this.sparqlQuery)
         .then((results) => {

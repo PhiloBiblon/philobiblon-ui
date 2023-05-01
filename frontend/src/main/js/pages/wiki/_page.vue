@@ -27,7 +27,7 @@ export default {
         disabled: true
       }
     ])
-    const wikiApiUrl = `${process.env.wikibaseApiUrl}?action=parse&page=${this.wikiPage}&prop=wikitext&formatversion=2&format=json&origin=*`
+    const wikiApiUrl = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.wikiPage}&prop=wikitext&formatversion=2&format=json&origin=*`
     this.contentToView = await fetch(wikiApiUrl)
       .then(response => response.json())
       .then(data => this.contentPage(data))

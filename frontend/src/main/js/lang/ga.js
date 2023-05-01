@@ -32,6 +32,16 @@ export default {
       }
     }
   },
+  auth: {
+    login: {
+      label: 'Iniciar sesión',
+      success: 'Inicio de sesión exitoso!'
+    },
+    logout: {
+      label: 'Pechar sesión',
+      success: 'Ata pronto!'
+    }
+  },
   welcome: {
     title: 'Benvido'
   },

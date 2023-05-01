@@ -32,6 +32,16 @@ export default {
       }
     }
   },
+  auth: {
+    login: {
+      label: 'Login',
+      success: 'Welcome {name}!'
+    },
+    logout: {
+      label: 'Logout',
+      success: 'See you soon!'
+    }
+  },
   welcome: {
     title: 'Welcome'
   },

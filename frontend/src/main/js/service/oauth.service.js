@@ -1,10 +1,11 @@
 export class OAuthService {
-  constructor (store) {
+  constructor (store, config) {
     this.$store = store
+    this.$config = config
   }
 
   step1 () {
-    fetch('http://localhost:8080/api/oauth/request-token')
+    fetch(`${this.$config.apiBaseUrl}/api/oauth/request-token`)
       .then((response) => {
         return response.json()
       })
@@ -14,7 +15,7 @@ export class OAuthService {
   }
 
   async step3 (oauthToken, oauthVerifier) {
-    const accessToken = await fetch(`http://localhost:8080/api/oauth/access-token?oauth_token=${oauthToken}&oauth_verifier=${oauthVerifier}`)
+    const accessToken = await fetch(`${this.$config.apiBaseUrl}/api/oauth/access-token?oauth_token=${oauthToken}&oauth_verifier=${oauthVerifier}`)
       .then((response) => {
         return response.json()
       })
@@ -52,7 +53,7 @@ export class OAuthService {
   }
 
   getUsername (accessToken) {
-    return fetch(`http://localhost:8080/api/oauth/username?oauth_token=${accessToken.token}&oauth_tokensecret=${accessToken.tokenSecret}`)
+    return fetch(`${this.$config.apiBaseUrl}/api/oauth/username?oauth_token=${accessToken.token}&oauth_tokensecret=${accessToken.tokenSecret}`)
       .then((response) => {
         return response.text()
       })

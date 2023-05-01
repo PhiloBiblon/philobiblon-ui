@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = {"/api/oauth"})
-@CrossOrigin(origins = { "http://localhost:3000", "http://philobiblon.duckdns.org:8000" })
+@CrossOrigin(origins = "${allowed.origins}")
 public interface OAuthController {
 
     @GetMapping(value = "/request-token")

@@ -1,4 +1,5 @@
-const fetch = require('node-fetch')
+import { QueryService } from '~/service/query.service'
+import { OAuthService } from '~/service/oauth.service'
 
 const PROPERTY_FORMATTER_URL = 'P236'
 const PROPERTY_NOTES = 'P817'
@@ -9,15 +10,16 @@ const PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
 const QITEM_PATTERN = /^Q\d+/
 
 export class WikibaseService {
-  constructor (store, queryService, oauthService) {
+  constructor (app, store) {
     const WBK = require('wikibase-sdk')
+    this.$config = app.$config
     this.wbk = WBK({
-      instance: process.env.wikibaseApiUrl,
-      sparqlEndpoint: process.env.sparqlEndpoint
+      instance: this.$config.wikibaseApiUrl,
+      sparqlEndpoint: this.$config.sparqlEndpoint
     })
     this.$store = store
-    this.queryService = queryService
-    this.$oauth = oauthService
+    this.$query = new QueryService(store, this.$config)
+    this.$oauth = new OAuthService(store, this.$config)
   }
 
   getWbk () {
@@ -62,7 +64,7 @@ export class WikibaseService {
   }
 
   getEntityFromPBID (pbid) {
-    return this.runSparqlQuery(this.queryService.entityFromPBIDQuery(pbid), true)
+    return this.runSparqlQuery(this.$query.entityFromPBIDQuery(pbid), true)
       .then((results) => {
         if (results && results.length > 0) {
           return results[0]

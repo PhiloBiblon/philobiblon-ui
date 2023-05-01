@@ -94,12 +94,28 @@
       </v-toolbar-title>
       <v-spacer />
       <languages-menu />
-      <v-icon v-if="$store.state.auth.isLogged" @click="logout">
-        mdi-logout-variant
-      </v-icon>
-      <v-icon v-if="!$store.state.auth.isLogged" @click="login">
-        mdi-login-variant
-      </v-icon>
+      <v-tooltip
+        v-if="$store.state.auth.isLogged"
+        bottom
+      >
+        <template #activator="{ on }">
+          <v-icon v-on="on" @click="logout">
+            mdi-logout-variant
+          </v-icon>
+        </template>
+        <span>{{ $t('auth.logout.label') }}</span>
+      </v-tooltip>
+      <v-tooltip
+        v-if="!$store.state.auth.isLogged"
+        bottom
+      >
+        <template #activator="{ on }">
+          <v-icon v-on="on" @click="login">
+            mdi-login-variant
+          </v-icon>
+        </template>
+        <span>{{ $t('auth.login.label') }}</span>
+      </v-tooltip>
     </v-app-bar>
     <v-main>
       <v-container fluid ma-50>
@@ -167,6 +183,7 @@ export default {
     },
     logout () {
       this.$store.commit('auth/logout')
+      this.$notification.success(this.$i18n.t('auth.logout.success'))
     }
   }
 }

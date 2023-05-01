@@ -1,11 +1,15 @@
 export class QueryService {
-  constructor (store) {
+  constructor (store, config) {
     this.$store = store
+    this.$config = config
   }
 
   addPrefixes (query) {
-    const QUERY_WITH_PREFIX = `${process.env.prefixSparqlQuery.replaceAll('\\n', '\n')} ${query}`
-    return QUERY_WITH_PREFIX
+    if (this.$config.sparqlQueryPrefix) {
+      return `${this.$config.sparqlQueryPrefix.replaceAll('\\n', '\n')} ${query}`
+    } else {
+      return query
+    }
   }
 
   generateLangFilter (lang) {

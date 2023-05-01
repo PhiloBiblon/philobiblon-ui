@@ -18,7 +18,7 @@
                 mdi-reply
               </v-icon>
             </template>
-            <span>{{ $t('search.item.back') }}</span>
+            <span>{{ $t('item.back') }}</span>
           </v-tooltip>
         </a>
       </v-row>
