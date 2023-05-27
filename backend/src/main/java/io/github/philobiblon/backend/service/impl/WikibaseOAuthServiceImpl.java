@@ -14,21 +14,32 @@ import io.github.philobiblon.backend.representation.RequestToken;
 import io.github.philobiblon.backend.service.WikibaseOAuthService;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
 
-    private OAuth10aService service;
-    private TimedMap<String, OAuth1RequestToken> requestTokens = new TimedMap<>(5, TimeUnit.MINUTES);
-    private String wikibaseApiUrl;
+    private final Pattern PATTERN_OAUTH_TOKEN = Pattern.compile("oauth_token=\"(.*?)\"");
+    private final Pattern PATTERN_PARAMS = Pattern.compile("([^=&]*)=([^&]*)");
+
+    private final TimedMap<String, OAuth1RequestToken> requestTokens = new TimedMap<>(5, TimeUnit.MINUTES);
+    private final TimedMap<String, OAuth1AccessToken> accessTokens = new TimedMap<>(15, TimeUnit.MINUTES, true);
+
+    private final OAuth10aService service;
+    private final String wikibaseApiUrl;
 
     @Autowired
     public WikibaseOAuthServiceImpl(@Value("${oauth.consumerKey}") String oauthConsumerKey,
@@ -62,6 +73,7 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
             try {
                 OAuth1AccessToken accessToken = service.getAccessToken(requestToken, oauthVerifier);
                 requestTokens.remove(token);
+                accessTokens.put(accessToken.getToken(), accessToken);
                 return new AccessToken(accessToken.getToken(), accessToken.getTokenSecret());
             } catch (IOException | InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
@@ -73,8 +85,10 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
 
     @Override
     public String getUsername(String token, String tokenSecret) {
+        String USER_ENDPOINT = "%s?action=query&meta=userinfo&format=json";
+
         OAuth1AccessToken accessToken = new OAuth1AccessToken(token, tokenSecret);
-        OAuthRequest request = new OAuthRequest(Verb.GET, String.format("%s?action=query&meta=userinfo&format=json", wikibaseApiUrl));
+        OAuthRequest request = new OAuthRequest(Verb.GET, String.format(USER_ENDPOINT, wikibaseApiUrl));
         service.signRequest(accessToken, request);
         try {
             Response response = service.execute(request);
@@ -83,5 +97,65 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
         } catch (IOException | InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String redirect(HttpServletRequest request, String body) {
+        OAuth1AccessToken accessToken = getAccessTokenFromRequest(request);
+        OAuthRequest oAuthRequest = buildOAuthRequest(request, body);
+        service.signRequest(accessToken, oAuthRequest);
+        try {
+            Response oAuthResponse = service.execute(oAuthRequest);
+            return oAuthResponse.getBody();
+        } catch (IOException | InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private OAuthRequest buildOAuthRequest(HttpServletRequest request, String body) {
+        URI uri = UriComponentsBuilder.fromUriString(wikibaseApiUrl)
+                .query(request.getQueryString())
+                .build(true).toUri();
+        Verb verb = getVerbFromRequest(request);
+        OAuthRequest oAuthRequest = new OAuthRequest(verb, uri.toString());
+        if (verb == Verb.PUT || verb == Verb.POST) {
+            addParamsFromBody(oAuthRequest, body);
+        }
+        return oAuthRequest;
+    }
+
+    private void addParamsFromBody(OAuthRequest oAuthRequest, String body) {
+        Matcher matcher = PATTERN_PARAMS.matcher(body);
+        while (matcher.find()) {
+            String param = matcher.group(1);
+            // We need to remove params that already exist in the query string
+            if (!"format".equals(param) && !"action".equals(param)) {
+                String value = decodeURLValue(matcher.group(2));
+                oAuthRequest.addBodyParameter(param, value);
+            }
+        }
+    }
+
+    private static String decodeURLValue(String value) {
+        return java.net.URLDecoder.decode(value, StandardCharsets.UTF_8);
+    }
+
+    private Verb getVerbFromRequest(HttpServletRequest request) {
+        return switch (request.getMethod()) {
+            case "GET" -> Verb.GET;
+            case "PUT" -> Verb.PUT;
+            case "POST" -> Verb.POST;
+            case "DELETE" -> Verb.DELETE;
+            default -> throw new IllegalStateException("Unexpected value: " + request.getMethod());
+        };
+    }
+
+    private OAuth1AccessToken getAccessTokenFromRequest(HttpServletRequest request) {
+        Matcher matcher = PATTERN_OAUTH_TOKEN.matcher(request.getHeader("authorization"));
+        if (matcher.find()) {
+            String token = matcher.group(1);
+            return accessTokens.get(token);
+        }
+        return null;
     }
 }

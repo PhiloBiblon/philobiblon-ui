@@ -11,24 +11,32 @@ import java.util.concurrent.TimeUnit;
 
 public class TimedMap<K, V> extends AbstractMap<K, V> {
 
-    private Map<K, V> map = new ConcurrentHashMap<>();
-    private Map<K, Long> expirationTimes = new ConcurrentHashMap<>();
-    private Timer expirationTimer = new Timer();
-    private long period;
+    private final Map<K, V> map = new ConcurrentHashMap<>();
+    private final Map<K, Long> expirationTimes = new ConcurrentHashMap<>();
+    private final long period;
+    private final boolean renewOnGet;
 
     public TimedMap(long expirationTime, TimeUnit timeUnit) {
+        this(expirationTime, timeUnit, false);
+    }
+
+    public TimedMap(long expirationTime, TimeUnit timeUnit, boolean renewOnGet) {
         this.period = TimeUnit.MILLISECONDS.convert(expirationTime, timeUnit);
-        expirationTimer.schedule(new ExpirationTask(), 0, period);
+        this.renewOnGet = renewOnGet;
+        new Timer().schedule(new ExpirationTask(), 0, period);
     }
 
     @Override
     public V put(K key, V value) {
-        expirationTimes.put(key, System.currentTimeMillis());
+        resetExpirationTime(key);
         return map.put(key, value);
     }
 
     @Override
     public V get(Object key) {
+        if(renewOnGet) {
+            resetExpirationTime((K) key);
+        }
         return map.get(key);
     }
 
@@ -67,8 +75,7 @@ public class TimedMap<K, V> extends AbstractMap<K, V> {
         long now = System.currentTimeMillis();
         for (K key : map.keySet()) {
             if (now - expirationTimes.get(key) > period) {
-                map.remove(key);
-                expirationTimes.remove(key);
+                remove(key);
             }
         }
     }
@@ -78,5 +85,9 @@ public class TimedMap<K, V> extends AbstractMap<K, V> {
         public void run() {
             checkExpiration();
         }
+    }
+
+    private void resetExpirationTime(K key) {
+        expirationTimes.put(key, System.currentTimeMillis());
     }
 }
