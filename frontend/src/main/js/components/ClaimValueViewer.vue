@@ -1,7 +1,7 @@
 <template>
   <v-row dense class="value">
     <v-col :cols="value.qualifiers ? 3 : 12">
-      <value-viewer :value="valueToView" />
+      <value-viewer :value="value.mainsnak" />
     </v-col>
     <qualifier-viewer
       v-for="(values, property) in value.qualifiers"
@@ -25,18 +25,8 @@ export default {
       type: Object,
       default: null
     }
-  },
-
-  data () {
-    return {
-      valueToView: null
-    }
-  },
-
-  async mounted () {
-    const mainsnak = this.value.mainsnak
-    this.valueToView = await this.$wikibase.getWbValue(mainsnak.property, mainsnak.datatype, mainsnak.datavalue.value, this.$i18n.locale)
   }
+
 }
 </script>
 

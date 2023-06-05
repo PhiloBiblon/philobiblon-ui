@@ -16,3 +16,15 @@ export const mutations = {
     state.isLogged = false
   }
 }
+
+export const getters = {
+  getRequestConfig (state) {
+    return {
+      credentials: {
+        oauth: {
+          token: state.accessToken.token
+        }
+      }
+    }
+  }
+}

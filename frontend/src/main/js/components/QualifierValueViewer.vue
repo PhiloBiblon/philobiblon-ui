@@ -1,6 +1,6 @@
 <template>
   <div class="qualifier-value">
-    <value-viewer :value="valueToView" />
+    <value-viewer :value="value" />
   </div>
 </template>
 
@@ -12,17 +12,8 @@ export default {
       type: Object,
       default: null
     }
-  },
-
-  data () {
-    return {
-      valueToView: null
-    }
-  },
-
-  async mounted () {
-    this.valueToView = await this.$wikibase.getWbValue(this.property, this.value.datatype, this.value.datavalue.value, this.$i18n.locale)
   }
+
 }
 </script>
 

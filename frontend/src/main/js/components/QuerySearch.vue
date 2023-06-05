@@ -26,14 +26,14 @@
             :key="'i-'+name"
             cols="4"
           >
-            <custom-text-field
+            <search-text-field
               v-if="item.type === 'text'"
               v-model="item.value"
               :label="$t(item.label)"
               :hint="$t(item.hint)"
               :disabled="item.disabled"
             />
-            <custom-autocomplete-field
+            <search-autocomplete-field
               v-if="item.type === 'autocomplete'"
               :id="'auto-'+name"
               v-model="item.value"

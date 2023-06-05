@@ -24,9 +24,23 @@
       </v-row>
       <v-row>
         <v-col>
-          <span class="text-h4">{{ $wikibase.getValueByLang(item.labels, $i18n.locale) }}</span>
-          &nbsp;
-          <a class="text-subtitle-2 link" :href="$config.wikibaseBaseUrl+'/wiki/Item:'+item.id" target="_blank">{{ item.id }}</a>
+          <span v-if="isUserLogged">
+            <edit-text-field
+              :value="label"
+              class="text-h4"
+              @save="editLabel"
+            >
+              <template #append-outer>
+                &nbsp;
+                <a class="text-subtitle-2 link" :href="$config.wikibaseBaseUrl+'/wiki/Item:'+item.id" target="_blank">{{ item.id }}</a>
+              </template>
+            </edit-text-field>
+          </span>
+          <span v-else class="text-h4">
+            {{ label }}
+            &nbsp;
+            <a class="text-subtitle-2 link" :href="$config.wikibaseBaseUrl+'/wiki/Item:'+item.id" target="_blank">{{ item.id }}</a>
+          </span>
         </v-col>
       </v-row>
       <v-row class="pb-5">
@@ -88,8 +102,15 @@ export default {
   data () {
     return {
       item: null,
+      label: null,
       showItem: false,
       claimsOrdered: []
+    }
+  },
+
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
     }
   },
 
@@ -98,6 +119,7 @@ export default {
       try {
         await this.$wikibase.getEntity(this.id, this.$i18n.locale).then((entity) => {
           this.item = entity
+          this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
           this.claimsOrdered = this.orderClaims(this.item.claims)
           this.showItem = true
           this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(entity))
@@ -151,6 +173,13 @@ export default {
         claimsOrdered.push({ property: claimP, values: claims[claimP] })
       })
       return claimsOrdered
+    },
+
+    editLabel (label) {
+      this.$wikibase.getWbEdit().label.set({ id: this.item.id, language: this.$i18n.locale, value: label }, this.$store.getters['auth/getRequestConfig'])
+        .catch((err) => {
+          this.$notification.error(err)
+        })
     }
   }
 }

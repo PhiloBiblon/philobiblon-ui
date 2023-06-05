@@ -39,7 +39,7 @@ export default {
     },
     logout: {
       label: 'Logout',
-      success: 'See you soon!'
+      success: 'See you next time!'
     }
   },
   welcome: {

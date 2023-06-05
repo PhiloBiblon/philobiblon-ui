@@ -24,23 +24,6 @@ export class OAuthService {
       })
     const username = await this.getUsername(accessToken)
     this.$store.commit('auth/login', { username, accessToken })
-    this.edit(accessToken)
-  }
-
-  edit (accessToken) {
-    const generalConfig = {
-      instance: 'http://localhost:8080'
-    }
-    this.wbEdit = require('wikibase-edit')(generalConfig)
-    const requestOauth = {
-      token: accessToken.token
-    }
-    const requestConfig = {
-      credentials: {
-        oauth: requestOauth
-      }
-    }
-    this.wbEdit.label.set({ id: 'Q35702', language: 'ca', value: 'Universitat de Salamanca' }, requestConfig)
   }
 
   getUsername (accessToken) {

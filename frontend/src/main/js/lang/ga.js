@@ -39,7 +39,7 @@ export default {
     },
     logout: {
       label: 'Pechar sesión',
-      success: 'Ata pronto!'
+      success: 'Ata a próxima vez!'
     }
   },
   welcome: {

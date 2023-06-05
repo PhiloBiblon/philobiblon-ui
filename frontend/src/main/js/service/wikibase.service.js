@@ -17,6 +17,9 @@ export class WikibaseService {
       instance: this.$config.wikibaseApiUrl,
       sparqlEndpoint: this.$config.sparqlEndpoint
     })
+    this.wbEdit = require('wikibase-edit')({
+      instance: this.$config.apiBaseUrl
+    })
     this.$store = store
     this.$query = new QueryService(store, this.$config)
     this.$oauth = new OAuthService(store, this.$config)
@@ -24,6 +27,10 @@ export class WikibaseService {
 
   getWbk () {
     return this.wbk
+  }
+
+  getWbEdit () {
+    return this.wbEdit
   }
 
   getPBIDPattern () {

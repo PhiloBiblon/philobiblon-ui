@@ -39,7 +39,7 @@ export default {
     },
     logout: {
       label: 'Tancar sessió',
-      success: 'Fins aviat!'
+      success: 'Fins la propera!'
     }
   },
   welcome: {
