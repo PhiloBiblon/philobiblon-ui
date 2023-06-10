@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+    ref="myTextField"
     v-model="currentText"
     v-bind="{ ...$attrs, ...commonAttrs }"
     v-on="$listeners"
@@ -45,6 +46,7 @@ export default {
   data () {
     return {
       currentText: null,
+      consolidatedText: null,
       focussed: false
     }
   },
@@ -57,10 +59,12 @@ export default {
   },
   mounted () {
     this.currentText = this.value
+    this.consolidatedText = this.value
   },
   methods: {
     blur () {
       this.focussed = false
+      this.restore()
     },
 
     focus () {
@@ -69,10 +73,12 @@ export default {
 
     edit (label) {
       this.$emit('save', this.currentText)
+      this.consolidatedText = this.currentText
+      this.$refs.myTextField.blur()
     },
 
     restore () {
-      this.currentText = this.value
+      this.currentText = this.consolidatedText
     }
   }
 }
