@@ -5,14 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.github.philobiblon</groupId>
-        <artifactId>philobiblon-ui</artifactId>
-        <version>${revision}</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.5</version>
+        <relativePath/>
     </parent>
 
+    <groupId>io.github.philobiblon</groupId>
     <artifactId>backend</artifactId>
+    <version>1.0.0</version>
 
     <properties>
+        <maven.release.compiler>17</maven.release.compiler>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <scribejava.version>8.3.3</scribejava.version>
         <parsson.version>1.1.1</parsson.version>
     </properties>

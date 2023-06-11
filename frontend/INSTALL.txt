@@ -1,9 +1,0 @@
-# Regenerate philobiblon-client docker
-
-1 - Create image
-
-docker build -t jmformenti/philobiblon-viewer .
-
-2 - Create the container:
-
-docker run -d -p 8000:8000  --env-file=.env --name philobiblon-viewer-1 jmformenti/philobiblon-viewer
