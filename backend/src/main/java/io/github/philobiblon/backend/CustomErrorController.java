@@ -1,4 +1,4 @@
-package io.github.philobiblon;
+package io.github.philobiblon.backend;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

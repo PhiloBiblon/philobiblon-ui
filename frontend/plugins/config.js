@@ -19,5 +19,6 @@ export default async ({ app }) => {
   } else {
     // eslint-disable-next-line no-console
     console.log('No API url server configured.')
+    console.log(app.$config)
   }
 }
