@@ -7,6 +7,7 @@
 $ yarn install
 
 # serve with hot reload at localhost:3000
+$ export API_BASE_URL=http://philobiblon.duckdns.org:8000
 $ yarn dev -o
 
 # build for production and launch server
