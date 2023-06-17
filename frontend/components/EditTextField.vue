@@ -41,6 +41,10 @@ export default {
     value: {
       type: String,
       default: null
+    },
+    save: {
+      type: Function,
+      required: true
     }
   },
   data () {
@@ -71,9 +75,24 @@ export default {
       this.focussed = true
     },
 
-    edit (label) {
-      this.$emit('save', this.currentText)
-      this.consolidatedText = this.currentText
+    async edit (label) {
+      await this.save(this.currentText)
+        .then((response) => {
+          console.log(response)
+          if (!response.success) {
+            throw new Error(response.info)
+          }
+          this.consolidatedText = this.currentText
+        })
+        .catch((error) => {
+          // workaround to avoid weird error if the session is expired
+          // the first time that we want edit the wikibase
+          console.log(error.message)
+          if (error.message === 'query is undefined') {
+            error = 'Error: Session expired.'
+          }
+          this.$notification.error(error)
+        })
       this.$refs.myTextField.blur()
     },
 

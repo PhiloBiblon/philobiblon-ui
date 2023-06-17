@@ -26,9 +26,9 @@
         <v-col>
           <span v-if="isUserLogged">
             <edit-text-field
+              :save="editLabel"
               :value="label"
               class="text-h4"
-              @save="editLabel"
             >
               <template #append-outer>
                 &nbsp;
@@ -176,10 +176,7 @@ export default {
     },
 
     editLabel (label) {
-      this.$wikibase.getWbEdit().label.set({ id: this.item.id, language: this.$i18n.locale, value: label }, this.$store.getters['auth/getRequestConfig'])
-        .catch((err) => {
-          this.$notification.error(err)
-        })
+      return this.$wikibase.getWbEdit().label.set({ id: this.item.id, language: this.$i18n.locale, value: label }, this.$store.getters['auth/getRequestConfig'])
     }
   }
 }

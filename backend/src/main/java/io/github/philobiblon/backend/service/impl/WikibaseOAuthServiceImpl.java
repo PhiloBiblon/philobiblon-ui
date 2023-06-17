@@ -8,6 +8,7 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
+import io.github.philobiblon.backend.error.WikibaseException;
 import io.github.philobiblon.backend.helper.TimedMap;
 import io.github.philobiblon.backend.representation.AccessToken;
 import io.github.philobiblon.backend.representation.RequestToken;
@@ -36,7 +37,7 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
     private final Pattern PATTERN_PARAMS = Pattern.compile("([^=&]*)=([^&]*)");
 
     private final TimedMap<String, OAuth1RequestToken> requestTokens = new TimedMap<>(5, TimeUnit.MINUTES);
-    private final TimedMap<String, OAuth1AccessToken> accessTokens = new TimedMap<>(15, TimeUnit.MINUTES, true);
+    private final TimedMap<String, OAuth1AccessToken> accessTokens = new TimedMap<>(60, TimeUnit.MINUTES, true);
 
     private final OAuth10aService service;
     private final String wikibaseApiUrl;
@@ -102,6 +103,9 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
     @Override
     public String redirect(HttpServletRequest request, String body) {
         OAuth1AccessToken accessToken = getAccessTokenFromRequest(request);
+        if (accessToken == null) {
+            throw new WikibaseException("Session expired.");
+        }
         OAuthRequest oAuthRequest = buildOAuthRequest(request, body);
         service.signRequest(accessToken, oAuthRequest);
         try {
