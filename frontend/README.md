@@ -1,4 +1,4 @@
-# philobiblon-viewer
+# frontend
 
 ## Build Setup
 

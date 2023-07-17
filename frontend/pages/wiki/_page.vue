@@ -50,7 +50,7 @@ export default {
 
     parseLink (match, g1, g2) {
       let link = g1
-      if (!link.startsWith('/' || !link.startsWith('http'))) {
+      if (!link.startsWith('/') || !link.startsWith('http')) {
         link = '/wiki/' + link
       }
       const text = g2 !== undefined ? g2 : g1

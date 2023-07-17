@@ -9,7 +9,8 @@ export default async ({ app }) => {
       })
       .then((data) => {
         Object.entries(data).forEach(([key, value]) => {
-          app.$config[key] = value
+          // replace internal host, only for local development
+          app.$config[key] = value.replace('host.docker.internal', 'localhost')
         })
       })
       .catch((err) => {

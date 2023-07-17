@@ -10,7 +10,8 @@ export class OAuthService {
         return response.json()
       })
       .then((data) => {
-        window.location.href = data.authUrl
+        // replace internal host, only for local development
+        window.location.href = data.authUrl.replace('host.docker.internal', 'localhost')
       })
   }
 
