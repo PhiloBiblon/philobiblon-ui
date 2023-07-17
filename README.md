@@ -24,18 +24,23 @@ PhiloBiblon UI has two main modules:
 
 Steps to build the modules:
 
-1. Build frontend container.
+1. Build backend container.
+```
+cd backend
+mvn clean install
+```  
+2. Build frontend container.
 ```
 docker-compose --env-file <env-file> build
 ```
   where `env-file` is the environment variables depending on the platform where we are installing (currently, `.env.local` for local development; `.env.pbuidev` for sandbox)
   
-2. First time only, get `Let's Encrypt` ssl certificates to enable the `https` protocol.
+3. First time only, get `Let's Encrypt` ssl certificates to enable the `https` protocol.
 ```
 init-letsencrypt.sh
 ```
 
-Step 2, initially starts all modules for PhiloBiblon UI.
+Step 3 already starts all modules for PhiloBiblon UI.
 
 ## Run
 
