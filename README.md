@@ -75,7 +75,7 @@ The configuration is centralized in the `env file`, where we can find all the en
   - SPARQL_BASE_URL: SPARQL base url (i.e, without any request URI)
   - SPARQL_ENDPOINT: SPARQL endpoint url.
   - SPARQL_QUERY_PREFIX: SPARQL prefix to use in queries.
-  - OAUTH_CONSUMER_KEY: OAuth consumer key generated in Wikibase (we need to register an OAuth consume:, similar that [we did for QS](https://github.com/PhiloBiblon/philobiblon-to-wikibase/blob/master/philobiblon-sandbox/pbuidev/qs/README.md)).
+  - OAUTH_CONSUMER_KEY: OAuth consumer key generated in Wikibase (similar that [we did for QS](https://github.com/PhiloBiblon/philobiblon-to-wikibase/blob/master/philobiblon-sandbox/pbuidev/qs/README.md)).
   - OAUTH_CONSUMER_SECRET: OAuth consumer secret generated in Wikibase.
   - OAUTH_CALLBACK_URL: OAuth callback url.
   - ALLOWED_ORIGINS: Allowed origins to access the backend module (for public instances use directly *).
