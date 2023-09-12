@@ -5,6 +5,10 @@ export default {
     host: '0'
   },
 
+  router: {
+    base: process.env.BASE_URL || '/'
+  },
+
   env: {
     debug: process.env.DEBUG === 'true'
   },
