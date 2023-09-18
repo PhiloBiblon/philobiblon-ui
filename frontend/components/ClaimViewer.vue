@@ -8,16 +8,15 @@
     <v-divider />
     <claim-value-viewer
       v-for="(value, index) in claim.values"
-      :key="'c-'+claim.property+'-'+index"
+      :key="'c-' + claim.property + '-' + index"
       :value="value"
-      :key_value="'c-'+claim.property+'-'+index"
+      :key_value="'c-' + claim.property + '-' + index"
     />
   </v-container>
 </template>
 
 <script>
 export default {
-
   props: {
     claim: {
       type: Object,
@@ -32,15 +31,20 @@ export default {
   },
 
   async mounted () {
-    await this.$wikibase.getEntity(this.claim.property, this.$i18n.locale).then((entity) => {
-      this.propertyLabel = this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
-    })
+    await this.$wikibase
+      .getEntity(this.claim.property, this.$i18n.locale)
+      .then((entity) => {
+        this.propertyLabel = this.$wikibase.getValueByLang(
+          entity.labels,
+          this.$i18n.locale
+        )
+      })
   }
 }
 </script>
 
 <style scoped>
 .claim {
-  padding-left: 0
+  padding-left: 0;
 }
 </style>

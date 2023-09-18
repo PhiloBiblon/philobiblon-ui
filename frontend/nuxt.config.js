@@ -6,7 +6,7 @@ export default {
   },
 
   env: {
-    debug: process.env.DEBUG==='true'
+    debug: process.env.DEBUG === 'true'
   },
 
   publicRuntimeConfig: {
@@ -66,10 +66,18 @@ export default {
     '@nuxtjs/toast'
   ],
 
+  pwa: {
+    icon: false,
+    workbox: {
+      // Configure your service worker options here
+    }
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+
     '@nuxtjs/i18n'
   ],
 
@@ -104,7 +112,7 @@ export default {
   },
 
   toast: {
-    position: 'top-center',
+    position: 'top-center'
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
