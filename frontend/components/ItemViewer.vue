@@ -186,6 +186,14 @@ export default {
           { id: this.item.id, language: this.$i18n.locale, value: label },
           this.$store.getters['auth/getRequestConfig']
         )
+    },
+    editDescription (description) {
+      return this.$wikibase
+        .getWbEdit()
+        .description.set(
+          { id: this.item.id, language: this.$i18n.locale, value: description },
+          this.$store.getters['auth/getRequestConfig']
+        )
     }
   }
 }
