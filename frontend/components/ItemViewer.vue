@@ -44,9 +44,21 @@
         </v-col>
       </v-row>
       <v-row class="pb-5">
-        <v-col class="text-subtitle-1">
-          {{ description }}
-        </v-col>
+        <span v-if="isUserLogged">
+          <edit-text-field :save="editDescription" :value="description" class="text-subtitle-1">
+            <template #append-outer>
+                &nbsp;
+              <v-col class="text-subtitle-1">
+                {{ description }}
+              </v-col>
+            </template>
+          </edit-text-field>
+        </span>
+        <span v-else class="text-subtitle-1">
+          <v-col class="text-subtitle-1">
+            {{ description }}
+          </v-col>
+        </span>
       </v-row>
       <claim-viewer
         v-for="(claim, index) in claimsOrdered"
@@ -172,6 +184,14 @@ export default {
         .getWbEdit()
         .label.set(
           { id: this.item.id, language: this.$i18n.locale, value: label },
+          this.$store.getters['auth/getRequestConfig']
+        )
+    },
+    editDescription (description) {
+      return this.$wikibase
+        .getWbEdit()
+        .description.set(
+          { id: this.item.id, language: this.$i18n.locale, value: description },
           this.$store.getters['auth/getRequestConfig']
         )
     }
