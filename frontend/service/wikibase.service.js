@@ -231,8 +231,14 @@ export class WikibaseService {
       })
     }
 
-    const url = this.wbk.sparqlQuery(query)
-    return fetch(url)
+    const [url, sparql] = this.wbk.sparqlQuery(query).split('?')
+
+    const options = {
+      method: 'POST',
+      body: sparql
+    }
+
+    return fetch(url, options)
       .then((response) => {
         if (response.status >= 200 && response.status <= 299) {
           return response.json()
