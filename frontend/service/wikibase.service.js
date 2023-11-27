@@ -44,17 +44,11 @@ export class WikibaseService {
 
   async getOrder () {
     const url = `${this.$config.wikibaseApiUrl}?action=parse&page=MediaWiki:Wikibase-SortedProperties&prop=wikitext&formatversion=2&format=json&origin=*`
+    const data = await this.wbFetcher(url)
 
-    const response = await fetch(url)
+    const PROP_REGEX = /P\d+/g
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-
-    const data = await response.json()
-
-    const regex = /P\d+/g
-    const order = data.parse.wikitext.match(regex) || []
+    const order = data.parse.wikitext.match(PROP_REGEX) || []
     return order
   }
 
@@ -63,18 +57,21 @@ export class WikibaseService {
       ids: [id],
       language: [lang, 'en']
     })
-    const entityHash = this.hashCode(`${id}-${lang}`)
-    const entry = this.getResultsFromCache(entityHash)
+    return this.wbFetcher(url)
+      .then((data) => {
+        return data.entities[id]
+      })
+  }
+
+  wbFetcher (url) {
+    const urlHash = this.hashCode(url)
+    const entry = this.getResultsFromCache(urlHash)
     if (entry) {
       return new Promise((resolve, reject) => {
         return resolve(entry.value)
       })
     }
 
-    return this.wbFetcher(url, entityHash, id)
-  }
-
-  wbFetcher (url, entityHash, id) {
     return fetch(url)
       .then((response) => {
         if (response.status >= 200 && response.status <= 299) {
@@ -84,13 +81,11 @@ export class WikibaseService {
         }
       })
       .then((data) => {
-        const entity = data.entities[id]
-
         this.$store.commit('queryCache/addEntry', {
-          key: entityHash,
-          value: entity
+          key: urlHash,
+          value: data
         })
-        return entity
+        return data
       })
   }
 
@@ -172,8 +167,7 @@ export class WikibaseService {
       const notesApiUrl =
         datavalue.replace('/wiki/', '/w/api.php?action=parse&page=') +
         '&prop=wikitext&formatversion=2&format=json&origin=*'
-      return fetch(notesApiUrl)
-        .then(response => response.json())
+      return this.wbFetcher(notesApiUrl)
         .then((data) => {
           return { value: data.parse.wikitext, type: 'html' }
         })
