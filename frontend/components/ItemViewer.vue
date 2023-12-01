@@ -48,9 +48,6 @@
           <edit-text-field :save="editDescription" :value="description" class="text-subtitle-1">
             <template #append-outer>
                 &nbsp;
-              <v-col class="text-subtitle-1">
-                {{ description }}
-              </v-col>
             </template>
           </edit-text-field>
         </span>
