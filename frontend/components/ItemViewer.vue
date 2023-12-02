@@ -79,7 +79,7 @@ const TABLEID_TO_NAME = {
   bioid: 'person',
   bibid: 'reference',
   texid: 'work',
-  geoid: 'geoid'
+  geoid: 'geography'
 }
 
 export default {

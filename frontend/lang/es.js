@@ -28,8 +28,8 @@ export default {
           msed: {
             label: 'MsEd'
           },
-          geoid: {
-            label: 'Geography'
+          geography: {
+            label: 'Geografía'
           }
         }
       }

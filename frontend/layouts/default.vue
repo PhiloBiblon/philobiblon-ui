@@ -69,9 +69,9 @@
               <v-list-item-title>{{ $t('menu.item.search.item.msed.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/geoid/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/geography/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.geoid.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.geography.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
