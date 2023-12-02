@@ -77,8 +77,9 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-
-    '@nuxtjs/i18n'
+    // https://i18n.nuxtjs.org/
+    '@nuxtjs/i18n',
+    'cookie-universal-nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
