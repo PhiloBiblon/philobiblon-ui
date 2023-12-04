@@ -23,7 +23,7 @@ export class WikibaseService {
     })
     this.$store = store
     this.$query = new QueryService(store, this.$config)
-    this.$oauth = new OAuthService(store, this.$config)
+    this.$oauth = new OAuthService(store, this.$config, app)
   }
 
   getWbk () {

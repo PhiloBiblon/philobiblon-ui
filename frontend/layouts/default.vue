@@ -150,6 +150,7 @@
 </template>
 
 <script>
+const jwt = require('jsonwebtoken')
 
 export default {
   data () {
@@ -166,6 +167,16 @@ export default {
     }
   },
   mounted () {
+    const token = this.$cookies.get('oauth')
+    try {
+      const decoded = jwt.verify(token, 'password')
+      const username = decoded.username
+      const accessToken = decoded.accessToken
+      this.$store.commit('auth/login', { username, accessToken })
+    } catch (err) {
+      // error logic here
+    }
+
     window.addEventListener('keydown', this.keyDownHandler)
   },
   destroyed () {
