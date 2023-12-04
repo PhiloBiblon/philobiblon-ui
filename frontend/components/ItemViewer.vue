@@ -44,12 +44,8 @@
         </v-col>
       </v-row>
       <v-row class="pb-5">
-        <span v-if="isUserLogged">
-          <edit-text-field :save="editDescription" :value="description" class="text-subtitle-1">
-            <template #append-outer>
-                &nbsp;
-            </template>
-          </edit-text-field>
+        <span v-if="isUserLogged" class="full-width">
+          <edit-text-field :save="editDescription" :value="description" class="text-subtitle-1" />
         </span>
         <span v-else class="text-subtitle-1">
           <v-col class="text-subtitle-1">
@@ -200,13 +196,14 @@ export default {
 .all-width {
   max-width: 100% !important;
 }
-
 .link {
   text-decoration: none;
 }
-
 .back {
   font-size: 12px;
   height: 15px;
+}
+.full-width {
+  width: 100%;
 }
 </style>
