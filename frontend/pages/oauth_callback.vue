@@ -12,7 +12,7 @@ export default {
     } else {
       this.$notification.error(response.error)
     }
-    this.$router.push(this.localePath('/'))
+    this.$router.push(this.localePath(this.$cookies.get('previous-path')))
   }
 }
 </script>
