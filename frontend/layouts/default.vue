@@ -185,7 +185,7 @@ export default {
     },
     login () {
       this.$cookies.set('previous-path', this.$route.path, {
-        path: '/oauth_callback',
+        path: '/',
         maxAge: 5 * 60
       })
       this.$wikibase.$oauth.step1()
