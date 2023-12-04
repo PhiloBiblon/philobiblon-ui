@@ -27,6 +27,9 @@ export default {
           },
           msed: {
             label: 'MsEd'
+          },
+          geography: {
+            label: 'Geography'
           }
         }
       }

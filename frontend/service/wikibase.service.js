@@ -185,7 +185,8 @@ export class WikibaseService {
         pbIdValue.includes('manid') ||
         pbIdValue.includes('bioid') ||
         pbIdValue.includes('bibid') ||
-        pbIdValue.includes('texid')
+        pbIdValue.includes('texid') ||
+        pbIdValue.includes('geoid')
       ) {
         return true
       }
