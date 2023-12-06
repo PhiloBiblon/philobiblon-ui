@@ -4,6 +4,21 @@ export class QueryService {
     this.$config = config
   }
 
+  // convert values to lowercase without diacritical accents except ñ
+  normalize (str) {
+    return str
+      .split('')
+      .map((chr) => {
+        chr = chr.toLowerCase()
+        if (chr !== 'ñ') {
+          return chr.normalize('NFD').replace(/[\u0300-\u036F]/g, '')
+        } else {
+          return chr
+        }
+      })
+      .join('')
+  }
+
   addPrefixes (query) {
     if (this.$config.sparqlQueryPrefix) {
       return `${this.$config.sparqlQueryPrefix.replaceAll('\\n', '\n')} ${query}`
@@ -45,8 +60,7 @@ export class QueryService {
 
   generateFilterSimpleSearch (form) {
     const filterFields = ['itemLabel', 'desc', 'ps', 'ps_Label', 'pq', 'pq_Label']
-    // convert values to lowercase without diacritical accents
-    const filterValues = form.simple_search.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036F]/g, '').split(' ')
+    const filterValues = this.normalize(form.simple_search.value).split(' ')
     let filters = null
     for (const filterField of filterFields) {
       if (filters) {
