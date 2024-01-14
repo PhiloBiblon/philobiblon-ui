@@ -150,7 +150,6 @@
 </template>
 
 <script>
-const jwt = require('jsonwebtoken')
 
 export default {
   data () {
@@ -167,16 +166,7 @@ export default {
     }
   },
   mounted () {
-    const token = this.$cookies.get('oauth')
-    try {
-      const decoded = jwt.verify(token, 'password')
-      const username = decoded.username
-      const accessToken = decoded.accessToken
-      this.$store.commit('auth/login', { username, accessToken })
-    } catch (err) {
-      // error logic here
-    }
-
+    this.$wikibase.$oauth.autoLoginByCookie()
     window.addEventListener('keydown', this.keyDownHandler)
   },
   destroyed () {
@@ -204,6 +194,7 @@ export default {
     logout () {
       this.$store.commit('auth/logout')
       this.$notification.success(this.$i18n.t('auth.logout.success'))
+      this.$cookies.remove('oauth')
     }
   }
 }

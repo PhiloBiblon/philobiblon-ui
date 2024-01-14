@@ -48,13 +48,26 @@ export class OAuthService {
         username,
         accessToken
       }
-      const token = jwt.sign(oauth, 'password')
+      const signer = 'password'
+      const token = jwt.sign(oauth, signer)
       this.$cookies.set('oauth', token, {
         path: '/',
-        maxAge: 60 * 60 * 24 * 7
+        maxAge: 60 * 60
       })
     }
     return response
+  }
+
+  autoLoginByCookie () {
+    const token = this.$cookies.get('oauth')
+    try {
+      const decoded = jwt.verify(token, 'password')
+      const username = decoded.username
+      const accessToken = decoded.accessToken
+      this.$store.commit('auth/login', { username, accessToken })
+    } catch (err) {
+      // error logic here
+    }
   }
 
   getUsername (accessToken) {
