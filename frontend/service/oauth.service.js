@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 
 export class OAuthService {
-  constructor (store, config, app) {
+  constructor (store, app) {
     this.$store = store
-    this.$config = config
+    this.$config = app.$config
     this.$cookies = app.$cookies
   }
 
@@ -66,7 +66,7 @@ export class OAuthService {
       const accessToken = decoded.accessToken
       this.$store.commit('auth/login', { username, accessToken })
     } catch (err) {
-      // error logic here
+      console.error(err)
     }
   }
 
