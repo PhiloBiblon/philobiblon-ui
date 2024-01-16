@@ -1,7 +1,10 @@
+const jwt = require('jsonwebtoken')
+
 export class OAuthService {
-  constructor (store, config) {
+  constructor (store, app) {
     this.$store = store
-    this.$config = config
+    this.$config = app.$config
+    this.$cookies = app.$cookies
   }
 
   step1 () {
@@ -41,8 +44,30 @@ export class OAuthService {
       const accessToken = response.accessToken
       const username = await this.getUsername(accessToken)
       this.$store.commit('auth/login', { username, accessToken })
+      const oauth = {
+        username,
+        accessToken
+      }
+      const signer = 'password'
+      const token = jwt.sign(oauth, signer)
+      this.$cookies.set('oauth', token, {
+        path: '/',
+        maxAge: 60 * 60
+      })
     }
     return response
+  }
+
+  autoLoginByCookie () {
+    const token = this.$cookies.get('oauth')
+    try {
+      const decoded = jwt.verify(token, 'password')
+      const username = decoded.username
+      const accessToken = decoded.accessToken
+      this.$store.commit('auth/login', { username, accessToken })
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   getUsername (accessToken) {

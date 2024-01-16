@@ -166,6 +166,7 @@ export default {
     }
   },
   mounted () {
+    this.$wikibase.$oauth.autoLoginByCookie()
     window.addEventListener('keydown', this.keyDownHandler)
   },
   destroyed () {
@@ -193,6 +194,7 @@ export default {
     logout () {
       this.$store.commit('auth/logout')
       this.$notification.success(this.$i18n.t('auth.logout.success'))
+      this.$cookies.remove('oauth')
     }
   }
 }
