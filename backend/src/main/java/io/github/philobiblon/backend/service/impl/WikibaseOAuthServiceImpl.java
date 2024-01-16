@@ -100,14 +100,14 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
         }
     }
 
+
     @Override
     public String redirect(HttpServletRequest request, String body) {
-        OAuth1AccessToken accessToken = getAccessTokenFromRequest(request);
-        if (accessToken == null) {
-            throw new WikibaseException("Session expired.");
-        }
         OAuthRequest oAuthRequest = buildOAuthRequest(request, body);
-        service.signRequest(accessToken, oAuthRequest);
+        OAuth1AccessToken accessToken = getAccessTokenFromRequest(request);
+        if (accessToken != null) {
+            service.signRequest(accessToken, oAuthRequest);
+        }
         try {
             Response oAuthResponse = service.execute(oAuthRequest);
             return oAuthResponse.getBody();
@@ -155,11 +155,16 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
     }
 
     private OAuth1AccessToken getAccessTokenFromRequest(HttpServletRequest request) {
-        Matcher matcher = PATTERN_OAUTH_TOKEN.matcher(request.getHeader("authorization"));
-        if (matcher.find()) {
-            String token = matcher.group(1);
-            return accessTokens.get(token);
+        String authHeader = request.getHeader("authorization");
+        if (authHeader != null) {
+            Matcher matcher = PATTERN_OAUTH_TOKEN.matcher(authHeader);
+            if (matcher.find()) {
+                String token = matcher.group(1);
+                return accessTokens.get(token);
+            }
+        } else if (getVerbFromRequest(request) == Verb.GET) {
+            return null;
         }
-        return null;
+        throw new WikibaseException("Session expired.");
     }
 }
