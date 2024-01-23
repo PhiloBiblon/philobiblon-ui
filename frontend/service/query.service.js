@@ -78,11 +78,11 @@ export class QueryService {
         ?statement ?ps ?ps_ .
         OPTIONAL { ?ps_ rdfs:label ?ps_Label }
 
-        ?wd wikibase:claim ?p .
-        ?wd wikibase:statementProperty ?ps .
-
         OPTIONAL {
-          ?statement ?pq ?pq_ .
+            ?wd wikibase:claim ?p .
+            ?wd wikibase:statementProperty ?ps .
+  
+            ?statement ?pq ?pq_ .
           ?wdpq wikibase:qualifier ?pq .
           OPTIONAL { ?pq_ rdfs:label ?pq_Label }
         }
