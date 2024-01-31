@@ -1,17 +1,23 @@
 <template>
   <v-row dense class="value">
     <v-col :cols="value.qualifiers ? 3 : 12">
-      <value-viewer :value="value.mainsnak" />
+      <value-viewer :claim="value" :value="value.mainsnak" :index="indexKey" :qualifiers="value.qualifiers" type="claim" />
     </v-col>
     <qualifier-viewer
+      type="qualifier"
       v-for="(values, property) in value.qualifiers"
       :key="keyValue+'-'+property"
       :property="property"
+      :claim="value"
+      :index="indexKey"
       :values="values"
       :key_value="keyValue+'-'+property"
     />
   </v-row>
 </template>
+
+
+
 
 <script>
 export default {
@@ -20,6 +26,9 @@ export default {
     keyValue: {
       type: String,
       default: null
+    },
+    indexKey: {
+      type: Number,
     },
     value: {
       type: Object,

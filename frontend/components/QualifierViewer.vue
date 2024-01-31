@@ -4,7 +4,9 @@
     <qualifier-value-viewer
       v-for="(value, index) in values"
       :key="keyValue + '-' + index"
+      :index="index"
       :value="value"
+      :claim="claim"
       :key_value="keyValue + '-' + index"
     />
   </v-col>
@@ -13,6 +15,9 @@
 <script>
 export default {
   props: {
+    claim: {
+      type: Object,
+    },
     keyValue: {
       type: String,
       default: null
@@ -24,6 +29,9 @@ export default {
     values: {
       type: Array,
       default: null
+    },
+    index: {
+      type: Number,
     }
   },
 

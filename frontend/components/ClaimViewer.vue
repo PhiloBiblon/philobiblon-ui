@@ -9,6 +9,7 @@
     <claim-value-viewer
       v-for="(value, index) in claim.values"
       :key="'c-' + claim.property + '-' + index"
+      :indexKey="index"
       :value="value"
       :key_value="'c-' + claim.property + '-' + index"
     />

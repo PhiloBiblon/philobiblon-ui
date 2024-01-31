@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+  :type="type"
     ref="myTextField"
     v-model="currentText"
     v-bind="{ ...$attrs, ...commonAttrs }"
@@ -42,6 +43,10 @@ export default {
       type: String,
       default: null
     },
+    type: {
+      type: String,
+      default: 'text'
+    },
     save: {
       type: Function,
       required: true
@@ -78,7 +83,7 @@ export default {
     async edit (label) {
       await this.save(this.currentText)
         .then((response) => {
-          if (!response.success) {
+          if (response && !response.success) {
             throw new Error(response.info)
           }
           this.consolidatedText = this.currentText
