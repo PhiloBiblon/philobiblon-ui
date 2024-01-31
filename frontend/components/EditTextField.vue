@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+  :type="type"
     ref="myTextField"
     v-model="currentText"
     :type="type"

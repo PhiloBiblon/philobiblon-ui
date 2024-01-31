@@ -4,6 +4,7 @@
       <value-viewer :claim="value" :value="value.mainsnak" type="claim" />
     </v-col>
     <qualifier-viewer
+      type="qualifier"
       v-for="(values, property) in value.qualifiers"
       :key="keyValue+'-'+property"
       type="qualifier"
@@ -15,12 +16,18 @@
   </v-row>
 </template>
 
+
+
+
 <script>
 export default {
   props: {
     keyValue: {
       type: String,
       default: null
+    },
+    indexKey: {
+      type: Number,
     },
     value: {
       type: Object,

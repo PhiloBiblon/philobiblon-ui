@@ -4,6 +4,7 @@
     <qualifier-value-viewer
       v-for="(value, index) in values"
       :key="keyValue + '-' + index"
+      :index="index"
       :value="value"
       :claim="claim"
       :key_value="keyValue + '-' + index"
@@ -29,6 +30,9 @@ export default {
     values: {
       type: Array,
       default: null
+    },
+    index: {
+      type: Number,
     }
   },
 

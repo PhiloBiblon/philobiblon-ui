@@ -23,6 +23,7 @@
         <edit-text-field :key="valueToView.value" :save="editValue" :value="valueToView.value" class="text-subtitle-1" />
       </template>
     </span>
+
     <span v-else-if="valueToView.type === 'time'">
       <template v-if="!isUserLogged">
         {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
@@ -31,6 +32,7 @@
         <edit-text-field :key="valueToView.value" :save="editValue" type="date" :value="valueToView.value" class="text-subtitle-1" />
       </template>
     </span>
+
     <span v-else-if="valueToView.type === 'url'">
       <a
         :href="imageLink"
