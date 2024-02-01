@@ -32,7 +32,7 @@ export default {
       default: null
     },
     index: {
-      type: Number,
+      type: Number
     }
   },
 
