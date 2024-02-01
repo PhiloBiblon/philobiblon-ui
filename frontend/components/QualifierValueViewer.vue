@@ -13,13 +13,12 @@ export default {
       default: null
     },
     claim: {
-      type: Object,
+      type: Object
     },
     index: {
-      type: Number,
-    },
+      type: Number
+    }
   }
-
 }
 </script>
 

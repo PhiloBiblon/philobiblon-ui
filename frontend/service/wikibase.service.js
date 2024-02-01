@@ -279,6 +279,7 @@ export class WikibaseService {
     }
     return hash
   }
+
   async searchEntityByName(search, language, uselang,) {
     try {
       const searchOptions = {
@@ -329,4 +330,3 @@ export class WikibaseService {
     return response.json();
   }
 }
-

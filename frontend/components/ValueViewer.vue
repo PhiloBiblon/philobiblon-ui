@@ -1,34 +1,36 @@
 <template>
   <div v-if="valueToView">
-        <template v-if="valueToView.type === 'text'">
+    <template v-if="valueToView.type === 'text'">
       <span v-if="!isUserLogged || value.datavalue.type === 'string'">
         {{ valueToView.value }}
       </span>
       <div v-else>
-        <edit-select-field :key="value.datavalue.value.id" :options="options" :save="editLabel"
-                           @update-options="options = $event"
-                         @input="oninput($event)"/>
+        <edit-select-field
+          :key="value.datavalue.value.id"
+          :options="options"
+          :save="editLabel"
+          @update-options="options = $event"
+          @input="oninput($event)"
+        />
       </div>
     </template>
 
- <span v-else-if="valueToView.type === 'text-lang'">
+    <span v-else-if="valueToView.type === 'text-lang'">
       <template v-if="!isUserLogged">
         {{ valueToView.value }} <sup>{{ valueToView.language }}</sup>
       </template>
       <template v-else>
-          <edit-text-field :key="datavalue" :save="editLabel" :value="datavalue" class="text-subtitle-1"/>
+        <edit-text-field :key="datavalue" :save="editLabel" :value="datavalue" class="text-subtitle-1" />
       </template>
     </span>
-
     <span v-else-if="valueToView.type === 'time'">
       <template v-if="!isUserLogged">
         {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
       </template>
       <template v-else>
-          <edit-text-field :key="datavalue" :save="editLabel" type="date" :value="datavalue" class="text-subtitle-1"/>
+        <edit-text-field :key="datavalue" :save="editLabel" type="date" :value="datavalue" class="text-subtitle-1" />
       </template>
     </span>
-
     <span v-else-if="valueToView.type === 'url'">
       <a
         :href="imageLink"
@@ -42,17 +44,21 @@
     </span>
 
     <span v-else-if="valueToView.type === 'item'">
-       <template v-if="!isUserLogged">
+      <template v-if="!isUserLogged">
         <NuxtLink :to="getUrlFromPBID(valueToView.item)">
           {{ valueToView.value }}
         </NuxtLink>
       </template>
       <template v-else>
-          <div style="position: relative">
-                <edit-select-field :key="value.datavalue.value.id" :options="options" :save="editLabel"
-                                   @update-options="options = $event"
-                                   @input="oninput($event)"/>
-            </div>
+        <div style="position: relative">
+          <edit-select-field
+            :key="value.datavalue.value.id"
+            :options="options"
+            :save="editLabel"
+            @update-options="options = $event"
+            @input="oninput($event)"
+          />
+        </div>
       </template>
     </span>
     <span v-else-if="valueToView.type === 'external-id'">
@@ -80,18 +86,17 @@ export default {
       default: null
     },
     index: {
-      type: Number,
+      type: Number
     },
     claim: {
-      type: Object,
+      type: Object
     },
     qualifiers: {
-      type: Object,
+      type: Object
     },
     type: {
-      type: String,
-    },
-    
+      type: String
+    }
   },
 
   data () {
@@ -99,8 +104,7 @@ export default {
       datavalue: null,
       valueToView: null,
       imageLink: null,
-      imageLink: null,
-      options: [],
+      options: []
     }
   },
 
@@ -118,7 +122,7 @@ export default {
       this.$i18n.locale
     )
 
-    this.setDefaultOption();
+    this.setDefaultOption()
 
     this.datavalue = this.valueToView.value
 
@@ -134,8 +138,8 @@ export default {
   },
 
   methods: {
-    oninput(e) {
-      if (e && e !== this.valueToView.value) this.handleSearchChange(e);
+    oninput (e) {
+      if (e && e !== this.valueToView.value) { this.handleSearchChange(e) }
     },
     getUrlFromPBID (item) {
       return this.localePath('/item/' + item)
@@ -144,172 +148,179 @@ export default {
       const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
       return urlRegex.test(str)
     },
-    setDefaultOption() {
+    setDefaultOption () {
       let defaultId = null
       if (this.type === 'qualifier') {
         defaultId = this.claim.qualifiers[this.value.property][this.index].datavalue.value.id
       } else {
         defaultId = this.claim.mainsnak.datavalue.value.id
       }
+
       this.options = [{
         id: defaultId,
-        label: this.valueToView.value,
+        label: this.valueToView.value
       }]
     },
-    async handleSearchChange(value) {
-      if (!value) return;
-      const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale);
-      if (search && search.length) return this.options = search;
+    async handleSearchChange (value) {
+      if (!value) { return }
+      const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale)
+      // eslint-disable-next-line no-return-assign
+      if (search && search.length) { return this.options = search }
     },
-    getItemId() {
-      const pattern = /Q\d+/g;
-      return this.claim.id.match(pattern)[0];
+    getItemId () {
+      const pattern = /Q\d+/g
+      return this.claim.id.match(pattern)[0]
     },
-    async editLabel(option) {
-      const accessToken = this.$store.getters['auth/getAccessToken'];
-      const csrfToken = await this.$wikibase.getWikiUiDevCsrfToken(accessToken.token);
-      if (!csrfToken) return;
-      const formData = await this.customizeUpdateData(option, csrfToken);
-      const response = await this.$wikibase.updateWikiClaim(accessToken.token, formData);
+    async editLabel (option) {
+      const accessToken = this.$store.getters['auth/getAccessToken']
+      const csrfToken = await this.$wikibase.getWikiUiDevCsrfToken(accessToken.token)
+
+      if (!csrfToken) { return }
+
+      const formData = await this.customizeUpdateData(option, csrfToken)
+      const response = await this.$wikibase.updateWikiClaim(accessToken.token, formData)
+
       if (response.success) {
         this.$notification.success('Successfully updated')
       } else {
         this.$notification.error('Something went wrong')
       }
     },
-    async customizeUpdateData(value, csrfToken) {
-      const itemId = this.getItemId();
-      let form = this.createInitialForm();
+    customizeUpdateData (value, csrfToken) {
+      const itemId = this.getItemId()
+      const form = this.createInitialForm()
       let newObj = {}
       switch (this.value.datavalue.type) {
         case 'string':
-          newObj = this.getStringValue(value);
-          break;
+          newObj = this.getStringValue(value)
+          break
         case 'quantity':
-          newObj = this.getQuantityValue(value);
-          break;
+          newObj = this.getQuantityValue(value)
+          break
         case 'time':
-          newObj = this.getTimeValue(value);
-          break;
+          newObj = this.getTimeValue(value)
+          break
         case 'wikibase-entityid':
-          newObj = this.getWikiBaseEntityIdValue(value);
-          break;
+          newObj = this.getWikiBaseEntityIdValue(value)
+          break
         case 'url':
-          newObj = this.getUrlValue(value);
-          break;
+          newObj = this.getUrlValue(value)
+          break
         case 'globe-coordinate':
-          newObj = this.getCoordinatesValue(value);
-          break;
+          newObj = this.getCoordinatesValue(value)
+          break
         case 'monolingualtext':
-          newObj = this.getMonolingualTextValue(value);
-          break;
+          newObj = this.getMonolingualTextValue(value)
+          break
         case 'math':
-          newObj = this.getMathValue(value);
-          break;
+          newObj = this.getMathValue(value)
+          break
         case 'external-id':
-          newObj = this.getExternalIdValue(value);
-          break;
+          newObj = this.getExternalIdValue(value)
+          break
         default:
-          break;
+          break
       }
-      this.setFormVal(form, newObj);
-      return this.createFormData(itemId, csrfToken, form);
+      this.setFormVal(form, newObj)
+
+      return this.createFormData(itemId, csrfToken, form)
     },
-    createInitialForm() {
-      return JSON.parse(JSON.stringify(this.claim));
+    createInitialForm () {
+      return JSON.parse(JSON.stringify(this.claim))
     },
-    getMonolingualTextValue(value) {
+    getMonolingualTextValue (value) {
       return {
         type: this.value.datavalue.type,
         value: {
           text: value,
-          language: this.value.datavalue.value.language,
-        },
-      };
+          language: this.value.datavalue.value.language
+        }
+      }
     },
-    getWikiBaseEntityIdValue(value) {
+    getWikiBaseEntityIdValue (value) {
       return {
         type: this.value.datavalue.type,
         value: {
-          id: value.id,
-        },
+          id: value.id
+        }
       }
     },
-    getStringValue(value) {
+    getStringValue (value) {
       return {
         value,
-        type: 'string',
-      };
+        type: 'string'
+      }
     },
-    getQuantityValue(value) {
+    getQuantityValue (value) {
       return {
-        type: "quantity",
+        type: 'quantity',
         value: {
           unit: value.unit,
-          amount: value.amount,
+          amount: value.amount
         }
       }
     },
-    getTimeValue(value) {
+    getTimeValue (value) {
       return {
-        type: "time",
+        type: 'time',
         value: {
           ...this.value.datavalue.value,
-          time: this.formatDate(value),
+          time: this.formatDate(value)
         }
       }
     },
-    getUrlValue(value) {
+    getUrlValue (value) {
       return {
         value,
-        type: "url",
+        type: 'url'
       }
     },
-    getCoordinatesValue(value) {
+    getCoordinatesValue (value) {
       return {
         precision: 0.0001,
         latitude: 37.7749,
         longitude: -122.4194,
-        globe: "http://www.wikidata.org/entity/Q2",
+        globe: 'http://www.wikidata.org/entity/Q2'
       }
     },
-    getMathValue(value) {
+    getMathValue (value) {
       return {
-        "latitude": 37.7749,
-        "longitude": -122.4194,
-        "precision": 0.0001,
-        "globe": "https://www.wikidata.org/entity/Q2",
+        latitude: 37.7749,
+        longitude: -122.4194,
+        precision: 0.0001,
+        globe: 'https://www.wikidata.org/entity/Q2'
       }
     },
-    getExternalIdValue(value) {
+    getExternalIdValue (value) {
       return {
-        "latitude": 37.7749,
-        "longitude": -122.4194,
-        "precision": 0.0001,
-        "globe": "http://www.wikidata.org/entity/Q2",
+        latitude: 37.7749,
+        longitude: -122.4194,
+        precision: 0.0001,
+        globe: 'http://www.wikidata.org/entity/Q2'
       }
     },
-    setFormVal(form, val) {
+    setFormVal (form, val) {
       if (this.type !== 'qualifier') {
         form.mainsnak.datavalue = val
       } else {
         form.qualifiers[this.value.property][this.index].datavalue = val
       }
     },
-    formatDate(dateString) {
-      const date = new Date(dateString);
-      const isoYear = date.getUTCFullYear();
-      const isoMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2);
-      const isoDay = ('0' + date.getUTCDate()).slice(-2);
-      return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`;
+    formatDate (dateString) {
+      const date = new Date(dateString)
+      const isoYear = date.getUTCFullYear()
+      const isoMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2)
+      const isoDay = ('0' + date.getUTCDate()).slice(-2)
+
+      return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`
     },
-    createFormData(itemId, csrfToken, form) {
-      const formData = new URLSearchParams();
-      formData.append('id', itemId);
-      formData.append('token', csrfToken);
-      formData.append('claim', JSON.stringify(form));
-      return formData;
-    },
+    createFormData (itemId, csrfToken, form) {
+      const formData = new URLSearchParams()
+      formData.append('id', itemId)
+      formData.append('token', csrfToken)
+      formData.append('claim', JSON.stringify(form))
+      return formData
+    }
   }
 }
 </script>

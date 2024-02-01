@@ -16,7 +16,7 @@
 export default {
   props: {
     claim: {
-      type: Object,
+      type: Object
     },
     keyValue: {
       type: String,
@@ -31,7 +31,7 @@ export default {
       default: null
     },
     index: {
-      type: Number,
+      type: Number
     }
   },
 
