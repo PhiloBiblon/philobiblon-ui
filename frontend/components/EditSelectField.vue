@@ -38,6 +38,7 @@ export default {
   inheritAttrs: false,
   props: {
     value: {
+      type: String,
       default: null
     },
     options: {
@@ -73,7 +74,7 @@ export default {
     onchange () {
       this.focussed = true
     },
-    focus (e) {
+    focus () {
       this.focussed = true
     },
     blur () {
@@ -88,10 +89,13 @@ export default {
       if (this.currentText && this.currentText.id !== this.consolidatedText.id) {
         await this.save(this.currentText)
           .then((response) => {
-            if (response && !response.success) {
-              throw new Error(response.info)
+            if (response) {
+              if (!response.success) {
+                throw new Error(response.info)
+              }
+              this.consolidatedText = this.currentText
+              this.$notification.success('Successfully updated')
             }
-            this.consolidatedText = this.currentText
           })
           .catch((error) => {
             // workaround to avoid weird error if the session is expired

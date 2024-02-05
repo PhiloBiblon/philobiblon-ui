@@ -8,7 +8,7 @@
         <edit-select-field
           :key="value.datavalue.value.id"
           :options="options"
-          :save="editLabel"
+          :save="editValue"
           @update-options="options = $event"
           @input="oninput($event)"
         />
@@ -20,7 +20,7 @@
         {{ valueToView.value }} <sup>{{ valueToView.language }}</sup>
       </template>
       <template v-else>
-        <edit-text-field :key="datavalue" :save="editLabel" :value="datavalue" class="text-subtitle-1" />
+        <edit-text-field :key="valueToView.value" :save="editValue" :value="valueToView.value" class="text-subtitle-1" />
       </template>
     </span>
     <span v-else-if="valueToView.type === 'time'">
@@ -28,7 +28,7 @@
         {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
       </template>
       <template v-else>
-        <edit-text-field :key="datavalue" :save="editLabel" type="date" :value="datavalue" class="text-subtitle-1" />
+        <edit-text-field :key="valueToView.value" :save="editValue" type="date" :value="valueToView.value" class="text-subtitle-1" />
       </template>
     </span>
     <span v-else-if="valueToView.type === 'url'">
@@ -54,7 +54,7 @@
           <edit-select-field
             :key="value.datavalue.value.id"
             :options="options"
-            :save="editLabel"
+            :save="editValue"
             @update-options="options = $event"
             @input="oninput($event)"
           />
@@ -81,30 +81,26 @@
 <script>
 export default {
   props: {
+    claim: {
+      type: Object,
+      default: null
+    },
     value: {
       type: Object,
       default: null
     },
-    index: {
-      type: Number
-    },
-    claim: {
-      type: Object
-    },
-    qualifiers: {
-      type: Object
-    },
     type: {
-      type: String
+      type: String,
+      default: null
     }
   },
 
   data () {
     return {
-      datavalue: null,
       valueToView: null,
       imageLink: null,
-      options: []
+      options: [],
+      currentValue: null
     }
   },
 
@@ -122,9 +118,9 @@ export default {
       this.$i18n.locale
     )
 
-    this.setDefaultOption()
+    this.currentValue = this.value.datavalue.value
 
-    this.datavalue = this.valueToView.value
+    this.setDefaultOption()
 
     if (this.isURL(this.valueToView.value) === true) {
       const res = await fetch(
@@ -149,15 +145,8 @@ export default {
       return urlRegex.test(str)
     },
     setDefaultOption () {
-      let defaultId = null
-      if (this.type === 'qualifier') {
-        defaultId = this.claim.qualifiers[this.value.property][this.index].datavalue.value.id
-      } else {
-        defaultId = this.claim.mainsnak.datavalue.value.id
-      }
-
       this.options = [{
-        id: defaultId,
+        id: this.value.datavalue.value.id,
         label: this.valueToView.value
       }]
     },
@@ -167,113 +156,93 @@ export default {
       // eslint-disable-next-line no-return-assign
       if (search && search.length) { return this.options = search }
     },
-    getItemId () {
-      const pattern = /Q\d+/g
-      return this.claim.id.match(pattern)[0]
-    },
-    async editLabel (option) {
-      const accessToken = this.$store.getters['auth/getAccessToken']
-      const csrfToken = await this.$wikibase.getWikiUiDevCsrfToken(accessToken.token)
-
-      if (!csrfToken) { return }
-
-      const formData = await this.customizeUpdateData(option, csrfToken)
-      const response = await this.$wikibase.updateWikiClaim(accessToken.token, formData)
-
-      if (response.success) {
-        this.$notification.success('Successfully updated')
+    async editValue (option) {
+      const newValue = await this.getNewValue(option)
+      if (this.type !== 'qualifier') {
+        return this.$wikibase.getWbEdit().claim.update({
+          guid: this.claim.id,
+          newValue
+        },
+        this.$store.getters['auth/getRequestConfig'])
       } else {
-        this.$notification.error('Something went wrong')
+        return this.$wikibase.getWbEdit().qualifier.update({
+          guid: this.claim.id,
+          property: this.value.property,
+          oldValue: this.currentValue,
+          newValue
+        },
+        this.$store.getters['auth/getRequestConfig'])
+          .then((response) => {
+            if (response && response.success) {
+              this.currentValue = newValue
+            }
+            return response
+          })
       }
     },
-    customizeUpdateData (value, csrfToken) {
-      const itemId = this.getItemId()
-      const form = this.createInitialForm()
-      let newObj = {}
+    getNewValue (value) {
+      let newValue = {}
       switch (this.value.datavalue.type) {
         case 'string':
-          newObj = this.getStringValue(value)
+          newValue = this.getStringValue(value)
           break
         case 'quantity':
-          newObj = this.getQuantityValue(value)
+          newValue = this.getQuantityValue(value)
           break
         case 'time':
-          newObj = this.getTimeValue(value)
+          newValue = this.getTimeValue(value)
           break
         case 'wikibase-entityid':
-          newObj = this.getWikiBaseEntityIdValue(value)
+          newValue = this.getWikiBaseEntityIdValue(value)
           break
         case 'url':
-          newObj = this.getUrlValue(value)
+          newValue = this.getUrlValue(value)
           break
         case 'globe-coordinate':
-          newObj = this.getCoordinatesValue(value)
+          newValue = this.getCoordinatesValue(value)
           break
         case 'monolingualtext':
-          newObj = this.getMonolingualTextValue(value)
+          newValue = this.getMonolingualTextValue(value)
           break
         case 'math':
-          newObj = this.getMathValue(value)
+          newValue = this.getMathValue(value)
           break
         case 'external-id':
-          newObj = this.getExternalIdValue(value)
+          newValue = this.getExternalIdValue(value)
           break
         default:
           break
       }
-      this.setFormVal(form, newObj)
-
-      return this.createFormData(itemId, csrfToken, form)
-    },
-    createInitialForm () {
-      return JSON.parse(JSON.stringify(this.claim))
+      return newValue
     },
     getMonolingualTextValue (value) {
       return {
-        type: this.value.datavalue.type,
-        value: {
-          text: value,
-          language: this.value.datavalue.value.language
-        }
+        text: value,
+        language: this.value.datavalue.value.language
       }
     },
     getWikiBaseEntityIdValue (value) {
       return {
-        type: this.value.datavalue.type,
-        value: {
-          id: value.id
-        }
+        id: value.id
       }
     },
     getStringValue (value) {
-      return {
-        value,
-        type: 'string'
-      }
+      return value
     },
     getQuantityValue (value) {
       return {
-        type: 'quantity',
-        value: {
-          unit: value.unit,
-          amount: value.amount
-        }
+        unit: value.unit,
+        amount: value.amount
       }
     },
     getTimeValue (value) {
       return {
-        type: 'time',
-        value: {
-          ...this.value.datavalue.value,
-          time: this.formatDate(value)
-        }
+        ...this.value.datavalue.value,
+        time: this.formatDate(value)
       }
     },
     getUrlValue (value) {
-      return {
-        value,
-        type: 'url'
-      }
+      return value
     },
     getCoordinatesValue (value) {
       return {
@@ -299,13 +268,6 @@ export default {
         globe: 'http://www.wikidata.org/entity/Q2'
       }
     },
-    setFormVal (form, val) {
-      if (this.type !== 'qualifier') {
-        form.mainsnak.datavalue = val
-      } else {
-        form.qualifiers[this.value.property][this.index].datavalue = val
-      }
-    },
     formatDate (dateString) {
       const date = new Date(dateString)
       const isoYear = date.getUTCFullYear()
@@ -313,13 +275,6 @@ export default {
       const isoDay = ('0' + date.getUTCDate()).slice(-2)
 
       return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`
-    },
-    createFormData (itemId, csrfToken, form) {
-      const formData = new URLSearchParams()
-      formData.append('id', itemId)
-      formData.append('token', csrfToken)
-      formData.append('claim', JSON.stringify(form))
-      return formData
     }
   }
 }
