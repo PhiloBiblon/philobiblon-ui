@@ -2,6 +2,7 @@
   <v-text-field
     ref="myTextField"
     v-model="currentText"
+    :type="type"
     v-bind="{ ...$attrs, ...commonAttrs }"
     v-on="$listeners"
     @blur="blur"
@@ -42,6 +43,10 @@ export default {
       type: String,
       default: null
     },
+    type: {
+      type: String,
+      default: 'text'
+    },
     save: {
       type: Function,
       required: true
@@ -75,13 +80,16 @@ export default {
       this.focussed = true
     },
 
-    async edit (label) {
+    async edit () {
       await this.save(this.currentText)
         .then((response) => {
-          if (!response.success) {
-            throw new Error(response.info)
+          if (response) {
+            if (!response.success) {
+              throw new Error(response.info)
+            }
+            this.consolidatedText = this.currentText
+            this.$notification.success('Successfully updated')
           }
-          this.consolidatedText = this.currentText
         })
         .catch((error) => {
           // workaround to avoid weird error if the session is expired

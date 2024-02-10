@@ -1,6 +1,6 @@
 <template>
   <div class="qualifier-value">
-    <value-viewer :value="value" />
+    <value-viewer :claim="claim" :value="value" type="qualifier" />
   </div>
 </template>
 
@@ -11,9 +11,12 @@ export default {
     value: {
       type: Object,
       default: null
+    },
+    claim: {
+      type: Object,
+      default: null
     }
   }
-
 }
 </script>
 

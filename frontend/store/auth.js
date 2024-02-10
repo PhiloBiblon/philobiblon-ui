@@ -26,5 +26,8 @@ export const getters = {
         }
       }
     }
+  },
+  getAccessToken(state) {
+    return state.accessToken;
   }
 }

@@ -279,4 +279,24 @@ export class WikibaseService {
     }
     return hash
   }
+
+  async searchEntityByName (search, language, uselang) {
+    try {
+      const searchOptions = {
+        search,
+        uselang,
+        language
+      }
+
+      const url = await this.getWbk().searchEntities(searchOptions)
+
+      const response = await fetch(url)
+      const result = await response.json()
+
+      return result.search
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error during search:', error)
+    }
+  }
 }

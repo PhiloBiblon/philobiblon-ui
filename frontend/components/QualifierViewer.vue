@@ -5,6 +5,7 @@
       v-for="(value, index) in values"
       :key="keyValue + '-' + index"
       :value="value"
+      :claim="claim"
       :key_value="keyValue + '-' + index"
     />
   </v-col>
@@ -13,6 +14,10 @@
 <script>
 export default {
   props: {
+    claim: {
+      type: Object,
+      default: null
+    },
     keyValue: {
       type: String,
       default: null
