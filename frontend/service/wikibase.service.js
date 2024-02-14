@@ -42,14 +42,34 @@ export class WikibaseService {
     return QITEM_PATTERN
   }
 
-  async getOrder () {
+  getClaimsOrder (wikitext, table, regex) {
+    const sectionRegex = new RegExp(`====\\s*${table}\\s*====\\s*([^=]+)`, 'gs')
+    const sectionMatch = sectionRegex.exec(wikitext)
+
+    if (!sectionMatch) { return [] }
+
+    const sectionContent = sectionMatch[1].trim()
+    const order = sectionContent
+      .split('\n')
+      .filter(line => line.trim().startsWith('*'))
+      .map(line => line.match(regex))
+      .filter(match => match !== null)
+      .map(match => match[0])
+
+    return [...new Set(order)]
+  }
+
+  async getOrder (table) {
     const url = `${this.$config.wikibaseApiUrl}?action=parse&page=MediaWiki:Wikibase-SortedProperties&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
-
     const PROP_REGEX = /P\d+/g
+    const wikitext = data.parse.wikitext
 
-    const order = data.parse.wikitext.match(PROP_REGEX) || []
-    return order
+    if (!table) {
+      return wikitext.match(PROP_REGEX) || []
+    } else {
+      return this.getClaimsOrder(wikitext, table, PROP_REGEX)
+    }
   }
 
   getEntity (id, lang) {
