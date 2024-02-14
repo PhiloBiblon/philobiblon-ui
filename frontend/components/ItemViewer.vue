@@ -75,6 +75,16 @@ const TABLEID_TO_NAME = {
   geoid: 'geography'
 }
 
+const TABLES = {
+  manid: 'Ms_Ed',
+  libid: 'Library',
+  texid: 'Analytic',
+  bioid: 'Biography',
+  geoid: 'Geography',
+  bibid: 'Bibliography',
+  insid: 'Institutions'
+}
+
 export default {
   props: {
     id: {
@@ -86,6 +96,7 @@ export default {
   data () {
     return {
       item: null,
+      table: null,
       label: null,
       showItem: false,
       claimsOrdered: []
@@ -99,39 +110,36 @@ export default {
   },
 
   async mounted () {
-    if (this.id) {
-      const order = await this.$wikibase.getOrder()
+    if (this.id) { await this.getClaims() }
+  },
 
+  methods: {
+    async getClaims () {
       try {
         await this.$wikibase
           .getEntity(this.id, this.$i18n.locale)
           .then((entity) => {
+            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(entity))
             this.item = entity
             this.label = this.$wikibase.getValueByLang(
               this.item.labels,
               this.$i18n.locale
             )
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
-            this.claimsOrdered = this.orderClaims(this.item.claims, order)
+            this.orderClaims(this.item.claims)
             this.showItem = true
-            this.$store.commit(
-              'breadcrumb/setItems',
-              this.getBreadcrumbItems(entity)
-            )
           })
       } catch (err) {
         this.$notification.error(err)
       }
-    }
-  },
-
-  methods: {
+    },
     getBreadcrumbItems (entity) {
       const pbid = this.$wikibase.getPBID(entity)
       const {
         groups: { tableid }
       } = this.$wikibase.getPBIDPattern().exec(pbid)
       const table = TABLEID_TO_NAME[tableid]
+      this.table = TABLES[tableid]
       return [
         {
           text: this.$i18n.t('menu.item.search.label'),
@@ -149,28 +157,10 @@ export default {
       ]
     },
 
-    orderClaims (claims, order) {
-      const claimPs = Object.keys(claims)
-      claimPs.sort(function (x, y) {
-        const posX = order.indexOf(x)
-        const posY = order.indexOf(y)
-        if (posY === -1) {
-          return -1
-        }
-        if (posX < posY) {
-          return -1
-        }
-        if (posX > posY) {
-          return 1
-        }
-        return 0
-      })
-      const claimsOrdered = []
-      claimPs.forEach((claimP) => {
-        claimsOrdered.push({ property: claimP, values: claims[claimP] })
-      })
+    async orderClaims (claims) {
+      const order = await this.$wikibase.getOrder(this.table ?? 'Institutions')
 
-      return claimsOrdered
+      this.claimsOrdered = order.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({ property: key, values: claims[key] }))
     },
 
     editLabel (label) {
