@@ -30,6 +30,9 @@ export default {
           },
           geography: {
             label: 'Xeografía'
+          },
+          subject: {
+            label: 'Asunto'
           }
         }
       }
