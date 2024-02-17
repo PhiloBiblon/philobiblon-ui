@@ -84,13 +84,10 @@ export default {
     async edit () {
       await this.save(this.currentText)
         .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
-            }
-            this.consolidatedText = this.currentText
-            this.$notification.success('Successfully updated')
+          if (response && !response.success) {
+            throw new Error(response.info)
           }
+          this.consolidatedText = this.currentText
         })
         .catch((error) => {
           // workaround to avoid weird error if the session is expired

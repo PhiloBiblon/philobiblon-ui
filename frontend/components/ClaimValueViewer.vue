@@ -1,7 +1,7 @@
 <template>
   <v-row dense class="value">
     <v-col :cols="value.qualifiers ? 3 : 12">
-      <value-viewer :claim="value" :value="value.mainsnak" type="claim" />
+      <value-viewer :claim="value" :value="value.mainsnak" :index="indexKey" :qualifiers="value.qualifiers" type="claim" />
     </v-col>
     <qualifier-viewer
       v-for="(values, property) in value.qualifiers"
@@ -9,6 +9,7 @@
       type="qualifier"
       :property="property"
       :claim="value"
+      :index="indexKey"
       :values="values"
       :key_value="keyValue+'-'+property"
     />

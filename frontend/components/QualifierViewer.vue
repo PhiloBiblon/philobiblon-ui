@@ -16,8 +16,7 @@
 export default {
   props: {
     claim: {
-      type: Object,
-      default: null
+      type: Object
     },
     keyValue: {
       type: String,
