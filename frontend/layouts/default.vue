@@ -74,6 +74,11 @@
               <v-list-item-title>{{ $t('menu.item.search.item.geography.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/search/subject/query')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.search.item.subject.label') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
@@ -166,7 +171,6 @@ export default {
     }
   },
   mounted () {
-    this.$wikibase.$oauth.autoLoginByCookie()
     window.addEventListener('keydown', this.keyDownHandler)
   },
   destroyed () {
@@ -194,7 +198,6 @@ export default {
     logout () {
       this.$store.commit('auth/logout')
       this.$notification.success(this.$i18n.t('auth.logout.success'))
-      this.$cookies.remove('oauth')
     }
   }
 }
