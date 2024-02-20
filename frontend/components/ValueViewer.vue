@@ -17,7 +17,7 @@
 
     <span v-else-if="valueToView.type === 'text-lang'">
       <template v-if="!isUserLogged">
-        {{ valueToView.value }} <sup>{{ valueToView.language }}</sup>
+        <text-lang :value="valueToView" />
       </template>
       <template v-else>
         <edit-text-field :key="valueToView.value" :save="editValue" :value="valueToView.value" class="text-subtitle-1" />

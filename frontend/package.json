@@ -16,7 +16,7 @@
     "@nuxtjs/toast": "^3.3.1",
     "cookie-universal-nuxt": "^2.2.2",
     "core-js": "^3.26.1",
-    "jsonwebtoken": "8.5.1",
+    "jsonwebtoken": "^8.5.1",
     "nuxt": "^2.15.8",
     "nuxt-material-design-icons": "^1.0.4",
     "vuetify": "^2.6.12",
