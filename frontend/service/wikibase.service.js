@@ -23,7 +23,7 @@ export class WikibaseService {
     })
     this.$store = store
     this.$query = new QueryService(store, this.$config)
-    this.$oauth = new OAuthService(store, app)
+    this.$oauth = new OAuthService(store, this.$config)
   }
 
   getWbk () {
@@ -306,23 +306,53 @@ export class WikibaseService {
     return hash
   }
 
-  async searchEntityByName (search, language, uselang) {
+  async searchEntityByName(search, language, uselang,) {
     try {
       const searchOptions = {
         search,
         uselang,
-        language
-      }
+        language,
+      };
 
-      const url = await this.getWbk().searchEntities(searchOptions)
+      const url = await this.getWbk().searchEntities(searchOptions);
 
-      const response = await fetch(url)
-      const result = await response.json()
+      const response = await fetch(url);
+      const result = await response.json();
 
-      return result.search
+      return result.search;
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error during search:', error)
+      console.error('Error during search:', error);
     }
+  }
+
+  async getWikiUiDevCsrfToken(token) {
+    const url = `${this.$config.apiBaseUrl}w/api.php?action=query&meta=tokens&type=csrf&format=json`;
+
+    const config = {
+      headers: {
+        'Authorization': `OAuth oauth_token="${token}"`,
+        'content-type': "application/x-www-form-urlencoded",
+      }
+    }
+
+    const response = await fetch(url, config)
+    const result = await response.json();
+
+    return result?.query?.tokens?.csrftoken ?? null;
+  }
+
+  async updateWikiClaim(token, data) {
+    const url = `${this.$config.apiBaseUrl}w/api.php?action=wbsetclaim&format=json`;
+    const config = {
+      method: 'post',
+      body: data,
+      headers: {
+        'Authorization': `OAuth oauth_token="${token}"`,
+        'content-type': "application/x-www-form-urlencoded",
+      }
+    }
+
+    const response = await fetch(url, config)
+    return response.json();
   }
 }

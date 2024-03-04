@@ -1,8 +1,9 @@
 <template>
   <v-text-field
+    :label="label"
+    :type="type"
     ref="myTextField"
     v-model="currentText"
-    :type="type"
     v-bind="{ ...$attrs, ...commonAttrs }"
     v-on="$listeners"
     @blur="blur"
@@ -43,6 +44,10 @@ export default {
       type: String,
       default: null
     },
+    label: {
+      required: false,
+      default: ''
+    },
     type: {
       type: String,
       default: 'text'
@@ -80,21 +85,18 @@ export default {
       this.focussed = true
     },
 
-    async edit () {
+    async edit (label) {
       await this.save(this.currentText)
         .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
-            }
-            this.consolidatedText = this.currentText
-            this.$notification.success('Successfully updated')
+          if (response && !response.success) {
+            throw new Error(response.info)
           }
+          this.consolidatedText = this.currentText
         })
         .catch((error) => {
           // workaround to avoid weird error if the session is expired
           // the first time that we want edit the wikibase
-          if (error.message === 'query is undefined') {
+          if (error?.message === 'query is undefined') {
             error = 'Error: Session expired.'
           }
           this.$notification.error(error)

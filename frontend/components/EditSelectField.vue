@@ -1,16 +1,18 @@
 <template>
   <v-autocomplete
+    :label="label"
     ref="autocomplete"
     v-model="currentText"
     :items="options"
+    :value="value"
     item-text="label"
-    return-object
-    required
-    variant="outlined"
     @blur="blur"
     @focus="focus"
+    return-object
     @change="onchange"
+    required
     @update:search-input="$emit('input', $event)"
+    variant="outlined"
   >
     <template #append>
       <v-btn
@@ -38,8 +40,11 @@ export default {
   inheritAttrs: false,
   props: {
     value: {
-      type: String,
       default: null
+    },
+    label: {
+      required: false,
+      default: ''
     },
     options: {
       type: Array,
@@ -48,6 +53,11 @@ export default {
     save: {
       type: Function,
       required: true
+    },
+    callbackParams: {
+      type: Array,
+      required: false,
+      default: () => []
     }
   },
   data () {
@@ -66,15 +76,19 @@ export default {
     }
   },
   mounted () {
-    this.currentText = { ...this.options[0] }
-    this.consolidatedText = { ...this.currentText }
+    if (!this.value) {
+      this.currentText = {...this.options[0] }
+    } else {
+      this.currentText = this.value
+    }
+    this.consolidatedText = {...this.currentText}
     this.consolidatedOptions = JSON.parse(JSON.stringify(this.options))
   },
   methods: {
     onchange () {
       this.focussed = true
     },
-    focus () {
+    focus (e) {
       this.focussed = true
     },
     blur () {
@@ -86,16 +100,13 @@ export default {
     async edit () {
       this.focussed = false
       this.$refs.autocomplete.blur()
-      if (this.currentText && this.currentText.id !== this.consolidatedText.id) {
-        await this.save(this.currentText)
+      if (this.currentText && (this.value || this.currentText.id !== this.consolidatedText.id)) {
+        await this.save(this.currentText, ...this.callbackParams)
           .then((response) => {
-            if (response) {
-              if (!response.success) {
-                throw new Error(response.info)
-              }
-              this.consolidatedText = this.currentText
-              this.$notification.success('Successfully updated')
+            if (response && !response.success) {
+              throw new Error(response.info)
             }
+            this.consolidatedText = this.currentText
           })
           .catch((error) => {
             // workaround to avoid weird error if the session is expired
@@ -105,7 +116,7 @@ export default {
             }
             this.$notification.error(error)
           })
-      } else if (!this.currentText) {
+      } else if (!this.currentText){
         this.$notification.error('Please fill inputs')
       }
     },
