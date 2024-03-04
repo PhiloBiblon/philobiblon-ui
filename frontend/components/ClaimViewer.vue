@@ -2,7 +2,7 @@
   <v-container class="claim">
     <v-row dense>
       <v-subheader class="text-h6 grey--text">
-        {{ propertyLabel }}
+        <text-lang :value="propertyLabel" />
       </v-subheader>
     </v-row>
     <v-divider />

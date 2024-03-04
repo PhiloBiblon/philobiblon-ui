@@ -33,7 +33,7 @@
             </edit-text-field>
           </span>
           <span v-else class="text-h4">
-            {{ label }}
+            <text-lang :value="label" />
             &nbsp;
             <a
               class="text-subtitle-2 link"
@@ -49,7 +49,7 @@
         </span>
         <span v-else class="text-subtitle-1">
           <v-col class="text-subtitle-1">
-            {{ description }}
+            <text-lang :value="description" />
           </v-col>
         </span>
       </v-row>

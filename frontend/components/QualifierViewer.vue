@@ -1,6 +1,8 @@
 <template>
   <v-col class="qualifier" cols="3">
-    <span class="text-subtitle-2 grey--text">{{ propertyLabel }}</span>
+    <span class="text-subtitle-2 grey--text">
+      <text-lang :value="propertyLabel" />
+    </span>
     <qualifier-value-viewer
       v-for="(value, index) in values"
       :key="keyValue + '-' + index"

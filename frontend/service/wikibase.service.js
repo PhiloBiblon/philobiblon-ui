@@ -116,16 +116,21 @@ export class WikibaseService {
       })
     } else if (datatype === 'wikibase-item') {
       return this.getEntity(datavalue.id, lang).then((entity) => {
-        const text = this.getValueByLang(entity.labels)
+        const label = this.getValueByLang(entity.labels)
         if (this.isEntityFromPB(entity)) {
           return {
-            value: text,
+            value: label.value,
+            language: label.language,
             type: 'item',
             item: datavalue.id,
             pbid: this.getPBID(entity)
           }
         } else {
-          return { value: text, type: 'text' }
+          return {
+            value: label.value,
+            language: label.language,
+            type: 'text-lang'
+          }
         }
       })
     } else if (datatype === 'string') {
@@ -134,7 +139,8 @@ export class WikibaseService {
       return {
         value: datavalue.text,
         language: datavalue.language,
-        type: 'text-lang'
+        type: 'text-lang',
+        showLanguage: true
       }
     } else if (datatype === 'time') {
       let isJulian = null
@@ -204,11 +210,31 @@ export class WikibaseService {
 
   getValueByLang (obj, lang) {
     if (obj[lang]) {
-      return obj[lang].value
+      return {
+        value: obj[lang].value,
+        language: lang
+      }
     } else if (obj.en) {
-      return obj.en.value
+      return {
+        value: obj.en.value,
+        language: 'en'
+      }
+    } else if (obj.es) {
+      return {
+        value: obj.es.value,
+        language: 'es'
+      }
+    } else if (Object.keys(obj).length > 0) {
+      const defaultLang = Object.keys(obj)[0]
+      return {
+        value: obj[defaultLang].value,
+        language: defaultLang
+      }
     } else {
-      return ''
+      return {
+        value: '',
+        language: lang
+      }
     }
   }
 
