@@ -32,7 +32,7 @@ export default {
             label: 'Geogràfia'
           },
           subject: {
-            label: 'Assignatura'
+            label: 'Assumpte'
           },
         }
       }
