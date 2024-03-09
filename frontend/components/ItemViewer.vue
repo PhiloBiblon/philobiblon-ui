@@ -56,7 +56,6 @@
       <claim-viewer
         v-for="(claim, index) in claimsOrdered"
         :key="'c-' + index"
-        :entity="claimsOrdered"
         :claim="claim"
       />
     </v-container>
@@ -68,21 +67,11 @@
 const TABLEID_TO_NAME = {
   insid: 'institution',
   libid: 'library',
-  manid: 'msed',
-  bioid: 'person',
-  bibid: 'reference',
-  texid: 'work',
+  manid: 'ms_ed',
+  bioid: 'biography',
+  bibid: 'bibliography',
+  texid: 'uniform_title',
   geoid: 'geography'
-}
-
-const TABLES = {
-  manid: 'Ms_Ed',
-  libid: 'Library',
-  texid: 'Analytic',
-  bioid: 'Biography',
-  geoid: 'Geography',
-  bibid: 'Bibliography',
-  insid: 'Institutions',
 }
 
 export default {
@@ -96,7 +85,6 @@ export default {
   data () {
     return {
       item: null,
-      table: null,
       label: null,
       showItem: false,
       claimsOrdered: []
@@ -110,36 +98,40 @@ export default {
   },
 
   async mounted () {
-    if (this.id) await this.getClaims();
+    if (this.id) {
+      await this.getClaims()
+    }
   },
 
   methods: {
-    async getClaims() {
+    async getClaims () {
       try {
         await this.$wikibase
           .getEntity(this.id, this.$i18n.locale)
-          .then((entity) => {
-            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(entity));
-            this.item = entity;
+          .then(async (entity) => {
+            const table = this.getRelatedTable(entity)
+            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(table, entity))
+            this.item = entity
             this.label = this.$wikibase.getValueByLang(
               this.item.labels,
               this.$i18n.locale
-            );
-            this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale);
-            this.orderClaims(this.item.claims);
-            this.showItem = true;
+            )
+            this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
+            this.claimsOrdered = await this.getOrderedClaims(table, this.item.claims)
+            this.showItem = true
           })
       } catch (err) {
-        this.$notification.error(err);
+        this.$notification.error(err)
       }
     },
-    getBreadcrumbItems (entity) {
+    getRelatedTable (entity) {
       const pbid = this.$wikibase.getPBID(entity)
       const {
         groups: { tableid }
       } = this.$wikibase.getPBIDPattern().exec(pbid)
-      const table = TABLEID_TO_NAME[tableid]
-      this.table = TABLES[tableid];
+      return TABLEID_TO_NAME[tableid]
+    },
+    getBreadcrumbItems (table, entity) {
       return [
         {
           text: this.$i18n.t('menu.item.search.label'),
@@ -156,13 +148,28 @@ export default {
         }
       ]
     },
-
-    async orderClaims (claims) {
-      const order = await this.$wikibase.getOrder(this.table??'Institutions');
-
-      this.claimsOrdered = order.filter((key) => claims.hasOwnProperty(key)).map((key) => ({property: key, values: claims[key]}));
+    getOrderedQualifiers (qualifiers, qualifiersOrder) {
+      return qualifiersOrder.reduce((result, key) => {
+        if (Object.prototype.hasOwnProperty.call(qualifiers, key)) {
+          result[key] = qualifiers[key]
+        }
+        return result
+      }, {})
     },
-
+    getOrderedValues (values, qualifiersOrder) {
+      return values.map((value) => {
+        const clonedValue = { ...value }
+        clonedValue.qualifiers = this.getOrderedQualifiers(clonedValue.qualifiers, qualifiersOrder)
+        return clonedValue
+      })
+    },
+    async getOrderedClaims (table, claims) {
+      let order = await this.$wikibase.getClaimsOrder(table)
+      if (!order) {
+        order = Object.keys(claims)
+      }
+      return Object.keys(order).filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({ property: key, values: this.getOrderedValues(claims[key], order[key]) }))
+    },
     editLabel (label) {
       return this.$wikibase
         .getWbEdit()

@@ -10,6 +10,8 @@ const COMMONS_WIKIMEDIA_URL_ENDPOINT =
 const PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
 const QITEM_PATTERN = /^Q\d+/
 
+const ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
+
 export class WikibaseService {
   constructor (app, store) {
     const WBK = require('wikibase-sdk')
@@ -23,7 +25,7 @@ export class WikibaseService {
     })
     this.$store = store
     this.$query = new QueryService(store, this.$config)
-    this.$oauth = new OAuthService(store, this.$config)
+    this.$oauth = new OAuthService(store, app)
   }
 
   getWbk () {
@@ -41,33 +43,66 @@ export class WikibaseService {
   getQItemPattern () {
     return QITEM_PATTERN
   }
-  getClaimsOrder(wikitext, table, regex) {
-    const sectionRegex = new RegExp(`====\\s*${table}\\s*====\\s*([^=]+)`, 'gs');
-    const sectionMatch = sectionRegex.exec(wikitext);
 
-    if (!sectionMatch) return [];
+  // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
+  transformSortedPropertiesWikiText (inputText) {
+    const sections = inputText.split(/==== (.+?) ====/).filter(Boolean)
 
-    const sectionContent = sectionMatch[1].trim();
-    const order = sectionContent
-      .split('\n')
-      .filter(line => line.trim().startsWith('*'))
-      .map(line => line.match(regex))
-      .filter(match => match !== null)
-      .map(match => match[0]);
+    const result = {}
 
-    return [...new Set(order)];
+    for (let i = 0; i < sections.length; i += 2) {
+      const sectionName = sections[i].trim().toLowerCase()
+      const sectionContent = sections[i + 1].trim()
+
+      const properties = {}
+      const lines = sectionContent.split('\n')
+
+      let currentProperty = null
+      let currentQualifiers = []
+
+      for (const line of lines) {
+        // to debug
+        // console.log(line)
+        if (line.startsWith('* ')) {
+          if (currentProperty) {
+            properties[currentProperty] = currentQualifiers
+            currentQualifiers = []
+          }
+
+          const [, property, ...qualifiers] = line
+            .match(/\* (\S+)(?::.*)?/)
+            .filter(Boolean)
+
+          currentProperty = property.trim()
+          currentQualifiers = qualifiers.map(q => q.trim())
+        } else if (line.startsWith(':: qualifier')) {
+          const [, qualifier] = line.match(/:: qualifier (\S+)/)
+          currentQualifiers.push(qualifier.trim())
+        }
+      }
+
+      if (currentProperty) {
+        properties[currentProperty] = currentQualifiers
+      }
+
+      result[sectionName] = properties
+    }
+
+    return result
   }
 
-  async getOrder (table) {
-    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=MediaWiki:Wikibase-SortedProperties&prop=wikitext&formatversion=2&format=json&origin=*`
+  async getClaimsOrder (table) {
+    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
-    const PROP_REGEX = /P\d+/g;
-    const wikitext = data.parse.wikitext;
-
-    if (!table) {
-      return wikitext.match(PROP_REGEX) || [];
+    if (data.error) {
+      return null
     } else {
-      return this.getClaimsOrder(wikitext, table, PROP_REGEX);
+      const fullOrder = this.transformSortedPropertiesWikiText(data.parse.wikitext)
+      if (table in fullOrder) {
+        return fullOrder[table]
+      } else {
+        return null
+      }
     }
   }
 
@@ -323,5 +358,25 @@ export class WikibaseService {
       hash |= 0 // Convert to 32bit integer
     }
     return hash
+  }
+
+  async searchEntityByName (search, language, uselang) {
+    try {
+      const searchOptions = {
+        search,
+        uselang,
+        language
+      }
+
+      const url = await this.getWbk().searchEntities(searchOptions)
+
+      const response = await fetch(url)
+      const result = await response.json()
+
+      return result.search
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error during search:', error)
+    }
   }
 }
