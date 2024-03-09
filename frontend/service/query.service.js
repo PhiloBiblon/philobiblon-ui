@@ -33,8 +33,8 @@ export class QueryService {
 
   generateLangFilters (lang) {
     let langFilters = this.generateLangFilter(lang)
-    if (lang !== 'en') {
-      langFilters += '\n' + this.generateLangFilter('en')
+    if (lang !== 'es') {
+      langFilters += '\n' + this.generateLangFilter('es')
     }
     // fallback to en if selected lang has no label
     return langFilters
