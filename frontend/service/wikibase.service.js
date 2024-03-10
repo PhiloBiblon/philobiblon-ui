@@ -10,6 +10,8 @@ const COMMONS_WIKIMEDIA_URL_ENDPOINT =
 const PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
 const QITEM_PATTERN = /^Q\d+/
 
+const ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
+
 export class WikibaseService {
   constructor (app, store) {
     const WBK = require('wikibase-sdk')
@@ -42,14 +44,66 @@ export class WikibaseService {
     return QITEM_PATTERN
   }
 
-  async getOrder () {
-    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=MediaWiki:Wikibase-SortedProperties&prop=wikitext&formatversion=2&format=json&origin=*`
+  // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
+  transformSortedPropertiesWikiText (inputText) {
+    const sections = inputText.split(/==== (.+?) ====/).filter(Boolean)
+
+    const result = {}
+
+    for (let i = 0; i < sections.length; i += 2) {
+      const sectionName = sections[i].trim().toLowerCase()
+      const sectionContent = sections[i + 1].trim()
+
+      const properties = {}
+      const lines = sectionContent.split('\n')
+
+      let currentProperty = null
+      let currentQualifiers = []
+
+      for (const line of lines) {
+        // to debug
+        // console.log(line)
+        if (line.startsWith('* ')) {
+          if (currentProperty) {
+            properties[currentProperty] = currentQualifiers
+            currentQualifiers = []
+          }
+
+          const [, property, ...qualifiers] = line
+            .match(/\* (\S+)(?::.*)?/)
+            .filter(Boolean)
+
+          currentProperty = property.trim()
+          currentQualifiers = qualifiers.map(q => q.trim())
+        } else if (line.startsWith(':: qualifier')) {
+          const [, qualifier] = line.match(/:: qualifier (\S+)/)
+          currentQualifiers.push(qualifier.trim())
+        }
+      }
+
+      if (currentProperty) {
+        properties[currentProperty] = currentQualifiers
+      }
+
+      result[sectionName] = properties
+    }
+
+    return result
+  }
+
+  async getClaimsOrder (table) {
+    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
-
-    const PROP_REGEX = /P\d+/g
-
-    const order = data.parse.wikitext.match(PROP_REGEX) || []
-    return order
+    if (data.error) {
+      return null
+    } else {
+      const fullOrder = this.transformSortedPropertiesWikiText(data.parse.wikitext)
+      if (table in fullOrder) {
+        return fullOrder[table]
+      } else {
+        return null
+      }
+    }
   }
 
   getEntity (id, lang) {
