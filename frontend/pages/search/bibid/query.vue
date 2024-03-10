@@ -1,6 +1,6 @@
 <template>
   <query-base
-    table="bioid"
+    table="bibid"
     :form-definition="form"
     :breadcrumb-items="breadcrumb_items"
   />
@@ -16,7 +16,7 @@ export default {
           disabled: true
         },
         {
-          text: this.$i18n.t('menu.item.search.item.person.label'),
+          text: this.$i18n.t('menu.item.search.item.bibid.label'),
           disabled: true
         }
       ],
@@ -35,10 +35,10 @@ export default {
           visible: true,
           disabled: false
         },
-        name: {
+        author: {
           active: false,
-          label: 'search.form.person.name.label',
-          hint: 'search.form.common.personal_name.hint',
+          label: 'search.form.reference.author.label',
+          hint: 'search.form.reference.author.hint',
           type: 'text',
           value: '',
           visible: true,
@@ -46,8 +46,8 @@ export default {
         },
         title: {
           active: false,
-          label: 'search.form.person.title.label',
-          hint: 'search.form.person.title.hint',
+          label: 'search.form.reference.title.label',
+          hint: 'search.form.reference.title.hint',
           type: 'text',
           value: '',
           visible: true,
@@ -55,26 +55,53 @@ export default {
         },
         date: {
           active: false,
-          label: 'search.form.person.date.label',
-          hint: 'search.form.person.date.hint',
+          label: 'search.form.reference.date.label',
+          hint: 'search.form.reference.date.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        associated_place: {
+        volume: {
           active: false,
-          label: 'search.form.person.associated_place.label',
-          hint: 'search.form.person.associated_place.hint',
+          label: 'search.form.reference.volume.label',
+          hint: 'search.form.reference.volume.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        profession: {
+        place_publication: {
           active: false,
-          label: 'search.form.person.profession.label',
-          hint: 'search.form.person.profession.hint',
+          label: 'search.form.reference.place_publication.label',
+          hint: 'search.form.reference.place_publication.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        publisher: {
+          active: false,
+          label: 'search.form.reference.publisher.label',
+          hint: 'search.form.reference.publisher.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        series: {
+          active: false,
+          label: 'search.form.reference.series.label',
+          hint: 'search.form.reference.series.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        associated_person: {
+          active: false,
+          label: 'search.form.reference.associated_person.label',
+          hint: 'search.form.reference.associated_person.hint',
           type: 'text',
           value: '',
           visible: true,

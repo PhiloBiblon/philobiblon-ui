@@ -1,6 +1,6 @@
 <template>
   <query-base
-    table="bibid"
+    table="manid"
     :form-definition="form"
     :breadcrumb-items="breadcrumb_items"
   />
@@ -16,7 +16,7 @@ export default {
           disabled: true
         },
         {
-          text: this.$i18n.t('menu.item.search.item.reference.label'),
+          text: this.$i18n.t('menu.item.search.item.manid.label'),
           disabled: true
         }
       ],
@@ -35,19 +35,28 @@ export default {
           visible: true,
           disabled: false
         },
-        author: {
+        city: {
           active: false,
-          label: 'search.form.reference.author.label',
-          hint: 'search.form.reference.author.hint',
+          label: 'search.form.msed.city.label',
+          hint: 'search.form.common.place.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        title: {
+        library: {
           active: false,
-          label: 'search.form.reference.title.label',
-          hint: 'search.form.reference.title.hint',
+          label: 'search.form.msed.library.label',
+          hint: 'search.form.msed.library.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        collection_shelfmark: {
+          active: false,
+          label: 'search.form.msed.shelfmark.label',
+          hint: 'search.form.msed.shelfmark.hint',
           type: 'text',
           value: '',
           visible: true,
@@ -55,44 +64,44 @@ export default {
         },
         date: {
           active: false,
-          label: 'search.form.reference.date.label',
-          hint: 'search.form.reference.date.hint',
+          label: 'search.form.msed.date.label',
+          hint: 'search.form.msed.date.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        volume: {
+        place_production: {
           active: false,
-          label: 'search.form.reference.volume.label',
-          hint: 'search.form.reference.volume.hint',
+          label: 'search.form.msed.place_production.label',
+          hint: 'search.form.msed.place_production.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        place_publication: {
+        scribe_printer: {
           active: false,
-          label: 'search.form.reference.place_publication.label',
-          hint: 'search.form.reference.place_publication.hint',
+          label: 'search.form.msed.scribe_printer.label',
+          hint: 'search.form.msed.scribe_printer.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        publisher: {
+        publisher_patron: {
           active: false,
-          label: 'search.form.reference.publisher.label',
-          hint: 'search.form.reference.publisher.hint',
+          label: 'search.form.msed.publisher_patron.label',
+          hint: 'search.form.msed.publisher_patron.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        series: {
+        previous_owner: {
           active: false,
-          label: 'search.form.reference.series.label',
-          hint: 'search.form.reference.series.hint',
+          label: 'search.form.msed.previous_owner.label',
+          hint: 'search.form.msed.previous_owner.hint',
           type: 'text',
           value: '',
           visible: true,
@@ -100,8 +109,8 @@ export default {
         },
         associated_person: {
           active: false,
-          label: 'search.form.reference.associated_person.label',
-          hint: 'search.form.reference.associated_person.hint',
+          label: 'search.form.msed.associated_person.label',
+          hint: 'search.form.msed.associated_person.hint',
           type: 'text',
           value: '',
           visible: true,

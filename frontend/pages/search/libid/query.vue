@@ -1,6 +1,6 @@
 <template>
   <query-base
-    table="insid"
+    table="libid"
     :form-definition="form"
     :breadcrumb-items="breadcrumb_items"
   />
@@ -8,7 +8,6 @@
 
 <script>
 export default {
-
   data () {
     return {
       breadcrumb_items: [
@@ -17,7 +16,7 @@ export default {
           disabled: true
         },
         {
-          text: this.$i18n.t('menu.item.search.item.institution.label'),
+          text: this.$i18n.t('menu.item.search.item.libid.label'),
           disabled: true
         }
       ],
@@ -31,43 +30,43 @@ export default {
           active: true,
           label: 'search.form.common.simple_search.label',
           hint: 'search.form.common.simple_search.hint',
+          value: '',
+          type: 'text',
+          visible: true,
+          disabled: false
+        },
+        city: {
+          active: false,
+          label: 'search.form.library.city.label',
+          hint: 'search.form.library.city.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        city: {
-          active: true,
-          label: 'search.form.institution.city.label',
-          hint: 'search.form.institution.city.hint',
-          type: 'autocomplete',
+        library: {
+          active: false,
+          label: 'search.form.library.library.label',
+          hint: 'search.form.library.library.hint',
+          type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        institution_type: {
-          active: true,
-          label: 'search.form.institution.institution_type.label',
-          hint: 'search.form.institution.institution_type.hint',
-          type: 'autocomplete',
-          value: '',
-          visible: true,
-          disabled: false
-        },
-        institution: {
-          active: true,
-          label: 'search.form.institution.institution.label',
-          hint: 'search.form.institution.institution.hint',
-          type: 'autocomplete',
+        shelfmark: {
+          active: false,
+          label: 'search.form.library.shelfmark.label',
+          hint: 'search.form.library.shelfmark.hint',
+          type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
         subject: {
-          active: true,
+          active: false,
           label: 'search.form.common.subject.label',
           hint: 'search.form.common.subject.hint',
-          type: 'autocomplete',
+          type: 'text',
           value: '',
           visible: true,
           disabled: false

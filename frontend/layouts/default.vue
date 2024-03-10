@@ -39,44 +39,44 @@
           <template #activator>
             <v-list-item-title>{{ $t('menu.item.search.label') }}</v-list-item-title>
           </template>
-          <v-list-item class="subitem" link @click="goTo('/search/work/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/texid/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.work.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.texid.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/library/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/libid/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.library.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.libid.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/institution/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/insid/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.institution.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.insid.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/person/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/bioid/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.person.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.bioid.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/reference/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/bibid/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.reference.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.bibid.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/msed/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/manid/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.msed.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.manid.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/geography/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/geoid/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.geography.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.geoid.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/subject/query')">
+          <v-list-item class="subitem" link @click="goTo('/search/subid/query')">
             <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.subject.label') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('menu.item.search.item.subid.label') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>

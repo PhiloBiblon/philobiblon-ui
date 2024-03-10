@@ -1,6 +1,6 @@
 <template>
   <query-base
-    table="geoid"
+    table="subid"
     :form-definition="form"
     :breadcrumb-items="breadcrumb_items"
   />
@@ -16,7 +16,7 @@ export default {
           disabled: true
         },
         {
-          text: this.$i18n.t('menu.item.search.item.geography.label'),
+          text: this.$i18n.t('menu.item.search.item.subid.label'),
           disabled: true
         }
       ],

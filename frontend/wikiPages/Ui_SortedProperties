@@ -97,7 +97,7 @@
 :: qualifier P511 (Contributor) UPDATED BY
 * P17 (Dataset complaint)
 
-==== bibliography ====
+==== bibid ====
 * P2 (Instance of) FORM_QNUMBER
 :: qualifier P700 (Refers to) TYPE_QNUMBER
 * P15 Medium_QNUMBER 
@@ -181,7 +181,7 @@
 * P17 (Dataset complaint)
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 03:11, 28 January 2024 (UTC)
 
-==== biography ====
+==== bioid ====
 * P2 (Instance of) Human (pb.cog Q49418; FG Q7)
 * P476 (PhiloBiblon ID) BIOID
 * P154 (Gender) SEX_QNUMBER
@@ -448,7 +448,7 @@
 :: qualifier P511 (Contributor) UPDATED BY
 * P17 (Dataset complaint) PhiloBiblon automation pending (pb.cog Q77
 
-==== geography ====
+==== geoid ====
 * P2 (Instance of) TYPE_QNUMBER
 :: qualifier P3 (Subclass) CLASS_QNUMBER
 * P476 (PhiloBiblon ID) GEOID
@@ -521,7 +521,7 @@
 * P17 (Dataset complaint) PhiloBiblon automation pending (pb.cog Q77
 
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 23:07, 1 February 2024 (UTC)
-==== institution ====
+==== insid ====
 * P2 (Instance of) CLASS
 :: qualifier P139 (parent organisation) TYPE
 * P2 (Instance of) Organisation (Q74)
@@ -604,7 +604,7 @@
 * P17 (Dataset complaint)
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 22:34, 30 November 2023 (UTC)
 
-==== library ====
+==== libid ====
 * P2 (Instance of) CLASS_QNUMBER
 :: P3 (Subclass of) Organisation (Q74)
 * P476 (PhiloBiblon ID) LIBID
@@ -673,7 +673,7 @@
 * P17 (Dataset complaint)
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 00:42, 3 February 2024 (UTC)
 
-==== ms_ed ====
+==== manid ====
 * P2 (Instance of)
 * P476 (PhiloBiblon ID) MANID
 * P329 (Present holding) RELATED_LIBID_QNUMBER
@@ -813,7 +813,7 @@
 :: qualifier P511 (Contributor) UPDATED BY
 * P17 (Dataset complaint) PhiloBiblon automation pending (pb.cog Q77
 
-==== subject ====
+==== subid ====
 * P2 (Instance of) Subject heading (pb.cog Q49417)
 * P34 (Naming) [es] HEADING_MAIN_QNUMBER
 :: qualifier P700 (Source [string]) HM_BASIS
@@ -845,7 +845,7 @@
 :: qualifier P721 (Source [string]) UPDATED BY
 * P17 (Dataset complaint)
 
-==== uniform_title ====
+==== texid ====
 * P2 (Instance of) Obra [WEMI Work] (pb.cog Q51132)
 * P121 (Type of work) CLASS_QNUMBER
 * P121 (Type of work) TYPE_QNUMBER

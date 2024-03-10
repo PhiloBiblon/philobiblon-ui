@@ -1,6 +1,6 @@
 <template>
   <query-base
-    table="manid"
+    table="texid"
     :form-definition="form"
     :breadcrumb-items="breadcrumb_items"
   />
@@ -16,7 +16,7 @@ export default {
           disabled: true
         },
         {
-          text: this.$i18n.t('menu.item.search.item.msed.label'),
+          text: this.$i18n.t('menu.item.search.item.texid.label'),
           disabled: true
         }
       ],
@@ -35,73 +35,37 @@ export default {
           visible: true,
           disabled: false
         },
-        city: {
+        author: {
           active: false,
-          label: 'search.form.msed.city.label',
-          hint: 'search.form.common.place.hint',
+          label: 'search.form.work.author.label',
+          hint: 'search.form.work.author.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        library: {
+        title: {
           active: false,
-          label: 'search.form.msed.library.label',
-          hint: 'search.form.msed.library.hint',
+          label: 'search.form.work.title.label',
+          hint: 'search.form.work.title.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        collection_shelfmark: {
+        incipit: {
           active: false,
-          label: 'search.form.msed.shelfmark.label',
-          hint: 'search.form.msed.shelfmark.hint',
+          label: 'search.form.work.incipit.label',
+          hint: 'search.form.work.incipit.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        date: {
+        explicit: {
           active: false,
-          label: 'search.form.msed.date.label',
-          hint: 'search.form.msed.date.hint',
-          type: 'text',
-          value: '',
-          visible: true,
-          disabled: false
-        },
-        place_production: {
-          active: false,
-          label: 'search.form.msed.place_production.label',
-          hint: 'search.form.msed.place_production.hint',
-          type: 'text',
-          value: '',
-          visible: true,
-          disabled: false
-        },
-        scribe_printer: {
-          active: false,
-          label: 'search.form.msed.scribe_printer.label',
-          hint: 'search.form.msed.scribe_printer.hint',
-          type: 'text',
-          value: '',
-          visible: true,
-          disabled: false
-        },
-        publisher_patron: {
-          active: false,
-          label: 'search.form.msed.publisher_patron.label',
-          hint: 'search.form.msed.publisher_patron.hint',
-          type: 'text',
-          value: '',
-          visible: true,
-          disabled: false
-        },
-        previous_owner: {
-          active: false,
-          label: 'search.form.msed.previous_owner.label',
-          hint: 'search.form.msed.previous_owner.hint',
+          label: 'search.form.work.explicit.label',
+          hint: 'search.form.work.explicit.hint',
           type: 'text',
           value: '',
           visible: true,
@@ -109,8 +73,26 @@ export default {
         },
         associated_person: {
           active: false,
-          label: 'search.form.msed.associated_person.label',
-          hint: 'search.form.msed.associated_person.hint',
+          label: 'search.form.work.associated_person.label',
+          hint: 'search.form.common.personal_name.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        place_composition: {
+          active: false,
+          label: 'search.form.work.place_composition.label',
+          hint: 'search.form.common.place.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        date_composition: {
+          active: false,
+          label: 'search.form.work.date_composition.label',
+          hint: 'search.form.common.date.hint',
           type: 'text',
           value: '',
           visible: true,
@@ -135,3 +117,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.search {
+  width: 100% !important
+}
+</style>

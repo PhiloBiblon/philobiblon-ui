@@ -64,16 +64,6 @@
 
 <script>
 
-const TABLEID_TO_NAME = {
-  insid: 'institution',
-  libid: 'library',
-  manid: 'ms_ed',
-  bioid: 'biography',
-  bibid: 'bibliography',
-  texid: 'uniform_title',
-  geoid: 'geography'
-}
-
 export default {
   props: {
     id: {
@@ -109,15 +99,15 @@ export default {
         await this.$wikibase
           .getEntity(this.id, this.$i18n.locale)
           .then(async (entity) => {
-            const table = this.getRelatedTable(entity)
-            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(table, entity))
+            const tableid = this.getRelatedTable(entity)
+            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(tableid, entity))
             this.item = entity
             this.label = this.$wikibase.getValueByLang(
               this.item.labels,
               this.$i18n.locale
             )
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
-            this.claimsOrdered = await this.getOrderedClaims(table, this.item.claims)
+            this.claimsOrdered = await this.getOrderedClaims(tableid, this.item.claims)
             this.showItem = true
           })
       } catch (err) {
@@ -129,7 +119,7 @@ export default {
       const {
         groups: { tableid }
       } = this.$wikibase.getPBIDPattern().exec(pbid)
-      return TABLEID_TO_NAME[tableid]
+      return tableid
     },
     getBreadcrumbItems (table, entity) {
       return [
@@ -158,9 +148,13 @@ export default {
     },
     getOrderedValues (values, qualifiersOrder) {
       return values.map((value) => {
-        const clonedValue = { ...value }
-        clonedValue.qualifiers = this.getOrderedQualifiers(clonedValue.qualifiers, qualifiersOrder)
-        return clonedValue
+        if (value.qualifiers) {
+          const clonedValue = { ...value }
+          clonedValue.qualifiers = this.getOrderedQualifiers(clonedValue.qualifiers, qualifiersOrder)
+          return clonedValue
+        } else {
+          return value
+        }
       })
     },
     async getOrderedClaims (table, claims) {

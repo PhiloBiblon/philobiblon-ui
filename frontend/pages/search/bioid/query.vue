@@ -1,6 +1,6 @@
 <template>
   <query-base
-    table="libid"
+    table="bioid"
     :form-definition="form"
     :breadcrumb-items="breadcrumb_items"
   />
@@ -16,7 +16,7 @@ export default {
           disabled: true
         },
         {
-          text: this.$i18n.t('menu.item.search.item.library.label'),
+          text: this.$i18n.t('menu.item.search.item.bioid.label'),
           disabled: true
         }
       ],
@@ -30,33 +30,51 @@ export default {
           active: true,
           label: 'search.form.common.simple_search.label',
           hint: 'search.form.common.simple_search.hint',
-          value: '',
-          type: 'text',
-          visible: true,
-          disabled: false
-        },
-        city: {
-          active: false,
-          label: 'search.form.library.city.label',
-          hint: 'search.form.library.city.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        library: {
+        name: {
           active: false,
-          label: 'search.form.library.library.label',
-          hint: 'search.form.library.library.hint',
+          label: 'search.form.person.name.label',
+          hint: 'search.form.common.personal_name.hint',
           type: 'text',
           value: '',
           visible: true,
           disabled: false
         },
-        shelfmark: {
+        title: {
           active: false,
-          label: 'search.form.library.shelfmark.label',
-          hint: 'search.form.library.shelfmark.hint',
+          label: 'search.form.person.title.label',
+          hint: 'search.form.person.title.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        date: {
+          active: false,
+          label: 'search.form.person.date.label',
+          hint: 'search.form.person.date.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        associated_place: {
+          active: false,
+          label: 'search.form.person.associated_place.label',
+          hint: 'search.form.person.associated_place.hint',
+          type: 'text',
+          value: '',
+          visible: true,
+          disabled: false
+        },
+        profession: {
+          active: false,
+          label: 'search.form.person.profession.label',
+          hint: 'search.form.person.profession.hint',
           type: 'text',
           value: '',
           visible: true,

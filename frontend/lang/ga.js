@@ -10,30 +10,30 @@ export default {
       search: {
         label: 'Buscar',
         item: {
-          work: {
+          texid: {
             label: 'Obra'
           },
-          library: {
+          libid: {
             label: 'Biblioteca'
           },
-          institution: {
+          insid: {
             label: 'Institución'
           },
-          person: {
+          bioid: {
             label: 'Persoa'
           },
-          reference: {
+          bibid: {
             label: 'Referencia'
           },
-          msed: {
+          manid: {
             label: 'MsEd'
           },
-          geography: {
+          geoid: {
             label: 'Xeografía'
           },
-          subject: {
+          subid: {
             label: 'Asunto'
-          },
+          }
         }
       }
     }
@@ -85,7 +85,7 @@ export default {
           any_word: 'Calquera palabra'
         }
       },
-      work: {
+      texid: {
         author: {
           label: 'Autor',
           hint: 'To search for a personal name as the <b>Author</b> of a text in WORK, use any form of the name, original, translated, or a variant. For example, search for “Benedictus”, “Bento”, “Benet”, or “Benito.”<br/>On all other search pages and in all other fields, such as (associated) persons, authors of secondary references, previous owners, translators, patrons, copyists, publishers, that is, for any personal name searched in any field other than that of Author in WORK, use the modern version of the name.<br/>Tip: To identify the modern form of a name, search in PERSON for any form in <b>Name</b>, original, translated, pseudonym, etc.'
@@ -112,7 +112,7 @@ export default {
           label: 'Data de composición'
         }
       },
-      library: {
+      libid: {
         city: {
           label: 'Cidade',
           hint: 'Search by the name of the city in its native language (e.g., New York, Firenze, etc.).'
@@ -126,7 +126,7 @@ export default {
           hint: 'Search by the current or any former shelfmark, including those of previous owners. This returns a list of libraries holding manuscripts or printings with that shelfmark. Shelfmarks are not case-sensitive.'
         }
       },
-      institution: {
+      insid: {
         city: {
           label: 'Cidade',
           hint: 'Busque polo nome da cidade na súa lingua nativa (isto é, New York, Firenze etc.).'
@@ -140,7 +140,7 @@ export default {
           hint: 'Search by any of the institution\'s formal or commonly used names (e.g. in BETA, search for Universidad Complutense, Universidad de Madrid, or Universidad Central).'
         }
       },
-      person: {
+      bioid: {
         name: {
           label: 'Nome'
         },
@@ -161,7 +161,7 @@ export default {
           hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. For professions see the list in the related help pages. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
         }
       },
-      reference: {
+      bibid: {
         author: {
           label: 'Autor',
           hint: 'Search by any form or portion of the name of the <b>author</b> (of a monograph or article).'
@@ -195,7 +195,7 @@ export default {
           hint: 'Search for any individual associated with the work <b>other than the author</b> (e.g., author of prologue, coordinator, editor, or director of series or collection, etc.).'
         }
       },
-      msed: {
+      manid: {
         city: {
           label: 'Cidade'
         },

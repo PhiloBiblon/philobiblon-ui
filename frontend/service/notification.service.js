@@ -27,6 +27,8 @@ export class NotificationService {
         }
       }
     }
+    // eslint-disable-next-line no-console
+    console.log(error)
     this.$toast.error(error, { ...TOAST_COMMON_PARAMS, icon: 'error' })
   }
 
