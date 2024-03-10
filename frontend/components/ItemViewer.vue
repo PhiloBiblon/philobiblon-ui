@@ -21,7 +21,7 @@
       <v-row>
         <v-col>
           <span v-if="isUserLogged">
-            <edit-text-field :save="editLabel" :value="label" class="text-h4">
+            <edit-text-field :save="editLabel" :value="label.value" class="text-h4">
               <template #append-outer>
                 &nbsp;
                 <a
@@ -45,7 +45,7 @@
       </v-row>
       <v-row class="pb-5">
         <span v-if="isUserLogged" class="full-width">
-          <edit-text-field :save="editDescription" :value="description" class="text-subtitle-1" />
+          <edit-text-field :save="editDescription" :value="description.value" class="text-subtitle-1" />
         </span>
         <span v-else class="text-subtitle-1">
           <v-col class="text-subtitle-1">
