@@ -1,5 +1,5 @@
 <template>
-  <span v-if="value">
+  <span v-if="value && value.value">
     {{ value.value }}
     <sup v-if="value.showLanguage || (value.language && value.language != $i18n.locale)">{{ value.language }}</sup>
   </span>

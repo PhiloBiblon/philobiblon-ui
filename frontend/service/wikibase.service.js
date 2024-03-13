@@ -170,7 +170,7 @@ export class WikibaseService {
       })
     } else if (datatype === 'wikibase-item') {
       return this.getEntity(datavalue.id, lang).then((entity) => {
-        const label = this.getValueByLang(entity.labels)
+        const label = this.getValueByLang(entity.labels, lang)
         if (this.isEntityFromPB(entity)) {
           return {
             value: label.value,
@@ -263,6 +263,7 @@ export class WikibaseService {
   }
 
   getValueByLang (obj, lang) {
+    console.log(obj, lang)
     if (obj[lang]) {
       return {
         value: obj[lang].value,
