@@ -2,7 +2,7 @@
 * P2 (Instance of) Testimonio textual (pb.cog Q51131)
 * P590 (Work context) TEXT_UNIID_QNUMBER
 :: qualifier P103 (Section) TEXT_PART
-:: qualifier P155 (How sure is this) TEXT_Q
+:: qualifier P155 (* Qualifier) TEXT_Q
 :: qualifier P721 (Source [string]) TEXT_BASIS
 * P8 (Part of) TEXT_MANID_QNUMBER
 :: qualifier (position in sequence) TEXT_SEQUENCE
@@ -12,7 +12,7 @@
 * P476 (PhiloBiblon ID) CNUM
 * P11 (Title) TEXT_TITLE
 :: qualifier P700 (Refers to) Title variant (Q51162)
-:: qualifier P155 (How sure is this) TEXT_TITLEQ
+:: qualifier P155 (* Qualifier) TEXT_TITLEQ
 :: qualifier P577 (Physical description) TEXT_TITLELOC
 :: qualifier P73 (Note) TEXT_TITLELOCQ
 :: qualifier P721 (Source [string]) TEXT_TITLEBASIS
@@ -22,13 +22,13 @@
 * P543 (Segmentation) INC_EXP_CLASS
 :: qualifier P602 (Excipit) EXPLICIT
 :: qualifier P577 (Physical description) EXPLICIT_LOC
-* P769 (Condition (bibliographical)) CONDITION
+* P769 (Condition (bibliographical) CONDITION
 * P781 (Poetic form) POETIC_FORM
 * P783 (Rhyme scheme) POETIC_STANZA
 * P18 (Language) DOCUMENT_LANGUAGE
 * P11 (Title) COMMENT_TITLE
 :: qualifier P21 (Author) COMMENT_BIOID_QNUMBER
-:: qualifier P155 (How sure is this?) COMMENT_BIODQ
+:: qualifier P155 (* Qualifier?) COMMENT_BIODQ
 :: qualifier P721 (Source [string]) COMMENT_BIOBASIS
 :: qualifier P70 (Incipit) COMMENT_INCIPIT
 :: qualifier P577 (Physical description) COMMENT_LOC
@@ -41,7 +41,7 @@
 * P703 (Associated persons) RELATED_BIOID_QNUMBER
 :: qualifier Object has role (P820) RELATED_BIOCLASS_QNUMBER
 :: qualifier Note (P73) RELATED_BIODETAIL
-:: qualifier P155 (How sure is this) RELATED_BIOIDQ
+:: qualifier P155 (* Qualifier) RELATED_BIOIDQ
 :: qualifier P49 (Begin date) RELATED_BIOBD
 :: qualifier P787) Precision of begin date) RELATED_BIOBDQ
 :: qualifier P721 (Source [string]) RELATED_BIOBASIS
@@ -67,7 +67,7 @@
 * P817 (Notes) EXTENDED_NOTES
 :: qualifier P11 (Title) TEXT_TITLE
 :: qualifier P60 (Incipit) INCIPIT
-:: qualifier P602 (Excipit))  EXPLICIT
+:: qualifier P602 (Excipit)  EXPLICIT
 :: qualifier P721 (Source [string]) NOTE
 * P146 (Online information) INTERNET_ADDRESS_URL
 :: qualifier P35 (Literal statement) INTERNET_SERVICE
@@ -145,7 +145,7 @@
 :: qualifier P90 (Number) RELATED_BIBITEM
 * P703 (Associated persons) SUBJECT_BIOID_QNUMBER
 * P47 (Localisation) SUBJECT_GEOID_QNUMBER
-* P232 (Institutions (mentioned)) SUBJECT_INSID_QNUMBER
+* P232 (Institutions (mentioned) SUBJECT_INSID_QNUMBER
 * P422 (Subject heading) SUBJECT_SUBID_QNUMBER
 * P73 (Note) NOTES
 * P799 (Dataset status) PhiloBiblon record created (Q80)
@@ -187,7 +187,7 @@
 * P154 (Gender) SEX_QNUMBER
 * P34 (Naming) EXPANDED_NAME
 :: qualifier P700 (Refers to) NAME_CLASS_QNUMBER
-:: qualifier P155 (How sure is this?) NAME_Q
+:: qualifier P155 (* Qualifier?) NAME_Q
 :: qualifier P49 (Begin date) NAME_BD
 :: qualifier P787 (Precision of begin date) NAME_BDQ
 :: qualifier P50 (End date) NAME_ED
@@ -202,7 +202,7 @@
 :: qualifier P73 (Note) Needs EXPANDED TITLE: NUMBER, TITLE, CONNECTOR, GEOID
 :: qualifier P73 (NOTE) TITLE CONNECTOR
 :: qualifier P47 (Localisation) TITLE_GEOID_QNUMBER
-:: qualifier P155 (How sure is this) TITLE_Q
+:: qualifier P155 (* Qualifier) TITLE_Q
 :: qualifier P49 (Begin date) TITLE_BD
 :: qualifier P787 (Precision of begin date) TITLE_BDQ
 :: qualifier P50 (End date) TITLE_ED
@@ -211,7 +211,7 @@
 * P137 (History) MILESTONE_CLASS_QNUMBER
 :: qualifier P73 (NOTE) MILESTONE_DETAIL
 :: qualifier P47 (Localisation) MILESTONE_GEO_ID_QNUMBER
-:: qualifier P155 (How sure is this) MILESTONE_GEOIDQ
+:: qualifier P155 (* Qualifier) MILESTONE_GEOIDQ
 :: qualifier P49 (Begin date) MILESTONE_BD
 :: qualifier P787 (Precision of begin date) MILESTONE_BDQ
 :: qualifier P50 (End date) MILESTONE_ED
@@ -220,7 +220,7 @@
 * P165 (Career statement) AFFILIATION_TYPE_PRO_QNUMBER
 :: qualifier P73 (NOTE) AFFILIATION_Q
 :: qualifier P47 (Localisation) AFFILIATION_GEO_ID_QNUMBER
-:: qualifier P155 (How sure is this) AFFILIATION_GEOIDQ
+:: qualifier P155 (* Qualifier) AFFILIATION_GEOIDQ
 :: qualifier P49 (Begin date) AFFILIATION_BD
 :: qualifier P787 (Precision of begin date) AFFILIATION_BDQ
 :: qualifier P50 (End date) AFFILIATION_ED
@@ -229,7 +229,7 @@
 * P746 (Religious order) AFFILIATION_TYPE_ORD_QNUMBER
 :: qualifier P73 (NOTE) AFFILIATION_Q
 :: qualifier P47 (Localisation) AFFILIATION_GEO_ID_QNUMBER
-:: qualifier P155 (How sure is this) AFFILIATION_GEOIDQ
+:: qualifier P155 (* Qualifier) AFFILIATION_GEOIDQ
 :: qualifier P49 (Begin date) AFFILIATION_BD
 :: qualifier P787 (Precision of begin date) AFFILIATION_BDQ
 :: qualifier P50 (End date) AFFILIATION_ED
@@ -238,7 +238,7 @@
 * P712 (Religious background) AFFILIATION_TYPE_REL_QNUMBER
 :: qualifier P73 (NOTE) AFFILIATION_Q
 :: qualifier P47 (Localisation) AFFILIATION_GEO_ID_QNUMBER
-:: qualifier P155 (How sure is this) AFFILIATION_GEOIDQ
+:: qualifier P155 (* Qualifier) AFFILIATION_GEOIDQ
 :: qualifier P49 (Begin date) AFFILIATION_BD
 :: qualifier P787 (Precision of begin date) AFFILIATION_BDQ
 :: qualifier P50 (End date) AFFILIATION_ED
@@ -247,7 +247,7 @@
 * P703 (Associated persons) RELATED_BIOID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIOCLASS_QNUMBER
 :: qualifier P73 (NOTE) RELATED_BIODETAIL
-:: qualifier P155 (How sure is this) RELATED_BIOIDQ
+:: qualifier P155 (* Qualifier) RELATED_BIOIDQ
 :: qualifier P49 (Begin date) RELATED_BIOBD
 :: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
 :: qualifier P50 (End date) RELATED_BIOED
@@ -256,7 +256,7 @@
 * P232 (Institutions mentioned) RELATED_INSID_QNUMBER
 :: qualifier P820 (Subject has role) RELATED_INSCLASS_QNUMBER
 :: qualifier P73 (NOTE) RELATED_INSDETAIL
-:: qualifier P155 (How sure is this) RELATED_INSIDQ
+:: qualifier P155 (* Qualifier) RELATED_INSIDQ
 :: qualifier P49 (Begin date) RELATED_INSBD
 :: qualifier P787 (Precision of begin date) RELATED_INSBDQ
 :: qualifier P50 (End date) RELATED_INSED
@@ -312,7 +312,7 @@
 * P2 (Instance of) Printed matter
 * P476 (PhiloBiblon ID) COPID
 * P329 (Present holding) RELATED_LIBID_QNUMBER
-:: qualifier P155 (How sure is this) RELATED_LIBID_Q
+:: qualifier P155 (* Qualifier) RELATED_LIBID_Q
 :: qualifier P324 (Contains documents of) RELATED_LIBCOLLECTION # P324 takes ITEM
 :: qualifier P721 (Source [string] RELATED_LIBBASIS
 :: qualifier P10 (Inventory position) RELATED_LIBCALLNO_C
@@ -324,57 +324,57 @@
 :: qualifier P803 (Registry number) RELATED_LIBCALLNO_R
 :: qualifier P1004 (CIBN1945 ID) RELATED_LIBCALLNO_CIBN45
 * P480 (Writing surface) MATERIAL_QNUMBER
-:: qualifier P700 (Source [string]) MATERIAL_BASIS
+:: qualifier P721 (* Source) MATERIAL_BASIS
 * P93 (Format) FORMAT_QNUMBER
-:: qualifier P700 (Source [string]) FORMAT_BASIS
-* P770 (State (bibliographical)) STATE
-:: qualifier P700 (Source [string]) STATE_BASIS
+:: qualifier P721 (* Source) FORMAT_BASIS
+* P770 (State (bibliographical) STATE
+:: qualifier P721 (* Source) STATE_BASIS
 * P800 (Binding*) BINDING
-:: qualifier P700 (Source [string]) BINDING_BASIS
-* P769 (Condition (bibliographical)) CONDITION
-:: qualifier P700 (Source [string]) CONDITION_BASIS
+:: qualifier P721 (* Source) BINDING_BASIS
+* P769 (Condition (bibliographical) CONDITION
+:: qualifier P721 (* Source) CONDITION_BASIS
 * P577 (Physical description) LEAF_COUNT
 :: qualifier P700 (Refers to) LEAF_CLASS_QNUMBER
-:: qualifier P700 (Source [string]) LEAF_BASIS
+:: qualifier P721 (* Source) LEAF_BASIS
 * P704 (Collation) COLLATION
-:: qualifier P700 (Source [string]) COLLATION_BASIS
+:: qualifier P721 (* Source) COLLATION_BASIS
 * P543 (Segmentation) SIZE_CLASS_QNUMBER
-:: qualifier P59 (Height (measure of vertical difference)) SIZE_HEIGHT
+:: qualifier P59 (Height (measure of vertical difference) SIZE_HEIGHT
 :: qualifier P60 (Width) SIZE_WIDTH
 :: qualifier P577 (Physical description) SIZE_LOC
 :: qualifier P721 (Source [string]) SIZE_BASIS
 * P481 (Page layout) PAGE_CLASS_QNUMBER
 :: qualifier P73 (Note) PAGE_DETAIL)
-:: qualifier P54 (Page(s)) PAGE_LOC
+:: qualifier P54 (Page(s) PAGE_LOC
 :: qualifier P721 (Source [string]) PAGE_BASIS
 * P748 (Typeface) FONT_CLASS_QNUMBER
 :: qualifier P73 (Note) FONT_DETAIL)
-:: qualifier P54 (Page(s)) FONT_LOC
+:: qualifier P54 (Page(s) FONT_LOC
 :: qualifier P721 (Source [string]) FONT_BASIS
 * P749 (Watermark) WATERMARK_CLASS_QNUMBER
 :: qualifier P73 (Note) WATERMARK_DETAIL)
-:: qualifier P100 (Folio(s)) WATERMARK_LOC
+:: qualifier P100 (Folio(s) WATERMARK_LOC
 :: qualifier P721 (Source [string]) WATERMARK_BASIS
 * P801 (Visual work component) GRAPHIC_CLASS_QNUMBER
 :: qualifier P73 (Note) GRAPHIC_DETAIL)
-:: qualifier P54 (Page(s)) GRAPHIC_LOC
+:: qualifier P54 (Page(s) GRAPHIC_LOC
 :: qualifier P721 (Source [string]) GRAPHIC_BASIS
 * P778 (Physical feature) FEATURE_CLASS_QNUMBER
 :: qualifier P73 (Note) FEATURE_DETAIL)
-:: qualifier P54 (Page(s)) FEATURE_LOC
+:: qualifier P54 (Page(s) FEATURE_LOC
 :: qualifier P721 (Source [string]) FEATURE_BASIS
 * P137 (History) RELATEDLIBEVENTCLASS_QNUMBER
 :: qualifier P73 (NOTE) RELATEDLIBEVENT_DETAIL
 :: qualifier P545 (Value / Price) RELATEDLIBEVENT_PRICE RELATEDLIBEVENT_CURRENCY
 :: qualifier P47 (Localisation) RELATEDLIBEVENTGEOID_QNUMBER
-:: qualifier P155 (How sure is this?) RELATEDLIBEVENTGEOIDQ
+:: qualifier P155 (* Qualifier?) RELATEDLIBEVENTGEOIDQ
 :: qualifier P49 (Begin date) RELATEDLIBEVENTBD
 :: qualifier P787 (Precision of begin date) RELATEDLIBEVENTBDQ
 :: qualifier P50 (End date) RELATEDLIBEVENTED
 :: qualifier P788 (Precision of end date) RELATEDLIBEVENTEDQ
 :: qualifier P721 (Source [string] RELATEDLIBEVENT_BASIS
 * P229 (Provenance) OWNER_ID_QNUMBER
-:: qualifier P155 (How sure is this) OWNER_IDQ
+:: qualifier P155 (* Qualifier) OWNER_IDQ
 :: qualifier P30 (Old inventory position) OWNER_CALLNO
 :: qualifier P73 (NOTE) OWNER_ARMS
 :: qualifier P545 (Value / Price) OWNER_PRICE OWNER_CURRENCY
@@ -387,7 +387,7 @@
 * P703 (Associated persons) RELATED_BIOID_QNUMBER
 :: qualifier Object has role (P820) RELATED_BIOCLASS_QNUMBER
 :: qualifier Note (P73) RELATED_BIODETAIL
-:: qualifier How sure is this (P155) RELATED_BIOIDQ
+:: qualifier * Qualifier (P155) RELATED_BIOIDQ
 :: qualifier Begin date (P49) RELATED_BIOBD
 :: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
 :: qualifier P721 (Source [string]) RELATED_BIOBASIS
@@ -412,7 +412,7 @@
 * P817 (Notes) EXTENDED_NOTES
 :: qualifier P5 (Title page transcript) TITLE
 :: qualifier P800 (Binding*) BINDING
-:: qualifier P704 (Condition (bibliographical)) CONDITION
+:: qualifier P704 (Condition (bibliographical) CONDITION
 :: qualifier P577 (Physical description) LEAF_COUNT
 :: qualifier P(Collation) COLLATION
 :: qualifier P721 (Source [string]) NOTE
@@ -527,7 +527,7 @@
 * P2 (Instance of) Organisation (Q74)
 * P476 (PhiloBiblon ID) INSID
 * P34 (Name history) NAME
-:: qualifier P155 (How sure is this?) NAME_Q
+:: qualifier P155 (* Qualifier?) NAME_Q
 :: qualifier P49 (Begin Date) NAME_BD
 :: qualifier P787 (Precision of Begin Date) NAME_BDQ
 :: qualifier P50 (End Date) NAME_ED
@@ -610,7 +610,7 @@
 * P476 (PhiloBiblon ID) LIBID
 * P34 (Naming) [es] NAME
 :: qualifier P700 (Refers to) NAME_CLASS_QNUMBER
-:: qualifier P155 (How sure is this?) NAME_Q
+:: qualifier P155 (* Qualifier?) NAME_Q
 :: qualifier P49 (Begin Date) NAME_BD
 :: qualifier P787 (Precision of Begin Date) NAME_BDQ
 :: qualifier P50 (End Date) NAME_ED
@@ -627,7 +627,7 @@
 * P846 (Telephone number) PHONE
 :: qualifier P700 (Refers to) PHONE_LOC_QNUMBER
 * P232 Institution(s) mentioned) RELATED_INSID_QNUMBER
-:: qualifier P155 (How sure is this) RELATED_INSIDQ
+:: qualifier P155 (* Qualifier) RELATED_INSIDQ
 :: qualifier P73 (Note) RELATED_INSDETAIL
 :: qualifier P721 (Notes) RELATED_INSBASIS
 * P12 (Secondary literature) RELATED_BIBID_QNUMBER
@@ -674,12 +674,13 @@
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 00:42, 3 February 2024 (UTC)
 
 ==== manid ====
-* P2 (Instance of)
+* P2 (Instance of) # Manuscript (FG Q15) or Printed matter (FG Q16)
+:: Refers to (P700) CLASS_QNUMBER
 * P476 (PhiloBiblon ID) MANID
 * P329 (Present holding) RELATED_LIBID_QNUMBER
-:: qualifier P155 (How sure is this) RELATED_LIBID_Q
-:: qualifier P324 (Contains documents of) RELATED_LIBCOLLECTION # P324 takes ITEM
-:: qualifier P721 (Source [string] RELATED_LIBBASIS
+:: qualifier P155 (* Qualifier) RELATED_LIBID_Q
+:: qualifier P1054 (* Contains documents of)
+:: qualifier P721 (* Source] RELATED_LIBBASIS
 :: qualifier P10 (Inventory position) RELATED_LIBCALLNO_C
 :: qualifier P802 (Alternate shelfmark) RELATED_LIBCALLNO_A
 :: qualifier P806 (Reference code) RELATED_LIBCALLNO_E
@@ -688,58 +689,31 @@
 :: qualifier P804 (Inventory number) RELATED_LIBCALLNO_I
 :: qualifier P803 (Registry number) RELATED_LIBCALLNO_R
 :: qualifier P1004 (CIBN1945 ID) RELATED_LIBCALLNO_CIBN45
-* P480 (Writing surface) MATERIAL_QNUMBER
-:: qualifier P700 (Source [string]) MATERIAL_BASIS
-* P93 (Format) FORMAT_QNUMBER
-:: qualifier P700 (Source [string]) FORMAT_BASIS
-* P770 (State (bibliographical)) STATE
-:: qualifier P700 (Source [string]) STATE_BASIS
-* P800 (Binding*) BINDING
-:: qualifier P700 (Source [string]) BINDING_BASIS
-* P769 (Condition (bibliographical)) CONDITION
-:: qualifier P700 (Source [string]) CONDITION_BASIS
-* P577 (Physical description) LEAF_COUNT
-:: qualifier P700 (Refers to) LEAF_CLASS_QNUMBER
-:: qualifier P700 (Source [string]) LEAF_BASIS
-* P704 (Collation) COLLATION
-:: qualifier P700 (Source [string]) COLLATION_BASIS
-* P543 (Segmentation) SIZE_CLASS_QNUMBER
-:: qualifier P59 (Height (measure of vertical difference)) SIZE_HEIGHT
-:: qualifier P60 (Width) SIZE_WIDTH
-:: qualifier P577 (Physical description) SIZE_LOC
-:: qualifier P721 (Source [string]) SIZE_BASIS
-* P481 (Page layout) PAGE_CLASS_QNUMBER
-:: qualifier P73 (Note) PAGE_DETAIL)
-:: qualifier P54 (Page(s)) PAGE_LOC
-:: qualifier P721 (Source [string]) PAGE_BASIS
-* P748 (Typeface) FONT_CLASS_QNUMBER
-:: qualifier P73 (Note) FONT_DETAIL)
-:: qualifier P54 (Page(s)) FONT_LOC
-:: qualifier P721 (Source [string]) FONT_BASIS
-* P749 (Watermark) WATERMARK_CLASS_QNUMBER
-:: qualifier P73 (Note) WATERMARK_DETAIL)
-:: qualifier P100 (Folio(s)) WATERMARK_LOC
-:: qualifier P721 (Source [string]) WATERMARK_BASIS
-* P801 (Visual work component) GRAPHIC_CLASS_QNUMBER
-:: qualifier P73 (Note) GRAPHIC_DETAIL)
-:: qualifier P54 (Page(s)) GRAPHIC_LOC
-:: qualifier P721 (Source [string]) GRAPHIC_BASIS
-* P778 (Physical feature) FEATURE_CLASS_QNUMBER
-:: qualifier P73 (Note) FEATURE_DETAIL)
-:: qualifier P54 (Page(s)) FEATURE_LOC
-:: qualifier P721 (Source [string]) FEATURE_BASIS
-* P137 (History) RELATEDLIBEVENTCLASS_QNUMBER
-:: qualifier P73 (NOTE) RELATEDLIBEVENT_DETAIL
-:: qualifier P545 (Value / Price) RELATEDLIBEVENT_PRICE RELATEDLIBEVENT_CURRENCY
-:: qualifier P47 (Localisation) RELATEDLIBEVENTGEOID_QNUMBER
-:: qualifier P155 (How sure is this?) RELATEDLIBEVENTGEOIDQ
-:: qualifier P49 (Begin date) RELATEDLIBEVENTBD
-:: qualifier P787 (Precision of begin date) RELATEDLIBEVENTBDQ
-:: qualifier P50 (End date) RELATEDLIBEVENTED
-:: qualifier P788 (Precision of end date) RELATEDLIBEVENTEDQ
-:: qualifier P721 (Source [string] RELATEDLIBEVENT_BASIS
+* P15 (Title page transcript) TITLE
+* P56 (Nickname) TITLE_NICKNAME
+* P47 (Localisation) MILESTONE_GEOID_QNUMBER
+:: qualifier P7155 (* Qualifier) MILESTONE_GEOIDQ
+:: qualifier P721 (* Source) MILESTONE_GEOIDBASIS
+* P241 (Place of publication) MILESTONE_GEOID_QNUMBER
+:: qualifier P7155 (* Qualifier) MILESTONE_GEOIDQ
+:: qualifier P721 (* Source) MILESTONE_GEOIDBASIS
+* P25 (Handwritten by) MILESTONE_MAKER_ID_QNUMBER
+:: qualifier P155 (* Qualifier) MILESTONE_MAKER_ID_Q
+:: qualifier P721 (*Source) MILESTONE_MAKERBASIS
+* P207 (Printed by) MILESTONE_MAKER_ID_QNUMBER
+:: qualifier P155 (* Qualifier) MILESTONE_MAKER_ID_Q
+:: qualifier P721 (*Source) MILESTONE_MAKERBASIS
+* P67 (Financed by) MILESTONE_FUNDER_ID_QNUMBER
+:: qualifier P155 (* Qualifier) MILESTONE_FUNDER_ID_Q
+:: qualifier P721 (*Source) MILESTONE_FUNDERBASIS
+* P536 (Date of Artifact) MILESTONE_BD
+* P536 (Date of Artifact) MILESTONE_ED
+:: qualifier P787 (* Precision of end date) MILESTONE_EDQ
+:: qualifier P721 (*Source) MILESTONE_BASIS
+* P222 (Date of Publication)  MILESTONE_BD
+* P222 (Date of Publication)  MILESTONE_ED
 * P229 (Provenance) OWNER_ID_QNUMBER
-:: qualifier P155 (How sure is this) OWNER_IDQ
+:: qualifier P155 (* Qualifier) OWNER_IDQ
 :: qualifier P30 (Old inventory position) OWNER_CALLNO
 :: qualifier P73 (NOTE) OWNER_ARMS
 :: qualifier P545 (Value / Price) OWNER_PRICE OWNER_CURRENCY
@@ -749,13 +723,73 @@
 :: qualifier P50 (End date) OWNER_ED
 :: qualifier P788 (Precision of end date) OWNER_EDQ
 :: qualifier P721 (Source [string] OWNER_BASIS
+* P480 (Writing surface) MATERIAL_QNUMBER
+:: qualifier P721 (* Source) MATERIAL_BASIS
+* P93 (Format) FORMAT_QNUMBER
+:: qualifier P721 (* Source) FORMAT_BASIS
+* P770 (State (bibliographical) STATE
+:: qualifier P721 (* Source) STATE_BASIS
+* P800 (Binding*) BINDING
+:: qualifier P721 (* Source) BINDING_BASIS
+* P769 (Condition (bibliographical) CONDITION
+:: qualifier P721 (* Source) CONDITION_BASIS
+* P577 (Physical description) LEAF_COUNT
+:: qualifier P700 (Refers to) LEAF_CLASS_QNUMBER
+:: qualifier P721 (* Source) LEAF_BASIS
+* P704 (Collation) COLLATION
+:: qualifier P721 (* Source) COLLATION_BASIS
+* P543 (Segmentation) SIZE_CLASS_QNUMBER
+:: qualifier P59 (Height (measure of vertical difference) SIZE_HEIGHT
+:: qualifier P60 (Width) SIZE_WIDTH
+:: qualifier P577 (Physical description) SIZE_LOC
+:: qualifier P721 (Source [string]) SIZE_BASIS
+* P481 (Page layout) PAGE_CLASS_QNUMBER
+:: qualifier P73 (Note) PAGE_DETAIL)
+:: qualifier P54 (Page(s) PAGE_LOC
+:: qualifier P721 (Source [string]) PAGE_BASIS
+* P7 (Script style) HAND_CLASS_QNUMBER
+:: qualifier P73 (Note) HAND_DETAIL)
+:: qualifier P54 (Page(s) HAND_LOC
+:: qualifier P721 (Source [string]) FONT_BASIS
+* P748 (Typeface) FONT_CLASS_QNUMBER
+:: qualifier P73 (Note) FONT_DETAIL)
+:: qualifier P54 (Page(s) FONT_LOC
+:: qualifier P721 (Source [string]) FONT_BASIS
+* P749 (Watermark) WATERMARK_CLASS_QNUMBER
+:: qualifier P73 (Note) WATERMARK_DETAIL)
+:: qualifier P100 (Folio(s) WATERMARK_LOC
+:: qualifier P721 (Source [string]) WATERMARK_BASIS
+* P801 (Visual work component) GRAPHIC_CLASS_QNUMBER
+:: qualifier P73 (Note) GRAPHIC_DETAIL)
+:: qualifier P54 (Page(s) GRAPHIC_LOC
+:: qualifier P721 (Source [string]) GRAPHIC_BASIS
+* P (Musical notation) MUSIC_CLASS_QNUMBER
+:: qualifier P73 (Note) MUSIC_DETAIL)
+:: qualifier P54 (Page(s) MUSIC_LOC
+:: qualifier P721 (Source [string]) MUSIC_BASIS
+* P778 (Physical feature) FEATURE_CLASS_QNUMBER
+:: qualifier P73 (Note) FEATURE_DETAIL)
+:: qualifier P54 (Page(s) FEATURE_LOC
+:: qualifier P721 (Source [string]) FEATURE_BASIS
+* P137 (History) RELATEDLIBEVENTCLASS_QNUMBER
+:: qualifier P73 (NOTE) RELATEDLIBEVENT_DETAIL
+:: qualifier P545 (Value / Price) RELATEDLIBEVENT_PRICE RELATEDLIBEVENT_CURRENCY
+:: qualifier P47 (Localisation) RELATEDLIBEVENTGEOID_QNUMBER
+:: qualifier P155 (* Qualifier?) RELATEDLIBEVENTGEOIDQ
+:: qualifier P49 (Begin date) RELATEDLIBEVENTBD
+:: qualifier P787 (Precision of begin date) RELATEDLIBEVENTBDQ
+:: qualifier P50 (End date) RELATEDLIBEVENTED
+:: qualifier P788 (Precision of end date) RELATEDLIBEVENTEDQ
+:: qualifier P721 (Source [string] RELATEDLIBEVENT_BASIS
 * P703 (Associated persons) RELATED_BIOID_QNUMBER
 :: qualifier Object has role (P820) RELATED_BIOCLASS_QNUMBER
 :: qualifier Note (P73) RELATED_BIODETAIL
-:: qualifier How sure is this (P155) RELATED_BIOIDQ
+:: qualifier * Qualifier (P155) RELATED_BIOIDQ
 :: qualifier Begin date (P49) RELATED_BIOBD
 :: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
 :: qualifier P721 (Source [string]) RELATED_BIOBASIS
+* P (Related object) RELATED_MANID_QNUMBER
+* P 9 (Includes) RELATED_UNIID_QNUMBER
 * P73 (Note) NOTES
 * P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
@@ -777,7 +811,7 @@
 * P817 (Notes) EXTENDED_NOTES
 :: qualifier P5 (Title page transcript) TITLE
 :: qualifier P800 (Binding*) BINDING
-:: qualifier P704 (Condition (bibliographical)) CONDITION
+:: qualifier P704 (Condition (bibliographical) CONDITION
 :: qualifier P577 (Physical description) LEAF_COUNT
 :: qualifier P(Collation) COLLATION
 :: qualifier P721 (Source [string]) NOTE
@@ -785,22 +819,10 @@
 * P146 (Online information) INTERNET_ADDRESS_URL
 :: qualifier P35 (Literal statement) INTERNET_SERVICE
 :: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P722 (Email address) INTERNET_ADDRESS_EMA
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
 *P438 (Online catalog) INTERNET_ADDRESS_CAT
 :: qualifier P35 (Literal statement) INTERNET_SERVICE
 :: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
 * PXXX (URI) INTERNET_ADDRESS_URI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P744 (URN formatter) INTERNET_ADDRESS_URN
 :: qualifier P35 (Literal statement) INTERNET_SERVICE
 :: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
 * P131 (Research projects) BETA / ... (pb.cog Q49409)
@@ -816,7 +838,7 @@
 ==== subid ====
 * P2 (Instance of) Subject heading (pb.cog Q49417)
 * P34 (Naming) [es] HEADING_MAIN_QNUMBER
-:: qualifier P700 (Source [string]) HM_BASIS
+:: qualifier P721 (* Source) HM_BASIS
 * P73 (Note) HEADING_VARIANT
 :: qualifier P700 (Refers to) HV_CLASS_QNUMBER
 :: qualifier P721 (Source [string]) HV_BASIS
@@ -851,7 +873,7 @@
 * P121 (Type of work) TYPE_QNUMBER
 * P476 (PhiloBiblon ID) TEXID
 * P21 (Author) AUTHOR_ID_QNUMBER)
-:: qualifier P155 (How sure is this?) AUTHOR_IDQ
+:: qualifier P155 (* Qualifier?) AUTHOR_IDQ
 :: qualifier P721 (Source [string]) AUTHOR_BASIS
 * P11 (Title) TITLE_UNIFORM
 :: qualifier P700 (Refers to) Title Uniform (pb.cog Q82895)
@@ -877,7 +899,7 @@
 * P703 (Associated persons) RELATED_BIOID_QNUMBER
 :: qualifier P820 (Object has role) RELATED_BIOCLASS_QNUMBER
 :: qualifier Note (P73) RELATED_BIODETAIL
-:: qualifier P155 (How sure is this) RELATED_BIOIDQ
+:: qualifier P155 (* Qualifier) RELATED_BIOIDQ
 :: qualifier P49 (Begin date) RELATED_BIOBD
 :: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
 :: qualifier P50 (End date) RELATED_BIOED
@@ -905,7 +927,7 @@
 * P817 (Notes) EXTENDED_NOTES
 :: qualifier P11 (Title) TEXT_TITLE
 :: qualifier P60 (Incipit) INCIPIT
-:: qualifier P602 (Excipit))  EXPLICIT
+:: qualifier P602 (Excipit)  EXPLICIT
 :: qualifier P721 (Source [string]) NOTE
 * P146 (Online information) INTERNET_ADDRESS_URL
 :: qualifier P35 (Literal statement) INTERNET_SERVICE
