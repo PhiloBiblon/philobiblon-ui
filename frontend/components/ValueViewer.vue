@@ -20,7 +20,13 @@
         <text-lang :value="valueToView" />
       </template>
       <template v-else>
-        <edit-text-field :key="valueToView.value" :save="editValue" :value="valueToView.value" class="text-subtitle-1" />
+        <edit-select-field
+          :save="editValue"
+          :options="options"
+          @input="oninput($event)"
+          :key="value.datavalue.value.id"
+          @update-options="options = $event"
+        />
       </template>
     </span>
     <span v-else-if="valueToView.type === 'time'">
@@ -120,7 +126,8 @@ export default {
 
     this.currentValue = this.value.datavalue.value
 
-    this.setDefaultOption()
+    this.setDefaultOption();
+    if (this.isUserLogged) { this.getQualifiers() }
 
     if (this.isURL(this.valueToView.value) === true) {
       const res = await fetch(
@@ -135,7 +142,7 @@ export default {
 
   methods: {
     oninput (e) {
-      if (e && e !== this.valueToView.value) { this.handleSearchChange(e) }
+      if (e && e !== this.valueToView.value && this.claim.mainsnak.datatype !== 'wikibase-item') { this.handleSearchChange(e) }
     },
     getUrlFromPBID (item) {
       return this.localePath('/item/' + item)
@@ -143,6 +150,11 @@ export default {
     isURL (str) {
       const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
       return urlRegex.test(str)
+    },
+    getQualifiers() {
+      if (this.claim.mainsnak.datatype === 'wikibase-item') {
+        this.populateOptionsAutocomplete();
+      }
     },
     setDefaultOption () {
       this.options = [{
@@ -157,30 +169,34 @@ export default {
       if (search && search.length) { return this.options = search }
     },
     async editValue (option) {
-      const newValue = await this.getNewValue(option)
+      const editableData =  this.getEditableData(option);
       if (this.type !== 'qualifier') {
         return this.$wikibase.getWbEdit().claim.update({
           guid: this.claim.id,
-          newValue
+          newValue: editableData.newValue,
         },
         this.$store.getters['auth/getRequestConfig'])
       } else {
         return this.$wikibase.getWbEdit().qualifier.update({
           guid: this.claim.id,
           property: this.value.property,
-          oldValue: this.currentValue,
-          newValue
+          oldValue: editableData.oldValue,
+          newValue: editableData.newValue,
         },
         this.$store.getters['auth/getRequestConfig'])
           .then((response) => {
             if (response && response.success) {
-              this.currentValue = newValue
+              if (typeof editableData.newValue !== 'object') {
+                this.currentValue.id = editableData.newValue;
+              } else {
+                this.currentValue = editableData.newValue;
+              }
             }
             return response
-          })
+          });
       }
     },
-    getNewValue (value) {
+    getEditableData (value) {
       let newValue = {}
       switch (this.value.datavalue.type) {
         case 'string':
@@ -223,8 +239,9 @@ export default {
     },
     getWikiBaseEntityIdValue (value) {
       return {
-        id: value.id
-      }
+        newValue: value.id,
+        oldValue: this.currentValue.id,
+      };
     },
     getStringValue (value) {
       return value
@@ -237,8 +254,11 @@ export default {
     },
     getTimeValue (value) {
       return {
-        ...this.value.datavalue.value,
-        time: this.formatDate(value)
+        oldValue: this.currentValue,
+        newValue: {
+          ...this.value.datavalue.value,
+          time: this.formatDate(value),
+        },
       }
     },
     getUrlValue (value) {
@@ -275,7 +295,19 @@ export default {
       const isoDay = ('0' + date.getUTCDate()).slice(-2)
 
       return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`
-    }
+    },
+    populateOptionsAutocomplete() {
+      this.$wikibase.runSparqlQuery(this.$wikibase.$query.qualifiersQuery(this.value.property, this.$i18n.locale), true)
+        .then((results) => {
+          Object.entries(results).forEach(
+            ([key, result]) => {
+              this.options.push({
+                id: result.value.value,
+                label: result.value.label,
+              });
+            });
+        });
+    },
   }
 }
 </script>

@@ -230,6 +230,16 @@ export class QueryService {
       `)
   }
 
+  qualifiersQuery(property, lang) {
+    return this.addPrefixes(
+        `
+        SELECT DISTINCT ?value ?valueLabel
+          WHERE {
+            ?item wdt:${property} ?value
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang}". }
+        }
+      `);
+  }
   entityFromPBIDQuery (pbid) {
     return this.addPrefixes(`SELECT ?item WHERE { ?item wdt:P476 '${pbid}'. }`)
   }

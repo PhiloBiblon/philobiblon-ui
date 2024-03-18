@@ -108,6 +108,7 @@ export default {
             )
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
             this.claimsOrdered = await this.getOrderedClaims(tableid, this.item.claims)
+
             this.showItem = true
           })
       } catch (err) {
