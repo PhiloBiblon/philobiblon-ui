@@ -26,8 +26,8 @@ export default {
         { locale: 'ca', name: 'Català' },
         { locale: 'es', name: 'Español' },
         { locale: 'en', name: 'English' },
-        { locale: 'ga', name: 'Galego' },
-        { locale: 'po', name: 'Português' }
+        { locale: 'gl', name: 'Galego' },
+        { locale: 'pt', name: 'Português' }
       ]
     }
   },

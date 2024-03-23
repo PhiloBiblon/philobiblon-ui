@@ -104,12 +104,12 @@ export default {
         file: 'es.js'
       },
       {
-        code: 'ga',
-        file: 'ga.js'
+        code: 'gl',
+        file: 'gl.js'
       },
       {
-        code: 'po',
-        file: 'po.js'
+        code: 'pt',
+        file: 'pt.js'
       }
     ],
     langDir: 'lang/',
