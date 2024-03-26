@@ -102,7 +102,7 @@ export class QueryService {
     if (form.city && form.city.value) {
       filters +=
         `
-        ?item wdt:P47 wd:${form.city.value} .\n
+        ?item wdt:P297 wd:${form.city.value} .\n
         `
     }
     if (form.institution && form.institution.value) {
@@ -164,7 +164,7 @@ export class QueryService {
           ?item wdt:P476 ?pbid .
           FILTER regex(?pbid, '(.*) geoid ') .
           ${this.generateLangFilters(lang)}
-          ?table wdt:P47 ?item . 
+          ?table wdt:P297 ?item . 
           ?table wdt:P476 ?table_pbid .
           FILTER regex(?table_pbid, '(.*) ${table} ')
         }
@@ -209,7 +209,7 @@ export class QueryService {
       `
         SELECT ?item ?label
         WHERE { 
-          ?item wdt:P476 ?pbid .
+          ?item wdt:P994 ?pbid .
           ${this.generateLangFilters(lang)}
           FILTER regex(?pbid, 'INSTITUTIONS\\\\*CLASS\\\\*') .
         }
