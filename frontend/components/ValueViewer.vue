@@ -20,7 +20,19 @@
         <text-lang :value="valueToView" />
       </template>
       <template v-else>
-        <edit-text-field :key="valueToView.value" :save="editValue" :value="valueToView.value" class="text-subtitle-1" />
+        <edit-select-field
+          v-if="!isWikiBaseItem"
+          :key="value.datavalue.value.id"
+          :options="options"
+          :save="editValue"
+          @update-options="options = $event"
+          @input="oninput($event)"
+        />
+        <edit-select-field
+          :save="editValue"
+          :options="autocompleteItems"
+          :key="value.datavalue.value.id"
+        />
       </template>
     </span>
     <span v-else-if="valueToView.type === 'time'">
@@ -28,7 +40,21 @@
         {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
       </template>
       <template v-else>
-        <edit-text-field :key="valueToView.value" :save="editValue" type="date" :value="valueToView.value" class="text-subtitle-1" />
+        <div class="d-flex">
+          <edit-text-field
+            type="date"
+            :save="editValue"
+            :key="valueToView.value"
+            :value="valueToView.value"
+            class="text-subtitle-1 mt-5"/>
+          <edit-select-field
+            :save="editValue"
+            :options="calendarTypes"
+            :callback-params="[true]"
+            :key="valueToView.calendar"
+            :value="valueToView.calendar"
+            class="text-subtitle-1 col-5"/>
+        </div>
       </template>
     </span>
     <span v-else-if="valueToView.type === 'url'">
@@ -100,14 +126,36 @@ export default {
       valueToView: null,
       imageLink: null,
       options: [],
-      currentValue: null
+      currentValue: null,
+      autocomplete: {
+        items: [],
+        queryFunction: () => { return this.qualifiersQuery(this.value.property, this.$i18n.locale) },
+      },
+      calendarTypes: [
+        {
+          label: 'Gregorian',
+          value: 'Gregorian',
+          wikiValue: 'http://www.wikidata.org/entity/Q1985727',
+        },
+        {
+          label: 'Julian',
+          value: 'Julian',
+          wikiValue: 'http://www.wikidata.org/entity/Q1985786',
+        }
+      ],
     }
   },
 
   computed: {
     isUserLogged () {
       return this.$store.state.auth.isLogged
-    }
+    },
+    isWikiBaseItem () {
+      return this.claim?.mainsnak?.datatype === 'wikibase-item';
+    },
+    autocompleteItems () {
+      return this.autocomplete.items;
+    },
   },
 
   async mounted () {
@@ -120,7 +168,8 @@ export default {
 
     this.currentValue = this.value.datavalue.value
 
-    this.setDefaultOption()
+    this.setDefaultOption();
+    if (this.isWikiBaseItem && this.isUserLogged) { this.populateOptionsAutocomplete() }
 
     if (this.isURL(this.valueToView.value) === true) {
       const res = await fetch(
@@ -145,10 +194,17 @@ export default {
       return urlRegex.test(str)
     },
     setDefaultOption () {
-      this.options = [{
-        id: this.value.datavalue.value.id,
-        label: this.valueToView.value
-      }]
+      if (!this.isWikiBaseItem) {
+        this.options = [{
+          id: this.value.datavalue.value.id,
+          label: this.valueToView.value,
+        }]
+      } else {
+        this.autocomplete.items = [{
+          id: this.value.datavalue.value.id,
+          label: this.valueToView.value,
+        }]
+      }
     },
     async handleSearchChange (value) {
       if (!value) { return }
@@ -156,31 +212,38 @@ export default {
       // eslint-disable-next-line no-return-assign
       if (search && search.length) { return this.options = search }
     },
-    async editValue (option) {
-      const newValue = await this.getNewValue(option)
+    async editValue (option, hasProp) {
+      const editableData = await this.getEditableData(option, hasProp);
+
+      if (JSON.stringify(editableData.newValue) === JSON.stringify(editableData.oldValue)) { return }
+
       if (this.type !== 'qualifier') {
         return this.$wikibase.getWbEdit().claim.update({
           guid: this.claim.id,
-          newValue
+          newValue: editableData.newValue,
         },
         this.$store.getters['auth/getRequestConfig'])
       } else {
         return this.$wikibase.getWbEdit().qualifier.update({
           guid: this.claim.id,
           property: this.value.property,
-          oldValue: this.currentValue,
-          newValue
+          oldValue: editableData.oldValue,
+          newValue: editableData.newValue,
         },
         this.$store.getters['auth/getRequestConfig'])
           .then((response) => {
             if (response && response.success) {
-              this.currentValue = newValue
+              if (typeof editableData.newValue !== 'object') {
+                this.currentValue.id = editableData.newValue;
+              } else {
+                this.currentValue = editableData.newValue;
+              }
             }
             return response
-          })
+          });
       }
     },
-    getNewValue (value) {
+    async getEditableData (value, hasProp = false) {
       let newValue = {}
       switch (this.value.datavalue.type) {
         case 'string':
@@ -190,7 +253,7 @@ export default {
           newValue = this.getQuantityValue(value)
           break
         case 'time':
-          newValue = this.getTimeValue(value)
+          newValue = this.getTimeValue(value, hasProp)
           break
         case 'wikibase-entityid':
           newValue = this.getWikiBaseEntityIdValue(value)
@@ -223,8 +286,9 @@ export default {
     },
     getWikiBaseEntityIdValue (value) {
       return {
-        id: value.id
-      }
+        newValue: value.id,
+        oldValue: this.currentValue.id,
+      };
     },
     getStringValue (value) {
       return value
@@ -235,10 +299,24 @@ export default {
         amount: value.amount
       }
     },
-    getTimeValue (value) {
+    getTimeValue(value, hasProp) {
+      let calendarModel, time;
+
+      if (hasProp) {
+        calendarModel = value.wikiValue;
+        time = this.value.datavalue.value.time;
+      } else {
+        time = this.formatDate(value);
+        calendarModel = this.value.datavalue.value.calendarmodel;
+      }
+
       return {
-        ...this.value.datavalue.value,
-        time: this.formatDate(value)
+        oldValue: this.currentValue,
+        newValue: {
+          ...this.value.datavalue.value,
+          time: time,
+          calendarmodel: calendarModel,
+        },
       }
     },
     getUrlValue (value) {
@@ -275,7 +353,31 @@ export default {
       const isoDay = ('0' + date.getUTCDate()).slice(-2)
 
       return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`
-    }
+    },
+    qualifiersQuery(property, lang) {
+      return this.$wikibase.$query.addPrefixes(
+        `
+        SELECT DISTINCT ?value ?valueLabel
+          WHERE {
+            ?item wdt:${property} ?value
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang}". }
+        }
+      `);
+    },
+    populateOptionsAutocomplete() {
+      this.$wikibase.runSparqlQuery(this.autocomplete.queryFunction(), true)
+        .then((results) => {
+          Object.entries(results).forEach(
+            ([key, result]) => {
+              if (!this.isURL(result.value.label)) {
+                this.autocomplete.items.push({
+                  id: result.value.value,
+                  label: result.value.label,
+                });
+              }
+            });
+        });
+    },
   }
 }
 </script>
