@@ -1,9 +1,11 @@
 <template>
   <v-autocomplete
+    :label="label"
     ref="autocomplete"
     v-model="currentText"
     :items="options"
     item-text="label"
+    :value="value"
     return-object
     required
     variant="outlined"
@@ -48,7 +50,16 @@ export default {
     save: {
       type: Function,
       required: true
-    }
+    },
+    label: {
+      required: false,
+      default: ''
+    },
+    callbackParams: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
   },
   data () {
     return {
@@ -58,15 +69,13 @@ export default {
       focussed: false
     }
   },
-  computed: {
-    commonAttrs () {
-      return {
-        dense: true
-      }
-    }
-  },
   mounted () {
-    this.currentText = { ...this.options[0] }
+    if (!this.value) {
+      this.currentText = {...this.options[0] }
+    } else {
+      this.currentText = this.value
+    }
+
     this.consolidatedText = { ...this.currentText }
     this.consolidatedOptions = JSON.parse(JSON.stringify(this.options))
   },
@@ -86,8 +95,8 @@ export default {
     async edit () {
       this.focussed = false
       this.$refs.autocomplete.blur()
-      if (this.currentText && this.currentText.id !== this.consolidatedText.id) {
-        await this.save(this.currentText)
+      if (this.currentText && (this.value || this.currentText.id !== this.consolidatedText.id)) {
+        await this.save(this.currentText, ...this.callbackParams)
           .then((response) => {
             if (response) {
               if (!response.success) {
@@ -98,8 +107,6 @@ export default {
             }
           })
           .catch((error) => {
-            // workaround to avoid weird error if the session is expired
-            // the first time that we want edit the wikibase
             if (error.message === 'query is undefined') {
               error = 'Error: Session expired.'
             }

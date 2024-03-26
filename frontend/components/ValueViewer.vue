@@ -1,11 +1,17 @@
 <template>
   <div v-if="valueToView">
     <template v-if="valueToView.type === 'text'">
-      <span v-if="!isUserLogged || claim.mainsnak.datatype === 'external-id'">
+      <span v-if="!isUserLogged || value.datavalue.type === 'string'">
         {{ valueToView.value }}
       </span>
       <div v-else>
-        <edit-text-field :key="valueToView.value" :save="editValue" :value="valueToView.value" class="text-subtitle-1" />
+        <edit-select-field
+          :key="value.datavalue.value.id"
+          :options="options"
+          :save="editValue"
+          @update-options="options = $event"
+          @input="oninput($event)"
+        />
       </div>
     </template>
 
@@ -23,7 +29,6 @@
           @input="oninput($event)"
         />
         <edit-select-field
-          v-else
           :save="editValue"
           :options="autocompleteItems"
           :key="value.datavalue.value.id"
@@ -35,31 +40,33 @@
         {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
       </template>
       <template v-else>
-        <edit-text-field :key="valueToView.value" :save="editValue" type="date" :value="valueToView.value" class="text-subtitle-1" />
+        <div class="d-flex">
+          <edit-text-field
+            type="date"
+            :save="editValue"
+            :key="valueToView.value"
+            :value="valueToView.value"
+            class="text-subtitle-1 mt-5"/>
+          <edit-select-field
+            :save="editValue"
+            :options="calendarTypes"
+            :callback-params="[true]"
+            :key="valueToView.calendar"
+            :value="valueToView.calendar"
+            class="text-subtitle-1 col-5"/>
+        </div>
       </template>
     </span>
     <span v-else-if="valueToView.type === 'url'">
-      <template v-if="!isUserLogged">
-        <a
-          :href="imageLink"
-          target="_blank"
-        >
-          <v-img
-            width="300"
-            :src="imageLink"
-          />
-        </a>
       <a
-        :href="valueToView.value"
+        :href="imageLink"
         target="_blank"
-      >
-        {{ valueToView.value }}
-      </a>
+      ><v-img
+        width="300"
+        :src="imageLink"
+      /></a>
+      <a :href="valueToView.value" target="_blank">{{ valueToView.value }}</a>
       <v-icon>mdi-link</v-icon>
-      </template>
-      <template v-else>
-        <edit-text-field :key="valueToView.value" :save="editValue" :value="valueToView.value" class="text-subtitle-1" />
-      </template>
     </span>
 
     <span v-else-if="valueToView.type === 'item'">
@@ -71,18 +78,11 @@
       <template v-else>
         <div style="position: relative">
           <edit-select-field
-            v-if="!isWikiBaseItem"
             :key="value.datavalue.value.id"
             :options="options"
             :save="editValue"
             @update-options="options = $event"
             @input="oninput($event)"
-          />
-          <edit-select-field
-            v-else
-            :save="editValue"
-            :options="autocompleteItems"
-            :key="value.datavalue.value.id"
           />
         </div>
       </template>
@@ -131,6 +131,18 @@ export default {
         items: [],
         queryFunction: () => { return this.qualifiersQuery(this.value.property, this.$i18n.locale) },
       },
+      calendarTypes: [
+        {
+          label: 'Gregorian',
+          value: 'Gregorian',
+          wikiValue: 'http://www.wikidata.org/entity/Q1985727',
+        },
+        {
+          label: 'Julian',
+          value: 'Julian',
+          wikiValue: 'http://www.wikidata.org/entity/Q1985786',
+        }
+      ],
     }
   },
 
@@ -159,13 +171,14 @@ export default {
     this.setDefaultOption();
     if (this.isWikiBaseItem && this.isUserLogged) { this.populateOptionsAutocomplete() }
 
-    if (this.valueToView.type === 'url' && this.isURL(this.valueToView.value)) {
-        fetch(
+    if (this.isURL(this.valueToView.value) === true) {
+      const res = await fetch(
         'https://the-visionary-git-master-austininseoul.vercel.app/api?url=' +
           this.valueToView.value
-        ).then(res => {
-          this.imageLink = res && res.imageSizes ? res.imageSizes[0].url : this.valueToView.value;
-        })
+      )
+      const data = await res.json()
+
+      this.imageLink = data.imageSizes[0].url
     }
   },
 
@@ -199,14 +212,10 @@ export default {
       // eslint-disable-next-line no-return-assign
       if (search && search.length) { return this.options = search }
     },
-    async editValue (option) {
-      const editableData = await this.getEditableData(option);
-      if (!editableData.valid || JSON.stringify(editableData.newValue) === JSON.stringify(editableData.oldValue)) {
-        if (editableData.message) {
-          this.$notification.error(editableData.message)
-        }
-        return
-      }
+    async editValue (option, hasProp) {
+      const editableData = await this.getEditableData(option, hasProp);
+
+      if (JSON.stringify(editableData.newValue) === JSON.stringify(editableData.oldValue)) { return }
 
       if (this.type !== 'qualifier') {
         return this.$wikibase.getWbEdit().claim.update({
@@ -214,12 +223,6 @@ export default {
           newValue: editableData.newValue,
         },
         this.$store.getters['auth/getRequestConfig'])
-          .then((response) => {
-            if (response && response.success) {
-              this.currentValue = editableData.newValue;
-            }
-            return response
-          });
       } else {
         return this.$wikibase.getWbEdit().qualifier.update({
           guid: this.claim.id,
@@ -230,26 +233,45 @@ export default {
         this.$store.getters['auth/getRequestConfig'])
           .then((response) => {
             if (response && response.success) {
-              this.currentValue = editableData.newValue;
+              if (typeof editableData.newValue !== 'object') {
+                this.currentValue.id = editableData.newValue;
+              } else {
+                this.currentValue = editableData.newValue;
+              }
             }
             return response
           });
       }
     },
-    async getEditableData (value) {
+    async getEditableData (value, hasProp = false) {
       let newValue = {}
       switch (this.value.datavalue.type) {
         case 'string':
-          newValue = this.value.datatype === 'url' ? this.getUrlValue(value) : this.getStringValue(value)
+          newValue = this.getStringValue(value)
+          break
+        case 'quantity':
+          newValue = this.getQuantityValue(value)
           break
         case 'time':
-          newValue = this.getTimeValue(value)
+          newValue = this.getTimeValue(value, hasProp)
           break
         case 'wikibase-entityid':
           newValue = this.getWikiBaseEntityIdValue(value)
           break
+        case 'url':
+          newValue = this.getUrlValue(value)
+          break
+        case 'globe-coordinate':
+          newValue = this.getCoordinatesValue(value)
+          break
         case 'monolingualtext':
           newValue = this.getMonolingualTextValue(value)
+          break
+        case 'math':
+          newValue = this.getMathValue(value)
+          break
+        case 'external-id':
+          newValue = this.getExternalIdValue(value)
           break
         default:
           break
@@ -258,49 +280,71 @@ export default {
     },
     getMonolingualTextValue (value) {
       return {
-        valid: true,
-        oldValue: this.currentValue,
-        newValue: {
-          ...this.value.datavalue.value,
-          text: value.label,
-          language: this.$i18n.locale,
-        },
+        text: value,
+        language: this.value.datavalue.value.language
       }
     },
     getWikiBaseEntityIdValue (value) {
       return {
-        valid: true,
         newValue: value.id,
         oldValue: this.currentValue.id,
       };
     },
     getStringValue (value) {
+      return value
+    },
+    getQuantityValue (value) {
       return {
-        valid: true,
-        newValue: value,
-        oldValue: this.currentValue,
+        unit: value.unit,
+        amount: value.amount
       }
     },
-    getTimeValue (value) {
+    getTimeValue(value, hasProp) {
+      let calendarModel, time;
+
+      if (hasProp) {
+        calendarModel = value.wikiValue;
+        time = this.value.datavalue.value.time;
+      } else {
+        time = this.formatDate(value);
+        calendarModel = this.value.datavalue.value.calendarmodel;
+      }
+
       return {
-        valid: true,
         oldValue: this.currentValue,
         newValue: {
           ...this.value.datavalue.value,
-          time: this.formatDate(value),
+          time: time,
+          calendarmodel: calendarModel,
         },
       }
     },
     getUrlValue (value) {
-      let valid = this.isURL(value);
-      let message = valid ? '' : 'Please fill a valid URL!';
-
+      return value
+    },
+    getCoordinatesValue (value) {
       return {
-        valid: valid,
-        newValue: value,
-        message: message,
-        oldValue: this.currentValue,
-      };
+        precision: 0.0001,
+        latitude: 37.7749,
+        longitude: -122.4194,
+        globe: 'http://www.wikidata.org/entity/Q2'
+      }
+    },
+    getMathValue (value) {
+      return {
+        latitude: 37.7749,
+        longitude: -122.4194,
+        precision: 0.0001,
+        globe: 'https://www.wikidata.org/entity/Q2'
+      }
+    },
+    getExternalIdValue (value) {
+      return {
+        latitude: 37.7749,
+        longitude: -122.4194,
+        precision: 0.0001,
+        globe: 'http://www.wikidata.org/entity/Q2'
+      }
     },
     formatDate (dateString) {
       const date = new Date(dateString)
