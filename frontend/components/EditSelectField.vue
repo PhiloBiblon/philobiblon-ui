@@ -65,8 +65,20 @@ export default {
       }
     }
   },
+  watch: {
+    value (newValue, oldValue) {
+      this.currentText = newValue
+      if (!oldValue) {
+        this.consolidatedText = this.currentText
+      }
+    }
+  },
   mounted () {
-    this.currentText = { ...this.options[0] }
+    if (this.value) {
+      this.currentText = this.value
+    } else {
+      this.currentText = { ...this.options[0] }
+    }
     this.consolidatedText = { ...this.currentText }
     this.consolidatedOptions = JSON.parse(JSON.stringify(this.options))
   },
@@ -78,14 +90,10 @@ export default {
       this.focussed = true
     },
     blur () {
-      if (!this.currentText) {
-        this.restore()
-      }
       this.focussed = false
+      this.restore()
     },
     async edit () {
-      this.focussed = false
-      this.$refs.autocomplete.blur()
       if (this.currentText && this.currentText.id !== this.consolidatedText.id) {
         await this.save(this.currentText)
           .then((response) => {
@@ -95,6 +103,7 @@ export default {
               }
               this.consolidatedText = this.currentText
               this.$notification.success('Successfully updated')
+              this.$refs.autocomplete.blur()
             }
           })
           .catch((error) => {
@@ -112,6 +121,7 @@ export default {
 
     restore () {
       this.currentText = this.consolidatedText
+      this.consolidatedOptions = [this.currentText]
       this.$emit('update-options', this.consolidatedOptions)
       this.$refs.autocomplete.blur()
     }
