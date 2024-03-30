@@ -14,6 +14,12 @@
         <text-lang :value="valueToView" />
       </template>
       <template v-else>
+        <v-select
+          v-model="valueToView.language"
+          :label="$t('common.language')"
+          :items="['ca', 'es', 'en', 'gl', 'pt']"
+          @change="editLanguage"
+        />
         <edit-text-field :save="editValue" :value="valueToView.value" />
       </template>
     </span>
@@ -149,10 +155,6 @@ export default {
 
     if (this.valueToView.type === 'item') {
       this.setOptionsAutocomplete()
-    } else if (this.valueToView.type === 'text-lang') {
-      if (this.valueToView.language !== this.$i18n.locale) {
-        this.valueToView.value = null
-      }
     } else if (this.valueToView.type === 'url' && this.isURL(this.valueToView.value)) {
       fetch(
         'https://the-visionary-git-master-austininseoul.vercel.app/api?url=' + this.valueToView.value
@@ -181,12 +183,24 @@ export default {
         if (search && search.length) { this.options = search }
       }
     },
-    async editValue (newValue) {
-      console.log(newValue)
+    editLanguage (newLanguage) {
+      this.valueToView.language = newLanguage
+      this.editValue(this.valueToView.value, true)
+        .then((response) => {
+          if (response) {
+            if (!response.success) {
+              throw new Error(response.info)
+            }
+            this.$notification.success('Successfully updated')
+          }
+        })
+    },
+    async editValue (newValue, forceEdit = false) {
       const editableData = await this.getEditableData(newValue, this.valueToView.type)
-      if (!editableData.valid || JSON.stringify(editableData.newValue) === JSON.stringify(editableData.oldValue)) {
-        if (editableData.message) {
-          this.$notification.error(editableData.message)
+      if (!editableData.validation.valid ||
+        (!forceEdit && JSON.stringify(editableData.values.newValue) === JSON.stringify(editableData.values.oldValue))) {
+        if (editableData.validation.message) {
+          this.$notification.error(editableData.validation.message)
         }
         return
       }
@@ -194,12 +208,12 @@ export default {
       if (this.type !== 'qualifier') {
         return this.$wikibase.getWbEdit().claim.update({
           guid: this.claim.id,
-          newValue: editableData.newValue
+          newValue: editableData.values.newValue
         },
         this.$store.getters['auth/getRequestConfig'])
           .then((response) => {
             if (response && response.success) {
-              this.currentValue = editableData.newValue
+              this.currentValue = editableData.values.newValue
             }
             return response
           })
@@ -207,13 +221,13 @@ export default {
         return this.$wikibase.getWbEdit().qualifier.update({
           guid: this.claim.id,
           property: this.value.property,
-          oldValue: editableData.oldValue,
-          newValue: editableData.newValue
+          oldValue: editableData.values.oldValue,
+          newValue: editableData.values.newValue
         },
         this.$store.getters['auth/getRequestConfig'])
           .then((response) => {
             if (response && response.success) {
-              this.currentValue = editableData.newValue
+              this.currentValue = editableData.values.newValue
             }
             return response
           })
@@ -245,49 +259,67 @@ export default {
     },
     getMonolingualTextValue (value) {
       return {
-        valid: true,
-        oldValue: this.currentValue,
-        newValue: {
-          text: value,
-          language: this.$i18n.locale
+        validation: {
+          valid: true
+        },
+        values: {
+          oldValue: this.currentValue,
+          newValue: {
+            text: value,
+            language: this.valueToView.language
+          }
         }
       }
     },
     getWikiBaseEntityIdValue (value) {
       return {
-        valid: true,
-        newValue: value.id,
-        oldValue: this.currentValue.id
+        validation: {
+          valid: true
+        },
+        values: {
+          newValue: value.id,
+          oldValue: this.currentValue.id
+        }
       }
     },
     getStringValue (value) {
       return {
-        valid: true,
-        newValue: value,
-        oldValue: this.currentValue
+        validation: {
+          valid: true
+        },
+        values: {
+          newValue: value,
+          oldValue: this.currentValue
+        }
       }
     },
     getTimeValue (value) {
       return {
-        valid: true,
-        oldValue: this.currentValue,
-        newValue: {
-          ...this.value.datavalue.value,
-          time: this.formatDate(value)
+        validation: {
+          valid: true
+        },
+        values: {
+          oldValue: this.currentValue,
+          newValue: {
+            ...this.value.datavalue.value,
+            time: this.formatDate(value)
+          }
         }
       }
     },
     getUrlValue (value) {
-      console.log(value)
       const valid = this.isURL(value)
-      console.log(valid)
       const message = valid ? '' : 'Please fill a valid URL!'
 
       return {
-        valid,
-        newValue: value,
-        message,
-        oldValue: this.currentValue
+        validation: {
+          valid,
+          message
+        },
+        values: {
+          newValue: value,
+          oldValue: this.currentValue
+        }
       }
     },
     formatDate (dateString) {

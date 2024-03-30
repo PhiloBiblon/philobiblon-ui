@@ -1,7 +1,8 @@
 export default {
   menu: {
     common: {
-      loading: 'Carregando..'
+      loading: 'Carregando..',
+      language: 'Linguagem'
     },
     item: {
       welcome: {
