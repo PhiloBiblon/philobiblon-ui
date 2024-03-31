@@ -183,7 +183,8 @@ export class WikibaseService {
           return {
             value: label.value,
             language: label.language,
-            type: 'text-lang'
+            type: 'item',
+            item: datavalue.id
           }
         }
       })
@@ -263,7 +264,6 @@ export class WikibaseService {
   }
 
   getValueByLang (obj, lang) {
-    console.log(obj, lang)
     if (obj[lang]) {
       return {
         value: obj[lang].value,

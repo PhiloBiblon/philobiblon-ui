@@ -1,6 +1,7 @@
 export default {
   common: {
-    loading: 'Carregant..'
+    loading: 'Carregant..',
+    language: 'Idioma'
   },
   menu: {
     item: {
