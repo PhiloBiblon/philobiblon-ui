@@ -161,7 +161,7 @@ export default {
     return {
       title_1: 'Philo',
       title_2: 'Biblon',
-      version: '0.5.0',
+      version: '0.6.0',
       drawer: false
     }
   },
