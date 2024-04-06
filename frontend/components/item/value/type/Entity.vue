@@ -1,0 +1,120 @@
+<template>
+  <div>
+    <template v-if="!isUserLogged">
+      <template v-if="valueToView.pbid">
+        <NuxtLink :to="getUrlFromPBID(valueToView.item)">
+          {{ valueToView.value }}
+        </NuxtLink>
+      </template>
+      <template v-else>
+        <item-util-view-text-lang :value="valueToView" />
+      </template>
+    </template>
+    <template v-else>
+      <item-util-edit-select-field
+        v-if="isItemWithCustomOptions"
+        :value="selectedOption"
+        :save="editValue"
+        :options="options"
+      />
+      <item-util-edit-select-field
+        v-else
+        :save="editValue"
+        :options="options"
+        @update-options="options = $event"
+        @input="oninput($event)"
+      />
+    </template>
+  </div>
+</template>
+
+<script>
+export default {
+  inheritAttrs: false,
+  props: {
+    isUserLogged: {
+      type: Boolean,
+      default: false
+    },
+    valueToView: {
+      type: Object,
+      default: null
+    },
+    save: {
+      type: Function,
+      required: true
+    }
+  },
+  data () {
+    return {
+      selectedOption: null,
+      options: [],
+      valueToView_: { ...this.valueToView },
+      property_autocomplete: {
+        P799: {
+          sparqlQuery: `SELECT ?item ?itemLabel WHERE { VALUES ?item { wd:Q5 wd:Q14 wd:Q15 } SERVICE wikibase:label { bd:serviceParam wikibase:language "${this.$i18n.locale},en,es". } }`
+        }
+      }
+    }
+  },
+  computed: {
+    isItemWithCustomOptions () {
+      return this.valueToView.property in this.property_autocomplete
+    }
+  },
+  created () {
+    this.setOptionsAutocomplete()
+  },
+  methods: {
+    editValue (newValue, oldValue) {
+      return this.save(this.getWikiBaseEntityIdValue(newValue, oldValue))
+    },
+    getWikiBaseEntityIdValue (newValue, oldValue) {
+      return {
+        validation: {
+          valid: true
+        },
+        values: {
+          newValue: newValue.id,
+          oldValue: oldValue.id
+        }
+      }
+    },
+    oninput (e) {
+      if (e) { this.handleSearchChange(e) }
+    },
+    getUrlFromPBID (item) {
+      return this.localePath('/item/' + item)
+    },
+    async handleSearchChange (value) {
+      if (value) {
+        const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale)
+        if (search && search.length) { this.options = search }
+      }
+    },
+    setOptionsAutocomplete () {
+      if (this.isItemWithCustomOptions) {
+        const autocomplete = this.property_autocomplete[this.valueToView.property]
+        const sparqlQuery = this.$wikibase.$query.addPrefixes(autocomplete.sparqlQuery)
+        this.$wikibase.runSparqlQuery(sparqlQuery, true)
+          .then((results) => {
+            Object.entries(results).forEach(
+              ([_, result]) => {
+                this.options.push({
+                  id: result.item.value,
+                  label: result.item.label
+                })
+              })
+            this.selectedOption = this.valueToView.value
+          })
+      } else {
+        this.options = [{
+          id: this.valueToView.item,
+          label: this.valueToView.value
+        }]
+        this.selectedOption = this.valueToView.item
+      }
+    }
+  }
+}
+</script>

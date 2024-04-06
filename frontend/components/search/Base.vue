@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <query-search
+    <search-filters
       ref="qs"
       :table="table"
       :form="form"
@@ -9,7 +9,7 @@
       @back-search="clearResults"
       @clear-search="clearResults"
     />
-    <query-results
+    <search-results
       ref="qr"
       :sparql-query="sparqlQuery"
       :results="results"

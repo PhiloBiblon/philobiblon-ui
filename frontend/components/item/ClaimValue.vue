@@ -1,9 +1,9 @@
 <template>
   <v-row dense class="value">
     <v-col :cols="value.qualifiers ? 3 : 12">
-      <value-viewer :claim="value" :value="value.mainsnak" type="claim" />
+      <item-value-base :claim="value" :value="value.mainsnak" type="claim" />
     </v-col>
-    <qualifier-viewer
+    <item-qualifier
       v-for="(values, property) in value.qualifiers"
       :key="keyValue+'-'+property"
       type="qualifier"

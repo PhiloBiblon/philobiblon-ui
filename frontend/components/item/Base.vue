@@ -21,7 +21,7 @@
       <v-row>
         <v-col>
           <span v-if="isUserLogged">
-            <edit-text-field :save="editLabel" :value="label.value" class="text-h4">
+            <item-util-edit-text-field :save="editLabel" :value="label.value" class="text-h4">
               <template #append-outer>
                 &nbsp;
                 <a
@@ -30,10 +30,10 @@
                   target="_blank"
                 >{{ item.id }}</a>
               </template>
-            </edit-text-field>
+            </item-util-edit-text-field>
           </span>
           <span v-else class="text-h4">
-            <text-lang :value="label" />
+            <item-util-view-text-lang :value="label" />
             &nbsp;
             <a
               class="text-subtitle-2 link"
@@ -45,15 +45,15 @@
       </v-row>
       <v-row class="pb-5">
         <span v-if="isUserLogged" class="full-width">
-          <edit-text-field :save="editDescription" :value="description.value" class="text-subtitle-1" />
+          <item-util-edit-text-field :save="editDescription" :value="description.value" class="text-subtitle-1" />
         </span>
         <span v-else class="text-subtitle-1">
           <v-col class="text-subtitle-1">
-            <text-lang :value="description" />
+            <item-util-view-text-lang :value="description" />
           </v-col>
         </span>
       </v-row>
-      <claim-viewer
+      <item-claim
         v-for="(claim, index) in claimsOrdered"
         :key="'c-' + index"
         :claim="claim"

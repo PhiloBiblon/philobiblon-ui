@@ -1,6 +1,6 @@
 <template>
   <div class="qualifier-value">
-    <value-viewer :claim="claim" :value="value" type="qualifier" />
+    <item-value-base :claim="claim" :value="value" type="qualifier" />
   </div>
 </template>
 

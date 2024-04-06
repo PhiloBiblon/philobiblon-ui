@@ -81,7 +81,7 @@ export default {
     },
 
     async edit () {
-      await this.save(this.currentText)
+      await this.save(this.currentText, this.consolidatedText)
         .then((response) => {
           if (response) {
             if (!response.success) {

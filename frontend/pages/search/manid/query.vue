@@ -1,5 +1,5 @@
 <template>
-  <query-base
+  <search-base
     table="manid"
     :form-definition="form"
     :breadcrumb-items="breadcrumb_items"

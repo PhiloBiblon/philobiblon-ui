@@ -173,17 +173,19 @@ export class WikibaseService {
         const label = this.getValueByLang(entity.labels, lang)
         if (this.isEntityFromPB(entity)) {
           return {
+            property,
             value: label.value,
             language: label.language,
-            type: 'item',
+            type: 'entity',
             item: datavalue.id,
             pbid: this.getPBID(entity)
           }
         } else {
           return {
+            property,
             value: label.value,
             language: label.language,
-            type: 'item',
+            type: 'entity',
             item: datavalue.id
           }
         }

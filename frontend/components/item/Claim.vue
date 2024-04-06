@@ -2,11 +2,11 @@
   <v-container class="claim">
     <v-row dense>
       <v-subheader class="text-h6 grey--text">
-        <text-lang :value="propertyLabel" />
+        <item-util-view-text-lang :value="propertyLabel" />
       </v-subheader>
     </v-row>
     <v-divider />
-    <claim-value-viewer
+    <item-claim-value
       v-for="(value, index) in claim.values"
       :key="'c-' + claim.property + '-' + index"
       :value="value"

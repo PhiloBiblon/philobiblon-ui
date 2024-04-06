@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <item-viewer v-if="itemId" :id="itemId" />
+    <item-base v-if="itemId" :id="itemId" />
   </div>
 </template>
 
