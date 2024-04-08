@@ -40,7 +40,7 @@ export default {
   methods: {
     editLanguage (newLanguage) {
       this.valueToView_.language = newLanguage
-      this.save(this.getMonolingualTextValue(this.valueToView_.value))
+      this.save(this.getMonolingualTextValue(this.valueToView_.value, this.valueToView_.value))
         .then((response) => {
           if (response) {
             if (!response.success) {
@@ -51,6 +51,7 @@ export default {
         })
     },
     editValue (newValue, oldValue) {
+      this.valueToView_.value = newValue
       return this.save(this.getMonolingualTextValue(newValue, oldValue))
     },
     getMonolingualTextValue (newValue, oldValue) {

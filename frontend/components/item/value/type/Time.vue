@@ -4,7 +4,27 @@
       {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
     </template>
     <template v-else>
-      <item-util-edit-text-field :save="editValue" type="date" :value="valueToView_.value" />
+      <v-container>
+        <v-row dense class="justify-start">
+          <v-col dense class="flex-shrink-1">
+            <item-util-edit-text-field
+              type="date"
+              :save="editValue"
+              :value="valueToView_.value"
+              style="width: 200px"
+              class="ma-0 pa-0"
+            />
+            <v-select
+              v-model="valueToView_.calendar"
+              :label="$t('common.calendar')"
+              :items="['Gregorian', 'Julian']"
+              class="ma-0 pa-0 text-body-2"
+              style="width: 100px"
+              @change="editCalendarType"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
     </template>
   </div>
 </template>
@@ -31,20 +51,37 @@ export default {
       valueToView_: { ...this.valueToView }
     }
   },
+  mounted () {
+    console.log(this.valueToView_)
+  },
   methods: {
-    editValue (newValue) {
-      return this.save(this.getTimeValue(newValue))
+    editCalendarType (newCalendar) {
+      console.log(newCalendar)
+      this.valueToView_.calendar = newCalendar
+      this.save(this.getTimeValue(this.valueToView_.value, this.valueToView_.value))
+        .then((response) => {
+          if (response) {
+            if (!response.success) {
+              throw new Error(response.info)
+            }
+            this.$notification.success('Successfully updated')
+          }
+        })
     },
-    getTimeValue (value) {
+    editValue (newValue, oldValue) {
+      this.valueToView_.value = newValue
+      return this.save(this.getTimeValue(newValue, oldValue))
+    },
+    getTimeValue (newValue, oldValue) {
       return {
         validation: {
           valid: true
         },
         values: {
-          oldValue: this.valueToView.value,
+          oldValue,
           newValue: {
-            ...this.valueToView_.datavalue.value,
-            time: this.formatDate(value)
+            time: this.formatDate(newValue),
+            calendar: this.valueToView_.calendar.toLowerCase()
           }
         }
       }

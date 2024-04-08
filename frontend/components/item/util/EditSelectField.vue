@@ -79,7 +79,11 @@ export default {
     } else {
       this.currentText = { ...this.options[0] }
     }
-    this.consolidatedText = { ...this.currentText }
+    if (typeof this.currentText === 'object' && this.currentText !== null) {
+      this.consolidatedText = { ...this.currentText }
+    } else {
+      this.consolidatedText = this.currentText
+    }
     this.consolidatedOptions = JSON.parse(JSON.stringify(this.options))
   },
   methods: {
