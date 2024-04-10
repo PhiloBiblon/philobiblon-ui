@@ -2,7 +2,8 @@ export default {
   menu: {
     common: {
       loading: 'Carregando..',
-      language: 'Linguagem'
+      language: 'Linguagem',
+      calendar: 'Calendário'
     },
     item: {
       welcome: {
