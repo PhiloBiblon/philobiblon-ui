@@ -51,12 +51,8 @@ export default {
       valueToView_: { ...this.valueToView }
     }
   },
-  mounted () {
-    console.log(this.valueToView_)
-  },
   methods: {
     editCalendarType (newCalendar) {
-      console.log(newCalendar)
       this.valueToView_.calendar = newCalendar
       this.save(this.getTimeValue(this.valueToView_.value, this.valueToView_.value))
         .then((response) => {
