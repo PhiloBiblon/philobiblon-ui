@@ -213,6 +213,7 @@ export class WikibaseService {
       return {
         value: this.wbk.wikibaseTimeToSimpleDay(datavalue),
         calendar: isJulian ? 'Julian' : 'Gregorian',
+        calendarmodel: datavalue.calendarmodel,
         type: 'time'
       }
     } else if (datatype === 'commonsMedia') {

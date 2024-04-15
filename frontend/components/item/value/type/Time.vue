@@ -4,27 +4,18 @@
       {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
     </template>
     <template v-else>
-      <v-container>
-        <v-row dense class="justify-start">
-          <v-col dense class="flex-shrink-1">
-            <item-util-edit-text-field
-              type="date"
-              :save="editValue"
-              :value="valueToView_.value"
-              style="width: 200px"
-              class="ma-0 pa-0"
-            />
-            <v-select
-              v-model="valueToView_.calendar"
-              :label="$t('common.calendar')"
-              :items="['Gregorian', 'Julian']"
-              class="ma-0 pa-0 text-body-2"
-              style="width: 100px"
-              @change="editCalendarType"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <div class="d-flex align-center">
+        <item-util-edit-text-field :save="editValue" type="date" :value="valueToView_.value" />
+        <v-select
+          class="col-5"
+          item-text="title"
+          item-value="value"
+          :items="calendars"
+          @change="editCalendarModel"
+          :label="$t('common.calendar')"
+          v-model="valueToView_.calendarmodel"
+        />
+      </div>
     </template>
   </div>
 </template>
@@ -48,36 +39,63 @@ export default {
   },
   data () {
     return {
-      valueToView_: { ...this.valueToView }
+      valueToView_: { ...this.valueToView },
+      calendars: [
+        {
+          title: 'Gregorian',
+          value: 'http://www.wikidata.org/entity/Q1985727',
+        },
+        {
+          title: 'Julian',
+          value: 'http://www.wikidata.org/entity/Q1985786',
+        }
+      ],
     }
   },
   methods: {
-    editCalendarType (newCalendar) {
-      this.valueToView_.calendar = newCalendar
-      this.save(this.getTimeValue(this.valueToView_.value, this.valueToView_.value))
-        .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
-            }
-            this.$notification.success('Successfully updated')
-          }
-        })
+    editCalendarModel(newValue) {
+      return this.save(this.getCalendarModelValue(newValue)).then(res => {
+        if (res.success) {
+          this.valueToView_.calendarmodel = newValue
+          this.$notification.success('Successfully updated')
+        }
+      })
     },
-    editValue (newValue, oldValue) {
-      this.valueToView_.value = newValue
-      return this.save(this.getTimeValue(newValue, oldValue))
+    editValue (newValue) {
+      return this.save(this.getTimeValue(newValue)).then(res => {
+        if (res.success) {
+          this.valueToView_.value = newValue
+          return res
+        }
+      })
     },
-    getTimeValue (newValue, oldValue) {
+    getTimeValue (value) {
       return {
         validation: {
           valid: true
         },
         values: {
-          oldValue,
+          oldValue: this.valueToView.value,
           newValue: {
-            time: this.formatDate(newValue),
-            calendar: this.valueToView_.calendar.toLowerCase()
+            ...this.valueToView_.datavalue,
+            time: value
+          }
+        }
+      }
+    },
+    getCalendarModelValue (value) {
+      return {
+        validation: {
+          valid: true
+        },
+        values: {
+          oldValue: {
+            time: this.formatDate(this.valueToView.value),
+            calendarmodel: this.valueToView.calendarmodel,
+          },
+          newValue: {
+            calendarmodel: value,
+            time: this.formatDate(this.valueToView.value)
           }
         }
       }

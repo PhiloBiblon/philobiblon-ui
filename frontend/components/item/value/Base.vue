@@ -63,12 +63,26 @@ export default {
           oldValue: editableData.values.oldValue,
           newValue: editableData.values.newValue
         },
-        this.$store.getters['auth/getRequestConfig'])
+          this.$store.getters['auth/getRequestConfig']).then(res => {
+          if (res.success) {
+            this.updateValueToView(editableData.values.newValue)
+          }
+          return res
+        })
       } else {
         // eslint-disable-next-line no-console
         console.log(`Unknown type to edit: ${this.type}`)
       }
-    }
+    },
+    updateValueToView(value) {
+      if (this.valueToView.type === 'time') {
+        if (!value.calendarmodel) {
+          this.valueToView.value = value.time
+        } else {
+          this.valueToView.calendarmodel = value.calendarmodel ?? this.valueToView.calendarmodel
+        }
+      }
+    },
   }
 }
 </script>
