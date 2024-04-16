@@ -139,12 +139,16 @@ export default {
       ]
     },
     getOrderedQualifiers (qualifiers, qualifiersOrder) {
-      return qualifiersOrder.reduce((result, key) => {
-        if (Object.prototype.hasOwnProperty.call(qualifiers, key)) {
-          result[key] = qualifiers[key]
-        }
-        return result
-      }, {})
+      if (qualifiersOrder) {
+        return qualifiersOrder.reduce((result, key) => {
+          if (Object.prototype.hasOwnProperty.call(qualifiers, key)) {
+            result[key] = qualifiers[key]
+          }
+          return result
+        }, {})
+      } else {
+        return qualifiers
+      }
     },
     getOrderedValues (values, qualifiersOrder) {
       return values.map((value) => {
@@ -158,11 +162,17 @@ export default {
       })
     },
     async getOrderedClaims (table, claims) {
+      const claimsKeys = Object.keys(claims)
       let order = await this.$wikibase.getClaimsOrder(table)
-      if (!order) {
-        order = Object.keys(claims)
+      let orderKeys
+      if (order) {
+        orderKeys = Object.keys(order)
+        orderKeys = [...new Set([...orderKeys, ...claimsKeys])]
+      } else {
+        order = claims
+        orderKeys = claimsKeys
       }
-      return Object.keys(order).filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({ property: key, values: this.getOrderedValues(claims[key], order[key]) }))
+      return orderKeys.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({ property: key, values: this.getOrderedValues(claims[key], order[key]) }))
     },
     editLabel (label) {
       return this.$wikibase
