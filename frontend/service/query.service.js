@@ -41,7 +41,7 @@ export class QueryService {
   }
 
   generateFilterByWord (filterField, filterValue) {
-    return `contains(lcase(replace(replace(replace(replace(replace(?${filterField}, '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i')), '${filterValue}')`
+    return `contains(replace(replace(replace(replace(replace(lcase(?${filterField}), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${filterValue}')`
   }
 
   generateFilterByWords (form, filterField, filterValues) {
