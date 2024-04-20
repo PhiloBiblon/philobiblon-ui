@@ -2,7 +2,7 @@
   <v-container class="claim">
     <v-row dense>
       <v-subheader class="text-h6 grey--text">
-        <item-util-view-text-lang :value="propertyLabel" />
+        <item-util-view-text-lang :value="propertyLabel" :tooltip="claim.property" />
       </v-subheader>
     </v-row>
     <v-divider />

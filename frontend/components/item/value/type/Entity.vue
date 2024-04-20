@@ -1,14 +1,7 @@
 <template>
   <div>
     <template v-if="!isUserLogged">
-      <template v-if="valueToView.pbid">
-        <NuxtLink :to="getUrlFromPBID(valueToView.item)">
-          {{ valueToView.value }}
-        </NuxtLink>
-      </template>
-      <template v-else>
-        <item-util-view-text-lang :value="valueToView" />
-      </template>
+      <item-util-view-text-lang :value="valueToView" :tooltip="valueToView.item" />
     </template>
     <template v-else>
       <item-util-edit-select-field
@@ -82,9 +75,6 @@ export default {
     },
     oninput (e) {
       if (e) { this.handleSearchChange(e) }
-    },
-    getUrlFromPBID (item) {
-      return this.localePath('/item/' + item)
     },
     async handleSearchChange (value) {
       if (value) {
