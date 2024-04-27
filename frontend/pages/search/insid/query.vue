@@ -43,7 +43,10 @@ export default {
           type: 'autocomplete',
           value: '',
           visible: true,
-          disabled: false
+          disabled: false,
+          autocomplete: {
+            queryFunction: (table, lang) => { return this.$wikibase.$query.citiesQuery(table, lang) }
+          }
         },
         institution_type: {
           active: true,
@@ -52,7 +55,10 @@ export default {
           type: 'autocomplete',
           value: '',
           visible: true,
-          disabled: false
+          disabled: false,
+          autocomplete: {
+            queryFunction: (table, lang) => { return this.$wikibase.$query.institutionTypesQuery(table, lang) }
+          }
         },
         institution: {
           active: true,
@@ -61,7 +67,10 @@ export default {
           type: 'autocomplete',
           value: '',
           visible: true,
-          disabled: false
+          disabled: false,
+          autocomplete: {
+            queryFunction: (table, lang) => { return this.$wikibase.$query.institutionQuery(table, lang) }
+          }
         },
         subject: {
           active: true,
@@ -70,7 +79,11 @@ export default {
           type: 'autocomplete',
           value: '',
           visible: true,
-          disabled: false
+          disabled: false,
+          autocomplete: {
+            queryFunction: (table, lang) => { return this.$wikibase.$query.subjectsQuery(table, lang) },
+            resultFunction: (result) => { return { text: result.label, value: { item: result.item, property: result.property } } }
+          }
         },
         search_type: {
           permanent: true,

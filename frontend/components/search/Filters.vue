@@ -37,10 +37,11 @@
               v-if="item.type === 'autocomplete'"
               :id="'auto-'+name"
               v-model="item.value"
-              :items="getAutocompleteItems(name)"
               :label="$t(item.label)"
               :hint="$t(item.hint)"
               :disabled="item.disabled"
+              :table="table"
+              :autocomplete="item.autocomplete"
               @click.stop
             />
           </v-col>
@@ -128,26 +129,7 @@ export default {
     return {
       search_group: {},
       search_type: {},
-      showResults: false,
-      autocomplete: {
-        city: {
-          items: [],
-          queryFunction: (table, lang) => { return this.$wikibase.$query.citiesQuery(table, lang) }
-        },
-        subject: {
-          items: [],
-          queryFunction: (table, lang) => { return this.$wikibase.$query.subjectsQuery(table, lang) },
-          resultFunction: (result) => { return { text: result.label, value: { item: result.item, property: result.property } } }
-        },
-        institution_type: {
-          items: [],
-          queryFunction: (table, lang) => { return this.$wikibase.$query.institutionTypesQuery(table, lang) }
-        },
-        institution: {
-          items: [],
-          queryFunction: (table, lang) => { return this.$wikibase.$query.institutionQuery(table, lang) }
-        }
-      }
+      showResults: false
     }
   },
 
@@ -170,13 +152,6 @@ export default {
     if (showResults) {
       this.showResults = showResults
     }
-    Object.entries(this.form).forEach(
-      ([key, field]) => {
-        if (field.type === 'autocomplete') {
-          this.populateItemsAutocomplete(key, this.autocomplete[key])
-        }
-      }
-    )
     window.addEventListener('keydown', this.keyDownHandler)
   },
 
@@ -238,27 +213,6 @@ export default {
 
     goToHelp () {
       window.location.href = 'https://bancroft.berkeley.edu/philobiblon/help_en.html'
-    },
-
-    getAutocompleteItems (field) {
-      return this.autocomplete[field].items
-    },
-
-    populateItemsAutocomplete (autocompleteKey, autocompleteField) {
-      let resultFunction = autocompleteField.resultFunction
-      if (!resultFunction) {
-        resultFunction = (result) => { return { text: result.label, value: result.item } }
-      }
-      this.$wikibase.runSparqlQuery(autocompleteField.queryFunction(this.table, this.$i18n.locale), true)
-        .then((results) => {
-          this.autocomplete[autocompleteKey].items = []
-          Object.entries(results).forEach(
-            ([key, result]) => {
-              this.autocomplete[autocompleteKey].items.push(resultFunction(result))
-            }
-          )
-        }
-        )
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete v-bind="{ ...$attrs, ...commonAttrs }" :no-data-text="$t('common.loading')" v-on="$listeners">
+  <v-autocomplete v-bind="{ ...$attrs, ...commonAttrs }" :no-data-text="$t('common.loading')" :items="items" v-on="$listeners">
     <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
       <slot :name="scopedSlotName" v-bind="slotData" />
     </template>
@@ -23,9 +23,22 @@
 export default {
   inheritAttrs: false,
   props: {
+    table: {
+      type: String,
+      required: true
+    },
+    autocomplete: {
+      type: Object,
+      default: null
+    },
     hintMaxWidth: {
       type: Number,
       default: 50
+    }
+  },
+  data () {
+    return {
+      items: []
     }
   },
   computed: {
@@ -33,6 +46,26 @@ export default {
       return {
         dense: true
       }
+    }
+  },
+  mounted () {
+    this.populateItemsAutocomplete()
+  },
+  methods: {
+    populateItemsAutocomplete () {
+      let resultFunction = this.autocomplete.resultFunction
+      if (!resultFunction) {
+        resultFunction = (result) => { return { text: result.label, value: result.item } }
+      }
+      this.$wikibase.runSparqlQuery(this.autocomplete.queryFunction(this.table, this.$i18n.locale), true)
+        .then((results) => {
+          Object.entries(results).forEach(
+            ([_, result]) => {
+              this.items.push(resultFunction(result))
+            }
+          )
+        }
+        )
     }
   }
 }
