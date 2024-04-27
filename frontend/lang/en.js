@@ -251,6 +251,8 @@ export default {
     }
   },
   item: {
+    title: 'Title',
+    description: 'Description',
     invalid_id: 'Invalid identifier.',
     not_found: 'Not found.',
     back: 'Go back'

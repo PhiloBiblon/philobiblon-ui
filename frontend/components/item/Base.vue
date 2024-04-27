@@ -21,7 +21,7 @@
       <v-row>
         <v-col>
           <span v-if="isUserLogged">
-            <item-util-edit-text-field :save="editLabel" :value="label.value" class="text-h4">
+            <item-util-edit-text-field :label="$t('item.title')" :save="editLabel" :value="label.value" class="text-h4">
               <template #append-outer>
                 &nbsp;
                 <a
@@ -45,7 +45,7 @@
       </v-row>
       <v-row class="pb-5">
         <span v-if="isUserLogged" class="full-width">
-          <item-util-edit-text-field :save="editDescription" :value="description.value" class="text-subtitle-1" />
+          <item-util-edit-text-field :label="$t('item.description')" :save="editDescription" :value="description.value" class="text-subtitle-1" />
         </span>
         <span v-else class="text-subtitle-1">
           <v-col class="text-subtitle-1">
@@ -102,10 +102,7 @@ export default {
             const tableid = this.getRelatedTable(entity)
             this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(tableid, entity))
             this.item = entity
-            this.label = this.$wikibase.getValueByLang(
-              this.item.labels,
-              this.$i18n.locale
-            )
+            this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
             this.claimsOrdered = await this.getOrderedClaims(tableid, this.item.claims)
             this.showItem = true
@@ -203,7 +200,7 @@ export default {
 }
 .back {
   font-size: 12px;
-  height: 15px;
+  height: 25px;
 }
 .full-width {
   width: 100%;

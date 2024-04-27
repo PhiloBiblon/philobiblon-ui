@@ -251,6 +251,8 @@ export default {
     }
   },
   item: {
+    title: 'Título',
+    description: 'Descripción',
     invalid_id: 'Identificador inválido.',
     not_found: 'No encontrado.',
     back: 'Ir atrás'

@@ -251,6 +251,8 @@ export default {
     }
   },
   item: {
+    title: 'Títol',
+    description: 'Descripció',
     invalid_id: 'Identificador invàlid.',
     not_found: 'No trobat.',
     back: 'Torna'
