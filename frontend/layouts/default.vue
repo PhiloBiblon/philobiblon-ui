@@ -2,6 +2,7 @@
   <v-app>
     <v-navigation-drawer
       v-model="drawer"
+      style="height: 99vh;"
       color="primary"
       :permanent="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs && !$vuetify.breakpoint.md"
       app
@@ -126,7 +127,7 @@
         <span>{{ $t('auth.login.label') }}</span>
       </v-tooltip>
     </v-app-bar>
-    <v-main>
+    <v-main class="min-height-full-display">
       <v-container fluid ma-50>
         <v-breadcrumbs :items="$store.state.breadcrumb.items" />
         <nuxt />
@@ -192,5 +193,8 @@ export default {
 }
 .subitem {
   padding-left: 35%;
+}
+.min-height-full-display {
+  min-height: 100vh;
 }
 </style>

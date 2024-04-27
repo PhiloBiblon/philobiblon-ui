@@ -14,6 +14,7 @@ export default {
   },
 
   publicRuntimeConfig: {
+    version: '0.6.0',
     apiBaseUrl: process.env.API_BASE_URL || '/.',
     wikibaseBaseUrl: process.env.WIKIBASE_BASE_URL,
     sparqlBaseUrl: process.env.SPARQL_BASE_URL,
