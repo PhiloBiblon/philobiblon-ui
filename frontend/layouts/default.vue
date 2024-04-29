@@ -2,8 +2,9 @@
   <v-app>
     <v-navigation-drawer
       v-model="drawer"
+      style="height: 99vh;"
       color="primary"
-      fixed
+      :permanent="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs && !$vuetify.breakpoint.md"
       app
       dark
     >
@@ -86,7 +87,6 @@
       fixed
       app
       dark
-      src="/img/header_page-opacity15_2.gif"
     >
       <template #img="{ props }">
         <v-img
@@ -94,7 +94,7 @@
           gradient="to top right, rgba(33, 33, 33,.7), rgba(250, 250, 250,.7)"
         />
       </template>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon class="d-lg-none" @click.stop="drawer = !drawer" />
       <v-toolbar-title
         class="text-h4"
         style="cursor: pointer"
@@ -127,30 +127,13 @@
         <span>{{ $t('auth.login.label') }}</span>
       </v-tooltip>
     </v-app-bar>
-    <v-main>
+    <v-main class="min-height-full-display">
       <v-container fluid ma-50>
         <v-breadcrumbs :items="$store.state.breadcrumb.items" />
         <nuxt />
       </v-container>
     </v-main>
-    <v-footer
-      app
-      :padless="true"
-    >
-      <v-card
-        flat
-        tile
-        width="100%"
-        class="text-center"
-      >
-        <v-card-text class="py-2 font-weight-light">
-          &copy; {{ new Date().getFullYear() }}
-          <span class="version">
-            v.{{ version }}
-          </span>
-        </v-card-text>
-      </v-card>
-    </v-footer>
+    <philo-footer />
   </v-app>
 </template>
 
@@ -161,7 +144,6 @@ export default {
     return {
       title_1: 'Philo',
       title_2: 'Biblon',
-      version: '0.6.0',
       drawer: false
     }
   },
@@ -209,11 +191,10 @@ export default {
 .mainmenu >>> .v-list-item--active {
   color: white;
 }
-.version {
-  float: right;
-  margin-right: 20px;
-}
 .subitem {
   padding-left: 35%;
+}
+.min-height-full-display {
+  min-height: 100vh;
 }
 </style>
