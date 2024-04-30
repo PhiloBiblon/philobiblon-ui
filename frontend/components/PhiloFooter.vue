@@ -65,16 +65,16 @@
         <v-container fluid>
           <v-row dense>
             <v-col>
-              <img src="/img/footer/universitat_barcelona.png">
+              <img src="img/footer/universitat_barcelona.png">
             </v-col>
             <v-col>
-              <img src="/img/footer/upf.png">
+              <img src="img/footer/upf.png">
             </v-col>
             <v-col>
-              <img src="/img/footer/the_bancroft.png">
+              <img src="img/footer/the_bancroft.png">
             </v-col>
             <v-col>
-              <img src="/img/footer/ilf.png">
+              <img src="img/footer/ilf.png">
             </v-col>
           </v-row>
         </v-container>
