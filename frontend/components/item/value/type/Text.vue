@@ -1,7 +1,8 @@
 <template>
   <div>
     <span v-if="!isUserLogged">
-      {{ valueToView.value }}
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <span v-html="valueToView.value" />
     </span>
     <div v-else>
       <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />

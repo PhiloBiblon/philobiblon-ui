@@ -1,7 +1,7 @@
 <template>
-  <v-col class="qualifier" cols="3">
+  <div>
     <span class="text-subtitle-2 grey--text">
-      <item-util-view-text-lang :value="propertyLabel" />
+      <item-util-view-text-lang :value="propertyLabel" :tooltip="property" />
     </span>
     <item-qualifier-value
       v-for="(value, index) in values"
@@ -10,7 +10,7 @@
       :claim="claim"
       :key_value="keyValue + '-' + index"
     />
-  </v-col>
+  </div>
 </template>
 
 <script>
@@ -52,10 +52,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.qualifier {
-  padding-top: 5px;
-  padding-left: 50px;
-}
-</style>

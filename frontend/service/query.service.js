@@ -4,13 +4,13 @@ export class QueryService {
     this.$config = config
   }
 
-  // convert values to lowercase without diacritical accents except ñ
+  // convert values to lowercase without diacritical
   normalize (str) {
     return str
       .split('')
       .map((chr) => {
         chr = chr.toLowerCase()
-        if (chr !== 'ñ') {
+        if (chr !== 'ñ' && chr !== 'ç') {
           return chr.normalize('NFD').replace(/[\u0300-\u036F]/g, '')
         } else {
           return chr

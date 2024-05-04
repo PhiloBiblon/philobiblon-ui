@@ -137,7 +137,9 @@ export default {
     },
     getOrderedQualifiers (qualifiers, qualifiersOrder) {
       if (qualifiersOrder) {
-        return qualifiersOrder.reduce((result, key) => {
+        const qualifiersKeys = Object.keys(qualifiers)
+        const fullQualifiersOrder = [...new Set([...qualifiersOrder, ...qualifiersKeys])]
+        return fullQualifiersOrder.reduce((result, key) => {
           if (Object.prototype.hasOwnProperty.call(qualifiers, key)) {
             result[key] = qualifiers[key]
           }
