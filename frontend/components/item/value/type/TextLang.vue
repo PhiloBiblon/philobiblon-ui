@@ -4,13 +4,18 @@
       <item-util-view-text-lang :value="valueToView" />
     </template>
     <template v-else>
-      <v-select
-        v-model="valueToView_.language"
-        :label="$t('common.language')"
-        :items="['ca', 'es', 'en', 'gl', 'pt']"
-        @change="editLanguage"
-      />
-      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+      <div class="d-flex align-center">
+        <item-util-edit-text-field :save="editValue" :value="valueToView_.value" class="pl-0 col-9" />
+        <v-select
+          item-text="title"
+          item-value="value"
+          :items="languages"
+          @change="editLanguage"
+          class="mt-0 pt-0 col-3"
+          :label="$t('common.language')"
+          v-model="valueToView_.language"
+        />
+      </div>
     </template>
   </div>
 </template>
@@ -34,13 +39,51 @@ export default {
   },
   data () {
     return {
-      valueToView_: { ...this.valueToView }
+      valueToView_: { ...this.valueToView },
+      languages: [
+        {
+          title: 'Latin',
+          value: 'la',
+        },
+        {
+          title: 'English',
+          value: 'en',
+        },
+        {
+          title: 'Spanish',
+          value: 'es',
+        },
+        {
+          title: 'Portuguese',
+          value: 'pt',
+        },
+        {
+          title: 'Catalan',
+          value: 'ca',
+        },
+        {
+          title: 'German',
+          value: 'de',
+        },
+        {
+          title: 'French',
+          value: 'fr',
+        },
+        {
+          title: 'Italian',
+          value: 'it',
+        },
+        {
+          title: 'Dutch',
+          value: 'nl',
+        },
+      ],
     }
   },
   methods: {
     editLanguage (newLanguage) {
       this.valueToView_.language = newLanguage
-      this.save(this.getMonolingualTextValue(this.valueToView_.value, this.valueToView_.value))
+      this.save(this.getMonolingualTextValue(this.valueToView_.value))
         .then((response) => {
           if (response) {
             if (!response.success) {
@@ -51,7 +94,6 @@ export default {
         })
     },
     editValue (newValue, oldValue) {
-      this.valueToView_.value = newValue
       return this.save(this.getMonolingualTextValue(newValue, oldValue))
     },
     getMonolingualTextValue (newValue, oldValue) {
@@ -71,3 +113,15 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+::v-deep .v-list-item__title {
+  font-size: 12px;
+}
+::v-deep .v-list-item__content {
+  padding: 0;
+}
+::v-deep .v-select__selection {
+  font-size: 12px;
+}
+</style>

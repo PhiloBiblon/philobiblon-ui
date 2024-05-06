@@ -1,8 +1,8 @@
 export default {
   common: {
     loading: 'Cargando..',
-    language: 'Idioma',
-    calendar: 'Calendario'
+    calendar: 'Calendario',
+    language: 'Idioma'
   },
   menu: {
     item: {
@@ -251,8 +251,6 @@ export default {
     }
   },
   item: {
-    title: 'Título',
-    description: 'Descripción',
     invalid_id: 'Identificador inválido.',
     not_found: 'No encontrado.',
     back: 'Ir atrás'
