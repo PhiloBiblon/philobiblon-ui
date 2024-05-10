@@ -79,11 +79,7 @@ export default {
     } else {
       this.currentText = { ...this.options[0] }
     }
-    if (typeof this.currentText === 'object' && this.currentText !== null) {
-      this.consolidatedText = { ...this.currentText }
-    } else {
-      this.consolidatedText = this.currentText
-    }
+    this.consolidatedText = { ...this.currentText }
     this.consolidatedOptions = JSON.parse(JSON.stringify(this.options))
   },
   methods: {
@@ -98,6 +94,7 @@ export default {
       this.restore()
     },
     async edit () {
+      this.$refs.autocomplete.isMenuActive = false
       if (this.currentText && this.currentText.id !== this.consolidatedText.id) {
         await this.save(this.currentText, this.consolidatedText)
           .then((response) => {

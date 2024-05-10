@@ -1,17 +1,19 @@
 <template>
   <v-container class="claim">
     <v-row dense>
-      <v-subheader class="text-h6 grey--text">
+      <v-subheader class="claim-header grey--text">
         <item-util-view-text-lang :value="propertyLabel" :tooltip="claim.property" />
       </v-subheader>
     </v-row>
-    <v-divider />
-    <item-claim-value
-      v-for="(value, index) in claim.values"
-      :key="'c-' + claim.property + '-' + index"
-      :value="value"
-      :key_value="'c-' + claim.property + '-' + index"
-    />
+    <v-container class="claim-values">
+      <item-claim-value
+        v-for="(value, index) in claim.values"
+        :key="'c-' + claim.property + '-' + index"
+        :index="index"
+        :value="value"
+        :key_value="'c-' + claim.property + '-' + index"
+      />
+    </v-container>
   </v-container>
 </template>
 
@@ -45,6 +47,12 @@ export default {
 
 <style scoped>
 .claim {
-  padding-left: 0;
+  padding: 0;
+}
+.claim-header {
+  font-size: 16px;
+}
+.claim-values {
+  padding: 0;
 }
 </style>
