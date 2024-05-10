@@ -249,7 +249,8 @@ export class WikibaseService {
         pbIdValue.includes('bioid') ||
         pbIdValue.includes('bibid') ||
         pbIdValue.includes('texid') ||
-        pbIdValue.includes('geoid')
+        pbIdValue.includes('geoid') ||
+        pbIdValue.includes('cnum')
       ) {
         return true
       }
