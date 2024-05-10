@@ -59,7 +59,7 @@ export class QueryService {
   }
 
   generateFilterSimpleSearch (form) {
-    const filterFields = ['itemLabel', 'desc', 'ps', 'ps_Label', 'pq', 'pq_Label']
+    const filterFields = ['label', 'desc', 'alias']
     const filterValues = this.normalize(form.simple_search.value).split(' ')
     let filters = null
     for (const filterField of filterFields) {
@@ -71,22 +71,8 @@ export class QueryService {
     }
     const SIMPLE_SEARCH_FILTER =
       `
-        ?item ?p ?statement .
-        OPTIONAL { ?item rdfs:label ?itemLabel }
-
+        OPTIONAL { ?item skos:altLabel ?alias }
         OPTIONAL { ?item schema:description ?desc }
-        ?statement ?ps ?ps_ .
-        OPTIONAL { ?ps_ rdfs:label ?ps_Label }
-
-        OPTIONAL {
-            ?wd wikibase:claim ?p .
-            ?wd wikibase:statementProperty ?ps .
-  
-            ?statement ?pq ?pq_ .
-          ?wdpq wikibase:qualifier ?pq .
-          OPTIONAL { ?pq_ rdfs:label ?pq_Label }
-        }
-        
         FILTER (${filters})
       `
     return SIMPLE_SEARCH_FILTER
@@ -126,11 +112,12 @@ export class QueryService {
     return this.addPrefixes(baseQueryFunction({ filters }))
   }
 
-  countQuery (table, form) {
+  countQuery (table, form, lang) {
     const COUNT_QUERY = $ =>
       `SELECT (COUNT(DISTINCT ?item) AS ?count)
       WHERE { 
         ?item wdt:P476 ?pbid .
+        ${this.generateLangFilters(lang)}
         ${$.filters}
       }`
     return this.generateQuery(table, COUNT_QUERY, form)

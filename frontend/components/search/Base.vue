@@ -89,7 +89,7 @@ export default {
     },
 
     count () {
-      this.$wikibase.runSparqlQuery(this.$wikibase.$query.countQuery(this.table, this.form), true)
+      this.$wikibase.runSparqlQuery(this.$wikibase.$query.countQuery(this.table, this.form, this.$i18n.locale), true)
         .then((results) => { this.totalResults = results[0] })
     },
 
