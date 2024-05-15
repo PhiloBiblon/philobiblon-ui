@@ -9,6 +9,7 @@ const COMMONS_WIKIMEDIA_URL_ENDPOINT =
 
 const PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
 const QITEM_PATTERN = /^Q\d+/
+const PITEM_PATTERN = /^P\d+/
 
 const ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
 
@@ -44,14 +45,30 @@ export class WikibaseService {
     return QITEM_PATTERN
   }
 
+  getPItemPattern () {
+    return PITEM_PATTERN
+  }
+
   // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
   transformSortedPropertiesWikiText (inputText) {
+    function removeDuplicatedQualifiers (qualifiers) {
+      const uniqueArray = []
+      const seen = {}
+      for (const item of qualifiers) {
+        if (!(item in seen)) {
+          uniqueArray.push(item)
+          seen[item] = true
+        }
+      }
+      return uniqueArray
+    }
+
     const sections = inputText.split(/==== (.+?) ====/).filter(Boolean)
 
     const result = {}
 
     for (let i = 0; i < sections.length; i += 2) {
-      const sectionName = sections[i].trim().toLowerCase()
+      const sectionName = sections[i].trim().toLowerCase().split(' ')[0]
       const sectionContent = sections[i + 1].trim()
 
       const properties = {}
@@ -61,31 +78,38 @@ export class WikibaseService {
       let currentQualifiers = []
 
       for (const line of lines) {
-        // to debug
-        // console.log(line)
         if (line.startsWith('* ')) {
-          if (currentProperty) {
-            properties[currentProperty] = currentQualifiers
+          const [, property] = line.match(/\* (\S+)/)
+          if (currentProperty && currentProperty !== property) {
+            properties[currentProperty] = removeDuplicatedQualifiers(currentQualifiers)
             currentQualifiers = []
           }
-
-          const [, property, ...qualifiers] = line
-            .match(/\* (\S+)(?::.*)?/)
-            .filter(Boolean)
-
           currentProperty = property.trim()
-          currentQualifiers = qualifiers.map(q => q.trim())
+          if (!this.getPItemPattern().test(currentProperty)) {
+            // eslint-disable-next-line no-console
+            console.error(`Invalid property ${currentProperty} in section ${sectionName}.`)
+          }
         } else if (line.startsWith(':: qualifier')) {
           const [, qualifier] = line.match(/:: qualifier (\S+)/)
-          currentQualifiers.push(qualifier.trim())
+          if (this.getPItemPattern().test(qualifier)) {
+            currentQualifiers.push(qualifier.trim())
+          } else {
+            // eslint-disable-next-line no-console
+            console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}.`)
+          }
         }
       }
 
       if (currentProperty) {
-        properties[currentProperty] = currentQualifiers
+        properties[currentProperty] = removeDuplicatedQualifiers(currentQualifiers)
       }
 
       result[sectionName] = properties
+    }
+
+    if (process.env.debug) {
+      // eslint-disable-next-line no-console
+      console.log(result)
     }
 
     return result
