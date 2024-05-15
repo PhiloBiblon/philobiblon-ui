@@ -18,7 +18,7 @@
               v-model="valueToView_.calendar"
               :label="$t('common.calendar')"
               :items="['Gregorian', 'Julian']"
-              class="ma-0 pa-0 text-body-2"
+              class="ma-0 pa-0"
               style="width: 100px"
               @change="editCalendarType"
             />
@@ -93,3 +93,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+::v-deep .v-list-item__title {
+  font-size: 12px;
+}
+::v-deep .v-select__selection {
+  font-size: 12px;
+}
+</style>

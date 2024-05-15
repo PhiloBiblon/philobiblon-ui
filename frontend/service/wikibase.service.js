@@ -184,9 +184,8 @@ export class WikibaseService {
     if (datatype === 'external-id') {
       return this.getEntity(property, lang).then((entity) => {
         if (entity.claims && PROPERTY_FORMATTER_URL in entity.claims) {
-          const url = entity.claims[
-            PROPERTY_FORMATTER_URL
-          ][0].mainsnak.datavalue.value.replace('$1', datavalue)
+          const url = entity.claims[PROPERTY_FORMATTER_URL][0]
+            .mainsnak.datavalue.value.replace('$1', encodeURIComponent(datavalue))
           return { value: datavalue, url, type: 'external-id' }
         } else {
           return { value: datavalue, type: 'text' }
