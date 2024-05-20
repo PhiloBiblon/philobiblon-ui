@@ -45,7 +45,19 @@ export default {
           visible: true,
           disabled: false,
           autocomplete: {
-            queryFunction: (table, lang) => { return this.$wikibase.$query.citiesQuery(table, lang) }
+            query:
+              `
+              SELECT DISTINCT ?item ?label
+              WHERE { 
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '(.*) geoid ') .
+                {{langFilter}}
+                ?table wdt:P297 ?item . 
+                ?table wdt:P476 ?table_pbid .
+                FILTER regex(?table_pbid, '(.*) {{table}} ')
+              }
+              ORDER BY ?label
+              `
           }
         },
         institution_type: {
@@ -57,7 +69,16 @@ export default {
           visible: true,
           disabled: false,
           autocomplete: {
-            queryFunction: (table, lang) => { return this.$wikibase.$query.institutionTypesQuery(table, lang) }
+            query:
+            `
+            SELECT ?item ?label
+            WHERE { 
+              ?item wdt:P994 ?pbid .
+              {{langFilter}}
+              FILTER regex(?pbid, 'INSTITUTIONS\\\\*CLASS\\\\*') .
+            }
+            ORDER BY ?label
+            `
           }
         },
         institution: {
@@ -69,7 +90,16 @@ export default {
           visible: true,
           disabled: false,
           autocomplete: {
-            queryFunction: (table, lang) => { return this.$wikibase.$query.institutionQuery(table, lang) }
+            query:
+            `
+            SELECT DISTINCT ?item ?label
+            WHERE { 
+              ?item wdt:P476 ?pbid .
+              FILTER regex(?pbid, '(.*) insid ') .
+              {{langFilter}}
+            }
+            ORDER BY ?label
+            `
           }
         },
         subject: {
@@ -81,8 +111,38 @@ export default {
           visible: true,
           disabled: false,
           autocomplete: {
-            queryFunction: (table, lang) => { return this.$wikibase.$query.subjectsQuery(table, lang) },
-            resultFunction: (result) => { return { text: result.label, value: { item: result.item, property: result.property } } }
+            query:
+            `
+            SELECT * {
+              {
+                SELECT DISTINCT ?item ?label ?property
+                WHERE { 
+                  ?table wdt:P476 ?table_pbid .
+                  ?table ?property ?item . 
+                  ?item wdt:P476 ?subject_pbid .
+                  {{langFilter}}
+                  FILTER regex(?subject_pbid, '(.*) bioid ')
+                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+                  BIND ( wdt:P703 as ?property)
+                }
+              } UNION {
+                SELECT DISTINCT ?item ?label ?property
+                WHERE { 
+                  ?table wdt:P476 ?table_pbid .
+                  ?table ?property ?item . 
+                  ?item wdt:P476 ?subject_pbid .
+                  {{langFilter}}
+                  FILTER regex(?subject_pbid, '.*')
+                  FILTER regex(?table_pbid, '.*')
+                  BIND ( wdt:P703 as ?property)
+                  FILTER regex(?subject_pbid, '(.*) subid ')
+                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+                  BIND ( wdt:P422 as ?property)
+                }
+              }
+            }
+            ORDER BY ?label
+            `
           }
         },
         search_type: {

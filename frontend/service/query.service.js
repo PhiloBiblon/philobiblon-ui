@@ -88,13 +88,13 @@ export class QueryService {
     if (form.city && form.city.value) {
       filters +=
         `
-        ?item wdt:P297 wd:${form.city.value} .\n
+        ?item wdt:P297 wd:${form.city.value.item} .\n
         `
     }
     if (form.institution && form.institution.value) {
       filters +=
         `
-        VALUES ?item {  wd:${form.institution.value}  } .\n
+        VALUES ?item {  wd:${form.institution.value.item}  } .\n
         `
     }
     if (form.subject && form.subject.value) {
@@ -106,7 +106,7 @@ export class QueryService {
     if (form.institution_type && form.institution_type.value) {
       filters +=
         `
-        ?item wdt:P2 wd:${form.institution_type.value} .\n
+        ?item wdt:P2 wd:${form.institution_type.value.item} .\n
         `
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
@@ -143,78 +143,16 @@ export class QueryService {
     return this.generateQuery(table, SEARCH_QUERY, form)
   }
 
-  citiesQuery (table, lang) {
-    return this.addPrefixes(
-      `
-        SELECT DISTINCT ?item ?label
-        WHERE { 
-          ?item wdt:P476 ?pbid .
-          FILTER regex(?pbid, '(.*) geoid ') .
-          ${this.generateLangFilters(lang)}
-          ?table wdt:P297 ?item . 
-          ?table wdt:P476 ?table_pbid .
-          FILTER regex(?table_pbid, '(.*) ${table} ')
-        }
-        ORDER BY ?label
-      `)
+  fillTemplate (template, replacements) {
+    return template.replace(/{{(\w+)}}/g, (match, p1) => replacements[p1] || '')
   }
 
-  subjectsQuery (table, lang) {
-    return this.addPrefixes(
-      `
-        SELECT * {
-        {
-          SELECT DISTINCT ?item ?label ?property
-          WHERE { 
-            ?table wdt:P476 ?table_pbid .
-            ?table ?property ?item . 
-            ?item wdt:P476 ?subject_pbid .
-            ${this.generateLangFilters(lang)}
-            FILTER regex(?subject_pbid, '(.*) bioid ')
-            FILTER regex(?table_pbid, '(.*) ${table} ')
-            BIND ( wdt:P703 as ?property)
-          }
-        } UNION {
-          SELECT DISTINCT ?item ?label ?property
-          WHERE { 
-            ?table wdt:P476 ?table_pbid .
-            ?table ?property ?item . 
-            ?item wdt:P476 ?subject_pbid .
-            ${this.generateLangFilters(lang)}
-            FILTER regex(?subject_pbid, '(.*) subid ')
-            FILTER regex(?table_pbid, '(.*) ${table} ')
-            BIND ( wdt:P422 as ?property)
-          }
-        }
-      }
-      ORDER BY ?label
-    `)
-  }
-
-  institutionTypesQuery (table, lang) {
-    return this.addPrefixes(
-      `
-        SELECT ?item ?label
-        WHERE { 
-          ?item wdt:P994 ?pbid .
-          ${this.generateLangFilters(lang)}
-          FILTER regex(?pbid, 'INSTITUTIONS\\\\*CLASS\\\\*') .
-        }
-        ORDER BY ?label
-      `)
-  }
-
-  institutionQuery (table, lang) {
-    return this.addPrefixes(
-      `
-        SELECT DISTINCT ?item ?label
-        WHERE { 
-          ?item wdt:P476 ?pbid .
-          FILTER regex(?pbid, '(.*) insid ') .
-          ${this.generateLangFilters(lang)}
-        }
-        ORDER BY ?label
-      `)
+  filterQuery (query, table, lang) {
+    const replacements = {
+      table,
+      langFilter: this.generateLangFilters(lang)
+    }
+    return this.addPrefixes(this.fillTemplate(query, replacements))
   }
 
   entityFromPBIDQuery (pbid) {

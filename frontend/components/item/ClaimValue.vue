@@ -13,7 +13,6 @@
             class="qualifier"
           >
             <item-qualifier
-              type="qualifier"
               :property="property"
               :claim="value"
               :values="values"

@@ -53,19 +53,21 @@ export default {
   },
   methods: {
     populateItemsAutocomplete () {
-      let resultFunction = this.autocomplete.resultFunction
-      if (!resultFunction) {
-        resultFunction = (result) => { return { text: result.label, value: result.item } }
-      }
-      this.$wikibase.runSparqlQuery(this.autocomplete.queryFunction(this.table, this.$i18n.locale), true)
-        .then((results) => {
-          Object.entries(results).forEach(
-            ([_, result]) => {
-              this.items.push(resultFunction(result))
-            }
+      const resultFunction = (result) => { return { text: result.label, value: { item: result.item, property: result.property } } }
+      if (this.autocomplete.query) {
+        this.$wikibase.runSparqlQuery(this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale), true)
+          .then((results) => {
+            Object.entries(results).forEach(
+              ([_, result]) => {
+                this.items.push(resultFunction(result))
+              }
+            )
+          }
           )
-        }
-        )
+      } else {
+        // eslint-disable-next-line no-console
+        console.error('No query defined for autocomplete')
+      }
     }
   }
 }
