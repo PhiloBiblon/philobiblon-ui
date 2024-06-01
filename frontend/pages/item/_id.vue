@@ -14,8 +14,8 @@ export default {
 
   async created () {
     const paramId = this.$route.params.id
-    if (this.$wikibase.getQItemPattern().test(paramId)) {
-      this.itemId = paramId
+    if (this.$wikibase.getQItemPattern().test(paramId.toUpperCase())) {
+      this.itemId = paramId.toUpperCase()
     } else if (this.$wikibase.getPBIDPattern().test(paramId)) {
       this.itemId = await this.$wikibase.getEntityFromPBID(paramId)
       if (this.itemId === null) {
