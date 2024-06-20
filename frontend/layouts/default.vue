@@ -2,9 +2,8 @@
   <v-app>
     <v-navigation-drawer
       v-model="drawer"
-      style="height: 99vh;"
       color="primary"
-      :permanent="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs && !$vuetify.breakpoint.md"
+      fixed
       app
       dark
     >
@@ -87,6 +86,7 @@
       fixed
       app
       dark
+      src="/img/header_page-opacity15_2.gif"
     >
       <template #img="{ props }">
         <v-img
@@ -94,7 +94,7 @@
           gradient="to top right, rgba(33, 33, 33,.7), rgba(250, 250, 250,.7)"
         />
       </template>
-      <v-app-bar-nav-icon class="d-lg-none" @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title
         class="text-h4"
         style="cursor: pointer"
@@ -127,13 +127,47 @@
         <span>{{ $t('auth.login.label') }}</span>
       </v-tooltip>
     </v-app-bar>
-    <v-main class="min-height-full-display">
+    <v-main>
       <v-container fluid ma-50>
         <v-breadcrumbs :items="$store.state.breadcrumb.items" />
         <nuxt />
       </v-container>
     </v-main>
-    <philo-footer />
+    <v-footer
+      app
+      :padless="true"
+    >
+      <v-card
+        flat
+        tile
+        width="100%"
+        class="text-center"
+      >
+        <v-card-text class="py-2 font-weight-light">
+          &copy; {{ new Date().getFullYear() }}
+          <span class="version">
+            v.{{ version }}
+          </span>
+
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <span v-bind="attrs" v-on="on">
+                <a class="version" @click="goTo('privacy-policy')">
+                  {{ $i18n.t('menu.item.privacyPolicy.label') }}
+                </a>
+              </span>
+            </template>
+            <span>
+              Strictly necessary cookies — These cookies are essential for you to browse the website and use its features,
+              such as accessing secure areas of the site. Cookies that allow web shops to hold your items in your cart
+              while you are shopping online are an example of strictly necessary cookies. These cookies will generally
+              be first-party session cookies. While it is not required to obtain consent for these cookies,
+              what they do and why they are necessary should be explained to the user.
+            </span>
+          </v-tooltip>
+        </v-card-text>
+      </v-card>
+    </v-footer>
   </v-app>
 </template>
 
@@ -144,6 +178,7 @@ export default {
     return {
       title_1: 'Philo',
       title_2: 'Biblon',
+      version: '0.6.0',
       drawer: false
     }
   },
@@ -191,10 +226,11 @@ export default {
 .mainmenu >>> .v-list-item--active {
   color: white;
 }
+.version {
+  float: right;
+  margin-right: 20px;
+}
 .subitem {
   padding-left: 35%;
-}
-.min-height-full-display {
-  min-height: 100vh;
 }
 </style>

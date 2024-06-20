@@ -8,6 +8,9 @@ export default {
       welcome: {
         label: 'Bem-vindo'
       },
+      privacyPolicy: {
+        label: 'Política de Privacidade'
+      },
       search: {
         label: 'Pesquisar',
         item: {
@@ -34,13 +37,7 @@ export default {
           },
           subid: {
             label: 'Assunto'
-          },
-          cnum: {
-            label: 'Item analítico'
-          },
-          copid: {
-            label: 'Item analítico'
-          },
+          }
         }
       }
     }
