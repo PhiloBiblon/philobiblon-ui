@@ -2,8 +2,7 @@ export default {
   menu: {
     common: {
       loading: 'Carregando..',
-      language: 'Linguagem',
-      calendar: 'Calendário'
+      language: 'Linguagem'
     },
     item: {
       welcome: {
@@ -35,7 +34,13 @@ export default {
           },
           subid: {
             label: 'Assunto'
-          }
+          },
+          cnum: {
+            label: 'Item analítico'
+          },
+          copid: {
+            label: 'Item analítico'
+          },
         }
       }
     }
@@ -251,8 +256,6 @@ export default {
     }
   },
   item: {
-    title: 'Título',
-    description: 'Descrição',
     invalid_id: 'Identificador non válido.',
     not_found: 'Non atopado.',
     back: 'Volte'

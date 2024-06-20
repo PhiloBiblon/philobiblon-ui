@@ -1,8 +1,7 @@
 export default {
   common: {
     loading: 'Carregant..',
-    language: 'Idioma',
-    calendar: 'Calendari'
+    language: 'Idioma'
   },
   menu: {
     item: {
@@ -35,7 +34,13 @@ export default {
           },
           subid: {
             label: 'Assumpte'
-          }
+          },
+          cnum: {
+            label: 'Element analític'
+          },
+          copid: {
+            label: 'Element analític'
+          },
         }
       }
     }
@@ -251,8 +256,6 @@ export default {
     }
   },
   item: {
-    title: 'Títol',
-    description: 'Descripció',
     invalid_id: 'Identificador invàlid.',
     not_found: 'No trobat.',
     back: 'Torna'

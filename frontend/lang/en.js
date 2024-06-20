@@ -1,8 +1,7 @@
 export default {
   common: {
     loading: 'Loading..',
-    language: 'Language',
-    calendar: 'Calendar'
+    language: 'Language'
   },
   menu: {
     item: {
@@ -35,7 +34,13 @@ export default {
           },
           subid: {
             label: 'Subject'
-          }
+          },
+          cnum: {
+            label: 'Analytic Item'
+          },
+          copid: {
+            label: 'Analytic Item'
+          },
         }
       }
     }
@@ -251,8 +256,6 @@ export default {
     }
   },
   item: {
-    title: 'Title',
-    description: 'Description',
     invalid_id: 'Invalid identifier.',
     not_found: 'Not found.',
     back: 'Go back'

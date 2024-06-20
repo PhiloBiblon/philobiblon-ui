@@ -4,13 +4,13 @@ export class QueryService {
     this.$config = config
   }
 
-  // convert values to lowercase without diacritical
+  // convert values to lowercase without diacritical accents except ñ
   normalize (str) {
     return str
       .split('')
       .map((chr) => {
         chr = chr.toLowerCase()
-        if (chr !== 'ñ' && chr !== 'ç') {
+        if (chr !== 'ñ') {
           return chr.normalize('NFD').replace(/[\u0300-\u036F]/g, '')
         } else {
           return chr
@@ -41,7 +41,7 @@ export class QueryService {
   }
 
   generateFilterByWord (filterField, filterValue) {
-    return `contains(replace(replace(replace(replace(replace(lcase(?${filterField}), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${filterValue}')`
+    return `contains(lcase(replace(replace(replace(replace(replace(?${filterField}, '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i')), '${filterValue}')`
   }
 
   generateFilterByWords (form, filterField, filterValues) {
@@ -59,7 +59,7 @@ export class QueryService {
   }
 
   generateFilterSimpleSearch (form) {
-    const filterFields = ['label', 'desc', 'alias']
+    const filterFields = ['itemLabel', 'desc', 'ps', 'ps_Label', 'pq', 'pq_Label']
     const filterValues = this.normalize(form.simple_search.value).split(' ')
     let filters = null
     for (const filterField of filterFields) {
@@ -71,8 +71,22 @@ export class QueryService {
     }
     const SIMPLE_SEARCH_FILTER =
       `
-        OPTIONAL { ?item skos:altLabel ?alias }
+        ?item ?p ?statement .
+        OPTIONAL { ?item rdfs:label ?itemLabel }
+
         OPTIONAL { ?item schema:description ?desc }
+        ?statement ?ps ?ps_ .
+        OPTIONAL { ?ps_ rdfs:label ?ps_Label }
+
+        OPTIONAL {
+            ?wd wikibase:claim ?p .
+            ?wd wikibase:statementProperty ?ps .
+  
+            ?statement ?pq ?pq_ .
+          ?wdpq wikibase:qualifier ?pq .
+          OPTIONAL { ?pq_ rdfs:label ?pq_Label }
+        }
+        
         FILTER (${filters})
       `
     return SIMPLE_SEARCH_FILTER
@@ -88,13 +102,13 @@ export class QueryService {
     if (form.city && form.city.value) {
       filters +=
         `
-        ?item wdt:P297 wd:${form.city.value.item} .\n
+        ?item wdt:P297 wd:${form.city.value} .\n
         `
     }
     if (form.institution && form.institution.value) {
       filters +=
         `
-        VALUES ?item {  wd:${form.institution.value.item}  } .\n
+        VALUES ?item {  wd:${form.institution.value}  } .\n
         `
     }
     if (form.subject && form.subject.value) {
@@ -106,18 +120,17 @@ export class QueryService {
     if (form.institution_type && form.institution_type.value) {
       filters +=
         `
-        ?item wdt:P2 wd:${form.institution_type.value.item} .\n
+        ?item wdt:P2 wd:${form.institution_type.value} .\n
         `
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
   }
 
-  countQuery (table, form, lang) {
+  countQuery (table, form) {
     const COUNT_QUERY = $ =>
       `SELECT (COUNT(DISTINCT ?item) AS ?count)
       WHERE { 
         ?item wdt:P476 ?pbid .
-        ${this.generateLangFilters(lang)}
         ${$.filters}
       }`
     return this.generateQuery(table, COUNT_QUERY, form)
@@ -143,19 +156,112 @@ export class QueryService {
     return this.generateQuery(table, SEARCH_QUERY, form)
   }
 
-  fillTemplate (template, replacements) {
-    return template.replace(/{{(\w+)}}/g, (match, p1) => replacements[p1] || '')
+  citiesQuery (table, lang) {
+    return this.addPrefixes(
+      `
+        SELECT DISTINCT ?item ?label
+        WHERE { 
+          ?item wdt:P476 ?pbid .
+          FILTER regex(?pbid, '(.*) geoid ') .
+          ${this.generateLangFilters(lang)}
+          ?table wdt:P297 ?item . 
+          ?table wdt:P476 ?table_pbid .
+          FILTER regex(?table_pbid, '(.*) ${table} ')
+        }
+        ORDER BY ?label
+      `)
   }
 
-  filterQuery (query, table, lang) {
-    const replacements = {
-      table,
-      langFilter: this.generateLangFilters(lang)
-    }
-    return this.addPrefixes(this.fillTemplate(query, replacements))
+  subjectsQuery (table, lang) {
+    return this.addPrefixes(
+      `
+        SELECT * {
+        {
+          SELECT DISTINCT ?item ?label ?property
+          WHERE { 
+            ?table wdt:P476 ?table_pbid .
+            ?table ?property ?item . 
+            ?item wdt:P476 ?subject_pbid .
+            ${this.generateLangFilters(lang)}
+            FILTER regex(?subject_pbid, '(.*) bioid ')
+            FILTER regex(?table_pbid, '(.*) ${table} ')
+            BIND ( wdt:P703 as ?property)
+          }
+        } UNION {
+          SELECT DISTINCT ?item ?label ?property
+          WHERE { 
+            ?table wdt:P476 ?table_pbid .
+            ?table ?property ?item . 
+            ?item wdt:P476 ?subject_pbid .
+            ${this.generateLangFilters(lang)}
+            FILTER regex(?subject_pbid, '(.*) subid ')
+            FILTER regex(?table_pbid, '(.*) ${table} ')
+            BIND ( wdt:P422 as ?property)
+          }
+        }
+      }
+      ORDER BY ?label
+    `)
+  }
+
+  institutionTypesQuery (table, lang) {
+    return this.addPrefixes(
+      `
+        SELECT ?item ?label
+        WHERE { 
+          ?item wdt:P994 ?pbid .
+          ${this.generateLangFilters(lang)}
+          FILTER regex(?pbid, 'INSTITUTIONS\\\\*CLASS\\\\*') .
+        }
+        ORDER BY ?label
+      `)
+  }
+
+  institutionQuery (table, lang) {
+    return this.addPrefixes(
+      `
+        SELECT DISTINCT ?item ?label
+        WHERE { 
+          ?item wdt:P476 ?pbid .
+          FILTER regex(?pbid, '(.*) insid ') .
+          ${this.generateLangFilters(lang)}
+        }
+        ORDER BY ?label
+      `)
   }
 
   entityFromPBIDQuery (pbid) {
     return this.addPrefixes(`SELECT ?item WHERE { ?item wdt:P476 '${pbid}'. }`)
+  }
+
+  generateSearchItemsQuery (form) {
+    const SEARCH_QUERY = $ => `
+      SELECT DISTINCT ?item ?label ?pbid
+      WHERE { 
+       ?item wdt:P476 ?pbid .
+       ${this.generateLangFilters(form.language)}
+       ${$.filters}
+       BIND(REPLACE(?pbid, '(.*) ${form.table} (.*)', '$2') AS ?pbidn)
+      }
+      ORDER BY ${this.getSortClause()}
+      `
+    return this.generateSearchQuery(SEARCH_QUERY, form)
+  }
+
+  generateSearchQuery (baseQueryFunction, form) {
+    let filters = `FILTER regex(?pbid, '(.*) ${form.table} ') .\n`
+
+    filters += this.generateSearchFilter(form)
+
+    return this.addPrefixes(baseQueryFunction({ filters }))
+  }
+
+  generateSearchFilter (form) {
+    return `
+        ?item ?p ?statement .
+        OPTIONAL { ?item rdfs:label ?itemLabel }
+
+        FILTER (regex(?itemLabel, "${form.simple_search.value}", "i"))
+      `;
   }
 }
