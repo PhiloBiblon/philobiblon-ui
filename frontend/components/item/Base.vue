@@ -58,27 +58,7 @@
         :key="'c-' + index"
         :claim="claim"
       />
-      <item-value-type-cnum
-        v-for="(cnum, index) in cnums"
-        :key="'cnum-' + index"
-        :value-to-view="cnum"
-      />
-
-      <item-value-type-copid
-        class="mt-5"
-        v-for="(copid, index) in copids"
-        :key="'copid-' + index"
-        :value-to-view="copid"
-      />
     </v-container>
-    <div v-else class="loader">
-      <v-progress-circular
-        size="50"
-        width="5"
-        indeterminate
-        color="primary"
-      />
-    </div>
   </div>
 </template>
 
@@ -94,8 +74,6 @@ export default {
 
   data () {
     return {
-      cnums: [],
-      copids: [],
       item: null,
       label: null,
       showItem: false,
@@ -130,93 +108,10 @@ export default {
             )
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
             this.claimsOrdered = await this.getOrderedClaims(tableid, this.item.claims)
-            await this.getAnalyticItems(tableid);
             this.showItem = true
           })
       } catch (err) {
         this.$notification.error(err)
-      }
-    },
-    async getAnalyticItems(table) {
-      if (table === 'manid' || table === 'texid') {
-        this.cnums = await this.getCnums('cnum', this.label.value, this.label.language);
-
-        const sentence = this.extractSentencesAfterColon(this.label.value);
-        const subSentence = this.extractFirstSentence(sentence);
-        this.copids = await this.getItemsByLabel('copid',  subSentence , this.label.language);
-      }
-      if (table === 'cnum') {
-        const sentence = this.extractSentencesAfterColon(this.label.value);
-        const subSentence = this.extractFirstSentence(sentence);
-        const work = await this.getWork(subSentence, this.label.language);
-
-        this.cnums.push(work);
-      }
-    },
-    async getItemsByLabel(table, label, lang) {
-      let form = {
-        language: lang,
-        table: table,
-        search_type: {
-          value: true,
-        },
-        simple_search: {
-          value: this.extractSentencesAfterColon(label),
-        },
-      }
-
-      return await this.$wikibase.getItemsByLabel(form);
-    },
-    async getCnums(table, label, lang) {
-      const cnums = await this.getItemsByLabel(table, label, lang);
-
-      return await Promise.all(cnums.map(async (cnum) => {
-        const sentence = this.extractSentencesAfterColon(cnum.label);
-        const subSentence = this.extractFirstSentence(sentence);
-
-        const work = await this.getWork(subSentence, lang);
-
-        return {
-          ...cnum,
-          work: work ?? null,
-          title: 'Specific witness ID - ',
-        };
-      }));
-    },
-    async getWork(label, lang) {
-      const response = await this.$wikibase.searchEntityByName(label, lang, lang);
-
-      if (response && response.length) {
-        const data = await this.$wikibase.getEntity(response[0].id);
-
-        return {
-          item: data.id,
-          language: lang,
-          title: 'Uniform Title IDno :',
-          label: data.labels[lang].value,
-          pbid: data.aliases[lang][0].value,
-        };
-      }
-    },
-    extractSentencesAfterColon(text) {
-      let match;
-      const matches = [];
-      const regex = /:\s*([^:.]*\.[^:.]*\.)/g;
-
-      while ((match = regex.exec(text)) !== null) {
-        matches.push(match[1].trim());
-      }
-
-      return matches?.[0] ?? text;
-    },
-    extractFirstSentence(text) {
-      const regex = /[^.!?]*[.!?]/;
-      const match = text.match(regex);
-
-      if (match) {
-        return match[0].trim();
-      } else {
-        return text;
       }
     },
     getRelatedTable (entity) {
@@ -267,7 +162,9 @@ export default {
       if (!order) {
         order = Object.keys(claims)
       }
-      return Object.keys(order).filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({ property: key, values: this.getOrderedValues(claims[key], order[key]) }))
+      return Object.values(order)
+        .filter(key => Object.prototype.hasOwnProperty.call(claims, key )&& key === 'P817')
+        .map(key => ({ property: key, values: this.getOrderedValues(claims[key], order[key]) }))
     },
     editLabel (label) {
       return this.$wikibase
@@ -302,15 +199,5 @@ export default {
 }
 .full-width {
   width: 100%;
-}
-
-.loader {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  top: 50%;
-  transform: translateY(-50%);
-  max-width: max-content;
 }
 </style>

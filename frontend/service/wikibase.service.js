@@ -232,7 +232,7 @@ export class WikibaseService {
         '&prop=wikitext&formatversion=2&format=json&origin=*'
       return this.wbFetcher(notesApiUrl)
         .then((data) => {
-          return { value: data.parse.wikitext, type: 'html' }
+          return { value: data.parse.wikitext, type: 'html', url: datavalue }
         })
     } else {
       return { value: datavalue, type: datatype }
@@ -381,16 +381,5 @@ export class WikibaseService {
       // eslint-disable-next-line no-console
       console.error('Error during search:', error)
     }
-  }
-  async getItemsByLabel(form) {
-    const query = await this.$query.generateSearchItemsQuery(form);
-
-    return await this.runSparqlQuery(query)
-        .then((results) => {
-          return results ?? [];
-        })
-        .catch((error) => {
-          console.error('Error during search:', error);
-        });
   }
 }
