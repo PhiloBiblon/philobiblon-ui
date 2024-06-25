@@ -1,13 +1,15 @@
 export default {
   common: {
     loading: 'Carregant..',
-    language: 'Idioma',
-    calendar: 'Calendari'
+    language: 'Idioma'
   },
   menu: {
     item: {
       welcome: {
         label: 'Benvingut'
+      },
+      privacyPolicy: {
+        label: 'Política de privacitat'
       },
       search: {
         label: 'Cercar',
@@ -251,8 +253,6 @@ export default {
     }
   },
   item: {
-    title: 'Títol',
-    description: 'Descripció',
     invalid_id: 'Identificador invàlid.',
     not_found: 'No trobat.',
     back: 'Torna'

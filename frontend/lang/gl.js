@@ -1,13 +1,15 @@
 export default {
   common: {
     loading: 'Cargando..',
-    language: 'Lingua',
-    calendar: 'Calendario'
+    language: 'Lingua'
   },
   menu: {
     item: {
       welcome: {
         label: 'Benvido'
+      },
+      privacyPolicy: {
+        label: 'Política de Privacidade'
       },
       search: {
         label: 'Buscar',
@@ -251,8 +253,6 @@ export default {
     }
   },
   item: {
-    title: 'Título',
-    description: 'Descrición',
     invalid_id: 'Identificador non válido.',
     not_found: 'Non atopado.',
     back: 'Volve'
