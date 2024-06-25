@@ -1,13 +1,15 @@
 export default {
   common: {
     loading: 'Loading..',
-    language: 'Language',
-    calendar: 'Calendar'
+    language: 'Language'
   },
   menu: {
     item: {
       welcome: {
         label: 'Welcome'
+      },
+      privacyPolicy: {
+        label: 'Privacy policy'
       },
       search: {
         label: 'Search',
@@ -251,8 +253,6 @@ export default {
     }
   },
   item: {
-    title: 'Title',
-    description: 'Description',
     invalid_id: 'Invalid identifier.',
     not_found: 'Not found.',
     back: 'Go back'
