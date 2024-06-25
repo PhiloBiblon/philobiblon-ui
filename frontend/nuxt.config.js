@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+
   server: {
     host: '0'
   },
@@ -14,7 +15,6 @@ export default {
   },
 
   publicRuntimeConfig: {
-    version: '0.8.0',
     apiBaseUrl: process.env.API_BASE_URL || '/.',
     wikibaseBaseUrl: process.env.WIKIBASE_BASE_URL,
     sparqlBaseUrl: process.env.SPARQL_BASE_URL,
@@ -53,6 +53,7 @@ export default {
   plugins: [
     '~/plugins/config.js',
     '~/plugins/wikibase.js',
+    '~/plugins/language.js',
     '~/plugins/notification.js'
   ],
 
@@ -114,7 +115,11 @@ export default {
       }
     ],
     langDir: 'lang/',
-    defaultLocale: 'en'
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'language',
+      alwaysRedirect: true,
+    },
   },
 
   toast: {
