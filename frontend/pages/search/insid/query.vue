@@ -29,6 +29,7 @@ export default {
         },
         simple_search: {
           active: true,
+          primary: true,
           label: 'search.form.common.simple_search.label',
           hint: 'search.form.common.simple_search.hint',
           type: 'text',
@@ -38,6 +39,7 @@ export default {
         },
         city: {
           active: true,
+          primary: true,
           label: 'search.form.insid.city.label',
           hint: 'search.form.insid.city.hint',
           type: 'autocomplete',
@@ -62,6 +64,7 @@ export default {
         },
         institution_type: {
           active: true,
+          primary: true,
           label: 'search.form.insid.institution_type.label',
           hint: 'search.form.insid.institution_type.hint',
           type: 'autocomplete',
@@ -83,6 +86,7 @@ export default {
         },
         institution: {
           active: true,
+          primary: true,
           label: 'search.form.insid.institution.label',
           hint: 'search.form.insid.institution.hint',
           type: 'autocomplete',
@@ -92,11 +96,22 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?item ?label
-            WHERE { 
-              ?item wdt:P476 ?pbid .
-              FILTER regex(?pbid, '(.*) insid ') .
-              {{langFilter}}
+            SELECT DISTINCT ?item ?label ?property {
+              {
+                SELECT ?item ?label
+                WHERE { 
+                  ?item wdt:P476 ?pbid .
+                  FILTER regex(?pbid, '(.*) {{table}} ') .
+                  ?item wdt:P34 ?label .
+                }
+              } UNION {
+                SELECT ?item ?label
+                WHERE { 
+                  ?item wdt:P476 ?pbid .
+                  FILTER regex(?pbid, '(.*) {{table}} ') .
+                  {{langFilter}}
+                }
+              }
             }
             ORDER BY ?label
             `
@@ -104,6 +119,7 @@ export default {
         },
         subject: {
           active: true,
+          primary: true,
           label: 'search.form.common.subject.label',
           hint: 'search.form.common.subject.hint',
           type: 'autocomplete',
@@ -113,9 +129,9 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT * {
+            SELECT DISTINCT * {
               {
-                SELECT DISTINCT ?item ?label ?property
+                SELECT ?item ?label ?property
                 WHERE { 
                   ?table wdt:P476 ?table_pbid .
                   ?table ?property ?item . 
@@ -126,18 +142,26 @@ export default {
                   BIND ( wdt:P703 as ?property)
                 }
               } UNION {
-                SELECT DISTINCT ?item ?label ?property
+                SELECT ?item ?label ?property
                 WHERE { 
                   ?table wdt:P476 ?table_pbid .
                   ?table ?property ?item . 
                   ?item wdt:P476 ?subject_pbid .
                   {{langFilter}}
-                  FILTER regex(?subject_pbid, '.*')
-                  FILTER regex(?table_pbid, '.*')
-                  BIND ( wdt:P703 as ?property)
                   FILTER regex(?subject_pbid, '(.*) subid ')
                   FILTER regex(?table_pbid, '(.*) {{table}} ')
                   BIND ( wdt:P422 as ?property)
+                }
+              } UNION {
+                SELECT ?item ?label ?property
+                WHERE { 
+                  ?table wdt:P476 ?table_pbid .
+                  ?table ?property ?item . 
+                  ?item wdt:P476 ?subject_pbid .
+                  {{langFilter}}
+                  FILTER regex(?subject_pbid, '(.*) geoid ')
+                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+                  BIND ( wdt:P47 as ?property)
                 }
               }
             }

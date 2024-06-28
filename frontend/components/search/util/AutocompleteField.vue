@@ -1,5 +1,12 @@
 <template>
-  <v-autocomplete v-bind="{ ...$attrs, ...commonAttrs }" :no-data-text="$t('common.loading')" :items="items" v-on="$listeners">
+  <v-autocomplete
+    v-bind="{ ...$attrs, ...commonAttrs }"
+    :loading="loadingItems"
+    :no-data-text="$t('common.no_data')"
+    :items="items"
+    :value-comparator="compareByLabel"
+    v-on="$listeners"
+  >
     <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
       <slot :name="scopedSlotName" v-bind="slotData" />
     </template>
@@ -38,7 +45,8 @@ export default {
   },
   data () {
     return {
-      items: []
+      items: [],
+      loadingItems: false
     }
   },
   computed: {
@@ -48,13 +56,14 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     this.populateItemsAutocomplete()
   },
   methods: {
     populateItemsAutocomplete () {
-      const resultFunction = (result) => { return { text: result.label, value: { item: result.item, property: result.property } } }
+      const resultFunction = (result) => { return { text: result.label, value: result } }
       if (this.autocomplete.query) {
+        this.loadingItems = true
         this.$wikibase.runSparqlQuery(this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale), true)
           .then((results) => {
             Object.entries(results).forEach(
@@ -62,12 +71,16 @@ export default {
                 this.items.push(resultFunction(result))
               }
             )
+            this.loadingItems = false
           }
           )
       } else {
         // eslint-disable-next-line no-console
         console.error('No query defined for autocomplete')
       }
+    },
+    compareByLabel (selectedItem, item) {
+      return selectedItem.label === item.label
     }
   }
 }

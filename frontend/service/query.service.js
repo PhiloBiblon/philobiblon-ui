@@ -78,13 +78,8 @@ export class QueryService {
     return SIMPLE_SEARCH_FILTER
   }
 
-  generateQuery (table, baseQueryFunction, form) {
+  addInstitutionFilters (form) {
     let filters = ''
-    const group = form.group.value === 'ALL' ? '(.*)' : form.group.value
-    filters = `FILTER regex(?pbid, '${group} ${table} ') .\n`
-    if (form.simple_search && form.simple_search.value) {
-      filters += this.generateFilterSimpleSearch(form)
-    }
     if (form.city && form.city.value) {
       filters +=
         `
@@ -108,6 +103,206 @@ export class QueryService {
         `
         ?item wdt:P2 wd:${form.institution_type.value.item} .\n
         `
+    }
+    return filters
+  }
+
+  addWorkFilters (form) {
+    let addAnalyticJoin = false
+    let filters = ''
+    if (form.type && form.type.value) {
+      filters +=
+        `
+        ?item p:P121 ?type_statement .
+        ?type_statement pq:P700 wd:${form.type.value.item} .
+        `
+    }
+    if (form.author && form.author.value) {
+      if (!form.author.value.analytic_item) {
+        filters +=
+          `
+          ?item wdt:P21 wd:${form.author.value.item} .
+          `
+      } else {
+        addAnalyticJoin = true
+        filters +=
+          `
+          ?analytic_item wdt:P34 ?author .
+          FILTER (STR(?author) = "${form.author.value.label}")
+          `
+      }
+    }
+    if (form.title && form.title.value) {
+      if (!form.title.value.analytic_item) {
+        filters +=
+          `
+          ?item wdt:P11 ?title.
+          FILTER (STR(?title) = "${form.title.value.label}")
+          `
+      } else {
+        addAnalyticJoin = true
+        filters +=
+          `
+          ?analytic_item wdt:P11 ?title .
+          FILTER (STR(?title) = "${form.title.value.label}")
+          `
+      }
+    }
+    if (form.incipit && form.incipit.value) {
+      if (!form.incipit.value.analytic_item) {
+        filters +=
+          `
+          ?item p:P543 ?incipit_statement .
+          ?incipit_statement pq:P70 ?incipit
+          FILTER (STR(?incipit) = "${form.incipit.value.label}")
+          `
+      } else {
+        addAnalyticJoin = true
+        filters +=
+          `
+          ?analytic_item p:P543 ?incipit_statement .
+          ?incipit_statement pq:P70 ?incipit
+          FILTER (STR(?incipit) = "${form.incipit.value.label}")
+          `
+      }
+    }
+    if (form.explicit && form.explicit.value) {
+      if (!form.explicit.value.analytic_item) {
+        filters +=
+          `
+          ?item p:P543 ?explicit_statement .
+          ?explicit_statement pq:P602 ?explicit
+          FILTER (STR(?explicit) = "${form.explicit.value.label}")
+          `
+      } else {
+        addAnalyticJoin = true
+        filters +=
+          `
+          ?analytic_item p:P543 ?explicit_statement .
+          ?explicit_statement pq:P602 ?explicit
+          FILTER (STR(?explicit) = "${form.explicit.value.label}")
+          `
+      }
+    }
+    if (form.language && form.language.value) {
+      if (!form.language.value.analytic_item) {
+        filters +=
+          `
+          ?item wdt:P18 wd:${form.language.value.item} .
+          `
+      } else {
+        addAnalyticJoin = true
+        filters +=
+          `
+          ?analytic_item wdt:P18 wd:${form.language.value.item} .
+          `
+      }
+    }
+    if (form.poetic_form && form.poetic_form.value) {
+      if (!form.poetic_form.value.analytic_item) {
+        filters +=
+          `
+          ?statement wdt:P781 ?poetic_form
+          FILTER (STR(?poetic_form) = "${form.poetic_form.value.label}")
+          `
+      } else {
+        addAnalyticJoin = true
+        filters +=
+          `
+          ?analytic_item wdt:P781 ?poetic_form .
+          FILTER (STR(?poetic_form) = "${form.poetic_form.value.label}")
+          `
+      }
+    }
+    if (form.associated_person && form.associated_person.value) {
+      if (!form.associated_person.value.analytic_item) {
+        filters +=
+          `
+          ?item wdt:P703 wd:${form.associated_person.value.item} .
+          `
+      } else {
+        filters +=
+          `
+          ?analytic_item wdt:P703 wd:${form.associated_person.value.item} .
+          `
+      }
+    }
+    if (form.subject && form.subject.value) {
+      filters +=
+        `
+        ?item wdt:P422 wd:${form.subject.value.item} .
+        `
+    }
+    if (form.date_composition.value &&
+      (form.date_composition.value.begin || form.date_composition.value.end)) {
+      let completeRange = false
+      if (form.date_composition.value.begin && form.date_composition.value.end) {
+        completeRange = true
+      }
+      filters +=
+      `
+      ?item p:P137 ?history .
+      `
+      if (form.date_composition.value.begin) {
+        filters +=
+        `
+        OPTIONAL { ?history pq:P49 ?begin_date }
+        `
+        if (completeRange) {
+          filters +=
+          `
+          FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
+          `
+        } else {
+          filters +=
+          `
+          FILTER(?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
+          `
+        }
+      }
+      if (form.date_composition.value.end) {
+        filters +=
+        `
+        OPTIONAL { ?history pq:P50 ?end_date }
+        `
+        if (completeRange) {
+          filters +=
+          `
+          FILTER(!BOUND(?end_date) || ?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
+          `
+        } else {
+          filters +=
+          `
+          FILTER(?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
+          `
+        }
+      }
+    }
+    if (addAnalyticJoin) {
+      filters +=
+        `
+        ?analytic_item wdt:P476 ?analytic_item_pbid .
+        FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
+        ?analytic_item wdt:P590 ?item .
+        `
+    }
+    return filters
+  }
+
+  generateQuery (table, baseQueryFunction, form) {
+    let filters = ''
+    const group = form.group.value === 'ALL' ? '(.*)' : form.group.value
+    filters = `FILTER regex(?pbid, '${group} ${table} ') .\n`
+    if (form.simple_search && form.simple_search.value) {
+      filters += this.generateFilterSimpleSearch(form)
+    }
+    switch (table) {
+      case 'insid':
+        filters += this.addInstitutionFilters(form)
+        break
+      case 'texid':
+        filters += this.addWorkFilters(form)
+        break
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
   }

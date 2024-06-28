@@ -1,8 +1,12 @@
 export default {
   common: {
+    no_data: 'No hi ha dades disponibles',
     loading: 'Carregant..',
     language: 'Idioma',
-    calendar: 'Calendari'
+    calendar: 'Calendari',
+    advanced_search: 'Cerca avançada',
+    from: 'Des de',
+    to: 'a'
   },
   menu: {
     item: {
@@ -105,13 +109,28 @@ export default {
           hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
         },
         associated_person: {
-          label: 'Persona relacionada'
+          label: 'Persona relacionada',
+          hint: ''
         },
         place_composition: {
-          label: 'Lloc de composició'
+          label: 'Lloc de composició',
+          hint: ''
         },
         date_composition: {
-          label: 'Data de composició'
+          label: 'Data de composició',
+          hint: ''
+        },
+        type: {
+          label: 'Tipus',
+          hint: ''
+        },
+        language: {
+          label: 'Idioma',
+          hint: ''
+        },
+        poetic_form: {
+          label: 'Forma poètica',
+          hint: ''
         }
       },
       libid: {
