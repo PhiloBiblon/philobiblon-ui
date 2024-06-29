@@ -12,6 +12,9 @@
         dense
         @click="changeLocale(index)"
       >
+        <v-list-item-avatar>
+          <v-img :src="item.image" alt="flag"/>
+        </v-list-item-avatar>
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item>
     </v-list>
@@ -23,11 +26,11 @@ export default {
   data () {
     return {
       languages: [
-        { locale: 'ca', name: 'Català' },
-        { locale: 'es', name: 'Español' },
-        { locale: 'en', name: 'English' },
-        { locale: 'gl', name: 'Galego' },
-        { locale: 'pt', name: 'Português' }
+        { locale: 'ca', name: 'Català', image: '/img/flags/flag_catalonia.gif' },
+        { locale: 'es', name: 'Español', image: '/img/flags/flag_spain.gif' },
+        { locale: 'en', name: 'English', image: '/img/flags/flag_unitedstates.gif' },
+        { locale: 'gl', name: 'Galego', image: '/img/flags/flag_galicia.gif' },
+        { locale: 'pt', name: 'Português', image: '/img/flags/flag_portugal.gif' }
       ]
     }
   },
@@ -38,3 +41,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+::v-deep .v-image__image--cover {
+  background-size: unset !important;
+}
+</style>
