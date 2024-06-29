@@ -15,12 +15,12 @@
             :key="'g-'+group"
             class="group-option"
             :label="group.text ? group.text : group"
-            :value="group.value ? group.value: group"
+            :value="group.value ? group.value : group"
           />
         </v-radio-group>
       </v-row>
       <v-row dense>
-        <template v-for="(item, name) in form">
+        <template v-for="(item, name) in primaryFilters">
           <v-col
             v-if="(item.active && !item.permanent && item.visible)"
             :key="'i-'+name"
@@ -43,6 +43,57 @@
               :table="table"
               :autocomplete="item.autocomplete"
               @click.stop
+            />
+            <search-util-date-field
+              v-if="item.type === 'date'"
+              :value="item.value"
+              :label="$t(item.label)"
+              :hint="$t(item.hint)"
+              :disabled="item.disabled"
+              @update-begin-date="item.value['begin'] = $event"
+              @update-end-date="item.value['end'] = $event"
+            />
+          </v-col>
+        </template>
+      </v-row>
+      <v-row v-if="existsAdvancedFilters && !showResults" dense>
+        <span class="advanced-search text-caption mb-2 primary--text" @click="showAdvancedSearch = !showAdvancedSearch">
+          {{ $t('common.advanced_search') }} <v-icon class="primary--text">{{ showAdvancedSearch ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+        </span>
+      </v-row>
+      <v-row v-if="showAdvancedSearch" dense>
+        <template v-for="(item, name) in advancedFilters">
+          <v-col
+            v-if="(item.active && !item.permanent && item.visible)"
+            :key="'i-'+name"
+            cols="4"
+          >
+            <search-util-text-field
+              v-if="item.type === 'text'"
+              v-model="item.value"
+              :label="$t(item.label)"
+              :hint="$t(item.hint)"
+              :disabled="item.disabled"
+            />
+            <search-util-autocomplete-field
+              v-if="item.type === 'autocomplete'"
+              :id="'auto-'+name"
+              v-model="item.value"
+              :label="$t(item.label)"
+              :hint="$t(item.hint)"
+              :disabled="item.disabled"
+              :table="table"
+              :autocomplete="item.autocomplete"
+              @click.stop
+            />
+            <search-util-date-field
+              v-if="item.type === 'date'"
+              :value="item.value"
+              :label="$t(item.label)"
+              :hint="$t(item.hint)"
+              :disabled="item.disabled"
+              @update-begin-date="item.value['begin'] = $event"
+              @update-end-date="item.value['end'] = $event"
             />
           </v-col>
         </template>
@@ -129,13 +180,33 @@ export default {
     return {
       search_group: {},
       search_type: {},
-      showResults: false
+      showResults: false,
+      showAdvancedSearch: false
     }
   },
 
   computed: {
     groups () {
       return ['BETA', 'BITAGAP', 'BITECA', { text: this.$t('search.form.common.group_all.label'), value: 'ALL' }]
+    },
+    primaryFilters () {
+      return Object.entries(this.form).reduce((acc, [key, value]) => {
+        if (value.primary) {
+          acc[key] = value
+        }
+        return acc
+      }, {})
+    },
+    advancedFilters () {
+      return Object.entries(this.form).reduce((acc, [key, value]) => {
+        if (!value.primary) {
+          acc[key] = value
+        }
+        return acc
+      }, {})
+    },
+    existsAdvancedFilters () {
+      return Object.values(this.form).some(item => item.primary === false)
     }
   },
 
@@ -173,13 +244,12 @@ export default {
     search () {
       for (const key in this.form) {
         const item = this.form[key]
-        if (!item.value) {
+        if (!item.value ||
+          (item.value instanceof Object && Object.keys(item.value).length === 0)) {
           item.visible = false
         }
         item.disabled = true
       }
-      this.search_group.disabled = true
-      this.search_type.disabled = true
       this.showResults = true
       this.$emit('on-search', this.form)
     },
@@ -190,8 +260,6 @@ export default {
         item.visible = true
         item.disabled = false
       }
-      this.search_group.disabled = false
-      this.search_type.disabled = false
       this.showResults = false
       this.$store.commit('queryStatus/setForm', JSON.parse(JSON.stringify(this.form)))
       this.$emit('back-search')
@@ -200,13 +268,18 @@ export default {
     clear () {
       for (const key in this.form) {
         const item = this.form[key]
-        item.value = ''
+        if (item.value instanceof Object) {
+          item.value = {}
+        } else {
+          item.value = ''
+        }
         item.visible = true
         item.disabled = false
       }
       this.search_group.value = 'ALL'
       this.search_type.value = true
       this.showResults = false
+      this.showAdvancedSearch = false
       this.$store.commit('queryStatus/setForm', null)
       this.$emit('clear-search')
     },
@@ -225,5 +298,8 @@ export default {
 }
 .group-option {
   padding-right: 30px;
+}
+.advanced-search {
+  cursor: pointer;
 }
 </style>
