@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+
   server: {
     host: '0'
   },
@@ -53,6 +54,7 @@ export default {
   plugins: [
     '~/plugins/config.js',
     '~/plugins/wikibase.js',
+    '~/plugins/language.js',
     '~/plugins/notification.js'
   ],
 
@@ -114,7 +116,11 @@ export default {
       }
     ],
     langDir: 'lang/',
-    defaultLocale: 'en'
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'language',
+      alwaysRedirect: true,
+    },
   },
 
   toast: {
