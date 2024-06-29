@@ -116,6 +116,7 @@ export default {
       }
     ],
     langDir: 'lang/',
+    defaultLocale: 'en',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'language',

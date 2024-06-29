@@ -28,6 +28,7 @@ export default {
         },
         simple_search: {
           active: true,
+          primary: true,
           label: 'search.form.common.simple_search.label',
           hint: 'search.form.common.simple_search.hint',
           value: '',

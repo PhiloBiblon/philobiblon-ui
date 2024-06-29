@@ -268,7 +268,7 @@ export default {
     clear () {
       for (const key in this.form) {
         const item = this.form[key]
-        if (item.value instanceof Object) {
+        if (item.type === 'date') {
           item.value = {}
         } else {
           item.value = ''
