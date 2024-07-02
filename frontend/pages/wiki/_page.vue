@@ -1,7 +1,7 @@
 <template>
   <v-container>
+    <search-simple />
     <!-- eslint-disable-next-line vue/no-v-html -->
-     <search-simple/>
     <div if="contentToView" v-html="contentToView" />
   </v-container>
 </template>
