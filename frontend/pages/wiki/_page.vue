@@ -58,3 +58,28 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+::v-deep .content {
+  .data {
+    margin-bottom: 10px;
+    width: 60%;
+    border: 1px solid #e5c992;
+    font-weight: normal;
+    font-size: 100%;
+    color: #000000;
+
+    td {
+      border: 1px solid #e5c992;
+      padding-left: 3px;
+      font-size: 85%;
+      color: #000000;
+    }
+  }
+
+   blockquote {
+    margin-left: 24px !important;
+
+  }
+}
+</style>

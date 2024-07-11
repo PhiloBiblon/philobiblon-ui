@@ -1,14 +1,9 @@
 export default {
-  common: {
-    no_data: 'Nenhum dado disponível',
-    loading: 'Carregando..',
-    language: 'Linguagem',
-    calendar: 'Calendário',
-    advanced_search: 'Busca avançada',
-    from: 'De',
-    to: 'para'
-  },
   menu: {
+    common: {
+      loading: 'Carregando..',
+      language: 'Linguagem'
+    },
     item: {
       welcome: {
         label: 'Bem-vindo'
@@ -109,28 +104,13 @@ export default {
           hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
         },
         associated_person: {
-          label: 'Pessoa associada',
-          hint: ''
+          label: 'Pessoa associada'
         },
         place_composition: {
-          label: 'Local de composição',
-          hint: ''
+          label: 'Local de composição'
         },
         date_composition: {
-          label: 'Data de composição',
-          hint: ''
-        },
-        type: {
-          label: 'Tipo',
-          hint: ''
-        },
-        language: {
-          label: 'Linguagem',
-          hint: ''
-        },
-        poetic_form: {
-          label: 'Forma poética',
-          hint: ''
+          label: 'Data de composição'
         }
       },
       libid: {
@@ -270,10 +250,40 @@ export default {
     }
   },
   item: {
-    title: 'Título',
-    description: 'Descrição',
     invalid_id: 'Identificador non válido.',
     not_found: 'Non atopado.',
     back: 'Volte'
-  }
+  },
+  about: {
+    title: 'Sobre',
+    bibliographies: {
+      title: 'Bibliografias',
+    },
+    citation: {
+      title: 'Formato de Citação Preferido',
+    },
+    language: {
+      title: 'Língua',
+    },
+    statistics: {
+      title: 'Estatísticas',
+    },
+    version: {
+      web: {
+        title: 'A versão web',
+      },
+      windows: {
+        title: 'A versão Windows',
+      },
+    },
+    history: {
+      title: 'História',
+    },
+    acknowledgments: {
+      title: 'Agradecimentos',
+    },
+    copyright: {
+      title: 'Copyright',
+    },
+  },
 }
