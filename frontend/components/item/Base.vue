@@ -166,6 +166,7 @@ export default {
       let orderKeys
       if (order) {
         orderKeys = Object.keys(order)
+        // remove duplicated keys
         orderKeys = [...new Set([...orderKeys, ...claimsKeys])]
       } else {
         order = claims
