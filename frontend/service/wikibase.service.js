@@ -51,19 +51,7 @@ export class WikibaseService {
 
   // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
   transformSortedPropertiesWikiText (inputText) {
-    function removeDuplicatedQualifiers (qualifiers) {
-      const uniqueArray = []
-      const seen = {}
-      for (const item of qualifiers) {
-        if (!(item in seen)) {
-          uniqueArray.push(item)
-          seen[item] = true
-        }
-      }
-      return uniqueArray
-    }
-
-    const sections = inputText.split(/==== (.+?) ====/).filter(Boolean)
+    const sections = inputText.split(/====(.+?)====/).filter(Boolean)
 
     const result = {}
 
@@ -75,33 +63,32 @@ export class WikibaseService {
       const lines = sectionContent.split('\n')
 
       let currentProperty = null
-      let currentQualifiers = []
 
       for (const line of lines) {
-        if (line.startsWith('* ')) {
-          const [, property] = line.match(/\* (\S+)/)
-          if (currentProperty && currentProperty !== property) {
-            properties[currentProperty] = removeDuplicatedQualifiers(currentQualifiers)
-            currentQualifiers = []
-          }
+        if (line.startsWith('*')) {
+          const [, property] = line.match(/\* ?(\S+)/)
           currentProperty = property.trim()
-          if (!this.getPItemPattern().test(currentProperty)) {
-            // eslint-disable-next-line no-console
-            console.error(`Invalid property ${currentProperty} in section ${sectionName}.`)
-          }
-        } else if (line.startsWith(':: qualifier')) {
-          const [, qualifier] = line.match(/:: qualifier (\S+)/)
-          if (this.getPItemPattern().test(qualifier)) {
-            currentQualifiers.push(qualifier.trim())
+          if (this.getPItemPattern().test(currentProperty)) {
+            if (!(currentProperty in properties)) {
+              properties[currentProperty] = []
+            }
           } else {
             // eslint-disable-next-line no-console
-            console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}.`)
+            console.error(`Invalid property ${currentProperty} in section ${sectionName}: ${line}`)
+            currentProperty = null
+          }
+        } else if (/^:: ?qualifier/.test(line)) {
+          let [, qualifier] = line.match(/:: ?qualifier (\S+)/)
+          qualifier = qualifier.trim()
+          if (this.getPItemPattern().test(qualifier)) {
+            if (currentProperty && !properties[currentProperty].includes(qualifier)) {
+              properties[currentProperty].push(qualifier)
+            }
+          } else {
+            // eslint-disable-next-line no-console
+            console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}: ${line}`)
           }
         }
-      }
-
-      if (currentProperty) {
-        properties[currentProperty] = removeDuplicatedQualifiers(currentQualifiers)
       }
 
       result[sectionName] = properties
@@ -119,12 +106,16 @@ export class WikibaseService {
     const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
     if (data.error) {
+      // eslint-disable-next-line no-console
+      console.error(`Error fetching ui sorted page: ${data.error}`)
       return null
     } else {
       const fullOrder = this.transformSortedPropertiesWikiText(data.parse.wikitext)
       if (table in fullOrder) {
         return fullOrder[table]
       } else {
+        // eslint-disable-next-line no-console
+        console.error(`Table ${table} not found in ui sorted page.`)
         return null
       }
     }
