@@ -87,10 +87,18 @@ export class QueryService {
         `
     }
     if (form.institution && form.institution.value) {
-      filters +=
+      if (form.institution.value.property === 'label') {
+        filters +=
         `
-        VALUES ?item {  wd:${form.institution.value.item}  } .\n
+        FILTER(str(?label) = '${form.institution.value.label}') . \n
         `
+      } else {
+        filters +=
+        `
+        ?item wdt:P34 ?value_institution .\n
+        FILTER(STR(?value_institution) = '${form.institution.value.label}') . \n
+        `
+      }
     }
     if (form.subject && form.subject.value) {
       filters +=
@@ -289,6 +297,37 @@ export class QueryService {
     return filters
   }
 
+  addLibraryFilters (form) {
+    let filters = ''
+    if (form.city && form.city.value) {
+      filters +=
+        `
+        VALUES ?item { wdt:P111 wd:${form.city.value.item} } .\n
+        `
+    }
+    if (form.library && form.library.value) {
+      if (form.library.value.property === 'label') {
+        filters +=
+        `
+        FILTER(str(?label) = '${form.library.value.label}') . \n
+        `
+      } else {
+        filters +=
+        `
+        ?item wdt:P34 ?value_library .\n
+        FILTER(STR(?value_library) = '${form.library.value.label}') . \n
+        `
+      }
+    }
+    if (form.subject && form.subject.value) {
+      filters +=
+        `
+        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        `
+    }
+    return filters
+  }
+
   generateQuery (table, baseQueryFunction, form) {
     let filters = ''
     const group = form.group.value === 'ALL' ? '(.*)' : form.group.value
@@ -302,6 +341,9 @@ export class QueryService {
         break
       case 'texid':
         filters += this.addWorkFilters(form)
+        break
+      case 'libid':
+        filters += this.addLibraryFilters(form)
         break
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
