@@ -142,9 +142,9 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
         },
-        shelfmark: {
-          label: 'Signatura',
-          hint: 'Search by the current or any former shelfmark, including those of previous owners. This returns a list of libraries holding manuscripts or printings with that shelfmark. Shelfmarks are not case-sensitive.'
+        call_number: {
+          label: 'Número de trucada',
+          hint: ''
         }
       },
       insid: {
