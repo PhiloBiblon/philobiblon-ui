@@ -1,0 +1,41 @@
+<h1>A versión web</h1>
+
+<div class="content">
+
+<p>Os datos desta nova versión web de PhiloBiblon teñen a súa orixe nunha versión igualmente nova do sistema da base de datos (descrito en detalle na versión Windows), ao que fora transferida toda a información das catro bibliografías a finais de 2008. Os datos que aquí se presentan constitúen unha parte substancial, mais só unha parte, da información que pode encontrarse na base de datos.</p>
+
+<p>En contraste cos datos limitados que caracterizan as anteriores versións web,
+
+esta nova versión presenta de forma case completa os datos das tabelas MS_ED, UNIFORM.TITLE, BIBLIOGRAPHY, BIOGRAPHY e LIBRARY, a que foi
+
+engadida información das tabelas ANALYTIC, COPIES, GEOGRAPHY, INSTITUTIONS e SUBJECT.
+
+Os usuarios da versión web de PhiloBiblon poderán buscar información sobre un texto ou un manuscrito, sobre os primeiros impresos, sobre unha copia específica dun texto contido nun manuscrito ou nunha edición impresa, sobre unha persoa, unha biblioteca ou sobre un determinado item na biblioteca de referencia.</p>
+
+<p>O usuario que, desta maneira, desexe consultar información sobre unha biblioteca comezaría polo motor de busca BIBLIOTECA,
+
+que ofrece non só información mais tamén unha listaxe de MSS e de edicións impresas que están depositados nesa biblioteca,
+
+sempre que se encontren descritos en PhiloBiblon. O usuario que desexe saber cales son os testemuños dun determinado texto comezaría polo
+
+motor de busca OBRAS. Os resultados desta busca mostrarán toda a información dispoñible sobre un texto, seguida dunha descrición detallada
+
+das copias dese texto cunha descrición abreviada do manuscrito ou edición impresa que contén cada copia. De igual modo, o usuario interesado
+
+na descrición e nos contidos dun determinado manuscrito ou edición impresa comezará polo motor de busca MANUSCRITOS ou IMPRESOS. Os resultados desta procura presentarán a descrición externa do volume en cuestión (incluíndo a procedencia e a bibliografía relevante), seguida dunha descrición detallada dos seus contidos, por orde de folio, cunha descrición abreviada do propio texto e, no caso de se tratar dunha edición impresa, dos seus exemplares coñecidos.</p>
+
+<p>Os motores de busca ofrecen detalles completos para OBRAS, MANUSCRITOS, IMPRESOS, PERSOAS, REFERENCIAS e BIBLIOTECAS.</p>
+
+<p>A versión web de cada unha das bibliografías será actualizada con regularidade, normalmente unha vez por trimestre.</p>
+
+<p>Na versión web falta a información, relativamente dispersa, das tabelas XEOGRAFÍA e INSTITUCIÓNS, que serven esencialmente como
+
+ficheiros xerais para as tabelas primarias. A tabela INSTITUCIÓNS recolle as institucións que posuíron volumes manuscritos ou impresos,
+
+ou que serviron como autores colectivos dos textos neles contidos. A tabela XEOGRAFÍA identifica os topónimos mencionados nas diferentes
+
+bibliografías.</p>
+
+<p>Os usuarios que compraron a edición de 1999 de PhiloBiblon e que desexen recibir un CD-ROM da actual versión da base de datos PhiloBiblon descrita máis abaixo deben pórse en contacto con Charles Faulhaber a través do enderezo electrónico cfaulhab[at]library.berkeley.edu.</p>
+
+</div>

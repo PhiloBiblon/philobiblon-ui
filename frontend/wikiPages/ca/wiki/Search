@@ -1,0 +1,47 @@
+<h1>Cerca</h1>
+
+<div class="content">
+
+<p><a href="ca/search/texid/query">Obra</a> [fonts primàries:
+
+autor, títol, incipit / explicit, data, persona relacionada, lloc de composició]</p>
+
+<p><a href="ca/search/libid/query">Biblioteca</a>
+
+[biblioteques que contenen fonts primàries: ciutat, nom de la biblioteca, signatura]</p>
+
+<p><a href="ca/search/insid/query">Institució</a> [orde religiosos o militars, monestir, convent, església, catedral, biblioteca, arxiu,
+
+universitat, col·legi, etc.: nom, lloc, data]</p>
+
+<p><a href="ca/search/bioid/query">Persona</a>
+
+[informació biogràfica sobre persones, com ara autor,
+
+antic posseïdor, copista, enquadernador, membre de la noblesa o de la
+
+jerarquia eclesiàstica: nom, títol, data, lloc relacionat, professió,
+
+orde militar o religiós]</p>
+
+<p><a href="ca/search/bibid/query">Referència</a>
+
+[fonts secundàries: autor, títol, data, lloc d'edició, editor,
+
+col·lecció, persona relacionada]</p>
+
+<p><a href="ca/search/manid/query">MsEd</a>
+
+[manuscrits o  edicións impresas: ciutat, biblioteca,
+
+signatura actual o anterior, data, lloc de producció,
+
+copista / impressor, editor / mecenes, antic posseïdor,
+
+altre persona relacionada]</p>
+
+<p><a href="ca/search/geoid/query">Geogràfia</a></p>
+
+<p><a href="ca/search/subid/query">Assumpte</a></p>
+
+</div>

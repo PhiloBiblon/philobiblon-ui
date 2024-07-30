@@ -1,0 +1,2854 @@
+<h1>AYUDA</h1>
+
+<div class="content">
+
+<p>Para ayuda con <i><b>BITAGAP</b></i> o <i><b>BITECA</b></i> consúltese la página de ayuda
+
+en <a href="help_po.html">portugués</a> o <a href="help_ca.html">catalán</a> respectivamente.</p>
+
+<a name="top"></a>
+
+<h2>Índice</h2>
+
+<p>
+
+</p><blockquote>
+
+<a href="#búsquedas">Búsquedas</a><br>
+
+<a href="#materia">Materia / Instituciones / Topónimos</a><br>
+
+<a href="#normas">Normas de transcripción</a><br>
+
+<a href="#url">Enlaces (URL = “Uniform Resource Locator”) / imágenes y textos digitalizados</a><br><br>
+
+<a href="#howusesearchtablespages">Cómo utilizar las tablas / páginas de búsqueda y sus campos</a><br><br>
+
+<a href="#obra">Obra</a><br>
+
+<a href="#biblioteca">Biblioteca</a><br>
+
+<a href="#persona">Persona</a><br>
+
+<blockquote>
+
+<a href="#nombre">Nombre</a><br>
+
+<a href="#title">Título</a><br>
+
+<a href="#order">Orden religiosa o militar / Profesión</a><br>
+
+<a href="#profession">Profesión</a><br>
+
+</blockquote>
+
+<a href="#reference">Referencia (bibliografía secundaria)</a><br>
+
+<a href="#msed">Manuscritos e impresos</a><br>
+
+<blockquote>
+
+<a href="#city">Ciudad</a><br>
+
+<a href="#library">Biblioteca</a><br>
+
+<a href="#shelfmark">Signatura</a><br>
+
+<a href="#date">Fecha</a><br>
+
+<a href="#printerscribe">Copista / Impresor</a><br>
+
+<a href="#owner">Antiguo dueño</a><br>
+
+</blockquote>
+
+<a href="#codicology">Bibliografía descriptiva, paleografía y codicología</a><br>
+
+<blockquote>
+
+<a href="#support">Soporte material</a><br>
+
+<a href="#format">Formato bibliográfico</a><br>
+
+<a href="#binding">Encuadernación</a><br>
+
+<a href="#collation">Colación</a><br>
+
+<a href="#hand">Mano (del manuscrito)</a><br>
+
+<a href="#font">Fuente (tipográfica)</a><br>
+
+<a href="#watermark">Filigrana</a><br>
+
+<a href="#decoration">Decoración (de la página)</a><br>
+
+<a href="#music">Música</a><br>
+
+<a href="#layout">Pautado</a><br>
+
+<a href="#catchword">Reclamos</a><br>
+
+<a href="#signature">Signaturas (de las hojas)</a><br>
+
+<a href="#sewing">Cosido</a><br>
+
+<a href="#perf">Perforaciones</a><br>
+
+<a href="#just">Justificación</a><br>
+
+<a href="#linef">Rellenos de línea</a><br>
+
+</blockquote>
+
+<a href="#examples">Ejemplos de búsquedas</a><br>
+
+<a href="#charset">Juego de caracteres</a><br>
+
+<a href="#helpdetail">Ayuda técnica y puntual</a><br>
+
+<a href="#resources">Recursos en línea</a><br>
+
+</blockquote>
+
+<p></p>
+
+<a name="búsquedas"></a>
+
+<h2>Búsquedas</h2>
+
+<p><b>Mayúsculas / Signos diacríticos:</b> Las búsquedas no tienen en cuenta
+
+ni las mayúsculas ni los signos diacríticos.
+
+Así “cañas, canas, Canas, Cañas” recuperan los mismos registros.</p>
+
+<p><b>Comodín:</b> En las búsquedas el asterisco sirve como comodín para uno o más caracteres,
+
+tanto al principio de la palabra como al final o en medio.</p>
+
+<p><b>MANID / TEXID / CNUM:</b> Si se conoce el “manid”, “texid”
+
+o “cnum” del registro que se busca,
+
+utilícese una búsqueda “Búsqueda Sencilla” (la última de las opciones
+
+en todas las páginas de búsqueda).
+
+Por ejemplo, en <i><b>OBRA</b></i> búsquese “texid 3482”
+
+después de seleccionar <i><b>BETA</b></i>.</p>
+
+<p>Las búsquedas con <b>“Búsqueda sencilla”</b> también
+
+pueden utilizarse para recuperar
+
+información que no se puede recuperar a través de los índices.
+
+Véase el apartado abajo <a href="#codicology">Bibliografía,
+
+paleografía y codicología</a>.</p>
+
+<p><b>Fechas:</b> En los campos que incluyen fechas éstas se visualizan
+
+en el formato AAAA-MM-DD, por
+
+ejemplo, 1454-07-21 es el 21 de julio de 1454. Se pueden buscar utilizando el mismo
+
+formato. Una búsqueda de “1454” recupera todas las fechas del año 1454;
+
+de “1454-07 ” (con o sin guiones), todas las de julio de 1454; de
+
+“1454-21”, todas las de cualquier día 21 del año 1454.</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="materia"></a>
+
+<h2>Materia</h2>
+
+<p>El uso del campo Materia en las varias tablas no ha sido sistemático. Por lo tanto
+
+no debe extrañar si se muestran sólo unos cuantos registros cuando en principio se deben
+
+encontrar muchos al hacer una búsqueda. Con el tiempo esta deficiencia se irá colmando.</p>
+
+<p>Por razones técnicas no se pueden combinar encabezamientos diferentes dentro de una
+
+misma búsqueda. Así se puede buscar “música” o “tratados”
+
+pero no “musica tratados”. Siendo así, la estrategia que se debe utilizar
+
+en las búsquedas es
+
+escoger el encabezamiento que más se aproxima al registro buscado. Así, para encontrar
+
+textos sobre cortes que tuvieron lugar en Valladolid, es mejor buscar en <b>OBRA</b>
+
+por “Valladolid”
+
+que no por “Cortes”. Este último recupera los registros de todos los
+
+cortes de la Edad Media.</p>
+
+<p>Nótese que el asterisco * sirve como comodín, sustituyendo a uno o varios caracteres
+
+tanto en medio como al principio o final de la palabra. Por ejemplo, en el
+
+elenco que sigue, “Jueg*” recupera no sólo “Juego” sino “Juegos - Lúdico”.</p>
+
+<p>El elenco de encabezamientos utilizados en <b><i>BETA</i></b> es el siguiente:</p>
+
+<ul class="normal">
+
+<li><b>Ciencia:</b> Agricultura, Alquimia, Aritmética, Astrología, Astronomía,
+
+Avicultura, Bestiarios, Botánica, Ciencia, Cosmología,
+
+Droguería - Materia médica, Farmacia,
+
+Geografía, Ginecología, Lapidarios, Magia, Mapas - Cartografía -
+
+Planos, Matemáticas, Medicina, Medicina Reproductiva,
+
+Minerología, Pediátrica, Peste, Química, Recetas, Recetas medicinales,
+
+Regimientos de sanidad, Sanidad Pública, Sífilis, Sueños, Veterinaria</li><br>
+
+<li><b>Conceptos:</b> Amor, Caballería, Cortesía, Costumbres, Esotérica, Etiqueta,
+
+Guerra, Luto, Misoginia - Antifeminismo, Mujeres, Muerte</li><br>
+
+<li><b>Deportes / Juegos / Ocio:</b> Ajedrez, Caza, Cetrería, Jueg*, Jueg* - Lúdico</li><br>
+
+<li><b>Derecho:</b> Derecho Administrativo, Derecho Canónico,
+
+Derecho Civil, Derecho Consuetudinario,
+
+Derecho Criminal, Derecho Marítimo,
+
+Derecho Militar, Derecho Procesal,
+
+Códigos legales, Estatutos municipales, Estatutos regionales,
+
+Fueros, Notariado, Penas - multas</li><br>
+
+<li><b>Minorías:</b> Árabes, Esclavos - Esclavitud, Minorías, Negros</li><br>
+
+<li><b>Eventos / acontecimientos:</b> Basilea - Concilio de,
+
+Castilla - Hambre en (1506),
+
+Caspe - Compromiso de (1412), Comuneros - Rebelión de los,
+
+Cruzada, Granada - Guerra de (1482-1492),
+
+Mudéjares - Revuelta de los (1501) - Alpujarras - Rebelión de las (1501),
+
+Ponza - Batalla de (1435)</li><br>
+
+<li><b>Géneros literarios:</b> Alegoría, Apologías, Artúric*, Cancioneril,
+
+Cartel de desafío, Clerecía, Comentario*, Consola*, Debates,
+
+Diálogo, Épica, Doctrina*, Elegía,
+
+Enciclopedia - Enciclopédic*, Epístola*, Epístola*, Epístola amorosa, Epitalamios,
+
+<i>Exempla</i>, Fábulas, Ficción, Goigs, Glosa*, Gnómic*, Juglaría, Lírica,
+
+Literatura didáctica,
+
+Misceláneas, Momos, Novelas, Oratoria, Oratoria Religiosa, Panegírico - Loor,
+
+Parodia, Pastoril, Planto, Poesía, Profecías, Refranes y proverbios,
+
+Romance, Romances (poéticos),
+
+Sapiencial, Sátira, Sentencias, Sueños, Teatro, Tratados, Viajes, Visiones - Literatura visionaria</li><br>
+
+<li><b>Gobierno:</b> Administración, Aduana, Arancel,
+
+Asociaciones locales, Asociationes privadas, Asociaciones públicas, Cancillería,
+
+Asuntos exteriories, Casa real, Ceremonia*, Controles sobre la exportación,
+
+Corrupción, Cortes, Desafíos - Retos,
+
+Diplomacia, Ejército, Fisco real, Hermandades, Impuestos,
+
+Marina, Náutica, Naval, Órdenes militares,
+
+Paz - Tratados de, Política - Administración, Política fiscal,
+
+Política monetaria, Protocolo, Rentas - Arrendamiento de, Vasallaje</li><br>
+
+<li><b>Historia:</b> Anales, Autobiografía, Biografía,
+
+Calendario, Cronología, Genealogía, Heráldica, Historia, Numismática</li><br>
+
+<li><b>Humanidades: </b> Bibliografía,
+
+Codicología, Diccionarios, Documento fechado, Ética, Filosofía moral, Filología,
+
+Gramática, Historia, Humanismo, Incunable,
+
+Lexicografía, Lingüística, Literatura, Literatura catalana hasta 1500,
+
+Literatura española hasta 1500, Literatura española - 1500-1600,
+
+Literatura italiana hasta 1500, Lógica, Manuscrito fechado,
+
+Materia clásica, Métrica - Versificación, Mitología, Música,
+
+Paleografía, Paremiología, Poética, Pos-incunable, Prehumanismo, Retórica</li><br>
+
+<li><b>Mundo natural:</b> Aves - Pájaros, Aves de rapiña, Clima, Ganado, Burros,
+
+Caballos, Mulas, Océano, Paloma* - Pichones, Perros, Sexo</li><br>
+
+<li><b>Religión:</b> Angeología, Anticristo, Apologética, Ascétic*,
+
+Biblia - Nuevo Testamento - Viejo Testamento - Salmos - Apócrifa - Libros apócrifos,
+
+Bibliología, Cábala, Cofradías, Confesión,
+
+Conversos, Cristología, Escatología, Espiritualidad,
+
+Eucaristía, Exégesis - Exegétic*, Exorcismo -
+
+Espíritus malignos, Hagiografía - Vidas de santos - Biografía,
+
+Herejía, Himnos, Iglesia Católica,
+
+Inquisición - Santo Oficio, Islam, Judaísmo, Judíos,
+
+Liturgia,
+
+Mariolatría, Mariología, Meditaciones, Milagros,
+
+Monacato - Monasticismo - Órdenes religiosos, Moral cristiana, Moriscos - conversos musulmanes,
+
+Musulmanes - Moros, Obras devocionales, Oraciones, Penitencia, Religión, Rito*,
+
+Sacramento,
+
+Sagrada Escritura, Santa María - Biografía,
+
+Santiago - apóstol, Sermones, Teología, Unción, Vida cristiana</li><br>
+
+<li><b>Sociedad / Economía:</b> Administración,
+
+Artes y oficios - Artesanía, Ciencia militar, Ciencia política,
+
+Cocina,
+
+Cosmética - Perfumes, Comercio - Negocio, Contabilidad,
+
+Creencias folclóricas, Economía doméstica, Encuadernadores, Ensenánza, Fiesta de los locos,
+
+Fiesta del asno, Fiesta del obispillo, Fuentes electrónicas,
+
+Gastronomía, Imprenta, Internet - Obras digitalizados,
+
+Internet - Textos electrónicos,
+
+Mercados, Pintura, Política, Superstición - Usura, Vinicultura</li><br>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<li><b>Instituciones:</b> Se da la población, si procede, con el nombre de
+
+la institución para distinguir instituciones del mismo nombre pero en diferentes
+
+lugares.
+
+En <i><b>OBRA</b></i> normalmente recupera textos de reglamentos o de otra
+
+información sobre la institución<br><br>
+
+Alba de Tormes: San Leonardo<br>
+
+Albacete: San Miguel (iglesia)<br>
+
+Alcalá: Santa María de Jesús<br>
+
+Alcocer: Concejo<br>
+
+Andújar: Concejo<br>
+
+Arjona: Concejo<br><br>
+
+Baeza: Concejo<br>
+
+Barcelona: Convent del Carme (OCarm)<br>
+
+Barcelona: Els Llibres del Tirant (librería)<br>
+
+Basilea: Concilium Basiliensis<br>
+
+Benfica: Santo Domingo<br>
+
+Berlin: S. Calvary & Co. (librería)<br>
+
+Berlin: Staatsbibliothek zu Berlin<br>
+
+Bilbao: Librería Anticuaria Astarloa<br>
+
+Buenos Aires: Librería de Antaño<br>
+
+Bujedo: Santa María de Bujedo (OPraem)<br>
+
+Burgos: Cofradía de la Creazón<br>
+
+Burgos: Cofradía de la Veracruz y San Sebastián<br>
+
+Burgos: Cofradía de San Julián<br>
+
+Burgos: Cofradía de Santa Ana<br>
+
+Burgos: Colegio de Jesuitas<br>
+
+Burgos: Monasterio de San Juan (OSB)<br>
+
+Burgos: Real Cofradía de los Caballeros de Santiago<br>
+
+Burgos: San Lesmes (iglesia)<br>
+
+Bruxelles: Collegium Societatis Iesu (SJ)<br><br>
+
+Cardeña: San Pedro<br>
+
+Castilla (reino): Cancillería Real<br>
+
+Castilla (reino): Consejo Real<br>
+
+Castilla y León (Corona de): Santa Hermandad<br>
+
+Cazorla: Concejo<br>
+
+Chicago: University of Chicago<br>
+
+Cifuentes: San Blas<br>
+
+Cofradía del Rosal<br>
+
+Coimbra: Santa Cruz (CanReg)<br>
+
+Columbus (Ohio): Columbus Public Library<br>
+
+Convento de San Sebastián (lugar desconocido)<br>
+
+Córdoba: Monasterio de Arrizafa<br>
+
+Córdoba: San Jerónimo<br>
+
+Cuéllar: Estudio de gramática<br>
+
+Cuéllar: Hospital de santa María Magdalena<br>
+
+Cuenca: Caballeros y escuderos de Cuenca<br><br>
+
+Duruelo: Carmelitas Descalzos (OCarm)<br><br>
+
+Écija: Nuestra Señora del Valle<br>
+
+Escalada: San Martín de Escalada<br>
+
+España: Consejo Real<br><br>
+
+Fitero: Santa María la Real<br>
+
+Frankfurt: Joseph Baer & Co Buchhandlung (librería)<br>
+
+Fresdelval: Santa María<br><br>
+
+Glasgow: Hunterian Museum<br>
+
+Glasgow: University of Glasgow<br>
+
+Granada: Santa María de la Concepción<br>
+
+Guadalupe: Santa María<br><br>
+
+
+Iglesia Católica: Inquisición - Santo Oficio<br><br>
+
+Jaén: Concejo<br>
+
+Junta de las comunidades<br><br>
+
+La Mejorada: Santa María<br>
+
+Lecároz: Convento de Capuchinos (OFMCap)<br>
+
+Leiden: Officina Plantiniana<br>
+
+Leiden: Universiteit<br>
+
+Leiquitio: Santa María<br>
+
+León (reino: Cancillería Real<br>
+
+Lisboa: Livraria Ferin (librería)<br>
+
+London: British Library<br>
+
+London: Ellis, Booksellers (librería)<br>
+
+London: Thomas Thorp (librería)<br>
+
+London: Thomas Thorpe, Bookseller (librería)<br><br>
+
+Madrid: Archivo de la Secretaría de Estado<br>
+
+Madrid: Banco Español de Crédito<br>
+
+Madrid: Casa Profesa de la Compañía de Jesús (SJ)<br>
+
+Madrid: Comisión de Archivos<br>
+
+Madrid: Concejo<br>
+
+Madrid: Gabinete de Historia Natural. Biblioteca Izquierdo<br>
+
+Madrid: Librería de Manuel de Godos<br>
+
+Madrid: Librería José Porrúa Turanzas<br>
+
+Madrid: Real Biblioteca privada<br>
+
+Madrid: Real Biblioteca pública<br>
+
+Madrid: Real Colegio de Cirugía de San Carlos<br>
+
+Madrid: San Andrés<br>
+
+Madrid: Universidad Complutense<br>
+
+Madrid: Universidad Complutense. Biblioteca de la Facultad de Filosofía y Letras<br>
+
+Madrid: Universidad Complutense. Biblioteca de la Facultad de Odontología<br>
+
+Madrid: Universidad Complutense. Facultad de Farmacia<br>
+
+Medina del Campo: Cofradía de Santa María de la Merced<br>
+
+Meyá: Santa María<br>
+
+Miranda del Ebro: San Miguel del Monte<br>
+
+Monóvar: Monasterio de Capuchinos(OFMCap)<br>
+
+Montesa: Orden de N. S. de Montesa<br>
+
+Muënchen: Biblioteca Regia Monacensis<br>
+
+Muënchen: StaatsBibliothek<br>
+
+Murcia: Monasterio de San Juan (OFM)<br><br>
+
+N. A. S. Francisco de Ávila (lugar desconocido)<br>
+
+York: Henry Schuman (librería)<br>
+
+New York: J. Pierpont Morgan Library <br>
+
+New York: John F. Fleming (librería)<br>
+
+Niebla: Santa María de la Luz<br>
+
+Nindeln: Rare Books, Ltd. (librería)<br><br>
+
+Oña: San Salvador<br>
+
+Orden de Alcántara<br>
+
+Orden de Calatrava<br>
+
+Orden de la Banda<br>
+
+Orden de la Merced, Orden de la Trinidad<br>
+
+Ordo Cartusiensis<br>
+
+Ordo Cisterciensis<br>
+
+Ordo Sancti Hieronimi<br>
+
+Oristany: Monasterio de Capuchinos<br>
+
+Oviedo: Librería Antiquario Valdés<br>
+
+Oxford: Dolphin Book Co. Ltd.<br><br>
+
+Palma de Mallorca: Colegi de Jesuïtes<br>
+
+Pamplona: Institución Provincial<br>
+
+Paris: Bibliothèque nationale<br>
+
+Paris: Collège de France<br>
+
+Paris: Collège de Sorbonne<br>
+
+Paris: Collegium Parisiensis Societatis Jesu<br>
+
+Paris: École des Chartes<br>
+
+Paris: Les Enluminaires (librería)<br>
+
+Paris: Librairie Alphonse Picard (librería)<br>
+
+Paris: Librarie Charles Porquet (librería)<br>
+
+Paris: Librarie Damascène Morgand (librería)<br>
+
+Paris: Musée de la Chasse et de la Nature<br>
+
+Peñafiel: Confraternidad de [...]<br>
+
+Philadelphia: John Penington & Son<br>
+
+Philadelphia: University of Pennsylvania<br>
+
+Roa: Concejo<br>
+
+Rodas: San Juan de Rodas<br>
+
+Roma: Collegio Romano [dei Gesuiti]<br>
+
+Roma: Gesuiti: Preposto Generale<br>
+
+Roma: Santa Maria della Scala<br>
+
+Roma: Università di Roma La Sapienza. Biblioteca Alessandrina<br><br>
+
+Sacro Imperio Romano<br>
+
+Sahagún: San Benito el Real<br>
+
+Saint-Denis: Abbaye de Saint-Denis<br>
+
+Salamanca: Colegio de la Magdalena / Colegio de los Gascos<br>
+
+Salamanca: Colegio Trilingüe<br>
+
+Salamanca: Sancti Spiritus<br>
+
+Salamanca: Santa María de la Victoria<br>
+
+San Juan de Ortega: Comunidad del Bendito San Juan de Ortega<br>
+
+San Lorenzo de El Escorial: Monasterio<br>
+
+San Martín de Elines: Colegiata de San Martín de Elines<br>
+
+San Salvador del Moral: Monasterio de San Salvador del Moral<br>
+
+Santa Cruzada<br>
+
+Santiponce: San Isidoro del Campo<br>
+
+Santisteban del Puerto: Concejo<br>
+
+Segovia: Cofradía de San Martín<br>
+
+Segovia: Hospital de la Misericordia<br>
+
+Segovia: San Antonio el Real (OFM)<br>
+
+Segovia: Santa María del Parral<br>
+
+Segovia (diócesis): Sínodo<br>
+
+Sevilla: Biblioteca Pública<br>
+
+Sevilla: Cofradía de Nuestra Señora del Pilar<br>
+
+Sevilla: Hospital de Santa Marta<br>
+
+Sevilla: Real Audiencia<br>
+
+Sevilla: San Jerónimo de Buenavista<br>
+
+Sevilla: Santa María de las Cuevas<br>
+
+Southampton: Taunton's College<br>
+
+Stockholm: Thulins Antikvariat AB (librería)<br><br>
+
+Tarazona: Catedral<br>
+
+Toledo: Cabildo de la ciudad<br>
+
+Toledo: Cabildo de la Santa Iglesia<br>
+
+Toledo: Catedral<br>
+
+Toledo: Catedral. Capilla de San Eugenio<br>
+
+Toledo: Hermandad y Cofradía de Corpus Christi y de Santa María de la Paz y de San Alfonso<br>
+
+Toledo: Colegio de San Eugenio<br>
+
+Toledo: San Clemente<br>
+
+Toledo: San Vicente (iglesia)<br>
+
+Toledo: Santa Leocadia<br>
+
+Toros de Guisando: San Jerónimo (OSH)<br><br>
+
+Úbeda: Concejo<br>
+
+Uclés: Orden de Santiago de la Espada<br><br>
+
+Valbuena: Santa María (OCist)<br>
+
+Valencia: Archivo de la Curia Episcopal<br>
+
+Valencia: Catedral de Santa María<br>
+
+Valfermoso de las Monjas: San Juan<br>
+
+Valladolid: Carmelitas Descalzas (OCarm)<br>
+
+Valladolid: Cofradía de Esgueva<br>
+
+Valladolid: Colegio de la Compañía de Jesús de San Ambrosio (SJ)<br>
+
+Valladolid: Delegación de Hacienda<br>
+
+Valladolid: San Benito el Real (OSB)<br>
+
+Valladolid: San Pablo (OP)<br>
+
+Villafranca del Bierzo: Cofradía de la Santísima Trinidad<br>
+
+Villagarcía de Campos: Colegio de Villagarcía (SJ)<br>
+
+Villaviciosa de Tajuña: San Blas<br><br>
+
+Yuste: San Jerónimo (OSH)<br><br>
+
+Zamora: Catedral
+
+Zaragoza: Santa Fe
+
+</li><br><br>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="toponyms"></a>
+
+<li><b>Topónimos:</b> Se utilizan los nombres en su lengua
+
+nativa (v.g., England, Napoli).<br><br>
+
+Aguero, Aguisy (Francia),
+
+Alarcón, Alba de Tormes, Albarracín,
+
+Alcalá de Henares, Alcalá del Valle,
+
+Alcañiz,
+
+Alcaraz, Alcaudete,
+
+Alcázar,
+
+Alcocer, Aledo,
+
+Algeciras,
+
+Alhama, Almenara,
+
+Almonacid de la Sierra,
+
+Alpujarras,
+
+Alquerforadat,
+
+Althorp (Inglaterra), América, Amusco,
+
+Añador, Andalucía, Andilla,
+
+Andújar,
+
+Antequera, Aragó*,
+
+Arcos de la Llana,
+
+Arenas de San Pedro,
+
+Arenys de Mar,
+
+Armenia, Aroche, Asturias,
+
+Atocha, Aumale (Francia),
+
+Ávila, Avilés, Ayala,
+
+Ayllón, Azután<br><br>
+
+Baeza,
+
+Balbás,
+
+Basilea, Baza, Beaumont-sur-Oise (Francia),
+
+Béjar, Benavente, Benfica (Portugal), Beniarjó,
+
+Berlanga, Berlin (Alemania),
+
+Bermeo,
+
+Boemia, Bosworth Field (campo de batalla, Inglaterra),
+
+Boulogne-sur-Mer (Francia),
+
+Brihuega, Briviesca, Buenache de Alarcón,
+
+Buenos Aires, Burgos<br><br>
+
+Cabreros del Monte, Cáceres, Calatayud,
+
+Canarias, Canet de Mar,
+
+Cañete la Real,
+
+Carrión de los Condes,
+
+Cartagena, Cartaxo (Portugal),
+
+Casarrubias, Caspe,
+
+Castilla, Castilla y León,
+
+Castro Urdiales, Castrojeriz,
+
+Cavtat (Croacia), Cetina,
+
+Chinchilla,
+
+Consuegra,
+
+Córdoba, Cornago,
+
+Coto de Cabo de Angoa,
+
+Covarrubias,
+
+Cuéllar,
+
+Cuenca, Cuerva,
+
+Curueña<br><br>
+
+Daroca, Dosbarrios<br><br>
+
+Easton Norton (Inglaterra), Écija,
+
+Eliche, Encinas de Esgueva, England,
+
+Escalada, Escalona, Esgueva,
+
+España, Estremadura, Evol<br><br>
+
+Ferrara, Fitero,
+
+France, Fuentes de la Alcarria,
+
+Fuentes de los Oteros, Funes<br><br>
+
+Gascogne (Francia), Gaucín,
+
+Genève (Suiza), Gibraltar, estrecho de,
+
+Glasgow (Escocia), Granada,
+
+Grecia, Guadalajara, Guadalcanal,
+
+Guarda (Portugal), Guipúzcoa<br> <br>
+
+Huélamo, Huete
+
+<br><br>
+
+Illescas, Imperio romano,
+
+Imperio Turco Otomano,
+
+Istanbul, Italia, Iznatoraf<br><br>
+
+Jaca, Jaraíz de la Vera,
+
+Jerusalén<br><br>
+
+La Adrada,
+
+La Guardia,
+
+Laredo, Las Palmas de Gran Canaria,
+
+Lede (Flandes), Ledesma,
+
+Ledigos, Leiquitio,
+
+Lences, León,
+
+Logroño, Loja, Lugo<br><br>
+
+Madrid, Maella,
+
+Málaga, Manresa,
+
+Marbella, Medina de Rioseco,
+
+Medina del Campo, Meyá,
+
+Middle Hill (Inglaterra),
+
+Mirando do Douro (Portugal),
+
+Mirueña de los Infanzones, Molina,
+
+Montánchez, Mora, Morbecq / Morbecque,
+
+Mucientes,
+
+Murcia, Muro<br><br>
+
+Nájera, Napoli (Italia),
+
+Navarra, Niebla, Numancia<br><br>
+
+Ocaña, Oliveto (Italia), Olmedo, Orense,
+
+Orihuela, Osuna,
+
+Oviedo<br><br>
+
+Palencia, Palmela (Portugal), Pamplona,
+
+Penàguila, Penamacor (Portugal),
+
+Peñafiel, Perellós,
+
+Persia,
+
+Philadelphia, Pinilla, Pinos Puente,
+
+Plasencia, Ponza (Italia),
+
+Portugal, Poyatos<br><br>
+
+Ravena (Italia), Reims (Francia),
+
+Renera, Requena,
+
+Ribadeo, Ribiella,
+
+Roda, Rodas,
+
+Roma (Italia), Ruiseñada<br><br>
+
+Sacro Imperio Romano, Sahagún,
+
+Saint-Denis (Francia),
+
+Saint-Germain-en-Laye (Francia),
+
+Saint-Jean-de-Luz (Francia),
+
+Saint-Nicolas-lès-Cîteaux (Francia),
+
+Salamanca,
+
+San Julián,
+
+San Martín de Elines,
+
+San Salvador del Moral, San Sebastián,
+
+San Vicente de la Barquera, Santa Gadea de Alfoz,
+
+Santander, Santarém (Portugal),
+
+Santiago de Compostela, Santiponce,
+
+Santisteban de Gormaz,
+
+Savona (Italia), Segovia, Sepúlveda,
+
+Sevilla, Sierra-Bermeja, Sobrarbe,
+
+Soria, Southampton (Inglaterra), Stockholm (Suecia),
+
+Strasbourg (Francia), Sulmona (Italia)<br><br>
+
+Teruel,
+
+Tierra Santa, Toledo,
+
+Tolosa,
+
+Tordehumos, Tordesillas, Toro, Torrebuceit,
+
+Treviño, Treviso (Italia),
+
+Triana, Tragacete, Troya,
+
+Tudela,
+
+Tuy<br><br>
+
+Úbeda, Uclés,
+
+Urbasa, Usagre<br><br>
+
+Valdefuente, Valdepeñas,
+
+Valfermoso de las Monjas,
+
+Valladolid,
+
+Valldemossa, Varazze (Italia),
+
+Versailles (Francia),
+
+Vigo, Viguera, Villaescusa de Haro,
+
+Villaudela,
+
+Villafeliche,
+
+Villafranca del Bierzo,
+
+Villagarcía de la Torre,
+
+Villanubla, Villaviciosa de Odón,
+
+Villoria, Vincennes (Francia),
+
+Vizcaya<br><br>
+
+Zahara de la Sierra, Zamora,
+
+Zaragoza, Zorita de los Canes</li>
+
+</ul>
+
+<p>Nótese el empleo del asterisco como comodín tanto en el medio como al principio o final de la
+
+palabra para buscar términos relacionados sin tener
+
+que multiplicar las búsquedas.</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="normas"></a>
+
+<h2>Normas de transcripción</h2>
+
+<p>
+
+En los últimos años hemos comenzado a hacer las transcripciones, v.g., de los íncipit y éxplicit de
+
+los textos encontrados en
+
+un manuscrito determinado, más detallados. Así se ha indicado la ausencia de
+
+una inicial mayúscula con el uso de corchetes: [A]. Asimismo se ha indicado la altura de la
+
+inicial con un número superíndice para señalar el número de líneas que ocupa: [A]<sup>6</sup>
+
+quiere decir que el espacio para la A que falta tiene una altura de seis líneas.
+
+</p>
+
+<p>También se ha comenzado a señalar las abreviaturas, o dejándolas tal cual (v.g., “cõ”
+
+en vez de “con”) o
+
+en el caso de abreviaturas más complicadas, desarrollándolas en cursiva
+
+(“cap<i>itu</i>lo”).
+
+La puntuación, omitida de las transcripciones originales por su uso arbitrario en las
+
+ediciones modernas, ha sido transcrita tal cual de los MSS y, sobre todo, impresos antiguos.
+
+Se ha indicado el paso de una línea a otra tanto en prosa como en poesía, utilizando la raya
+
+vertical a tal efecto: | Dos rayas verticales || indican el paso de una columna a la
+
+siguiente o de una
+
+página a la siguiente. Detalles como estos son especialmente importantes en la descripción de
+
+los impresos para ayudar
+
+a distinguir una edición de otra o para determinar los distintos estados de una edición
+
+</p>
+
+<p>Sin embargo, no ha sido posible revisar sistemáticamente todos los registros para
+
+adecuarlos a las normas actuales. Por lo tanto en la práctica algunas descripciones
+
+tendrán un lujo de detalle mientras la mayoría sigue las normas antiguas. Con el
+
+tiempo, a medida que el equipo editorial pueda examinar todos los manuscritos e impresos <i>in situ</i>,
+
+todas las descripciones seguirán las normas actuales.</p>
+
+<a name="url"></a>
+
+<h2>Enlaces(URL): imágenes y textos digitalizados</h2>
+
+<p>Para acceder a otras páginas web similares, bastará con usar el ratón y
+
+pinchar los enlaces resaltados. Generalmente, los enlaces que
+
+aparecen en <i><b>PhiloBiblon</b></i> proporcionan acceso a tres tipos de información distintos:</p>
+
+<ol>
+
+<li>en la tabla <i><b>MsEd</b></i>: el facsímil digitalizado de una fuente primaria,
+
+manuscrita o impresa. En algunos casos, dependiendo de la institución correspondiente,
+
+tal vez las imágenes se descarguen en el computador en vez de que puedan verse en pantalla. Para
+
+encontrar todos los facsímiles digitalizados recogidos en <i><b>PhiloBiblon</b></i>, búsquese
+
+“http” en el campo “Búsqueda sencilla”.</li>
+
+<li>en la tabla  <i><b>REFERENCIA</b></i>: un facsímil digitalizado de una
+
+fuente secundaria,  en formato PDF o en cualquier otro formato de texto electrónico.</li>
+
+<li>en la tabla <i><b>PERSONA</b></i>: cualquier tipo de fuente
+
+contrastada en Internet que proporciona información sobre esa persona concreta.</li>
+
+</ol>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="howusesearchtablespages">Cómo utilizar  las tablas / páginas de búsqueda y sus campos</a><br>
+
+<h2>Las tablas de <i>BETA</i></h2><h2>
+
+<a name="obra"></a>
+
+</h2><h3>OBRA</h3>
+
+<p><i><b>Información sobre los textos medievales: Autor, título, íncipit, éxplicit, fecha, personas
+
+asociadas, lugar de redacción, materia.</b></i></p>
+
+<p><b>Autor:</b> Se puede buscar tanto el nombre original como su traducción. Así se puede buscar
+
+“Augustinus” o “Agustín” para el santo. Para ver todas las formas del nombre recogidas
+
+en la base de datos, búsquese en la tabla <a href="#persona"><i><b>PERSONA</b></i></a>.
+
+</p><p>
+
+</p><p><b>Título:</b> Se puede buscar tanto el título en la lengua original como en la traducción
+
+española. Así una búsqueda de “regimine” recupera los registros de traducciones,
+
+v.g., del <i>De regimine principum</i>, mientras una búsqueda de “regimiento” recupera
+
+los mismos registros más los de otras obras
+
+escritas originalmente en castellano, como el <i>Regimiento de príncipes</i> de Gómez
+
+Manrique.</p>
+
+<p><b>Íncipit / Éxplicit:</b> Para facilitar las búsquedas hemos modernizado la ortografía de los títulos,
+
+los íncipit y los éxplicit en los registros “maestro” (texid) de cada obra,
+
+mientras hemos mantenido la ortografía medieval en los registros que describen los testimonios de la obra (cnum).
+
+Como en muchos casos todavía faltan el íncipit y el éxplicit en el registro “maestro”, si no se encuentra, v.g.
+
+“mujer” o “hizo”, búsquese por “muger” o “fizo”, etc.</p>
+
+<p><b>Persona asociada:</b> Se refiere a traductores, destinatarios de la obra,
+
+notarios, personas mencionadas, patronos, personas a quienes la obra va
+
+dedicada, etc. En el caso de no conocerse el nombre original
+
+en su lengua nativa, se puede empezar la búsqueda en la tabla
+
+<a href="#persona"><i><b>PERSONA</b></i></a>,
+
+donde se puede
+
+buscar por cualquier forma del nombre. Al final del registro se encontrará un listado de
+
+todas las obras traducidas por el individuo buscado o relacionados de
+
+cualquier manera con él.</p>
+
+<p><b>Fecha de composición:</b> Se puede referir no sólo a la fecha original
+
+de composición sino también a la de refundición, de traducción, de promulgación (tratando
+
+de una ley u ordenamiento).</p>
+
+<p><b>Lugar de composición:</b> Vale lo mismo como para la fecha de composición.</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="biblioteca"></a>
+
+<h3>BIBLIOTECA</h3>
+
+<p><i><b>Información sobre las bibliotecas que contienen fuentes primarias, manuscritos e
+
+impresos.</b></i>
+
+</p><p>Las búsquedas en la tabla <i><b>BIBLIOTECA</b></i> son útiles para formarse una
+
+idea del contenido de la biblioteca, por ejemplo, para
+
+planear una visita a la misma; pero para localizar información
+
+puntual sobre un manuscrito o impreso determinado, es aconsejable hacer la búsqueda
+
+directamente en la tabla <a href="searchmsed_es.html"><i><b>MsEd</b></i></a>.</p>
+
+<p><b>Ciudad:</b> Búsquese el nombre de la ciudad en su lengua nativa
+
+(v.g., London, New York) o transliterado, si viene al caso, v.g., Moskva.
+
+En caso de no conocerse el
+
+nombre nativo, utílicese el asterisco como comodín. En la inmensa mayoría
+
+de los casos la letra inicial es la misma; así que una búsqueda
+
+de “m*” recupera
+
+todas las ciudades cuyos nombres empiezan con “M”.</p>
+
+<a name="library1"></a>
+
+<p><b>Biblioteca:</b> Se puede buscar tanto por el nombre
+
+actual como por el o los antiguos.</p>
+
+<a name="signatura"></a>
+
+<p><b>Signatura</b> Se puede buscar por la signatura actual,
+
+la antigua o por la de un antiguo
+
+posesor. Ahora, debe tenerse en cuenta que el resultado <i>no</i> será el registro
+
+(ficha descriptiva) del
+
+manuscrito o impreso buscado sino el de la biblioteca que lo contiene. En este registro,
+
+a continuación de la información sobre la biblioteca (señas, teléfonos, personal, etc.),
+
+consta un listado, por orden de signatura (salvo error), de todos los manuscritos e impresos
+
+que contiene la biblioteca.</p>
+
+<p>Para buscar signaturas de antiguos dueños es también aconsejable hacer la búsqueda en
+
+MsEd, por la sencilla razón que esas signaturas no se visualizan en el
+
+listado de manuscritos e impresos
+
+(a pesar del hecho que la búsqeda las considera).
+
+Por lo tanto la única manera de encontrar el MS o impreso
+
+con esa signatura en la tabla <i><b>BIBLIOTECA</b></i> es ir abriendo uno por
+
+uno todos los registros del listado hasta topar
+
+la signatura buscada en el campo “Dueño antiguo“.</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="persona"></a>
+
+<h3>PERSONA</h3>
+
+<p><i><b>Información sobre las personas involucradas, en sentido amplio, con la
+
+composición y difusión de la literatura medieval castellana: autores,
+
+traductores, miembros de la nobleza o del clero, antiguos dueños de manuscritos o
+
+impresos, anticuarios, eruditos, etc.</b></i></p>
+
+<p>El registro puede ofrecer información sobre los cargos que la
+
+persona desempeñó, las relaciones que tuvo con otras
+
+personas (v.g., familiares o profesionales) o con instituciones, la profesión que ejerció y
+
+la orden religiosa o militar a que perteneció. En este registro, a continuación
+
+de la información sobre la persona, se encuentra una relación
+
+de las obras que compuso, de otras asociones con
+
+obras (v.g., como patrono), los manuscritos o impresos
+
+que le pertenecieron, etc. Véase, como ejemplo muy rico, el registro de Íñigo
+
+López de Mendoza, 1. marqués de Santillana (bioid 1031).</p>
+
+<p>NOTA: El apartado <i>Associated Persons</i> de los registros biográficos debe tratarse con cautela, sobre todo en el caso de aquellos individuos que tienen numerosas relaciones. El programa que maneja la base de datos debe establecer automáticamente un enlace recíproco entre dos registros cuando en uno de ellos se establece un enlace con el otro.
+
+Así cuando se relacionó el registro de "Juana la Loca" (BETA bioid 7208) con el de Fernando V (bioid 1104) como su  hija, se estableció un enlace automáticamente
+
+en el de Fernando V señalando que Juana la Loca era su hija.
+
+Desgraciadamente, por faltas de programación este proceso automático a veces ha establecido enlaces erróneos con otros registros.
+
+Con el tiempo estos errores serán corregidos. Rogamos a los usuarios hagan el favor de señalárnoslos.
+
+</p>
+
+<a name="nombre"></a>
+
+<p><b>Nombre:</b> Se puede buscar tanto el nombre original como el traducido. Así
+
+Augustinus y Agustín recuperan el registro de Aurelius Augustinus (S.). Asimismo se pueden
+
+buscar variantes del nombre y seudónimos.</p>
+
+<a name="title"></a>
+
+<p><b>Título:</b> Se puede buscar no sólo por el título en sí (obispo, marqués) sino también
+
+por el lugar
+
+relacionado con ese título (Valladolid, Sevilla, Santillana)</p>
+
+<a name="persdate"></a>
+
+<p><b>Fecha:</b> Se incluyen no sólo las fechas de nacimiento y muerte sino también
+
+las
+
+de la tenencia de un título nobiliario, de un obispado, etc.</p>
+
+<a name="persplace"></a>
+
+<p><b>Lugar relacionado:</b> Se incluyen no sólo los lugares de nacimiento y muerte sino
+
+también los períodos de residencia en un lugar determinado o la presencia en un
+
+acontecimiento importante (v.g., la batalla de Olmedo). En principio el intento es
+
+de construir un itinerario completo de la persona, aunque nuestros datos no
+
+llegan, con mucho, a ese ideal, ni siquiera para figuras tan conocidas como los
+
+RR.CC.</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="order"></a>
+
+<p><b>Orden religiosa o militar:</b> Las órdenes religiosas deben buscarse por las
+
+siglas empleadas en el <i>Diccionario de historia eclesiástica de España</i>:</p>
+
+<ul class="normal">
+
+<li>CanReg: Ordo Canonicorum Regularium / Canónigos Regulares / Canónigos Augustinianos </li>
+
+<li>Cluny: Cluniacenses</li>
+
+<li>OCart: Ordo Cartusiensis / Cartujos </li>
+
+<li>OCist: Ordo Cisterciensis / Cistercienses</li>
+
+<li>OdeM: Ordo de Mercede / Mercedarios</li>
+
+<li>OESA: Ordo Eremitarum Sancti Augustini / Ermitaños de san Agustín</li>
+
+<li>OFM: Ordo Fratrum Minorum / Franciscanos</li>
+
+<li>OM: Ordo Minimorum / Mínimos</li>
+
+<li>OP: Ordo Praedicatorum / Dominicos</li>
+
+<li>OPraem: Ordo Praemonstratensis / Premonstratenses</li>
+
+<li>OSA: Ordo Sancti Augustini / Agustinos</li>
+
+<li>OSB: Ordo Sancti Benedicti / Benedictinos</li>
+
+<li>OSH: Ordo Sancti Hieronymii / Jerónimos</li>
+
+<li>OSST: Ordo Sanctissimae Trinitatis / Trinitarios</li>
+
+<li>SJ: Societas Jesu / Jesuitas</li>
+
+<li>Teatinos: Ordo Clericorum Regularium / Teatinos</li>
+
+</ul>
+
+<p>Las órdenes militares pueden buscarse por sus nombres:</p>
+
+<ul class="normal">
+
+<li>Alcántara: Orden de Alcántara</li>
+
+<li>Avis: Ordem de Avis (Portugal)</li>
+
+<li>Calatrava: Orden de Calatrava</li>
+
+<li>Montesa: Orden de Montesa</li>
+
+<li>San Juan: Orden de San Juan de Jerusalén, de
+
+Rodas y de Malta / Hospitalarios</li>
+
+<li>Santiago: Orden de Santiago</li>
+
+<li>Toison: Ordre de la Toison d'or (Borgoña)</li>
+
+</ul>
+
+<a name="profession"></a>
+
+<p>Las profesiones pueden buscarse por los siguientes términos:</p>
+
+<ul class="normal">
+
+<li>abogado </li>
+
+<li>agricultor   </li>
+
+<li>anticuario    </li>
+
+<li>arquitecto    </li>
+
+<li>archivero    </li>
+
+<li>astrólogo </li>
+
+<li>astrónomo </li>
+
+<li>banquero    </li>
+
+<li>barbero    </li>
+
+<li>bibliófilo    </li>
+
+<li>bibliógrafo    </li>
+
+<li>boticario </li>
+
+<li>bibliotecaria  </li>
+
+<li>bibliotecario  </li>
+
+<li>bordador </li>
+
+<li>caballero </li>
+
+<li>calígrafo    </li>
+
+<li>campesino   </li>
+
+<li>canonista    </li>
+
+<li>carpentero    </li>
+
+<li>cirujano </li>
+
+<li>clérigo regular </li>
+
+<li>clérigo secular </li>
+
+<li>cocinero   </li>
+
+<li>compositor   </li>
+
+<li>consejero real</li>
+
+<li>contador  </li>
+
+<li>copero </li>
+
+<li>copista    </li>
+
+<li>cortesno    </li>
+
+<li>cronista </li>
+
+<li>diplomático </li>
+
+<li>dramaturgo  </li>
+
+<li>editor    </li>
+
+<li>encuadernador </li>
+
+<li>erudito   </li>
+
+<li>escritor  </li>
+
+<li>escribano    </li>
+
+<li>escudero    </li>
+
+<li>estudiante  </li>
+
+<li>filólogo </li>
+
+<li>filósofo    </li>
+
+<li>genealogista</li>
+
+<li>geógrafo     </li>
+
+<li>halconero </li>
+
+<li>heraldo </li>
+
+<li>herbalista   </li>
+
+<li>herrero    </li>
+
+<li>historiador </li>
+
+<li>humanista </li>
+
+<li>iluminador</li>
+
+<li>ilustrador</li>
+
+<li>impresor  </li>
+
+<li>juglar    </li>
+
+<li>jurista    </li>
+
+<li>librero  </li>
+
+<li>marinero    </li>
+
+<li>matemático  </li>
+
+<li>mecenas    </li>
+
+<li>médico </li>
+
+<li>mercader </li>
+
+<li>maestro</li>
+
+<li>militar   </li>
+
+<li>monja   </li>
+
+<li>monje   </li>
+
+<li>músico   </li>
+
+<li>noble   </li>
+
+<li>notario   </li>
+
+<li>notario real </li>
+
+<li>orfebre   </li>
+
+<li>oidor   </li>
+
+<li>paje   </li>
+
+<li>periodista   </li>
+
+<li>pintor   </li>
+
+<li>platero   </li>
+
+<li>poeta   </li>
+
+<li>político   </li>
+
+<li>profesor   </li>
+
+<li>retórico   </li>
+
+<li>rey de armas  </li>
+
+<li>secretario </li>
+
+<li>secretario real</li>
+
+<li>teólogo </li>
+
+<li>tintorero </li>
+
+<li>traductor</li>
+
+<li>veterinario</li>
+
+</ul>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="reference"></a>
+
+<h3>REFERENCIA</h3>
+
+<p><b><i>Bibliografía secundaria: Son las fuentes de información que respaldan los datos
+
+encontrados en las otras tablas.</i></b></p>
+
+<p>Al final del registro bibliográfico sigue un
+
+listado de todos los registros en las otras tablas donde la obra en cuestión ha sido
+
+citada. Así se puede rastrear, por ejemplo, todas las citas a <i>Les Filigranes</i>
+
+de Charles Briquet y por lo tanto las filigranas en <i><b>MsEd</b></i>
+
+identificadas con las de Briquet.</p>
+
+<p>Los campos son los consabidos de cualquier bibliografía.</p>
+
+<a name="refauth"></a>
+
+<p><b>Autor:</b> Se puede buscar por cualquier de los apellidos
+
+o por el nombre de pila.</p>
+
+<a name="reftit"></a>
+
+<p><b>Título:</b> En adición a los títulos de obras impresas o electrónicas, se
+
+encontrarán bastantes referencias a
+
+la inspección personal de un manuscrito o impreso antiguo o a
+
+una carta particular dirigida a alguno de los miembros del
+
+equipo de <b><i>BETA</i></b>.</p>
+
+<a name="refdate"></a>
+
+<p><b>Fecha:</b> Es la que figura en el pie de imprenta. Los impresos no fechados
+
+llevan la indicación “s.f.” (sin fecha).</p>
+
+<a name="revista"></a>
+
+<p><b>Revista / volumen colectivo:</b> Se citan tanto las revistas impresas como las
+
+electrónicas. Los volumenes colectivos suelen ser actas
+
+de congresos, homenajes y similares.</p>
+
+<a name="refplace"></a>
+
+<p><b>Lugar de impresión:</b> Los lugares constan según
+
+el nombre que figura en el pie de imprenta.</p>
+
+<a name="editorial"></a>
+
+<p><b>Editorial:</b> Es la que figura en el pie de imprenta, como Gredos.</p>
+
+<a name="serie"></a>
+
+<p><b>Serie / Colección:</b> Se refiere a la serie a que pertenece un tomo, como la
+
+Biblioteca de Autores Españoles, o a una colección editorial, como Clásicos Castalia.</p>
+
+<a name="refpers"></a>
+
+<p><b>Persona asociada:</b> Se incluyen aquí todas las personas relacionadas con una obra salvo el
+
+autor: traductor, editor científico, autor del prólogo, coordinador de un tomo
+
+colectivo, editor de una serie o una colección, etc.</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="msed"></a>
+
+<h3>MsEd (Manuscritos e impresos)</h3>
+
+<p><b><i>Son las fuentes primarias, manuscritos e impresos, que conservan los restos de la
+
+literatura medieval castellana.</i></b></p>
+
+<p>Incluye todos los manuscritos que puedan ofrecer
+
+información sobre esa literatura. La fecha límite es 1800 ca., pero cada vez más
+
+vamos añadiendo copias hechas por eruditos de los siglos XIX y XX que puedan
+
+proporcionar datos útiles. En cuanto a los impresos, se incluyen todas las ediciones
+
+incunables, o sea, hasta 1501; y cada vez más se van añadiendo ediciones de los ss. XVI y XVII
+
+de obras medievales.</p>
+
+<a name="city"></a>
+
+<p><b>Ciudad:</b> Se refiere a la ciudad donde se ubica la biblioteca que conserva el
+
+manuscrito o impreso. Búsquese el nombre de la ciudad en su lengua nativa
+
+(v.g., London, New York) o transliterado, si viene al caso, v.g., Moskva.
+
+En caso de no conocerse el
+
+nombre nativo, utílicese el asterisco como comodín. En la inmensa mayoría
+
+de los casos la letra inicial es la misma; así que una búsqueda
+
+de “m*” recupera
+
+todas las ciudades cuyos nombres empiezan con “M”.</p>
+
+<a name="library"></a>
+
+<p><b>Biblioteca:</b> Es la que conserva el manuscrito o impreso. Se puede buscar tanto por su
+
+nombre actual como por el o los antiguos</p>
+
+<a name="shelfmark"></a>
+
+<p><b>Signatura:</b> Se puede buscar por la signatura actual, la antigua o por la de un antiguo
+
+posesor. Si es una signatura de varios elementos, como los del Escorial, se deben
+
+buscar sin guiones ni puntos, aeparando los elementos por espacios. Así búsquese MS
+
+esc. “a.IV.10” como “a IV 10” o “a iv 10” (sin tener en cuenta las letras
+
+mayúsculas o minúsculas.</p>
+
+<p>Si no se puede encontrar la signatura conocida de una edición impresa, búsquese por los
+
+datos de la edición misma (lugar, editor, fecha). Si no se conocen estos datos, búsquese
+
+por la/s obra/s que contiene en la tabla <i><b>OBRA</b></i> e ir repasando el
+
+listado de testimonios que
+
+se encuentran al final del registro. Habrá que pasar al registro de todas las ediciones
+
+hasta encontrar la que tiene un ejemplar con la signatura que nos interesa.</p>
+
+<p>Para las signaturas que contienen letras griegas, búsquense por el nombre inglés de
+
+la letra:
+
+</p><ul class="normal">
+
+<li>α  = alpha</li>
+
+<li>β = beta</li>
+
+<li>γ = gamma</li>
+
+<li>δ = delta</li>
+
+<li>ε = epsilon</li>
+
+<li>ζ = zeta</li>
+
+<li>η = eta</li>
+
+<li>θ = theta</li>
+
+<li>ι = iota</li>
+
+<li>κ = kappa</li>
+
+<li>λ = lambda</li>
+
+<li>μ = mu</li>
+
+<li>ν = nu</li>
+
+<li>ξ = xi</li>
+
+<li>ο = omicron</li>
+
+<li>π = pi</li>
+
+<li>ρ = rho</li>
+
+<li>σ = sigma</li>
+
+<li>τ = tau</li>
+
+<li>υ = upsilon</li>
+
+<li>φ = phi</li>
+
+<li>χ = chi</li>
+
+<li>ψ = psi</li>
+
+<li>ω = omega</li>
+
+</ul>
+
+<a name="date"></a>
+
+<p><b>Fecha:</b>   Las fechas se dan en el formato AAAA-MM-DD. Para las aproximadas se
+
+utilizan locuciones del tipo “1441 ca. - 1460 ca.”, o en el caso de duda,
+
+con interrogantes. Téngase en cuenta que
+
+esto significa exactamente lo mismo que “s. XV med.”, o sea, mediados del
+
+siglo XV. Ejemplos:</p>
+
+<ul class="normal">
+
+<li>1401 - 1500 = s. XV</li>
+
+<li>1401 ca. - 1410 ca. = s. XV inc.</li>
+
+<li>1401 ca. - 1425 ca. = s.XV<sup>1/4</sup> (primer cuarto del s. XV)</li>
+
+<li>1426 ca. - 1450 ca. = s.XV<sup>2/4</sup> (segundo cuarto del s. XV)</li>
+
+<li>1401 ca. - 1433 ca. = s.XV<sup>1/3</sup> (primer tercio del s. XV)</li>
+
+<li>1401 ca. - 1450 ca. = s. XV<sup>1/2</sup> (primera mitad del s. XV)</li>
+
+<li>1441 ca. - 1460 ca. = s. XV med.</li>
+
+<li>1451 ca. - 1500 ca. = s. XV<sup>2/2</sup> (segunda mitad del s. XV)</li>
+
+<li>1491 ca. - 1500 ca. = s. XV ex.</li>
+
+<li>1491 ca. - 1510 ca. = s. XV ex. - s. XVI inc.</li>
+
+</ul>
+
+<a name="msedplace"></a>
+
+<p><b>Lugar de producción:</b> Se emplean los nombres actuales, no necesariamente los
+
+que se encuentran en el pie de imprenta, v.g., Zaragoza (no Çaragoça)</p>
+
+<a name="printerscribe"></a>
+
+<p><b>Copista / impresor:</b> Se utiliza el mismo campo para copistas (de
+
+manuscritos) e impresores (de libros).
+
+Para los impresores se utiliza el nombre nativo; así, Stanislaw Polak,
+
+no Estanislao o Lançalao Polono.
+
+De la misma manera no se han empleado locuciones del tipo “Tres Compañeros
+
+Alemanes”, dando a su vez los nombres: Magnus Herbst von Fils,
+
+Thomas Glockner y Johann Pegnitzer von Nürnberg. Si no se conoce el nombre nativo
+
+búsquense otras formas del nombre en la tabla <a href="#persona"><i><b>PERSONA</b></i></a>.
+
+A continuación de
+
+los datos personales conocidos se ofrece un listado de todos los manuscritos
+
+o impresos que la persona buscada ha copiado o impreso.</p>
+
+<p>Las dos prensas epónimas de Salamanca
+
+se identifican como “Impresor de las <i>Introductiones</i> de Nebrija”
+
+e “Impresor de la <i>Gramática</i> de Nebrija”</p>
+
+<a name="msedpub"></a>
+
+<p><b>Editorial / Mecenas:</b> Para un manuscrito se refiere al mecenas o patrono para quien el
+
+volumen ha sido copiado. Para un impreso se refiere a la persona que ha costeado la
+
+impresión.</p>
+
+<a name="owner"></a>
+
+<p><b>Antiguo posesor:</b> Son las personas o instituciones a través de cuyas manos o
+
+bibliotecas el tomo ha pasado, desde el primer dueño
+
+(v.g., el marqués de Santillana) hasta el
+
+último (v.g. el duque de Osuna) hasta que ha llegado a su paradero actual, en el caso
+
+citado, a la Biblioteca Nacional de España. Se dan en
+
+orden cronológico.</p>
+
+<a name="associatedname"></a>
+
+<p><b>Persona asociada:</b> Son las personas que se pueden relacionar con el tomo:
+
+encuadernador, iluminador, persona que hace anotaciones o deja su firma, etc.</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="codicology"></a>
+
+<b>Elementos bibliográficos, paleográficos y codicológicos</b>
+
+<p><b><i>BETA</i></b> contiene una abundancia de información  sobre la materialidad del tomo
+
+que no se puede buscar a través de los índices sino a través de “Búsqueda sencilla”.</p>
+
+<p>Nótese el empleo del asterisco como comodín tanto en el medio como al principio o final de la
+
+palabra para buscar términos relacionados sin tener
+
+que multiplicar las búsquedas.</p>
+
+<p>Téngase en cuenta que el término encontrado puede hallarse en cualquier de los
+
+campos del registro, no sólo en el buscado. Así “lazo” como término de
+
+decoración en la encuadernación también puede encontrarse como una palabra dentro de
+
+un íncipit o éxplicit. Habrá que abrir uno por uno los registros recuperados y
+
+hacer una búsqueda [CTRL-F] del navegador para encontrar el término dentro del
+
+registro.</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<ul class="normal">
+
+<a name="support"></a>
+
+<li><b>Soporte material:</b><br><br>
+
+<ul class="normal">
+
+<li>papel</li>
+
+<li>perg*</li>
+
+<li>papel y perg*</li>
+
+<li>Papel y perg* (bifol. ext. e int.de perg.)</li>
+
+<li>Papel y perg* (bifol. ext. de perg.)</li>
+
+<li>Papel ceptí</li>
+
+<li>vitela   </li>
+
+<li>papel y vitela</li>
+
+<li>papiro   </li>
+
+<li>tela   </li>
+
+<li>piedra   </li>
+
+<li>teja   </li><br><br>
+
+</ul>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+</li>
+
+<a name="format"></a>
+
+<li><b>Formato del pliego:</b><br><br>
+
+<ul class="normal">
+
+<li>folio </li>
+
+<li>4<sup>o</sup> </li>
+
+<li>8<sup>o</sup> </li>
+
+<li>12<sup>o</sup></li>
+
+<li>16<sup>o</sup></li>
+
+<li>32<sup>o</sup></li><br><br>
+
+</ul>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="binding"></a>
+
+</li><li><b>Encuadernación:</b><br><br>
+
+<ul class="normal">
+
+<li><b>Materia de las tapas:</b> perg*, vitela, pasta,
+
+piel,
+
+media piel,
+
+cuero, ante*,
+
+papel, papel de aguas, cart*,
+
+tafilete, vaqueta, chagrin, cabra, rusia, levante,
+
+becerr*,
+
+ternera, carnero, badana, cerdo,
+
+cierv*, gamuza,
+
+marroquí,
+
+envesad*, estezad*, tela,
+
+seda, terciopelo,
+
+tabla*<br>
+
+</li>
+
+<li><b>Parte de las tapas:</b> bullon*,
+
+cantonera*,
+
+punta*,
+
+metal*, nervio*,
+
+canto*, ceja*,
+
+corte*,
+
+lom*,
+
+correa*,
+
+manecilla*, correílla*,
+
+cierre*,
+
+lazo*,
+
+broche*,
+
+presilla*,
+
+</li>
+
+<li><b>Decorado de las tapas:</b> jaspead*, gofrad*,
+
+hierro*,
+
+seco*,
+
+repujad*,
+
+dentelle*,
+
+dorad*, oro, greca*,
+
+filete*, hilo*,
+
+ribete*,
+
+laceria*, lazo*,
+
+vegetal*,
+
+orla*,
+
+cenefa*,
+
+borde*,
+
+fitomorfic*,
+
+geometric*,  entrelazo*,
+
+rectángulo*,
+
+rombo*,
+
+rueda*, circulo*, redondel*
+
+flor*,
+
+roseta*,
+
+cruz,
+
+</li>
+
+<li><b>Estilo de las tapas:</b> gótic*, hispanogótic*,
+
+mudéjar*,
+
+plateresc*,
+
+renacentista,
+
+barroc*,
+
+abanico*,
+
+jansenista,
+
+heraldic*,
+
+holandesa,
+
+valenciana,
+
+aleman*,
+
+farnesian*,
+
+frances*,
+
+ingles*,
+
+italian*,
+
+roman*,
+
+romantic*,
+
+rustic*<br><br>
+
+</li>
+
+</ul>
+
+</li>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="collation"></a>
+
+<li><b>Colación:</b> Es la representación de la composición del tomo
+
+por cuadernos. Se presenta bajo la forma siguiente:</li> <br><br>
+
+<ul class="normal">
+
+<li>1<sup>¿6-1?</sup> 2-15<sup>12</sup> 16<sup>10</sup><br><br>
+
+</li>
+
+<li>a-f<sup>12</sup> g-h<sup>14</sup><br></li>
+
+</ul>
+
+<p>El primer ejemplo quiere decir que el manuscrito tiene 16 cuadernos, el primero, con
+
+dudas, de 6 hojas, faltando la primera; los cuadernos 2-15, de 12 hojas; y el cuaderno
+
+16, de 10 hojas.</p>
+
+<p>El segundo ejemplo, de un impreso, muestra que los cuadernos signados a-f tienen 12 hojas
+
+cada uno y los cuadernos signados g-h tienen 14 hojas cada uno.</p>
+
+<p>Las signaturas numéricos de los cuadernos, que son los de los compiladores,
+
+indican cuadernos no signados;
+
+mientras las letras, empleadas de forma corriente en los impresos y excepcionalmente
+
+en los manuscritos, sirven como indicación del orden de los cuadernos para
+
+el encuadernador. Los sobreescritos indican el número de hojas en el cuaderno.</p>
+
+<p>Téngase en cuenta que el alfabeto utilizado en las fórmulas de la
+
+colación es el siguiente, de sólo 23 caracteres:</p><br>
+
+<ul class="normal">
+
+<li>a b c d e f g h i/j k l m n o p q r s t u/v x y z</li>
+
+<br>
+
+</ul>
+
+<p>Si el MS o impreso tiene otro sistema de signaturas se indica, señalando explícitamente las deviaciones
+
+del alfabeto indicado. Con frecuencia en los impresos se utilizan mayúsculas ( A B C ...) o una
+
+combinación de mayúsculas y minúsculas. En los impresos de gran formato de más de 23 cuadernos es corriente utilizar  dobles
+
+mayúsculas (AA BB CC ...) después del cuaderno "z".</p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="hand"></a>
+
+<li><b>Mano:</b> Es el estilo de letra utilizado en un manuscrito.<br><br>
+
+<ul class="normal">
+
+<li>carolingia, gótica, gótica minúscula, gótica, gótica redonda, gótica cursiva,
+
+bastarda, cortesana, semigótica, gótico-humanística, humanística, itálica,
+
+cursiva, procesal</li>
+
+</ul>
+
+<p>Aunque en un principio partimos de la terminología del <i>Tratado de
+
+paleografía española</i>
+
+de Agustín Millares Carlo, no hemos sido del todo consecuentes en el
+
+empleo de estos términos,
+
+que a su vez
+
+pueden ser modificados
+
+por, e.g., “albalaes, aragonesa, caligráfica,
+
+cancilleresca, corriente, currens, forma* (formada, formal),
+
+francesa, híbrida,
+
+libraria,
+
+precortesana, semicursiva, sentada,
+
+textual*”.</p>
+
+</li>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="font"></a>
+
+<li><b>Fuente tipográfica:</b><br><br>
+
+<ul class="normal">
+
+<li>gótica</li>
+
+<li>humanística</li>
+
+<li>redonda</li>
+
+<li>itálica</li>
+
+</ul>
+
+<p>A veces se da también la medida,
+
+de la forma “120 G”, que significa que 20 lineas de un texto en letra gótica
+
+ocupan 120 mm. La mayoría de estas indicaciones provienen de fuentes secundarios,
+
+como F. J. Norton, <i>A Descriptive Catalogue of Printing in Spain and
+
+Portugal 1501-1520</i>.</p>
+
+</li>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="watermark"></a>
+
+<li><b>Filigrana:</b> Los términos pueden ser combinados, v.g., mano
+
+con estrella de 5 puntos.<br><br>
+
+<ul class="normal">
+
+<li><b>seres o elementos naturales o mitológicas:</b> animal, basilisco, caballo, cabeza, cabra,
+
+ciervo, dedo*, dragón, estrella (de 5 puntos, de 6 puntos), flor (de 5 pétalos, de 6 pétalos),
+
+fruta, galgo, gallo, granada,
+
+halcón, jabalí, león, luna, mano, mont*, muñeca, pájaro, paloma, pato, peregrino,
+
+perro, pez, serpiente, sirena, toro, trébol,
+
+unicornio, uvas, vaca</li>
+
+<li><b>elementos artificiales:</b> ancla, anillo, anteojos, arco, balanza, ballesta, campana,
+
+carro, castillo, cetro, columna, corona, cuerno, cruz, cuchillo,
+
+escalera, escudo, espada, flecha*, guante, hacha, iglesia, jarro, letra, llave*,
+
+martillo, rueda, sombrero, tenazas, tijeras, TAU. torre, yunque</li>
+
+<li><b>figuras geométricas:</b> círculo*, óvalo</li><br><br>
+
+</ul>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="decoration"></a>
+
+</li><li><b>Decoración / Elementos gráficos:</b> Es la decoración artística de la página, desde miniaturas
+
+o ilustraciones a página entera hasta el empleo de tintas de colores para hacer resaltar un elemento
+
+determinado de la escritura.<br><br>
+
+<ul class="normal">
+
+<li>orla*</li>
+
+<li>miniatura*</li>
+
+<li>iluminacion*</li>
+
+<li>ilustracion*    </li>
+
+<li>dibujo*    </li>
+
+<li>xilografí*    </li>
+
+<li>inicial* (no se emplean los términos “versal” ni “capital“)</li>
+
+<li>rúbrica*</li>
+
+<li>azul*</li>
+
+<li>roj*</li>
+
+<li>verd*</li>
+
+<li>morad*</li>
+
+<li>título*</li>
+
+<li>calderón*</li>
+
+<li>cabeceras</li>
+
+<br><br>
+
+</ul>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="music"></a>
+
+</li><li><b>Presencia de neumas / música:</b> Faltándonos la pericia musicológica necesaria, nos
+
+contentamos con indicar la presencia de música y, sobre todo, de neumas.</li><br><br>
+
+<a name="layout"></a>
+
+<li><b>Pautado:</b> Es la técnica empleada para establecer la justificación o
+
+caja del manuscrito:<br><br>
+
+<ul class="normal">
+
+<li>punta seca</li>
+
+<li>plomo</li>
+
+<li>tinta</li>
+
+<li>grafito</li><br><br>
+
+</ul>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+</li>
+
+<a name="catchword"></a>
+
+<li><b>Reclamos:</b> Se indica su presencia y más excepcionalmente las hojas donde
+
+se encuentran, siempre que no sea el margen inferior del verso de la hoja final del
+
+cuaderno, y la forma que presentan:</li>
+
+<br><br>
+
+<ul class="normal">
+
+<li>horizontal*</li>
+
+<li>vertical*</li>
+
+<li>diagonal*</li>
+
+<li>transversal*</li>
+
+<li>oblicu*</li>
+
+<li>centrad*</li>
+
+<li>cuadro, encuadrad*, cuadrilateral</li>
+
+<li>debajo de la segunda columna</li>
+
+<li>a la derecha</li>
+
+<li>afiligranad* </li>
+
+<li>man* (mano,manecilla)</li>
+
+<li>nota tironiana</li>
+
+<li>en la pauta</li>
+
+<li>rasgueo*</li>
+
+<li>ray* (raya, rayado)</li>
+
+<li>punto*</li>
+
+<li>tocando el corte</li>
+
+<br><br>
+
+</ul>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="signature"></a>
+
+<li><b>Signaturas (de las hojas):</b> Se notan sobre todo en los impresos para
+
+indicar cómo el impresor ha ayudado al encuadernador para ordenar los pliegos.
+
+Tambien se encuentran en
+
+los manuscritos, donde no sólo desempeñan la función de mantener
+
+en orden los pliegos sino que pueden indicar la participación de uno
+
+o más copistas dentro de un volumen.
+
+Normalmente toman la forma</li><br><br>
+
+<ul class="normal">
+
+<li> a aij aiij aiiij b bij biij biiij ...</li>
+
+<br><br>
+
+</ul>
+
+<a name="sewing"></a>
+
+<li><b>Cosido:</b> Se nota excepcionalmente cuando la encuadernácion del libro lo
+
+permite. Se indican los folios entre los que se encuentra el cosido, v.g., 6/7, 16/17,
+
+26/27. Es muy útil para confirmar la construccion y tamaño de los cuadernos.</li>
+
+<br><br>
+
+<a name="perf"></a>
+
+<li><b>Perforaciones:</b> Con frecuencia desaparecen por la cuchilla del encuadernador,
+
+pero a veces se pueden ver en los márgenes, muy cerca del corte o en los ángulos
+
+de la caja, señalando las líneas rectrices que delimitan la caja de
+
+escritura. A veces también es visible una línea de perforaciones que señala la
+
+separación de los renglones. Su posición (al recto o al verso) y factura
+
+(folio por folio, bifolio por bifolio, con todo el cuaderno  abierto
+
+o cerrado, etc.) proporcionan dados significativos sobre la construcción del
+
+libro medieval. Hasta ahora sólo hemos notado su presencia; excepcionalmente
+
+indicamos su forma, tamaño y ubicación.</li>
+
+<br><br>
+
+<a name="just"></a>
+
+<li><b>Justificación:</b> Es el conjunto de rayas horizontales y
+
+verticales que establece la
+
+caja de escritura. Varían desde 2 (las 2 verticales exteriores),
+
+3 (las mismas más una línea horizontal superior), 4 (que es el más
+
+frecuente: 2 horizontales superior e inferior, y
+
+dos verticales interior y exterior) hasta 8, 10, o más, según lo
+
+complejo de la página (a 2 o 3 columnas, con líneas verticales
+
+supletorias, horizontales complementarias, con texto central y glosas
+
+marginales, etc.). Se ha notado esporádicamente hasta hace muy
+
+poco.</li>
+
+<br><br>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="linef"></a>
+
+<li>
+
+<b>Relleno de línea:</b>
+
+Los copistas, para justificar la línea a la derecha, a veces echan mano a varias combinaciones de rayas horizontales,
+
+puntos o grupos de letras (como oooo), para rellenar la línea cuando el texto termina antes del final de ella.
+
+Tales rellenos
+
+de línea pueden servir como diagnóstico importante para fechar o localizar el MS si se pueden comparar con los
+
+de MSS fechados o localizados.<br><br>
+
+Algunos que hemos visto son:<br><br>
+
+<ul class="normal">
+
+<li>Raya horizontal sencilla: ------------</li>
+
+<li>Raya horizontal interrumpida por 2 puntos: ----:----:----</li>
+
+<li>Raya horizontal interrumpida por puntos: ----....----....----</li>
+
+<li>Grupos de la letra “o” unidas estrechamente entre sí y separados por espacios: oooo oooo oooo</li>
+
+<li>Grupos de la letra “o” unidas estrechamente entre sí y separados por rayitas:<br> oooo----oooo----oooo</li>
+
+<li>Grupos de la letra “o” unidas estrechamente entre sí y
+
+separados por rayitas
+
+y puntos: (ooo---.---ooo--.--ooo)</li>
+
+<li>Rayas horizontales onduladas, a veces interrumpidas por puntos</li>
+
+<br><br>
+
+</ul>
+
+</li>
+
+<li><b>¿Línea primera escrita?:</b> La primera línea del pautado
+
+puede estar en blanco, escrita, pisada o bien con la escritura colgada de
+
+ella. El uso de la primera línea en blanco se abandonó pronto en
+
+Europa y no se recupera hasta el Humanismo, por imitación de los modelos
+
+carolingios, pero a la Península Ibérica se mantuvo más tiempo y se encuentran
+
+ejemplos al s. XIV. Es un elemento que también empezamos a notar sólo hace poco.</li>
+
+<br>
+
+</ul>
+
+<p>Nótese el uso del asterisco como comodín para encontrar todas las formas de las
+
+palabras en “Búsqueda Sencilla”. </p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="examples"></a>
+
+<h3>Ejemplos de búsqueda en <b><i>BETA</i></b></h3>
+
+<p>Escójase primero la base de dados, pulsando sobre la bandera que
+
+indica el idioma en la parte superior de la página.</p>
+
+<p>En la columna de la izquierda púlsese la opción <b>BUSCAR</b>.</p>
+
+<ol>
+
+<li>Si se quiere encontrar las obras escritas por un determinado autor:
+
+<p>Escójase la tabla <i><b>OBRA</b></i> y luego el botón para <b><i>BETA</i></b>.
+
+Escríbase en el
+
+campo <b>Autor</b> una o más palabras del nombre deseado y
+
+oprímese <b>Buscar</b> en el margen inferior.
+
+Obtendrá una relación
+
+de títulos que tienen como autor el nombre escogido (¡atención! si hay más de uno con
+
+el mismo nombre escogido, v.g. “Ramírez”, obtendrá una relación
+
+de las obras de todos ellos). Cliqueando sobre cada uno de los títulos
+
+pasará a una página con informació sobre la obra y una relación de los testimonios
+
+con datos sumarios. Desde esta página, si se cliquea sobre los <b>manid</b>
+
+pasará a la descripción detallada de los manuscritos</p></li><li>
+
+<ii>Si se quiere encontrar todas las obras relacionados (por autoría,
+
+traducción, etc.) con
+
+una determinada persona:
+
+<p>Escójase la tabla <i><b>PERSONA</b></i> y luego el
+
+botón para <b><i>BETA</i></b>. Escríbase en
+
+el
+
+campo <b>Nombre</b> una o más palabras del nombre deseado
+
+y oprímese <b>Buscar</b> en el margen inferior.
+
+Obtendrá
+
+una relación de las personas así nombrados (<i>v.g.</i> “Gómez García” da
+
+como resultado  “Gómez García” (autor del <i>Carro de dos vidas</i>)
+
+y “Gómez García del Castillo”) (traductor de la <i>Ciudad de Dios</i> de
+
+san Agustín).
+
+Cliqueando sobre el nombre deseado se abre una página con los datos biográficos
+
+de la persona y
+
+a continuación una relación
+
+de las obras escritas (autor) o relacionadas (traductor u otras associaciones).</p></ii></li>
+
+<li>Si se quiere saber cuáles testimonios se conserven de una obra determinada.
+
+<p>Escójase la tabla <i><b>OBRA</b></i> y luego el botón para <b><i>BETA</i></b>.
+
+Escríbase en el
+
+campo <b>Título</b> una o más de las palabras del título deseado y
+
+oprímese <b>Buscar</b> en el margen inferior.
+
+Obtendrá una relación de los títulos que las contienen
+
+(v.g. una búsqueda de “regimiento de príncipes”
+
+recuperará las traducciones de las obras de Aegidius Romanus y santo Tomás de Aquino más
+
+la obra de Gómez Manrique. Cliqueando sobre el que interesa
+
+obtendrá una página con informaciones sobre la obra, el número de testimonios
+
+que la conserven y una descripción de cada una de ellos, frecuentemente con la
+
+transcripción de los íncipit y éxplicit tal como se ven en el testimonio. Desde esta
+
+pàgina, si cliquea sobre los <b>manid</b> pasará a la descripción detallada
+
+de los manuscritos.</p><p></p></li>
+
+<li>Si quiere saber cuáles manuscritos e impresos de una determinada biblioteca se
+
+encuentran registrados en <i><b>BETA</b></i>.
+
+<p>Escójase la tabla <i><b>BIBLIOTECA</b></i> y luego el botón para <b><i>BETA</i></b>.
+
+Escríbase en el
+
+campo <b>Nombre</b> o en el campo <b>Ciudad</b> una o más de las palabras de la biblioteca
+
+o ciudad deseadas y
+
+oprímese <b>Buscar</b> en el margen inferior. Obtendrá una relación de las
+
+bibliotecas correspondientes. Seleccione la que interesa
+
+y después de información sobre la biblioteca encontrará una lista de todos
+
+los manuscritos y impresos que conserva, ordenados por la signatura actual (salvo
+
+error).</p><p></p></li>
+
+<li>Si se quiere saber dónde se encuentra, en cuáles condiciones o
+
+hasta si existe aún un volumen del que se conece la signatura:
+
+<p>Escójase la tabla <i><b>MsEd</b></i> y luego el botón para <b><i>BETA</i></b>.
+
+Escríbase en el
+
+campo <b>Signatura</b> una o más de los elementos de la signatura deseada y
+
+oprímese <b>Buscar</b> en el margen inferior. Obtendrá una relación de los ejemplars
+
+que la contienen.</p></li>
+
+<li>Si se quiere saber cuáles ejemplares relacionados a una determinada
+
+persona (un antigo posesor, per exemple) se conserven:
+
+<p>Escójase la tabla <b>MsEd</b> y luego el botón para <b><i>BETA</i></b>.
+
+Escríbase en el
+
+campo <b>Antiguo posesor</b> o <b>Persona relacionada</b>
+
+una o más de las palabras del nombre de la persona deseada y
+
+oprímese <b>Buscar</b> en el margen inferior. Obtendrá
+
+una relación de los ejemplares relacionados con esa persona.</p><p></p></li>
+
+</ol>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="charset"></a>
+
+<h3>Juego de caracteres</h3>
+
+<p>El juego de caracteres es
+
+<a href="http://unicode.org/charts/PDF/U0100.pdf">Latin
+
+Extended-A</a> complementado por
+
+<a href="http://unicode.org/charts/PDF/UA720.pdf">Latin Extended-D</a> para los caracteres medievales, como la nota tironiana. Para ver estos últimos caracteres correctamente hace falta descargar e instalar la fuente <a href="http://sourceforge.net/projects/junicode/files/">Junicode</a>.
+
+Si no tiene la fuente Junicode tales caracteres aparecerán como cuadritos en blanco.</p><p>
+
+</p><p>Estos caracteres incluyen los siguientes:</p>
+
+<ul class="normal">
+
+<li>nota tironiana = ⁊</li>
+
+<li>p con un trazo en el asta descendente = ꝑ como en ꝑa “para” o
+
+ꝑtenescer “pertenescer”</li>
+
+<li>p con un bucle adelante  = ꝓ como en ꝓuar “p<i>ro</i>uar”</li>
+
+<li>q con trazo diagonal = ꝙ = “q<i>uod</i>”</li>
+
+<li>r rotunda (utilizada después de los caracteres con panza: b, o, p) = ꝛ como en “obꝛar”</li>
+
+<li>r rotunda con trazo diagonal = ꝝ = <i>rum</i> como en numeroꝝ “numero<i>rum</i>”</li>
+
+<li>v con trazo diagonal = ꝟ = v<i>er</i> como en ꝟbo “v<i>er</i>bo”</li>
+
+<li>c al revés al comienzo de una palabra =  ꝯ = <i>con</i> como en ꝯtra “<i>con</i>tra”</li>
+
+<li>c al revés al final de una palabra, sobreescrita = ꝰ = <i>us</i> como en “script ꝰ”</li>
+
+</ul>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="helpdetail"></a>
+
+<p>Para ayuda técnica o para ayuda con <i><b>Philobiblon</b></i>
+
+en general, póngase en contacto con <a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a>.</p>
+
+<p>Para ayuda puntual sobre el uso o contenido de las bibliografías individuales de
+
+<i><b>PhiloBiblon</b></i>:</p>
+
+<p><a href="beta_en.html"><b>BETA</b></a><b> / Bibliografía
+
+Española de Textos Antiguos</b><br>
+
+Textos medievales en español.<br>
+
+<a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a></p>
+
+<p><a href="bipa_en.html"><b>BIPA</b></a><b> / Bibliografía
+
+de la Poesía Áurea</b><br>
+
+Poesía del Siglo de oro.<br>
+
+<a href="mailto:Ralph.Difranco@du.edu">Ralph DiFranco.</a></p>
+
+<p><a href="bitagap_en.html"><b>BITAGAP</b></a><b> / Bibliografia de
+
+Textos Antigos Galegos e Portugueses</b><br>
+
+Textos medievales en gallego, gallego-portugués y portugués.<br>
+
+<a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a></p>
+
+<p><a href="biteca_en.html"><b>BITECA</b></a><b> / Bibliografia
+
+de Textos Antics Catalans, Valencians i Balears</b><br>
+
+textos medievales en catalán.<br>
+
+<a href="mailto:gavenoza@ub.edu">Gemma Avenoza</a></p>
+
+<p><a href="#top">Volver al Índice</a></p>
+
+<a name="resources"></a>
+
+<p><b>Recursos en línea</b><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_es.html#medievalstudies">Asociaciones y blogs de estudios medievales</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_es.html#research">Institutos, centros y grupos de investigación</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_es.html#catalogs">Bibliotecas y bibliotecas digitales: Catálogos y listas</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_es.html#archives">Archivos y Archivos digitales: Catálogos y listas</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_es.html#databases">Bases de datos en línea</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_es.html#bibliographies">Obras de referencia y bibliografías</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_es.html#reviews">Revistas en línea</a></p>
+
+<p> Se ruega a los usuarios mandar información sobre cambios en los URL o sugerencias para la adición de otros enlaces apropiados a <a href="mailto:schafferm@usfca.edu">Martha E. Schaffer</a>.</p>
+
+<p><a href="#top">Return to Index</a></p>
+
+</div>

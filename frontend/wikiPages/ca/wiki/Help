@@ -1,0 +1,2170 @@
+<h1>Ajuda</h1>
+
+<div class="content">
+
+<p>Per a l'ajuda a BITAGAP o BITECA, consulteu la pàgina d'ajuda
+
+en <a href="help_po.html">portugués</a> o
+
+<a href="help_es.html">castellá</a>, respectivament.
+
+<a name="top"></a>
+
+</p><h2>Índex</h2>
+
+<a href="#búsquedas"><b>Cerques</b></a><br>
+
+<a href="#materia"><b>Matèria</b></a><br>
+
+<blockquote>
+
+<a href="#headings">Encapçalaments</a><br>
+
+<a href="#institutions">Institucions</a><br>
+
+<a href="#toponyms">Topònims</a><br>
+
+</blockquote>
+
+<a href="#url"><b>“Uniform Resource Locator”</b> URL</a><br><br>
+
+<a href="#norms"><b>Normes de transcripció</b></a><br><br>
+
+<a href="#obra"><b><i>Obra</i></b></a><br>
+
+<blockquote>
+
+<a href="#autor">Autor</a><br>
+
+<a href="#titulo">Títol</a><br>
+
+<a href="#incexpl"><i>Íncipits</i> i <i>èxplicits</i></a><br>
+
+<a href="#assocname">Persona associada</a><br>
+
+<a href="#fecha">Data de composició</a>
+
+</blockquote>
+
+<a href="#biblioteca"><b><i>Biblioteca</i></b></a><br>
+
+<blockquote>
+
+<a href="#city">Ciutat</a><br>
+
+<a href="#library1">Biblioteca</a><br>
+
+<a href="#signatura">Signatura</a><br>
+
+</blockquote>
+
+<a href="#persona"><b><i>Persona</i></b></a><br>
+
+<blockquote>
+
+<a href="#nombre">Nom</a><br>
+
+<a href="#title">Títol</a><br>
+
+<a href="#persdate">Dates</a><br>
+
+<a href="#persplace">Llocs relacionats</a><br>
+
+<a href="#order">Orde religiosa o militar</a><br>
+
+<a href="#profession">Professió</a><br>
+
+</blockquote>
+
+<a href="#reference"><b><i>Referència</i> (bibliografia secundària)</b></a><br><br>
+
+<a href="#msed"><b><i>Manuscrits o impresos</i></b></a><br>
+
+<blockquote>
+
+<a href="#city">Ciutat</a><br>
+
+<a href="#library">Biblioteca</a><br>
+
+<a href="#shelfmark">Signatura</a><br>
+
+<a href="#date">Data</a><br>
+
+<a href="#printerscribe">Copista / Impressor</a><br>
+
+<a href="#owner">Antic possessor</a><br>
+
+</blockquote>
+
+<a href="#codicology"><b>Elements bibliogràfics, paleogràfics i codicològics</b></a><br>
+
+<blockquote>
+
+<a href="#support">Suport material</a><br>
+
+<a href="#format">Format del plec</a><br>
+
+<a href="#binding">Relligadura</a><br>
+
+<a href="#collation">Col·lació</a><br>
+
+<a href="#hand">Mà (del manuscrit)</a><br>
+
+<a href="#font">Font (tipogràfica)</a><br>
+
+<a href="#watermark">Filigrana</a><br>
+
+<a href="#decoration">Decoració (de la pàgina)</a><br>
+
+<a href="#music">Música</a><br>
+
+<a href="#layout">Pautat</a><br>
+
+<a href="#catchword">Reclams</a><br>
+
+<a href="#signature">Signatures (de bifoli)</a><br>
+
+<a href="#sewing">Cosit</a><br>
+
+<a href="#perf">Perforacions</a><br>
+
+<a href="#just">Justificació</a><br>
+
+</blockquote>
+
+<a href="#examples"><b>Exemples de cerques a <i>BITECA</i></b><br>
+
+</a><a href="#charset"><b>Joc de caràcters</b></a><br>
+
+<a href="#helpdetail"><b>Ajuda tècnica i puntual</b></a><br>
+
+<a href="#resources"><b>Recursos en línia</b></a><br>
+
+<p></p>
+
+<a name="búsquedas"></a>
+
+<h2>Cerques</h2>
+
+<p><b>Majúscules / Signes diacrítics:</b> Les cerques no tenen en compte
+
+ni les majúscules ni els signes diacrítics de cap mena.
+
+Aíxí “cañas, canas, Canas, Cañas” o “caça, caca”
+
+recuperen els mateixos registres.</p>
+
+<p><b>Comodí:</b> A les cerques podeu emprar l'asterisc * com a comodí per a un o
+
+més caracters, sigui a l'inici de paraula, al mig o al final.</p>
+
+<p><b>MANID / TEXID / CNUM:</b> Si es coneix el “manid”, “texid”
+
+o “cnum” del registre que es busca,
+
+es pot emprar una recerca per <b>“Cerca simple”</b>
+
+(la primera de
+
+les opcions de cerques a la llista). Per exemple, a <i><b>OBRA</b></i> es pot
+
+buscar “texid 3482” després de sel·leccionar <b><i>BITECA</i></b>.</p>
+
+<p>Cal buscar els <b>CNUM</b> (testimonis de les obres)  dins de la taula <i><b>OBRA</b></i> o
+
+dins de <i><b>MsEd</b></i>. Un cop obert el registre
+
+que conté el <b>CNUM</b> que ens interessa, es pot trobar
+
+emprant la tecla [CRTL-F] (“buscar”) del navegador.</p>
+
+<p>Les cerques per <b>“Cerca simple”</b> es poden emprar
+
+per recuperar informació
+
+que no és possible aconseguir a través dels índexs. Vegeu més avall l'apartat
+
+<a href="#codicology"><b>Elements bibliogràfícs, paleogràfícs i codicològícs</b></a>.</p>
+
+<a name="fechas"></a>
+
+<p><b>Dates:</b> Als camps que inclouen dates, aquestes presenten el format
+
+AAAA-MM-DD, per exemple, 1454-07-21 és el 21 de juliol de 1454. Una
+
+cerca de “1454” recupera totes les dates de l'any 1454;
+
+de “1454-07” (amb o sense guions), totes les de juliol de 1454 (o de totes
+
+les de qualsevol dia 7 durant l'any 1454); de “1454-21”,
+
+totes les de qualsevol dia 21 durant l'any 1454.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="materia"></a>
+
+<h2>Matèria</h2>
+
+<p>L'ús del camp de MATÈRIA a <b><i>BITECA</i></b> s'ha limitat a la
+
+taula <i><b>OBRA</b></i>; a la resta de taules encara no s'empra.</p>
+
+<p>Per raons tècniques no es  poden combinar encapçalaments diferents dins
+
+d'una mateixa cerca. Així es pot buscar “música” o “tractats”,
+
+però no “música tractats”. Caldrà triar
+
+l'encapçalament que més s'aproximi al concepte que es busca,
+
+per obtenir els registres que el contenen.
+
+Així, per a trobar textos sobre corts tingudes a Montsó, serà millor
+
+buscar en la taula <i><b>OBRA</b></i> per “Montsó” i no per “Corts” (com matèria),
+
+car aquesta darrera recerca recuperarà tots els registres relatius a corts medievals.</p>
+
+<a name="headings"></a>
+
+<p>La relació d'encapçalaments emprats a <b><i>BITECA</i></b> és la següent:</p>
+
+<ul class="normal">
+
+<li><b>Ciencia:</b> Agricultura, Alquímia, Astrologia, Astronomia, Bestiaris,
+
+Botànica, Cartografia, Cosmologia, Drogueria, Ginecologia, Geografia,
+
+Farmàcia, Lapidaris, Màgia, Matemàtiques, Medicina, Medicina
+
+reproductiva, Mineralogia, Pesta, Química, Regiments de sanitat,
+
+Tractats, Veterinària, Zoologia</li><br>
+
+<li><b>Esports / Jocs / Oci:</b>  Caça, Cetreria, Joc</li><br>
+
+<li><b>Dret:</b> Corts, Dret, Furs, Lleis, Notariat, Usatges</li><br>
+
+<li><b>Minories:</b> Àrabs, Conversos, Esclaus, Jueus, Musulmans</li><br>
+
+<li><b>Literatura:</b> Al·legoria, Artúric, Autobiografia, Bestiaris,
+
+Biografia, Comentari, Consolació, Debat, Doctrinal, Elegia, Èpica,
+
+Epístoles / Carta / Epistolografia, Epitalami, <i>Exempla</i>, Fàbules, Goigs,
+
+Himnes, Lapidaris, Lírica, Novel·la / Roman, Oratòria / Discursos no religiosos,
+
+Panegíric, Paremiologia / Proverbis, Poesia, Poètica,
+
+Sàtira, Teatre, Tractats</li><br>
+
+<li><b>Govern:</b> Administració, Associacions, Ciència militar, Diplomàcia, Gremis,
+
+Guerra, Mar, Navegació, Oratòria, Ordes militars, Política, Protocol</li><br>
+
+<li><b>Història:</b> Annals, Comentari, Cronologia, Document datat, Heràldica, Manuscrit datat, Moneda, Numismàtica, Volum notarial datat</li><br>
+
+<li><b>Món natural: </b> Ase, Cavall, Clima, Èquids, Euga, Mula, Ocells, Sexe</li><br>
+
+<li><b>Religió:</b> Angeologia, Apologia, Bíblia, Bíblia Apòcrifs, Bíblia N. T. / Evangelis,
+
+Bíblia V. T. / Antic Testament, Bíblia V. T. Saltiri / Salms,
+
+Càbala, Comentari, Conversos, Cristologia / Crist / Passió, Debat,
+
+Església, Exorcisme, Goigs, Inquisició / Sant ofici, Jueus,
+
+Hagiografia / Sants, Heretgia / Heretge, Litúrgia / Oficis divins / Breviari /
+
+Hores canòniques, Mariologia / Verge, Miracles, Monacat / Monjos / Monges,
+
+Musulmans, Oratòria religiosa / Sermons / Predicació, Pregàries /
+
+Oracions, Profecies, Teologia, Tractats, Visions</li><br>
+
+<li><b>Societat / Economia / Arts liberals:</b> Administració,
+
+Associacions, Bibliologia, Comerç,
+
+Cosmètica, Cuina,
+
+Dietètica, Economia, Enciclopèdia, Ensenyament / Didàctica,
+
+Esclaus, Gastronomia,
+
+Gremis, Impostos, Menestrals, Mercats,
+
+Moneda, Música, Oficis, Pintura, Sense classificar, Superstició, Usura, Viatges</li><br>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="institutions"></a>
+
+<li><b>Institucions:</b> Es poden buscar a partir del lloc on
+
+s'establiren, a través del seu nom o del seu tipus.<br><br>
+
+<ol>
+
+<li>Així si es cerca “Ripoll” s'obtindrà:
+
+Ripoll: Ajuntament i Ripoll: Monestir de Santa Maria. </li>
+
+<li>Si es busca “Santa Maria” es trobaran deu
+
+institucions que inclouen la locució i, entre elles, el Monestir de Santa Maria
+
+de Ripoll.</li>
+
+<li>Si es busca “Monestir” el resultat
+
+serà una llista de 29 monestirs que estan registrats a <b><i>BITECA</i></b>,
+
+entre els quals es troba el de Santa Maria de Ripoll.</li>
+
+</ol>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="toponyms"></a>
+
+</li><li><b>Topònims:</b> S'usen els noms en la llengua original, llevat
+
+d'aquells que van pertànyer a la Corona d'Aragó i
+
+tradicionalment als estudis de catalanística s'esmenten
+
+pel seu nom català (<i>v.g.</i> Sogorb, Morvedre o Saragossa). Es poden trobar en
+
+Matèria en totes les taules, però també en altres camps apropiats, com Títol o Lloc
+
+Relacionat, Lloc de Composició en <b><i>Obra</i></b> o Lloc de
+
+Producció en <i><b>MsEd</b></i></li><br><br>
+
+</ul>
+
+<p>Recordi's la possibilitat d'emprar l'asterisc com a
+
+comodí per trobar totes les formes de les paraules i minimitzar les cerques.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="url"></a>
+
+<h2>“Uniform Resource Locator” (URL)</h2>
+
+<p>Actualment és possible connectar directament amb els enllaços de URL que es troben
+
+a les pàgines resultants de les recerques (sempre que els enllaços siguin estables).
+
+Aquests URL serveixen bàsicament per a tres propòsits:</p>
+
+<ol>
+
+<li>a la taula <i><b>MsEd</b></i> per accedir a un facsímil digitalitzat
+
+d'una font primària (manuscrit o imprès)</li>
+
+<li>a la taula <i><b>MsEd</b></i> per accedir a un facsímil digitalitzat
+
+de marques d'aigua presents al volum (manuscrit o imprès)</li>
+
+<li>a la taula <i><b>REFERÈNCIA</b></i> per accedir a un facsímil digitalitzat
+
+(generalment un arxiu .pdf), o al text en versió electrònica d'una font secundària</li>
+
+<li>a la taula <i><b>PERSONA</b></i> per accedir a una font en línia que recull
+
+informació sobre un personatge determinat.</li>
+
+</ol>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="norms"></a>
+
+<h2>Normes de transcripció emprades a <i>BITECA</i></h2>
+
+<p><i><b>BITECA</b></i> ofereix una transcripció paleogràfica dels íncipit i èxplicit dels
+
+textos, en la forma en la qual els transmeten els diversos testimonis, intervenint el mínim
+
+possible. Per fer-ho ens hem servit d'una sèrie de convencions:</p>
+
+<ul class="normal">
+
+<li>Desenvolupem totes les abreviatures, assenyalant la intervenció
+
+en cursiva; si a la paraula abreujada li segueix [?] vol dir que
+
+hi ha més d'una possible interpretació de l'abreviatura.</li>
+
+<li>L'excepció a la norma anterior es dóna amb l'abreviatura de
+
+la conjunció copulativa, que desfem sense indicar-ho, segons la forma emprada al text.</li>
+
+<li>Per a les abreviatures de nasals davant d'oclusiva seguim l'ús de l'original.</li>
+
+<li>No modifiquem l'ús de majúscules i minúscules.</li>
+
+<li>No modifiquem l'ús que el copista faci de i/j/y, v/u/b, presència
+
+o absència de la lletra h, ni tampoc simplifiquem les
+
+consonats dobles sense valor fonètic.</li>
+
+<li>Quan un mot presenta una forma anòmala, el transcrivim
+
+exactament i tot seguit afegim [sic] per confirmar que no es
+
+tracta d'un error a la transcripció.</li>
+
+<li>No desfem les amalgames ni tampoc unim allò
+
+que al text s'escriu separat i a la llengua moderna no.</li>
+
+<li>Per deixar constància de les lletres, signes o
+
+mots afegits als interlineats o als marges fem servir els signes \ / (afegit
+
+per damunt de la línia d'escriptura), / \ (afegit per sota de la línia d'escriptura);
+
+els afegits marginals es transcriuen entre entre / /
+
+(si es troben al marge dret) o \ \ si es troben al marge esquerre.</li>
+
+<li>Quan manca text, però és possible reconstruir-lo, s'indica entre [ ],
+
+per exemple, “[C]om” vol dir que hom va deixar en blanc l'espai per a
+
+la inicial del mot.</li>
+
+<li>Quan sobra text o hi ha repeticions o esmenes hom trobarà solucions de tipus
+
+explicatiu, com per exemple: [que <i>ratllat</i>].</li>
+
+<li>L'alçada de les inicials i també d'algunes il·lustracions es
+
+marca mitjançant un superíndex, que indica el nombre de línies
+
+de l'escriptura (o unitats de pauta) que aquesta ocupa,
+
+així “C<sup>3</sup>” vol dir que la caplletra té una alçada corresponent
+
+a tres línies de l'escriptura.</li>
+
+<li>No s'ha marcat la presència de signes de paràgraf al text.</li>
+
+<li>Als textos en vers el signe / indica la posició de la
+
+cesura i la | el canvi de vers.</li>
+
+<li>No puntuem el text segons els criteris actuals, però mantenim
+
+els signes de puntuació que hi siguin presents.</li>
+
+<li>Qualsevol intervenció del transcriptor que no consti en aquestes
+
+normes es trobarà al text entre [ ] i en cursiva; si és un problema que
+
+demana una explicació extensa, aquesta es trobarà a l'apartat de
+
+<b>Notes</b>.<br><br>
+
+</li></ul>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<h2>Les taules de <i>BITECA</i></h2><h2>
+
+<a name="obra"></a>
+
+</h2><h3><i>OBRA</i></h3>
+
+<p><b><i>Informació sobre els textos medievals: Autor, títol,  íncipit, èxplicit,
+
+data, persones associades, lloc de redacció i matèria.</i></b><br><br></p>
+
+<a name="autor"></a>
+
+<p><b>Autor:</b> Es pot cercar el nom original o la seva traducció
+
+(“Augustinus”
+
+o “Agustí” per al nom del sant).
+
+Aquesta indicació serveix també quan l'autor és una institució
+
+(<i>v.g.</i> Consell de Cent).</p><p>
+
+<a name="titulo"></a>
+
+</p><p><b>Títol:</b>  Es pot cercar tant el títol en la llengua original com
+
+en la seva traducció catalana. Així, una recerca del mot “regimine”
+
+recupera els registres de traduccions, <i>v.g.</i>, del <i>De regimine principum</i>,
+
+mentre que una cerca de “regiment” recupera els mateixos
+
+registres més totes aquelles altres obres escrites originalment en català que duguin aquest mot al títol,
+
+com ara el <i>Regiment de la cosa pública</i> de Francesc Eiximenis.</p>
+
+<a name="incexpl"></a>
+
+<p><b><i>Íncipits / Èxplicits:</i></b> Dins de la
+
+taula <i><b>Obra</b></i> es poden buscar dues menes d'<i>íncipit</i> i <i>èxplicit</i>.
+
+</p><ol>
+
+<li><i>Modernitzats.</i> Per facilitar la recerca, al
+
+registre mestre de l'obra (el que consta a <b>texid</b>) conté
+
+els <i>íncipits</i> i <i>èxplicits</i> modernitzats, seguint el text
+
+publicat per les edicions més modernes i autoritzades. Així, una cerca
+
+per a  <i>muller</i> a l'<i>incipit</i>  recupera tots
+
+els registres que contenen aquesta paraula.</li>
+
+<li><i>Paleogràfics</i>. Al transcriure els testimonis d'una obra (que
+
+consten als diversos <b>cnum</b>) es mantenen els <i>íncipits</i> i
+
+<i>èxplicits</i> sense normalitzar ni regularitzar,
+
+en transcripció paleogràfica (vegis les <a href="#norms"><b>Normes de
+
+transcripció</b></a>). Així, qui desitgi trobar els registres que
+
+continguin la paraula <i>muller</i> haurà de tenir present totes les
+
+seves variants medievals (<i>muler, muller</i>). En aquests
+
+casos és molt útil emprar l'asterisc com a comodí en
+
+la cerca, <i> v. g.</i> <i>mul*</i> recuperarà totes les formes, fins
+
+i tot els plurals, però també qualsevol altra paraula que comenci així.</li>
+
+</ol>
+
+<p>Una mateixa cerca recupera els dos tipus
+
+d'<i>íncipit</i> i <i>èxplicit</i>. Notis que  transcrivim tots
+
+els <i>íncipit</i> i <i>èxplicit</i> dels testimonis, no
+
+només aquells del text, sinó també els de les rúbriques, títols, pròlegs,
+
+epílegs, etc. multiplicant així les possibilitats de trobar el
+
+text que interessa. Altrament, hem inclòs les formes normalitzades
+
+a partir d'edicions, si aquestes existeixen, o si es tracta d'una
+
+obra en testimoni únic, a partir d'aquest. Així doncs, si una cerca
+
+normalitzada no serveix per localitzar el text, cal recórrer a una
+
+cerca del text paleogràfic dels testimonis.</p>
+
+<p>Aquest tipus de cerques són molt útils
+
+especialment per identificar els textos d'autor desconegut o sense un títol concret,
+
+com els textos poètics que es coneixen solament
+
+pel seu primer vers.</p>
+
+<p></p>
+
+<a name="assocname"></a>
+
+<p><b>Persona associada:</b>  Es refereix a traductors, destinataris de l'obra, notaris,
+
+persones esmentades, comandataris, dedicataris, etc.
+
+Si no es coneix el nom en la seva llengua original, es pot començar
+
+la recerca a través de la taula <a href="#persona"><i><b>PERSONA</b></i></a>, on es trobarà
+
+qualsevol forma dels noms. A través d'aquesta recerca s'arriba
+
+a una relació de totes les obres traduïdes per la persona cercada
+
+o relacionades de qualsevol manera amb ella.</p>
+
+<a name="fecha"></a>
+
+<p><b>Data de composició:</b> Pot fer referència no només a la data original
+
+de composició d'una obra, sinó a la de refosa, traducció,
+
+promulgació (quan es tracta d'una llei o ordenació legal), etc.</p>
+
+<p><b>Lloc de composició:</b> Pot fer referència no només al lloc original
+
+de composició d'una obra, sinó a la de refosa, traducció,
+
+promulgació (quan es tracta d'una llei o ordenació legal), etc.
+
+</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="biblioteca"></a>
+
+<h3><i>BIBLIOTECA</i></h3>
+
+<p><i><b>Informació sobre les biblioteques que
+
+contenen les fonts primàries, siguin manuscrits i impresos:</b></i>
+
+</p><p>Les recerques sobre la taula <i><b>BIBLIOTECA</b></i> són molt
+
+útils per formar-se una idea del contingut d'una
+
+determinada biblioteca o arxiu, per exemple a l'hora de
+
+preparar una visita. Ara bé, per trobar informació puntual
+
+sobre un manuscrit o imprès determinat és
+
+recomanable fer la recerca directament des de la taula
+
+<a href="#msed"><i><b>MsEd</b></i></a>.</p>
+
+<a name="city"></a>
+
+<p><b>Ciutat:</b> Busquis el nom de la ciutat en la llengua
+
+original (<i>v.g.</i> London, New York, llevat
+
+d'aquells que van pertànyer a la Corona d'Aragó i
+
+tradicionalment als estudis de catalanística s'esmenten
+
+pel seu nom català (<i>v.g.</i> Sogorb, Morvedre o Saragossa) o transliterat, si
+
+és el cas, <i>v.g.</i>, Sankt Peterburg. Si hom dubta sobre
+
+la forma original del nom, pot emprar l'asterisc com a
+
+comodí. Com en la immensa majoria dels casos la
+
+lletra inicial és la mateixa, una recerca de “s*”  recuperà totes
+
+les ciutats els noms de les quals comencin amb la lletra “S” .</p>
+
+<a name="library1"></a>
+
+<p><b>Biblioteca:</b> Es pot fer la recerca tant pel nom actual
+
+com per les antigues denominacions.</p>
+
+<a name="signatura"></a>
+
+<p><b>Signatura</b>  Es pot buscar per la signatura actual, l'antiga, o la d'un antic
+
+possessor. Ara bé, cal tenir present que el resultat de la cerca
+
+no serà el registre (la fitxa de descripció) del manuscrit o imprès, sinó
+
+el de la biblioteca on es conserva. A la informació que ens
+
+retorna el sistema, seguidament de les dades de la
+
+biblioteca (adreça, telèfons, personal, etc.), es troba una llista,
+
+per ordre de signatura (llevat d'error), de tots els
+
+manuscrits i impresos que la biblioteca conserva.</p>
+
+<p>Si la referència que hom disposa d'un volum és la
+
+de la signatura d'un antic posseïdor, és recomanable
+
+començar la recerca en <a href="#msed"><i><b>MsEd</b></i></a>,
+
+car fent-la a partir de la taula <i><b>BIBLIOTECA</b></i>,
+
+trobarà que aquestes signatures no són visibles a la relació de manuscrits i
+
+impresos (tot i que la cerca les considera). Així doncs, la forma de
+
+trobar un manuscrit o imprès a través d'una signatura antiga a la taula
+
+<i><b>BIBLIOTECA</b></i> és obrir un per un tots els registres de la llista,
+
+fins trobar la signatura buscada en el camp “Proprietari antic“, cosa
+
+per la qual recomanem fer-la, en aquest cas, a partir
+
+de la taula <a href="#msed"><i><b>MsEd</b></i></a>.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="persona"></a>
+
+<h3><i>PERSONA</i></h3>
+
+<p><i><b>Informació sobre les persones involucrades, en sentit ampli,
+
+en la composició i difusió de la  literatura medieval catalana: autors,
+
+traductors, membres de la noblesa o del clergat que foren destinataris o
+
+inductors de les obres, antics posseïdors de manuscrits o impresos,
+
+antiquaris, erudits, etc.</b></i></p>
+
+<p>El registre pot oferir informació sobre els càrrecs de responsabilitat
+
+que una persona ocupà, les relacions que tingué amb altres persones
+
+(<i>v.g.</i> familiars o professionals) o amb institucions; la professió
+
+que exercí i l'orde religiosa o militar a la qual va pertànyer.
+
+En aquest registre, a continuació de la informació esmentada, es
+
+troba una relació de les obres que compongué, de les relacions
+
+que tingué amb la creació d'altres obres (<i>v.g.</i> com a comandatari),
+
+dels manuscrits o impresos que posseí, etc.</p>
+
+<a name="nombre"></a>
+
+<p><b>Nom:</b> Es pot buscar tant el nom original com la seva traducció.
+
+Així Augustinus i Agustí recuperen el registre d'Aurelius Augustinus Hipona (S.).
+
+Tanmateix es poden buscar variants del nom i pseudònims.</p>
+
+<a name="title"></a>
+
+<p><b>Títol:</b> Es pot fer la cerca no només pel títol en si (bisbe,
+
+marquès, etc.) sinó també pel lloc al qual es
+
+vincula (Guimerà, Barcelona, Cardona, etc.).</p>
+
+<a name="persdate"></a>
+
+<p><b>Data:</b> S'inclouen no només les dates de naixement i mort
+
+sinó també les dates de tinença d'un títol determinat si es coneixen
+
+(sigui nobiliari, eclesiàstic, acadèmic, monàstic, etc.).</p>
+
+<a name="persplace"></a>
+
+<p><b>Lloc relacionat:</b> S'inclouen a més dels llocs de naixement i mort,
+
+aquells on la persona va residir en un determinat període.
+
+En principi es tractaria d'intentar reconstruir un itinerari
+
+vital complet de la persona, tot i que les dades de les quals disposem
+
+i que hem pogut introduir a la base de dades no arriben, ni de lluny,
+
+a aquest ideal, ni tant sols per a figures tant conegudes com els reis d'Aragó.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="order"></a>
+
+<p><b>Orde religiosa o militar:</b> Les ordes religioses
+
+cal buscar-les per les sigles emprades
+
+al <i>Diccionario de historia eclesiástica de España</i>:</p>
+
+<ul class="normal">
+
+<li>CanReg: Ordo Canonicorum Regularium / Canonges Regulars / Canonges Augustinians </li>
+
+<li>Cluny: Cluniacencs</li>
+
+<li>OCart: Ordo Cartusiensis / Cartoixans </li>
+
+<li>OCist: Ordo Cisterciensis / Cistercencs</li>
+
+<li>OdeM: Ordo de Mercede / Mercedaris</li>
+
+<li>OESA: Ordo Eremitarum Sancti Augustini / Ermitans de sant Agustí</li>
+
+<li>OFM: Ordo Fratrum Minorum / Franciscans</li>
+
+<li>OM: Ordo Minimorum / Mínims</li>
+
+<li>OP: Ordo Praedicatorum / Dominicans</li>
+
+<li>OPraem: Ordo Praemonstratensis / Premonstratenses</li>
+
+<li>OSA: Ordo Sancti Augustini / Agustins</li>
+
+<li>OSB: Ordo Sancti Benedicti / Benedictins</li>
+
+<li>OSH: Ordo Sancti Hieronymii / Jerònims</li>
+
+<li>OSST: Ordo Sanctissimae Trinitatis / Trinitaris</li>
+
+<li>SJ: Societas Jesu / Jesuïtes</li>
+
+<li>Teatinos: Ordo Clericorum Regularium / Teatins</li>
+
+</ul>
+
+<p>Les ordes militars es poden cercar pels seus noms:</p>
+
+<ul class="normal">
+
+<li>Alcántara: Orde de Alcántara</li>
+
+<li>Avis: Ordem de Avis (Portugal)</li>
+
+<li>Calatrava: Orde de Calatrava</li>
+
+<li>Montesa: Orde de Montesa</li>
+
+<li>Sant Joan: Orde de Sant Joan de Jerusalem, de Rodes i de Malta / Hospitalaris</li>
+
+<li>Santiago: Orde de Santiago</li>
+
+<li>Toison: Ordre de la Toison d'or (Borgonya)</li>
+
+</ul>
+
+<a name="profession"></a>
+
+<p>Les professions es poden cercar pels termes següents:</p>
+
+<ul class="normal">
+
+<li>alfaquí    </li>
+
+<li>antiquari    </li>
+
+<li>argenter </li>
+
+<li>arquitecte    </li>
+
+<li>arxiver    </li>
+
+<li>astròleg </li>
+
+<li>astrònom </li>
+
+<li>advocat    </li>
+
+<li>banquer    </li>
+
+<li>barber    </li>
+
+<li>bibliòfil    </li>
+
+<li>botxí </li>
+
+<li>bibliotecari  </li>
+
+<li>brodador </li>
+
+<li>cal·lígraf    </li>
+
+<li>candeler </li>
+
+<li>cavaller </li>
+
+<li>cirurgià </li>
+
+<li>clergue regular </li>
+
+<li>clergue secular </li>
+
+<li>compositor   </li>
+
+<li>conseller reial</li>
+
+<li>comptador  </li>
+
+<li>coper </li>
+
+<li>copista    </li>
+
+<li>corder    </li>
+
+<li>cortesà    </li>
+
+<li>cronista </li>
+
+<li>cuiner    </li>
+
+<li>diplomàtic </li>
+
+<li>dramaturg  </li>
+
+<li>editor    </li>
+
+<li>escriptor  </li>
+
+<li>escrivà    </li>
+
+<li>escuder    </li>
+
+<li>erudit    </li>
+
+<li>esparter </li>
+
+<li>estudiant  </li>
+
+<li>falconer </li>
+
+<li>famacèutic </li>
+
+<li>ferrer    </li>
+
+<li>filòsof    </li>
+
+<li>forner    </li>
+
+<li>funcioari reial</li>
+
+<li>fuster </li>
+
+<li>genealogista</li>
+
+<li>geògraf     </li>
+
+<li>herald </li>
+
+<li>historiador </li>
+
+<li>humanista </li>
+
+<li>il·luminador</li>
+
+<li>il·lustrador</li>
+
+<li>impressor  </li>
+
+<li>jardiner  </li>
+
+<li>joglar    </li>
+
+<li>jurista    </li>
+
+<li>lingüista  </li>
+
+<li>llibreter  </li>
+
+<li>mariner    </li>
+
+<li>matemàtic  </li>
+
+<li>mecenes    </li>
+
+<li>mercader </li>
+
+<li>mestre d'estudi</li>
+
+<li>mestre racional</li>
+
+<li>metge   </li>
+
+<li>militar   </li>
+
+<li>monja   </li>
+
+<li>músic   </li>
+
+<li>noble   </li>
+
+<li>notari   </li>
+
+<li>notari reial </li>
+
+<li>orfebre   </li>
+
+<li>oïdor   </li>
+
+<li>pagès   </li>
+
+<li>paraire  </li>
+
+<li>patge   </li>
+
+<li>pellisser   </li>
+
+<li>periodista   </li>
+
+<li>pintor   </li>
+
+<li>poeta   </li>
+
+<li>polític   </li>
+
+<li>pregoner   </li>
+
+<li>professor   </li>
+
+<li>relligador   </li>
+
+<li>rei d'armes  </li>
+
+<li>restaurador </li>
+
+<li>sabater     </li>
+
+<li>secretari </li>
+
+<li>secretari reial</li>
+
+<li>teixidor </li>
+
+<li>teòleg </li>
+
+<li>tintorer </li>
+
+<li>tirador d'or</li>
+
+<li>traductor</li>
+
+<li>tresorer reial</li>
+
+<li>uxier</li>
+
+</ul>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="reference"></a>
+
+<h3><i>REFERÈNCIA</i></h3>
+
+<p><b><i>Bibliografia secundària: Són les fonts d'informació que
+
+donen suport a les dades recollides a les altres taules.</i></b></p>
+
+<p>Al final del registre bibliogràfic segueix una
+
+relació de totes les fitxes de les altres taules on l'obra en qüestió
+
+ha estat citada. Així es poden trobar, per exemple, totes les cites
+
+a <i>Catálogo de obras en lengua catalana impresas desde 1474 hasta 1860</i>
+
+de Marià Aguiló i, per tant, els registres
+
+en <i><b>OBRA</b></i> identificats amb els del catàleg d'Aguiló.</p>
+
+<p>Els camps són els habituals de qualsevol bibliografia:</p>
+
+<a name="refauth"></a>
+
+<p><b>Autor:</b> Hom pot cercar per qualsevol dels cognoms o pel nom de fonts.</p>
+
+<a name="reftit"></a>
+
+<p><b>Títol:</b> A més dels títols d'obres impreses (o electròniques), hom
+
+trobarà força referències a la inspecció personal d'un
+
+volum per un dels membres de l'equip  de <b><i>BITECA</i></b>, o a una carta particular adreçada a qualsevol dels seus
+
+membres.</p>
+
+<a name="refdate"></a>
+
+<p><b>Data:</b> És la que figura al peu d'impremta. Els impresos
+
+no datats duen la indicació “s.d.” (sense data).</p>
+
+<a name="revista"></a>
+
+<p><b>Revista / volum col·lectiu:</b> El camp inclou revistes impreses o
+
+electròniques, volums miscel·lanis, com ara les actes de
+
+congressos, els homenatges, els monogràfics o similars.</p>
+
+<a name="refplace"></a>
+
+<p><b>Lloc de impressió:</b> Reprodueix el nom que figura al peu d'impremta,
+
+si no consta, s'indica com “s.l.” (sense lloc d'edició
+
+conegut).</p>
+
+<a name="editorial"></a>
+
+<p><b>Editorial:</b> És la que figura al peu d'impremta,
+
+si no consta, s'indica com “s.e.” (sense editor conegut).</p>
+
+<a name="serie"></a>
+
+<p><b>Serie / Col·lecció:</b> Es refereix a la sèrie a la que pertany un volum,
+
+com ara la Biblioteca Catalana, o una col·lecció editorial,
+
+com Els Nostres Clàssics.</p>
+
+<a name="refpers"></a>
+
+<p><b>Persona associada:</b> S'inclouen aquí totes les persones relacionades amb
+
+una obra, llevat de l'autor: traductor, editor científic, autor
+
+del pròleg, coordinador d'un volum col·lectiu,
+
+editor d'una sèrie o d'una col·lecció, etc.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="msed"></a>
+
+<h3><i>MsEd</i> (Manuscrits i impresos)</h3>
+
+<p><b><i>Són les fonts primàries, manuscrits i impresos, que transmeten
+
+la literatura medieval catalana.</i></b></p>
+
+<p>Aquesta taula inclou tots els manuscrits que poden oferir
+
+informació sobre aquesta literatura. La data límit es 1800 ca.,
+
+però també s'incorporen còpies fetes per erudits del s. XIX o inicis
+
+del XX que puguin proporcionar dades útils (especialment quan els originals
+
+s'han perdut recentment). Pel que fa als impresos, s'inclouen
+
+totes les edicions incunables, i també les edicions del s. XVI que
+
+contenen obres medievals; en algun cas s'ha incorporat també
+
+alguna edició del s. XVII, però és una excepció, no la norma.</p>
+
+<a name="city"></a>
+
+<p><b>Ciutat:</b> Es refereix a la ciutat on es troba la
+
+biblioteca que conserva el manuscit o imprès. Busquis el nom de la ciutat en
+
+la llengua original (<i>v.g.</i> London, New York) o transliterat, si és
+
+el cas, v.g., Sankt Peterburg. Si hom dubta sobre la forma original del
+
+nom, pot emprar l'asterisc com a comodí. Com en la immensa majoria dels
+
+casos la lletra inicial és la mateixa, una recerca
+
+de “s*” recuperà totes les ciutats els noms de les
+
+quals comencin amb la lletra “S”.</p>
+
+<a name="library"></a>
+
+<p><b>Biblioteca:</b> És la que conserva el manuscrit o
+
+imprès. Es pot fer la recerca tant pel nom actual com per
+
+les antigues denominacions.</p>
+
+<a name="shelfmark"></a>
+
+<p><b>Signatura:</b> Es pot buscar per la signatura
+
+actual, l'antiga, o la d'un antic possessor. Si la signatura té
+
+diversos elements, com ara les de El Escorial, cal fer la cerca
+
+sense guions ni punts, separant els elements substantius amb espais.
+
+Així si es vol trobar
+
+el manuscrit Esc. “a.IV.10” busquis
+
+com “a IV 10” o “a iv 10”. </p>
+
+<p>Si no es pot trobar la signatura coneguda d'una edició
+
+impresa, facis la cerca per les dades de l'edició (lloc, editor, data).
+
+Si aquestes dades no són conegudes, busquis llavors per l'obra (o les obres)
+
+que conté a la taula <a href="#obra"><i><b>OBRA</b></i></a> i revisis la llista de testimonis
+
+fins trobar el document que interessa. Caldrà, això sí, examinar totes i
+
+cadascuna de les edicions de l'obra fins trobar el registre on figura
+
+l'exemplar amb la signatura buscada.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<p>Per a les signatures que contenen lletres gregues, cal fer
+
+la cerca pel nom anglès de la lletra.</p>
+
+<ul class="normal">
+
+<li> Α / α  = alpha</li>
+
+<li> Β/ β = beta</li>
+
+<li> Γ / γ = gamma</li>
+
+<li> Δ / δ = delta</li>
+
+<li> Ε / ε = epsilon</li>
+
+<li> Ζ / ζ = zeta</li>
+
+<li> Η / η = eta</li>
+
+<li> Θ / θ = theta</li>
+
+<li> Ι / ι = iota</li>
+
+<li> Κ / κ = kappa</li>
+
+<li> Λ / λ = lambda</li>
+
+<li> Μ / μ = mu</li>
+
+<li> Ν / ν = nu</li>
+
+<li> Ξ / ξ = xi</li>
+
+<li> Ο / ο = omicron</li>
+
+<li> Π / π = pi</li>
+
+<li> Ρ / ρ = rho</li>
+
+<li> Σ / σ = sigma</li>
+
+<li> Τ / τ = tau</li>
+
+<li> Υ / υ = upsilon</li>
+
+<li> Φ / φ = phi</li>
+
+<li> Χ / χ = chi</li>
+
+<li> Ψ / ψ = psi</li>
+
+<li> Ω / ω = omega</li>
+
+</ul>
+
+<p></p>
+
+<a name="date"></a>
+
+<p><b>Data:</b> Les dates consten en el format AAAA-MM-DD. Per a les aproximades
+
+s'empren expressions del tipus “1441 ca. - 1460 ca.”, o en el cas de
+
+dubte, interrogants. Cal tenir present que això significa
+
+exactament el mateix que “mitjans s. XV”.</p>
+
+<ul class="normal">
+
+<li>1401 - 1500 = s. XV</li>
+
+<li>1401 ca. - 1410 ca. = s. XV inc.</li>
+
+<li>1401 ca. - 1425 ca. = s.XV<sup>1/4</sup> (primer quart del s. XV)</li>
+
+<li>1426 ca. - 1450 ca. = s.XV<sup>2/4</sup> (segon quart del s. XV)</li>
+
+<li>1401 ca. - 1433 ca. = s.XV<sup>1/3</sup> (primer terç del s. XV)</li>
+
+<li>1401 ca. - 1450 ca. = s. XV<sup>1/2</sup> (primera meitad del s. XV)</li>
+
+<li>1441 ca. - 1460 ca. = s. XV mitjans</li>
+
+<li>1451 ca. - 1500 ca. = s. XV<sup>2/2</sup> (segona meitat del s. XV)</li>
+
+<li>1491 ca. - 1500 ca. = s. XV finals</li>
+
+<li>1491 ca. - 1510 ca. = s. XV fin. - s. XVI inc.</li>
+
+</ul>
+
+<a name="msedplace"></a>
+
+<p><b>Lloc de producció:</b> No es reprodueix exactament el peu d'impremta,
+
+sinó que s'usen els noms actuals (<i>v.g.</i> Barcelona [no Barçelona]).</p>
+
+<a name="printerscribe"></a>
+
+<p><b>Copista / impressor:</b> Es fa servir el mateix camp per
+
+a copistes (de manuscrits) i impressors (de llibres). Si no es coneix el
+
+nom original es poden trobar altres formes del nom a la
+
+taula <a href="#persona"><i><b>PERSONA</b></i></a>.
+
+A continuació de les dades personals conegudes hom
+
+trobarà una relació de tots els manuscrits o dels impresos vinculats
+
+al copista o a l'impressor.</p>
+
+<a name="msedpub"></a>
+
+<p><b>Editorial /  Comandatari:</b> Per a un manuscrit fa referència al
+
+patró per a qui el llibre fou copiat. En el cas d'un
+
+imprès fa referència a la persona que s'ha fet càrrec del cost de l'edició.</p>
+
+<a name="owner"></a>
+
+<p><b>Antic posseïdor:</b> Són les persones o institucions a través de
+
+les mans o biblioteques dels quals el
+
+llibre ha passat al llarg dels temps, des de l'època del seu
+
+primer propietari (<i>v.g.</i> el marquès de Santillana o el comte de Guimerà)
+
+al seu darrer posseïdor (v.g. el duc d'Osuna o el duc d'Híjar)
+
+fins que ha arribat a la seu actual. Aquests noms de persones o
+
+institucions apareixen en ordre cronològic (llevat d'error o
+
+incertesa en les dades).</p>
+
+<a name="associatedperson"></a>
+
+<p><b>Persona associada:</b> Són aquelles persones que es poden relacionar
+
+amb un volum: relligador, il·luminador, persona que féu anotacions, que deixà la seva firma, etc.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="codicology"></a>
+
+<h3>Elements bibliogràfics, paleogràfics i codicològics</h3>
+
+<p><b><i>BITECA</i></b> conté una gran quantitat de materials
+
+que no és possible encara trobar a través dels índexs que hem descrit,
+
+però bona part d'aquests es poden localitzar a través
+
+de  “Cerca simple”.</p>
+
+<p>Recordi's la possibilitat d'emprar l'asterisc com a
+
+comodí, per trobar totes les formes de les paraules, tal i
+
+com s'ha explicat per a la recerca a “Cerca simple”.</p>
+
+<p>Cal tenir present que el terme pot trobar-se a qualsevol dels camps del
+
+registre, no només en aquell que interessa. Així “tall“ com a
+
+part de la relligadura, també pot trobar-se com una paraula dins d'un
+
+íncipit o èxplicit. Caldrà, doncs, obrir un a un tots els registres
+
+recuperats i fer una recerca amb l'opció [CTRL-F] del navegador per trobar el terme dins del registre.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<ul class="normal">
+
+<a name="support"></a>
+
+<li><b>Suport material:</b><br><br>
+
+<ul class="normal">
+
+<li>paper</li>
+
+<li>pergamí</li>
+
+<li>pergamí gr. (pergamí gruixut)</li>
+
+<li>p & p (pergamí i paper)</li>
+
+<li>p & p (e/i) (bifolis interior i exterior de pergamí)</li>
+
+<li>p & p (e) (bifoli exterior de pergamí)</li>
+
+<li>p & p (i) (bifoli interior de pergamí)</li>
+
+<li>paper àrab</li>
+
+<li>paper gruixut</li>
+
+<li>paper ceptí</li>
+
+<li>vitel·la</li>
+
+<li>pedra</li>
+
+<li>teixa</li>
+
+<li>papir</li>
+
+<li>tela</li>
+
+<br>
+
+</ul>
+
+</li>
+
+<a name="format"></a>
+
+<li><b>Format del plegat:</b><br><br>
+
+<ul class="normal">
+
+<li>foli</li>
+
+<li>foli petit</li>
+
+<li>foli gran</li>
+
+<li>4<sup>t</sup></li>
+
+<li>8<sup>au</sup></li>
+
+<li>12<sup>au</sup></li>
+
+<li>16<sup>au</sup></li>
+
+<li>32<sup>au</sup></li>
+
+</ul>
+
+</li>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="binding"></a>
+
+<li><b>Relligadura:</b><br><br>
+
+<ul class="normal">
+
+<li><b>Matèria de les cobertes:</b> pergamí, pasta, pasta valenciana, pasta espanyola, pell, cuir,
+
+mitja pell, badana, paper, cartó, tela, seda, vellut, cérvol, porc, camussa.</li>
+
+<li><b>Matèria de l'ànima de les cobertes:</b> cartó, fusta, paper (paper*), pergamí (pergam*).</li>
+
+<li><b>Elements de les cobertes:</b> bolló (boll*), clau (clau*), filet (filet*), llom, corretja (corret*), nervi (nervi*),
+
+entrenervi (entrenervi*), tira (tir*),  tancador (tancador*), bagueta (baguet*), tall (tall*), cantonera (cantoner*).</li>
+
+<li><b>Decoració de les cobertes:</b> jaspiat (jaspia*), gofrad (gofra*), ferro (ferro*), sec (sec*), repussat (repussa*),
+
+daurat (daura*), or, greca (gre*), filet (filet*), fil (fil*), flor (flor*), vegetal (vegetal*), orla (orl*), sanefa (sanef*),
+
+geomètric (geomètri*), entrellaç (entrelaç*), rectangle (rectangl*), rombe (rombe*), roda (rod*), cercle (cercle*), flor (flor*),
+
+creu (creu*), roda (rod*). </li>
+
+<li><b>Estil de les cobertes:</b> gòtic (gòti*), hispanogòtic (hispanogòti*), mudéjar (mudéjar*),
+
+plateresc (plateresc*), renaixentista (renaixentist*), barroc (barroc*), vano (vano*), jansenista, heràldic (heràldi*),
+
+holandès (holand*), valencià (valenci*), alemany, farnesià, francès, anglès, italià, romàntic, monàstic, notarial, de cartera.
+
+<br>
+
+</li>
+
+</ul>
+
+<p>Recordi's que l'asterisc serveix com a comodí per trobar totes les formes de les paraules.</p>
+
+</li>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="collation"></a>
+
+<li><b>Col·lació:</b>  És la representació de la composició del volum per quaderns.<br><br>
+
+S'expressa de la forma següent:
+
+<br><br>
+
+<ul class="normal">
+
+<li>1<sup>3/2</sup> 2-15<sup>12</sup> 16<sup>14</sup></li>
+
+<li>a-f<sup>12</sup> g-h<sup>14</sup></li>
+
+</ul>
+
+<p>El primer exemple representa un manuscrit de setze quaderns, el
+
+primer dels quals presenta dubtes en la seva estructura, car resten
+
+cinc fulls, manca un a la segona part del plec i no queda clar si en realitat
+
+era inicialment un ternió; la resta de plecs, els quaderns 2-15,
+
+són senions, és a dir, cadascun té 12 folis i el quadern final,
+
+el setzè, és un plec de set bifolis, és a dir, té 14 folis.</p>
+
+<p>El segon exemple correspon a un imprès; mostra que els
+
+quaderns signats  a-f tenen 12 folis cadascun i els quaderns
+
+signats g-h tenen 14 folis cadascun.</p>
+
+<p>Els números han estat assignats pels compiladors i indiquen quaderns sense
+
+signatura, mentre que les lletres, emprades
+
+generalment als impresos i rara vegada visibles als manuscrits,
+
+indiquen l'ordre dels quaderns per al relligador.
+
+Els números sobreescrits indiquen el nombre de folis del plec.</p>
+
+<p>Cal tenir present que l'alfabet emprat és el que següeix:</p>
+
+<ul class="normal">
+
+<li>a b c d e f g h i/j k l m n o p q r s t u/v x y z</li>
+
+</ul>
+
+<p>En els casos en que s'empren diverses formes d'una lletra com ara “s llarga” / “s curta”,
+
+“d erecta” / “d uncial”, “r de dues corbes” / “r recta”, etc.,
+
+s'indica de la forma següent:</p>
+
+<ul class="normal">
+
+<li>a-s<sup>12</sup> s-t<sup>12</sup></li>
+
+<br>
+
+</ul>
+
+</li>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="hand"></a>
+
+<li><b>Mà:</b> És l'estil de lletra emprat en un manuscrit.<br><br>
+
+<ul class="normal">
+
+<li>carolina, gòtica (gòti*), gòtica aragonesa, gòtica rodona, gòtica cursiva, gòtica minúscula,
+
+gòtica de forma, semigòtica (semigòti*), bastarda (bastard*), cortesana (cortesan*), humanística (humanísti*), humanística
+
+cursiva, gòtico-humanística, processal, cursiva (cursiv*), itàlica (itàli*), notarial, privilegis</li>
+
+</ul>
+
+<p>Inicialment es va partir de la terminologia del <i>Tratado de
+
+paleografía española</i> de Agustín Millares Carlo, i sempre que ha estat possible s'ha intentat
+
+que un únic membre
+
+de l'equip s'encarregués d'examinar les <i>scripta</i> i identificar-les. Ara bé,
+
+la rara presència de lletres “pures”, davant l'abundància de lletres influïdes per altres estils, fa
+
+que aquest sigui un punt a completar amb la consulta dels facsímils.
+
+</p>
+
+</li>
+
+<a name="font"></a>
+
+<li><b>Font tipogràfica:</b>
+
+<br><br>
+
+<ul class="normal">
+
+<li>gòtica</li>
+
+<li>humanística</li>
+
+<li>romana</li>
+
+<li>itàlica</li>
+
+</ul>
+
+<p>De vegades es dóna també la mida, sota
+
+la forma “120 G”, que significa que 20 línies d'un
+
+text en lletra gòtica ocupen 120 mm. La majoria
+
+d'aquestes indicacions provenen de fonts
+
+secundàries com ara F. J. Norton, <i>A Descriptive Catalogue of
+
+Printing in Spain and Portugal 1501-1520</i>.</p>
+
+</li>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="watermark"></a>
+
+<li><b>Filigrana:</b> És la marca d'aigua que trobem al paper. Els seus elements poden combinar-se,
+
+<i>v.g.</i> mà amb estel de cinc puntes.<br><br>
+
+<ul class="normal">
+
+<li><b>éssers o elements naturals o mitològics:</b> ànec, àngel, animal, basilisc, boc,
+
+cap de boc, brau, cap de brau, cavall, cap d'home, cabra, cap de cabra, cérvol, drac,
+
+estel (de cinc puntes, de sis puntes), flor*, flor (de cinc pètals, de sis pètals), fruit (fruit*),
+
+gall, gos, falcó, home a cavall, lleó, lluna, mà, muntanya (muntany*), ocell, colom, pelegrí, peix,
+
+porc senglar, serp, sirena, trèvol, unicorn, cap de unicorn, raïm, vedella.</li>
+
+<li><b>elements creats per l'home:</b> àncora, anell, arc (arc*), balança, ballesta, bandera, barret, campana,
+
+carro, castell, ceptre, clau (clau*), closca, columna, compàs, corona, corn, creu, enclusa, escala, escut, església,
+
+espasa, estendard, destral,  fletxa (fletx*), ganivet, gerro, lletra (lletr*), martell (martell*),
+
+música (instrument musical), nau, nom (nom*), paraula (paraul*), roda, sageta (saget*), signe (signe*), tau, tenalles, tisores, torre, ulleres.</li>
+
+<li><b>figures geomètriques:</b> cercle (cercle*), croissant òval, altres.</li>
+
+<br>
+
+</ul>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="decoration"></a>
+
+</li><li><b>Elements gràfics:</b> És la decoració artística de la pàgina, des d'il·lustracions a pàgina completa fins a petits detalls.
+
+Inclou l'ús de tintes de colors per destacar un determinat element de l'escriptura.<br><br>
+
+<ul class="normal">
+
+<li>orla (orl*)</li>
+
+<li>miniatura (miniatur*)</li>
+
+<li>il·luminació (il·luminaci*)</li>
+
+<li>il·lustració (il·lustraci*)</li>
+
+<li>dibuix (dibuix*)</li>
+
+<li>xilografia (xilografi*)</li>
+
+<li>inicial (inicial*)</li>
+
+<li>caplletra (caplletr*)</li>
+
+<li>blau (bla*)</li>
+
+<li>vermell (vermell*)</li>
+
+<li>verd (verd*)</li>
+
+<li>safranat (safrana*)</li>
+
+<li>or</li>
+
+<li>daurat (daura*)</li>
+
+<li>rúbrica (rúbri*)</li>
+
+<li>títol (títol*)</li>
+
+<li>calderó (calder*)</li>
+
+<li>lletra de guia (lletr* de guia)</li>
+
+<li><i>titre-courant</i>
+
+<br><br>
+
+</li>
+
+</ul>
+
+<a name="music"></a>
+
+</li><li><b>Presència de neumes / música:</b> En no tenir l'experiència
+
+musicològica necessària, ens limitem a indicar la presència de
+
+notació musical, especialment si es tracta de neumes.</li><br>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="layout"></a>
+
+<li><b>Pautat</b>: És la tècnica emprada per establir la
+
+justificació o caixa del manuscrit:<br><br>
+
+<ul class="normal">
+
+<li>punta seca (o pautat cec)</li>
+
+<li>punta de plom</li>
+
+<li>tinta</li>
+
+<li>punta de carbó</li>
+
+<li>sanguina</li>
+
+<li>plegat tabeliònic</li>
+
+<li>mastara</li>
+
+<br>
+
+</ul>
+
+</li>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="catchword"></a>
+
+<li><b>Reclams:</b> S'indica la seva presència i posició; aquesta s'assenyala molt especialment
+
+si ocupen un lloc que no sigui el verso del foli final de cada plec.</li>
+
+<br>
+
+<ul class="normal">
+
+<li>horitzontal (horitzontal*)</li>
+
+<li>horitzontal centrat</li>
+
+<li>horitzontal centrat sota la segona columna</li>
+
+<li>horitzontal centrat cap a la dreta</li>
+
+<li>horitzontal tocant el tall</li>
+
+<li>vertical (vertical*) (pot ser ascendent o descendent)</li>
+
+<li>vertical centrat</li>
+
+<li>vertical seguint la línia externa de justificació de la segona columna</li>
+
+<li>vertical fregant el tall</li>
+
+<li>decorat</li>
+
+<li>amb tocs de vermell (o d'altres colors)</li>
+
+<br>
+
+</ul>
+
+<a name="signature"></a>
+
+<li><b>Signatures (de bifoli):</b> S'anoten especialment als llibres impresos, car permeten comprovar la integritat
+
+de l'imprès en ésser un element d'ordenació que l'impressor introduïa al llibre per guiar al relligador. També es troben
+
+als manuscrits, on no només tenen la funció de mantenir
+
+en ordre els plecs sinó que poden indicar la participació
+
+d'un o més copistes dins d'un volum, si varien de forma o posició.
+
+Poden ser alfanumèriques, numèricoalfabetiques, numèriconumèriques, etc. Poden combinar números romans i aràbigs,
+
+lletres minúscules i majúscules, lletres hebrees, signes, etc. i llegir-se de esquerra a dreta o de dreta a esquerra.
+
+Normalment només figuren a la primera part dels plecs (llevat dels casos en què s'assenyala amb un signe,
+
+normalment una +, el primer bifoli de la segona part). Tenen la forma següent:</li>
+
+<br>
+
+<ul class="normal">
+
+<li>a aij aiij aiiij b bij biij biiij ...</li>
+
+<br>
+
+<li>a j. b j. c j. d j. a ij. bij. cij. dij. ...</li>
+
+<br>
+
+</ul>
+
+<a name="sewing"></a>
+
+<li><b>Cosit:</b> Es pren nota només si l'estat de la relligadura
+
+del llibre ho permet i si es sospita d'algun problema en
+
+la constitució dels quaderns, quan falta algun foli en una de les parts.
+
+S'indica el foli on es troba, <i>v.g.</i> 6/7, 16/17, 26/27.</li>
+
+<br>
+
+<a name="perf"></a>
+
+<li><b>Perforacions:</b>  Sovint desapareixen quan es relliga el llibre, però
+
+de vegades es poden veure als marges, molt a prop dels talls,
+
+o als angles de les caixes, assenyalant les línies fonamentals que delimiten
+
+la caixa d'escriptura; de vegades també és visible una línia de perforacions
+
+que assenyala la separació dels renglons. La seva posició (al recto o al verso)
+
+i factura (foli a foli, bifoli a bifoli, amb tot el quadern obert
+
+o tancat, etc.) proporciona dades significatives sobre la construcció del
+
+llibre medieval. Així doncs, anotem la seva presència, forma i
+
+posició sempre que és possible.</li>
+
+<br>
+
+<a name="just"></a>
+
+<li><b>Justificació:</b> És el conjunt de ratlles horitzontals i verticals que
+
+estableix la caixa d'escriptura. Varien des de 2 (les dues verticals exteriors),
+
+3 (les anteriors més una línia horitzontal superior), 4 (que és el més
+
+freqüent: dues horitzontals superior i inferior, i
+
+dues verticals interior i exterior) fins a 8, 10, o més, segons la
+
+complexitat de la pàgina (a 2 o 3 columnes, amb línies verticals
+
+o horitzontals complementàries, amb text central a 1 o 2 columnes
+
+i glosses marginals, etc.). Per facilitar la comparació dels esquemes remetem sovint a la
+
+numeració dels que va estudiar A. Derolez a <i>Codicologie des manuscrits en écriture humanistique sur parchemin</i> (1984).</li>
+
+<br>
+
+<li><b>Primera línia escrita?:</b> La primera línia del pautat
+
+pot estar en blanc, escrita, trepitjada o bé amb l'escriptura penjant
+
+d'ella. L'ús de la primera línia en blanc s'abandona aviat a
+
+Europa i no es recupera fins a l'Humanisme, per imitació dels models
+
+antics, però a la Península Ibèrica es manté més temps i se'n troben
+
+exemples al s. XIV. Indiquem, per tant, la seva posició.</li>
+
+</ul>
+
+<p>Recordi's la possibilitat d'emprar l'asterisc com a comodí,
+
+per trobar totes les formes de les paraules, tal i com s'ha explicat
+
+per a la recerca a “Cerca simple”.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="examples"></a>
+
+<h3>Exemples de cerques a <b><i>BITECA</i></b></h3>
+
+<p>Escolliu primer de tot la base de dades, pulsant sobre la bandera que
+
+indica l'idioma que hi ha a l'extrem superior dret de la pàgina.</p>
+
+<p>A la columna de l'esquerra trieu l'opció <b>Cerca</b>.</p>
+
+<ol>
+
+<li>Si es vol trobar les obres escrites per un determinat autor:<br><br>
+
+Escolliu la taula <a href="#obra"><i><b>OBRA</b></i></a>, trieu <b><i>BITECA</i></b>
+
+escriviu al
+
+camp <b>Autor</b> el seu nom i pitjeu <b>Cerca</b>. Obtindreu una relació
+
+de títols que tenen com a autor el nom triat (atenció! si hi ha més d'un amb
+
+el mateix nom triat, <i>v.g.</i> “Vilanova”, obtindreu una relació de tots ells. Pitjant sobre cadascun dels títols
+
+passareu a una pàgina amb informació sobre l'obra i una llista dels testimonis amb dades sumàries.
+
+Des d'aquesta pàgina, si pitjeu sobre els <b>manid</b>, passareu a la descripció dels manuscrits.</li>
+
+<br>
+
+<li>Si es vol trobar les obres relacionades (per autoria, traducció, etc.) amb un determinat autor:
+
+<br>
+
+Escolliu la taula <a href="#persona"><i><b>PERSONA</b></i></a>, trieu <b><i>BITECA</i></b> escriviu al camp
+
+<b>Nom</b> el mot corresponent i pitjeu <b>Cerca</b>. Obtindreu
+
+una relació de les persones així anomenades (<i>v.g.</i> “Eiximenis” dóna
+
+com a resultat  “Francesc Eiximenis (Fra)” i “Pseudo Francesc Eiximenis”).
+
+Pitjeu damunt del nom i després d'unes dades biogràfiques trobareu la relació
+
+d'obres escrites (autor) o relacionades (traductor o altres associacions).</li>
+
+<br>
+
+<li>Si es vol saber quins testimonis es conserven d'una obra determinada:
+
+<br>
+
+Escolliu la taula <a href="#obra"><i><b>OBRA</b></i></a>, trieu <b><i>BITECA</i></b>, escriviu al
+
+camp <b>Títol</b> alguna paraula del que busqueu i pitjeu <b>Cerca</b>.
+
+Obtindreu una relació de títols que la contenen (<i>v.g.</i> “Regiment de prínceps”
+
+retornarà les dues versions de l'obra, la d'Aegidius Colonna i la del <i>Dotzè</i> d'Eiximenis
+
+que conté també el <i>Regiment de prínceps</i>. Trieu la que us interessa
+
+i obtindreu una pàgina amb informacions sobre l'obra, nombre de testimonis
+
+que la conserven i una descripció mínima de cadascun d'ells. Des d'aquesta
+
+pàgina, si pitjeu sobre els <b>manid</b>, passareu a la descripció
+
+dels manuscrits.</li>
+
+<br>
+
+<li>Si es vol saber quins manuscrits i impresos d'una determinada Biblioteca es troben
+
+registrats a <i><b>BITECA</b></i>:
+
+<br>
+
+Escolliu la taula <a href="#biblioteca"><i><b>BIBLIOTECA</b></i></a>,
+
+trieu <b><i>BITECA</i></b>, escriviu al
+
+camp <b>Nom</b>, o al camp <b>Ciutat</b> alguna paraula de la
+
+que busqueu i pitjeu <b>Cerca</b>. Obtindreu una relació de les
+
+biblioteques corresponents. Trieu la que us interessi
+
+i després d'informació sobre la biblioteca i bibliografia
+
+trobareu una llista de tots els manuscrits i impresos que conserva.</li>
+
+<br>
+
+<li>Si es vol saber on es troba, en quines condicions o
+
+si existeix un volum del qual es coneix la signatura:<br>
+
+Escolliu la taula <a href="#msed"><i><b>MsEd</b></i></a>,
+
+trieu <b><i>BITECA</i></b>, escriviu
+
+al camp <b>Signatura</b> alguna paraula del que
+
+busqueu i pitjeu <b>Cerca</b>. Obtindreu una relació dels exemplars
+
+que la contenen.</li>
+
+<br>
+
+<li>Si es vol saber quins exemplars vinculats a una determinada
+
+persona (un antic posseïdor, per exemple) es conserven:
+
+<br>
+
+Escolliu la taula <a href="#msed"><i><b>MsEd</b></i></a>, trieu <b><i>BITECA</i></b>,
+
+escriviu al camp <b>Antic posseïdor</b> o <b>Persona relacionada</b>
+
+alguna paraula del que busqueu i pitjeu <b>Cerca</b>. Obtindreu
+
+una relació dels exemplars que s'hi relacionen. També es pot fer la cerca des de
+
+la taula <a href="#persona"><i><b>PERSONA</b></i></a>.</li>
+
+<br>
+
+</ol>
+
+<a name="charset"></a>
+
+<h3>Joc de caràcters</h3>
+
+
+<p>
+
+El joc de caràcters emprat
+
+és <a href="http://unicode.org/charts/PDF/U0100.pdf">Latin
+
+Extended-A</a> complementat per
+
+<a href="http://unicode.org/charts/PDF/UA720.pdf">Latin Extended-D</a> per a les abreviatures medievals.
+
+Per tal de visualitzar-los correctament, descarregueu i instal·leu la font
+
+<a href="http://sourceforge.net/projects/junicode/files/">Junicode</a>.
+
+Si no té la font Junicode instal·lat apareixeran com quadrets en blanc.<br><br>
+
+El navegador preferit per a la visualització dels caràcters Junicode és <a href="http://mozilla-firefox.todownload.com/">Mozilla</a>.</p>
+
+<p>Aquests caracters inclouen la possibilitat de
+
+representar abreviatures paleogràfiques, com ara:</p>
+
+<ul class="normal">
+
+<li>nota tironiana = ⁊</li>
+
+<li>p amb un traç en l'asta descendent = ꝑ com en ꝑa “p<i>ar</i>a” o com a
+
+ꝑtenescer “p<i>er</i>tenescer”</li>
+
+<li>p amb un bucle a l'asta descendent = ꝓ com en ꝓuar “p<i>ro</i>uar”</li>
+
+<li>q amb traç diagonal = ꝙ = “q<i>uod</i>”</li>
+
+<li>r rodona (emprada després dels caràcters del tipus: b, o, p) = ꝛ com en “obꝛar”</li>
+
+<li>r rodona amb traç diagonal = ꝝ = <i>rum</i> com en numeroꝝ “numero<i>rum</i>”</li>
+
+<li>v amb traç diagonal = ꝟ = v<i>er</i> com en ꝟbo “v<i>er</i>bo”</li>
+
+<li>C a l'inrevés al començament d'una paraula = ꝯ = <i>con</i> com en ꝯtra “<i>con</i>tra”</li>
+
+<li>c a l'inrevés al final d' una paraula, sobreescrita = ꝰ = <i>us</i> com en “script ꝰ”</li>
+
+</ul>
+
+<p>Hores d'ara (abril del 2014) <b><i>BITECA</i></b> no empra encara aquesta possibilitat que ofereix el programa,
+
+però s'incorporarà progressivament el seu ús especialment en les
+
+descripcions de les col·lacions dels impresos, on formes com  ꝝ = <i>rum</i>  etc. apareixen sovint.</p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="helpdetail"></a>
+
+<p>Per a ajuda tècnica o de tipus general amb
+
+l'ús o continguts de <b><i>Philobiblon</i></b> contacteu
+
+amb  <a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a>.</p>
+
+<p>Per a ajuda tècnica o de tipus general amb l'ús o continguts d'una
+
+de les bibliografies incloses a <b><i>Philobiblon</i></b> contacteu amb:</p>
+
+<p><a href="beta_en.html"><i><b>BETA</b></i></a><b> / Bibliografía Española
+
+de Textos Antiguos</b><br>
+
+Textos medievals en espanyol.<br>
+
+<a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a></p>
+
+<p><a href="bipa_en.html"><i><b>BIPA</b></i></a><b> / Bibliografía de la Poesía Áurea</b><br>
+
+Poesia del Segle d'or espanyol.<br>
+
+<a href="mailto:Ralph.Difranco@du.edu">Ralph DiFranco</a></p>
+
+<p><a href="bitagap_en.html"><i><b>BITAGAP</b></i></a><b> / Bibliografia de Textos Antigos Galegos e Portugueses</b><br>
+
+Textos medievals en gallec, gallecportuguès i portuguès.<br>
+
+<a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a></p>
+
+<p><a href="biteca_en.html"><i><b>BITECA</b></i></a><b> / Bibliografia de Textos Antics Catalans, Valencians i Balears</b><br>
+
+Textos medievals en català.<br>
+
+<a href="mailto:gavenoza@ub.edu">Gemma Avenoza</a></p>
+
+<p><a href="#top">Tornar a l'Índex</a></p>
+
+<a name="resources"></a>
+
+<p><b>Recursos en línia</b><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ca.html#medievalstudies">Associacions i blogs d'estudis medievals</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ca.html#research">Institucions, centres i grups de recerca</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ca.html#catalogs">Biblioteques i biblioteques digitals: Catàlegs i llistes</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ca.html#archives">Arxius i arxius digitals: Catàlegs i llistes</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ca.html#databases">Bases de dades en línia</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ca.html#bibliographies">Fonts de referència i bibliografies</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ca.html#reviews">Revistes en línia</a></p>
+
+<p></p><p>Es prega a tots els usuaris enviar la informació sobre els
+
+canvis als URL o els suggeriments per afegir-ne d'altres URL
+
+a <a href="mailto:schafferm@usfca.edu">Martha E. Schaffer</a>.</p>
+
+</div>

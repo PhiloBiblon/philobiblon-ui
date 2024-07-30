@@ -1,0 +1,141 @@
+<h1>Acknowledgments</h1>
+
+<div class="content">
+
+<p>The technical development of PhiloBiblon has depended almost entirely
+
+on generous support from the <a href="https://www.neh.gov/">National Endowment
+
+for the Humanities (NEH)</a> for more than twenty years.
+
+Additional NEH grants funded data entry for BETA, BIPA, and BITAGAP:</p>
+
+<ul style="list-style-type: none; color: #000">
+
+<li>RC-21708-89 (1989-91) (Faulhaber, PI). Focused on data entry for BETA and the elaboration of PhiloBiblon into a full-fledged relational database system with ten tables.</li><br>
+
+<li>RT-21265-91 (1991-93) (Faulhaber, PI). The focus shifted to the transcription of machine-readable texts for the Archivo Digital de Manuscritos y Textos Españoles (ADMYTE) in addition to the preparation of PhiloBiblon and its component bibliographies for release as part of the ADMYTE CD-ROM disk. This included the redaction of a 75-page manual and its translation into Spanish.</li><br>
+
+<li>RG-20004-92 (1992-93) (Askins, PI). Emphasis on BITAGAP, focusing on direct consultation of primary source materials, both new and previously reported.</li><br>
+
+<li>RT-21641-94 (1994-95) (Askins, Faulhaber PIs). The provision of multi-lingual capabilities for the PhiloBiblon user interface, searching, and display of data as well as enhancement of the report generators.</li><br>
+
+<li>PA 23025-97 (1997-98) (DiFranco and Labrador, PIs). Focused on BIPA, with support for data input of the incipits from the corpus of Spanish Golden Age poetry, beginning first with data prepared manually on card files in an earlier version of the project.</li><br>
+
+<li>PA-23362-99 (1999-2000) (DiFranco and Labrador, PIs). Focused on BIPA, with support for data input of the incipits from the corpus of Spanish Golden Age poetry, adding materials from direct consultation of the original manuscripts.</li><br>
+
+<li>PA-23523-00 (2000-2001) (Faulhaber and Askins, PIs). Upgrade of PhiloBiblon software from DOS to Windows.</li><br>
+
+<li>PA 23787-01 (DiFranco and Labrador, PIs). Focused on BIPA. Data entry from 737 new sources (231 manuscripts and 506 printed books and chap-books) held at forty-nine libraries located in thirty-seven cities. With this material, 83,992 new records were created.</li><br>
+
+<li>PM-50038-07 (2007-2010) (Faulhaber, PI). Enhancement of PhiloBiblon Windows software and upgrade of ten-year-old PhiloBiblon web site.</li><br>
+
+<li>PW-51633-14 (2014-2015) (Faulhaber, PI). Enhancement of PhiloBiblon Windows software and upgrade of PhiloBiblon web site; establishment of a mirror site in Spain; organization of a PhiloBiblon workshop in the summer of 2015.</li><br>
+
+<li>1990-2011 (Beltran or Avenoza, PIs). Secretaría de Estado de Investigación. Subprograma de Proyectos de Investigación Fundamental no orientada (PB90-53, PB93-758, PB96-1235, PB98-1170, BFF2002-00052, HUM2005-00178, FFI2008-03882). These grants, dedicated to the study of primary sources, allowed access to and study of numerous library and archival collections in Spain, France, Italy, the United Kingdom, the East Coast of the U.S., as well as a few in Germany. They also made possible data entry and the adaptation of BITECA to different platforms. Besides this, the last series of grants made possible the  creation of a general corpus of poetry in Catalan.</li><br>
+
+<li>2001 (Beltran and Avenoza, PIs). Beca Alòs Moner. Institut d'Estudis Catalans. Dedicated to updating of collections of poetry.</li><br>
+
+<li>2007-2009 (Beltran and Avenoza, PIs). Acadèmia Valenciana de la Llengua. This grant not only made it possible to hire a graduate research student for data entry, especially for materials having to do with Valencian works and libraries; it also allowed more study of primary sources and the verification of data taken from secondary sources. </li><br>
+
+</ul>
+
+<p>The 2007-2010 NEH grant received matching support from the L.J. Skaggs and Mary C. Skaggs Foundation and the Gladys Krieble Delmas Foundation. In 2009 grants from the Andrew W. Mellon Foundation and the Fundación Ignacio Larramendi made it possible to enhance the underlying Windows database version by adding robust reporting and search tools as well as context-specific help.</p>
+
+<p>The 2014-2015 NEH grant also received financial support from the Pine Tree Foundation.</p>
+
+<p>PhiloBiblon is a collaborative project involving the joint efforts of the following individuals and institutions:</p>
+
+<p>Principal developers of PhiloBiblon are:</p>
+
+<ul style="list-style-type: none; color: #000">
+
+<li><a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a>, University of California, Berkeley <a href="https://bancroft.berkeley.edu/info/cfaulhaber_cv.pdf">(CV)</a></li><br>
+
+<li><a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a>, University of California, Berkeley</li><br>
+
+<li><a href="mailto:sharrer@spanport.ucsb.edu">Harvey L. Sharrer</a>, University of California, Santa Barbara</li><br>
+
+<li><a href="mailto:gavenoza@ub.edu">Gemma Avenoza</a>, Universitat de Barcelona</li><br>
+
+<li><a href="mailto:dde@astound.net">John G. May</a>, DataBase Design & Engineering, Walnut Creek, CA</li><br>
+
+</ul>
+
+<p>It is a pleasure to acknowledge the hard work and expertise of the following programmers: Giulia Hill,
+
+Kurt William True, Casondra Sobieralski (University of California, Berkeley);  Marc Esteve Crespo, Joan Trench Rubal
+
+(Universitat Pompeu Fabra, Barcelona).</p>
+
+<p>Institutions that have contributed significantly to the development of PhiloBiblon include:</p>
+
+<ul style="list-style-type: none; color: #000">
+
+<li><a href="https://www.avl.gva.es/inici.html">Acadèmia Valenciana de la Llengua</a></li><br>
+
+<li><a href="https://www.mellon.org/">Andrew W. Mellon Foundation</a></li><br>
+
+<li><a href="https://bancroft.berkeley.edu/">The Bancroft Library</a>, University of California, Berkeley</li><br>
+
+<li><a href="https://www.portcenter.ucsb.edu/">Center for Portuguese Studies</a>, University of California, Santa Barbara</li><br>
+
+<li><a href="https://www.spanport.ucsb.edu/index.php?option=com_content&amp;view=article&amp;id=10&amp;Itemid=59">Center for Galician Studies</a>, University of California, Santa Barbara</li><br>
+
+<li>DataBase Design & Engineering, Walnut Creek, California</li><br>
+
+<li>Fundación del Amo, Universidad Complutense de Madrid</li><br>
+
+<li>Fundación MAPFRE Tavera, Madrid</li><br>
+
+<li><a href="https://www.larramendi.es/">Fundación Ignacio de Larramendi</a>, Madrid</li><br>
+
+<li>Gaspar de Portolà Catalonian Studies Program, University of California, Berkeley</li><br>
+
+<li><a href="https://www10.gencat.cat/agaur_web/AppJava/catala/index.jsp">Generalitat de Catalunya. Agència de Gestió d’Ajuts Universitaris i de Recerca</a></li><br>
+
+<li><a href="https://delmas.org/">Gladys Krieble Delmas Foundation</a>, New York</li><br>
+
+<li><a href="https://www.hispanicsociety.org/hispanic/HSMS.htm">Hispanic Seminary of Medieval Studies</a>,
+
+Hispanic Society of America, New York (formerly at the University of Wisconsin)</li><br>
+
+<li>IBM - Advanced Education Program</li><br>
+
+<li><a href="https://lib.berkeley.edu/">The Library</a>, University of California, Berkeley</li><br>
+
+<li>L.J. Skaggs and Mary C. Skaggs Foundation, Oakland, California</li><br>
+
+<li>Ministerio de Ciencia e Innovación. Dirección General de Programas y Transferencia del Conocimiento</li><br>
+
+<li><a href="https://www.idi.mineco.gob.es/portal/site/MICINN/menuitem.29451c2ac1391f1febebed1001432ea0/?vgnextoid=6e0393bdfeb01210VgnVCM1000001034e20aRCRD">Ministerio
+
+de Ciencia e Innovación. Transferencia del Conocimiento</a></li><br>
+
+<li><a href="https://www.neh.gov/">National Endowment for the Humanities</a>, Washington D.C.</li><br>
+
+<li>Pine Tree Foundation, New York, New York</li><br>
+
+<li><a href="https://ies.berkeley.edu/psp/">Portuguese Studies Program</a>, University of California, Berkeley</li><br>
+
+<li><a href="https://www.oclc.org/research/partnership.html">Research Libraries Group</a>, now part of <a href="https://www.oclc.org/en-US/home.html">OCLC</a>, Dublin, Ohio</li><br>
+
+</ul>
+
+<p>WWW access to and use of PhiloBiblon are free of charge. Reproduction of any materials found here is subject to the restrictions found in our <a href="wiki/Copyright">Copyright Statement</a>.</p>
+
+<p>Best results will result from using latest-version WWW browsers which both render tables well and support JavaTM, but every effort will be made to present a generic service, accessible to any WWW viewing tool.</p>
+
+<p>Readers are encouraged to send questions, comments, new data, and suggestions for the improvement of this site to Charles B. Faulhaber: cfaulhab@library.berkeley.edu.</p>
+
+<p>Charles B. Faulhaber<br>
+
+The Bancroft Library<br>
+
+University of California, Berkeley<br>
+
+January 1 2015
+
+</p>
+
+</div>
