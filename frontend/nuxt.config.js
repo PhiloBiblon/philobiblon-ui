@@ -55,7 +55,8 @@ export default {
     '~/plugins/config.js',
     '~/plugins/wikibase.js',
     '~/plugins/language.js',
-    '~/plugins/notification.js'
+    '~/plugins/notification.js',
+    '~/plugins/dompurify.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

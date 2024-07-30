@@ -25,11 +25,13 @@
     <div v-if="isHintVisible" class="message-container">
       <v-tooltip max-width="40%" bottom ligth open-delay="200">
         <template #activator="{ on }">
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <span class="text-caption hint" v-on="on" v-html="hint && hint.length &lt; hintMaxWidth ? hint : hint.substring(0, hintMaxWidth) + '...'" />
+          <span class="text-caption hint" v-on="on">
+            {{ hint && hint.length < hintMaxWidth ? hint : hint.substring(0, hintMaxWidth) + '...' }}
+          </span>
         </template>
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="hint" />
+        <span>
+          {{ hint }}
+        </span>
       </v-tooltip>
     </div>
   </div>

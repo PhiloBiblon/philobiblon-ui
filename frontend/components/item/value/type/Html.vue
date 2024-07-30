@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <span v-html="valueToView.value" />
+  <span v-html="contentView" />
 </template>
 
 <script>
@@ -18,6 +18,11 @@ export default {
     save: {
       type: Function,
       required: true
+    }
+  },
+  computed: {
+    contentView() {
+      return this.$sanitize(this.valueToView.value);
     }
   }
 }

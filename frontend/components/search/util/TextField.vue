@@ -9,11 +9,13 @@
     <template #message="{ message }">
       <v-tooltip max-width="40%" bottom open-delay="200">
         <template #activator="{ on }">
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <span v-on="on" v-html="message && message.length &lt; hintMaxWidth ? message : message.substring(0, hintMaxWidth) + '...'" />
+          <span v-on="on">
+            {{ message && message.length < hintMaxWidth ? message : message.substring(0, hintMaxWidth) + '...' }}
+          </span>
         </template>
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="message" />
+        <span>
+          {{ message }}
+        </span>
       </v-tooltip>
     </template>
   </v-text-field>
