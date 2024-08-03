@@ -68,7 +68,9 @@ export default {
           .then((results) => {
             Object.entries(results).forEach(
               ([_, result]) => {
-                this.items.push(resultFunction(result))
+                if (result.label !== undefined) {
+                  this.items.push(resultFunction(result))
+                }
               }
             )
             this.loadingItems = false
