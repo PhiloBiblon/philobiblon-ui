@@ -1,0 +1,505 @@
+<h1>BETA: Bibliografía Española de Textos Antiguos</h1>
+
+<div class="content">
+
+<p>Una cerca a <a href="searchwork_ca.html">Obra</a> ens proporciona una llista de registres que contenen els termes inclosos a la cerca. F
+
+eu clic en l'obra que us interessa i obtindreu una llista dels seus testimonis presentats en ordre cronològic.
+
+Cadascun dels testimonis està vinculat al  manuscrit o a l'edició impresa que el conté.</p><p>
+
+</p><p>Una cerca a <a href="searchmsed_ca.html">MsEd</a> ens proporciona una llista de registres que contenen els termes inclosos a la cerca.
+
+Feu clic al manuscrit o a l'edició impresa que us interessa i trobareu una descripció externa de l'exemplar,
+
+seguida d'una descripció del seu contingut, amb les diverses obres que transmet l'exemplar ordenades segons la seva aparició al volum.</p>
+
+<p>BETA es basa en i deriva de BOOST (Bibliography of Old Spanish Texts), recopilació iniciada en 1974 com a part d'un projecte del Seminario de Estudios Medievales Hispánicos de la Universitat de Wisconsin en Madison, consistent en crear un Dictionary of the Old Spanish Language amb ajuda informàtica. El propòsit de BOOST fou el de seleccionar els textos del corpus sobre els quals l'esmentat diccionari es basà.</p>
+
+<p>No obstant, des d'aquest any inicial de 1974 BETA ha evolucionat de forma substancial, amb major amplitud de mires i així mateix amb un objectiu de major abast. Igualment que les seves companyes BITAGAP, BITECA i BIPA, el propòsit actual de BETA no és altre que proporcionar un catàleg col·lectiu i comprensiu de les fonts primàries, manuscrites i impreses, per a l'estudi de la cultura hispànica medieval. Les 966 entrades inicials amb què comptava la primera edició impresa de BOOST en 1975 s'han transformat en les gairebé 30.000 presents en aquesta nova versió en Internet.</p>
+
+<p>BETA es centra en els textos escrits en castellà, però també inclou d'altres redactats en els anomenats dialectos afines, com són el lleonès, el navarrès, l'aragonès i el mossàrab, així com certs materials aljamiats de l'hebreu o de l'àrab. Entengui's bé que ens servim de l'etiqueta "textos" en un sentit molt ampli. Només deixem fora el document purament notarial; d'aquesta manera, a més de la poesia i de la prosa de ficció, recollim tots els testimonis coneguts de matèria historiogràfica, legal, mèdica, militar, teològica, filosòfica i, en general, científica.
+
+</p>
+
+<p>
+
+<a href="#compiled">Responsables</a><br>
+
+<a href="#sitescoordinated">Projectes coordenats amb BETA</a><br>
+
+<a href="#preferredcitation">Com es cita</a><br>
+
+<a href="#conventions">Convencions</a><br>
+
+<a href="#history">Història</a><br>
+
+<a href="#acknowledgments">Reconeixements</a>
+
+</p>
+
+<a name="compiled"></a>
+
+<p><b>Responsables:</b></p>
+
+<p>
+
+<a href="mailto:cbf@berkeley.edu">Charles B. Faulhaber</a>, University of California, Berkeley,
+
+<a href="https://escholarship.org/uc/item/8hh2t6gf">Bibliografia</a>, <a href="https://escholarship.org/uc/item/1fb531dp">CV</a><br>
+
+<a href="mailto:agomezmoreno@filol.ucm.es">Angel Gómez Moreno</a>, Universidad Complutense de Madrid,
+
+<a href="http://emui.academia.edu/%C3%81ngelG%C3%B3mezMoreno">CV</a><br>
+
+<a href="mailto:nsalvadormiguel@telefonica.net">Nicasio Salvador Miguel</a>, Universidad Complutense de Madrid, <a href="http://www.fuesp.com/pdfs_revistas/cilh/40/cilh40art1.pdf">CV</a><br>
+
+<a href="mailto:cortijo@spanport.ucsb.edu">Antonio Cortijo Ocaña</a>, University of California, Santa Barbara, <a href="http://www.spanport.ucsb.edu/people/antonio-cortijo-oca%C3%B1">CV</a><br>
+
+<a href="mailto:maria.morras@upf.edu">María Morrás</a>, Universitat Pompeu Fabra / Oxford University,  <a href="https://www.upf.edu/web/humanitats/entry/-/-/1003/404/maria-morras">CV</a><br>
+
+<a href="mailto:o.perea.r@gmail.com">Óscar Perea Rodríguez</a>, Universidad Complutense de Madrid,
+
+<a href="http://ucriverside.academia.edu/OscarPereaRodriguez">CV</a><br>
+
+<a href="mailto:alvarobustos@filol.ucm.es">Álvaro Bustos Táuler</a>, Universidad Complutense de Madrid, <a href="http://www.ucm.es/directorio?id=24049">CV</a><br>
+
+<a href="mailto:jlgonz01@pdi.ucm.es)">José Luis Gonzalo Sánchez-Molero</a>, Universidad Complutense de Madrid, <a href="http://www.ucm.es/directorio?id=18036">CV</a><br>
+
+<a href="mailto:aiandreu@ucm.es)">Almudena Izquierdo Andreu</a>, Universidad de Salamanca, <a href="https://scholar.google.com/citations?user=loKYZcIAAAAJ&amp;hl=es">CV</a><br>
+
+<a href="mailto:pgsanchezmigallon@ucm.es)">Patricia García Sánchez-Migallón</a>, École normale supérieure de Lyon, <a href="https://scholar.google.es/citations?user=31oL9QYAAAAJ&amp;hl=es">CV</a>
+
+</p>
+
+<a name="sitescoordinated"></a>
+
+<p><b>Projectes coordenats amb BETA</b></p>
+
+<p>BETA coopera e col·labora amb diversos projectes amb finalitat i contengut relevant. On és possible, una recerca em BITAGAP produeix enllaços amb els seus locs del web:
+
+</p><p><a href="http://www.hispanicseminary.org/textconc-en.htm">Digital Library of Old Spanish Texts</a><br>
+
+Dir. Francisco Gago Jover (Hispanic Seminary of Medieval Studies. College of the Holy Cross).<br>
+
+</p><p><a href="http://osta.oldspanishtextualarchive.org/">Old Spanish Textual Archive</a><br>
+
+Dir. Francisco Gago Jover (College of the Holy Cross) & Javier Pueyo Mena (CSIC).<br>
+
+</p><p><a href="https://comedic.unizar.es/">Catálogo de obras medievales impresas en castellano (COMEDIC)</a><br>
+
+Dir. María Jesús Lacarra (Universidad de Zaragoza).<br>
+
+</p>
+
+<p><b>Col·laboradors:</b></p>
+
+<p>Volem expressar la nostra immensa gratitud a tots aquells que han aportat informació a BOOST i a BETA des de l'any 1975:</p>
+
+<p>Xavier Agenjo, Carlos Alvar Ezquerra, Manuel Alvar Ezquerra (†), David Anderson, José Aragües,
+
+David Arbesu, Robert Archer, Nicholas Asbury, Arthur Askins,
+
+Gemma Avenoza (†), Reinaldo Ayerbe-Chaux, Heather Bamford, Fernando Baños, María Teresa Barbadillo, Francisco Bautista, Miles Becker,
+
+Vicenç Beltran, Carmen Benítez, John Bidwell, Hugo Bizzarri, Soledad Bohdziewicz, Inocencio Bombín
+
+Hans Braun, Mercedes Brea, Linde Brocato, Kenneth Buelow, Gustavo Bueno, Victoria Burrus, María del Mar de Bustos,
+
+Denise Cabanel, José Luis Canet, Irene Capdevila, Miguel Carabias Orgaz, Mario Antonio Cossio Olavide,
+
+Thomas Capuano, Anthony Cárdenas, Dwayne Carpenter, Derek Carr, Alexander F. Caskey, Diego Catalán (†),
+
+Pedro Cátedra, María Céu Silva, Eugene Chang, Neil Chase, James R. Chatham, Carlos Clavería,
+
+Beatrice Concheff (†), Juan Carlos Conde, Porter Conerly,
+
+Judith Connick, Carol Copenhagen, Ivy Corfis, Adelaida Cortijo, Jerry Craddock, Charity Cúellar,
+
+Salvador Cuenca, Luis de la Fuente,
+
+Nitzaira Delgado-García, Alan Deyermond (†), Aida F. Dias (†), Ralph DiFranco, Victoria Dorn,
+
+Stephen Duffy, Consuelo Dutschke, Brian Dutton (†),
+
+Daniel Eisenberg, Anton von Euw (†), Raymond G. Feilner, Jr., Estefanía Ferrer del Río, Inés Fernández-Ordóñez,
+
+José Manuel Fradejas, Enzo Franchini, H. Frick, Juan Héctor Fuentes, Francisco Gago-Jover, Mercedes García-Arenal, María Cruz García de Enterria,
+
+Jorge García López, Patricia García Sánchez-Migallón,
+
+Michael Gerli, Joan Gili (†), Rosalie Gimeno, Harriet Goldberg (†), Ana María Gómez Bravo,
+
+Margarita Gómez Gómez, Fernando González Ollé, José Luis Gonzalo Sánchez-Molero, Jean M. Gosebrink, George Greenia, Anna Gudayol,
+
+C. Guzmán, Joseph Gwara, Scott Gwara, Cinthia María Hamlin, Albert Hauf,
+
+Francisca Hernández, Vanesa Hernández Amez, María Teresa Herrera,
+
+Richard Hitchcock, Fred Hodcroft (†), David Hook, Víctor Infantes, John R. Jensen,
+
+Harold G. Jones, Lloyd Kasten (†), John E. Keller (†)
+
+Maxim Kerkhof, Richard Kinkade (†), Steven D. Kirby,
+
+Douglas Koepke, H.P. Kraus (†), Thomas Kren, Paul Oskar Kristeller (†),
+
+José Julián Labrador, María Jesús Lacarra, James B. Larkin, Jeremy Lawrance, Linda Lefkowitz,
+
+John Lihani, Mark Littlefield (†), D.W. Lomax (†),
+
+Maria Mercé López Casas, Laura López Drusetta, Santiago López-Ríos, María Luisa López Vidriero,
+
+José Manuel Lucía, Anthony T. Luttrell, David Mackenzie (†),
+
+Robert A. MacDonald (†), Fiona Maguire, R. Maier (†), Antoni Malet, Hugo Mancuso,
+
+Francisco Marcos-Marín, Alexander Marey, Ana María Marín,
+
+Massimo Marini, Julián Martín Abad, Lorenzo Martín del Burgo, Hope Mayo, Ian Michael (†),
+
+Angela Moll Dexeus, Concepción Morales, Filipe Alves Moreira, Margherita Morreale (†), Jay Moschella,
+
+Lucía Mosquera, Cristina Moya, Isabel Muñoz, Elena Muñoz Rodríguez, Martha Narváez,
+
+Eric W. Naylor (†), Hans-Josef Niederehe, Georgina Olivetto,
+
+Marilyn Olsen, John O'Neill, Germán Orduna (†), David Pattison (†), Icela Pelayo,
+
+René Pellen, Miguel Pérez Rosado, Ricardo Pichel Gotérrez,
+
+Pedro Pinto, Dawn Prince, Jaume de Puig i Oliver, Manu Radhakrishnan,
+
+Stephen Raulston, Klaus Reinhardt,
+
+Dennis Rhodes (†), Benjamin Richler, Francisco Rico, Jaume Riera (†), Jesús Rodríguez Velasco, Elvira Roca Barea, Paul Rodgers,
+
+Albert Roqué, Lenore Rouse, Carmen Rovira, Adeline Ruquoi, Suzanne Rutter, Carlos Sáez,
+
+Ángel Sáenz-Badillos (†), Pedro Sainz Rodríguez (†), María Nieves Sánchez, Rafael Sánchez Grande Moreno, Rebeca Sanmartín, Israel Sanz
+
+Pablo Saracino, Martha Schaffer, Svato Schutzner, Emma Scoles, Dennis Seniff (†), Miriam Shadis, Ellen Shaffer, Harvey Sharrer,
+
+Sandra Sider, Joel Silver, María Lourdes Simó, Munair Simpson, Amadeu-J. Soberanes-Lleó (†), Michael Solomon,
+
+Lourdes Soriano Robles, Thomas Spaccarelli, Ronald Surtz, R. Brian Tate (†),
+
+Barry Taylor, Juan C. Temprano, Miguel Torrens, Marta Torres Santo Domingo, Kimberly Tully,
+
+Juan Miguel Valero Moreno, Mercedes Vaquero, Martha Waller, John K. (Jack) Walsh (†),
+
+Franklin Waltman, Aengus Ward, Julie Ward,
+
+Keith Whinnom (†), Julian Weiss, Constance Wilkins, Raymond S. Willis (†)
+
+Edward M. Wilson (†)
+
+Curt Wittlin (†), Abby Yokelson.</p>
+
+<a name="preferredcitation"></a>
+
+<p><b>Com es cita</b></p>
+
+<p>Donat que BETA i les altres bibliografies germanes catalogan obres concretes, manuscrits, edicions impreses i els diversos individus relacionats amb tals testimonis (autors, traductors, copistes, impressors, propietaris, destinataris…), recomanem que, en els treballs científics, els usuaris citin els nostres codis numèrics d'identificació. Així doncs, per exemple, es podrà distingir entre Íñigo López de Mendoza, primer Marquès de Santillana (bioid 1031) i el seu nét i homònim, Íñigo de Mendoza y Luna, tercer Marquès de Santillana i segon Duc de l'Infantado (bioid 3034).</p>
+
+<p>A continuació presentem diversos exemples amb la forma correcta de citar les referències de BETA:</p>
+
+<p>Per a obres: <b>BETA texid 0000:</b></p>
+
+<blockquote>Poema del mío Cid (BETA texid 1109)</blockquote>
+
+<p>Per a còpies específiques d'una obra: <b>BETA cnum 0000:</b></p>
+
+<blockquote>Poema del mío Cid. Madrid: Biblioteca Nacional, VITR/7/17 (BETA cnum 1231)</blockquote>
+
+<p>Per a manuscrits: <b>BETA manid 0000:</b></p>
+
+<blockquote>Madrid. Biblioteca Nacional, MSS/800 (olim D-67, D-123) (BETA manid 1372)</blockquote>
+
+<p>Per a les edicions impreses hi ha dues possibilitats diferents.</p>
+
+<p>L'exemplar principal d'una edició qualsevol es cita: <b>BETA manid 0000:</b></p>
+
+<blockquote>Antonio de Nebrija. <i>Gramática castellana</i>. Salamanca: Nebrija (Impresor de la Gramática de [¿Juan de Porras?]), 1492-08-18. Madrid: Biblioteca Nacional, INC/1259 (BETA manid 2022)</blockquote>
+
+<p>Qualsevol altre exemplar d'aquesta edició es cita: <b>BETA copid 0000:</b></p>
+
+<blockquote>Antonio de Nebrija. Gramática castellana. Salamanca: Nebrija (Impresor de la Gramática de [¿Juan de Porras?]), 1492-08-18. Oxford: Bodleian, Inc. b. S. 97. 1(4) (BETA copid 1600)</blockquote>
+
+<p>Per a individus: <b>BETA bioid 0000:</b></p>
+
+<blockquote>Iñigo López de Mendoza, 1. marqués de Santillana (BETA bioid 1031)</blockquote>
+
+<div align="right">
+
+<p><a href="#top">Torna al començament de la página</a></p>
+
+</div>
+
+<a name="conventions"></a>
+
+<p><b>Convencions</b></p>
+
+<p><b>Text-tipus:</b></p>
+
+<p>El text-tipus és una còpia específica d'un text que s'empra per establir la identitat d'aquest text. Per exemple, quan ens referim a que una còpia d'un treball concret, manuscrit o imprès, és el text-tipus d'aquest treball, volem dir que el text tal i com es conté en aquest manuscrit o imprès és la pedra de toc per calibrar d'altres versions del text que puguin trobar-se en d'altres còpies. Això no significa necessàriament que, en termes de crítica textual, el nostre text-tipus sigui ni l'arquetipus ni la còpia més antiga d'aquesta obra, ni tant sols la còpia millor conservada. Senzillament, es tracta d'una convenció per facilitar la consulta de la base de dades.</p>
+
+<p>Les particularitats del text-tipus tal vegada s'entenguin millor posant un exemple. Hi ha almenys vuit traduccions diferents de l'Epistola de Gubernatione rei familiaris, atribuïda a Sant Bernat de Claraval. Els textos-tipus per a les tres versions següents es troben en manuscrits de El Escorial o de la Biblioteca Nacional de Madrid:</p>
+
+<ul style="color: #000; list-style-type: disc">
+
+<li>Bernardo de Claraval (pseudo). Epístola de San Bernardo a Raimundo, caballero, su sobrino. (BETA texid 3758). Text-tipus en San Lorenzo de El Escorial: Monasterio, K.III.7 (4), ff. 1r-4v (=238r-241v) (BETA manid 3614)</li><br>
+
+<li>Bernardo de Claraval (pseudo). Carta de gobernación de la casa (BETA texid 4227). Text-tipus en Madrid: Nacional, 9247, ff. 117v-119v (BETA manid 2684)</li><br>
+
+<li>Bernardo de Claraval (pseudo). Carta de san Bernardo enviada a un noble caballero (BETA texid 4229). Text-tipus en Madrid: Nacional, 9428, ff. 29r-32r (BETA manid 3292)</li>
+
+</ul>
+
+<p>Quan es trobin altres còpies d'aquestes traduccions, podran agrupar-se en famílies entorn d'aquests textos tipus, creats per la seva utilitat per a la base de dades.</p>
+
+<p><b>Dates:</b></p>
+
+<p>Les indicacions que solien figurar en les descripcions de manuscrits dels catàlegs impresos més tradicionals, com ara "a principios del siglo XV", "hacia mediados del siglo XV", o "s. XV ex.", s'han transformat ara en indicadors numèrics. Així, "a principios del siglo XV" passa a ser "1401-1410". Ara bé, això no significa que el manuscrit en qüestió fos escrit entre aquestes dates concretes, sinó que el sentit d'aproximació és el mateix que té la frase "a principios del siglo XV".</p>
+
+<p>Les equivalències següents es fan amb exemples del segle XV, amb l'objectiu de servir d'exemples a l'usuari:</p>
+
+<p>
+
+1401-1500 = segle XV<br>
+
+1401-1425 = primer quart del segle XV<br>
+
+1401-1433 = primer terç del segle XV<br>
+
+1401-1450 = primera meitat del segle XV<br>
+
+1426-1450 = segon quart del segle XV<br>
+
+1441-1460 = mitjans del segle XV<br>
+
+1451-1475 = tercer quart del segle XV<br>
+
+1451-1500 = segona meitat del segle XV<br>
+
+1491-1500 = finals del segle XV<br>
+
+1491-1510 = finals del segle XV / inicis del segle XVI<br>
+
+1401-1600 = segles XV-XVI. Encara que mirem d'evitar referències tan poc concretes como
+
+aquesta, s'usa en ocasions quan apareix tal qual en una referència secundària<br>
+
+1501 ca. = cap a 1500<br>
+
+1415 a quo = després de 1415<br>
+
+1415 ad quem = abans de 1415<br>
+
+</p>
+
+<p>Si es coneix la data exacta, s'escriu amb xifres aràbigues en el format AAAA-MM-DD, amb l'objectiu de facilitar la recerca i la consulta. Vegeu els següents exemples:</p>
+
+<p>
+
+1463 = datació precisa basada en el colofó d'una obra o en altra evidència cronològica incontestable<br><br>
+
+1463-03 = març de 1463<br><br>
+
+1463-03-08 = vuit de març de 1463<br><br>
+
+1463 a quo — 1475 ad quem = entre 1463 i 1475 (s'usen aquestes dates quan han estat deduïdes generalment per dades internes)<br><br>
+
+1406-12-31 a quo — 1423-09-18 ad quem = entre el 31 de desembre de 1406 i el 18 de setembre de 1423 (de nou, dates obtingudes gràcies a dades internes)<br><br>
+
+1453 [?] = datat en 1453, però sense certesa<br><br>
+
+1453 [!] = datat erròniament en 1453<br><br>
+
+1493 ca. [?] = datat cap a 1493, però sense massa certesa (aquesta datació s'usa generalment quan hi ha dues fonts que es contradiuen entre si)<br><br>
+
+1488-1491 [!], 1491 ca. [!], 1490 = manuscrit o imprès datat erròniament cap a 1488-91 per una font, cap a 1491 per altra font també errada, i correctament en 1490 per una tercera.
+
+</p>
+
+<p>La datació tant d'obres com de fonts impreses o manuscrites s'ha establert de la forma més precisa possible, emprant totes les evidències disponibles i també mètodes comparatius. Així doncs, el terminus a quo d'una obra pot certificar-se per la més primerenca data d'una de les fonts manuscrites o impreses que la contingui, o bé per referències internes de l'obra. Per exemple, la Quarta part de la General estoria alfonsí deu haver estat acabada abans de 1280, perquè aquesta és la data del més primerenc dels còdexs que la contenen: el manuscrit Vat. Urb. lat. 539 (BETA manid 1077). De manera semblant, la còpia de la Primera part de la General estoria que es conserva en el manuscrit BNM 10236 (BETA manid 1059) es va acabar abans del 25 de març de 1458, data de la mort del marquès de Santillana, Íñigo López de Mendoza, qui encarregà l'esmentada còpia manuscrita per a la seva biblioteca. Amb idèntic criteri, la traducció dels Diálogos de Sant Gregori feta per Gonzalo de Ocaña (BETA texid 1360) va haver d'acabar-se abans de 1460, data de la mort de Fernán Pérez de Guzmán, senyor de Batres, a qui es dedicà la traducció.</p>
+
+<div align="right">
+
+<p><a href="#top">Torna al començament de la página</a></p>
+
+</div>
+
+<a name="history"></a>
+
+<p><b>Història</b></p>
+
+<p>
+
+<a href="#madison">Madison</a><br>
+
+<a href="#berkeley">Berkeley</a><br>
+
+<a href="#changesovertime">Canvis al llarg del projecte</a><br>
+
+<a href="#scopecontent">Contingut i perspectives futures</a><br>
+
+<a href="#electronicresources">Recursos electrònics</a>
+
+</p>
+
+<a name="madison"></a>
+
+<p><b>Madison</b></p>
+
+<p>Com sigui que el Diccionario del Español Antiguo (DOSL, Dictionary of the Old Spanish Language) es va concebre com un projecte basat en cites de lèxic, seguint el model de l'Oxford English Dictionary (OED), tant el director del projecte, Lloyd Kasten, com el director associat, John Nitti, aviat s'adonaren que necessitaven buscar aquest lèxic en els originals escrits de les obres medievals, i no en edicions crítiques modernes, que tenien uns criteris d'edició que variaven enormement. Així, la primera edició de BOOST (Bibliography of Old Spanish Texts), recopilada en Madison per Jean Gilkison i Anthony Cárdenas sota la supervisió del professor Nitti, només va incloure referències a manuscrits anteriors a 1501 o a incunables, és a dir, a edicions d'impremta anteriors a 1501. Aquestes referències s'obtingueren inicialment de la primera edició de la Bibliografía de la literatura española del benemèrit José Simón Díaz, el volum del qual sobre literatura medieval va ser publicat en 1953. D'altra banda, les referències als manuscrits anteriors a 1501 existents en la Biblioteca de El Escorial es prengueren de l'encara útil i ben ponderada obra del beat Julián Zarco Cuevas, Catálogo de los manuscritos castellanos de la Real Biblioteca de El Escorial (1924-29), el primer catàleg de manuscrits medievals espanyols que realment mereix dur tal nom. Per últim, es van fer servir multitud d'introduccions d'obres medievals en espanyol, així com altres materials de treball existents en el Hispanic Seminary of Medieval Studies de la Universitat de Wisconsin-Madison. Per a la segona edició de BOOST (1977), per exemple, es van emprar també els nou volums publicats fins al moment de l'Inventario general de manuscritos de la Biblioteca Nacional.</p>
+
+<p>Per a la història tècnica de BOOST i de BETA, vegeu la pàgina principal de PhiloBiblon.</p>
+
+<p>La primera edició de BOOST (1975) contenia 966 entrades, ?cada una de les quals proporcionava una breu informació sobre un manuscrit en concret o sobre un imprès, organitzat per autor i títol. La segona edició (1977), que responia al mateix esquema organitzatiu, contenia 1.860 entrades, gairebé el doble. Per a la tercera edició (1984), la primera sota control editorial d'un equip d'investigadors de fora de la Universitat de Wisconsin-Madison format per Charles B. Faulhaber, Ángel Gómez Moreno, David Mackenzie i Brian Dutton, el corpus s'incrementà fins a les 3.378 entrades, organitzades aquesta vegada de forma topogràfica i ordenades per ciutat, biblioteca, signatura i ordre de folis dins de cada volum.</p>
+
+<p>A partir de la tercera edició de BOOST, el projecte deixà de centrar-se exclusivament en proporcionar suport lèxic per al Dictionary of the Old Spanish Language per convertir-se en el que és en realitat, el gran catàleg col·lectiu de fonts primàries de la literatura espanyola medieval, i una de les primeres decisions del nou equip editorial fou la d'incloure des d'aquell moment manuscrits posteriors a 1501. Així les coses, una de les primeres decisions del nou equip editorial va ser la d'incloure, sempre que es considerés oportú o necessari, les fonts impreses i manuscrites posteriors a 1501.</p>
+
+<a name="berkeley"></a>
+
+<p><b>Berkeley</b></p>
+
+<p>Des de 1985, el treball de producció de BOOST es centralitzà en la Universitat de California en Berkeley, tot i que l'equip editorial continuà col·laborant estretament amb el Hispanic Seminary of Medieval Studies de Madison. En 1987, gràcies al finançament d'IBM, totes les dades de BOOST es transportaren a una base de dades relacional amb sistema operatiu MS DOS: Revelation (més tard anomenada Advanced Revelation, implementada per Revelation Technologies).</p>
+
+<p>En 1993, la versió en MS DOS de PhiloBiblon, amb tres de les bibliografies que el composen (BETA, BITAGAP i BITECA), s'edità en CD ROM com part del disc 0 d'ADMYTE (Archivo Digital de Manuscritos y Textos Españoles), projecte de la Biblioteca Nacional, la Societat Estatal Cinquè Centenari i Micronet S.A. (Madrid), dirigit per Francisco Marcos Marín, amb la companyia de Faulhaber i Gómez Moreno. Una nova versió d'aquesta base de dades en entorn DOS, revisada i esmenada, es publicà de nou en 1999 per la Bancroft Library de la Universitat de California en Berkeley, edició que es troba actualment esgotada.</p>
+
+<a name="changesovertime"></a>
+
+<p><b>Canvis al llarg del projecte</b></p>
+
+<p>Ja en la tercera edició de BOOST (1984), les descripcions basades en fonts secundàries han anat reforçant-se (entengui's augmentades i corregides) gràcies a consultes de primera mà dutes a terme per nombrosos
+
+col·laboradors encara que la tasca va recaure principalment en els editors.</p>
+
+<p>En l'actualitat, totes les fonts manuscrites anteriors a 1800 d'obres medievals escrites en espanyol s'inclouen en la base de dades, amb alguns exemples selectes dels segles XIX i XX que en ocasions poden servir com a prova d'obres originals avui perdudes. Per als impresos, s'han inclòs noves fitxes d'obres posteriors entre 1501 y 1520 gràcies a F.J. Norton, A Descriptive Catalogue of Printing in Spain and Portugal 1501-1520 (Cambridge, 1978), encara que les seves fitxes es van augmentant a poc a poc per l'obra de Julián Martín Abad, Post-incunables ibéricos (Madrid: Ollero y Ramos, 2001; Adenda, 2007), tan rigorosa com exhaustiva.</p>
+
+<p>En la base de dades actual, les fitxes d'ANALYTIC, que són les que amb major fidelitat es corresponen amb l'organització inicial de BOOST (per tal com presenten informació d'un text concret en manuscrit o imprès), arriben a un total de 9.162 (dades de l'1 de gener de 2009), és a dir, s'ha multiplicat per deu l'escàs miler d'entrades (966) que contenia la primera edició. Les altres fitxes de BETA són unes 20.000, i contenen detallades descripcions de manuscrits i impresos, textos, persones, bibliografia secundària i biblioteques. </p>
+
+<p>Com en qualsevol altra base de dades que porti més de trenta anys funcionant, com la nostra, els criteris seguits per a l'entrada de dades han sofert una constant evolució, generalment ampliant el camp de treball a mida que el desenvolupament tècnic dels programes i sistemes d'informació ha fet possible emmagatzemar una major quantitat de dades.</p>
+
+<p>Així, en els primers anys només es registrava la informació absolutament essencial per als propòsits del Dictionary of the Old Spanish Language (DOSL): autor, títol, localització actual, data del manuscrit o imprès, data de redacció de l'obra i bibliografia secundària relacionada. Amb el pas del temps, fou cada cop més evident que la informació codicològica i bibliogràfica havia d'afegir-se, sobretot per donar suport a les dates específiques de còpia o impresió. De forma anàloga, es feu evident que la informació de l'incipit i de l' explicit de cada obra s'havia de copiar per ajudar en la identificació de còpies específiques d'aquesta obra.</p>
+
+<p>Més recentment, els recopiladors de BETA han intentat documentar de forma exhaustiva cada manuscrit i cada ejemplar de cada imprès, basant-se en el coneixement del mateix de primera mà. Quan no ha estat possible examinar un manuscrit o imprès d'aquesta manera, la informació que s'hi ha afegit procedeix de fonts secundàries dignes de tota confiança. Per exemple, durant el curs 2007-2008 s'ha incorporat sistemàticament tota la informació rellevant del catàleg de Zarco Cuevas sobre manuscrits de El Escorial, silenciada per principi en les primeres dues edicions de BOOST.
+
+</p><p>També s'ha posat especial cuidat en transcriure l'incipit i explicit. Per exemple, l'absència de caplletres s'ha pal·liat mitjançant la transcripció de la grafia absent entre claudàtors o parèntesis quadrats [A]. L'alçada d'aquestes capitals ha estat també indicada amb un superíndex que mostra el nombre de línies que aquesta caplletra ocupa, de forma que [A]6 significa que la caplletra perduda és una "A" majúscula i que l'espai que ocupa és de sis línies. La puntuació de cada incipit i explicit, omesa anteriorment perquè la seva presentació en edicions modernes és totalment arbitrària, s'ha transcrit ara respectant escrupulosament l'original. Els finals de línia i de vers s'han indicat també d'aquesta manera. Aquests darrers detalls són de particular importància per als textos impresos, donat que la seva confrontació permet de vegades la distinció d'edicions, emissions i estats.</p>
+
+<p>Per desgràcia, no ha estat possible revisar sistemàticament totes les fitxes de BETA per actualitzar-les conforme a aquests criteris actuals, i així l'usuari podrà trobar descripcions molt precises fins al darrer detall al costat d'altres més aviat pobres. Amb el pas del temps, quan els membres de l'equip editorial puguin examinar cada manuscrit o còpia impresa in situ, totes les descripcions tindran el mateix nivell conforme als criteris actuals. Per assolir aquest objectiu, qualsevol tipus de col·laboració descriptiva, així com addicions o correccions a les descripcions ja existents, seran extremadament benvingudes, i poden enviar-se mitjançant correu electrònic a cfaulhab@library.berkeley.edu.</p>
+
+<a name="scopecontent"></a>
+
+<p><b>Contingut i perspectives futures</b></p>
+
+<p>El volum de notícies de primera mà s'ha incrementat a passos gegantescos. Així, les descripcions de manuscrits custodiats a la biblioteca de la Hispanic Society of America s'han beneficiat del treball allí efectuat per Faulhaber. La BNE també ha estat objecte de nombroses visites per examinar la ingent quantitat de fonts manuscrites i impreses que s'hi troben localitzades. Aquestes visites s'han complementat a més a més amb la informació detallada present als primers nou volums de l'Inventario general de manuscritos de la Biblioteca Nacional (1953-70; MSS 1-3026), i la informació més breu continguda als volums 10 a 15 (1984-2001; MSS 3027-11.000). Les descripcions d'altres cinc volums en via de publicació, que cobreixen els MSS 11.001-12981, ens han estat proporcionades en document electrònic gràcies a la generosa ajuda de Julián Martín Abad i el seu equip de facultatius, essent d'especial esment l'ajuda de Lourdes Alonso. A més d'aquestes dades, Gómez Moreno i Faulhaber han revisat sistemàticament tota la informació de les antigues fitxes de cartolina de la BNE, al mateix temps que, durant la tardor de 2006, ambdos investigadors dugueren a terme la revisió dels manuscrits continguts tant en la Biblioteca Histórica "Marqués de Valdecilla" de la Universitat Complutense de Madrid, com a la biblioteca dels Duques de Alba, al Palacio de Liria de Madrid. Malgrat tot aquest esforç, únicament un miler de les més de 5.700 fitxes referents a manuscrits o exemplars d'impresos primerencs han estat examinades de primera mà per membres de l'equip editor de BETA.</p>
+
+<p>Afortunadament, el nombre de catàlegs sobre fonts manuscrites en biblioteques espanyoles s'ha incrementat ràpidament durant els últims quinze o vint anys. Són exemples dignes d'esment el Catálogo de manuscritos de la Real Academia Española (1991), el Catálogo de la Real Biblioteca. Manuscritos (1994-1997), el Catálogo de manuscritos de la Biblioteca Universitaria de Salamanca (1997-2002), o els Manuscritos españoles de la Biblioteca Lázaro Galdiano (1998). Per raons fàcilment imaginables, encara no hem pogut vessar de manera sistemàtica la rica quantitat d'informació que contenen: encara queda molt per fer en aquest sentit.</p>
+
+<p>Pel que fa als impresos primerencs, BETA ha intentat registrar cada ejemplar de cada imprès conegut, i s'interessa per l'estat del mateix i la seva procedència. Els repertoris clàssics i bàsics sobre incunables hispànics (Haebler 1903-17, Vindel 1945-51) s'han utilitzat profusament, però no ha estat possible buidar-los per complet. No obstant això, sí s'ha emprat sistemàticament la informació que consta tant al Catálogo general de incunables en bibliotecas españolas de Francisco García Craviotto, com a les Adiciones y correcciones al mateix fetes per Julián Martín Abad. També s'han examinat els més importants catàlegs de cada país (per exemple, els de Goff, de 1964 i 1972, per als Estats Units, o el de Pellechet per a França), però això no significa que la informació s'hagi buidat sistemàticament. Es pot dir el mateix de l'ús efectuat del Catálogo de títulos de incunables (<a href="http://www.bl.uk/catalogues/istc/index.html">Incunabula Short Title Catalogue http://www.bl.uk/catalogues/istc/index.html</a>) mantingut per la British Library. Essencialment, es tracta d'un catàleg internacional col·lectiu que conté una relació comprensiva de tots els incunables coneguts, amb l'actual localització de cada còpia. Tanmateix, aquest catàleg és encara una obra in fieri i que, al contrari que BETA, no pretén descriure cada exemplar en una biblioteca concreta. Per això, malgrat que BETA és també una obra in fieri, la nostra base de dades és actualment (i ho serà més en el futur, per suposat) la millor i més gran bibliografia enumerativa i descriptiva dels antics impresos en espanyol. </p>
+
+<p>Tot i els més de trenta anys d'existència d'aquest projecte, és evident que encara queda molt per fer. Sobretot, necessitem descripcions codicològiques detallades de cada manuscrit, transcripcions dels seus incipit i explicit i identificació de textos anònims.</p>
+
+<p>Com ja s'ha dit, BETA també ha prestat molta atenció a les biografies de tots els personatges relacionats amb la literatura medieval espanyola. Per exemple, el treball d'investigació en arxius valencians de Perea Rodríguez ha permès afegir una gran quantitat d'informació biogràfica sobre els poetes del Cancionero general (1511). Així mateix, els cinc volums del Diccionario de historia eclesiástica de España (1972-75; suplement de 1987) ens han proporcionat noms i dates de tots els bisbes de Castella i Lleó des del segle XIII fins a inicis del segle XVI, a més de la informació biogràfica essencial sobre els més importants. Aquest mateix treball també ens ha servit per incorporar la major part d'informació relativa a les ordes religioses medievals, monàstiques i militars, i també la de cada monestir i dels seus dirigents (abats, priors, comanadors, etc.)</p>
+
+<p>La bibliografia secundària present a BETA no intenta ésser de cap manera exhaustiva. En cap cas no pretén ocupar el lloc que li correspon al Boletín Bibliográfico de la Asociación Hispánica de Literatura Medieval. La informació que més ens interessa destacar és la relativa a catàlegs de manuscrits o impresos, estudis codicològics de manuscrits concrets, edicions de textos, estudis biogràfics i d'altres similars treballs, molt més que estudis crítics sobre autors, obres o gèneres literaris. </p>
+
+<p>En termes de matèries i gèneres, creiem haver identificat convenientment la major part de textos legals vernacles, furs i corts, basant-nos tant en les velles edicions de la Real Academia de la Historia com en el catàleg de El Escorial, si bé nombrosos testimonis manuscrits posteriors a l'Edat Mitjana encara s'han d'afegir. Si per una part, hem recollit totes les fonts de la poesia de cançoner i les poesies narratives que contenen, ens falta incorporar l'ingent volum d'informació relatiu a tots i cada un dels texts lírics reunit per Brian Dutton en El cancionero del siglo XV. c. 1360-1520, de recent i lliure accés a Internet a través del <a href="http://cancionerovirtual.liv.ac.uk/main-page.htm">Corpus electrónico de los manuscritos castellanos cancioneriles del siglo XV http://cancionerovirtual.liv.ac.uk/main-page.htm</a>, projecte dirigit per Dorothy Severin en la Universitat de Liverpool. No obstant això, la incorporació de la lírica medieval en BETA és encara un dels nostres més importants desigs de cara al futur. Cal advertir, per últim, que en aquesta addició de materials lírics desitjada no hi ha lloc per a les jarchas, per les seves particularitats lingüístiques que, fins al moment, ens conviden a deixar-les al marge del projecte (d'altra banda, els manuscrits que les preserven estan bé identificats gràcies als esforços dels estudiosos durant l'últim quart de segle). Així mateix, llevat d'aquells testimonis que es puguin datar abans de 1501, també hem omès la lírica tradicional (recollida sistemàticament per Margit Frenk en su Nuevo corpus de la antigua lírica popular hispánica (siglos XV a XVII), México: UNAM-Colegio de México-Fondo de Cultura Económica, 2003, que ens deslliura d'ocupar-nos de tal tasca) i el romancer (remetem a la tasca de catalogació i identificació de testimonis del Seminario Menéndez Pidal).</p>
+
+<a name="electronicresources"></a>
+
+<p><b>Recursos electrònics</b></p>
+
+<p>Durant les darreres dècades hem assistit a un allau d'innovacions electròniques a la zarza; de tots ells, el que aquí més interessa és l'accés lliure, ràpid i còmode a un elevat nombre d'edicions i de facsímils de còdexs i antics impresos a través d'Internet. Per això, hem decidit incorporar enllaços amb pàgines web tan valuoses com la de <a href="http://parnaseo.uv.es/">LEMIR (Literatura Española Medieval y del Renacimiento: http://parnaseo.uv.es/</a>).</p>
+
+<p>Per a tots aquells acurats investigadors que no confien gaire en cap transcripció o edició, hi ha també algunes eines electròniques encara més útils, com ara els facsímils digitals. El capdavanter d'aquests recursos és el ja esmentat ADMYTE, amb les seves més de 55.000 pàgines de textos i de facsímils, originalment editades en CD-ROM, que ara estan disponibles a la xarxa mitjançant un servei de subscripció: <a href="http://www.admyte.com/home.htm">http://www.admyte.com/home.htm</a>.</p>
+
+<p>D'altra banda, el Proyecto Dioscórides de la Biblioteca Histórica "Marqués de Valdecilla", de la Universitat Complutense de Madrid, és el primer projecte efectuat per biblioteques espanyoles consistent en posar a disposició del gran públic tots els facsímils de la seva important col·lecció de manuscrits medievals: <a href="http://biblioteca.ucm.es/foa/25889.php">Biblioteca Digital Dioscórides</a>. Entre d'altres exemples, l'usuari pot accedir a un dels més extraordinaris còdexs de l'escriptori real alfonsí: el manuscrit dels Libros del saber de astronomía, BH MSS 156 (BETA manid 1091).</p>
+
+<p>Altres projectes ofereixen acc'es en xarxa a facsímils parcials. L'Escriptori Digital (<a href="http://bancroft.berkeley.edu/digitalscriptorium/">Digital Scriptorium</a>), un projecte en grup iniciat en 1966 per la Bancroft Library de Berkeley i la Universitat de Columbia, ha arribat a ser una espècie de catàleg col·lectiu visual de manuscrits medievals escrits en totes les llengües occidentals fins a l'any 1550, aproximadament. En l'actualitat, el Digital Scriptorium proporciona, a una resolució d'imatge extremadament alta, descripcions i facsímils parcials de més de 5.300 manuscrits conservats en 27 institucions norteamericanes, entre els quals n'hi ha 63 d'espanyols, entre els que cal assenyalar:</p>
+
+<ul style="color: #000; list-style-type: disc">
+
+<li>Fragments de l'únic manuscrit medieval conegut fins al moment de l'<a href="http://ucblibrary4.berkeley.edu:8088/xtf22/search?smode=basic;rmode=digscript;text=amadis%20de%20gaula;docsPerPage=1;startDoc=1;fullview=yes">Amadís de Gaula</a>, datat en el primer quart del segle l XV (<i>BETA</i> cnum 216. Berkeley: Bancroft Library).</li><br>
+
+<li>El millor manuscrit de la <a href="http://ucblibrary4.berkeley.edu:8088/xtf22/search?smode=basic;text=cronica%20sarracina;rmode=digscript;docsPerPage=1;startDoc=1;fullview=yes">Crónica sarracina</a>, cap a la meitat del segle XV (<i>BETA</i> cnum 4949. Berkeley: Bancroft Library).</li><br>
+
+<li>Un manuscrit de l'obra de Valeri Màxim, <a href="http://ucblibrary4.berkeley.edu:8088/xtf22/search?shelfmark=lodge%2013;smode=basic;rmode=digscript;docsPerPage=1;startDoc=1;fullview=yes">Dichos y hechos</a>, de mitjans del segle XV, l'única còpia que conté uns versos introductoris (<i>BETA</i> cnum 2848. Nova York: Universitat de Columbia).</li><br>
+
+<li>Una còpia de finals del segle XIII del <a href="http://ucblibrary4.berkeley.edu:8088/xtf22/search?smode=basic;rmode=digscript;text=fuero%20real;docsPerPage=1;startDoc=1;fullview=yes">Fuero real</a> (<i>BETA</i> cnum 3676. Philadelphia: Free Library)</li>
+
+</ul>
+
+<p>Precisament, un dels propòsits primordials de PhiloBiblon és el de realçar la necessitat de comptar amb facsímils, transcripcions i edicions de tots els textos medievals. Cal tenir present que al voltant de dos terços de les obres medievals escrites en espanyol sobreviuen gràcies a un únic manuscrit. Si aquest manuscrit es perdés o es destruís abans que el seu contingut s'hagi transferit a qualsevol suport, llavors l'obra mateixa es perdria, desapareixent amb ella un element irreemplaçable de la cultura medieval hispànica. Per tant, és hora de posar-se mans a l'obra perquè això no suceeixi.</p>
+
+<div align="right">
+
+<p><a href="#top">Torna al començament de la página</a></p>
+
+</div>
+
+<a name="acknowledgments"></a>
+
+<p><b>Reconeixements</b></p>
+
+<p>Són molts els estudiants de la Universitat de California en Berkeley que han traballat com a investigadors ajudants de BETA des de l'any 1987. Volem agrair al Programa d'Aprenentatge d'Investigació per a Estudiants Subgraduats (Undergraduate Research Apprenticeship Program) de la Universitat de California, Berkeley, així com al Comitè del Senat Acadèmic per a la Investigació (Academic Senate Committee on Research), pel suport donat. D'entre els subgraduats cal destacar a Nicholas Asbury, Eugene Chang, Charity Cuéllar, Victoria Dorn, Icela Pelayo i Munir Simpson. Pel que fa als estudiants graduats, cal esmentar a Heather Bamford, Miles Becker, Denise Cabanel, Adelaida Cortijo Ocaña, Ana María Gómez Bravo, Ángela Moll, María Morrás, Stephen Raulston i Israel Sanz.</p>
+
+<p>BETA deu una gran part de la seva informació a la col·laboració desinteressada de nombrosos investigadors. Especialment, estem en deute amb Gemma Avenoza (†) per les seves descripcions de manuscrits i incunables espanyols de les biblioteques d'Évora i moltes altres, com també ho estem amb José Aragüés, Fernando Baños i Vanesa Hernández Amez pels seus treballs sobre les traduccions al castellà de la Legenda aurea. No és més petit el deute que hem adquirit amb Hugo Bizzarri per les seves referències a la literatura sapiencial, amb Thomas Capuano pels seus treballs sobre agricultura, amb Juan Carlos Conde per la seva informació sobre certs manuscrits i textos del segle XV, amb Ivy Corfis per la cessió de materials sobre literatura cavalleresca i per les seves nombroses transcripcions electròniques, amb José Manuel Fradejas Rueda per les seves referències a la literatura cinegètica, amb David Hook per les seves referències sobre textos historiogràfics, amb Francisco Marcos Marín per catalogar els manuscrits de la Biblioteca Nacional d'Argentina, amb Georgina Olivetto per les seves descripcions de manuscrits espanyols a la British Library, amb Rebeca Sanmartín per les seves de Santiago de Compostela i Orense, amb Jesús Rodríguez Velasco i Harvey Sharrer per materials sobre novel·les de cavalleries, i,
+
+finalment, amb el ja esmentat Sharrer, amb Arthur L-F, Filipe Alves Moreira i Pedro Pinto per les seves referències sobre manuscrits espanyols a biblioteques portugueses.
+
+Al marge d'això, encara estem en deute amb moltíssims d'altres investigadors, que ens han fet arribar amablement les seves valuoses dades i referències sobre una gran quantitat de manuscrits i textos específics.</p>
+
+<p>Els editors de BETA també volen agrair el suport rebut per part de les institucions següents:</p>
+
+<p>
+
+<a href="http://bancroft.berkeley.edu/">The Bancroft Library</a>, University of California, Berkeley<br>
+
+<a href="http://www.portcenter.ucsb.edu/">Center for Portuguese Studies</a>, University of California, Santa Barbara<br>
+
+<a href="http://www.spanport.ucsb.edu/index.php/research/galician-studies">Center for Galician Studies</a>, University of California, Santa Barbara<br>
+
+DataBase Design & Engineering, Walnut Creek, California<br>
+
+<a href="http://www.fundacionmapfre.org/fundacion/es_es/default.jsp">Fundación MAPFRE</a>, Madrid<br>
+
+Fundación del Amo, Universidad Complutense de Madrid<br>
+
+Gaspar de Portolà Catalonian Studies Program, University of California, Berkeley<br>
+
+<a href="http://www.hispanicseminary.org/index-en.htm">Hispanic Seminary of Medieval Studies, Hispanic Society of America</a>, New York, New York<br>
+
+<a href="http://lib.berkeley.edu/">The Library</a>, University of California, Berkeley<br>
+
+<a href="http://www.mecd.gob.es/portada-mecd/">Ministerio de Educación</a>, Cultura y Deporte, Spain<br>
+
+<a href="http://www.mineco.gob.es/portal/site/mineco/">Ministerio de Economía y Competividad. Secretaría de Estado de Investigación, Desarrollo e Innovación</a>, Spain<br>
+
+<a href="http://www.neh.gov/">National Endowment for the Humanities</a>, Washington D.C.<br>
+
+Program for Cultural Cooperation Between Spain's Ministry of Culture & United States' Universities<br>
+
+<a href="http://www.oclc.org/research.html">Research Libraries Group, now OCLC Research, part of OCLC</a>, Dublin, Ohio<br>
+
+<a href="http://ies.berkeley.edu/psp/">Portuguese Studies Program</a>, University of California, Berkeley
+
+</p>
+
+<div align="right">
+
+<p><a href="#top">Torna al començament de la página</a></p>
+
+</div>
+
+<p>Tant l'accés com l'ús de PhiloBiblon són totalment gratuïts. La reproducció de qualsevol dels materials que es trobin està subjecta a les restriccions que hom pot consultar en les següents <a href="copyright_ca.html">normes de copyright</a>.</p>
+
+<p>L'usuari obtindrà una millor qualitat d'accés a PhiloBiblon si disposa de l'última versió de qualsevol dels navegadors més freqüents, especialment si poden visualitzar bé les taules (render tables) i estan equipats amb la versió més actualitzada de JavaTM, si bé els nostres esforços de programació aniran destinats a un servei genèric i accessible a través de qualsevol eina de navegació a la xarxa.</p>
+
+<p>Preguntes, comentaris o suggeriments sobre PhiloBiblon seran sempre molt ben rebuts. Amb tal propòsit, l'usuari haurà de dirigir-se mitjançant correu electrònic a Charles B. Faulhaber: cfaulhab[at]library.berkeley.edu.
+
+</p>
+
+</div>

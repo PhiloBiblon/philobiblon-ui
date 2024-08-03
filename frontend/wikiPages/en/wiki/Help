@@ -1,0 +1,801 @@
+<h1>GENERAL <i>PhiloBiblon</i> HELP</h1>
+
+<div class="content">
+
+<p>For help with a specific bibliography, please consult its Help Page:
+
+</p><ul>
+
+<li><a href="help_es.html"><i><b>BETA</b></i></a> (Spanish)</li>
+
+<li><a href="help_po.html"><i><b>BITAGAP</b></i></a> (Portuguese and Galician)</li>
+
+<li><a href="help_ca.html"><i><b>BITECA</b></i></a> (Catalan).</li><p></p>
+
+</ul>
+
+<a name="top"></a>
+
+<h1>Index</h1>
+
+<p>
+
+<a href="#searchesgeneral">Searches - General</a><br>
+
+</p><blockquote>
+
+<a href="#searchtablespages">Search pages and fields</a><br>
+
+<a href="#quotationmarks">Quotation marks</a><br>
+
+<a href="#capitalsdiacritics">Capital letters, diacritics</a><br>
+
+<a href="#asteriskplaceholder">Asterisk as placeholder/wildcard</a><br>
+
+<a href="#ids">IDs (texid, cnum, manid, bibid, bioid)</a><br>
+
+<a href="#personalnames">Personal names</a><br>
+
+<a href="#dates">Dates</a><br>
+
+<a href="#placenames">Place names</a><br>
+
+<a href="#subjectheadings">Subject headings</a><br>
+
+<a href="#keywordsnumbers">Simple search</a><br>
+
+<a href="#url">“Uniform Resource Locator” (URL) / Digitized images and texts</a><br>
+
+<a href="#transcriptionnorms">Transcription norms</a><br>
+
+<a href="#paleographycodicology">Paleography and codicology</a><br>
+
+</blockquote>
+
+<p></p>
+
+<p>
+
+<a href="#howusesearchtablespages">How to Use Search Pages and Fields within them</a><br>
+
+</p><blockquote>
+
+<a href="#work">WORK</a><br>
+
+<a href="#library">LIBRARY</a><br>
+
+<a href="#institution">INSTITUTION</a><br>
+
+<a href="#person">PERSON</a><br>
+
+<a href="#reference">REFERENCE (secondary bibliography)</a><br>
+
+<a href="#msed">MS/ED (manuscript or printed edition)</a>
+
+</blockquote>
+
+<p></p>
+
+<p>
+
+<a href="#technicalhelp">Technical Help</a><br>
+
+</p>
+
+<p>
+
+<a href="#resources">Online Resources</a><br>
+
+</p>
+
+<a name="searchesgeneral"></a>
+
+<h2>Searches - General</h2>
+
+<p><b>Select the bibliography:</b>  At the top of the search page, click on the “radio button” to the left
+
+of the bibliography you wish to search, <i><b>BETA</b></i>, <i><b>BITAGAP</b></i>, or <i><b>BITECA</b></i>.
+
+After inserting
+
+the search term(s) in the appropriate search box(es), initiate the search by clicking on the “Search” button at the bottom,
+
+beneath the search fields.</p>
+
+<a name="searchtablespages"></a>
+
+<p><b>Search pages and fields:</b>
+
+The search pages are listed in the index to the left at the
+
+top of the Search page: <b>WORK</b>, <b>LIBRARY</b>, <b>INSTITUTION</b>,<b>PERSON</b>, <b>REFERENCE</b> (secondary bibliography), <b>MsEd</b>
+
+(primary sources).
+
+You can only search in one page at a time, but you can use one or multiple search terms in any of the search boxes on
+
+that page using the “<b>All</b> words” or “<b>Any
+
+of the words</b>“ options beneath the list of search fields.</p>
+
+<p>Searches return new screens with a list of the records found. To see a full record, simply
+
+click on it.</p>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="quotationmarks"></a>
+
+<p><b>Quotation marks:</b> Any search that <i>requires</i> quotation marks (e.g. to enclose a record ID,
+
+as explained below) is specified on this Help page. Otherwise quotation marks used here indicate the
+
+precise search terms and results returned.</p>
+
+<a name="capitalsdiacritics"></a>
+
+<p><b>Capital letters, diacritics:</b> No search depends on the correct use of capital letters or
+
+diacritics: “Alcácer, Alcacer, alcácer, alcacer, alcaçer” all return
+
+“Alcácer.”</p>
+
+<a name="asteriskplaceholder"></a>
+
+<p><b>Asterisk as placeholder / wildcard:</b> The asterisk is a placeholder for one or more
+
+characters anywhere in a word.  In <b><i>BETA</i></b> WORK a search for <b>Author</b> “jac*”
+
+returns “Jacobo de Benavente, Jacobo de las Leyes, Jacobus de Voragine,” etc.
+
+In <b><i>BITAGAP</i></b> WORK, for <b>Incipit</b>, “estr*” returns “estromento, estrumento, estranna,
+
+estremos,” etc.</p>
+
+<a name="ids"></a>
+
+<p><b>IDs (texid, cnum, manid, bibid, bioid):</b>
+
+Unique IDs are assigned to each text
+
+(<b>texid</b>), each example of the text that survives (<b>cnum</b>), each manuscript or printed edition
+
+in which a text appears (<b>manid</b>), each secondary bibliographic item (<b>bibid</b>), and each person
+
+(<b>bioid</b>).  If you know these IDs, you may use them within quotation marks in the field <b>Simple search</b>
+
+on any search page.  For example, in WORK, use “Simple search” to find “texid 1141” <i>using quotation marks</i>.  Then use
+
+your browser's “Find” feature to locate more precisely the specific record among
+
+those returned.  Note: in some cases the “Find” feature is case- and/or
+
+diacritic-sensitive. Note also that the same ID number may be used in more than one bibliography.
+
+Thus bioid 1031 is the record for Íñigo López de Mendoza, 1. marqués de Santillana
+
+in <b><i>BETA</i></b>, while in <b><i>BITECA</i></b> it is that of Pseudo-Claudianus</p>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="personalnames"></a>
+
+<p><b>Personal names:</b>
+
+To search for a personal name as the <b>Author</b> of a text in WORK,  use <i>any form of the name, original, translated, or a variant</i>. For example, search for
+
+“Benedictus”, “Bento”, “Benet”,  or “Benito.”</p>
+
+<p>On all other search pages and in all other fields, such as (associated) persons, authors of secondary references,
+
+previous owners, translators, patrons, copyists, publishers, that is, for any personal name searched in any field other than that of Author in WORK,
+
+use the modern version of the name.</p>
+
+<p>Tip: To identify the modern form of a name, search in PERSON for <i>any</i> form in <b>Name</b>, original, translated, pseudonym, etc.
+
+</p>
+
+<a name="dates"></a>
+
+<p><b>Dates:</b>
+
+In fields that include dates, search by any combination of year (yyyy) and/or
+
+month (mm) and/or day (dd).  A search returns dates as yyyy-mm-dd (1379-01-31 is January 31,
+
+1379).  Search using this format or more simply, the year: “1379” returns all texts
+
+written in 1379; “1379 01” or “01 1379” returns all texts written on
+
+the first of each month of 1379 and on any day of January of 1379.  Note:  Year dates
+
+frequently form part of titles in WORK and can be used to search for the same.</p>
+
+<a name="placenames"></a>
+
+<p><b>Place names:</b>
+
+Place names appear on several search pages: WORK - <b>Place of
+
+composition</b>; PERSON - <b>Associated place</b>; LIBRARY - <b>City</b>; REFERENCE - <b>Place
+
+of publication</b>; MSED - <b>City</b>. Since each bibliography handles place names differently,
+
+see the relevant help pages for specific details:</p>
+
+<ul>
+
+<li><a href="help_es.html#toponyms"><i><b>BETA</b></i> Topónimos</a></li>
+
+<li><a href="help_po.html#placenames"><i><b>BITAGAP</b></i> Place names</a></li>
+
+<li><a href="help_ca.html#toponyms"><i><b>BITECA</b></i> Topònims</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="subjectheadings"></a>
+
+<p><b>Subject headings:</b>
+
+Keep in mind when searching in <b>Subject</b> that its use is not
+
+uniform in all search pages nor in the three bibliographies.</p>
+
+<p>Search using a complete heading or any word contained in any heading (e.g. a place name).
+
+For technical reasons, only one subject heading can be searched at a time. Searches for two different subject headings
+
+or for words from two different subject headings will return zero results.
+
+In <b><i>BITAGAP</i></b>, for example,
+
+search for “milagres” <i><b>or</b></i> for “mariologia” but not for
+
+“milagres” <i><b>and</b></i> “mariologia”.  Experimentation will reveal
+
+best strategies. Since each bibliography handles subject headings differently,
+
+and has different, language-specific subject headings,
+
+see the relevant help pages for details:</p><p>
+
+</p><ul>
+
+<li><a href="help_es.html#materia"><i><b>BETA</b></i> Materia</a></li>
+
+<li><a href="help_po.html#subjectheadings"><i><b>BITAGAP</b></i> Subject headings</a></li>
+
+<li><a href="help_ca.html#toponyms"><i><b>BITECA</b></i> Matèria</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="keywordsnumbers"></a>
+
+<p><b>Simple search:</b>
+
+Use this field to search for information not locatable in named fields. For example, in <b>MsEd</b>, codicological
+
+information; or, in WORK, type “trad*” in <b>Simple search</b> to produce a list of works which
+
+have been translated from their original language.</p>
+
+<a name="url"></a>
+
+<p><b>Uniform Resource Locator (URL) / Digitized images and texts:</b>
+
+To access related web pages, simply click on the highlighted URL.</p>
+
+<p>In <i><b>PhiloBiblon</b></i> URLs generally provide access to the following kinds of information:</p>
+
+<ol>
+
+<li>in the <i><b>MsEd</b></i> table:  a digitized facsimile of a primary source (manuscript or printed
+
+edition (In some cases, depending on the institution and the browser used, digitized images will be downloaded to your
+
+computer rather than displayed on your screen.) To find all of the digitized facsimiles
+
+recorded in <i><b>PhiloBiblon</b></i>, search either for “http” in “Simple search” or the appropriate
+
+heading in “Subject” (e.g. in BETA “Internet - Facsímiles digitalizados” and in BITAGAP “Fontes electro\nicas - Internet - Obra digitalizada”).
+
+</li>
+
+<li>in the  <i><b>REFERENCE</b></i> table: a digitized facsimile (v.g., pdf) or electronic text of a
+
+secondary source.</li>
+
+<li>in the <i><b>PERSON</b></i> table: an online source that provides information concerning an
+
+individual.</li>
+
+</ol>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="transcriptionnorms"></a>
+
+<p><b>Transcription Norms:</b>
+
+In <b>Title</b> (text titles) and <b>Incipit/Explicit</b> in WORK, all
+
+three bibliographies use modern
+
+spelling, including for the incipits of poetic texts. All three offer paleographical or semi-paleographical
+
+readings of textual material found in individual manuscripts and printed editions (titles, incipits,
+
+explicits).</p>
+
+<p>Transcription practices for the latter materials
+
+vary considerably among the three bibliographies. Consult the relevant help
+
+pages for specific details:
+
+</p><ul>
+
+<li><a href="help_es.html#normas"><i><b>BETA</b></i> Normas de transcripción</a></li>
+
+<li><a href="help_po.html#transcriptionnorms"><i><b>BITAGAP</b></i> Transcription norms</a></li>
+
+<li><a href="help_ca.html#norms"><i><b>BITECA</b></i> Normes de transcripció</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="paleographycodicology"></a>
+
+<p><b>Descriptive bibliography, paleography, and codicology:</b></p>
+
+<p>Bibliographical, paleographical, and codicological descriptions also vary considerably among the three
+
+bibliographies, with <i>BITECA</i> providing the most detailed ones, <i>BITAGAP</i>
+
+the least, and <i>BETA</i> somwhere in the middle. This responds to the particular interests
+
+and expertise of each team. In <i>BITECA</i> and <i>BETA</i>, use
+
+<b>Simple search</b> in <b>MsEd</b> to search for specific features. In <i><b>BITAGAP</b></i> this yields
+
+uneven results.</p>
+
+<p><b><i>PhiloBiblon</i></b> invites users who have personally examined a manuscript or early printed book
+
+to provide complete or partial bibliographical, paleographical, and/or codicological descriptions. These users will be credited.</p>
+
+<p>The specific codicological features and terminology used also vary considerably among the three bibliographies.
+
+Consult the relevant help pages for specific details.</p>
+
+<ul>
+
+<li><a href="help_es.html#codicology"><i><b>BETA</b></i> Elementos bibliográficos,
+
+paleográficos y codicológicos</a></li>
+
+<li><a href="help_po.html#paleographycodicology"><i><b>BITAGAP</b></i> Paleography and codicology</a></li>
+
+<li><a href="help_ca.html#codicology"><i><b>BITECA</b></i> Elements bibliogràfícs, paleogràfícs i codicològícs</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<p><a name="howusesearchtablespages"></a>
+
+</p><h2> How to Use Search Pages and Fields</h2>
+
+<a name="work"></a>
+
+<p><b>WORK:</b> contains information about medieval texts. Search fields are <b>Simple search, Author, Title, Incipit, Explicit,
+
+Associated person(s), Date of composition, Place of composition, Subject</b>.</p>
+
+<p><b>Author</b>:  Search for the name either in its original form or in translation.  To
+
+see a list of all forms used in the database, search in <a href="#person"><i><b>PERSON</b></i></a>.</p>
+
+<p><b>Title</b>:  Search for prose works using the modern form of the title or, for a
+
+translated work, the original or the translated title.  For a broad search, the former (e.g.,
+
+“vida”) will generally return more works than the latter (“vita”).  All
+
+searches return works according to any of their known titles.  You may also use (any part
+
+of) a date to search in this field. For individual poetic texts, see <b>Incipit/Explicit</b> below unless the poem has
+
+a commonly-used title, e.g., in BITAGAP, <i>Poema da Batalha do Salado</i>.  Songbook
+
+titles (e.g., <i>Cancioneiro da Ajuda, Cancionero de Estúñiga, Cançoner dels Masdovelles</i>) can
+
+also be searched in this field.</p>
+
+<p><b>Incipit/Explicit</b>:  This important search field may aid in the identification of a text.</p>
+
+<p>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records
+
+for every known surviving copy of the work (each with a unique <b>cnum</b>).  For the former,
+
+incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced
+
+paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks,
+
+resolved or unresolved abbreviations, misspellings, etc.) as found in the
+
+manuscript or printed edition or as transcribed in a secondary source.  A search in this
+
+field should return a list of works based on both the modernized incipits/explicits as well as the
+
+original ones.  When trying to identify a text, repeat the search using variants of the less common words. In some case,
+
+particularly for texts with a large number of copies and no modern edition, incipits and explicits have been
+
+recorded only in the copy records. This is particularly the case for BETA.</p>
+
+<p>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.</p>
+
+<p><b>Associated persons</b>:  Search using the modern form of the
+
+name.  A search may return names of translators, notaries, patrons, important personages
+
+mentioned in a text, dedicatees, etc.</p>
+
+<p><b>Date of composition</b>:  Search for yyyy and/or mm and/or dd.  A search here might return the date of
+
+composition, confirmation, revision, translation, promulgation, etc.</p>
+
+<p><b>Place of composition</b>:  Search for the name in its modern form. </p>
+
+<p>For bibliography-specific help, consult the help page of each bibliography:</p>
+
+<ul>
+
+<li><a href="help_es.html#obra"><i><b>BETA</b></i> Obra</a></li>
+
+<li><a href="help_po.html#work"><i><b>BITAGAP</b></i> Work</a></li>
+
+<li><a href="help_ca.html#obra"><i><b>BITECA</b></i> Obra</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="library"></a>
+
+<p><b>LIBRARY:</b> Information about the libraries that house manuscripts and printed editions: search fields
+
+are <b>Simple search, City, Library, Shelfmark, Subject</b>.</p>
+
+<p><b>City</b>:  Search by the name of the city in its native language (e.g., New
+
+York, Firenze, etc.).</p>
+
+<p><b>Library</b>:  Search by any of the library's formal or commonly used names (e.g. in BETA, search
+
+for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).</p>
+
+<p><b>Shelfmark</b>:  Search by the current or any former shelfmark, including those of previous owners.
+
+This returns a list of libraries holding manuscripts or printings with that shelfmark.
+
+Shelfmarks are not case-sensitive.</p>
+
+<p>From the search results page, click on the library you are interested in to see a list
+
+of <i>all of its manuscripts and printed editions</i>
+
+in shelfmark order.</p>
+
+<p>For bibliographic-specific information see:</p>
+
+<ul>
+
+<li><a href="help_es.html#biblioteca"><i><b>BETA</b></i> Biblioteca</a></li>
+
+<li><a href="help_po.html#library"><i><b>BITAGAP</b></i> Library</a></li>
+
+<li><a href="help_ca.html#biblioteca"><i><b>BITECA</b></i> Biblioteca</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="institution"></a>
+
+<p><b>INSTITUTION:</b> Information about the institutions that owned manuscripts and printed editions or that were associated with individuals who produced and transmitted
+
+works, manuscripts, and printed editions: search fields
+
+are <b>Simple search, Name, Place, Subject</b>.</p>
+
+<p><b>Name</b>:  Search by any of the institution's formal or commonly used names (e.g. in BETA, search
+
+for Universidad Complutense, Universidad de Madrid, or Universidad Central).</p>
+
+<p><b>Place</b>:  Search for the place where the institution is currently or was formerly located using the form in its native language(e.g. in BETA, search
+
+for London, not Londres, Aachen, not Aquisgrán,).</p>
+
+<a name="person"></a>
+
+<p><b>PERSON:</b> Information about individuals involved with the composition and diffusion
+
+of medieval texts, such as authors, translators, patrons, owners, scholars, members of the
+
+nobility or clergy, etc.  Search fields include <b>Simple search, Name, Title, Date, Associated place,
+
+Religious or military order and profession, trade, or occupation, Subject</b>.</p>
+
+<p><b>Name</b>:  Search by original or translated forms of the name, by pseudonym, etc.</p>
+
+<p><b>Title</b>: This refers to a title conferred on an individual (by king, noble; Church;
+
+for a particular period, hereditary, or for life). You may also search any place to which
+
+the conferred title is attached (e.g., in BITAGAP, Bispo Ourense, Rei Castela Leão).</p>
+
+<p><b>Date</b>:  Search for date of birth, death, conferral of a title, or other milestone
+
+event.</p>
+
+<p><b>Associated place</b>: Search for place (in the modern form) of birth,
+
+death, residence, or other milestone event.</p>
+
+<p><b>Religious or military order and profession, trade, or occupation</b>: For religious orders
+
+search by the standard sigla, e.g., OSB, OFM, SJ,
+
+Ocist. For professions see the list in the related help pages. Note that identification of professions is
+
+sporadic in all three bibliographies.</p>
+
+<p>NOTE: The <i>Associated Persons</i> section of each record must be treated with caution,
+
+especially for those individuals with numerous relationships.
+
+The database program is designed to establish a reciprocal link between two records automatically.
+
+Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter,
+
+his record was automatically updated to show him as her father.
+
+Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records.
+
+Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.</p>
+
+<p>See bibliography-specific help pages for details:</p>
+
+<ul>
+
+<li><a href="help_es.html#persona"><i><b>BETA</b></i> Persona</a></li>
+
+<li><a href="help_po.html#person"><i><b>BITAGAP</b></i> Person</a></li>
+
+<li><a href="help_ca.html#persona"><i><b>BITECA</b></i> Persona</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="reference"></a>
+
+<p><b>REFERENCE:</b> Secondary bibliography related to texts, manuscripts, printed editions, and persons.
+
+The order of items returned is generally alphabetical by title, with links to the full reference.
+
+Search fields include <b>Simple search, Author, Title, Date, Journal / collected volume, Place of
+
+publication, Publisher, Series, Associated person, Subject</b>.</p>
+
+<p><b>Author</b>:  Search by any form or portion of the name of the <b>author</b> (of a monograph
+
+or article).</p>
+
+<p><b>Title</b>:  Search by monograph or article title (whole or partial, most distinctive
+
+words).</p>
+
+<p><b>Date</b>: Search by year of publication.</p>
+
+<p><b>Journal / collected volume</b>:  Search by title of the journal (print or electronic)
+
+or collected volume (acts or proceedings of congresses, homage volumes, etc.).</p>
+
+<p><b>Place of publication</b>:  Search by name of the city of publication in its native
+
+language.</p>
+
+<p><b>Publisher</b>: Search by publisher (e.g., “University of California Press”).</p>
+
+<p><b>Series</b>: Search by series (e.g., in BITAGAP, “Subsídios para a história da
+
+arte”).</p>
+
+<p><b>Associated person</b>:  Search for any individual associated with the work
+
+<b>other than the author</b> (e.g., author of
+
+prologue, coordinator, editor, or director of series or collection, etc.).</p>
+
+<p>For bibliographic-specific details see:</p><ul>
+
+<li><a href="help_es.html#reference"><i><b>BETA</b></i> Referencia</a></li>
+
+<li><a href="help_po.html#reference"><i><b>BITAGAP</b></i> Reference</a></li>
+
+<li><a href="help_ca.html#reference"><i><b>BITECA</b></i> Referència</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="msed"></a>
+
+<p><b>MsEd (Manuscripts and printed editions):</b> These are the primary sources, manuscripts and printed
+
+editions, in which the medieval texts
+
+are preserved. See the home pages of the three bibliographies (“Scope and content”) for a description
+
+of the sources included in the database.  Search fields are <b>Simple search, City, Library, Shelfmark, Date,
+
+Place of production, Scribe/printer, Publisher/patron, Previous owner, Associated person, Subject</b>.</p>
+
+<p><b>Manuscript / Printed edition:</b>  First, above the search fields, click on one of these
+
+options.  Manuscripts might include the “original” text or copies of it,
+
+including copies made in later centuries. Printed editions are incunables and 16th- and
+
+17th-century editions of medieval works.  Search later printed editions in REFERENCE.</p>
+
+<p><b>City</b>:  Search by name of the city (in its native language) where the library that
+
+holds the manuscript or printed edition is located.</p>
+
+<p><b>Library</b>: Search by the current or former name of the library that holds the
+
+manuscript or printed edition.</p>
+
+<p><b>Shelfmark</b>:  Search for a current or former shelfmark in the holding library as well as for
+
+the shelfmark of a previous owner.  Searches are not case-sensitive, e.g., “Inc. 1484” or “inc.
+
+1484.”</p>
+
+
+
+<p><b>Date</b>:  You can search for complete or partial dates.  A search for “1325“, for
+
+example, returns manuscripts copied on
+
+any day of that year as well as undated manuscripts which, based on internal or external
+
+evidence, have been dated to include the year 1325 (e.g. 1325; 1325 a quo, 1325 ad quem; 1301? - 1325?; 1290? - 1325?;
+
+etc.).</p>
+
+<p><b>Place of production</b>: Search by the name of a city or place in its modern
+
+form.</p>
+
+<p><b>Scribe / printer</b>: Search for a scribe using any form of the name.  For a printer,
+
+use the name in its original form (e.g., in BITAGAP, “Hermann von Kempen” rather than
+
+“Hermão de Campos”).  To learn the original form of a printer's name, search
+
+first in PERSON.</p>
+
+<p><b>Publisher / patron</b>:  For a printed edition, search for the person who sponsored it
+
+using the modern form of the name. For a manuscript, search for the modern form of the name of
+
+the patron for whom it was copied.</p>
+
+<p><b>Previous owner</b>: Search for any person or institution that has owned the object by
+
+a person's name or title, by the name of a monastery, museum, auction house,
+
+etc.</p>
+
+<p><b>Associated person</b>:  Search using any form of the name.  A search returns the name
+
+of a binder, illuminator, annotator, etc.</p>
+
+<p>For bibliography-specific information see:</p>
+
+<ul>
+
+<li><a href="help_es.html#msed"><i><b>BETA</b></i> Manuscritos e impresos</a></li>
+
+<li><a href="help_po.html#msed"><i><b>BITAGAP</b></i> Manuscripts and printed editions</a></li>
+
+<li><a href="help_ca.html#msed"><i><b>BITECA</b></i> Manuscrits i impresos</a></li><p></p>
+
+</ul>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="technicalhelp"></a>
+
+<p><b>Technical help</b></p>
+
+<p><b><i>PhiloBiblon</i></b> in general: <a href="mailto:cfaulhab@library.berkeley.edu">Charles B.
+
+Faulhaber</a>.</p>
+
+<p><a href="beta_en.html"><b>BETA</b></a> / <b>Bibliografía
+
+Española de Textos Antiguos</b><br>
+
+Medieval texts in Spanish.<br>
+
+<a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a></p>
+
+<p><a href="bipa_en.html"><b>BIPA</b></a> / <b>Bibliografía
+
+de la Poesía Áurea</b><br>
+
+Golden Age Poetry.<br>
+
+<a href="mailto:Ralph.Difranco@du.edu">Ralph DiFranco.</a></p>
+
+<p><a href="bitagap_en.html"><b>BITAGAP</b></a> / <b>Bibliografia de
+
+Textos Antigos Galegos e Portugueses</b><br>
+
+Medieval Texts in Galician, Galician-Portuguese, and Portuguese.<br>
+
+<a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a></p>
+
+<p><a href="biteca_en.html"><b>BITECA</b></a> / <b>Bibliografia
+
+de Textos Antics Catalans, Valencians i Balears</b><br>
+
+Medieval Texts in Catalan.<br>
+
+<a href="mailto:gavenoza@ub.edu">Gemma Avenoza</a></p>
+
+<p></p>
+
+<p><a href="#top">Return to Index</a></p>
+
+<a name="resources"></a>
+
+<p><b>On-line resources</b><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#medievalstudies">Medieval
+
+studies associations and blogs</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#research">Research institutions, centers, and groups</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#catalogs">Libraries and digital libraries: catalogs and lists</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#archives">Archives and digital archives: catalogs and lists</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#databases">On-line
+
+databases</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#bibliographies">Reference
+
+and bibliographies</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#reviews">Online journals</a></p>
+
+<p>Please send information regarding the URLs for these resources (especially changes to them) and suggestions for sites to be added, to <a href="mailto:schafferm@usfca.edu">Martha E. Schaffer</a>.</p>
+
+<p><a href="#top">Return to Index</a></p>
+
+</div>

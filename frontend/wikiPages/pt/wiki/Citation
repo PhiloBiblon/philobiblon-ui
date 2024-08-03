@@ -1,0 +1,71 @@
+<h1>Formato de Citação Preferido</h1>
+
+<div class="content">
+
+<p>Os utilizadores de PhiloBiblon e das suas bibliografias devem citar estes recursos nas suas investigações e publicações.
+
+A prática preferida é referir-se ao projecto PhiloBiblon e também à(s) bibliografia(s) particular(es) utilizada(s), BETA, BITAGAP, o BITECA.
+
+</p>
+
+<ul>
+
+<p><i>PhiloBiblon</i>. Dir. Charles B. Faulhaber. Bancroft Library. University of California, Berkeley,
+
+1997-. Web: http://vm136.lib.berkeley.edu/BANC/philobiblon/index.html. Consultada: [Data]</p>
+
+<p><i>BETA (Bibliografía Española de Textos Antiguos)</i>. Dir. Charles B. Faulhaber. The
+
+Bancroft Library. University of California, Berkeley,
+
+1997-. Web: http://vm136.lib.berkeley.edu/BANC/philobiblon/beta_en.html. Consultada: [Data]</p>
+
+<p><i>BITAGAP (Bibliografia de Textos Antigos Galegos e Portugueses)</i>. Dir. Arthur L-F. Askins. The
+
+Bancroft Library. University of California, Berkeley,
+
+1997-. Web: http://vm136.lib.berkeley.edu/BANC/philobiblon/bitagap_en.html. Consultada: [Data]
+
+</p>
+
+<p><i>BITECA (Bibliografia de Textos Antics Catalans, Valencians i Balears)</i>. Dirs. Gemma Avenoza, Lourdes Soriano, i Vicenç Beltran. The
+
+Bancroft Library. University of California, Berkeley,
+
+1997-. Web: http://vm136.lib.berkeley.edu/BANC/philobiblon/biteca_en.html. Consultada: [Data]
+
+</p>
+
+</ul>
+
+<p>Considerando que cada bibliografia procura identificar obras específicas, manuscritos, edições impressas e indivíduos, recomendamos que os estudos críticos citem o respectivo número de identificação de forma a desfazer ambiguidades: por exemplo, Íñigo López de Mendoza, primeiro marquês de Santillana (BETA bioid 1031) vs. o seu neto, Íñigo López de Mendoza y Luna, terceiro marquês de Santillana e segundo duque do Infantado (BETA bioid 3034).</p>
+
+<p>O formato de citação dos dados preferido é o seguinte:</p>
+
+<p>Para uma obra: <b>Bibliografia texid 0000:</b></p>
+
+<blockquote><i>Cantar de mió Cid</i> (BETA texid 1109)</blockquote>
+
+<p>Para uma cópia específica de uma dada obra: <b>Bibliografia cnum 0000:</b></p>
+
+<blockquote><i>Cantar de mió Cid</i>. Madrid: Biblioteca Nacional, VITR/7/17 (BETA cnum 1231)</blockquote>
+
+<p>Para um manuscrito: <b>Bibliografia manid 0000:</b></p>
+
+<blockquote>Barcelona: Biblioteca de Catalunya, 267 (olim D-67, D-123) (BITECA manid 1482)</blockquote>
+
+<p>Para uma edição impressa, existem duas possibilidades:</p>
+
+<p>O exemplar principal de uma determinada edição é citado da seguinte forma: <b>Bibliografia manid 0000:</b></p>
+
+<blockquote>Ludolphus de Saxonia. <i>Vita Christi</i> [Pt. 2]. Lisboa: Nicolau de Saxónia ~ Valentim Fernandes, 1495-09-07. Lisboa: Biblioteca Nacional, Inc. 566 [2] (olim Inc. 479) (BITAGAP manid 1006)</blockquote>
+
+<p>Outro exemplar da mesma edição é citado da seguinte forma: <b>Bibliografia copid 0000:</b></p>
+
+<blockquote>Ludolphus de Saxonia. <i>Vita Christi</i> [Pt. 2]. Lisboa: Nicolau de Saxónia ~ Valentim Fernandes, 1495-09-07. Viseu: Biblioteca Municipal, INC 26-II-13 (2) (BITAGAP copid 1036)</blockquote>
+
+<p>Para um determinado indivíduo: <b>Bibliografia bioid 0000:</b></p>
+
+<blockquote>Garcilaso de la Vega (BIPA bioid 1170)</blockquote>
+
+</div>

@@ -1,0 +1,3490 @@
+<h1>BITAGAP AXUDA</h1>
+
+<div class="content">
+
+<p>Para obter axuda relativa ao uso de <i><b>BETA</b></i> ou de <i><b>BITECA</b></i>, consulte as súas respectivas páxinas de axuda (<a href="help_es.html">espanhol</a> ou <a href="help_ca.html">catalán</a>).</p>
+
+<p>Seguen os índices e a información da páxina de axuda de BITAGAP primeiro en galego e despois en inglés.</p>
+
+<p>For help using <i><b>BETA</b></i> or <i><b>BITECA</b></i>, consult their respective help pages (<a href="help_es.html">Spanish</a> or <a href="help_ca.html">Catalan</a>).</p>
+
+<p>The Index and information for the BITAGAP help page follow, first in Galician, then in English.</p>
+
+<a name="topo"></a>
+
+<h1>Índice (galego)</h1>
+
+<p>
+
+<a href="#pesquisasgeral">Buscas - Xeral</a><br>
+
+</p><blockquote>
+
+<a href="#seleccionarBITAGAP">Seleccionar BITAGAP</a><br>
+
+<a href="#pesquisartabelas">Buscar tabelas/páxinas e campos</a><br>
+
+<a href="#aspas">Aspas</a><br>
+
+<a href="#maiúsculasdiacríticos">Maiúsculas, diacríticos</a><br>
+
+<a href="#asterisco">Asteriscos para substituír caracteres non determinados</a><br>
+
+<a href="#ides">IDs (texid, cnum, manid, bibid, bioid...)</a><br>
+
+<a href="#nomesdepessoas">Nomes de persoas</a><br>
+
+<a href="#datas">Datas</a><br>
+
+<a href="#topónimos">Topónimos</a><br>
+
+<a href="#entradasdeassunto">Entradas de tema</a><br>
+
+<a href="#palavraschave">Busca simple</a><br>
+
+<a href="#urles">“Uniform Resource Locator” (URL)</a><br>
+
+<a href="#normasdetranscrição">Normas de transcrición</a><br>
+
+<a href="#paleografiacodicologia">Paleografía e codicoloxía</a><br>
+
+</blockquote>
+
+<a href="#comousartabelas">Como usar as tabelas/páxinas de busca e os seus campos</a><br>
+
+<blockquote>
+
+<a href="#obra">OBRA</a><br>
+
+<blockquote>
+
+<a href="#palavraschaveOBRA">Busca simple</a><br>
+
+<a href="#autor">Autor</a><br>
+
+<a href="#título">Título</a><br>
+
+<a href="#incipites">Incipit</a><br>
+
+<a href="#explicites">Explicit</a><br>
+
+<a href="#pessoasassociadas">Persoa asociada</a><br>
+
+<a href="#datadecomposição">Data de composición</a><br>
+
+<a href="#localdecomposição">Lugar de composición</a><br>
+
+<a href="#assuntoOBRA">Tema</a><br>
+
+</blockquote>
+
+<a href="#biblioteca">BIBLIOTECA</a><br>
+
+<blockquote>
+
+<a href="#palavraschaveBIBLIOTECA">Busca simple</a><br>
+
+<a href="#cidade">Cidade</a><br>
+
+<a href="#nomedebiblioteca">Biblioteca</a><br>
+
+<a href="#cota">Cota</a><br>
+
+<a href="#assuntoBIBLIOTECA">Tema</a><br>
+
+</blockquote>
+
+<a href="#pessoa">PERSOA</a><br>
+
+<blockquote>
+
+<a href="#palavraschavePESSOA">Busca simple</a><br>
+
+<a href="#nomedepessoa">Nome</a><br>
+
+<a href="#títulodepessoa">Título</a><br>
+
+<a href="#data">Data</a><br>
+
+<a href="#localassociado">Lugar asociado</a><br>
+
+<a href="#ordensprofissões">Orde relixiosa ou militar e profesión</a><br>
+
+<a href="#assuntoPESSOA">Tema</a><br>
+
+</blockquote>
+
+<a href="#referência">REFERENCIA (bibliografía secundaria)</a><br>
+
+<blockquote>
+
+<a href="#palavraschaveREFERÊNCIA">Busca simple</a><br>
+
+<a href="#autorREFERÊNCIA">Autor</a><br>
+
+<a href="#títuloREFERÊNCIA">Título</a><br>
+
+<a href="#dataREFERÊNCIA">Data</a><br>
+
+<a href="#revistavolumecoletivo">Revista / volume colectivo</a><br>
+
+<a href="#localdepublicação">Lugar de publicación</a><br>
+
+<a href="#editora">Editorial</a><br>
+
+<a href="#colecção">Colección</a><br>
+
+<a href="#pessoasassociadas">Persoa asociada</a><br>
+
+<a href="#assuntoREFERÊNCIA">Tema</a><br>
+
+</blockquote>
+
+<a href="#msedes">MS/ED (manuscrito ou edición impresa)</a>
+
+<blockquote>
+
+<a href="#palavraschaveMSED">Busca simple</a><br>
+
+<a href="#manuscritoimpresso">Manuscrito / edición impresa</a><br>
+
+<a href="#cidadeMSED">Cidade</a><br>
+
+<a href="#bibliotecaMSED">Biblioteca</a><br>
+
+<a href="#cotaMSED">Cota</a><br>
+
+<a href="#dataMSED">Data</a><br>
+
+<a href="#localdeprodução">Lugar de producción</a><br>
+
+<a href="#copistaimpressor">Copista / impresor</a><br>
+
+<a href="#editorpatrono">Editor / mecenas</a><br>
+
+<a href="#proprietárioanterior">Propietario anterior</a><br>
+
+<a href="#pessoaassociadaMSED">Persoa asociada</a><br>
+
+<a href="#assuntoMSED">Tema</a><br>
+
+</blockquote>
+
+</blockquote>
+
+<p></p>
+
+<p>
+
+<a href="#ajudatécnica">Axuda técnica</a><br>
+
+</p>
+
+<p>
+
+<a href="#recursos">Recursos en liña</a><br>
+
+</p>
+
+<a name="top"></a>
+
+<h1>Index (English)</h1>
+
+<p>
+
+<a href="#searchesgeneral">Searches - General</a><br>
+
+</p><blockquote>
+
+<a href="#selectBITAGAP">Select BITAGAP</a><br>
+
+<a href="#searchtablespages">Search tables/pages and fields</a><br>
+
+<a href="#quotationmarks">Quotation marks</a><br>
+
+<a href="#capitalsdiacritics">Capital letters, diacritics</a><br>
+
+<a href="#asteriskplaceholder">Asterisk as placeholder/wildcard</a><br>
+
+<a href="#ids">IDs (texid, cnum, manid, bibid, bioid...)</a><br>
+
+<a href="#personalnames">Personal names</a><br>
+
+<a href="#dates">Dates</a><br>
+
+<a href="#placenames">Place names</a><br>
+
+<a href="#subjectheadings">Subject headings</a><br>
+
+<a href="#keywordsnumbers">Simple search</a><br>
+
+<a href="#url">“Uniform Resource Locator” (URL)</a><br>
+
+<a href="#transcriptionnorms">Transcription norms</a><br>
+
+<a href="#paleographycodicology">Paleography and codicology</a><br>
+
+</blockquote>
+
+<a href="#howusesearchtablespages">How to Use Search Tables/Pages and Their Fields</a><br>
+
+<blockquote>
+
+<a href="#work">WORK</a><br>
+
+<blockquote>
+
+<a href="#author">Author</a><br>
+
+<a href="#title">Title</a><br>
+
+<a href="#incipit">Incipit</a><br>
+
+<a href="#explicit">Explicit</a><br>
+
+<a href="#associatedpersons">Associated person</a><br>
+
+<a href="#datecomposition">Date of composition</a><br>
+
+<a href="#placecomposition">Place of composition</a><br>
+
+<a href="#subjectWORK">Subject</a><br>
+
+<a href="#keywordsWORK">Simple search</a><br>
+
+</blockquote>
+
+<a href="#library">LIBRARY</a><br>
+
+<blockquote>
+
+<a href="#city">City</a><br>
+
+<a href="#libraryname">Library</a><br>
+
+<a href="#shelfmark">Shelfmark</a><br>
+
+<a href="#subjectLIBRARY">Subject</a><br>
+
+<a href="#keywordsLibrary">Simple search</a><br>
+
+</blockquote>
+
+<a href="#person">PERSON</a><br>
+
+<blockquote>
+
+<a href="#personname">Name</a><br>
+
+<a href="#conferredtitle">Title</a><br>
+
+<a href="#date">Date</a><br>
+
+<a href="#associatedplace">Associated place</a><br>
+
+<a href="#ordersprofessions">Religious or military order and profession</a><br>
+
+<a href="#subjectPERSON">Subject</a><br>
+
+<a href="#keywordsPERSON">Simple search</a><br>
+
+</blockquote>
+
+<a href="#reference">REFERENCE (secondary bibliography)</a><br>
+
+<blockquote>
+
+<a href="#authorREFERENCE">Author</a><br>
+
+<a href="#titleREFERENCE">Title</a><br>
+
+<a href="#date">Date</a><br>
+
+<a href="#journalcollectedvolume">Journal / collected volume</a><br>
+
+<a href="#placepublication">Place of Publication</a><br>
+
+<a href="#publisher">Publisher</a><br>
+
+<a href="#series">Series</a><br>
+
+<a href="#associatedperson">Associated person</a><br>
+
+<a href="#subjectREFERENCE">Subject</a><br>
+
+<a href="#keywordsREFERENCE">Simple search</a><br>
+
+</blockquote>
+
+<a href="#msed">MS/ED (manuscript or printed edition)</a>
+
+<blockquote>
+
+<a href="#msprinteded">Manuscript / printed edition</a><br>
+
+<a href="#cityMSED">City</a><br>
+
+<a href="#libraryMSED">Library</a><br>
+
+<a href="#shelfmarkMSED">Shelfmark</a><br>
+
+<a href="#dateMSED">Date</a><br>
+
+<a href="#placeproduction">Place of production</a><br>
+
+<a href="#scribeprinter">Scribe / printer</a><br>
+
+<a href="#publisherpatron">Publisher / patron</a><br>
+
+<a href="#previousowner">Previous owner</a><br>
+
+<a href="#associatedpersonMSED">Associated person</a><br>
+
+<a href="#subjectMSED">Subject</a><br>
+
+<a href="#keywordsMSED">Simple search</a><br>
+
+</blockquote>
+
+</blockquote>
+
+<p></p>
+
+<p>
+
+<a href="#technicalhelp">Technical Help</a><br>
+
+</p>
+
+<p>
+
+<a href="#resources">Online Resources</a><br>
+
+</p>
+
+<br>
+
+<a name="pesquisasgeral"></a>
+
+<h2>Buscas - Xeral</h2>
+
+<p>Estamos traballando na resolución de problemas técnicos que nos permitirán mellorar a calidade e a exhaustividade das buscas. A súa opinión, que lle pode enviar a <a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a>, seranos moi útil.</p>
+
+<p>
+
+<a name="seleccionarBITAGAP"></a>
+
+</p><p><b>Seleccione BITAGAP</b>: Na parte superior da páxina de busca, para cada pescuda, seleccione BITAGAP. Para iniciar a busca, clique no botón "Busca" e, na parte inferior, nos campos de busca.</p>
+
+<a name="pesquisartabelas"></a>
+
+<p><b>Tabelas/páxinas de busca e campos</b>: As tabelas/páxinas de busca están listadas no índice á esquerda, ao comezo da páxina de Axuda. Busque usando polo menos un campo nunha determinada páxina. A pescuda ofrece novas xanelas coa lista de rexistros que conteñan o(s) termo(s) buscado(s).</p>
+
+<p>En calquera das tabelas/páxinas de busca, clique sobre o nome na parte superior ou nun dos campos para ser conducido á sección apropiada desta páxina de Axuda.</p>
+
+<p>Nesta páxina de Axuda, os nomes das tabelas/páxinas de busca están en MAIÚSCULAS e os campos que poden ser buscados dentro delas están <b>en negra</b>.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="aspas"></a>
+
+<p><b>Aspas</b>: Cando unha busca require o uso de aspas (por exemplo, para delimitar un ID, como se explica despois), especifícase nesta páxina de Axuda. Nos demais casos, as aspas indican os termos exactos da busca e os resultados obtidos.</p>
+
+<a name="maiúsculasdiacríticos"></a>
+
+<p><b>Maiúsculas, diacríticos</b>: Non hai ningunha busca que dependa do uso correcto de letras maiúsculas ou de diacríticos: "Alcácer, Alcacer, alcácer, alcacer, alcaçer" remiten todos a "Alcácer". É mellor non utilizar diacríticos no campo <b>Busca simple</b>.</p>
+
+<a name="asterisco"></a>
+
+<p><b>Asterisco para substituír caracteres non determinados</b>: O asterisco substitúe un ou máis caracteres non determinados en calquera posición da palabra. En OBRA, na busca por <b>Autor</b> "jac*" obtense "Jacobo de Benavente, Jacobo de las Leyes, Jacobus de Voragine" etc. En OBRA, para <b>Incipit</b>, inserindo "estr*" obtense "estromento, estrumento, este stromento; estranna; estremos" etc.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="ides"></a>
+
+<p><b>IDs (texid, cnum, manid, bibid, bioid...)</b>: En BITAGAP atribúeselle un único ID a cada texto (texid), a cada exemplar conservado do texto (cnum),
+
+a cada manuscrito ou edición impresa en que un texto aparece, a cada item de bibliografía secundaria (bibid) e a cada persoa (bioid).
+
+Se coñece estes IDs (aparecen, cando están dispoñibles, na primeira liña do cadro de información, e noutras liñas seleccionados en azul),
+
+pode usalos entre aspas no campo <b>Busca simple</b> en calquera páxina de busca. Por exemplo, en OBRA, en <b>Busca simple</b>
+
+busque "texid 1141" usando estas aspas. Despois, use a función "Find" do seu browser para localizar máis exactamente o item específico entre os resultados da busca. Nota: nalgúns casos a función "Find" é sensible a maiúsculas e/ou a sinais diacríticos.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="nomesdepessoas"></a>
+
+<p><b>Nomes de persoas</b>: Sexa autor dunha obra, autor de bibliografía secundaria, persoa (asociada), propietario anterior, tradutor, mecenas, copista ou editor literario, use a versión moderna do nome, o nome na súa forma orixinal ou unha traducción ou modernización (por exemplo, busque "Benedictus", "benedictus" ou "Bento", "Titus Livius" ou "Tito Livio", "João Baveca" ou "Johan Baveca").</p>
+
+<p><b>Suxestión:</b> Para ver unha listaxe de todas as formas dun nome de persoa usadas na base de datos, en PERSOA busque calquera forma en <b>Nome</b>, e despois clique no item específico.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="datas"></a>
+
+<p><b>Datas</b>: Nos campos que inclúen datas, busque por calquera combinación de ano (aaaa) e/ou mes (mm) e/ou día (dd). A busca obtén resultados de datas do tipo aaaa-mm-dd (1379-01-31 é 31 de xaneiro de 1379). Busque usando este formato ou máis simplemente: "1379" fornece todos os textos escritos en 1379; "1379 01" ou "01 1379" fornece todos os textos escritos o primeiro día de cada mes de 1379 e en calquera día de xaneiro de 1379. Nota: Con frecuencia hai datas (anos) que forman parte de títulos en OBRA (e.g. Cortes), e poden ser usadas para buscar eses títulos.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="topónimos"></a>
+
+<p><b>Topónimos</b>: En varias tabelas/páxinas de busca aparecen topónimos: OBRA - <b>Lugar de composición</b>; PERSOA - <b>Lugar asociado</b>; BIBLIOTECA - <b>Cidade</b>;
+
+REFERENCIA - <b>Lugar de producción</b>; MSED - <b>Cidade</b>. En OBRA e PERSOA, busque usando a forma portuguesa ou galega. En MSED, para a <b>Cidade</b> en que se localiza
+
+a biblioteca, use a forma da respectiva lingua nativa (ver abaixo), pero en <b>Lugar de produción</b> use a forma moderna portuguesa ou galega.
+
+En BIBLIOTECA e REFERENCIA busque polo nome na forma da lingua nativa. A continuación ofrécese unha listaxe de topónimos usados (ata agora) en BITAGAP.</p>
+
+<p>
+
+Antuerpen = Antwerpen<br>
+
+Berlín = Berlin<br>
+
+Cidade do Cabo = Cape Town<br>
+
+Cracovia = Kraków<br>
+
+Edimburgo = Edinburgh<br>
+
+Estrasburgo = Strasbourg<br>
+
+Filadelfia = Philadelphia<br>
+
+Florencia = Firenze<br>
+
+A Haia = Den Haag<br>
+
+Hamburgo = Hamburg<br>
+
+Londres = London<br>
+
+Milán = Milano<br>
+
+Moscova = Moscovo<br>
+
+Munique = München<br>
+
+Nápoles = Napoli<br>
+
+Nova Iorque = New York<br>
+
+</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="entradasdeassunto"></a>
+
+<p><b>Entradas de tema</b>: Teña presente cando busque en <b>Tema</b> que <i>o seu uso non é uniforme en todas as páxinas</i>. Note tamén que BITAGAP usa <b>Entradas de tema</b> non só para categorizar e/ou clasificar obras individuais, mais tamén para facilitar a busca da vasta bibliografía secundaria en REFERENCIA.</p>
+
+<p>Busque usando unha entrada completa ou calquera palabra contida en calquera entrada (por exemplo, un topónimo). Por razóns técnicas, as buscas de Tema teñen
+
+que ser individualizadas: busque "milagres" <b>ou</b> "Mariologia" pero non "milagres" <b>e</b> "Mariologia". A experiencia acaba indicando cales son as mellores estratexias de busca.</p><p>
+
+</p><p>A continuación ofrécese unha listaxe de todas as entradas de tema, en <i><b>portugués</b></i>, correntes en BITAGAP (indicando entre parénteses as
+
+tabelas/páxinas en que se usan). As páxinas en que se pode buscar por <b>Tema</b> son:</p>
+
+<p>
+
+B = BIBLIOTECA/LIBRARY<br>
+
+I = INSTITUCIÓN/INSTITUTION<br>
+
+M = MSED<br>
+
+O = OBRA/WORK<br>
+
+P = PERSOA/PERSON<br>
+
+R = REFERÊNCIA/REFERENCE<br>
+
+</p>
+
+<p>
+
+Acordos  (O) <br>
+
+Administração Civil   (I/O/R) <br>
+
+Administração Eclesiástica   (O/R) <br>
+
+Agricultura   (O/R) <br>
+
+Albergarias - Albergaria   (I/O/R) <br>
+
+Alcaide - Alcaides - Alcaidaria [Cartas de]   (O) <br>
+
+Alfarrobeira [Batalha de]   (O/R) <br>
+
+Alforria   (O) <br>
+
+Almirantado - Marinha   (O/R) <br>
+
+Almoxarife - Almoxarife - Almoxarifado [Cartas de]    (O) <br>
+
+Alquimia   (O/R) <br>
+
+Anais medievais - Apontamentos históricos   (O/R) <br>
+
+Anticlericalismo   (R) <br>
+
+Antologias - Crestomatias - Florilégios   (R) <br>
+
+Apologética   (O/R) <br>
+
+Aposentadoria   (I/O/R) <br>
+
+Aposentação [Cartas de]   (O/R) <br>
+
+Apresentação eclesiástica [Cartas de] - Benefícios   (O/R) <br>
+
+Armas [Brasão de / Cartas de Brasão de]   (O/R) <br>
+
+Armas [Cartas de porte de]    (O) <br>
+
+Arquitectura   (O/R) <br>
+
+Arquitectura - Militar   (O/R) <br>
+
+Arquivo Galícia Medieval   (R) <br>
+
+Ascética   (O/R) <br>
+
+Assistência   (R) <br>
+
+Assuntos internos - Galiza   (-) <br>
+
+Assuntos internos - Portugal   (O) <br>
+
+Astronomia - Astrologia - Almanaques   (O/R) <br>
+
+Autobiografia   (O/R) <br>
+
+Beatificação - Canonização   (M/P/R) <br>
+
+Besteiro - Besteiros [Cartas de]   (O/R)  <br>
+
+Bestiários - Animais   (O/R) <br>
+
+Bíblia   (O/R) <br>
+
+Bibliografia - Bibliografias  (P/R) <br>
+
+Bibliografia - Opera omnia - Produção científica   (P/R) <br>
+
+Bibliologia - Diplomática - Codicologia   (O/R) <br>
+
+Bibliotecas - Arquivos - Cartórios até 1601 [Inventários - Notícias avulsas - Catálogos - Índices - Sumários - Listagens]  (I/M/O/P/R) <br>
+
+Bibliotecas - Arquivos - Cartórios Pós-1600    (B/I/M//P/R) <br>
+
+Bibliotecas - Arquivos - Cartórios Pós-1600  [Inventários - Notícias avulsas - Catálogos - Índices- Sumários - Listagens]  (B/I/M/R) <br>
+
+Bibliotecas - Arquivos - Cartórios Pós-1600 [Exposições - Tesouros]   (R) <br>
+
+Bibliotecas - Arquivos - Cartórios Pós-1600 [Leilões - Vendas - Compras]   (B/R) <br>
+
+Bibliotecas digitais - Tecnologias digitais (R) <br>
+
+Bibliotecas régias   (O/R) <br>
+
+Bulas - Indulgências   (O/R) <br>
+
+</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<p>
+
+Cadeias - Carcereiros   (O) <br>
+
+Caminheiro - Caminheiros [Cartas de] - Troteiros   (O) <br>
+
+Caminhos - Estradas - Pontes   (O/R) <br>
+
+Cantigas das Festas de Santa Maria   (O/R) <br>
+
+Cantigas das Festas de Nosso Senhor Jesus Cristo   (O/R) <br>
+
+Capela - Capelas   (I/O/R) <br>
+
+Capelania [Cartas de]     (O) <br>
+
+Capitania [Cartas de]    (O) <br>
+
+Carreteiro - Carreteiros [Cartas de]    (O) <br>
+
+Castelos - Fortalezas - Torres   (I/M/O/P/R) <br>
+
+Cativo/a - Cativos/as   (I/O/P/R) <br>
+
+Cavalaria   (O/R) <br>
+
+Cavalaria [Novelas de - Romances de]   (O/R) <br>
+
+Censura literária   (O/R) <br>
+
+Cerimónias públicas - Ritos   (O/P/R) <br>
+
+Chancelarias   (R) <br>
+
+Ciclo Bretão - Matéria de Bretanha - Literatura Arturiana   (O/R) <br>
+
+Ciclo Carolíngio - Matéria Carolíngia - Matéria de França   (O/R) <br>
+
+Ciclo Clássico   (O/R) <br>
+
+Ciganos   (O/R) <br>
+
+Códigos sociais   (O) <br>
+
+Confissão - Penitência   (O/R) <br>
+
+Confrarias eclesiásticas - Estatutos - Compromissos   (I/O/R) <br>
+
+Contador - Contadores - Contadoria [Cartas de]   (O) <br>
+
+Contrabandistas - Passadores   (O/R) <br>
+
+Conventos - Igrejas - Mosteiros - Casas religiosas   (I/O/R) <br>
+
+Conversão religiosa   (O) <br>
+
+Cortes   (M/O/P/R) <br>
+
+Cortes - Capítulos - Clero   (O/R) <br>
+
+Cortes - Capítulos - Nobreza   (O) <br>
+
+Cortes - Capítulos Especiais   (M/O/R) <br>
+
+Cortes - Capítulos Especiais - Universidade   (O/R) <br>
+
+Cortes - Capítulos Gerais   (M/O/R) <br>
+
+Cortes - Cartas convocatórias   (O/R) <br>
+
+Cortes - Juramentos - Menagens   (O/R) <br>
+
+Cortes - Leis   (O/R) <br>
+
+Cortes - Proposições - Acordos   (O/R) <br>
+
+Costumes  (O/R) <br>
+
+Coudel - Coudeis - Coudelaria [Cartas de]   (O) <br>
+
+Coutos - Coutos Velhos   (O) <br>
+
+Crença - Crenças [Cartas de]   (O/R) <br>
+
+Cristologia   (O/R) <br>
+
+Cristãos-novos   (O) <br>
+
+Crítica textual - Ecdótica  (R) <br>
+
+Crónicas - Histórias Clássicas   (O/R) <br>
+
+Crónicas - Histórias  Medievais   (M/O/R) <br>
+
+Crónicas - Cronista - Cristóvão Rodrigues Acenheiro   (O/P/R) <br>
+
+Crónicas - Cronista - Duarte Galvão   (O/P/R) <br>
+
+Crónicas - Cronista - Fernão Lopes   (O/P/R) <br>
+
+Crónicas - Cronista - Garcia de Resende   (O/P/R) <br>
+
+Crónicas - Cronista - Gaspar Correia   (O/P/R) <br>
+
+Crónicas - Cronista - Gomes Eanes de Zurara   (O/P/R) <br>
+
+Crónicas - Cronista - Rui de Pina   (M/O/P/R) <br>
+
+Culinária   (O/R) <br>
+
+</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<p>
+
+Demografia   (R) <br>
+
+Demissão [Cartas de]   (O) <br>
+
+Demónios - Espíritos malignos - Possessões   (O/P/R) <br>
+
+Desafio [Cartas de] - Requesta - Duelos   (O/R) <br>
+
+Determinações avulsas   (O/R) <br>
+
+Dicionários - Léxicos - Vocabulários   (O/R) <br>
+
+Diplomacia - Diplomatas   (P/R) <br>
+
+Direito - Colecções - Comentários   (O/R) <br>
+
+Direito canónico - Sínodos - Constituições   (O/R) <br>
+
+Doação - Doações [Cartas de]   (I/O/R) <br>
+
+Documentos suspeitos   (O) <br>
+
+Doze [Os] de Inglaterra   (O/P/R/) <br>
+
+Duarte, D. - Leal Conselheiro   (R) <br>
+
+Ecologia - Ambiente   (O/R) <br>
+
+Economia - Indústrias - Construção  (O) <br>
+
+Economia - Indústrias - Metalurgia    (O) <br>
+
+Economia - Indústrias - Pesca    (O/R) <br>
+
+Economia - Indústrias - Tecidos   (O/R) <br>
+
+Economia - Mercadores estrangeiros    (O/P/R) <br>
+
+Economia - Mercadores portugueses - Frota mercante  \ (O/P/R) <br>
+
+Economia - Moedas - Falsificação (O)  <br>
+
+Economia - Moedas - Valias - Amoedação    (M/O/R)  <br>
+
+Economia - Metrologia - Pesos - Medidas    (O/R)   <br>
+
+Economia - Preços - Valias    (O/R)  <br>
+
+Economia - Privilégios    (O/R) <br>
+
+Economia - Salários - Emolumentos   (O/R) <br>
+
+Edição problemática - duvidosa   (M) <br>
+
+Edições - Editar (R) <br>
+
+Educação - Ensino   (O/R) <br>
+
+Epistolografia - Cartas pessoais   (O/R) <br>
+
+Epitáfio - Epitáfios    (O/R) <br>
+
+Equitação - Gineta    (O/R) <br>
+
+Escravatura - Escravo/a - Escravos/as    (O/P/R) <br>
+
+Escrivaninha - Escrivaninhas [Cartas de]   (O) <br>
+
+Espingardeiro - Espingardeiros [Cartas de]   (O/R) <br>
+
+Estalagens - Estalajadeiro  [Cartas de] - Estalajadeiros - Estaus - Pousadas   (O/R) <br>
+
+Estatutos eclesiásticos   (O/R) <br>
+
+Estudos Medievais - Centros   (R) <br>
+
+Exorcismo    (O)   <br>
+
+Expropriação - Confisco  [Cartas de]  (O/R) <br>
+
+Fábulas - Exempla   (O/R) <br>
+
+Fac-símiles (integrais)   (M/O/R) <br>
+
+Falcoaria - Cetreria   (O/R) <br>
+
+Falsificação Medieval     (O/R) <br>
+
+Farmacopéia - Receitas - Mezinhas    (O/R) <br>
+
+Feiras   (I/O/R) <br>
+
+Festas - Procissões   (O/R) <br>
+
+Floresta - Florestas - História florestal   (R) <br>
+
+Folha avulsa - Folha solta - Folha volante - Folhas avulsas - Folhas soltas - Folhas volantes (M/O) <br>
+
+Fontes electrónicas - Recursos electrónicos  (B/I/M/O/R)  <br>
+
+Forais   (M/O/R)  <br>
+
+Formulários    (O/R) <br>
+
+Fragmentos - Impressos   (M) <br>
+
+Fragmentos - Manuscritos   (M/O/R) <br>
+
+Fronteiro - Fronteiros [Cartas de]   (O) <br>
+
+Frotas Reais - Armadas   (I/O/R) <br>
+
+</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<p>
+
+Gafaria - Gafos - Gafas - Leprosaria - Leproso - Leprosa   (I/O/R) <br>
+
+Genealogia - Linhagens   (O/R) <br>
+
+Glossários   (O/R) <br>
+
+Graças  (O) <br>
+
+Grêmios   (O/R) <br>
+
+Guerra   (O/R) <br>
+
+Hagiografia   (O/P/R) <br>
+
+Heráldica   (O/P/R) <br>
+
+Historiografia - Medieval   (O/R) <br>
+
+Hospitais - Hospícios   (B/I/O/R) <br>
+
+Iconografia   (R) <br>
+
+Iluminuras - Miniaturas - Ornatos - Elementos decorativos    (O/P/R) <br>
+
+Impresso (Impressos) -  Perdidos ou não localizados   (M) <br>
+
+Impressores   (I/P/R)  <br>
+
+Impressos   (M/R) <br>
+
+Impresso, exemplar conhecido, perdido ou não localizado  (M) <br>
+
+Impressos - Incunábulos   (M/R) <br>
+
+Impressos - Incunábulos - Catálogos   (R) <br>
+
+Impressos - Incunábulos - Edições     (R) <br>
+
+Impressos - Incunábulos - Estudos    (R) <br>
+
+Impressos - Século XVI   (M/R)  <br>
+
+Impressos - Século XVII   (M/R) <br>
+
+Impressos - Século XVIII   (M/R) <br>
+
+Indignação régia - Indignatio regis   (O) <br>
+
+Inscrições - Epigrafia (O/R) <br>
+
+Instrução - Instruções [Cartas de]   (M/O/R) <br>
+
+Inquirições   (M/O/R) <br>
+
+Itinerários de reis, nobres, eclesiásticos   (O/R) <br>
+
+Judeus   (I/O/P/R) <br>
+
+Juiz - Juízes - Juizado [Cartas de]   (O) <br>
+
+Lais de Bretanha   (O/R) <br>
+
+Legitimação - Legitimações [Cartas de]  (M/O/R) <br>
+
+Leis   (M/O/R) <br>
+
+Leis - D. Afonso II   (O/R) <br>
+
+Leis - D. Afonso III  (O/R) <br>
+
+Leis - D. Afonso IV  (O/R) <br>
+
+Leis - D. Afonso V   (M/O/R) <br>
+
+Leis - D. Afonso X, o Sábio - Sete Partidas   (M/O/R)  <br>
+
+Leis - D. Alfonso XI   (O/R) <br>
+
+Leis - D. Dinis   (O/R) <br>
+
+Leis - D. Duarte   (O/R) <br>
+
+Leis - D. Fernando   (M/O/R) <br>
+
+Leis - D. Pedro   (O/R) <br>
+
+Leis - D. João I   (M/O/R) <br>
+
+Leis - D. João II   (O/R) <br>
+
+Leis - D. Manuel I   (O/R)     <br>
+
+Leis não identificadas   (O/R) <br>
+
+Leis de direitos de portagens    (O) <br>
+
+Lexicografia - Léxico - Vocabulário   (R) <br>
+
+Lexicologia   (R) <br>
+
+Lezíria - Lezírias    (O/R) <br>
+
+Língua - castelhano - poesia    (O) <br>
+
+Língua - castelhano - prosa   (O)  <br>
+
+Língua - catalão e português - poesia   (O) <br>
+
+Língua - galego - poesia    (O/R)  <br>
+
+Língua - galego - prosa   (O/R) <br>
+
+Língua - galego - prosa - Obras perdidas   (O/R) <br>
+
+Língua - galego [?] - poesia    (O) <br>
+
+Língua - galego [?] - prosa    (O)  <br>
+
+Língua - galego e castelhano - poesia   (O/R) <br>
+
+Língua - galego e castelhano - prosa   (O/R)   <br>
+
+Língua - galego e leonês - prosa   (O/R) <br>
+
+Língua - latim [?] - prosa   (O) <br>
+
+Língua - occitano - poesia  (O/R) <br>
+
+Língua - plurilíngua - poesia   (O/R) <br>
+
+Língua - plurilíngua - prosa   (O/R)   <br>
+
+Língua - português [?] - prosa  (O/R) <br>
+
+Língua - português e castelhano - poesia   (O/R) <br>
+
+Língua - português e castelhano - prosa   (O/R) <br>
+
+Língua - português e catalão - prosa   (O/R) <br>
+
+Língua - português e latim - poesia   (O/R) <br>
+
+Língua - português e latim - prosa   (O/R) <br>
+
+Língua - provençal - occitão - poesia   (O/R) <br>
+
+Linguística Histórica   (R) <br>
+
+Literatura Galega - Crítica Literária   (R) <br>
+
+Literatura Galega - Guias - Histórias - Dicionários   (R <br>
+
+Literatura Portuguesa - Crítica Literária   (R) <br>
+
+Literatura Portuguesa - Guias - Histórias - Dicionários   (R) <br>
+
+Livrarias - Livreiros   (B/I/O) <br>
+
+Louvor - Louvores - Elógio - Elógios - Cantigas de loor  (O/R) <br>
+
+</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<p>
+
+Magia - Feitiçaria   (O/R) <br>
+
+Manuscritos perdidos ou não localizados     (M/O/R) <br>
+
+Mariologia   (O/R) <br>
+
+Matrimónios - Casamentos   (O/R) <br>
+
+Mata - Matas - Matas coutadas   (O/R) <br>
+
+Medicina - Sau\de   (O/R) <br>
+
+Medicina - Medicina - Leis - Exames Autorizados e Licenças Concedidas a Físicos, Cirurgiões, Boticários [Cartas de]   (O/R) <br>
+
+Mercê - Mercês [Cartas de]  (O) <br>
+
+Mercearias - Merceeiro - Merceeira [Cartas de]   (O/R) <br>
+
+Milagres - Milagre   (M/O/R) <br>
+
+Minas - Adiças - Mineiros - Adiceiros   (I/O/R) <br>
+
+Misericórdias   (O/R) <br>
+
+Mística   (O/R) <br>
+
+Moedeiros   (M/O/R) <br>
+
+Monteiro - Guardador - Monteiros e Guardadores [Cartas de]   (O/R) <br>
+
+Moralística - Doutrinária   (O/R) <br>
+
+Mouros - Árabes - Mulçumanos   (I/O/P/R) <br>
+
+Muros - Fôssos - Cercas - Cavas   (O/P/R) <br>
+
+Música   (M/O/R) <br>
+
+Notariados [Cartas de]   (O) <br>
+
+Obras Perdidas   (O/R) <br>
+
+Ofício - Ofícios vários [Cartas de]   (O) <br>
+
+Onomástica - Antroponímia  (R) <br>
+
+Onomástica -Toponímia   (R) <br>
+
+Orações - Oração - Falas - Fala - Discursos - Discurso   (O/R) <br>
+
+Orações - Oração - Rezas - Reza - Súplica - Súplicas   (O/R) <br>
+
+Oratória   (O) <br>
+
+Oratória religiosa - Pregadores   (O/R) <br>
+
+Ordens Honoríficas de Cavalaria   (I/R) <br>
+
+Ordens Militares   (I/O/P/R) <br>
+
+Ordens Militares - Regras - Estatutos - Privilégios   (M/O/R) <br>
+
+Ordens Militares - Usos - Costumes   (O) <br>
+
+Ordens Religiosas    (I/R) <br>
+
+Ordens Religiosas - Regras - Constituições - Estatutos - Privilégios    (O/R) <br>Ordens Religiosas - Usos - Costumes   (O/R) <br>
+
+Ortografia - Pontuação   (R) <br>
+
+Paleografia - Escrita   (R) <br>
+
+Paródia  (O/R) <br>
+
+Paul - Pauis   (O) <br>
+
+Perdão [Cartas de]   (O/R) <br>
+
+Peregrinações - Romarias   (O/R) <br>
+
+Perfilhamento - Perfilhamentos [Cartas de]   (O/R) <br>
+
+PhiloBiblon - BITAGAP - BETA - BITECA  (R) <br>
+
+Pigmentos - Corantes   (M/O/R) <br>
+
+Piratas - Pirataria - Corsários   (O/P/R) <br>
+
+Poder - Poderes [Cartas de]   (O) <br>
+
+Poesia - Após 1350 - Colecções   (O/R) <br>
+
+Poesia - Após 1350 - Colecções - Cancioneiro Geral   (I/O/P/R)  <br>
+
+Poesia - Após 1350 - Colecções - Cancionero de Baena   (R <br>
+
+Poesia - Após 1350 - Épica   (O/R) <br>
+
+Poesia - Após 1350 - Lírica    (M/O/R) <br>
+
+Poesia - Após 1350 - Lírica - Escola Galego-Castelhana   (R) <br>
+
+Poesia - Após 1350 - Religiosa    (O/R) <br>
+
+Poesia - Após 1350 - Satírica   (O/R) <br>
+
+Poesia - Até 1351 - Colecções   (O/R) <br>
+
+Poesia - Até 1351 - Colecções - Tradição Manuscrita   (O/R) <br>
+
+Poesia - Até 1351 - Épica   (O/R) <br>
+
+Poesia - Até 1351 - Influência Francesa   (R) <br>
+
+Poesia - Até 1351 - Lírica   (I/O/P/R) <br>
+
+Poesia - Até 1351 - Religiosa    (O/R) <br>
+
+Poesia - Até 1351 - Religiosa - Cantigas de Santa Maria   (I/O/P/R) <br>
+
+Poesia - Até 1351 - Religiosa - Cantigas de Santa Maria - Tradição Manuscrita   (O/R) <br>
+
+Poesia - Até 1351 - Satírica   (I/O/P/R) <br>
+
+Poesia - Incipit   (O) <br>
+
+Poesia - Versificação - Métrica    (O/R) <br>
+
+Portagens   (O/R) <br>
+
+Posturas   (O) <br>
+
+Privilégios - Foros - Usos e Costumes  (M/O/R) <br>
+
+Procurador - Procuradores - Procuradoria [Cartas de]   (O) <br>
+
+Prosa - Satírica   (O/R) <br>
+
+Provérbios - Ditos   (O/R) <br>
+
+</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<p>
+
+Quitação [Cartas de]   (O) <br>
+
+Recebedor das Sisas [Cartas de]   (O) <br>
+
+Recursos electrónicos - Internet   (B/I/M/O/P/R) <br>
+
+Recursos electrónicos - Internet - Obra digitalizada   (M/O/R) <br>
+
+Recursos electrónicos - Sistemas - Base de Dados - Projectos - Comentários   (R) <br>
+
+Regatão - Regatona - Regateira - Regatães [Cartas de]   (O) <br>
+
+Relações com Europa - Fronteiras    (O/R) <br>
+
+Relações com Europa - Tratados    (M/O/R) <br>
+
+Relações com a África e Ilhas   (O/R) <br>
+
+Relações com a África e Ilhas - Tratados   (O/R) <br>
+
+Relações com as Américas   (O/R) <br>
+
+Relações com as Américas - Tratados   (O/R) <br>
+
+Relações com o Médio Oriente e Ásia   (O/R) <br>
+
+Relações diplomáticas e quotidianas - Portugal e Espanha (O/R) <br>
+
+Relações literárias - Portugal e Espanha   (R) <br>
+
+Remessa de Santarém  (I/R) <br>
+
+Requeredor das Sisas [Cartas de]   (O) <br>
+
+Restituição - Restituições [Cartas de]   (O/R) <br>
+
+Retórica   (R) <br>
+
+Rotulus - Rotuli   (M/O/R) <br>
+
+Sátira   (O/R) <br>
+
+Segurança - Seguranças - Salvo-condutos [Cartas de]   (O/R) <br>
+
+Sentenças - Julgamentos   (O/R) <br>
+
+Sermão - Sermões - Pregação - Pregações   (O/R) <br>
+
+Selos - Sigilografia   (R) <br>
+
+Sesmeiro - Sesmeiros [Cartas de]   (O) <br>
+
+Sociedades comerciais - Estatutos - Compromissos de Confraria   (O/R) <br>
+
+Superstição - Superstições   (R) <br>
+
+Suporte - Marcas de Água - Encadernação   (R) <br>
+
+Tabeliado - Tabeliados [Cartas de]   (O) <br>
+
+Tabeliães - Escrivães - Notários  (O/R) <br>
+
+Teatro   (O/R) <br>
+
+Tença - Tenças [Cartas de]   (O) <br>
+
+Terramotos - Terremotos - Sismos (O/R) <br>
+
+Testamentos - Cartas testamentárias   (O/R) <br>
+
+Texto aljamiado - Caracteres hebraicos   (M/O/R) <br>
+
+Texto apócrifo   (O/R) <br>
+
+Texto apócrifo [?]    (O) <br>
+
+Texto conhecido apenas por fragmentos    (O) <br>
+
+Texto judeu-português   (M/O/R) <br>
+
+Texto perdido ou não localizado   (O/P/R) <br>
+
+Texto poético perdido ou não localizado   (O/P/R) <br>
+
+Texto problemático - duvidoso   (O) <br>
+
+Textos mais antigos   (O/R) <br>
+
+Texto não identificado - Textos não identificados   (O) <br>
+
+Tinta - Tintas   (M/O/R) <br>
+
+Tipografia   (R) <br>
+
+Tordesilhas [Tratado de]   (O/R) <br>
+
+Torre do Tombo   (R) <br>
+
+Tradução [Teoria de - História de]   (R) <br>
+
+Tradução medieval apócrifa [após 1500]  (O) <br>
+
+Transcrição - Normas   (R) <br>
+
+Trasladação - Trasladações   (O/R) <br>
+
+Universidade   (I/O/P/R) <br>
+
+Vereação - Vereadores   (O/R) <br>
+
+Vereações [Livros de]   (R) <br>
+
+Veterinária - Alveitaria    (O/R) <br>
+
+Viagens  (O/R) <br>
+
+Viagens - Fantásticas   (O/R) <br>
+
+Viagens - Roteiros   (O/R) <br>
+
+Viagens - Visionárias   (O/R) <br>
+
+Visitações    (M/O/R) <br>
+
+Visão - Visões - Aparição - Aparições - Sonho - Sonhos - Profecia - Profecias    (O/P/R) <br>
+
+Vizinhos - Vizinhas - Vizinhança [Cartas de]  (O)
+
+</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<p>
+
+<a name="palavraschave"></a>
+
+</p><p><b>Busca simple</b>: Use este campo para buscar con outros termos. Por exemplo, en OBRA, en <b> Busca simple </b> introduza "traducido" para unha listaxe de obras que foron traducidas da súa lingua orixinal. Nota: debido á forma en que os datos foron introducidos e á resolución, aínda en curso, desta, as listaxes non están, de momento, completas. Recorde que pode buscar usando un ID coñecido (<i>con aspas</i>), tal como se indicou antes, en <a href="#ides">IDs (texid, cnum, manid, bibid, bioid...)</a>. Nas tabelas/páxinas específicas que se fornecen máis abaixo proporciónanse suxestións para o uso deste campo.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="urles"></a>
+
+<p><b>Uniform Resource Locator (URL)</b>: Unha busca en varias tabelas/páxinas de busca de BITAGAP fornece os URL.</p>
+
+<ol>
+
+<li><b>MSED</b>: un facsímile dixitalizado (completo ou parcial) dunha fonte primaria (manuscrita ou edición impresa), unha ficha de catálogo, unha transcrición (completa ou parcial) etc.</li>
+
+<li><b>REFERENCIA</b>: un facsímile dixitalizado ou texto electrónico dunha fonte secundaria.</li>
+
+<li> <b>PERSOA</b>:  unha fonte "online" que ofrece información sobre unha persoa.</li>
+
+</ol><p></p>
+
+<p>Un URL fornecido nos resultados dunha busca é activo. Só debe clicar no URL. Se a busca proporciona dous (ou máis), pode clicar en calquera deles. Nalgúns casos, conforme á institución, as dixitalizacións poden ser descargadas; noutros, ábrense nunha xanela. Se ten problemas co URL, pode copialo na xanela doutro browser/ferramenta de busca. Se o URL non funciona, por favor, remítanos a información a <a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a>.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="normasdetranscrição"></a>
+
+<p><b>Normas de transcrición</b>: En <b>Título</b> en OBRA (títulos de textos), BITAGAP usa a grafía moderna, inclusive para o incipit dos poemas. Noutros lugares, úsanse lecturas paleográficas ou semipaleográficas para o incipit e explicit de manuscritos e mais de impresos, e de títulos, tal como aparecen nos manuscritos e impresos.</p>
+
+<p>As Normas de transcrición de BITAGAP son as seguintes:</p>
+
+<p>
+
+</p><blockquote>
+
+<li>Xeralmente, non se desenvolven nin as abreviaturas nin os sinais de suspensión; consérvanse as letras sobrescritas.</li><br>
+
+<li>Un til representa letras que se suprimiron, incluíndo sinais engadidos á letra p, tal como un trazo que corta o descendente (para p<i>er</i>).</li><br>
+
+<li>Non se distingue entre diferentes formas de letras, como "s" redondo vs. "s" longo.</li><br>
+
+<li>O sinal tironiano represéntase como "e".</li><br>
+
+<li>As palabras sepáranse de acordo coa norma actual; as enclíticas únense ás formas verbais sen guión.</li><br>
+
+<li>Consérvanse os erros de copia ou de composición dos orixinais; as lacunas do texto indícanse mediante puntos suspensivos colocados entre parénteses cadradas [...]</li>
+
+</blockquote>
+
+<p></p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="paleografiacodicologia"></a>
+
+<p><b>Paleografía e codicoloxía</b>: Dado que BITAGAP, actualmente, fai un uso limitado da capacidade de Philobiblon a este respecto, buscar en
+
+BITAGAP manuscritos con certas características paleográficas ou codicolóxicas (en MSED, usando <b>Busca simple</b>) produce resultados irregulares.</p>
+
+<p>Ademais das medidas do folio, da súa análise e do número de columnas, BITAGAP describe habitualmente os seguintes aspectos: material, formato, encadernación e letra. Indícase, tamén, a presenza de música e de decoración. Para os impresos, indícase con frecuencia a fonte tipográfica. Clique nun manid da lista de resultados para obter a información dispoñible.</p>
+
+<p>BITAGAP convida os usuarios que examinasen persoalmente un manuscrito a facilitar as súas descricións paleográficas e/ou codicolóxicas completas ou parciais deste. A autoría das descricións seralles recoñecida.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<p>
+
+<a name="comousartabelas"></a>
+
+</p><h2>Como usar as tabelas/páxinas de busca e os seus campos</h2>
+
+<p></p>
+
+<a name="obra"></a>
+
+<p><b>OBRA</b><br>
+
+Información sobre textos medievais: os campos de busca son <b>Autor, Título, Incipit, Explicit, Persoa(s) asociada(s), Data de composición, Tema, Palabra clave ou números</b>.</p>
+
+<a name="palavraschaveOBRA"></a>
+
+<p><b>Busca simple</b>: Tal e como se describiu antes en <a href="#ides">IDs (texid, cnum, manid, bibid, bioid...)</a>, pode buscar usando un texid  (<i>con aspas</i>) neste campo. <i>Tamén pode buscar aquí unha obra usando unha palabra clave do seu título</i>.</p>
+
+<a name="autor"></a>
+
+<p><b>Autor</b>: Tal como se indicou antes (<a href="#nomesdepessoas">Nomes de persoas</a>) busque polo nome baixo <i><b>calquera forma</b></i>.</p>
+
+<a name="título"></a>
+
+<p><b>Título</b>: Busque obras en prosa usando o título portugués ou galego ou, para unha obra traducida, o título orixinal.
+
+Para unha busca ampla, o máis actual (por exemplo, "vida") mostrará máis obras que o antigo ("vita").
+
+Todas as buscas mostran obras de acordo con calquera dos seus títulos coñecidos.</p>
+
+<p>Necesita inserir só unha ou dúas palabras clave dun título... sen artigos, preposicións ou sen a conxunción "e".
+
+</p><p>Pode usar tamén (calquera parte de) unha data para buscar no seu campo  (tal como antes se indicou, en <a href="#datas">Datas</a>).
+
+Para textos poéticos individuais, véxase <b>Incipit/Explicit</b> máis abaixo. Se o poema ten un título convencional
+
+(por exemplo, <i>Cantiga da Garvaia, Poema da Batalha do Salado, Arrenegos</i> de Gregório
+
+Afonso), ou se o ten un grupo de poemas (así, os coñecidos como <i>Cuidar e Sospirar</i>), este tamén pode buscarse neste campo; ademais, poden buscarse os títulos de cancioneiros (por exemplo, <i>Cancioneiro da Ajuda, Cantigas de Santa María, Cancioneiro Geral</i>).</p>
+
+<a name="incipites"></a><a name="explicites"></a>
+
+<p><b>Incipit/Explicit</b>: Use <b>Incipit</b> para buscar un texto poético individual. Nota: Tanto o <b>Incipit</b> como o <b>Explicit</b> poden axudar a
+
+identificar un texto.</p>
+
+<p>Para cada obra, existe (a) un rexistro-mestre (cun texid) e (b) unha serie de rexistros para todos os testemuños coñecidos dun texto (cada un cun único cnum).
+
+Para aquel, o incipit e explicit foron modernizados (sen considerar a métrica nin a rima: por exemplo, coraçon/coraçom/coraçam &gt; corazón; perdudo/a &gt; perdido/a;
+
+couza(s) &gt; cousa(s)). En portugués e en galego-portugués "mia" e "minha" normalizáronse en "minha" e nos textos galegos máis recentes en "miña".
+
+Para o segundo caso, o incipit e explicit reprodúcense paleograficamente (isto é, con sinais de supresión, abreviaturas, erros etc.;
+
+vexa as <a href="#normasdetranscrição">Normas de Transcrición</a> anteriormente referidas), tal como aparecen no manuscrito ou no impreso ou como foron
+
+transcritos nunha fonte secundaria.</p>
+
+<p>Unha busca neste campo debe fornecer unha listaxe de obras baseada en ambas as dúas formas. Cando tente identificar un texto, repita a busca usando variantes das palabras menos comúns.</p>
+
+<p>Para localizar un texto poético en <b>Incipit</b> (non en <b>Título</b>, excepto no caso antes mencionado), busque calquera palabra que apareza na
+
+primeira liña. Nota: Para os textos individuais das <i>Cantigas de Santa Maria</i>, pode usar o número da edición Mettmann ("Mettmann 301"); para a poesía profana galego-portuguesa use o número Tavani/Brea et al. ("T/LP 97 15" ou simplemente "97 15"); para os textos do <i>Cancioneiro Geral</i> use os números da edición Dias 1990-2003 (e.g. "D 382"). Buscando só "301" en Incipit obtén Mettmann 301, Dias 301, Ajuda 301, e así sucesivamente.</p>
+
+<a name="pessoasassociadas"></a>
+
+<p><b>Persoa Asociada</b>: Busque usando as formas modernas do nome en portugués ou en galego. A busca pode ofrecer nomes de tradutores, notarios, mecenas, persoas importantes mencionadas etc.
+
+Para máis información, véxase <a href="#nomesdepessoas">Nomes de persoas</a>.</p>
+
+<a name="datadecomposição"></a>
+
+<p><b>Data de composición</b>: Busque como se indicou antes (en <a href="#datas">Datas</a>): aaaa e/ou mm e/ou dd. A busca pode fornecer aquí a data de composición, confirmación, revisión, tradución, promulgación etc. Este campo é útil para a identificación de textos.</p>
+
+<a name="localdecomposição"></a>
+
+<p><b>Lugar de composición</b>: Busque polo nome na súa forma moderna en portugués ou en galego (tal como se indicou antes en <a href="#topónimos">Topónimos</a>).</p>
+
+<a name="assuntoOBRA"></a>
+
+<p><b>Tema</b>: Busque como se describiu antes (en <a href="#entradasdeassunto">Entradas de tema</a>), tendo presente que unicamente funcionan aquí as entradas de tema seguidas de "(O)".</p>
+
+<p><b>Suxestión</b>:  Se quere localizar unha obra composta por varios textos, mais coñecida por un título específico (e.g. <i>Livro verde</i>), insira o título en "Busca simple".</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="biblioteca"></a>
+
+<p><b>BIBLIOTECA</b>
+
+<br>
+
+Información sobre bibliotecas que custodian manuscritos e impresos: os campos de busca son <b>Cidade, Biblioteca, Cota, Tema, Busca simple</b>.</p>
+
+<a name="palavraschaveBIBLIOTECA"></a>
+
+<p><b>Busca simple</b>: BITAGAP non vincula textos a BIBLIOTECA por <b> Busca simple</b>.</p>
+
+<a name="cidade"></a>
+
+<p><b>Cidade</b>: Busque polo nome da cidade na súa lingua nativa (isto é, New York, Firenze etc.). Consulte a lista de nomes antes, en <a href="#topónimos">Topónimos</a>.</p>
+
+<a name="nomedebiblioteca"></a>
+
+<p><b>Biblioteca</b>: Busque por calquera dos nomes coñecidos da biblioteca (por exemplo, en Évora,
+
+busque quer a Biblioteca Pública, Arquivo da Câmara Municipal quer o Arquivo Distrital).
+
+Busque nunha biblioteca para ver <i>todos os manuscritos e impresos</i> presentes en BITAGAP.</p>
+
+<a name="cota"></a>
+
+<p><b>Cota</b>: Busque pola cota actual ou por calquera outra anterior. Obterá unha listaxe de bibliotecas que gardan manuscritos ou impresos con esa cota. Daquela, clique nunha biblioteca para ver <i>todos os manuscritos e impresos</i> recollidos en BITAGAP.</p>
+
+<a name="assuntoBIBLIOTECA"></a>
+
+<p><b>Tema</b>: BITAGAP non une os textos a BIBLIOTECA por <b>Entrada de Tema</b>.</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="pessoa"></a>
+
+<p><b>PERSOA</b><br>
+
+Información, considerada de forma ampla, sobre personalidades relacionadas coa composición e difusión de textos medievais, tales como autores, tradutores, mecenas, propietarios, intelectuais, membros da nobreza ou do clero etc. Os campos de busca inclúen <b>Nome, Título, Data, Lugar asociado, Orde relixiosa ou militar, Tema, Palabras clave ou número</b>.</p>
+
+<p>Nota: A información presentada na sección <i>Associated Persons</i> dos rexistros biográficos non é sempre fiable e debe ser tratada con prudencia, en especial nos rexistros de individuos con diversas relacións. O programa da base de datos foi deseñado para establecer automaticamente unha ligazón recíproca entre dous rexistros. Por exemplo, cando o rexistro de D. João I (BITAGAP bioid 1064) foi ligado ao rexistro da Infanta D. Isabel, Duquesa da Borgoña (BITAGAP bioid 2094) como o seu pai, o rexistro dela foi actualizado automaticamente para indicar que a Infanta era a filla de D. João I. Infelizmente, certos erros de programación produciron ás veces ligazóns incorrectas con outros rexistros. Co tempo os erros serán eliminados. Pedimos a colaboración dos usuarios para poder identificalos.</p>
+
+<a name="palavraschavePESSOA"></a>
+
+<p><b>Busca simple</b>: Use un bioid (“bioid 1981,” <i>con aspas</i>) para obter non só Isabel de Aragón, mais tamén todas as persoas asociadas a ela. Do mesmo modo, tal como se indicou en <a href="#ides">IDs (texid, cnum, manid, bibid, bioid...)</a>.</p>
+
+<a name="nomedepessoa"></a>
+
+<p><b>Nome</b>: Busque polas formas modernas do nome, por pseudónimo etc. (Para máis información, vexa, antes, <a href="#nomesdepessoas">Nomes de persoas</a>).</p>
+
+<a name="títulodepessoa"></a>
+
+<p><b>Título</b>: Relativo a títulos atribuídos a persoas (por rei, nobre; Igrexa; durante un período particular, hereditario ou vitalicio). Pode buscar tamén calquera lugar co que estea relacionado o título (por exemplo, Bispo Ourense, Rei Castela León).</p>
+
+<a name="data"></a>
+
+<p><b>Data</b>: Busque pola data de nacemento, de morte, de atribución dun título ou doutro evento significativo. Para convencións básicas de busca,
+
+vexa antes <a href="#datas">Datas</a></p><a href="#datas">
+
+</a><a name="localassociado"></a>
+
+<p><b>Lugar asociado</b>: Busque polo lugar de nacemento, de morte, de atribución dun título ou doutro evento significativo. Para convencións básicas de busca, vexa antes <a href="#topónimos">Topónimos</a>.</p>
+
+<a name="ordensprofissões"></a>
+
+<p><b>Orde relixiosa ou militar e profissão</b>: <i>No momento actual, esta busca ofrece resultados limitados</i>. O desenvolvemento das ligazóns entre ordes ou profesións e persoas continúa.</p>
+
+<p>Para ordes relixiosas, busque por <i>sigla</i>:</p>
+
+<p>
+
+</p><blockquote>
+
+<li>ConRegRon: Orde dos Cóengos Regulares de Roncesvalles</li>
+
+<li>ConSec: Cóengos Seculares</li>
+
+<li>OCarm: Ordo Fratrum Beatae Virginis Mariae de Monte Carmelo / Carmelita</li>
+
+<li>OCart: Ordo Cartusiensis / Cartuxo </li>
+
+<li>OCist: Ordo Cisterciensis / Cisterciense</li>
+
+<li>OdeM: Ordo Beatae Mariae Virginis de Mercede</li>
+
+<li>OESA: Ordo Eremitarum Sancti Augustini / Ermida de Santo Agostiño</li>
+
+<li>OFM: Ordo Fratrum Minorum / Franciscano</li>
+
+<li>OP: Ordo Praedicatorum / Dominicano</li>
+
+<li>OPraem: Ordo Praemonstratensis / Premonstratensiano</li>
+
+<li>OSA: Ordo Sancti Augustini / Agostiño</li>
+
+<li>OSB: Ordo Sancti Benedicti / Beneditino</li>
+
+<li>OSH: Ordo Sancti Hieronymii / Xerónimo</li>
+
+<li>OSPE: Ordo Fratrum S. Pauli Primi Eremitae</li>
+
+<li>SJ: Societas Jesu / Xesuíta</li>
+
+<li>Teatin: Ordo Clericorum Regularium / Teatino</li>
+
+</blockquote>
+
+<p></p>
+
+<p>Estas ordes militares poden buscarse polo nome:</p>
+
+<p>
+
+</p><blockquote>
+
+<li>Alcántara: Orde de Alcántara</li>
+
+<li>Avís: Orde de Avís</li>
+
+<li>Calatrava: Orde de Calatrava</li>
+
+<li>Jerusalém: Orde do Templo</li>
+
+<li>Montesa: Orde de Montesa</li>
+
+<li>Tomar: Orde de Cristo</li>
+
+<li>S. João: Orde de San Xoán de Xerusalem, de Rodas e de Malta / Hospitalario</li>
+
+<li>Orde de Santiago</li>
+
+</blockquote>
+
+<p></p>
+
+<p>As seguintes profesións e actividades indicáronse esporadicamente:</p>
+
+<p>
+
+</p><blockquote>
+
+<li>alfaiate - xastre</li>
+
+<li>arauto</li>
+
+<li>agricultor</li>
+
+<li>almoxarife</li>
+
+<li>arquiteto</li>
+
+<li>astrónomo</li>
+
+<li>barbeiro</li>
+
+<li>bibliófilo</li>
+
+<li>bibliotecário</li>
+
+<li>boticario</li>
+
+<li>calígrafo</li>
+
+<li>camponés</li>
+
+<li>carpinteiro</li>
+
+<li>cavaleiro</li>
+
+<li>clérigo regular</li>
+
+<li>clérigo secular</li>
+
+<li>comerciante</li>
+
+<li>compositor</li>
+
+<li>conselheiro real</li>
+
+<li>contador</li>
+
+<li>diplomata</li>
+
+<li>dramaturgo</li>
+
+<li>encadernador</li>
+
+<li>escriba - escrivão</li>
+
+<li>escudeiro</li>
+
+<li>ferreiro</li>
+
+<li>historiador</li>
+
+<li>iluminador</li>
+
+<li>ilustrador</li>
+
+<li>impressor - editor </li>
+
+<li>jurista</li>
+
+<li>livreiro</li>
+
+<li>marinheiro </li>
+
+<li>médico - físico</li>
+
+<li>mercador - comerciante</li>
+
+<li>músico</li>
+
+<li>nobre</li>
+
+<li>notario - tabelião</li>
+
+<li>notario real</li>
+
+<li>ouvidor real</li>
+
+<li>ouvires</li>
+
+<li>piloto</li>
+
+<li>pintor</li>
+
+<li>poeta</li>
+
+<li>prateiro</li>
+
+<li>procurador</li>
+
+<li>rei de armas</li>
+
+<li>secretario</li>
+
+<li>secretario real</li>
+
+<li>soldadeira</li>
+
+<li>soldado </li>
+
+<li>tintureiro</li>
+
+<li>trovador - jogral</li>
+
+</blockquote>
+
+<p></p>
+
+<a name="assuntoPESSOA"></a>
+
+<p><b>Tema</b>: Véxase a listaxe de <a href="#entradasdeassunto">Entradas de tema</a> para o número limitado que está ligado a PERSOA por Tema; están indicados na listaxe con "(P)".</p>
+
+<p><b>Suxestión</b>:  Se unha busca con información no campo "Título" ou no campo "Orde relixiosa" non ofrece os resultados esperados, insira a información (título, nome da orde ou sigla, nome da profesión) no campo "Palabras clave e números".</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="referência"></a>
+
+<p><b>REFERENCIA</b> (bibliografía secundaria)<br>
+
+Bibliografía secundaria sobre os textos, manuscritos e impresos. A listaxe dos itens obtense en xeral por orde alfabética, con vínculos á referencia completa seleccionados en azul. Os campos de busca inclúen <b>Autor, Título, Data, Revista / volume colectivo, Lugar de publicación, Editorial, Coleción, Persoa asociada, Tema, Busca simple</b>.</p>
+
+<p>NOTA: Aquí pode buscar toda a bibliografía sobre un gran número de textos específicos, obras, manuscritos e tópicos, tal como se explica, máis abaixo, en <a href="#assuntoREFERÊNCIA">Tema</a>.</p>
+
+<a name="palavraschaveREFERÊNCIA"></a>
+
+<p><b>Busca simple</b>: unha busca aquí, usando o bibid de calquera item (<i>con aspas</i>), tal como se explicou en <a href="#ides">IDs (texid, cnum, manid, bibid, bioid...)</a>, ofrece datos bibliográficos completos.</p>
+
+<a name="autorREFERÊNCIA"></a>
+
+<p><b>Autor</b>: Busque por calquera forma ou parte do nome do autor (dunha monografía ou artigo). Nota: <i>Para buscar polo nome do editor literario, coordinador etc., vexa <a href="#pessoasassociadas">Persoa Asociada</a> máis abaixo</i>.</p>
+
+<a name="títuloREFERÊNCIA"></a>
+
+<p><b>Título</b>: Busque por título de artigo ou monografía (completo ou parcial, palabras máis significativas).</p>
+
+<a name="dataREFERÊNCIA"></a>
+
+<p><b>Data</b>: Busque polo ano de publicación.</p>
+
+<a name="revistavolumecoletivo"></a>
+
+<p><b>Revista/volume colectivo</b>: Busque por título de revista (en papel ou electrónico) ou volume (actas de congresos, volumes de homenaxe etc.).</p>
+
+<a name="localdepublicação"></a>
+
+<p><b>Lugar de publicación</b>: Busque polo nome da cidade en que se fixou a publicación na súa lingua nativa (vexa a listaxe antes, en <a href="#topónimos">Topónimos</a>).</p>
+
+<a name="editora"></a>
+
+<p><b>Editorial</b>: Busque pola casa editora (por exemplo, "Colibrí").</p>
+
+<a name="colecção"></a>
+
+<p><b>Coleción</b>: Busque por coleción (por exemplo, "Subsídios para a história da arte").</p>
+
+<a name="pessoasassociadas"></a>
+
+<p><b>Persoa asociada</b>: Busque calquera personalidade ademais do autor (por exemplo, editor literario, autor dun prólogo, coordinador, editor ou director dunha coleción etc.).</p>
+
+<a name="assuntoREFERÊNCIA"></a>
+
+<p><b>Tema</b>: Poderá obter unha listaxe de toda a bibliografía secundaria para os principais temas e colectáneas buscando palabras ou frases que formen parte dunha entrada de tema relevante (indicado por "(R)"). Unha busca sobre "cancioneiro geral" (da entrada de tema Colecións - Cancioneiro Geral) fornece unha listaxe de toda a bibliografía relacionada con esta colectánea. Busque "satírica até 1351" para obter bibliografía relacionada con <i>cantigas de escarnio e maldizer</i>. Unha busca por "ensino" ofrece todos os artigos relacionados con este tema, e unha pesquisa "cron*" fornece toda a bibliografía relacionada con crónicas. Vexa, máis arriba, a listaxe de <a href="#entradasdeassunto">Entradas de tema</a> <i>en portugués</i>.</p>
+
+
+<p><b>Suxestión:</b> Para ver toda a bibliografía dunha persoa concreta (e.g. como autor de estudos secundarios e tamén como editor literario de textos), insira o nome en "Busca simple".</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="msedes"></a>
+
+<p><b>MSED</b> (manuscritos e impresos)<br>
+
+Estas son as fontes primarias, manuscritos e impresos, que transmiten os textos medievais. Vexa na páxina de entrada de BITAGAP ("Ámbito e contido") a descrición das obras incluídas na base de datos. Os campos de busca son <b>Cidade, Biblioteca, Cota, Data, Lugar de produción, Copista / impresor, Editor / mecenas, Propietario anterior, Persoa asociada, Tema, Busca simple</b>.</p>
+
+<a name="manuscritoimpresso"></a>
+
+<p><b>Manuscrito / impreso</b>: <i>Primeiro, sobre os campos de busca, clique nunha destas opcións</i>. A información sobre manuscritos pode incluír o texto "orixinal" ou as súas copias, considerando tamén as copias feitas en séculos próximos a nós. Os impresos son incunables e edicións dos séculos XVI e XVII de obras medievais. Busque en REFERENCIA para obter edicións impresas recentes.</p>
+
+<a name="palavraschaveMSED"></a>
+
+<p><b>Busca simple</b>: Busque, por exemplo, por unha palabra no título dun manuscrito ou impreso, ou pola sigla dunha orde relixiosa que posuíu un manuscrito ou impreso. Pode buscar tamén, se o souber, usando o manid <i>con aspas</i>, como se explicou en <a href="#ides">IDs (texid, cnum, manid, bibid, bioid...)</a>.</p>
+
+<a name="cidadeMSED"></a>
+
+<p><b>Cidade</b>: Busque polo nome (na forma da lingua nativa) da cidade onde se sitúa a biblioteca que garda o manuscrito ou o impreso (vexa a listaxe antes, en <a href="#topónimos">Topónimos</a>).</p>
+
+<a name="bibliotecaMSED"></a>
+
+<p><b>Biblioteca</b>: Busque polo nome antigo ou polo nome actual da biblioteca que custodia o manuscrito ou o impreso.</p>
+
+<a name="cotaMSED"></a>
+
+<p><b>Cota</b>: Busque pola cota actual ou por unha cota antiga. A busca non é sensible a maiúsculas, por exemplo, Évora, Biblioteca Pública MS: "CXXX / 2-2" ou "cxxx / 2-2"; incunables da Biblioteca Nacional de Portugal: "Inc. 1484" ou "inc. 1484"; cota da coleción Gavetas, da Torre do Tombo: "Gaveta 13, Maço 3, n. 11" ou "gaveta 13 3 11." Teña en conta que, no último exemplo, BITAGAP non usa a abreviatura "n.o.". Algunhas cotas complexas son problemáticas e constitúen un punto que deberá solucionarse no futuro.</p>
+
+<a name="dataMSED"></a>
+
+<p><b>Data</b>: Tal e como se explicou antes (en <a href="#datas">Datas</a>), busque datas completas ou parciais.
+
+A procura "1325" fornece manuscritos copiados en calquera día deste ano, así como manuscritos non datados que, con base en evidencias internas ou
+
+externas, foron datados (en catálogos de bibliotecas ou inventarios, por editores ou por BITAGAP) incluíndo o ano de 1325 (e.g. 1325; 1325 a quo,
+
+1325 ad quem; 1301? - 1325?; 1290? - 1325? etc.).</p>
+
+<a name="localdeprodução"></a>
+
+<p><b>Lugar de produción</b>: Busque polo nome dunha cidade ou lugar na súa forma moderna portuguesa ou galega (vexa antes a listaxe en  <a href="#topónimos">Topónimos</a>).</p>
+
+<a name="copistaimpressor"></a>
+
+<p><b>Copista / impresor</b>: Busque un copista usando calquera forma do seu nome. Para un impresor, use o nome na súa forma
+
+orixinal ("Hermann von Kempen" en vez de "Hermão de Campos"). Para saber cal é a forma orixinal do nome dun impresor, busque primeiro en PERSOA
+
+(Vexa antes <a href="#nomesdepessoas">Nomes de persoas</a> para maís información.)</p>
+
+<a name="editorpatrono"></a>
+
+<p><b>Editor / mecenas</b>: Para un impreso, busque a persoa que o patrocinou usando a forma moderna do nome. Para un manuscrito, busque a forma moderna do nome do mecenas para o que foi copiado.</p>
+
+<a name="proprietárioanterior"></a>
+
+<p><b>Propietario anterior</b>: Busque calquera persoa ou institución que posuíu o obxecto polo nome da persoa ou polo seu título, polo nome dun mosteiro, museo, casa de poxas etc.</p>
+
+<a name="pessoaassociadaMSED"></a>
+
+<p><b>Persoa asociada</b>: Busque usando calquera forma do nome. A procura ofrece o nome dun encadernador, iluminador, anotador etc.</p>
+
+<a name="assuntoMSED"></a>
+
+<p><b>Tema</b>: Vexa a listaxe das <a href="#entradasdeassunto">Entradas de tema</a> de BITAGAP e busque opcións con "(M)”.</p>
+
+<p><b>Suxestión</b>:  Se quere localizar unha obra composta por varios textos, pero coñecida por un título específico (e.g. <i>Livro verde</i>), insira o título en "Palabras clave e números".</p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="ajudatécnica"></a>
+
+<h2>Axuda técnica</h2>
+
+<p>PhiloBiblon en xeral: <a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a>.</p>
+
+<p><a href="beta_po.html"><b>BETA</b></a><b> / Bibliografía Española de Textos Antiguos</b><br>
+
+Textos medievais en castelán.<br>
+
+<a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a></p>
+
+<p><a href="bipa_po.html"><b>BIPA</b></a><b> / Bibliografía de Poesía Áurea</b><br>
+
+Poesia do Século de Ouro.<br>
+
+<a href="mailto:Ralph.Difranco@du.edu">Ralph DiFranco.</a></p>
+
+<p><a href="bitagap_po.html"><b>BITAGAP</b></a><b> / Bibliografia de
+
+Textos Antigos Galegos e Portugueses</b><br>
+
+Textos medievais en galego, galego-portugués e portugués.<br>
+
+<a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a></p>
+
+<p><a href="biteca_po.html"><b>BITECA</b></a><b> / Bibliografia
+
+de Textos Antics Catalans, Valencians i Balears</b><br>
+
+Textos medievais en catalán.<br>
+
+<a href="mailto:gavenoza@ub.edu">Gemma Avenoza</a></p>
+
+<p></p>
+
+<a href="#topo">Volver ao Índice</a>
+
+<a name="recursos"></a>
+
+<p><b>Recursos em liña</b><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ga.html#medievalstudies">Asociacións e Blogs de Medievalistas e de Estudos Medievais</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ga.html#research">Institucións, Grupos e Centros Dediados á Investigación</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ga.html#catalogs">Bibliotecas e Bibliotecas Digitais: Catálogos e Listaxes</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ga.html#archives">Arquivos e Arquivos Digitais: Catálogos e Listaxes</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ga.html#databases">Bases de Datos Online</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ga.html#bibliographies">Referencias e Bibliografías</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_ga.html#reviews">Revistas Online</a></p>
+
+<p>Sobre URL (especialmente alteracións), por favor envíe a información e as súas suxestións a <a href="mailto:schafferm@usfca.edu">Martha E. Schaffer</a>.</p>
+
+<a href="#topo">Volver ao índice</a>
+
+<br>
+
+<br>
+
+<h1>BITAGAP HELP</h1>
+
+<a name="searchesgeneral"></a>
+
+<h2>Searches - General</h2>
+
+<p>We are working to resolve technical problems that will allow us to improve the quality
+
+and completeness of searches. Your feedback, sent to <a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a>, is
+
+useful to us.</p>
+
+<p>
+
+<a name="selectBITAGAP"></a>
+
+</p><p><b>Select BITAGAP</b>: At the top of the search page, for every search,
+
+select BITAGAP. To initiate the search, click on the “Search” button at the bottom,
+
+beneath the search fields.</p>
+
+<a name="searchtablespages"></a>
+
+<p><b>Search tables/pages and fields</b>: Search tables/pages are listed in the
+
+index to the left at the beginning of the Help page. Search using at least one field in a given page.
+
+Searches return new screens with the list of records containing the search term(s).</p>
+
+<p>From any of the search tables/pages, click on the name at the top
+
+or on one of the fields to be taken to the appropriate section of this Help page.</p>
+
+<p>In this Help page, names of search tables/pages are given in <b>CAPITAL LETTERS</b> and the fields
+
+that can be searched within them are given in <b>Bold face</b>.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="quotationmarks"></a>
+
+<p><b>Quotation marks</b>: Any search that <i>requires</i> quotation marks (e.g. to enclose an ID, as explained below) is specified on this Help page. Otherwise quotation marks indicate the precise search terms and results returned.</p>
+
+<a name="capitalsdiacritics"></a>
+
+<p><b>Capital letters, diacritics</b>: No search depends on the correct use of capital letters or diacritics: “Alcácer, Alcacer, alcácer, alcacer, alcaçer” all return “Alcácer.”  It is better <b>not</b> to use diacritics in the field <b>Simple search</b>.</p><p></p>
+
+<a name="asteriskplaceholder"></a>
+
+<p><b>Asterisk as placeholder/wildcard</b>: The asterisk is a placeholder for one or more characters anywhere in a word. In WORK a search for <b>Author</b> “jac*” returns “Jacobo de Benavente, Jacobo de las Leyes, Jacobus de Voragine,” etc. In WORK, for <b>Incipit</b>, “estr*” returns “estromento, estrumento; estranna; estremos,” etc.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="ids"></a>
+
+<p><b>IDs (texid, cnum, manid, bibid, bioid...)</b>: Unique IDs are assigned to each BITAGAP text (texid), each example of the text that survives (cnum), each manuscript or printed edition in which a text appears (manid), each secondary bibliographic item (bibid), and each person (bioid). If you know these IDs (they appear, when available, in the first row of the information table, and in blue in other rows), you may use them within quotation marks in the field <b>Simple search</b> on any search page. For example, in WORK, in <b>Simple search</b> search “texid 1141” <i>using these quotation marks</i>. Then use
+
+your browser's “Find” feature to locate more precisely the specific item among those returned. Note: In some cases the “Find” feature is case- and/or diacritic-sensitive.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="personalnames"></a>
+
+<p><b>Personal names</b>: Whether searching the author of a text, an author of secondary bibliography, an (associated) person, previous owner, translator, patron, copyist, or publisher, <i>use the modern version of the name</i> (e.g. search “Benedictus” or “benedictus,” or “Bento;” “João Baveca,” or “Johan Baveca.”).</p>
+
+<p><b>Tip:</b> To see a list of all forms of a personal name used in the database, in PERSON search any form in <b>Name</b>, then click on the item returned.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="dates"></a>
+
+<p><b>Dates</b>: In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK (e.g. Cortes) and can be used to search the same.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="placenames"></a>
+
+<p><b>Place names</b>: Place names appear on several search tables/pages: WORK - <b>Place of composition</b>;
+
+PERSON - <b>Associated place</b>; LIBRARY - <b>City</b>; REFERENCE - <b>Place of publication</b>;
+
+MSED - <b>City</b>. In WORK and PERSON, search using the Portuguese or the Galician form. In MSED, for the <b>City</b> where the library is located use the native-language form (see below), but in <b>Place of production</b> use the modern Portuguese or Galician form. In LIBRARY and REFERENCE search by the native-language name. A list of names used (to date) in BITAGAP follows.</p>
+
+<p>
+
+Antuerpen = Antwerpen<br>
+
+Berlín = Berlin<br>
+
+Cidade do Cabo = Cape Town<br>
+
+Cracovia = Kraków<br>
+
+Edimburgo = Edinburgh<br>
+
+Estrasburgo = Strasbourg<br>
+
+Filadelfia = Philadelphia<br>
+
+Florencia = Firenze<br>
+
+A Haia = Den Haag<br>
+
+Hamburgo = Hamburg<br>
+
+Londres = London<br>
+
+Milán = Milano<br>
+
+Moscova = Moscovo<br>
+
+Munique = München<br>
+
+Nápoles = Napoli<br>
+
+Nova Iorque = New York<br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="subjectheadings"></a>
+
+<p><b>Subject headings</b>: Keep in mind when searching in <b>Subject</b> that its use is not uniform in all search pages. Also note that BITAGAP uses <b>Subject</b> headings not only to categorize and/or classify individual works <b><i>but also to facilitate searching the vast secondary bibliography in REFERENCE</i></b>.</p>
+
+<p>Search using a complete heading or any word contained in any heading (e.g. a place name). For technical reasons, <b>Subject</b> searches must be individualized: search “milagres” <i><b>or</b></i> “mariologia” but not “milagres” <i><b>and</b></i> “mariologia.” Experimentation reveals best strategies.</p><p>
+
+</p><p>A list of all current BITAGAP subject headings in Portuguese (indicating in parentheses the search tables/pages in which they are used) follows. Search pages where <b>Subject</b> can be searched are:
+
+</p><p>
+
+B = BIBLIOTECA/LIBRARY<br>
+
+I = INSTITUCIÓN/INSTITUTION<br>
+
+M = MSED<br>
+
+O = OBRA/WORK<br>
+
+P = PERSOA/PERSON<br>
+
+R = REFERÊNCIA/REFERENCE<br>
+
+</p>
+
+<p>
+
+Acordos  (O)<br>
+
+Administração Civil   (I/O/P/R) <br>
+
+Administração Eclesiástica   (I/O/P/R) <br>
+
+Agricultura   (O/R) <br>
+
+Alcaida - Alcaides - Alcaidaria [Cartas de]   (O/P) <br>
+
+Alfarrobeira [Batalha de]   (O/P/R) <br>
+
+Alforria   (O) <br>
+
+Almirantado - Marinha   (O/R) <br>
+
+Almoxarife - Almoxarife - Almoxarifado [Cartas de]    (O) <br>
+
+Alquimia   (O/R) <br>
+
+Anais medievais - Apontamentos históricos   (O/R) <br>
+
+Anticlericalismo   (R) <br>
+
+Antologias - Crestomatias - Florilégios   (R) <br>
+
+Apologética   (O/R) <br>
+
+Aposentadoria   (I/O/R) <br>
+
+Aposentação [Cartas de]   (O/R) <br>
+
+Apresentação eclesiástica [Cartas de] - Benefícios    (O/P/R) <br>
+
+Armas [Brasão de / C.B.A.]   (O/R) <br>
+
+Armas [Cartas de porte de]    (O) <br>
+
+Arquitectura   (O/R) <br>
+
+Arquitectura militar   (O/R) <br>
+
+Arquivo Galícia Medieval   (R) <br>
+
+Ascética   (O/R) <br>
+
+Assuntos internos - Galiza   (-)<br>
+
+Assuntos internos - Portugal   (O) <br>
+
+Astronomia - Astrologia - Almanaques   (O/R) <br>
+
+Autobiografia   (O/R) <br>
+
+Beatificação - Canonização   (M/P/R) <br>
+
+Besteiro - Besteiros [Cartas de]   (O/P/R)  <br>
+
+Bestiários - Animais   (O/R) <br>
+
+Bíblia   (O/R) <br>
+
+Bibliografia   (P/R) <br>
+
+Bibliografia - Opera omnia - Produção científica   (P/R) <br>
+
+Bibliologia - Diplomática - Codicologia   (O/R) <br>
+
+Bibliotecas, Arquivos e Cartórios até 1601 - Inventários - Notícias avulsas - Catálogos - Índices - Sumários - Listagens  (I/M/O/P/R) <br>
+
+Bibliotecas, Arquivos e Cartórios pós 1600    (I/M/O/P/R) <br>
+
+Bibliotecas -Arquivos - Cartórios pós 1600  [Inventários]  (B/I/M/R) <br>
+
+Bibliotecas - Arquivos - Cartórios pós 1600 [Exposições - Tesouros]   (R) <br>
+
+Bibliotecas - Arquivos - Cartórios pós 1600 [Leilões - Vendas - Compras]   (B/R) <br>
+
+Bibliotecas digitais   (R) <br>
+
+Bibliotecas régias   (O/R) <br>
+
+Bulas - Indulgências   (O/R) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Cadeias - Carcereiros   (O) <br>
+
+Caminheiro - Caminheiros [Cartas de] - Troteiros   (O/P) <br>
+
+Caminhos - Estradas - Pontes   (O/R) <br>
+
+Cantigas das Festas de Santa Maria   (O/R) <br>
+
+Cantigas das Festas de Nosso Senhor Jesus Cristo   (O/R) <br>
+
+Capela - Capelas   (I/O/P/R) <br>
+
+Caplelania [Cartas de]     (O) <br>
+
+Capitania [Cartas de]    (O) <br>
+
+Cartas pessoais - Espistólografia   (O/R) <br>
+
+Carreteiro - Carreteiros [Cartas de]    (O) <br>
+
+Castelos - Fortalezas - Torres   (I/M/O/P/R) <br>
+
+Cativo/a - Cativos/as   (O/P/R) <br>
+
+Cavalaria   ((O/R) <br>
+
+Cavalaria [Novelas - Romances]   (O/R) <br>
+
+Censura literária   (O/R) <br>
+
+Cerimónias públicas - Ritos   (O/P/R) <br>
+
+Chancelarias   (P/R) <br>
+
+Ciclo Bretão - Matéria de Bretanha - Literatura Arturiana   (O/R) <br>
+
+Ciclo Carolíngio - Matéria Carolíngia - Matéria de França   (O/R) <br>
+
+Ciclo Clássico   (O/R) <br>
+
+Ciganos   (O/R) <br>
+
+Códigos sociais   (O) <br>
+
+Confissão - Penitência   (O/R) <br>
+
+Confrarias eclesiásticas - Estatutos - Compromissos   (I/O/R) <br>
+
+Contador - Contadores - Contadoria [Cartas de]   (O/P) <br>
+
+Contrabandistas - Passadores   (O/R) <br>
+
+Conventos -Igrejas - Mosteiros - Casa religiosas   (I/O/R) <br>
+
+Conversão religiosa   (O) <br>
+
+Cortes   (M/O/P/R) <br>
+
+Cortes - Capítulos - Clero   (O/R) <br>
+
+Cortes - Capítulos - Nobreza   (O) <br>
+
+Cortes - Capítulos - Especiais   (M/O/R) <br>
+
+Cortes - Capítulos - Especiais - Universidade   (O/R) <br>
+
+Cortes - Capítulos gerais   (M/O/R) <br>
+
+Cortes - Cartas convocatórias   (O/R) <br>
+
+Cortes - Juramentos - Menagens   (O/R) <br>
+
+Cortes - Leis   (O/R) <br>
+
+Cortes - Proposições - Acordos   (O/R) <br>
+
+Costumes   (OR) <br>
+
+Coudel - Coudeis - Coudelaria [Cartas de]   (O/P) <br>
+
+Coutos - Coutos Velhos   (O) <br>
+
+Crença - Crenças [Cartas de]   (O/R) <br>
+
+Crisologia   (O/R) <br>
+
+Cristãos-novos   (O) <br>
+
+Crítica textual - Ecdótica  (R) <br>
+
+Crónicas - Histórias clássicas   (O/R) <br>
+
+Crónicas - Histórias  medievais   (O/R) <br>
+
+Crónicas - Cristóvão Rodrigues Acenheiro   (O/P/R) <br>
+
+Crónicas - Duarte Galvão   (O/P/R) <br>
+
+Crónicas - Fernão Lopes   (O/P/R) <br>
+
+Crónicas - Garcia de Resende   (O/P/R) <br>
+
+Crónicas - Gaspar Correia   (O/P/R) <br>
+
+Crónicas - Gomes Eanes de Zurara   (O/P/R) <br>
+
+Crónicas - Rui de Pina   (O/P/R) <br>
+
+Culinaria   (O/R) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Demografia   (R) <br>
+
+Demissão [Cartas de]   (O) <br>
+
+Demónios - Espíritos malignos - Possessões   (O/P/R) <br>
+
+Desafio [Cartas de] - Requesta - Duelos   (O/R) <br>
+
+Determinações avulsas   (O/R) <br>
+
+Dicionários - Léxicos - Vocabulários   (O/R) <br>
+
+Diplimacio - Dipomatas   (P/R) <br>
+
+Direito [Coleções de] - Comentários   (O/R) <br>
+
+Direito canónico - Sínodos - Constituições   (O/R) <br>
+
+Doação - Doações [Cartas de]   (I/O/R) <br>
+
+Documentos suspeitos   (O) <br>
+
+Doze [Os] de Inglaterra   (O/P/R/)<br>
+
+Duarte, D. - Leal Conselheiro   (R) <br>
+
+Ecologia - Ambiente   (O/R) <br>
+
+Economia - Indústrias - Construção  (O) <br>
+
+Economia - Indústrias - Metalurgia    (O) <br>
+
+Economia - Indústrias - Pesca    (O/R) <br>
+
+Economia - Indústrias - Tecidos   (O/R) <br>
+
+Economia - Mercadores estrangeiros    (M/O/P/R)  <br>
+
+Economia - Mercadores portugueses - Frota mercante   (O/P/R) <br>
+
+Economia - Moedas - Falsificação      (O)  <br>
+
+Economia - Moedas - Valias - Amoedação    (O/R) <br>
+
+Economia - Pesos - Medidas    (O/R) <br>
+
+Economia - Preços - Valias    (O) <br>
+
+Economia - Privilégios    (O/R) <br>
+
+Economia - Salários - Emolumentos   (O/R) <br>
+
+Ediçõs - Editar   (R) <br>
+
+Educação - Ensino   (O/R) <br>
+
+Epistolografia - Cartas pessoais   (O/R) <br>
+
+Epitáfio - Epitáfios    (O/R) <br>
+
+Equitação - Gineta    (O/R) <br>
+
+Escravo/a - Escravos/as    (O/P/R) <br>
+
+Escrivaninha - Escrivaninhas [Cartas de]   (O/P) <br>
+
+Espingardeiro - Espingardeiros [Cartas de]   (O/P) <br>
+
+Estalagens - Estalajadeiro  [Cartas de] - Estalajadeiros - Albergarias - Estaus -    Pousadas   (I/O/P/R) <br>
+
+Estatutos eclesiásticos   (O/R) <br>
+
+Estudos Medievais - Centros   (R) <br>
+
+Exorcismo    (O)   <br>
+
+Expropriação - Confisco   (O/R) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Fábulas - Exempla   (O/R) <br>
+
+Fac-símiles integrais   (M/O/R) <br>
+
+Falcoaria - Cetreria   (O/R) <br>
+
+Falsificação Medieval     (O/R) <br>
+
+Farmacopéia - Receitas - Mezinhas    (O/R) <br>
+
+Feiras   (I/O/P/R) <br>
+
+Festas - Procissões   (O/R) <br>
+
+Floresta - Florestas - História florestal   (R) <br>
+
+Folha avulsa - Folhas avulsas   (M) <br>
+
+Fontes electrónicas - Recursos electrónicos (B/I/M/O/R) <br>
+
+Forais   (M/O/R)  <br>
+
+Formulários    (O/R) <br>
+
+Fragmentos - Impressos   (M) <br>
+
+Fragmentos - Manuscritos   (M/O/R) <br>
+
+Fronteiros   (P) <br>
+
+Frotas Reais - Armadas   (I/O) <br>
+
+Gafarias - Gafos - Gafas   (I/O/R) <br>
+
+Genealogia - Linhagens   (M/O/R)
+
+Glossários   (O/R) <br>
+
+Graças     (O) <br>
+
+Grêmios   (O/R) <br>
+
+Guerra   (O/R) <br>
+
+Hagiografia   (O/P/R) <br>
+
+Heráldica   (O/P/R) <br>
+
+Historiografia - Medieval   (O/R) <br>
+
+Hospitais   (B/I/O/R) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Iconografia   (R) <br>
+
+Iluminuras - Miniaturas - Ornatos - Elementos decorativos    (O/P/R) <br>
+
+Impresso - Impressos [Perdidos ou não localizados]   (M) <br>
+
+Impressores   (I/P/R) <br>
+
+Impressos   (M/R) <br>
+
+Impressos [Exemplar conhecido, perdido ou não localizado]   (M) <br>
+
+Impressos - Incunábulos   (M/R) <br>
+
+Impressos - Incunábulos - Catálogos   (R) <br>
+
+Impressos - Incunábulos - Edições     (R) <br>
+
+Impressos - Incunábulos - Estudos    (R) <br>
+
+Impressos - Século XVI   (M/R) <br>
+
+Impressos - Século XVII   (M/R) <br>
+
+Impressos - Século XVIII   (M/R) <br>
+
+Indignação régia - Indignatio regis   (O) <br>
+
+Instrução - Instruções [Cartas de]   (M/O/R) <br>
+
+Inquirições   (M/O/R) <br>
+
+Itinerários de reis, nobres, eclesiásticos   (O/R) <br>
+
+Judeus   (I/O/P/R) <br>
+
+Juiz - Juízes - Juizado [Cartas de]   (O/P) <br>
+
+Lais de Bretanha   (O/R)<br>
+
+Legitimação - Legitimações   (M/O/P/R) <br>
+
+Leis   (M/O/R) <br>
+
+Leis - D. Afonso II   (O/R) <br>
+
+Leis - D. Afonso III  (O/R) <br>
+
+Leis - D. Afonso IV  (O/R) <br>
+
+Leis - D. Afonso V   (M/O/R) <br>
+
+Leis - D. Afonso X, o Sábio - Sete Partidas   (M/O/R) <br>
+
+Leis - D. Alfonso XI   (O/R) <br>
+
+Leis - D. Dinis   (O/R) <br>
+
+Leis - D. Duarte   (O/R) <br>
+
+Leis - D. Fernando   (M/O/R) <br>
+
+Leis - D. Pedro   (O/R) <br>
+
+Leis - D. João I   (M/O/R) <br>
+
+Leis - D. João II   (O/R) <br>
+
+Leis - D. Manuel I   (O/R)     <br>
+
+Leis não identificadas   (O/R) <br>
+
+Leis de direitos de portagens    (O) <br>
+
+Lexicografia - Léxico - Vocabulário   (O/R) <br>
+
+Lexicologia   (R) <br>
+
+Lezíria - Lezírias    (O/R) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Língua - castelhano - poesia    (O) <br>
+
+Língua - castelhano - prosa   (O)  <br>
+
+Língua - catalão e português - poesia   (O) <br>
+
+Língua - galego - poesia    (O/R) <br>
+
+Língua - galego - prosa   (O/R) <br>
+
+Língua - galego - prosa - Obras perdidas   (O/R) <br>
+
+Língua - galego [?] - poesia    (O) <br>
+
+Língua - galego [?] - prosa    (O) <br>
+
+Língua - galego e castelhano - poesia   (O/R) <br>
+
+Língua - galego e castelhano - prosa   (O/R)  <br>
+
+Língua - galego e leonês - prosa   (O/R)  <br>
+
+Língua - latim [?] - prosa   (O)    <br>
+
+Língua - plurilíngua - poesia   (O/R) <br>
+
+Língua - plurilíngua - prosa   (O/R)   <br>
+
+Língua - português [?] - prosa  (O/R) <br>
+
+Língua - português e castelhano - poesia   (O/R) <br>
+
+Língua - português e castelhano - prosa   (O/R) <br>
+
+Língua - português e latim - poesia   (O/R) <br>
+
+Língua - português e latim - prosa   (O/R) <br>
+
+Língua - provençal - occitão -  poesia   (O/R) <br>
+
+Linguística Histórica   (O/R) <br>
+
+Literatura Galega - Crítica  Literária   (R) <br>
+
+Literatura Galega - Guias - Histórias - Dicionários   (R) <br>
+
+Literatura Portuguesa - Crítica Literária   (R) <br>
+
+Literatura Portuguesa - Guias - Histórias - Dicionários   (R) <br>
+
+Livrarias - Livreiros   (I/O/P) <br>
+
+Louvor - Louvores - Elógio - Elógios   (O/R) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Magia - Feitiçaria   (O/R) <br>
+
+Manuscritos - Perdidos ou não localizados     (M/O/R) <br>
+
+Mariologia   (O/R) <br>
+
+Mata - Matas - Matas coutadas   (O/P/R) <br>
+
+Matrimónios - Casamentos   (O/R) <br>
+
+Medicina - Saude   (O/R) <br>
+
+Medicina - Leis - Licenças Concedidas a Físicos, Cirurgiões ou Boticários   (O/P/R) <br>
+
+Mercê - Mercês [Cartas de]  (O) <br>
+
+Milagres - Milagre   (M/O/R) <br>
+
+Mina - Adiça - Mineiro - Adiceiro   (O/P/R) <br>
+
+Misericórdias   (O/R)   <br>
+
+Mística   (O/R) <br>
+
+Moedeiros   (M/O/R) <br>
+
+Monteiro - Guardador - Monteiros e Guardadores [Cartas de]   (O/R) <br>
+
+Moralística - Doutrinária   (O/R) <br>
+
+Mouros - Árabes   (O/P/R) <br>
+
+Muros - Fôssos - Cercas - Cavas   (O/P/R) <br>
+
+Música   (M/O/R) <br>
+
+Notariados [Cartas de]   (O) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Obras Perdidas   (O/R) <br>
+
+Ofício - Ofícios vários [Cartas de]   (O/P) <br>
+
+Onomástica - Antroponímia (R) <br>
+
+Onomástica -Toponímia   (R) <br>
+
+Orações - Oração - Falas - Fala - Discursos - Discurso   (O/R) <br>
+
+Orações - Oração - Rezas - Reza - Súplica - Súplicas   (O/R) <br>
+
+Oratória   (O) <br>
+
+Oratória religiosa - Pregadores   (O/R) <br>
+
+Ordens Honoríficas de Cavalaria   (I/R) <br>
+
+Ordens Militares   (I/O/R) <br>
+
+Ordens Militares - Regras - Estatutos - Privilégios   (M/O/R) <br>
+
+Ordens Militares - Usos - Costumes   (O) <br>
+
+Ordens Religiosas    (I/R) <br>
+
+Ordens Religiosas - Regras - Constituições - Estatutos - Privilégios    (O/R) <br>
+
+Ordens Religiosas - Usos - Costumes   (O/R) <br>
+
+Ortografia - Pontuação   (R) <br>
+
+Paleografia - Escrita   (R) <br>
+
+Paródia  (O/R) <br>
+
+Paul - Pauis   (O/P) <br>
+
+Perdão [Cartas de]   (I/O) <br>
+
+Peregrinações - Romarias   (O/R) <br>
+
+Perfilhamento - Perfilhamentos [Cartas de]   (O/R) <br>
+
+PhiloBiblon - BITAGAP  (R) <br>
+
+Pigmentos - Corantes   (M/O/R) <br>
+
+Piratas - Pirataria - Corsários   (O/P/R) <br>
+
+Poder - Poderes [Cartas de]  (O) <br>
+
+Poesia - Após 1350 - Colecções   (O/R) <br>
+
+Poesia - Após 1350 - Colecções - Cancioneiro Geral   (I/O/P/R) <br>
+
+Poesia - Após 1350 - Colecções - Cancionero de Baena   (R) <br>
+
+Poesia - Após 1350 - Épica   (O/R) <br>
+
+Poesia - Após 1350 - Lírica    (M/O/R) <br>
+
+Poesia - Após 1350 - Lírica - Escola Galego-Castelhana   (R) <br>
+
+Poesia - Após 1350 - Religiosa    (O/R) <br>
+
+Poesia - Após 1350 - Satírica   (O/R) <br>
+
+Poesia - Até 1351 - Colecções   (O/R <br>
+
+Poesia - Até 1351 - Colecções - Tradição Manuscrita   (O/R) <br>
+
+Poesia - Até 1351 - Épica   (O/R) <br>
+
+Poesia - Até 1351 - Influência Francesa   (R) <br>
+
+Poesia - Até 1351 - Lírica   (I/O/P/R) <br>
+
+Poesia - Até 1351 - Religiosa    (O/R) <br>
+
+Poesia - Até 1351 - Religiosa - Cantigas de Santa Maria   (I/O/P/R) <br>
+
+Poesia - Até 1351 - Religiosa - Cantigas de Santa Maria - Tradição
+
+                     Manuscrita   (O/R)     <br>
+
+Poesia - Até 1351 - Satírica   (I/O/P/R)  <br>
+
+Poesia - Incipit   (O) <br>
+
+Poesia - Versificação - Métrica    (O/R) <br>
+
+Portagens   (O/R) <br>
+
+Posturas   (O) <br>
+
+Privilégios - Foros - Usos e Costumes  (M/O/R) <br>
+
+Procurador - Procuradores - Procuradoria [Cartas de]   (O) <br>
+
+Prosa - Satírica   (O/R) <br>
+
+Provérbios - Ditos   (O) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Quitação [Cartas de]   (O) <br>
+
+Recebedor das Sisas [Cartas de]   (O) <br>
+
+Recursos electrónicos - Internet   (B/I/M/O/P/R) <br>
+
+Recursos electrónicos - Internet - Obra digitalizada   (M/O/R) <br>
+
+Recursos electrónicos - Sistemas - Base de Dados - Projectos - Comentários   (R) <br>
+
+Regatão - Regatona - Regateira - Regatães [Cartas de]   (O) <br>
+
+Relações com Europa - Fronteiras    (O/R) <br>
+
+Relações com Europa - Tratados    (M/O/R) <br>
+
+Relações com a África e Ilhas   (O/R) <br>
+
+Relações com a África e Ilhas - Tratados   (O/R) <br>
+
+Relações com as Américas   (O/R) <br>
+
+Relações com as Américas - Tratados   (O/R) <br>
+
+Relações com o Médio Oriente e Ásia   (O/R) <br>
+
+Relações diplomáticas - Portugal e Espanha   (M/O/R) <br>
+
+Relações literárias - Portugal e Espanha   (R)  <br>
+
+Requeredor das Sisas (Cartas de)   (O) <br>
+
+Restituição - Restituições    (O/P) <br>
+
+Retórica   (R) <br>
+
+Rotulus - Rotuli   (M/O/R) <br>
+
+Sátira   (O/R) <br>
+
+Segurança - Seguranças - Salvo-condutos [Cartas de]   (O/R) <br>
+
+Selos - Sigilografia   (R) <br>
+
+Sentenças - Julgamentos   (O/P/R) <br>
+
+Sermão - Sermões - Pregação - Pregações   (O/R) <br>
+
+Sesmeiro - Sesmeiros [Cartas de]    (O/P) <br>
+
+Sociedades comerciais - Estatutos e Compromissos de Confrarias   (O/R) <br>
+
+Superstição - Superstições   (R) <br>
+
+Suporte - Encadernação   (R) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+Tabeliado - Tabeliados [Cartas de]   (O) <br>
+
+Tabeliães - Escrivães - Notários  (O/P/R) <br>
+
+Teatro   (O/R) <br>
+
+Tença - Tenças [Cartas de]   (O) <br>
+
+Testamentos   (O/R) <br>
+
+Texto aljamiado - caracteres hebraicos   (M/O/R) <br>
+
+Texto aljamiado - escrita arábica  (-)<br>
+
+Texto apócrifo   (O/R) <br>
+
+Texto apócrifo [?]    (O) <br>
+
+Texto conhecido apenas por fragmentos    (O) <br>
+
+Texto judeu-português   (M/O/R)<br>
+
+Texto perdido ou não localizado   (O/P/R) <br>
+
+Texto poético perdido ou não  localizado   (O/P/R) <br>
+
+Texto problemático - duvidoso   (O) <br>
+
+Textos mais antigos   (O/R) <br>
+
+Texto não identificado  - Textos não identificados   (O) <br>
+
+Tinta - Tintas   (M/O/R) <br>
+
+Tipografia   (R) <br>
+
+Tordesilhas [Tratado de]   (O/R) <br>
+
+Torre do Tombo   (R) <br>
+
+Tradução - Teoria - História   (R) <br>
+
+Tradução Medieval Apócrifa após 1500  (O) <br>
+
+Transcrição - Normas   (R) <br>
+
+Trasladação - Trasladações   (O/R) <br>
+
+Universidade   (I/O/P/R) <br>
+
+Vereação - Vereadores   (O/R) <br>
+
+Vereações [Livros de]   (R) <br>
+
+Veterinária - Alveitaria    (O/R) <br>
+
+Viagens  (O/R) <br>
+
+Viagens - Fantásticas   (O/R) <br>
+
+Viagens - Roteiros   (O/R) <br>
+
+Viagens - Visionárias   (O/R) <br>
+
+Visitações   (M/O/R) <br>
+
+Visão - Visões - Aparição - Aparições - Sonho - Sonhos - Profecia - Profecias    (O/P/R) <br>
+
+</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+<a name="keywordsnumbers"></a>
+
+</p><p><b>Simple search</b>: Use this field to search with other terms. For example, in WORK, in <b>Simple search</b> type “traduzido,” for a list of works which have been translated from their original language. Note: because of the way data has been entered, and pending ongoing work, at the present time such lists may not be complete. Remember that you can search here using a known ID (<i>with quotation marks</i>) as described above in <a href="#ids">IDs (texid, cnum, manid, bibid, bioid...)</a>.  Suggestions for using this field are made in the specific search tables/pages below.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="url"></a>
+
+<p><b>Uniform Resource Locator (URL)</b>: A BITAGP search in various tables/pages returns URLs.
+
+</p><ol>
+
+<li><b>MSED</b>:  a digital facsimile (complete or partial) of a primary source (manuscript or printed edition), a catalogue record, a transcription (complete or partial) etc.</li>
+
+<li><b>REFERENCE</b>: a digital facsimile or electronic text of a secondary source. </li>
+
+<li><b>PERSON</b>: an on-line souce that provides information about a person.</li>
+
+</ol><p></p>
+
+<p>A URL returned in search results is active: just click on it. If a search returns more than one, click on any of them. In some cases, depending on the institution, the digitalization is downloaded, and in others it opens in a window. If you have a problem with a URL, cut and paste it into the window of another browser/search engine. If a URL no longer works, please send the information to <a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a>.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="transcriptionnorms"></a>
+
+<p><b>Transcription norms</b>: In <b>Title</b> in WORK (text titles), BITAGAP uses modern spelling, including for poetry incipits. Elsewhere, paleographical or semi-paleographical readings of incipits and explicits of individual manuscripts and printed editions, and of titles as given in manuscripts and printed editions (and individual texts within them) are used. Otherwise BITAGAP uses spelling as given in secondary sources.</p>
+
+<p>BITAGAP Transcription norms follow: </p>
+
+<p>
+
+</p><blockquote>
+
+<li>Generally, abbreviations and suspension marks are not resolved and superscript characters are maintained.</li><br>
+
+<li>A tilde represents suppressed characters, including variants added to the letter p such as a line bisecting the descender (for p<i>er</i>).</li><br>
+
+<li>No distinction is made for the various forms of individual letters, such as normal “s” vs. tall “s.”</li><br>
+
+<li>The Tironian note is represented as “e.”</li><br>
+
+<li>Words are separated following modern convention, but enclitic pronouns are attached to verb forms without a hyphen.</li><br>
+
+<li>Misspellings and printing errors in the original are maintained; any missing part of the text is indicated by ellipsis within square brackets [...].</li>
+
+</blockquote>
+
+<p></p>
+
+<a href="#top">Return to Index</a>
+
+<a name="paleographycodicology"></a>
+
+<p><b>Paleography and codicology</b>: Because BITAGAP, to date, makes limited use of Philobiblon's capacity in this regard, searching BITAGAP for manuscripts with certain paleographical or codicological features (in MSED, using <b>Simple search</b>) yields uneven results.</p>
+
+<p>In addition to folio size, leaf analysis, and number of columns, BITAGAP routinely describes the following: material, format, binding, and hand. Music is usually indicated, as is the presence of decoration. For printed editions, typographic font is often indicated. Click on a manid in search results to bring up available information.</p>
+
+<p>BITAGAP invites users who have personally examined a manuscript to provide complete or partial paleographical and/or codicological descriptions. These users will be credited.</p>
+
+<a href="#top">Return to Index</a>
+
+<p>
+
+<a name="howusesearchtablespages"></a>
+
+</p><h2> How to Use Search Tables/Pages and Their Fields</h2>
+
+<p></p>
+
+<a name="work"></a>
+
+<p><b>WORK</b><br>
+
+Information about medieval texts: search fields are <b>Simple search, Author, Title, Incipit, Explicit, Associated person(s),
+
+Date of composition, Place of composition, Subject</b>.</p>
+
+<a name="keywordsWORK"></a>
+
+<p><b>Simple search</b>: As described above in <a href="#ids">IDs (texid, cnum, manid, bibid, bioid...)</a>, you can search using a texid (<i>with quotation marks</i>) in this field. <i>You can also search here for a work using a key word from its title</i>.</p>
+
+<a name="author"></a>
+
+<p><b>Author</b>: As above (<a href="#personalnames">Personal names</a>) search by the name <i><b>in any form</b></i>.</p>
+
+<a name="title"></a>
+
+<p><b>Title</b>: Search prose works using the Portuguese or Galician title or, for a translated work, the original title. For a broad search, the former (e.g. “vida”) will return more works than the latter (“vita”). All searches return works according to any of their known titles.</p>
+
+<p>You need enter only one or two key words of a title, without articles, prepositions, or the conjunction “e.”
+
+</p><p>You may also use (any part of) a date to search in this field (as in <a href="#dates">Dates</a> above). For individual poetic texts, see <b>Incipit/Explicit</b> below. If the poem has a commonly-used title (e.g. <i>Cantiga da Garvaia, Poema da Batalha do Salado</i>, Gregório
+
+Afonso's <i>Arrenegos</i>, or the group of poems known as <i>Cuidar e Sospirar</i>, it can also be searched in this field, as can songbook titles (e.g. <i>Cancioneiro da Ajuda, Cantigas de Santa Maria, Cancioneiro Geral</i>).</p>
+
+<a name="incipit"></a><a name="explicit"></a>
+
+<p><b>Incipit/Explicit</b>: Use <b>Incipit</b> to search an individual poetic text.
+
+Note: both <b>Incipit</b> and <b>Explicit</b> may aid in the identification of a text.</p>
+
+<p>For every work, there is (a) a master record (with a texid) and (b) a series of records for every known surviving copy of the work (each
+
+with a unique cnum). For the former, incipits/explicits have been modernized (without regard to metrics or rhyme:
+
+e.g. coraçon/coraçom/coraçam &gt; coração; perdudo/a &gt; perdido/a, couza(s) &gt; coisa(s).
+
+In Portuguese and Galician-Portuguese “mia” and “minha” are normalized to “minha” and in
+
+later Galician texts to “miña.” For the latter, incipits/explicits are reproduced paleographically (i.e. with suppression marks, abbreviated forms, misspellings, etc.; see <a href="#transcriptionnorms">Transcription norms</a> above) as in the manuscript or printed edition or as transcribed in a secondary source.</p>
+
+<p>A search in this field should return a list of works based on both of these. When trying to identify a text, repeat the search using variants of the less common words.</p>
+
+<p>To locate a poetic text in <b>Incipit</b> (not in <b>Title</b>, except as noted above), search any words appearing in the first line. Note: For the individual texts of the <i>Cantigas de Santa Maria</i>, you can use the Mettmann edition number (“Mettmann 301”); for Galician-Portuguese secular poetry use a Tavani/Brea et al. number (“T/LP 97 15” or just “97 15”); for texts of the <i>Cancioneiro Geral</i> use the numbers of the 1990-2003 Dias edition (e.g. “D 382”). Searching just “301” in <b>Incipit</b> returns Mettmann 301, Dias 301, Ajuda 301, and so forth.</p>
+
+<a name="associatedpersons"></a>
+
+<p><b>Associated person</b>: Search using the modern Portuguese or Galician form of the name. A search may return names of
+
+translators, notaries, patrons, important personages mentioned in a text, dedicatees, etc.
+
+See above (<a href="#personalnames">Personal names</a>) for more information.</p>
+
+<a name="datecomposition"></a>
+
+<p><b>Date of composition</b>: Search as indicated above (in <a href="#dates">Dates</a>): yyyy and/or mm and/or dd. A search here might return the date of composition, confirmation, revision, translation, promulgation, etc.  This field is useful in identifying a text.</p>
+
+<a name="placecomposition"></a>
+
+<p><b>Place of composition</b>: Search by the name in its modern Portuguese or Galician form (as indicated above in <a href="#placenames">Place names</a>).</p>
+
+<a name="subjectWORK"></a>
+
+<p><b>Subject</b>: Search as described above (<a href="#subjectheadings">Subject headings</a>), keeping in mind that
+
+only subject headings followed by “(O),” in that list function here.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="library"></a>
+
+<p><b>LIBRARY</b>
+
+<br>
+
+Information about the libraries that house manuscripts and printed editions: search fields are <b>Simple search, City, Library, Shelfmark, Subject</b>.</p>
+
+<a name="keywordsLIBRARY"></a>
+
+<p><b>Simple search</b>: BITAGAP does not link texts to LIBRARY by <b>Simple search</b>.</p>
+
+<a name="city"></a>
+
+<p><b>City</b>: Search according to the name of the city in its native language (i.e. New York, Firenze, etc.). Consult the list
+
+of names above in <a href="#placenames">Place names</a>.</p>
+
+<a name="libraryname"></a>
+
+<p><b>Library</b>: Search according to any of the library's known names (e.g. in Évora, search either the Biblioteca Pública,
+
+Arquivo da Câmara Municipal or the Arquivo Distrital). Click on a library to see <i>all of its manuscripts and printed editions</i> controlled by BITAGAP.</p>
+
+<a name="shelfmark"></a>
+
+<p><b>Shelfmark</b>: Search according to the current or any previous shelfmark. This returns a list of libraries holding manuscripts or printings with that shelfmark. Then, click on a library to see <i>all of its manuscripts and printed editions</i> controlled by BITAGAP.</p>
+
+<a name="subjectLIBRARY"></a>
+
+<p><b>Subject</b>: BITAGAP does not link texts to LIBRARY by <b>Subject</b> heading.</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="person"></a>
+
+<p><b>PERSON</b><br>
+
+Information about individuals involved, broadly speaking, with the composition and diffusion of medieval texts, such as authors, translators, patrons, owners, scholars, members of the
+
+nobility or clergy, etc. Search fields include <b>Simple search, Name, Title, Date, Associated place, Religious or military order, Subject</b>.</p>
+
+<p>NOTE: The <i>Associated Persons</i> section of each record must be treated with caution,
+
+especially for those individuals with numerous relationships.
+
+The database program is designed to establish a reciprocal link between two records automatically.
+
+Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter,
+
+his record was automatically updated to show him as her father.
+
+Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records.
+
+Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.</p>
+
+<a name="keywordsPERSON"></a>
+
+<p><b>Simple search</b>: Use a bioid (“bioid 1981,” <i>with quotation marks</i>) to return not only Isabel de Aragão but all of the persons associated with her. Also, as above in <a href="#ids">IDs (texid, cnum, manid, bibid, bioid...)</a>.</p>
+
+<a name="personname"></a>
+
+<p><b>Name</b>: Search by modern forms of the name, by pseudonym, etc.</p>
+
+<a name="conferredtitle"></a>
+
+<p><b>Title</b>: This refers to a title conferred on an individual (by king, noble; Church; for a
+
+particular period, hereditary, or for life). You may also search any place to which
+
+the conferred title is attached (e.g. Bispo Ourense, Rei Castela Leão).</p>
+
+<a name="date"></a>
+
+<p><b>Date</b>: Search for date of birth, death, conferral of a title, or other milestone event. See <a href="#dates">Dates</a> above for basic search conventions.</p>
+
+<a name="associatedplace"></a>
+
+<p><b>Associated place</b>: Search for place (in modern Portuguese or Galician) of birth,
+
+death, residence, or other milestone event. (See list above in <a href="#placenames">Place names</a>.)</p>
+
+<a name="ordersprofessions"></a>
+
+<p><b>Religious or military order and profession</b>:
+
+<i>At present a search here returns limited results.</i> The development of links between orders or professions and persons is ongoing.</p>
+
+<p>For religious orders, search by <i>sigla</i>:</p>
+
+<p>
+
+</p><blockquote>
+
+<li>ConRegRon: Ordem dos Cónegos Regulares de Roncesvales</li>
+
+<li>ConSec: Cónegos Seculares</li>
+
+<li>OCarm: Ordo Fratrum Beatae Virginis Mariae de Monte Carmelo / Carmelita</li>
+
+<li>OCart: Ordo Cartusiensis / Cartujo </li>
+
+<li>OCist: Ordo Cisterciensis / Cisterciense</li>
+
+<li>OdeM: Ordo Beatae Mariae Virginis de Mercede</li>
+
+<li>OESA: Ordo Eremitarum Sancti Augustini / Ermita de Santo Agostinho</li>
+
+<li>OFM: Ordo Fratrum Minorum / Franciscano</li>
+
+<li>OP: Ordo Praedicatorum / Dominicano</li>
+
+<li>OPraem: Ordo Praemonstratensis / Premonstratensiano</li>
+
+<li>OSA: Ordo Sancti Augustini / Agostinho</li>
+
+<li>OSB: Ordo Sancti Benedicti / Beneditino</li>
+
+<li>OSH: Ordo Sancti Hieronymii / Hieronimita</li>
+
+<li>OSPE: Ordo Fratrum S. Pauli Primi Eremitae</li>
+
+<li>SJ: Societas Jesu / Jesuíta</li>
+
+<li>Teatin: Ordo Clericorum Regularium / Teatino</li>
+
+</blockquote>
+
+<p></p>
+
+<p>These military orders can be searched by name:</p>
+
+<p>
+
+</p><blockquote>
+
+<li>Alcântara: Orden de Alcántara</li>
+
+<li>Avis: Ordem de Avis</li>
+
+<li>Calatrava: Ordem de Calatrava</li>
+
+<li>Jerusalém: Ordem do Templo</li>
+
+<li>Montesa: Ordem de Montesa</li>
+
+<li>Tomar: Ordem de Cristo</li>
+
+<li>S. João: Ordem de São João de Jerusalem, de Rodas e de Malta / Hospitálario</li>
+
+<li>Ordem de Santiago</li>
+
+</blockquote>
+
+<p></p>
+
+<p>The following professions, trades, or occupations have been indicated sporadically:</p>
+
+<p>
+
+</p><blockquote>
+
+<li>alfaiate</li>
+
+<li>arauto</li>
+
+<li>agricultor</li>
+
+<li>almoxarife</li>
+
+<li>arquiteto</li>
+
+<li>astrônomo</li>
+
+<li>barbeiro</li>
+
+<li>bibliófilo</li>
+
+<li>bibliotecário</li>
+
+<li>boticário</li>
+
+<li>calígrafo</li>
+
+<li>camponés</li>
+
+<li>carpinteiro</li>
+
+<li>cavaleiro</li>
+
+<li>clérigo regular</li>
+
+<li>clérigo secular</li>
+
+<li>comerciante</li>
+
+<li>compositor</li>
+
+<li>conselheiro real</li>
+
+<li>contador</li>
+
+<li>diplomata</li>
+
+<li>dramaturgo</li>
+
+<li>encadernador</li>
+
+<li>escriba - escrivão</li>
+
+<li>escudeiro</li>
+
+<li>ferreiro</li>
+
+<li>historiador</li>
+
+<li>iluminador</li>
+
+<li>ilustrador</li>
+
+<li>impressor - editor </li>
+
+<li>jurista</li>
+
+<li>livreiro</li>
+
+<li>marinheiro </li>
+
+<li>médico - físico</li>
+
+<li>mercador - comerciante</li>
+
+<li>músico</li>
+
+<li>nobre</li>
+
+<li>notário - tabelião</li>
+
+<li>notário real</li>
+
+<li>ouvidor real</li>
+
+<li>ouvires</li>
+
+<li>piloto</li>
+
+<li>pintor</li>
+
+<li>poeta</li>
+
+<li>prateiro</li>
+
+<li>procurador</li>
+
+<li>rei de armas</li>
+
+<li>secretário</li>
+
+<li>secretário real</li>
+
+<li>soldadeira</li>
+
+<li>soldado </li>
+
+<li>tintureiro</li>
+
+<li>trovador - jogral</li>
+
+</blockquote>
+
+<p></p>
+
+<a name="subjectPERSON"></a>
+
+<p><b>Subject</b>: See the list of <a href="#subjectheadings">Subject headings</a> for the limited number that are linked to PERSON by Subject;
+
+on the list these are indicated by “(P).”</p>
+
+<p><b>Tip</b>: If a search using information in the field “Title” or “Religious or Military order” doesn't
+
+produce the anticipated results, enter the title or name of the order/profession in the field “Simple search.”</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="reference"></a>
+
+<p><b>REFERENCE</b> (Secondary bibliography)<br>
+
+Secondary bibliography related to texts, manuscripts, and printed editions. The order of items returned is generally
+
+alphabetical by title,
+
+with links to full reference highlighted in blue. Search fields include <b>Simple search, Author, Title, Date, Journal / collected volume,
+
+Place of publication, Publisher, Series, Associated person, Subject</b>.</p>
+
+<p>NOTE: Here you may search for all bibliography on a large number of specific texts,
+
+works, manuscripts, and topics, as explained below under Subject.</p>
+
+<a name="keywordsREFERENCE"></a>
+
+<p><b>Simple search</b>: A search here using the bibid of an item (<i>with quotation marks</i>,
+
+as explained in <a href="#ids">IDs (texid, cnum, manid, bibid, bioid...)</a>) returns complete bibliographic data.</p>
+
+<a name="authorREFERENCE"></a>
+
+<p><b>Author</b>: Search by any form or portion of the name of the author (of a monograph or article).
+
+Note: <i>to search by name of editor, coordinator, etc.</i> see <a href="#associatedperson"><b>Associated Person</b></a> below.</p>
+
+<a name="titleREFERENCE"></a>
+
+<p><b>Title</b>: Search by monograph or article title (whole or partial, most distinctive words).</p>
+
+<a name="dateREFERENCE"></a>
+
+<p><b>Date</b>: Search by year of publication.</p>
+
+<a name="journalcollectedvolume"></a>
+
+<p><b>Journal / collected volume</b>: Search by title of the journal (print or
+
+electronic) or volume (acts or proceedings of congresses, homage volumes, etc.).</p>
+
+<a name="placepublication"></a>
+
+<p><b>Place of publication</b>: Search by name of city where published in its native language
+
+(see list above in <a href="#placenames">Place names</a>).</p>
+
+<a name="publisher"></a>
+
+<p><b>Publisher</b>: Search by publisher (e.g. “Colibrí”).</p>
+
+<a name="series"></a>
+
+<p><b>Series or collection</b>: Search by series or collection(e.g. “Subsídios para a história da arte”).</p>
+
+<a name="associatedperson"></a>
+
+<p><b>Associated person</b>: Search any individual <i>other than the author</i> (e.g. editor of a work, author of a prologue; coordinator; editor or director of a series or collection, etc.).</p>
+
+<a name="subjectREFERENCE"></a>
+
+<p><b>Subject</b>: A list of all secondary bibliography for broad topics and collective works can be produced
+
+by searching words or phrases that form part of a relevant subject heading (i.e. one indicated
+
+by “(R)”). A search here for “cancioneiro geral” (from the subject heading
+
+Colecções - Cancioneiro Geral) returns a list of all bibliography linked to this collection.
+
+Search “satírica até 1351” for bibliography related to <i>cantigas de escárnio e maldizer</i>.
+
+A search for “ensino” returns all articles linked to that
+
+subject heading, and a search “cron*” returns all bibliography related to chronicles.
+
+See the list of <a href="#subjectheadings">Subject headings</a> above.</p>
+
+<p><b>Tip</b>: If you want to see all bibliographic items by a particular person (e.g. as author of secondary studies and editor of texts), enter the name in "Simple search".</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="msed"></a>
+
+<p><b>MSED</b> (Manuscripts and printed editions)<br>
+
+These are the primary sources, manuscripts and printed editions, in which the medieval texts are
+
+preserved. See the BITAGAP home page (“Scope and content”) for a description of the works included
+
+in the database. Search fields are <b>Simple search, City, Library, Shelfmark, Date, Place of production, Scribe / printer,
+
+Publisher / patron, Previous owner, Associated person, Subject</b>.</p>
+
+<a name="msprinteded"></a>
+
+<p><b>Manuscript / printed edition</b>: <i>First, above the search fields, click on one of these options</i>. Manuscripts might include the “original” text or copies of it, including copies made in
+
+later centuries. Printed editions are incunables and 16th- and 17th-century editions of medieval works. Search for later printed editions in REFERENCE.</p>
+
+<a name="keywordsMSED"></a>
+
+<p><b>Simple search</b>: Search, for example, for a word in the title of a manuscript or edition,
+
+the sigla of religious orders that once owned a manuscript or printed edition. Or if known, search using
+
+the manid (<i>with quotation marks</i>, as explained in <a href="#ids">IDs (texid, cnum, manid, bibid, bioid...)</a>.</p>
+
+<a name="cityMSED"></a>
+
+<p><b>City</b>: Search by name (in its native-language form) the city of the library that holds the manuscript or
+
+printed edition (see list above in <a href="#placenames">Place names</a>).</p>
+
+<a name="libraryMSED"></a>
+
+<p><b>Library</b>: Search by the current or former name of the library that holds the manuscript or printed edition.</p>
+
+<a name="shelfmarkMSED"></a>
+
+<p><b>Shelfmark</b>: Search by a current or former shelfmark. Searches are not case-sensitive, e.g., Évora, Biblioteca Pública MS: “CXXX / 2-2”
+
+or “cxxx / 2-2”; Biblioteca Nacional de Portugal incunable: “Inc. 1484”
+
+or “inc. 1484”; Torre do Tombo shelfmark in the Gavetas collection:
+
+“Gaveta 13, Maço 3, n. 11” or “gaveta 13 3 11.” Note in the latter example
+
+that BITAGAP does not use the abbreviation “n.<sup>o</sup>.” Certain complex shelfmarks
+
+are problematic, an issue to be resolved in the future.</p>
+
+<a name="dateMSED"></a>
+
+<p><b>Date</b>: As explained above (in <a href="#dates">Dates</a>), search complete or partial dates. A search “1325“ returns manuscripts copied on any day of that year as well as undated
+
+manuscripts which, based on internal or external evidence, have been dated (in library catalogues or
+
+inventories, by editors, or by BITAGAP) to include the year 1325 (e.g. 1325; 1325 a quo, 1325 ad quem;
+
+1301? - 1325?; 1290? - 1325?; etc.).</p>
+
+<a name="placeproduction"></a>
+
+<p><b>Place of production</b>: Search by the name of a city or place in its modern Portuguese or Galician
+
+form (see list above in <a href="#placenames">Place names</a>).</p>
+
+<a name="scribeprinter"></a>
+
+<p><b>Scribe / printer</b>: Search for a scribe using any form of the name. For a printer, use the name in its
+
+original form (“Hermann von Kempen” rather than “Hermão de Campos”).
+
+To learn the original form of a printer's name, search first in PERSON.(See <a href="#personalnames">Personal names</a> above for more information.)</p>
+
+<a name="publisherpatron"></a>
+
+<p><b>Publisher / patron</b>: For a printed edition, search the person who sponsored it using the modern form
+
+of the name. For a manuscript, search the modern form of the name of the patron for whom it was copied.</p>
+
+<a name="previousowner"></a>
+
+<p><b>Previous owner</b>: Search for any person or institution that has owned the object by a person's name or
+
+conferred title, by the name of a monastery, museum, auction house, etc.</p>
+
+<a name="associatedpersonMSED"></a>
+
+<p><b>Associated person</b>: Search using any form of the name. A search returns the name of a binder,
+
+illuminator, annotator, etc.</p>
+
+<a name="subjectMSED"></a>
+
+<p><b>Subject</b>: See the list of BITAGAP <a href="#subjectheadings">Subject headings</a> and look for options
+
+with “(M).”</p>
+
+<p><b>Tip</b>:  If you want to locate a work that is comprised of multiple texts but known by a single title (e.g. <i>Livro verde</i>), enter the title in "Simple search".</p>
+
+<a href="#top">Return to Index</a>
+
+<a name="technicalhelp"></a>
+
+<h2>Technical help</h2>
+
+<p>Philobiblon in general: <a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a>.</p>
+
+<p><a href="beta_en.html"><b>BETA</b></a><b> / Bibliografía
+
+Española de Textos Antiguos</b><br>
+
+Medieval texts in Spanish.<br>
+
+<a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a></p>
+
+<p><a href="bipa_en.html"><b>BIPA</b></a><b> / Bibliografía
+
+de la Poesía Áurea</b><br>
+
+Poetry of the Siglo de Oro.<br>
+
+<a href="mailto:Ralph.Difranco@du.edu">Ralph DiFranco.</a></p>
+
+<p><a href="bitagap_en.html"><b>BITAGAP</b></a><b> / Bibliografia de
+
+Textos Antigos Galegos e Portugueses</b><br>
+
+Medieval texts in Galician, Galician-Portuguese, and Portuguese.<br>
+
+<a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a></p>
+
+<p><a href="biteca_en.html"><b>BITECA</b></a><b> / Bibliografia
+
+de Textos Antics Catalans, Valencians i Balears</b><br>
+
+Medieval Texts in Catalán.<br>
+
+<a href="mailto:gavenoza@ub.edu">Gemma Avenoza</a></p>
+
+<p></p>
+
+<a href="#top">Return to Index</a>
+
+<a name="resources"></a>
+
+<p><b>On-line resources</b><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#medievalstudies">Medieval
+
+studies associations and blogs</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#research">Research institutions, centers, and groups</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#catalogs">Libraries and digital libraries: catalogs and lists</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#archives">Archives and digital archives: catalogs and lists</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#databases">On-line
+
+databases</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#bibliographies">Reference
+
+and bibliographies</a><br>
+
+<a href="http://bancroft.berkeley.edu/philobiblon/resources_en.html#reviews">Online journals</a></p>
+
+<p>Please send information regarding the URLs for these resources (especially changes to them) and suggestions
+
+for sites to be added, to <a href="mailto:schafferm@usfca.edu">Martha E. Schaffer</a>.</p>
+
+<a href="#top">Return to Index</a>
+
+<br>
+
+</div>

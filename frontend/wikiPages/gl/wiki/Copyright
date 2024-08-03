@@ -1,0 +1,75 @@
+<h1>Copyright</h1>
+
+<div class="content">
+
+<p>Os datos existentes en PhiloBiblon poden ser citados libremente con fins académicos ou instrutivos sen que se precise obter a pertinente autorización e sen ningún custo. Non deben ser usados para fins comerciais
+
+sen a autorización de <a href="mailto:cbf@berkeley.edu">Charles B. Faulhaber</a>.</p>
+
+<p>Cando use PhiloBiblon ou as súas bibliografías na súa investigación ou nas súas publicacións, por favor, sinale que usou esta base de datos.
+
+O modo máis adecuado de facelo é citar PhiloBiblon e, tamén, a ou as bibliografías consultadas, BETA, BITAGAP ou BITECA.
+
+</p>
+
+<ul>
+
+<p><i>PhiloBiblon</i>. Dir. Charles B. Faulhaber. Bancroft Library. University of California, Berkeley,
+
+1997-. Web: https://vm136.lib.berkeley.edu/BANC/philobiblon/index.html. Consultada: [Data]</p>
+
+<p><i>BETA (Bibliografía Española de Textos Antiguos)</i>. Dir. Charles B. Faulhaber. The
+
+Bancroft Library. University of California, Berkeley,
+
+1997-. Web: https://vm136.lib.berkeley.edu/BANC/philobiblon/beta_en.html. Consultada: [Data]</p>
+
+<p><i>BITAGAP (Bibliografia de Textos Antigos Galegos e Portugueses)</i>. Dir. Arthur L-F. Askins. The
+
+Bancroft Library. University of California, Berkeley,
+
+1997-. Web: https://vm136.lib.berkeley.edu/BANC/philobiblon/bitagap_en.html. Consultada: [Data]
+
+</p>
+
+<p><i>BITECA (Bibliografia de Textos Antics Catalans, Valencians i Balears)</i>. Dirs. Gemma Avenoza, Lourdes Soriano, i Vicenç Beltran. The
+
+Bancroft Library. University of California, Berkeley,
+
+1997-. Web: https://vm136.lib.berkeley.edu/BANC/philobiblon/biteca_en.html. Consultada: [Data]
+
+</p>
+
+</ul>
+
+<p>Considerando que cada bibliografía procura identificar obras específicas, manuscritos, edicións impresas e individuos, recomendamos que os estudos críticos citen o respectivo número de identificación de forma que se poidan desfacer posibles ambigüidades: por exemplo, Íñigo López de Mendoza, primeiro marqués de Santillana (BETA bioid 1031) vs. o seu neto, Íñigo López de Mendoza y Luna, terceiro marqués de Santillana e segundo duque do Infantado (BETA bioid 3034).</p>
+
+<p>O formato de cita dos datos preferido é o seguinte:</p>
+
+<p>Para unha obra: <b>Bibliografía texid 0000:</b><br>
+
+</p><blockquote>Cantar de mio Cid (BETA texid 1109)</blockquote><p></p>
+
+<p>Para unha copia específica dunha determinada obra: <b>Bibliografía cnum 0000:</b><br>
+
+</p><blockquote><i>Cantar de mió Cid</i>. Madrid: Biblioteca Nacional, VITR/7/17 (BETA cnum 1231)</blockquote>
+
+<p>Para un manuscrito: <b>Bibliografía manid 0000:</b><br>
+
+</p><blockquote>Barcelona: Biblioteca de Catalunya, 267 (olim D-67, D-123) (BITECA manid 1482)</blockquote><p></p>
+
+<p>Para unha edición impresa, existen dúas posibilidades:</p>
+
+<p>O exemplar principal dunha determinada edición debe ser citado da seguinte forma: <b>Bibliografía manid 0000:</b><br>
+
+</p><blockquote>Ludolphus de Saxonia. Vita Christi [Pt. 2]. Lisboa: Nicolau de Saxónia ~ Valentim Fernandes, 1495-09-07. Lisboa: Biblioteca Nacional, Inc. 566 [2] (olim Inc. 479) (BITAGAP manid 1006)</blockquote><p></p>
+
+<p>Calquera outro exemplar da mesma edición debe ser citado da seguinte forma: <b>Bibliografía copid 0000:</b><br>
+
+</p><blockquote>Ludolphus de Saxonia. Vita Christi [Pt. 2]. Lisboa: Nicolau de Saxónia ~ Valentim Fernandes, 1495-09-07. Viseu: Biblioteca Municipal, INC 26-II-13 (2) (BITAGAP copid 1036)</blockquote><p></p>
+
+<p>Para un determinado individuo: <b>Bibliografía bioid 0000:</b><br>
+
+</p><blockquote>Garcilaso de la Vega (BIPA bioid 1170)</blockquote><p></p>
+
+</div>
