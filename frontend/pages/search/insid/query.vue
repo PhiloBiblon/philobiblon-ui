@@ -115,7 +115,7 @@ export default {
                 }
               }
             }
-            ORDER BY ?label
+            ORDER BY STR(?label)
             `
           }
         },

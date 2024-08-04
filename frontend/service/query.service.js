@@ -248,41 +248,41 @@ export class QueryService {
         completeRange = true
       }
       filters +=
-      `
-      ?item p:P137 ?history .
-      `
+        `
+        ?item p:P137 ?history .
+        `
       if (form.date_composition.value.begin) {
         filters +=
-        `
-        OPTIONAL { ?history pq:P49 ?begin_date }
-        `
+          `
+          OPTIONAL { ?history pq:P49 ?begin_date }
+          `
         if (completeRange) {
           filters +=
-          `
-          FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
-          `
+            `
+            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
+            `
         } else {
           filters +=
-          `
-          FILTER(?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
-          `
+            `
+            FILTER(?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
+            `
         }
       }
       if (form.date_composition.value.end) {
         filters +=
-        `
-        OPTIONAL { ?history pq:P50 ?end_date }
-        `
+          `
+          OPTIONAL { ?history pq:P50 ?end_date }
+          `
         if (completeRange) {
           filters +=
-          `
-          FILTER(!BOUND(?end_date) || ?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
-          `
+            `
+            FILTER(!BOUND(?end_date) || ?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
+            `
         } else {
           filters +=
-          `
-          FILTER(?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
-          `
+            `
+            FILTER(?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
+            `
         }
       }
     }
@@ -292,6 +292,114 @@ export class QueryService {
         ?analytic_item wdt:P476 ?analytic_item_pbid .
         FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
         ?analytic_item wdt:P590 ?item .
+        `
+    }
+    return filters
+  }
+
+  addPersonFilters (form) {
+    let filters = ''
+    if (form.name && form.name.value) {
+      if (form.name.value.property === 'label') {
+        filters +=
+          `
+          FILTER(str(?label) = "${form.name.value.label}") . \n
+          `
+      } else {
+        filters +=
+          `
+          ?item wdt:P34 ?value_name .\n
+          FILTER(STR(?value_name) = "${form.name.value.label}") . \n
+          `
+      }
+    }
+    if (form.title && form.title.value) {
+      filters +=
+        `
+        ?item wdt:P171 wd:${form.title.value.item} .\n
+        `
+    }
+    if (form.date.value &&
+      (form.date.value.begin || form.date.value.end)) {
+      let completeRange = false
+      if (form.date.value.begin && form.date.value.end) {
+        completeRange = true
+      }
+      filters +=
+        `
+        ?item p:P137 ?history .
+        `
+      if (form.date.value.begin) {
+        filters +=
+          `
+          OPTIONAL { ?history pq:P49 ?begin_date }
+          `
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            `
+        } else {
+          filters +=
+            `
+            FILTER(?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            `
+        }
+      }
+      if (form.date.value.end) {
+        filters +=
+          `
+          OPTIONAL { ?history pq:P50 ?end_date }
+          `
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(!BOUND(?end_date) || ?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            `
+        } else {
+          filters +=
+            `
+            FILTER(?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            `
+        }
+      }
+    }
+    if (form.associated_place && form.associated_place.value) {
+      if (form.associated_place.value.property === 'P47') {
+        filters +=
+          `
+          ?item wdt:${form.associated_place.value.property} wd:${form.associated_place.value.item} .\n
+          `
+      } else {
+        filters +=
+          `
+          ?item p:${form.associated_place.value.property} ?associated_place_prop .\n
+          ?associated_place_prop pq:P47 wd:${form.associated_place.value.item} .\n
+          `
+      }
+    }
+    if (form.religion && form.religion.value) {
+      filters +=
+        `
+        ?item wdt:P172 wd:${form.religion.value.item} .\n
+        `
+    }
+    if (form.religious_order && form.religious_order.value) {
+      filters +=
+        `
+        ?item wdt:P746 wd:${form.religious_order.value.item} .\n
+        `
+    }
+    if (form.profession && form.profession.value) {
+      filters +=
+        `
+        ?item wdt:P165 wd:${form.profession.value.item} .\n
+        `
+    }
+    if (form.subject && form.subject.value) {
+      filters +=
+        `
+        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
         `
     }
     return filters
@@ -352,6 +460,9 @@ export class QueryService {
         break
       case 'libid':
         filters += this.addLibraryFilters(form)
+        break
+      case 'bioid':
+        filters += this.addPersonFilters(form)
         break
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
