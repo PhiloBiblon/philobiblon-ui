@@ -90,13 +90,13 @@ export class QueryService {
       if (form.institution.value.property === 'label') {
         filters +=
         `
-        FILTER(str(?label) = '${form.institution.value.label}') . \n
+        FILTER(str(?label) = "${form.institution.value.label}") . \n
         `
       } else {
         filters +=
         `
         ?item wdt:P34 ?value_institution .\n
-        FILTER(STR(?value_institution) = '${form.institution.value.label}') . \n
+        FILTER(STR(?value_institution) = "${form.institution.value.label}") . \n
         `
       }
     }
@@ -426,6 +426,45 @@ export class QueryService {
         `
         ?item wdt:P165 wd:${form.profession.value.item} .\n
         `
+    }
+    if (form.subject && form.subject.value) {
+      filters +=
+        `
+        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        `
+    }
+    return filters
+  }
+
+  addLibraryFilters (form) {
+    let filters = ''
+    if (form.city && form.city.value) {
+      filters +=
+      `
+      ?item wdt:P111 ?value_city .\n
+      FILTER(STR(?value_city) = "${form.city.value.label}") . \n
+      `
+    }
+    if (form.library && form.library.value) {
+      if (form.library.value.property === 'label') {
+        filters +=
+        `
+        FILTER(str(?label) = "${form.library.value.label}") . \n
+        `
+      } else {
+        filters +=
+        `
+        ?item wdt:P34 ?value_library .\n
+        FILTER(STR(?value_library) = "${form.library.value.label}") . \n
+        `
+      }
+    }
+    if (form.call_number && form.call_number.value) {
+      filters +=
+      `
+      ?item wdt:P10 ?value_call_number .\n
+      FILTER(STR(?value_call_number) = "${form.call_number.value.label}") . \n
+      `
     }
     if (form.subject && form.subject.value) {
       filters +=

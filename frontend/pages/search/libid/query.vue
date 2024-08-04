@@ -48,7 +48,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?item ?label
+            SELECT DISTINCT ?label
             WHERE { 
               ?item wdt:P476 ?table_pbid .
               FILTER regex(?table_pbid, '(.*) {{table}} ')
@@ -89,12 +89,12 @@ export default {
                 }
               }
             }
-            ORDER BY ?label
+            ORDER BY STR(?label)
             `
           }
         },
         call_number: {
-          active: false,
+          active: true,
           primary: true,
           label: 'search.form.libid.call_number.label',
           hint: 'search.form.libid.call_number.hint',
@@ -105,6 +105,16 @@ export default {
           autocomplete: {
             query:
             `
+            SELECT DISTINCT ?label
+            WHERE { 
+              ?manid wdt:P476 ?manid_pbid .
+              FILTER regex(?manid_pbid, '(.*) manid ')
+              ?manid wdt:P329 ?item .
+              ?item wdt:P476 ?table_pbid .
+              FILTER regex(?table_pbid, '(.*) {{table}} ')
+              ?item wdt:P10 ?label
+            }
+            ORDER BY ?label
             `
           }
         },

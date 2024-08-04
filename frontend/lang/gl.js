@@ -141,6 +141,10 @@ export default {
         library: {
           label: 'Biblioteca',
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
+        },
+        call_number: {
+          label: 'Número de chamada',
+          hint: ''
         }
       },
       insid: {
