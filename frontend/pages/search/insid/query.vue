@@ -96,20 +96,22 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?item ?label ?property {
+            SELECT DISTINCT ?label ?property {
               {
-                SELECT ?item ?label
+                SELECT ?label ?property
                 WHERE { 
                   ?item wdt:P476 ?pbid .
                   FILTER regex(?pbid, '(.*) {{table}} ') .
                   ?item wdt:P34 ?label .
+                  BIND('P34' AS ?property)
                 }
               } UNION {
-                SELECT ?item ?label
+                SELECT ?label ?property
                 WHERE { 
                   ?item wdt:P476 ?pbid .
                   FILTER regex(?pbid, '(.*) {{table}} ') .
                   {{langFilter}}
+                  BIND('label' AS ?property)
                 }
               }
             }
