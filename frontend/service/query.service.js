@@ -514,4 +514,26 @@ export class QueryService {
   entityFromPBIDQuery (pbid) {
     return this.addPrefixes(`SELECT ?item WHERE { ?item wdt:P476 '${pbid}'. }`)
   }
+
+  allItemsQuery (text, lang) {
+    const SEARCH_QUERY =
+    `
+    SELECT DISTINCT ?item ?label ?pbid
+    WHERE { 
+      ?item wdt:P476 ?pbid .
+      ${this.generateLangFilters(lang)}
+      FILTER (REGEX(?pbid, '(.*) bibid ') || REGEX(?pbid, '(.*) bioid ') || REGEX(?pbid, '(.*) geoid ') 
+        || REGEX(?pbid, '(.*) insid ') || REGEX(?pbid, '(.*) libid ') || REGEX(?pbid, '(.*) manid ')
+        || REGEX(?pbid, '(.*) subid ') || REGEX(?pbid, '(.*) texid ')).
+      OPTIONAL { ?item skos:altLabel ?alias }
+      OPTIONAL { ?item schema:description ?desc }
+      FILTER ((contains(replace(replace(replace(replace(replace(lcase(?label), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${text}')) 
+      || (contains(replace(replace(replace(replace(replace(lcase(?desc), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${text}')) 
+      || (contains(replace(replace(replace(replace(replace(lcase(?alias), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${text}')))
+    }
+    OFFSET 0
+    LIMIT 10
+    `
+    return this.addPrefixes(SEARCH_QUERY)
+  }
 }
