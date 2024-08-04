@@ -297,37 +297,6 @@ export class QueryService {
     return filters
   }
 
-  addLibraryFilters (form) {
-    let filters = ''
-    if (form.city && form.city.value) {
-      filters +=
-        `
-        VALUES ?item { wdt:P111 wd:${form.city.value.item} } .\n
-        `
-    }
-    if (form.library && form.library.value) {
-      if (form.library.value.property === 'label') {
-        filters +=
-          `
-          FILTER(str(?label) = '${form.library.value.label}') . \n
-          `
-      } else {
-        filters +=
-          `
-          ?item wdt:P34 ?value_library .\n
-          FILTER(STR(?value_library) = '${form.library.value.label}') . \n
-          `
-      }
-    }
-    if (form.subject && form.subject.value) {
-      filters +=
-        `
-        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
-        `
-    }
-    return filters
-  }
-
   addPersonFilters (form) {
     let filters = ''
     if (form.name && form.name.value) {
