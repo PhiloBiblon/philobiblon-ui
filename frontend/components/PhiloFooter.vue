@@ -10,8 +10,8 @@
       <v-col cols="12" sm="3">
         <v-list dense>
           <v-list-item-group>
-            <v-list-item v-for="(item, index) in links_col_1" :key="index" link>
-              <v-list-item-title class="text-subtitle-2" @click="goTo(item.link)">
+            <v-list-item v-for="(item, index) in links_col_1" :key="index" @click="goTo(item.link, item.href)" link>
+              <v-list-item-title class="text-subtitle-2">
                 {{ item.label }}
               </v-list-item-title>
             </v-list-item>
@@ -21,8 +21,8 @@
       <v-col cols="12" sm="3">
         <v-list dense>
           <v-list-item-group>
-            <v-list-item v-for="(item, index) in links_col_2" :key="index" link>
-              <v-list-item-title class="text-subtitle-2" @click="goTo(item.link)">
+            <v-list-item v-for="(item, index) in links_col_2" :key="index" @click="goTo(item.link, item.href)" link>
+              <v-list-item-title class="text-subtitle-2">
                 {{ item.label }}
               </v-list-item-title>
             </v-list-item>
@@ -49,7 +49,7 @@
           </v-row>
           <v-row dense>
             <v-col>
-              <a class="footer_a text-body-2" target="_blank" href="https://bancroft.berkeley.edu/philobiblon/citation_en.html">
+              <a role="button" class="footer_a text-body-2" @click="goTo('wiki/Citation', true)">
                 How to cite PhiloBiblon
               </a>
             </v-col>
@@ -84,6 +84,16 @@
         <span class="version">
           v.{{ $config.version }}
         </span>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <span v-bind="attrs" v-on="on">
+              <a class="version" @click="goTo('privacy-policy')">
+                {{ $i18n.t('menu.item.privacyPolicy.label') }}
+              </a>
+            </span>
+          </template>
+          <p class="tooltip">{{ $i18n.t('menu.item.privacyPolicy.tooltip') }}</p>
+        </v-tooltip>
       </v-col>
     </v-row>
   </v-footer>
@@ -96,26 +106,30 @@ export default {
       links_col_1: [
         { label: 'ABOUT PhiloBiblon', link: '/about' },
         { label: 'HELP', link: '/help' },
-        { label: 'RESOURCES', link: '/resources' },
+        { label: 'RESOURCES', link: 'wiki/Resources', href: true },
         { label: 'COLLABORATE', link: '/collaborate' }
       ],
       links_col_2: [
-        { label: 'BETA', link: '/beta' },
-        { label: 'BIPA', link: '/bipa' },
-        { label: 'BITAGAP', link: '/bitagap' },
-        { label: 'BITECA', link: '/biteca' }
+        { label: 'BETA', link: 'wiki/Beta', href: true },
+        { label: 'BIPA', link: 'wiki/Bipa', href: true },
+        { label: 'BITAGAP', link: 'wiki/Bitagap', href: true },
+        { label: 'BITECA', link: 'wiki/Biteca', href: true }
       ]
     }
   },
   methods: {
-    goTo (path) {
-      this.$router.push(this.localePath(path))
+    goTo (path, href = false) {
+      if (!href) {
+        this.$router.push(this.localePath(path));
+      } else {
+        window.location.href = `${this.$i18n.locale !== 'en' ? this.$i18n.locale : ''}/${path}`;
+      }
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .z-index-100 {
   z-index: 100;
 }
@@ -128,5 +142,10 @@ export default {
 .version {
   float: right;
   margin-right: 20px;
+}
+.v-tooltip__content {
+  width: 500px!important;
+  left: unset!important;
+  right: 0!important;
 }
 </style>

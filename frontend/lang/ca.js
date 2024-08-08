@@ -1,17 +1,59 @@
 export default {
   common: {
-    no_data: 'No hi ha dades disponibles',
     loading: 'Carregant..',
-    language: 'Idioma',
-    calendar: 'Calendari',
-    advanced_search: 'Cerca avançada',
-    from: 'Des de',
-    to: 'a'
+    language: 'Idioma'
   },
   menu: {
     item: {
       welcome: {
         label: 'Benvingut'
+      },
+      privacyPolicy: {
+        label: 'Política de privacitat',
+        tooltip: 'Galetes estrictament necessàries: aquestes cookies són essencials perquè navegueu pel lloc web i utilitzeu les seves funcions, com ara accedir a àrees segures del lloc. Les galetes que permeten a les botigues web mantenir els vostres articles a la cistella mentre feu compres en línia són un exemple de galetes estrictament necessàries. Aquestes galetes seran generalment galetes de sessió pròpies. Tot i que no és necessari obtenir el consentiment per a aquestes cookies, s\'ha d\'explicar a l\'usuari què fan i per què són necessàries.',
+        consent: {
+          title: 'Dades recollides sobre la base del consentiment',
+          desc: 'A la vostra sol·licitud i expressió de consentiment, recollim les dades següents amb la finalitat de proporcionar-vos serveis. Les vostres dades no s\'utilitzen per a cap altra finalitat ni es comparteixen amb tercers. S\'elimina quan retireu el vostre consentiment o la vostra sol·licitud de rescissió d\'aquests serveis.',
+        },
+        comments: {
+          title: 'Comentaris',
+          subtitle: 'Nom, adreça de correu electrònic, contingut del comentari',
+          subtitleDesc: 'aquestes dades es recullen quan deixeu un comentari i es mostren al lloc web.',
+          desc: 'Si deixeu un comentari al lloc web, el vostre nom i adreça de correu electrònic també es desaran a les galetes. Aquestes són per a la teva comoditat perquè no hagis d\'omplir les teves dades de nou quan deixis un altre comentari. Aquestes galetes es desaran al vostre ordinador fins que les suprimiu.',
+        },
+        userAgent: {
+          subtitle: 'IP i cadena d\'agent d\'usuari del navegador',
+          subtitleDesc: 'aquestes dades es recullen quan deixeu un comentari.',
+        },
+        retentionPeriod: {
+          subtitle: 'Període de retenció',
+          subtitleDesc: 'les dades esmentades es conserven indefinidament perquè puguem reconèixer i aprovar qualsevol comentari de seguiment automàticament en lloc de mantenir-los en una cua de moderació.',
+        },
+        legitimateInterest: {
+          title: 'Dades recollides sobre la base d\'un interès legítim',
+          desc: 'Basant-nos en els nostres interessos legítims, recopilem les dades següents amb la finalitat d\'executar aquest lloc web. Les vostres dades no s\'utilitzen per a cap altra finalitat ni es comparteixen amb tercers. S\'elimina a petició vostra.',
+        },
+        statistics: {
+          title: 'Estadístiques',
+          desc: 'El lloc web utilitza una versió mínima de Google Analytics, un servei que transmet dades de trànsit del lloc web als servidors de Google als Estats Units i ens permet notar tendències per millorar l\'experiència de l\'usuari al nostre lloc web. Aquesta compilació mínima processa dades personals com ara: l\'identificador d\'usuari únic establert per Google Analytics, la data i l\'hora, el títol de la pàgina que es visualitza, l\'URL de la pàgina que es visualitza, l\'URL de la pàgina que es va veure abans de la pàgina actual, la resolució de la pantalla, l\'hora a la zona horària local, els fitxers en què s\'ha fet clic i s\'ha baixat, els enllaços als quals s\'ha fet clic a un domini extern, el tipus de dispositiu i el país, la regió i la ciutat. <br/> <br/>Podeu desactivar aquest seguiment en qualsevol moment activant la configuració "No rastrejar" al vostre navegador.',
+        },
+        embedContent: {
+          title: 'Contingut incrustat d\'altres llocs web',
+          desc: 'Els articles del lloc web poden incloure contingut incrustat (per exemple, vídeos, gràfics, etc.). El contingut incrustat d\'altres llocs web es comporta exactament de la mateixa manera que si el visitant hagués visitat l\'altre lloc web. <br/> <br/>\n' +
+            'Aquests llocs web poden recopilar dades sobre vostè, utilitzar galetes, incrustar un seguiment addicional de tercers i supervisar la seva interacció amb aquest contingut incrustat, inclòs el seguiment de la seva interacció amb el contingut incrustat si teniu un compte i heu iniciat sessió en aquest lloc web.',
+        },
+        rights: {
+          title: 'Els teus drets sobre les teves dades',
+          desc: 'Si heu deixat comentaris al lloc web, podeu sol·licitar rebre un fitxer exportat de les dades personals que tenim sobre vosaltres, incloses les dades que ens hàgiu proporcionat. També podeu sol·licitar que rectifiquem o esborrem qualsevol dada personal que tinguem sobre vostè. Envieu la vostra sol·licitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
+          data: '• Dret a retirar el consentiment <br/>\n' +
+            '• El dret d\'accés<br/>\n' +
+            '• Dret a supressió<br/>\n' +
+            '• Dret de rectificació<br/>\n' +
+            '• Dret a la portabilitat de les dades<br/>\n' +
+            '• Dret d\'oposició<br/>\n' +
+            '• Notificació de violacions de dades<br/>\n' +
+            '• Dret a presentar una reclamació davant una autoritat de control',
+        },
       },
       search: {
         label: 'Cercar',
@@ -109,28 +151,13 @@ export default {
           hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
         },
         associated_person: {
-          label: 'Persona relacionada',
-          hint: ''
+          label: 'Persona relacionada'
         },
         place_composition: {
-          label: 'Lloc de composició',
-          hint: ''
+          label: 'Lloc de composició'
         },
         date_composition: {
-          label: 'Data de composició',
-          hint: ''
-        },
-        type: {
-          label: 'Tipus',
-          hint: ''
-        },
-        language: {
-          label: 'Idioma',
-          hint: ''
-        },
-        poetic_form: {
-          label: 'Forma poètica',
-          hint: ''
+          label: 'Data de composició'
         }
       },
       libid: {
@@ -142,9 +169,9 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
         },
-        call_number: {
-          label: 'Número de trucada',
-          hint: ''
+        shelfmark: {
+          label: 'Signatura',
+          hint: 'Search by the current or any former shelfmark, including those of previous owners. This returns a list of libraries holding manuscripts or printings with that shelfmark. Shelfmarks are not case-sensitive.'
         }
       },
       insid: {
@@ -177,17 +204,9 @@ export default {
           label: 'Lloc relacionat',
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
-        religious_order: {
+        profession: {
           label: 'Orde religiós o militar / Professió',
           hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. For professions see the list in the related help pages. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
-        },
-        profession: {
-          label: 'Professió',
-          hint: ''
-        },
-        religion: {
-          label: 'Religió',
-          hint: ''
         }
       },
       bibid: {
@@ -278,8 +297,6 @@ export default {
     }
   },
   item: {
-    title: 'Títol',
-    description: 'Descripció',
     invalid_id: 'Identificador invàlid.',
     not_found: 'No trobat.',
     back: 'Torna'
