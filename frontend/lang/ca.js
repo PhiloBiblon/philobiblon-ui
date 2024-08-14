@@ -39,6 +39,12 @@ export default {
           },
           subid: {
             label: 'Assumpte'
+          },
+          cnum: {
+            label: 'cnum'
+          },
+          copid: {
+            label: 'copid'
           }
         }
       }

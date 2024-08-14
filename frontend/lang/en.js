@@ -39,6 +39,12 @@ export default {
           },
           subid: {
             label: 'Subject'
+          },
+          cnum: {
+            label: 'cnum'
+          },
+          copid: {
+            label: 'copid'
           }
         }
       }
