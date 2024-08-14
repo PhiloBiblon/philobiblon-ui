@@ -10,14 +10,14 @@ export default {
     return {
       breadcrumbItems: [
         {
-          text: this.$i18n.t('menu.item.privacyPolicy.label'),
+          text: this.$i18n.t('privacyPolicy.label'),
           disabled: true
         }
-      ],
+      ]
     }
   },
   mounted () {
     this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
-  },
+  }
 }
 </script>

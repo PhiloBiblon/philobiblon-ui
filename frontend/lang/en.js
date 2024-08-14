@@ -1,59 +1,17 @@
 export default {
   common: {
+    no_data: 'No data available',
     loading: 'Loading..',
-    language: 'Language'
+    language: 'Language',
+    calendar: 'Calendar',
+    advanced_search: 'Advanced search',
+    from: 'From',
+    to: 'To'
   },
   menu: {
     item: {
       welcome: {
         label: 'Welcome'
-      },
-      privacyPolicy: {
-        label: 'Privacy policy',
-        tooltip: 'Strictly necessary cookies — These cookies are essential for you to browse the website and use its features, such as accessing secure areas of the site. Cookies that allow web shops to hold your items in your cart while you are shopping online are an example of strictly necessary cookies. These cookies will generally be first-party session cookies. While it is not required to obtain consent for these cookies, what they do and why they are necessary should be explained to the user.',
-        consent: {
-          title: 'Data collected on the basis of consent',
-          desc: 'Upon your request and expression of consent, we collect the following data for the purpose of providing services to you. Your data is not used for any other purposes or shared with third parties. It is removed upon your withdrawal of consent or your request to terminate theses services.',
-        },
-        comments: {
-          title: 'Comments',
-          subtitle: 'Name, email address, content of the comment',
-          subtitleDesc: 'this data is collected when you leave a comment and displayed on the Website.',
-          desc: 'If you leave a comment on the Website, your name and email address will also be saved in cookies. These are for your convenience so that you do not have to fill in your details again when you leave another comment. These cookies will be saved on your computer until you delete them.',
-        },
-        userAgent: {
-          subtitle: 'IP and browser user agent string',
-          subtitleDesc: 'this data is collected when you leave a comment.',
-        },
-        retentionPeriod: {
-          subtitle: 'Retention period',
-          subtitleDesc: 'the aforementioned data is retained indefinitely so we can recognize and approve any follow-up comments automatically instead of holding them in a moderation queue.',
-        },
-        legitimateInterest: {
-          title: 'Data collected on the basis of legitimate interest',
-          desc: 'Based on our legitimate interests, we collect the following data for the purpose of running this website. Your data is not used for any other purposes or shared with third parties. It is removed upon your request.',
-        },
-        statistics: {
-          title: 'Statistics',
-          desc: 'The website uses a minimal build of Google Analytics, a service which transmits website traffic data to Google servers in the United States and allows us to notice trends to improve the user experience on our website. This minimal build processes personal data such as: the unique User ID set by Google Analytics, the date and time, the title of the page being viewed, the URL of the page being viewed, the URL of the page that was viewed prior to the current page, the screen resolution, the time in local timezone, the files that were clicked on and downloaded, the links clicked on to an outside domain, the type of device, and the country, region, and city. <br/> <br/>You may opt out of this tracking at any time by activating the “Do Not Track” setting in your browser.',
-        },
-        embedContent: {
-          title: 'Embedded content from other websites',
-          desc: 'Articles on the Website may include embedded content (e.g. videos, charts, etc.). Embedded content from other websites behaves in the exact same way as if the visitor had visited the other website. <br/> <br/>\n' +
-            'These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracing your interaction with the embedded content if you have an account and are logged in to that website.',
-        },
-        rights: {
-          title: 'Your rights pertaining your data',
-          desc: 'If you have left comments on the Website, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we rectify or erase any personal data we hold about you. Please send your request to <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
-          data: '• The right to withdraw consent <br/>\n' +
-            '• The right of access<br/>\n' +
-            '• The right to erasure<br/>\n' +
-            '• The right to rectification<br/>\n' +
-            '• The right to data portability<br/>\n' +
-            '• The right to object<br/>\n' +
-            '• Notification of data breaches<br/>\n' +
-            '• The right to lodge a complaint with a supervisory authority',
-        },
       },
       search: {
         label: 'Search',
@@ -151,13 +109,28 @@ export default {
           hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
         },
         associated_person: {
-          label: 'Associated person'
+          label: 'Associated person',
+          hint: ''
         },
         place_composition: {
-          label: 'Place of composition'
+          label: 'Place of composition',
+          hint: ''
         },
         date_composition: {
-          label: 'Date of composition'
+          label: 'Date of composition',
+          hint: ''
+        },
+        type: {
+          label: 'Type',
+          hint: ''
+        },
+        language: {
+          label: 'Language',
+          hint: ''
+        },
+        poetic_form: {
+          label: 'Poetic form',
+          hint: ''
         }
       },
       libid: {
@@ -169,9 +142,9 @@ export default {
           label: 'Library',
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
         },
-        shelfmark: {
-          label: 'Shelfmark',
-          hint: 'Search by the current or any former shelfmark, including those of previous owners. This returns a list of libraries holding manuscripts or printings with that shelfmark. Shelfmarks are not case-sensitive.'
+        call_number: {
+          label: 'Call number',
+          hint: ''
         }
       },
       insid: {
@@ -204,9 +177,17 @@ export default {
           label: 'Associated place',
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
-        profession: {
+        religious_order: {
           label: 'Religious or military order and profession, trade, or occupation',
           hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. For professions see the list in the related help pages. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
+        },
+        profession: {
+          label: 'Profession',
+          hint: ''
+        },
+        religion: {
+          label: 'Religion',
+          hint: ''
         }
       },
       bibid: {
@@ -297,8 +278,57 @@ export default {
     }
   },
   item: {
+    title: 'Title',
+    description: 'Description',
     invalid_id: 'Invalid identifier.',
     not_found: 'Not found.',
     back: 'Go back'
+  },
+  privacyPolicy: {
+    label: 'Privacy policy',
+    tooltip: 'We are using strictly necessary cookies — These cookies are essential for you to browse the website and use its features, such as accessing secure areas of the site or remember the selected language.',
+    consent: {
+      title: 'Data collected on the basis of consent',
+      desc: 'Upon your request and expression of consent, we collect the following data for the purpose of providing services to you. Your data is not used for any other purposes or shared with third parties. It is removed upon your withdrawal of consent or your request to terminate theses services.'
+    },
+    comments: {
+      title: 'Comments',
+      subtitle: 'Name, email address, content of the comment',
+      subtitleDesc: 'this data is collected when you leave a comment and displayed on the Website.',
+      desc: 'If you leave a comment on the Website, your name and email address will also be saved in cookies. These are for your convenience so that you do not have to fill in your details again when you leave another comment. These cookies will be saved on your computer until you delete them.'
+    },
+    userAgent: {
+      subtitle: 'IP and browser user agent string',
+      subtitleDesc: 'this data is collected when you leave a comment.'
+    },
+    retentionPeriod: {
+      subtitle: 'Retention period',
+      subtitleDesc: 'the aforementioned data is retained indefinitely so we can recognize and approve any follow-up comments automatically instead of holding them in a moderation queue.'
+    },
+    legitimateInterest: {
+      title: 'Data collected on the basis of legitimate interest',
+      desc: 'Based on our legitimate interests, we collect the following data for the purpose of running this website. Your data is not used for any other purposes or shared with third parties. It is removed upon your request.'
+    },
+    statistics: {
+      title: 'Statistics',
+      desc: 'The website uses a minimal build of Google Analytics, a service which transmits website traffic data to Google servers in the United States and allows us to notice trends to improve the user experience on our website. This minimal build processes personal data such as: the unique User ID set by Google Analytics, the date and time, the title of the page being viewed, the URL of the page being viewed, the URL of the page that was viewed prior to the current page, the screen resolution, the time in local timezone, the files that were clicked on and downloaded, the links clicked on to an outside domain, the type of device, and the country, region, and city. <br/> <br/>You may opt out of this tracking at any time by activating the “Do Not Track” setting in your browser.'
+    },
+    embedContent: {
+      title: 'Embedded content from other websites',
+      desc: 'Articles on the Website may include embedded content (e.g. videos, charts, etc.). Embedded content from other websites behaves in the exact same way as if the visitor had visited the other website. <br/> <br/>\n' +
+        'These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracing your interaction with the embedded content if you have an account and are logged in to that website.'
+    },
+    rights: {
+      title: 'Your rights pertaining your data',
+      desc: 'If you have left comments on the Website, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we rectify or erase any personal data we hold about you. Please send your request to <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
+      data: '• The right to withdraw consent <br/>\n' +
+        '• The right of access<br/>\n' +
+        '• The right to erasure<br/>\n' +
+        '• The right to rectification<br/>\n' +
+        '• The right to data portability<br/>\n' +
+        '• The right to object<br/>\n' +
+        '• Notification of data breaches<br/>\n' +
+        '• The right to lodge a complaint with a supervisory authority'
+    }
   }
 }

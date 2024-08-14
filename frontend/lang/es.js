@@ -1,59 +1,17 @@
 export default {
   common: {
+    no_data: 'No hay datos disponibles',
     loading: 'Cargando..',
-    language: 'Idioma'
+    language: 'Idioma',
+    calendar: 'Calendario',
+    advanced_search: 'Búsqueda avanzada',
+    from: 'De',
+    to: 'a'
   },
   menu: {
     item: {
       welcome: {
         label: 'Bienvenido'
-      },
-      privacyPolicy: {
-        label: 'Política de privacidad',
-        tooltip: 'Cookies estrictamente necesarias: estas cookies son esenciales para que usted pueda navegar por el sitio web y utilizar sus funciones, como acceder a áreas seguras del sitio. Las cookies que permiten a las tiendas web guardar sus artículos en su carrito mientras compra en línea son un ejemplo de cookies estrictamente necesarias. Estas cookies generalmente serán cookies de sesión de origen. Si bien no es necesario obtener el consentimiento para estas cookies, se debe explicar al usuario qué hacen y por qué son necesarias.',
-        consent: {
-          title: 'Datos recopilados sobre la base del consentimiento',
-          desc: 'Si lo solicita y da su consentimiento, recopilamos los siguientes datos con el fin de brindarle nuestros servicios. Sus datos no se utilizan para ningún otro fin ni se comparten con terceros. Se eliminan si retira su consentimiento o solicita la finalización de estos servicios.',
-        },
-        comments: {
-          title: 'Comentarios',
-          subtitle: 'Nombre, dirección de correo electrónico, contenido del comentario',
-          subtitleDesc: 'Estos datos se recopilan cuando usted deja un comentario y se muestran en el sitio web.',
-          desc: 'Si dejas un comentario en el Sitio Web, tu nombre y dirección de correo electrónico también se guardarán en cookies. Esto es para tu comodidad, para que no tengas que volver a rellenar tus datos cuando dejes otro comentario. Estas cookies se guardarán en tu ordenador hasta que las elimines.',
-        },
-        userAgent: {
-          subtitle: 'Cadena de agente de usuario de IP y navegador',
-          subtitleDesc: 'Estos datos se recopilan cuando dejas un comentario.',
-        },
-        retentionPeriod: {
-          subtitle: 'Periodo de conservación',
-          subtitleDesc: 'Los datos antes mencionados se conservan indefinidamente para que podamos reconocer y aprobar automáticamente los comentarios posteriores en lugar de mantenerlos en una cola de moderación.',
-        },
-        legitimateInterest: {
-          title: 'Datos recopilados en base a un interés legítimo',
-          desc: 'En base a nuestros intereses legítimos, recopilamos los siguientes datos con el fin de gestionar este sitio web. Sus datos no se utilizan para ningún otro fin ni se comparten con terceros. Se eliminan si usted lo solicita.',
-        },
-        statistics: {
-          title: 'Estadísticas',
-          desc: 'El sitio web utiliza una versión mínima de Google Analytics, un servicio que transmite datos de tráfico del sitio web a los servidores de Google en los Estados Unidos y nos permite observar tendencias para mejorar la experiencia del usuario en nuestro sitio web. Esta versión mínima procesa datos personales como: el ID de usuario único establecido por Google Analytics, la fecha y la hora, el título de la página que se está visualizando, la URL de la página que se está visualizando, la URL de la página que se vio antes de la página actual, la resolución de la pantalla, la hora en la zona horaria local, los archivos en los que se hizo clic y se descargaron, los enlaces en los que se hizo clic a un dominio externo, el tipo de dispositivo y el país, la región y la ciudad. <br/> <br/>Puede optar por no participar en este seguimiento en cualquier momento activando la configuración "No rastrear" en su navegador.',
-        },
-        embedContent: {
-          title: 'Contenido incrustado de otros sitios web',
-          desc: 'Los artículos del sitio web pueden incluir contenido incrustado (por ejemplo, videos, gráficos, etc.). El contenido incrustado de otros sitios web se comporta exactamente de la misma manera que si el visitante hubiera visitado el otro sitio web. <br/> <br/>\n' +
-            'Estos sitios web pueden recopilar datos sobre usted, utilizar cookies, incorporar un seguimiento adicional de terceros y supervisar su interacción con ese contenido incrustado, incluido el seguimiento de su interacción con el contenido incrustado si tiene una cuenta y ha iniciado sesión en ese sitio web.',
-        },
-        rights: {
-          title: 'Sus derechos en relación con sus datos',
-          desc: 'Si ha dejado comentarios en el sitio web, puede solicitar recibir un archivo exportado de los datos personales que tenemos sobre usted, incluidos los datos que nos haya proporcionado. También puede solicitar que rectifiquemos o borremos los datos personales que tengamos sobre usted. Envíe su solicitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
-          data: '• El derecho a retirar el consentimiento<br/>\n' +
-            '• El derecho de acceso<br/>\n' +
-            '• El derecho de supresión<br/>\n' +
-            '• El derecho de rectificación<br/>\n' +
-            '• El derecho a la portabilidad de los datos<br/>\n' +
-            '• El derecho a oponerse<br/>\n' +
-            '• Notificación de violaciones de datos<br/>\n' +
-            '• El derecho a presentar una reclamación ante una autoridad de control',
-        },
       },
       search: {
         label: 'Buscar',
@@ -151,13 +109,28 @@ export default {
           hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
         },
         associated_person: {
-          label: 'Persona asociada'
+          label: 'Persona asociada',
+          hint: ''
         },
         place_composition: {
-          label: 'Lugar de composición'
+          label: 'Lugar de composición',
+          hint: ''
         },
         date_composition: {
-          label: 'Fecha de composición'
+          label: 'Fecha de composición',
+          hint: ''
+        },
+        type: {
+          label: 'Tipo',
+          hint: ''
+        },
+        language: {
+          label: 'Idioma',
+          hint: ''
+        },
+        poetic_form: {
+          label: 'Forma poética',
+          hint: ''
         }
       },
       libid: {
@@ -169,9 +142,9 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
         },
-        shelfmark: {
-          label: 'Signatura',
-          hint: 'Search by the current or any former shelfmark, including those of previous owners. This returns a list of libraries holding manuscripts or printings with that shelfmark. Shelfmarks are not case-sensitive.'
+        call_number: {
+          label: 'Número de llamada',
+          hint: ''
         }
       },
       insid: {
@@ -204,9 +177,17 @@ export default {
           label: 'Lugar asociado',
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
-        profession: {
+        religious_order: {
           label: 'Orden religiosa o militar / Profesión',
           hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. For professions see the list in the related help pages. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
+        },
+        profession: {
+          label: 'Profesión',
+          hint: ''
+        },
+        religion: {
+          label: 'Religión',
+          hint: ''
         }
       },
       bibid: {
@@ -297,8 +278,57 @@ export default {
     }
   },
   item: {
+    title: 'Título',
+    description: 'Descripción',
     invalid_id: 'Identificador inválido.',
     not_found: 'No encontrado.',
     back: 'Ir atrás'
+  },
+  privacyPolicy: {
+    label: 'Política de privacidad',
+    tooltip: 'Usamos cookies estrictamente necesarias: estas cookies son esenciales para que usted pueda navegar por el sitio web y utilizar sus funciones, como acceder a áreas seguras del sitio o recordar el idioma seleccionado.',
+    consent: {
+      title: 'Datos recopilados sobre la base del consentimiento',
+      desc: 'Si lo solicita y da su consentimiento, recopilamos los siguientes datos con el fin de brindarle nuestros servicios. Sus datos no se utilizan para ningún otro fin ni se comparten con terceros. Se eliminan si retira su consentimiento o solicita la finalización de estos servicios.'
+    },
+    comments: {
+      title: 'Comentarios',
+      subtitle: 'Nombre, dirección de correo electrónico, contenido del comentario',
+      subtitleDesc: 'Estos datos se recopilan cuando usted deja un comentario y se muestran en el sitio web.',
+      desc: 'Si dejas un comentario en el Sitio Web, tu nombre y dirección de correo electrónico también se guardarán en cookies. Esto es para tu comodidad, para que no tengas que volver a rellenar tus datos cuando dejes otro comentario. Estas cookies se guardarán en tu ordenador hasta que las elimines.'
+    },
+    userAgent: {
+      subtitle: 'Cadena de agente de usuario de IP y navegador',
+      subtitleDesc: 'Estos datos se recopilan cuando dejas un comentario.'
+    },
+    retentionPeriod: {
+      subtitle: 'Periodo de conservación',
+      subtitleDesc: 'Los datos antes mencionados se conservan indefinidamente para que podamos reconocer y aprobar automáticamente los comentarios posteriores en lugar de mantenerlos en una cola de moderación.'
+    },
+    legitimateInterest: {
+      title: 'Datos recopilados en base a un interés legítimo',
+      desc: 'En base a nuestros intereses legítimos, recopilamos los siguientes datos con el fin de gestionar este sitio web. Sus datos no se utilizan para ningún otro fin ni se comparten con terceros. Se eliminan si usted lo solicita.'
+    },
+    statistics: {
+      title: 'Estadísticas',
+      desc: 'El sitio web utiliza una versión mínima de Google Analytics, un servicio que transmite datos de tráfico del sitio web a los servidores de Google en los Estados Unidos y nos permite observar tendencias para mejorar la experiencia del usuario en nuestro sitio web. Esta versión mínima procesa datos personales como: el ID de usuario único establecido por Google Analytics, la fecha y la hora, el título de la página que se está visualizando, la URL de la página que se está visualizando, la URL de la página que se vio antes de la página actual, la resolución de la pantalla, la hora en la zona horaria local, los archivos en los que se hizo clic y se descargaron, los enlaces en los que se hizo clic a un dominio externo, el tipo de dispositivo y el país, la región y la ciudad. <br/> <br/>Puede optar por no participar en este seguimiento en cualquier momento activando la configuración "No rastrear" en su navegador.'
+    },
+    embedContent: {
+      title: 'Contenido incrustado de otros sitios web',
+      desc: 'Los artículos del sitio web pueden incluir contenido incrustado (por ejemplo, videos, gráficos, etc.). El contenido incrustado de otros sitios web se comporta exactamente de la misma manera que si el visitante hubiera visitado el otro sitio web. <br/> <br/>\n' +
+        'Estos sitios web pueden recopilar datos sobre usted, utilizar cookies, incorporar un seguimiento adicional de terceros y supervisar su interacción con ese contenido incrustado, incluido el seguimiento de su interacción con el contenido incrustado si tiene una cuenta y ha iniciado sesión en ese sitio web.'
+    },
+    rights: {
+      title: 'Sus derechos en relación con sus datos',
+      desc: 'Si ha dejado comentarios en el sitio web, puede solicitar recibir un archivo exportado de los datos personales que tenemos sobre usted, incluidos los datos que nos haya proporcionado. También puede solicitar que rectifiquemos o borremos los datos personales que tengamos sobre usted. Envíe su solicitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
+      data: '• El derecho a retirar el consentimiento<br/>\n' +
+        '• El derecho de acceso<br/>\n' +
+        '• El derecho de supresión<br/>\n' +
+        '• El derecho de rectificación<br/>\n' +
+        '• El derecho a la portabilidad de los datos<br/>\n' +
+        '• El derecho a oponerse<br/>\n' +
+        '• Notificación de violaciones de datos<br/>\n' +
+        '• El derecho a presentar una reclamación ante una autoridad de control'
+    }
   }
 }

@@ -1,31 +1,38 @@
 <template>
   <div class="container">
-    <h2 v-html="$i18n.t('menu.item.privacyPolicy.label')"/>
-    <h4 v-html="$i18n.t('menu.item.privacyPolicy.consent.title')"/>
-    <p v-html="$i18n.t('menu.item.privacyPolicy.consent.desc')"/>
-    <h4 v-html="$i18n.t('menu.item.privacyPolicy.comments.title')"/>
+    <h2>{{ $i18n.t('privacyPolicy.label') }}</h2>
+    <h3>{{ $i18n.t('privacyPolicy.consent.title') }}</h3>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="$i18n.t('privacyPolicy.consent.desc')" />
+    <h3>{{ $i18n.t('privacyPolicy.comments.title') }}</h3>
     <p>
-      <strong>{{ $i18n.t('menu.item.privacyPolicy.comments.subtitle') }}:</strong>
-      {{ $i18n.t('menu.item.privacyPolicy.comments.subtitleDesc') }}
+      <strong>{{ $i18n.t('privacyPolicy.comments.subtitle') }}:</strong>
+      {{ $i18n.t('privacyPolicy.comments.subtitleDesc') }}
     </p>
-    <p>{{ $i18n.t('menu.item.privacyPolicy.comments.desc') }}</p>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="$i18n.t('privacyPolicy.comments.desc')" />
     <p>
-      <strong>{{ $i18n.t('menu.item.privacyPolicy.userAgent.subtitle') }}:</strong>
-      {{ $i18n.t('menu.item.privacyPolicy.userAgent.subtitleDesc') }}
+      <strong>{{ $i18n.t('privacyPolicy.userAgent.subtitle') }}:</strong>
+      {{ $i18n.t('privacyPolicy.userAgent.subtitleDesc') }}
     </p>
     <p>
-      <strong>{{ $i18n.t('menu.item.privacyPolicy.retentionPeriod.subtitle') }}:</strong>
-      {{ $i18n.t('menu.item.privacyPolicy.retentionPeriod.subtitleDesc') }}
+      <strong>{{ $i18n.t('privacyPolicy.retentionPeriod.subtitle') }}:</strong>
+      {{ $i18n.t('privacyPolicy.retentionPeriod.subtitleDesc') }}
     </p>
-    <h4 v-html="$i18n.t('menu.item.privacyPolicy.legitimateInterest.title')"/>
-    <p v-html="$i18n.t('menu.item.privacyPolicy.legitimateInterest.desc')"/>
-    <h4 v-html="$i18n.t('menu.item.privacyPolicy.statistics.title')"/>
-    <p v-html="$i18n.t('menu.item.privacyPolicy.statistics.desc')"/>
-    <h4 v-html="$i18n.t('menu.item.privacyPolicy.embedContent.title')"/>
-    <p v-html="$i18n.t('menu.item.privacyPolicy.embedContent.desc')"/>
-    <h4 v-html="$i18n.t('menu.item.privacyPolicy.rights.title')"/>
-    <p v-html="$i18n.t('menu.item.privacyPolicy.rights.desc')"/>
-    <p v-html="$i18n.t('menu.item.privacyPolicy.rights.data')"/>
+    <h3>{{ $i18n.t('privacyPolicy.legitimateInterest.title') }}</h3>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="$i18n.t('privacyPolicy.legitimateInterest.desc')" />
+    <h3>{{ $i18n.t('privacyPolicy.statistics.title') }}</h3>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="$i18n.t('privacyPolicy.statistics.desc')" />
+    <h3>{{ $i18n.t('privacyPolicy.embedContent.title') }}</h3>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="$i18n.t('privacyPolicy.embedContent.desc')" />
+    <h3>{{ $i18n.t('privacyPolicy.rights.title') }}</h3>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="$i18n.t('privacyPolicy.rights.desc')" />
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="$i18n.t('privacyPolicy.rights.data')" />
   </div>
 </template>
 
@@ -39,6 +46,6 @@ export default {
   },
   mounted () {
     this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
-  },
+  }
 }
 </script>
