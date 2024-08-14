@@ -10,68 +10,73 @@
       :class="{welcome: isWelcome}"
       style="max-width: 450px;"
       :loading="loading"
-      @change="onItemSelected"
       :search-input.sync="search"
       prepend-inner-icon="mdi-magnify"
       placeholder="Search PhiloBiblon"
       append-inner-icon="mdi-microphone"
+      @change="onItemSelected"
     />
   </div>
 </template>
 
 <script>
 export default {
-  name: "Simple",
   data () {
     return {
       items: [],
       search: '',
-      loading: false,
-    };
-  },
-  watch: {
-    search(val) {
-      if (val) this.searchItems(val);
+      loading: false
     }
   },
   computed: {
-    isWelcome() {
+    isWelcome () {
       return this.$route.path.includes('Welcome')
     }
   },
+  watch: {
+    search (val) {
+      if (val) {
+        this.searchItems(val)
+      }
+    }
+  },
   methods: {
-    async searchItems(search) {
+    async searchItems (search) {
       if (search.length < 2) {
-        this.items = [];
-        return;
+        this.items = []
+        return
       }
 
-      this.loading = true;
+      this.loading = true
 
       try {
         this.results = []
         const sparqlQuery = this.$wikibase.$query.allItemsQuery(search, this.$i18n.locale)
 
         const items = await this.$wikibase.runSparqlQuery(sparqlQuery)
-        this.items = this.customizeSearchData(items);
+        console.log(items)
+        this.items = this.customizeSearchData(items)
       } catch (error) {
-        console.error("Error fetching items:", error);
+        // eslint-disable-next-line no-console
+        console.error('Error fetching items:', error)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
-    customizeSearchData(items) {
-      return items.map(item => {
+    customizeSearchData (items) {
+      return items.map((item) => {
         return {
-          id: item.id,
-          title: item.label,
+          id: item.pbid,
+          title: item.label
         }
       })
     },
-    onItemSelected(id) {
-      if (id) this.$router.push(this.localePath(`/item/${id}`));
-    },
-  },
+    onItemSelected (id) {
+      if (id) {
+        this.$router.push(this.localePath(`/item/${id}`))
+      }
+    }
+  }
 }
 </script>
 
