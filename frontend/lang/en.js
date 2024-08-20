@@ -198,8 +198,8 @@ export default {
       },
       bibid: {
         author: {
-          label: 'Author',
-          hint: 'Search by any form or portion of the name of the <b>author</b> (of a monograph or article).'
+          label: 'Author/Creator',
+          hint: 'Search by any form or portion of the name of the <b>author</b> (of a monograph or article) and for any individual associated with the work <b>other than the author</b> (e.g., author of prologue, coordinator, editor, or director of series or collection, etc.).'
         },
         title: {
           label: 'Title',
@@ -225,9 +225,17 @@ export default {
           label: 'Series',
           hint: 'Search by series (e.g., in BITAGAP, “Subsídios para a história da arte”).'
         },
-        associated_person: {
-          label: 'Associated person',
-          hint: 'Search for any individual associated with the work <b>other than the author</b> (e.g., author of prologue, coordinator, editor, or director of series or collection, etc.).'
+        locations: {
+          label: 'Locations',
+          hint: ''
+        },
+        international_standard_number: {
+          label: 'International standard number (ISBN, ISSN)',
+          hint: ''
+        },
+        type: {
+          label: 'Type',
+          hint: ''
         }
       },
       manid: {
