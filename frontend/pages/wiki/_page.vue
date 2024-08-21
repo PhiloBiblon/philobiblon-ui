@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <search-simple />
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div if="contentToView" v-html="contentToView" />
   </v-container>
@@ -34,7 +35,7 @@ export default {
 
   methods: {
     removeLocalePrefix (page) {
-      const regex = /^[a-z]{2}_/;
+      const regex = /^[a-z]{2}_/
       if (regex.test(page)) {
         page = page.split('_')[1]
       }
