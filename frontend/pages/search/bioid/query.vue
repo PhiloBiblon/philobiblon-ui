@@ -202,7 +202,7 @@ export default {
         },
         religious_order: {
           active: true,
-          primary: true,
+          primary: false,
           label: 'search.form.bioid.religious_order.label',
           hint: 'search.form.bioid.religious_order.hint',
           type: 'autocomplete',

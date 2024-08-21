@@ -184,12 +184,12 @@ export default {
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
         religious_order: {
-          label: 'Religious or military order and profession, trade, or occupation',
-          hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. For professions see the list in the related help pages. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
+          label: 'Religious or military',
+          hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
         },
         profession: {
-          label: 'Profession',
-          hint: ''
+          label: 'Profession, trade or occupation',
+          hint: 'For professions see the list in the related help pages.'
         },
         religion: {
           label: 'Religion',
