@@ -150,7 +150,7 @@ export default {
       insid: {
         city: {
           label: 'Ciutat',
-          hint: 'Busquis el nom de la ciutat en la llengua original (v.g. London, New York, llevat d\'aquells que van pertànyer a la Corona d\'Aragó i tradicionalment als estudis de catalanística s\'esmenten pel seu nom català (v.g. Sogorb, Morvedre o Saragossa) o transliterat, si és el cas, v.g., Sankt Peterburg.'
+          hint: 'Busquis el nom de la ciutat en la llengua original (v.g. London, New York, llevat d\'aquells que van pertànyer a la Corona d\'Aragó i tradicionalment als estudis de catalanística s\'esmenten pel seu nom català (v.g. Sogorb, Morvedre o Saragossa) o transliterat, si és el cas, v.g., Sankt Peterburg.'
         },
         institution_type: {
           label: 'Tipus d\'institució',
@@ -283,5 +283,52 @@ export default {
     invalid_id: 'Identificador invàlid.',
     not_found: 'No trobat.',
     back: 'Torna'
+  },
+  privacyPolicy: {
+    label: 'Política de privacitat',
+    tooltip: 'Utilitzem galetes estrictament necessàries: aquestes cookies són essencials perquè navegueu pel lloc web i utilitzeu les seves funcions, com ara accedir a àrees segures del lloc o recordar l\'idioma escollit.',
+    consent: {
+      title: 'Dades recollides sobre la base del consentiment',
+      desc: 'A la vostra sol·licitud i expressió de consentiment, recollim les dades següents amb la finalitat de proporcionar-vos serveis. Les vostres dades no s\'utilitzen per a cap altra finalitat ni es comparteixen amb tercers. S\'elimina quan retireu el vostre consentiment o la vostra sol·licitud de rescissió d\'aquests serveis.'
+    },
+    comments: {
+      title: 'Comentaris',
+      subtitle: 'Nom, adreça de correu electrònic, contingut del comentari',
+      subtitleDesc: 'aquestes dades es recullen quan deixeu un comentari i es mostren al lloc web.',
+      desc: 'Si deixeu un comentari al lloc web, el vostre nom i adreça de correu electrònic també es desaran a les galetes. Aquestes són per a la teva comoditat perquè no hagis d\'omplir les teves dades de nou quan deixis un altre comentari. Aquestes galetes es desaran al vostre ordinador fins que les suprimiu.'
+    },
+    userAgent: {
+      subtitle: 'IP i cadena d\'agent d\'usuari del navegador',
+      subtitleDesc: 'aquestes dades es recullen quan deixeu un comentari.'
+    },
+    retentionPeriod: {
+      subtitle: 'Període de retenció',
+      subtitleDesc: 'les dades esmentades es conserven indefinidament perquè puguem reconèixer i aprovar qualsevol comentari de seguiment automàticament en lloc de mantenir-los en una cua de moderació.'
+    },
+    legitimateInterest: {
+      title: 'Dades recollides sobre la base d\'un interès legítim',
+      desc: 'Basant-nos en els nostres interessos legítims, recopilem les dades següents amb la finalitat d\'executar aquest lloc web. Les vostres dades no s\'utilitzen per a cap altra finalitat ni es comparteixen amb tercers. S\'elimina a petició vostra.'
+    },
+    statistics: {
+      title: 'Estadístiques',
+      desc: 'El lloc web utilitza una versió mínima de Google Analytics, un servei que transmet dades de trànsit del lloc web als servidors de Google als Estats Units i ens permet notar tendències per millorar l\'experiència de l\'usuari al nostre lloc web. Aquesta compilació mínima processa dades personals com ara: l\'identificador d\'usuari únic establert per Google Analytics, la data i l\'hora, el títol de la pàgina que es visualitza, l\'URL de la pàgina que es visualitza, l\'URL de la pàgina que es va veure abans de la pàgina actual, la resolució de la pantalla, l\'hora a la zona horària local, els fitxers en què s\'ha fet clic i s\'ha baixat, els enllaços als quals s\'ha fet clic a un domini extern, el tipus de dispositiu i el país, la regió i la ciutat. <br/> <br/>Podeu desactivar aquest seguiment en qualsevol moment activant la configuració "No rastrejar" al vostre navegador.'
+    },
+    embedContent: {
+      title: 'Contingut incrustat d\'altres llocs web',
+      desc: 'Els articles del lloc web poden incloure contingut incrustat (per exemple, vídeos, gràfics, etc.). El contingut incrustat d\'altres llocs web es comporta exactament de la mateixa manera que si el visitant hagués visitat l\'altre lloc web. <br/> <br/>\n' +
+        'Aquests llocs web poden recopilar dades sobre vostè, utilitzar galetes, incrustar un seguiment addicional de tercers i supervisar la seva interacció amb aquest contingut incrustat, inclòs el seguiment de la seva interacció amb el contingut incrustat si teniu un compte i heu iniciat sessió en aquest lloc web.'
+    },
+    rights: {
+      title: 'Els teus drets sobre les teves dades',
+      desc: 'Si heu deixat comentaris al lloc web, podeu sol·licitar rebre un fitxer exportat de les dades personals que tenim sobre vosaltres, incloses les dades que ens hàgiu proporcionat. També podeu sol·licitar que rectifiquem o esborrem qualsevol dada personal que tinguem sobre vostè. Envieu la vostra sol·licitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
+      data: '• Dret a retirar el consentiment <br/>\n' +
+        '• El dret d\'accés<br/>\n' +
+        '• Dret a supressió<br/>\n' +
+        '• Dret de rectificació<br/>\n' +
+        '• Dret a la portabilitat de les dades<br/>\n' +
+        '• Dret d\'oposició<br/>\n' +
+        '• Notificació de violacions de dades<br/>\n' +
+        '• Dret a presentar una reclamació davant una autoritat de control'
+    }
   }
 }

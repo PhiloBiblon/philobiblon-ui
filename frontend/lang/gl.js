@@ -283,5 +283,52 @@ export default {
     invalid_id: 'Identificador non válido.',
     not_found: 'Non atopado.',
     back: 'Volve'
+  },
+  privacyPolicy: {
+    label: 'Política de Privacidade',
+    tooltip: 'Estamos a usar cookies estrictamente necesarias: estas cookies son esenciais para que navegues polo sitio web e utilices as súas funcións, como acceder a áreas seguras do sitio ou lembrar o idioma seleccionado.',
+    consent: {
+      title: 'Datos recollidos en base ao consentimento',
+      desc: 'Tras a súa solicitude e expresión de consentimento, recollemos os seguintes datos co fin de proporcionarlle servizos. Os teus datos non se usan para ningún outro propósito nin se comparten con terceiros. Elimínase tras a súa retirada do consentimento ou a súa solicitude para finalizar estes servizos.'
+    },
+    comments: {
+      title: 'Comentarios',
+      subtitle: 'Nome, enderezo de correo electrónico, contido do comentario',
+      subtitleDesc: 'estes datos recóllense cando deixa un comentario e aparecen no sitio web.',
+      desc: 'Se deixas un comentario no sitio web, o teu nome e enderezo de correo electrónico tamén se gardarán en cookies. Son para a túa comodidade para que non teñas que volver a encher os teus datos cando deixes outro comentario. Estas cookies gardaranse no teu ordenador ata que as elimines.'
+    },
+    userAgent: {
+      subtitle: 'IP e cadea de axente de usuario do navegador',
+      subtitleDesc: 'estes datos recóllense cando deixas un comentario.'
+    },
+    retentionPeriod: {
+      subtitle: 'Período de retención',
+      subtitleDesc: 'os datos mencionados consérvanse indefinidamente para que poidamos recoñecer e aprobar calquera comentario de seguimento automaticamente en lugar de mantelos nunha cola de moderación.'
+    },
+    legitimateInterest: {
+      title: 'Datos recollidos en base ao interese lexítimo',
+      desc: 'En función dos nosos intereses lexítimos, recompilamos os seguintes datos co propósito de executar este sitio web. Os teus datos non se usan para ningún outro propósito nin se comparten con terceiros. Elimínase cando o solicites.'
+    },
+    statistics: {
+      title: 'Estatísticas',
+      desc: 'O sitio web utiliza unha versión mínima de Google Analytics, un servizo que transmite datos de tráfico do sitio web aos servidores de Google nos Estados Unidos e que nos permite observar tendencias para mellorar a experiencia do usuario no noso sitio web. Esta compilación mínima procesa datos persoais como: o ID de usuario único definido por Google Analytics, a data e a hora, o título da páxina que se está a ver, o URL da páxina que se está a ver, o URL da páxina que se viu antes da páxina actual, a resolución da pantalla, a hora na zona horaria local, os ficheiros nos que se fixo clic e se descargaron, as ligazóns nos que se fixo clic a un dominio externo, o tipo de dispositivo e o país, rexión e cidade. <br/> <br/>Podes desactivar este seguimento en calquera momento activando a opción "Non rastrexar" no teu navegador.'
+    },
+    embedContent: {
+      title: 'Contido incorporado doutros sitios web',
+      desc: 'Os artigos do sitio web poden incluír contido incorporado (por exemplo, vídeos, gráficos, etc.). O contido incrustado doutros sitios web compórtase exactamente do mesmo xeito que se o visitante visitara o outro sitio web. <br/> <br/>\n' +
+        'Estes sitios web poden recoller datos sobre ti, usar cookies, incorporar seguimento adicional de terceiros e supervisar a túa interacción con ese contido incrustado, incluído o rastrexo da túa interacción co contido incrustado se tes unha conta e iniciaches sesión nese sitio web.'
+    },
+    rights: {
+      title: 'Os teus dereitos sobre os teus datos',
+      desc: 'Se deixou comentarios no sitio web, pode solicitar recibir un ficheiro exportado dos datos persoais que temos sobre vostede, incluídos os datos que nos proporcionou. Tamén pode solicitar que rectifiquemos ou borremos os datos persoais que teñamos sobre vostede. Envía a túa solicitude a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
+      data: '• Dereito a retirar o consentimento <br/>\n' +
+        '• O dereito de acceso<br/>\n' +
+        '• Dereito á supresión<br/>\n' +
+        '• Dereito de rectificación<br/>\n' +
+        '• Dereito á portabilidade dos datos<br/>\n' +
+        '• Dereito de oposición<br/>\n' +
+        '• Notificación de violacións de datos<br/>\n' +
+        '• Dereito a presentar unha reclamación ante unha autoridade de control'
+    }
   }
 }

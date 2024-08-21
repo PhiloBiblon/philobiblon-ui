@@ -283,5 +283,52 @@ export default {
     invalid_id: 'Identificador inválido.',
     not_found: 'No encontrado.',
     back: 'Ir atrás'
+  },
+  privacyPolicy: {
+    label: 'Política de privacidad',
+    tooltip: 'Usamos cookies estrictamente necesarias: estas cookies son esenciales para que usted pueda navegar por el sitio web y utilizar sus funciones, como acceder a áreas seguras del sitio o recordar el idioma seleccionado.',
+    consent: {
+      title: 'Datos recopilados sobre la base del consentimiento',
+      desc: 'Si lo solicita y da su consentimiento, recopilamos los siguientes datos con el fin de brindarle nuestros servicios. Sus datos no se utilizan para ningún otro fin ni se comparten con terceros. Se eliminan si retira su consentimiento o solicita la finalización de estos servicios.'
+    },
+    comments: {
+      title: 'Comentarios',
+      subtitle: 'Nombre, dirección de correo electrónico, contenido del comentario',
+      subtitleDesc: 'Estos datos se recopilan cuando usted deja un comentario y se muestran en el sitio web.',
+      desc: 'Si dejas un comentario en el Sitio Web, tu nombre y dirección de correo electrónico también se guardarán en cookies. Esto es para tu comodidad, para que no tengas que volver a rellenar tus datos cuando dejes otro comentario. Estas cookies se guardarán en tu ordenador hasta que las elimines.'
+    },
+    userAgent: {
+      subtitle: 'Cadena de agente de usuario de IP y navegador',
+      subtitleDesc: 'Estos datos se recopilan cuando dejas un comentario.'
+    },
+    retentionPeriod: {
+      subtitle: 'Periodo de conservación',
+      subtitleDesc: 'Los datos antes mencionados se conservan indefinidamente para que podamos reconocer y aprobar automáticamente los comentarios posteriores en lugar de mantenerlos en una cola de moderación.'
+    },
+    legitimateInterest: {
+      title: 'Datos recopilados en base a un interés legítimo',
+      desc: 'En base a nuestros intereses legítimos, recopilamos los siguientes datos con el fin de gestionar este sitio web. Sus datos no se utilizan para ningún otro fin ni se comparten con terceros. Se eliminan si usted lo solicita.'
+    },
+    statistics: {
+      title: 'Estadísticas',
+      desc: 'El sitio web utiliza una versión mínima de Google Analytics, un servicio que transmite datos de tráfico del sitio web a los servidores de Google en los Estados Unidos y nos permite observar tendencias para mejorar la experiencia del usuario en nuestro sitio web. Esta versión mínima procesa datos personales como: el ID de usuario único establecido por Google Analytics, la fecha y la hora, el título de la página que se está visualizando, la URL de la página que se está visualizando, la URL de la página que se vio antes de la página actual, la resolución de la pantalla, la hora en la zona horaria local, los archivos en los que se hizo clic y se descargaron, los enlaces en los que se hizo clic a un dominio externo, el tipo de dispositivo y el país, la región y la ciudad. <br/> <br/>Puede optar por no participar en este seguimiento en cualquier momento activando la configuración "No rastrear" en su navegador.'
+    },
+    embedContent: {
+      title: 'Contenido incrustado de otros sitios web',
+      desc: 'Los artículos del sitio web pueden incluir contenido incrustado (por ejemplo, videos, gráficos, etc.). El contenido incrustado de otros sitios web se comporta exactamente de la misma manera que si el visitante hubiera visitado el otro sitio web. <br/> <br/>\n' +
+        'Estos sitios web pueden recopilar datos sobre usted, utilizar cookies, incorporar un seguimiento adicional de terceros y supervisar su interacción con ese contenido incrustado, incluido el seguimiento de su interacción con el contenido incrustado si tiene una cuenta y ha iniciado sesión en ese sitio web.'
+    },
+    rights: {
+      title: 'Sus derechos en relación con sus datos',
+      desc: 'Si ha dejado comentarios en el sitio web, puede solicitar recibir un archivo exportado de los datos personales que tenemos sobre usted, incluidos los datos que nos haya proporcionado. También puede solicitar que rectifiquemos o borremos los datos personales que tengamos sobre usted. Envíe su solicitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
+      data: '• El derecho a retirar el consentimiento<br/>\n' +
+        '• El derecho de acceso<br/>\n' +
+        '• El derecho de supresión<br/>\n' +
+        '• El derecho de rectificación<br/>\n' +
+        '• El derecho a la portabilidad de los datos<br/>\n' +
+        '• El derecho a oponerse<br/>\n' +
+        '• Notificación de violaciones de datos<br/>\n' +
+        '• El derecho a presentar una reclamación ante una autoridad de control'
+    }
   }
 }
