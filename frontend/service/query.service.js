@@ -260,6 +260,7 @@ export class QueryService {
           filters +=
             `
             FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
@@ -277,6 +278,7 @@ export class QueryService {
           filters +=
             `
             FILTER(!BOUND(?end_date) || ?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date) || ?end_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
@@ -284,6 +286,12 @@ export class QueryService {
             FILTER(?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
             `
         }
+      }
+      if (completeRange) {
+        filters +=
+        `
+        FILTER(BOUND(?begin_date) || BOUND(?end_date))
+        `
       }
     }
     if (addAnalyticJoin) {
@@ -338,6 +346,7 @@ export class QueryService {
           filters +=
             `
             FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
@@ -355,6 +364,7 @@ export class QueryService {
           filters +=
             `
             FILTER(!BOUND(?end_date) || ?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date) || ?end_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
@@ -362,6 +372,12 @@ export class QueryService {
             FILTER(?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
             `
         }
+      }
+      if (completeRange) {
+        filters +=
+        `
+        FILTER(BOUND(?begin_date) || BOUND(?end_date))
+        `
       }
     }
     if (form.associated_place && form.associated_place.value) {
@@ -444,6 +460,133 @@ export class QueryService {
     return filters
   }
 
+  addReferenceFilters (form) {
+    let filters = ''
+    if (form.author && form.author.value) {
+      filters +=
+        `
+        ?item wdt:${form.author.value.property} ?value_author .\n
+        FILTER(STR(?value_author) = "${form.author.value.label}") . \n
+        `
+    }
+    if (form.title && form.title.value) {
+      filters +=
+        `
+        ?item wdt:P11 ?value_title .\n
+        FILTER(str(?value_title) = "${form.title.value.label}") . \n
+        `
+    }
+    if (form.date.value &&
+      (form.date.value.begin || form.date.value.end)) {
+      let completeRange = false
+      if (form.date.value.begin && form.date.value.end) {
+        completeRange = true
+      }
+      if (form.date.value.begin) {
+        filters +=
+          `
+          OPTIONAL { ?item pq:P49 ?begin_date }
+          `
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime )
+            `
+        } else {
+          filters +=
+            `
+            FILTER(?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            `
+        }
+      }
+      if (form.date.value.end) {
+        filters +=
+          `
+          OPTIONAL { ?item pq:P50 ?end_date }
+          `
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(!BOUND(?end_date) || ?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date) || ?end_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime )
+            `
+        } else {
+          filters +=
+            `
+            FILTER(?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            `
+        }
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(BOUND(?begin_date) || BOUND(?end_date))
+            `
+        }
+      }
+    }
+    if (form.volume && form.volume.value) {
+      filters +=
+        `
+        ?item wdt:P1137 ?value_volume .\n
+        FILTER(str(?value_volume) = "${form.volume.value.label}") . \n
+        `
+    }
+    if (form.place_publication && form.place_publication.value) {
+      filters +=
+        `
+        ?item wdt:P1141 ?value_place_publication .\n
+        FILTER(str(?value_place_publication) = "${form.place_publication.value.label}") . \n
+        `
+    }
+    if (form.publisher && form.publisher.value) {
+      filters +=
+        `
+        ?item wdt:P1140 ?value_publisher .\n
+        FILTER(str(?value_publisher) = "${form.publisher.value.label}") . \n
+        `
+    }
+    if (form.series && form.series.value) {
+      filters +=
+        `
+        ?item wdt:P1139 ?value_series .\n
+        FILTER(str(?value_series) = "${form.series.value.label}") . \n
+        `
+    }
+    if (form.locations && form.locations.value) {
+      filters +=
+        `
+        ?item wdt:P329 wd:${form.locations.value.item} .\n
+        `
+    }
+    if (form.international_standard_number && form.international_standard_number.value) {
+      filters +=
+        `
+        OPTIONAL { ?item wdt:P605 ?value_isn_p605 } .\n
+        OPTIONAL { ?item wdt:P606 ?value_isn_p606 } .\n
+        OPTIONAL { ?item wdt:P634 ?value_isn_p634 } .\n
+        OPTIONAL { ?item wdt:P743 ?value_isn_p743 } .\n
+        FILTER(str(?value_isn_p605) = "${form.international_standard_number.value.label}" 
+          || str(?value_isn_p606) = "${form.international_standard_number.value.label}" 
+          || str(?value_isn_p634) = "${form.international_standard_number.value.label}" 
+          || str(?value_isn_p743) = "${form.international_standard_number.value.label}") . \n
+        `
+    }
+    if (form.type && form.type.value) {
+      filters +=
+        `
+        ?item wdt:P2 wd:${form.type.value.item} .\n
+        `
+    }
+    if (form.subject && form.subject.value) {
+      filters +=
+        `
+        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        `
+    }
+    return filters
+  }
+
   generateQuery (table, baseQueryFunction, form) {
     let filters = ''
     const group = form.group.value === 'ALL' ? '(.*)' : form.group.value
@@ -463,6 +606,9 @@ export class QueryService {
         break
       case 'bioid':
         filters += this.addPersonFilters(form)
+        break
+      case 'bibid':
+        filters += this.addReferenceFilters(form)
         break
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
