@@ -259,7 +259,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT ?item ?label {
+            SELECT DISTINCT ?item ?label {
               ?table_item wdt:P476 ?table_item_pbid .
               FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
               ?table_item p:P121 ?statement .
@@ -317,7 +317,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?item ?label ?analytic_item {
+            SELECT DISTINCT ?label ?analytic_item {
               {
                 SELECT ?item ?label {
                   ?item wdt:P476 ?item_pbid .

@@ -587,6 +587,49 @@ export class QueryService {
     return filters
   }
 
+  addGeographyFilters (form) {
+    let filters = ''
+    if (form.type && form.type.value) {
+      filters +=
+        `
+        ?item wdt:P2 wd:${form.type.value.item} .\n
+        `
+    }
+    if (form.class && form.class.value) {
+      filters +=
+        `
+        ?item p:P2 ?class_statement .
+        ?class_statement pq:P700 wd:${form.class.value.item} .
+        `
+    }
+    if (form.subject && form.subject.value) {
+      filters +=
+        `
+        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        `
+    }
+    return filters
+  }
+
+  addSubjectFilters (form) {
+    let filters = ''
+    if (form.headings && form.headings.value) {
+      if (form.headings.value.property === 'label') {
+        filters +=
+          `
+          FILTER(str(?label) = "${form.headings.value.label}") . \n
+          `
+      } else {
+        filters +=
+          `
+          ?item wdt:P1031 ?value_heading .\n
+          FILTER(STR(?value_heading) = "${form.headings.value.label}") . \n
+          `
+      }
+    }
+    return filters
+  }
+
   generateQuery (table, baseQueryFunction, form) {
     let filters = ''
     const group = form.group.value === 'ALL' ? '(.*)' : form.group.value
@@ -609,6 +652,12 @@ export class QueryService {
         break
       case 'bibid':
         filters += this.addReferenceFilters(form)
+        break
+      case 'geoid':
+        filters += this.addGeographyFilters(form)
+        break
+      case 'subid':
+        filters += this.addSubjectFilters(form)
         break
     }
     return this.addPrefixes(baseQueryFunction({ filters }))

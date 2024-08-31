@@ -184,7 +184,7 @@ export default {
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
         religious_order: {
-          label: 'Religious or military',
+          label: 'Religious or military order',
           hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
         },
         profession: {
@@ -273,6 +273,19 @@ export default {
         associated_person: {
           label: 'Associated person',
           hint: ' Search using any form of the name. A search returns the name of a binder, illuminator, annotator, etc.'
+        }
+      },
+      geoid: {
+        type: {
+          label: 'Type'
+        },
+        class: {
+          label: 'Class'
+        }
+      },
+      subid: {
+        headings: {
+          label: 'Headings'
         }
       }
     },
