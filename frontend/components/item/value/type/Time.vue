@@ -60,7 +60,7 @@ export default {
             if (!response.success) {
               throw new Error(response.info)
             }
-            this.$notification.success('Successfully updated')
+            this.$notification.success(this.$i18n.t('messages.success.updated'))
           }
         })
     },

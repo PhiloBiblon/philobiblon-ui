@@ -39,12 +39,6 @@ export default {
           },
           subid: {
             label: 'Assumpte'
-          },
-          cnum: {
-            label: 'cnum'
-          },
-          copid: {
-            label: 'copid'
           }
         }
       }
@@ -148,15 +142,15 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
         },
-        call_number: {
-          label: 'Número de trucada',
-          hint: ''
+        shelfmark: {
+          label: 'Signatura',
+          hint: 'Search by the current or any former shelfmark, including those of previous owners. This returns a list of libraries holding manuscripts or printings with that shelfmark. Shelfmarks are not case-sensitive.'
         }
       },
       insid: {
         city: {
           label: 'Ciutat',
-          hint: 'Busquis el nom de la ciutat en la llengua original (v.g. London, New York, llevat d\'aquells que van pertànyer a la Corona d\'Aragó i tradicionalment als estudis de catalanística s\'esmenten pel seu nom català (v.g. Sogorb, Morvedre o Saragossa) o transliterat, si és el cas, v.g., Sankt Peterburg.'
+          hint: 'Busquis el nom de la ciutat en la llengua original (v.g. London, New York, llevat d\'aquells que van pertànyer a la Corona d\'Aragó i tradicionalment als estudis de catalanística s\'esmenten pel seu nom català (v.g. Sogorb, Morvedre o Saragossa) o transliterat, si és el cas, v.g., Sankt Peterburg.'
         },
         institution_type: {
           label: 'Tipus d\'institució',
@@ -183,23 +177,15 @@ export default {
           label: 'Lloc relacionat',
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
-        religious_order: {
-          label: 'Ordre religiós o militar',
-          hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
-        },
         profession: {
-          label: 'Professió, ofici o ocupació',
-          hint: 'For professions see the list in the related help pages.'
-        },
-        religion: {
-          label: 'Religió',
-          hint: ''
+          label: 'Orde religiós o militar / Professió',
+          hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. For professions see the list in the related help pages. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
         }
       },
       bibid: {
         author: {
-          label: 'Autor/Creador',
-          hint: 'Search by any form or portion of the name of the <b>author</b> (of a monograph or article) and for any individual associated with the work <b>other than the author</b> (e.g., author of prologue, coordinator, editor, or director of series or collection, etc.).'
+          label: 'Autor',
+          hint: 'Search by any form or portion of the name of the <b>author</b> (of a monograph or article).'
         },
         title: {
           label: 'Títol',
@@ -225,17 +211,9 @@ export default {
           label: 'Serie / Col·lecció',
           hint: 'Search by series (e.g., in BITAGAP, “Subsídios para a história da arte”).'
         },
-        locations: {
-          label: 'Localitzacions',
-          hint: ''
-        },
-        international_standard_number: {
-          label: 'Número estàndard internacional (ISBN, ISSN)',
-          hint: ''
-        },
-        type: {
-          label: 'Tipus',
-          hint: ''
+        associated_person: {
+          label: 'Persona relacionada',
+          hint: 'Search for any individual associated with the work <b>other than the author</b> (e.g., author of prologue, coordinator, editor, or director of series or collection, etc.).'
         }
       },
       manid: {
@@ -298,51 +276,20 @@ export default {
     not_found: 'No trobat.',
     back: 'Torna'
   },
-  privacyPolicy: {
-    label: 'Política de privacitat',
-    tooltip: 'Utilitzem galetes estrictament necessàries: aquestes cookies són essencials perquè navegueu pel lloc web i utilitzeu les seves funcions, com ara accedir a àrees segures del lloc o recordar l\'idioma escollit.',
-    consent: {
-      title: 'Dades recollides sobre la base del consentiment',
-      desc: 'A la vostra sol·licitud i expressió de consentiment, recollim les dades següents amb la finalitat de proporcionar-vos serveis. Les vostres dades no s\'utilitzen per a cap altra finalitat ni es comparteixen amb tercers. S\'elimina quan retireu el vostre consentiment o la vostra sol·licitud de rescissió d\'aquests serveis.'
+  messages: {
+    error: {
+      session: {
+        expired: "Sessió expirada",
+      },
+      inputs: {
+        fill: 'Si us plau, ompliu les entrades',
+      },
+      modification: {
+        failed: 'L\'etiqueta i la descripció del codi d\'idioma en no poden tenir el mateix valor.',
+      },
     },
-    comments: {
-      title: 'Comentaris',
-      subtitle: 'Nom, adreça de correu electrònic, contingut del comentari',
-      subtitleDesc: 'aquestes dades es recullen quan deixeu un comentari i es mostren al lloc web.',
-      desc: 'Si deixeu un comentari al lloc web, el vostre nom i adreça de correu electrònic també es desaran a les galetes. Aquestes són per a la teva comoditat perquè no hagis d\'omplir les teves dades de nou quan deixis un altre comentari. Aquestes galetes es desaran al vostre ordinador fins que les suprimiu.'
+    success: {
+      updated: "S'ha actualitzat correctament",
     },
-    userAgent: {
-      subtitle: 'IP i cadena d\'agent d\'usuari del navegador',
-      subtitleDesc: 'aquestes dades es recullen quan deixeu un comentari.'
-    },
-    retentionPeriod: {
-      subtitle: 'Període de retenció',
-      subtitleDesc: 'les dades esmentades es conserven indefinidament perquè puguem reconèixer i aprovar qualsevol comentari de seguiment automàticament en lloc de mantenir-los en una cua de moderació.'
-    },
-    legitimateInterest: {
-      title: 'Dades recollides sobre la base d\'un interès legítim',
-      desc: 'Basant-nos en els nostres interessos legítims, recopilem les dades següents amb la finalitat d\'executar aquest lloc web. Les vostres dades no s\'utilitzen per a cap altra finalitat ni es comparteixen amb tercers. S\'elimina a petició vostra.'
-    },
-    statistics: {
-      title: 'Estadístiques',
-      desc: 'El lloc web utilitza una versió mínima de Google Analytics, un servei que transmet dades de trànsit del lloc web als servidors de Google als Estats Units i ens permet notar tendències per millorar l\'experiència de l\'usuari al nostre lloc web. Aquesta compilació mínima processa dades personals com ara: l\'identificador d\'usuari únic establert per Google Analytics, la data i l\'hora, el títol de la pàgina que es visualitza, l\'URL de la pàgina que es visualitza, l\'URL de la pàgina que es va veure abans de la pàgina actual, la resolució de la pantalla, l\'hora a la zona horària local, els fitxers en què s\'ha fet clic i s\'ha baixat, els enllaços als quals s\'ha fet clic a un domini extern, el tipus de dispositiu i el país, la regió i la ciutat. <br/> <br/>Podeu desactivar aquest seguiment en qualsevol moment activant la configuració "No rastrejar" al vostre navegador.'
-    },
-    embedContent: {
-      title: 'Contingut incrustat d\'altres llocs web',
-      desc: 'Els articles del lloc web poden incloure contingut incrustat (per exemple, vídeos, gràfics, etc.). El contingut incrustat d\'altres llocs web es comporta exactament de la mateixa manera que si el visitant hagués visitat l\'altre lloc web. <br/> <br/>\n' +
-        'Aquests llocs web poden recopilar dades sobre vostè, utilitzar galetes, incrustar un seguiment addicional de tercers i supervisar la seva interacció amb aquest contingut incrustat, inclòs el seguiment de la seva interacció amb el contingut incrustat si teniu un compte i heu iniciat sessió en aquest lloc web.'
-    },
-    rights: {
-      title: 'Els teus drets sobre les teves dades',
-      desc: 'Si heu deixat comentaris al lloc web, podeu sol·licitar rebre un fitxer exportat de les dades personals que tenim sobre vosaltres, incloses les dades que ens hàgiu proporcionat. També podeu sol·licitar que rectifiquem o esborrem qualsevol dada personal que tinguem sobre vostè. Envieu la vostra sol·licitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
-      data: '• Dret a retirar el consentiment <br/>\n' +
-        '• El dret d\'accés<br/>\n' +
-        '• Dret a supressió<br/>\n' +
-        '• Dret de rectificació<br/>\n' +
-        '• Dret a la portabilitat de les dades<br/>\n' +
-        '• Dret d\'oposició<br/>\n' +
-        '• Notificació de violacions de dades<br/>\n' +
-        '• Dret a presentar una reclamació davant una autoritat de control'
-    }
   }
 }
