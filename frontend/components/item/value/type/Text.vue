@@ -1,8 +1,7 @@
 <template>
   <div>
     <span v-if="!isUserLogged">
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <span v-html="valueToView.value" />
+      <span v-html="contentView" />
     </span>
     <div v-else>
       <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
@@ -30,6 +29,11 @@ export default {
   data () {
     return {
       valueToView_: { ...this.valueToView }
+    }
+  },
+  computed: {
+    contentView() {
+      return this.$sanitize(this.valueToView.value);
     }
   },
   methods: {

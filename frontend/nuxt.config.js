@@ -15,7 +15,7 @@ export default {
   },
 
   publicRuntimeConfig: {
-    version: '0.8.3',
+    version: '0.8.1',
     apiBaseUrl: process.env.API_BASE_URL || '/.',
     wikibaseBaseUrl: process.env.WIKIBASE_BASE_URL,
     sparqlBaseUrl: process.env.SPARQL_BASE_URL,
@@ -55,7 +55,8 @@ export default {
     '~/plugins/config.js',
     '~/plugins/wikibase.js',
     '~/plugins/language.js',
-    '~/plugins/notification.js'
+    '~/plugins/notification.js',
+    '~/plugins/dompurify.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
