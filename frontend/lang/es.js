@@ -1,12 +1,7 @@
 export default {
   common: {
-    no_data: 'No hay datos disponibles',
     loading: 'Cargando..',
-    language: 'Idioma',
-    calendar: 'Calendario',
-    advanced_search: 'Búsqueda avanzada',
-    from: 'De',
-    to: 'a'
+    language: 'Idioma'
   },
   menu: {
     item: {
@@ -39,12 +34,6 @@ export default {
           },
           subid: {
             label: 'Asunto'
-          },
-          cnum: {
-            label: 'cnum'
-          },
-          copid: {
-            label: 'copid'
           }
         }
       }
@@ -115,28 +104,13 @@ export default {
           hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
         },
         associated_person: {
-          label: 'Persona asociada',
-          hint: ''
+          label: 'Persona asociada'
         },
         place_composition: {
-          label: 'Lugar de composición',
-          hint: ''
+          label: 'Lugar de composición'
         },
         date_composition: {
-          label: 'Fecha de composición',
-          hint: ''
-        },
-        type: {
-          label: 'Tipo',
-          hint: ''
-        },
-        language: {
-          label: 'Idioma',
-          hint: ''
-        },
-        poetic_form: {
-          label: 'Forma poética',
-          hint: ''
+          label: 'Fecha de composición'
         }
       },
       libid: {
@@ -148,9 +122,9 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
         },
-        call_number: {
-          label: 'Número de llamada',
-          hint: ''
+        shelfmark: {
+          label: 'Signatura',
+          hint: 'Search by the current or any former shelfmark, including those of previous owners. This returns a list of libraries holding manuscripts or printings with that shelfmark. Shelfmarks are not case-sensitive.'
         }
       },
       insid: {
@@ -183,23 +157,15 @@ export default {
           label: 'Lugar asociado',
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
-        religious_order: {
-          label: 'Orden religiosa o militar',
-          hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
-        },
         profession: {
-          label: 'Profesión, oficio u ocupación',
-          hint: 'For professions see the list in the related help pages.'
-        },
-        religion: {
-          label: 'Religión',
-          hint: ''
+          label: 'Orden religiosa o militar / Profesión',
+          hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. For professions see the list in the related help pages. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
         }
       },
       bibid: {
         author: {
-          label: 'Autor/Creador',
-          hint: 'Search by any form or portion of the name of the <b>author</b> (of a monograph or article) and for any individual associated with the work <b>other than the author</b> (e.g., author of prologue, coordinator, editor, or director of series or collection, etc.).'
+          label: 'Autor',
+          hint: 'Search by any form or portion of the name of the <b>author</b> (of a monograph or article).'
         },
         title: {
           label: 'Título',
@@ -225,17 +191,9 @@ export default {
           label: 'Serie / Colección',
           hint: 'Search by series (e.g., in BITAGAP, “Subsídios para a história da arte”).'
         },
-        locations: {
-          label: 'Localizaciones',
-          hint: ''
-        },
-        international_standard_number: {
-          label: 'Número estándar internacional (ISBN, ISSN)',
-          hint: ''
-        },
-        type: {
-          label: 'Tipo',
-          hint: ''
+        associated_person: {
+          label: 'Persona asociada',
+          hint: 'Search for any individual associated with the work <b>other than the author</b> (e.g., author of prologue, coordinator, editor, or director of series or collection, etc.).'
         }
       },
       manid: {
@@ -292,57 +250,40 @@ export default {
     }
   },
   item: {
-    title: 'Título',
-    description: 'Descripción',
     invalid_id: 'Identificador inválido.',
     not_found: 'No encontrado.',
     back: 'Ir atrás'
   },
-  privacyPolicy: {
-    label: 'Política de privacidad',
-    tooltip: 'Usamos cookies estrictamente necesarias: estas cookies son esenciales para que usted pueda navegar por el sitio web y utilizar sus funciones, como acceder a áreas seguras del sitio o recordar el idioma seleccionado.',
-    consent: {
-      title: 'Datos recopilados sobre la base del consentimiento',
-      desc: 'Si lo solicita y da su consentimiento, recopilamos los siguientes datos con el fin de brindarle nuestros servicios. Sus datos no se utilizan para ningún otro fin ni se comparten con terceros. Se eliminan si retira su consentimiento o solicita la finalización de estos servicios.'
+  about: {
+    title: 'Acerca de',
+    bibliographies: {
+      title: 'Las Bibliografías',
     },
-    comments: {
-      title: 'Comentarios',
-      subtitle: 'Nombre, dirección de correo electrónico, contenido del comentario',
-      subtitleDesc: 'Estos datos se recopilan cuando usted deja un comentario y se muestran en el sitio web.',
-      desc: 'Si dejas un comentario en el Sitio Web, tu nombre y dirección de correo electrónico también se guardarán en cookies. Esto es para tu comodidad, para que no tengas que volver a rellenar tus datos cuando dejes otro comentario. Estas cookies se guardarán en tu ordenador hasta que las elimines.'
+    citation: {
+      title: 'Cómo se cita PhiloBiblon',
     },
-    userAgent: {
-      subtitle: 'Cadena de agente de usuario de IP y navegador',
-      subtitleDesc: 'Estos datos se recopilan cuando dejas un comentario.'
-    },
-    retentionPeriod: {
-      subtitle: 'Periodo de conservación',
-      subtitleDesc: 'Los datos antes mencionados se conservan indefinidamente para que podamos reconocer y aprobar automáticamente los comentarios posteriores en lugar de mantenerlos en una cola de moderación.'
-    },
-    legitimateInterest: {
-      title: 'Datos recopilados en base a un interés legítimo',
-      desc: 'En base a nuestros intereses legítimos, recopilamos los siguientes datos con el fin de gestionar este sitio web. Sus datos no se utilizan para ningún otro fin ni se comparten con terceros. Se eliminan si usted lo solicita.'
+    language: {
+      title: 'Lenguas',
     },
     statistics: {
       title: 'Estadísticas',
-      desc: 'El sitio web utiliza una versión mínima de Google Analytics, un servicio que transmite datos de tráfico del sitio web a los servidores de Google en los Estados Unidos y nos permite observar tendencias para mejorar la experiencia del usuario en nuestro sitio web. Esta versión mínima procesa datos personales como: el ID de usuario único establecido por Google Analytics, la fecha y la hora, el título de la página que se está visualizando, la URL de la página que se está visualizando, la URL de la página que se vio antes de la página actual, la resolución de la pantalla, la hora en la zona horaria local, los archivos en los que se hizo clic y se descargaron, los enlaces en los que se hizo clic a un dominio externo, el tipo de dispositivo y el país, la región y la ciudad. <br/> <br/>Puede optar por no participar en este seguimiento en cualquier momento activando la configuración "No rastrear" en su navegador.'
     },
-    embedContent: {
-      title: 'Contenido incrustado de otros sitios web',
-      desc: 'Los artículos del sitio web pueden incluir contenido incrustado (por ejemplo, videos, gráficos, etc.). El contenido incrustado de otros sitios web se comporta exactamente de la misma manera que si el visitante hubiera visitado el otro sitio web. <br/> <br/>\n' +
-        'Estos sitios web pueden recopilar datos sobre usted, utilizar cookies, incorporar un seguimiento adicional de terceros y supervisar su interacción con ese contenido incrustado, incluido el seguimiento de su interacción con el contenido incrustado si tiene una cuenta y ha iniciado sesión en ese sitio web.'
+    version: {
+      web: {
+        title: 'La Versión en la Red',
+      },
+      windows: {
+        title: 'La Base de Datos de Windows',
+      },
     },
-    rights: {
-      title: 'Sus derechos en relación con sus datos',
-      desc: 'Si ha dejado comentarios en el sitio web, puede solicitar recibir un archivo exportado de los datos personales que tenemos sobre usted, incluidos los datos que nos haya proporcionado. También puede solicitar que rectifiquemos o borremos los datos personales que tengamos sobre usted. Envíe su solicitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
-      data: '• El derecho a retirar el consentimiento<br/>\n' +
-        '• El derecho de acceso<br/>\n' +
-        '• El derecho de supresión<br/>\n' +
-        '• El derecho de rectificación<br/>\n' +
-        '• El derecho a la portabilidad de los datos<br/>\n' +
-        '• El derecho a oponerse<br/>\n' +
-        '• Notificación de violaciones de datos<br/>\n' +
-        '• El derecho a presentar una reclamación ante una autoridad de control'
-    }
-  }
+    history: {
+      title: 'Historia',
+    },
+    acknowledgments: {
+      title: 'Reconocimientos',
+    },
+    copyright: {
+      title: 'Copyright',
+    },
+  },
 }

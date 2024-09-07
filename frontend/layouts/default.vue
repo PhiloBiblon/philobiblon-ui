@@ -2,9 +2,8 @@
   <v-app>
     <v-navigation-drawer
       v-model="drawer"
-      style="height: 99vh;"
       color="primary"
-      :permanent="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs && !$vuetify.breakpoint.md"
+      fixed
       app
       dark
     >
@@ -81,12 +80,65 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+        <v-list-group
+          prepend-icon="mdi-information-variant"
+        >
+          <template #activator>
+            <v-list-item-title>{{ $t('about.title') }}</v-list-item-title>
+          </template>
+          <v-list-item class="subitem" link @click="goTo('wiki/About', false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.bibliographies.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('wiki/Citation',false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.citation.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('wiki/Language', false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.language.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('wiki/Statistics', false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.statistics.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('wiki/Webversion', false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.version.web.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('wiki/Windowsversion', false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.version.windows.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('wiki/History', false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.history.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('wiki/Acknowledgments', false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.acknowledgments.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('wiki/Copyright', false)">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('about.copyright.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
       fixed
       app
       dark
+      src="/img/header_page-opacity15_2.gif"
     >
       <template #img="{ props }">
         <v-img
@@ -94,7 +146,7 @@
           gradient="to top right, rgba(33, 33, 33,.7), rgba(250, 250, 250,.7)"
         />
       </template>
-      <v-app-bar-nav-icon class="d-lg-none" @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title
         class="text-h4"
         style="cursor: pointer"
@@ -127,13 +179,30 @@
         <span>{{ $t('auth.login.label') }}</span>
       </v-tooltip>
     </v-app-bar>
-    <v-main class="min-height-full-display">
+    <v-main>
       <v-container fluid ma-50>
         <v-breadcrumbs :items="$store.state.breadcrumb.items" />
         <nuxt />
       </v-container>
     </v-main>
-    <philo-footer />
+    <v-footer
+      app
+      :padless="true"
+    >
+      <v-card
+        flat
+        tile
+        width="100%"
+        class="text-center"
+      >
+        <v-card-text class="py-2 font-weight-light">
+          &copy; {{ new Date().getFullYear() }}
+          <span class="version">
+            v.{{ version }}
+          </span>
+        </v-card-text>
+      </v-card>
+    </v-footer>
   </v-app>
 </template>
 
@@ -144,6 +213,7 @@ export default {
     return {
       title_1: 'Philo',
       title_2: 'Biblon',
+      version: '0.6.0',
       drawer: false
     }
   },
@@ -168,8 +238,15 @@ export default {
         this.drawer = !this.drawer
       }
     },
-    goTo (path) {
-      this.$router.push(this.localePath(path))
+    goTo (path, router = true) {
+      if (!router) {
+        const locale = this.$i18n.locale !== 'en' ? `/${this.$i18n.locale}`: '';
+        path = `${locale}/${path}`;
+
+        if (this.$route.path !== path) window.location.href = path;
+      } else {
+        this.$router.push(this.localePath(path))
+      }
     },
     login () {
       this.$cookies.set('previous-path', this.$route.path, {
@@ -191,10 +268,11 @@ export default {
 .mainmenu >>> .v-list-item--active {
   color: white;
 }
+.version {
+  float: right;
+  margin-right: 20px;
+}
 .subitem {
   padding-left: 35%;
-}
-.min-height-full-display {
-  min-height: 100vh;
 }
 </style>
