@@ -149,7 +149,7 @@ export default {
           hint: 'Cerca per qualsevol dels noms formals o d\'ús habitual de la biblioteca (p. ex., en BETA, cerca Real Biblioteca, Biblioteca de Palacio o simplement Palacio).'
         },
         call_number: {
-          label: 'Número de trucada',
+          label: 'Número d\'inventari',
           hint: ''
         }
       },
@@ -245,10 +245,6 @@ export default {
         library: {
           label: 'Biblioteca',
           hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
-        },
-        shelfmark: {
-          label: 'Signatura',
-          hint: 'Search for a current or former shelfmark in the holding library as well as for the shelfmark of a previous owner. Searches are not case-sensitive, e.g., “Inc. 1484” or “inc. 1484.”'
         },
         date: {
           label: 'Data',
