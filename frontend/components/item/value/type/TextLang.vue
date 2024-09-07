@@ -80,7 +80,7 @@ export default {
               throw new Error(response.info)
             }
             this.consolidatedLanguage = this.valueToView_.language
-            this.$notification.success('Successfully updated')
+            this.$notification.success(this.$i18n.t('messages.success.updated'))
           }
         })
     },

@@ -103,7 +103,7 @@ export default {
                 throw new Error(response.info)
               }
               this.consolidatedText = this.currentText
-              this.$notification.success('Successfully updated')
+              this.$notification.success(this.$i18n.t('messages.success.updated'))
               this.$refs.autocomplete.blur()
             }
           })
@@ -111,12 +111,12 @@ export default {
             // workaround to avoid weird error if the session is expired
             // the first time that we want edit the wikibase
             if (error.message === 'query is undefined') {
-              error = 'Error: Session expired.'
+              error = this.$i18n.t('messages.error.session.expired')
             }
             this.$notification.error(error)
           })
       } else if (!this.currentText) {
-        this.$notification.error('Please fill inputs')
+        this.$notification.error(this.$i18n.t('messages.error.inputs.fill'))
       }
     },
 
