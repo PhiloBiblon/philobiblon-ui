@@ -210,7 +210,7 @@ export class QueryService {
       if (!form.poetic_form.value.analytic_item) {
         filters +=
           `
-          ?statement wdt:P781 ?poetic_form
+          ?item wdt:P781 ?poetic_form
           FILTER (STR(?poetic_form) = "${form.poetic_form.value.label}")
           `
       } else {
