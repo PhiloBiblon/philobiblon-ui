@@ -40,8 +40,13 @@ export class QueryService {
     return langFilters
   }
 
+  replaceDiacritics (field) {
+    return `replace(replace(replace(replace(replace(lcase(${field}), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i')`
+  }
+
   generateFilterByWord (filterField, filterValue) {
-    return `contains(replace(replace(replace(replace(replace(lcase(?${filterField}), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${filterValue}')`
+    const filterFieldWithoutDiacritics = this.replaceDiacritics(`?${filterField}`)
+    return `contains(${filterFieldWithoutDiacritics}, '${filterValue}')`
   }
 
   generateFilterByWords (form, filterField, filterValues) {
@@ -626,7 +631,7 @@ export class QueryService {
   }
 
   getSortClause () {
-    const sortBy = this.$store.state.queryStatus.sortBy === 'id' ? 'xsd:integer(?pbidn)' : 'xsd:string(?label)'
+    const sortBy = this.$store.state.queryStatus.sortBy === 'id' ? 'xsd:integer(?pbidn)' : this.replaceDiacritics('xsd:string(?label)')
     return this.$store.state.queryStatus.isSortDescending ? `DESC(${sortBy})` : sortBy
   }
 

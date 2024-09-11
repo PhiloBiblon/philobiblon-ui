@@ -60,8 +60,14 @@ export default {
     this.populateItemsAutocomplete()
   },
   methods: {
+    orderItems (items) {
+      return items.sort((a, b) =>
+        a.text.localeCompare(b.text, undefined, { sensitivity: 'base' })
+      )
+    },
     populateItemsAutocomplete () {
       const resultFunction = (result) => { return { text: result.label, value: result } }
+      const resultItems = []
       if (this.autocomplete.query) {
         this.loadingItems = true
         this.$wikibase.runSparqlQuery(this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale), false)
@@ -69,10 +75,11 @@ export default {
             Object.entries(results).forEach(
               ([_, result]) => {
                 if (result.label !== undefined) {
-                  this.items.push(resultFunction(result))
+                  resultItems.push(resultFunction(result))
                 }
               }
             )
+            this.items = this.orderItems(resultItems)
             this.loadingItems = false
           }
           )
