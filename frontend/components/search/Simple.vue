@@ -12,7 +12,7 @@
       :loading="loading"
       :search-input.sync="search"
       prepend-inner-icon="mdi-magnify"
-      placeholder="Search PhiloBiblon"
+      :placeholder="$t('wiki.search.placeholder')"
       append-inner-icon="mdi-microphone"
       @change="onItemSelected"
     />

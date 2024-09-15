@@ -124,7 +124,7 @@ export default {
         },
         date_composition: {
           label: 'Date of composition',
-          hint: ''
+          hint: 'Search for yyyy and/or mm and/or dd. A search here might return the date of composition, confirmation, revision, translation, promulgation, etc.'
         },
         type: {
           label: 'Type',
@@ -160,7 +160,7 @@ export default {
         },
         institution_type: {
           label: 'Institution type',
-          hint: 'Search by type of institution'
+          hint: 'Search by type of institution.'
         },
         institution: {
           label: 'Institution',
@@ -294,9 +294,12 @@ export default {
   item: {
     title: 'Title',
     description: 'Description',
-    invalid_id: 'Invalid identifier.',
-    not_found: 'Not found.',
-    back: 'Go back'
+    back: 'Go back',
+    messages: {
+      invalid_id: 'Invalid identifier.',
+      not_found: 'Not found.',
+      invalid_url: 'Please fill a valid URL!'
+    }
   },
   privacyPolicy: {
     label: 'Privacy policy',
@@ -343,6 +346,27 @@ export default {
         '• The right to object<br/>\n' +
         '• Notification of data breaches<br/>\n' +
         '• The right to lodge a complaint with a supervisory authority'
+    }
+  },
+  messages: {
+    error: {
+      session: {
+        expired: 'Session expired'
+      },
+      inputs: {
+        fill: 'Please, fill inputs'
+      },
+      modification: {
+        failed: 'Label and description for language code en can not have the same value.'
+      }
+    },
+    success: {
+      updated: 'Successfully updated'
+    }
+  },
+  wiki: {
+    search: {
+      placeholder: 'Search in PhiloBiblon'
     }
   }
 }
