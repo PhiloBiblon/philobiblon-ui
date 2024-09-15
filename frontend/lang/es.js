@@ -47,6 +47,38 @@ export default {
             label: 'copid'
           }
         }
+      },
+      about: {
+        title: 'Acerca de',
+        bibliographies: {
+          title: 'Las Bibliografías'
+        },
+        citation: {
+          title: 'Cómo se cita PhiloBiblon'
+        },
+        language: {
+          title: 'Lenguas'
+        },
+        statistics: {
+          title: 'Estadísticas'
+        },
+        version: {
+          web: {
+            title: 'La Versión en la Red'
+          },
+          windows: {
+            title: 'La Base de Datos de Windows'
+          }
+        },
+        history: {
+          title: 'Historia'
+        },
+        acknowledgments: {
+          title: 'Reconocimientos'
+        },
+        copyright: {
+          title: 'Copyright'
+        }
       }
     }
   },

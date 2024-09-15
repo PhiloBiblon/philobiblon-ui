@@ -81,6 +81,56 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+        <v-list-group prepend-icon="mdi-information-variant">
+          <template #activator>
+            <v-list-item-title>{{ $t('menu.item.about.title') }}</v-list-item-title>
+          </template>
+          <v-list-item class="subitem" link @click="goTo('/wiki/About')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.bibliographies.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/wiki/Citation')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.citation.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/wiki/Language')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.language.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/wiki/Statistics')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.statistics.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/wiki/Webversion')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.version.web.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/wiki/Windowsversion')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.version.windows.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/wiki/History')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.history.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/wiki/Acknowledgments')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.acknowledgments.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="subitem" link @click="goTo('/wiki/Copyright')">
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('menu.item.about.copyright.title') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
