@@ -1,0 +1,55 @@
+<h1>Welcome</h1>
+
+<div class="content">
+
+<p>You have reached the Home Page of <b>PhiloBiblon, </b>a free
+internet-based bio-bibliographical database of texts written in the
+various Romance vernaculars of the Iberian Peninsula during the
+Middle Ages and the early Renaissance.</p>
+
+<p>A search in <a href="search/texid/query/">Work</a> returns a list of records containing the search term(s). Click on the work of interest for a
+list of witnesses in chronological order; each witness links to the manuscript or printed edition containing it.</p>
+
+<p>A search in <a href="search/manid/query/">MsEd</a> returns a list of  records containing the search term(s). Click on the manuscript or printed edition of interest
+to see an external description followed by an internal description, with the list of contents in the order in which they appear in the volume.</p>
+
+<p>PhiloBiblon (which takes its name from Richard de Bury's 14th-c. description of an ideal library) is the
+corpus of data catalogued by the PhiloBiblon Project: the romance vernacular sources of medieval and early modern
+Iberian culture. It is also the bio-bibliographical database management system
+designed to catalog the primary sources themselves, both manuscript and printed, the texts they contain, the individuals involved with the production
+and transmission of those sources and texts, and the libraries holding them, along with relevant secondary references and authority files for persons, places, and institutions.</p>
+
+<p>For the latest information see the <b>PhiloBLOG</b> on the left or follow PhiloBiblon on
+<b>Facebook</b> or <b>Twitter</b>.</p>
+
+<p>PhiloBiblon consists of four separate bibliographies, each of which has its own Home Page:</p><p><b>[[En Beta|BETA]] / Bibliografía Española de Textos Antiguos</b><br>Medieval texts in Spanish.
+</p><p><b>[[En Bipa|BIPA]]</b> <b>/ Bibliograf&iacute;a de la Poes&iacute;a &Aacute;urea</b><br>Golden Age Poetry in Spanish.
+</p><p><b>[[En Bitagap|BITAGAP]] / Bibliografia de Textos Antigos Galegos e Portugueses</b><br>Medieval texts in Galician, Galician-Portuguese, and Portuguese.
+</p>
+
+<p><b>[[En Biteca|BITECA]] / Bibliografia de Textos Antics Catalans, Valencians i Balears</b><br>Medieval texts in Catalan.</p>
+
+<p>Research in all of the PhiloBiblon bibliographies may be done through the<br><br>[[En Search|PhiloBiblon Search Engine]]
+<br>[[Es Search|M&aacute;quina de b&uacute;squeda de PhiloBiblon]] (en espa&ntilde;ol)
+<br>[[Ca Search|Motor / Eina de recerca de PhiloBiblon]] (en catal&agrave;)
+<br>[[Gl Search|Motor de busca de PhiloBiblon]] (en galego)
+<br>[[Pt Search|Motor de Busca de PhiloBiblon]] (em portugu&ecirc;s)
+<br><br>[[En Help|Help]]ː Please read before beginning initial search
+<br>[[Es Help|Ayuda]]ː Por favor, L&eacute;ala antes de comenzar su b&uacute;squeda inicial
+<br>[[Ca Help|Ajuda]]ː Sisplau, llegiu abans de començar la recerca
+<br>[[Gl Help|Axuda]]ː Por favor, lea antes de comezar a busca
+<br>[[Pt Help|Ajuda]]ː Por favor, leia antes de iniciar a pesquisa
+
+</p>
+
+<p>We are very pleased to acknowledge the support of generous grants from the National Endowment for the Humanities (PM-5008-07 [2007 - 2010],  PW-51633-14 [2014 - 2015], PW-277550-21 [2021-2022], PW-290580-23 [2023-2025]) to enhance web access to the data in PhiloBiblon's component bibliographies. In addition to the previous access to descriptions of manuscripts and early printed editions, the enhanced web site provides access to libraries, to texts and witnesses, to biographical data, and to secondary references, among many other improvements. The last two grants support the process of transforming PhiloBiblon's platform from Revelation Technology's proprietary database management system, OpenInsight, to Wikibase, the platform that supports Wikipedia and Wikidata.</p>
+
+<p>We are pleased to announce that the former mirror web site at the Universitat Pompeu Fabra (Barcelona) is now the primary PhiloBiblon website: [[http://philobiblon.upf.edu/|PhiloBiblon Universitat Pompeu Fabra]]
+</p>
+
+<p>Additional support has been provided by the Gladys Krieble Delmas Foundation, the L.J. Skaggs and Mary Skaggs Foundation, the Andrew W. Mellon Foundation, the Fundación Ignacio Larramendi, and the Pine Tree Foundation.</p>
+
+<p>The PhiloBiblon [[En Resources|Resource List]] provides links to web sites that offer information relevant to the component bibliographies as well as to general information on Iberian medieval studies.</p>
+
+<br>[[En Citation|How to cite PhiloBiblon]]
+</div>

@@ -1,0 +1,187 @@
+<nowiki><h1>Windows version</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>The PhiloBiblon database is structured on the basis of ten interrelated tables, each of which serves as an authority file for the other nine. Four of these tables are central to the system:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>UNIFORM TITLE: normalized version of author's name and text title (with frequently seen variants), and modernized incipit/explicit, as well as dates (of composition, translation, revision, etc.), language(s) of the text, associated individuals, relationships with other texts</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>MS_ED: primary source manuscripts and editions: present location, shelfmark or call number, codicological or bibliographical description, previous owners and other related individuals, relationship with other manuscripts or editions</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>COPIES: adjunct to MS_ED, for the recording of additional copies of a particular printed edition: present location, call number, condition, and previous owners</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>ANALYTIC: description of a given text found in a specific manuscript or printed source (exact form of title, incipit, explicit), together with specification of its folio or page location and any identifying characteristics. (So called because, following standard library practice, it analyzes the contents of a given manuscript or printed edition)</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Six other tables complement and serve as authority files for the primary tables:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>BIBLIOGRAPHY: Secondary references (e.g., catalogs, editions, descriptions, studies, and critical appreciations)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>BIOGRAPHY: individuals related in any way to the cataloged texts and primary sources (authors, translators, scribes, printers, patrons, binders, illuminators, current and previous owners, etc.)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>GEOGRAPHY: places, regions, political or ecclesiastical divisions (county, duchy, diocese), kingdoms, and nations associated in various manners with a text, manuscript, edition, individual, or institution</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>INSTITUTIONS: institutions (e.g., convents, monasteries, libraries, religious orders, universities) related in any way to the cataloged texts, primary sources, or individuals (including previous owners or publishers)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>LIBRARY: libraries which hold the primary sources or copies of items in the secondary bibliography (address, telephone, hours, facilities, contact individuals)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>SUBJECT: multi-lingual authority file for subject headings, with a thesaurus of related headings, broader headings, narrower headings, and rejected headings</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Upon entering the Windows version, one of the bibliographies (BETA, BIPA, BITAGAP, BITECA) is chosen for default display. A menu then allows access to</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>FILES: any of the ten authority tables of the currently accessed bibliography</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>TOOLS for modification of default data for a given field, utilities, and report generators</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>ADMINISTRATION: to switch between bibliographies, addition of new users</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>WINDOWS: viewing options (tile or cascade)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>QUERIES allows the empty data structure of any table to be filled in with a search term or terms for query-by-example</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>HELP: user’s manual</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Each of the interrelated authority tables is displayed in a set of pages containing fields appropriate to the data in question.</p></nowiki>
+
+<nowiki><p>For example, the MS_ED table records on five pages data concerning primary source manuscripts or editions. A unique code number or record key (manid) serves to link it to records in related tables.</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>The first page records information concerning the current location of a given volume (library, shelfmark, acquisition history), the date and place of printing or copying, and the names of scribes, printers, publishers, and patrons;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>the second, detailed codicological or bibliographical information: format, number of leaves, collation, dimensions (of leaf, text page, column, binding), number of columns per page and lines per column or page, type of script or font, binding, condition;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>the third, watermarks, graphics, music, codicological features, previous owners;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>the fourth lists other persons associated with the volume (binders, illuminators, annotators), other texts in the volume (not in the target language), bibliography related to the manuscript or edition, other manuscripts related to it (e.g., later copies), internet access to, e.g., electronic facsimiles;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>the fifth allows for miscellaneous notes, subject access, and "housekeeping" details: the date the record was created or updated; the identity of the record creator.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>The descriptive fields in the other tables are similarly detailed.</p></nowiki>
+
+<nowiki><p>Many of the fields are associated and multi-valued within "edit frames." For example date, location, printer, and publisher are all linked in a repeatable data structure to establish a bibliographical imprint. This allows for the recording of opinions when sources offer conflicting information. Thus authorities may differ on where and by whom a given edition was printed:</p></nowiki>
+
+<nowiki><table class="data" cellpadding="3" cellspacing="0"></nowiki>
+
+<nowiki><tbody><tr></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Place</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Maker</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Began</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Ended</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Basis</b></nowiki><nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Castilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Impresor de <nowiki><i>Flos Sanctorum</i></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1472<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1475<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Vindel<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Santiago de Compostela<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Juan de Bobadilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1480<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Haebler<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Sevilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1475<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1480<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Painter<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki></tbody></nowiki><nowiki></table></nowiki>
+
+<nowiki><p>Similarly, watermarks found in a given manuscript can be linked to the leaves on which they occur and the authorities (e.g., Briquet) who record similar watermarks. A qualifier field within the data structure allows for the indication of the degree of certainty, and a source or basis field shows the authority that provides the data.</p></nowiki>
+
+<nowiki><p>Many fields are filled in on-the-fly with data from related authority tables (keyed by the corresponding code number). Thus in order to link a given record in MS_ED to a secondary source, such as a catalogue, it suffices to type the author's name or a word of the title in a pop-up index window and select the relevant record from BIBLIOGRAPHY, where the full bibliographic citation is maintained.</p></nowiki>
+
+<nowiki><p>Navigation among the various related tables (e.g., from MS_Ed to ANALYTIC to UNIFORM.TITLE to BIOGRAPHY) is accomplished by use of pop-up windows.</p></nowiki>
+
+<nowiki><p>Searches for specific types of data are carried out through two different mechanisms:</p></nowiki>
+
+<nowiki><ul style="list-style-type: none; color: #000"></nowiki>
+
+<nowiki><li>(1) a pop-up Locator Window which provides access to pre-indexed fields;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>(2) a Queries option on the main menu that allows for query-by-example in any field.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>One of the lessons we have learned in the course of designing PhiloBiblon is that a program like this is never finished: the underlying database management software is upgraded, thereby requiring modifications in the application in order for it to remain current; and as one gains experience, modifications in the data structure suggest themselves. Thus we initially believed that only a few fields would need qualifiers and bases to indicate the degree of certainty and the authority for the data. We now believe that qualifiers and bases are needed across the board; in the current Windows version (PhiloBiblon 3.7.0) they have been included for almost all fields.</p></nowiki>
+
+<nowiki></div></nowiki>

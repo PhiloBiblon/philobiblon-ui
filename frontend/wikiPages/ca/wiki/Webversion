@@ -1,0 +1,17 @@
+<nowiki><h1>Versió Web</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>Aquesta nova versió web de PhiloBiblon pren les seves dades d'una igualment novedosa versió del sistema de base de dades de PhiloBiblon, analitzada en detall en la </nowiki>[[Ca Windowsversion|versió de Windows]]. A aquesta nova base de dades fou transferida tota la informació de les quatre bibliografies en els darrers mesos de 2008. Les dades proporcionades per aquesta nova versió en la xarxa representen una part substancial, però només una part, de tota la informació que pot trobar-se a la base de dades. No obstant això, contràriament de la informació limitada que presentava la versió anterior a la xarxa, l'actual versió presenta de forma completa totes les dades de les taules de MS_ED, UNIFORM.TITLE, BIBLIOGRAPHY, BIOGRAPHY i LIBRARY, augmentats amb la informació introduïda en les taules d'ANALYTIC, COPIES, GEOGRAPHY, INSTITUTIONS i SUBJECT. Els usuaris de la versió a la xarxa de PhiloBiblon poden buscar informació sobre un text qualsevol, un manuscrit o un imprés antic concret, una còpia específica del text desitjat en un manuscrit o en un imprès concret, així com persones, biblioteques o treballs dins d'una bibliografia secundària.<nowiki></p></nowiki>
+
+<nowiki><p>D'aquesta manera, si l'usuari desitja obtenir informació sobre una biblioteca qualsevol, l'opció més lògica serà començar en la pantalla de recerca de BIBLIOTECA, que no només proporciona aquesta informació que es busca, sinó també una llista amb la descripció de tots els manuscrits i els impresos antics que aquesta biblioteca conté i dels que, fins a aquest moment, hem tingut notícia. En canvi, qui vulgui accedir als testimonis d'un text concret, seria millor que comencés en la pantalla de recerca de OBRA. El resultat d'aquesta recerca oferirà una llista de la informació bàsica d'aquesta obra, seguida d'una breu descripció de les còpies d'aquest text, acompanyada a més a més d'una breu descripció dels manuscrits i/o impresos antics de cada còpia. De forma inversa, un usuari interessat en la descripció i contingut d'un manuscrit concret o d'un imprés antic donat, hauria de començar des de les pantalles de recerca de MSS o IMPRESOS. Els resultats d'aquesta consulta presentaran la descripció externa del volum en qüestió (inclosa la bibliografia més específica i rellevant), seguida d'una detallada descripció del seu contingut per ordre de foliació, amb una breu descripció de l'obra analitzada; evidentment, si es tracta d'edicions impreses, la recerca presentarà una llista dels exemplars coneguts.</p></nowiki>
+
+<nowiki><p>L'usuari trobarà una descripció més completa en cadascuna de les pantalles de recerca de OBRA, MSS, IMPRESOS, PERSONAS, REFERENCIAS y BIBLIOTECA.</p></nowiki>
+
+<nowiki><p>La versió a la xarxa de cadascuna de les bibliografies s'actualitzarà de forma periòdica, normalment cadascun trimestre.</p></nowiki>
+
+<nowiki><p>L'única pèrdua d'informació en la versió de la xarxa de les bibliografies i la versió de la base de dades és tot allò, normalment poc, referent a les taules GEOGRAPHY i INSTITUTIONS, que serveixen essencialment com a informació de referència per a les taules principals. GEOGRAPHY identifica els topònims esmentats en les diverses bibliografies, mentres que INSTITUTIONS conté informació sobre les institucions que conservaven còpies específiques de textos medievals, manuscrites o impreses, o bé informació sobre els autors corporatius d'aquests mateixos textos.</nowiki>
+
+<nowiki></p></nowiki>
+
+<nowiki></div></nowiki>

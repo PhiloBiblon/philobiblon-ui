@@ -1,0 +1,65 @@
+<nowiki><h1>History</h1></nowiki>
+
+<nowiki><h2>The Bibliographies</h2></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>PhiloBiblon is based upon and derived from BOOST (the Bibliography of Old Spanish Texts), rebaptized as BETA (Bibliografía Española de Textos Antiguos) in 1992 for the ADMYTE CD-ROM edition. For BETA and the Dictionary of the Old Spanish Language project at the University of Wisconsin, Madison, from which it sprang, please see the </nowiki>[[En Beta|BETA home page]]. The first edition of BOOST appeared in 1975; the second, in 1977; the third in 1984. The first edition of the Bibliography of Old Catalan Texts (BOOCT), in exactly the same format as BOOST<nowiki><sub>3</sub></nowiki>, came out in 1985. In 1988 work began on what was originally to be called the Bibliography of Old Portuguese Texts (BOOPT). Both BOOCT and BOOPT were also retitled in 1992 for the ADMYTE CD-ROM, as BITECA and BITAGAP respectively. Finally, in 1997, the Bibliografía de Poesía Áurea (BIPA) extended the scope of the project into the 16th and 17th centuries.<nowiki></p></nowiki>
+
+<nowiki><p>Collaboration with colleagues in Spain, particularly Francisco Marcos Marín (then at the Universidad Autónoma de Madrid and now at the University of Texas, San Antonio) allowed BETA, BITAGAP, and BITECA, and the database management system itself to become part of ADMYTE (Archivo Digital de Manuscritos y Textos Españoles), one of the projects funded by the Sociedad Estatal del Quinto Centenario to commemorate the first voyage of Columbus. They were published in 1993 on CD-ROM as part of disk 0 of ADMYTE, produced by Micronet, S.A. (Madrid). A revised and expanded edition of PhiloBiblon, with the same bibliographies, was published on CD-ROM in 1999 by The Bancroft Library, University of California, Berkeley.</p></nowiki>
+
+<nowiki><p>In 1997, thanks to NEH funding supplemented by grants from UC Berkeley's Gaspar de Portolà Catalonian Studies Program and Portuguese Studies Program and from UC Santa Barbara’s Centers for Portuguese Studies and Galician Studies, a PhiloBiblon web site was established that made it possible to provide detailed descriptions of individual manuscripts and printed editions and the texts they contain. Updates to the web version were made roughly quarterly, as the project teams added more data to the various bibliographies.</p></nowiki>
+
+<nowiki><p>After the 2001 port of BETA from the DOS version of Advanced Revelation to the much-expanded Windows version (see below), it was no longer possible to update the web version of BETA, because the mapping software was predicated on the data structure of the DOS version. It was still possible to update BITAGAP and BITECA regularly, since they continued to use the DOS version until the fall of 2008. Thus it is only with this new web site that all of the bibliographies can be reunited at the same stage of development.</p></nowiki>
+
+<nowiki></div></nowiki>
+
+<nowiki><h2>Technical History</h2></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>The first edition of BOOST (1975) made use of a flat file database management system, FAMULUS, running on the Univac 1110 at the University of Wisconsin. FAMULUS, originally written at Berkeley in 1967 for the Pacific Southwest Forest and Range Experiment Station (United States Department of Agriculture) for the management of personal bibliographical files, takes as input a standard ASCII file created with any text editor, and then batch sorts and indexes the entire file. The limitations it places on the organization of more complex materials are severe: It allows only ten fields (variable length), and a maximum of 4000 characters per record. In order to compensate for these limitations, related but in fact dissimilar data elements were grouped in one field in the original version of BOOST. Thus AUTH lumped together authors with editors and translators.</p></nowiki>
+
+<nowiki><p>FAMULUS allows sorting on any and all fields in any order and indexing of any field, although index terms are limited to a maximum of forty characters. The order of fields within the record and of records within the file can be changed and the entire database then resorted and re-indexed on the basis of the new order. The first edition of BOOST in 1975 consisted of the complete file ordered hierarchically by work (author / title / date / present location) and followed by indices of each field and vocabulary indices of the author and title fields. It was printed as photo-offset copy of landscape format computer printout, all in upper-case letters.</p></nowiki>
+
+<nowiki><p>The second edition (1977) maintained the same number of fields, and the same indexing limitations, but the presentation was more elegant: portrait format, in double columns, with a more attractive serif font, but still all in upper case.</p></nowiki>
+
+<nowiki><p>While editorial control of BOOST passed in 1981 to a new team, the Medieval Spanish Seminary at Madison continued to provide technical support, re-writing FAMULUS into a customized database management system, based on FAMULUS but with a relaxation of some of the latter's technical limitations. Thus the third edition of BOOST (1984) contained fourteen data fields and allowed index terms of up to 159 characters.</p></nowiki>
+
+<nowiki><p>One technical change in the third edition, the sorting of the database topographically (city / library / shelfmark / folio order), required the addition of two new fields:</p></nowiki>
+
+<nowiki><blockquote>(1) CSEQ, sequence of the MS within the library, necessary since shelfmarks are not strictly alphanumeric in most libraries (cfr. El Escorial);</blockquote></nowiki>
+
+<nowiki><blockquote>(2) FSEQ, sequence of the text within the MS, by folio order.</blockquote></nowiki>
+
+<nowiki><p>Other changes in the record structure reflected the information needs perceived by the new editorial committee.</p></nowiki>
+
+<nowiki><p>Thus the date formulas in OPDT and SPDT, Original and Specific PRoduction Dates (e.g., 15th mid, 15th end) were not only ambiguous but were sorted alphanumerically rather than chronologically. To avoid the latter problem, in particular, they were changed to absolute numerical values (e.g., "1440-1460" instead of " 15th mid").</p></nowiki>
+
+<nowiki><p>With the change in the sorting hierarchy (from author / title to a topographical arrangement [city / library / shelfmark]), it became difficult to control the relationship between corresponding entries in BOOST<sub>2</sub></nowiki> and BOOST<nowiki><sub>3</sub></nowiki>. The Control NUMber (CNUM), the record identification number, which remained constant, was pressed into use as the linking element.<nowiki></p></nowiki>
+
+<nowiki><p>Two other changes involved the collapsing of individual data fields. Thus all bibliographical information was collapsed together from the BIBS and NOTE fields of BOOST<sub>2</sub></nowiki> (which had been used to differentiate references cited directly from those cited second- or third-hand) into a single data element, BIBL. This was done in order to be able to create a single unified bibliographical index, but, unfortunately, it made control of the secondary bibliography more difficult. The fusion of GTIT, the General or normalized TITle field, and STIT, the Specific or variant TITle field, was a mistake of a similar sort made for a similar reason, the desire to create a single title index.<nowiki></p></nowiki>
+
+<nowiki><p>In two other instances, however, data elements were divided in order to reflect differences in the data they contained. Thus translators were separated from the AUTH field and given one of their own, TRAN. Similarly, printers and scribes were removed from SPRL (Specific PRoduction Location) and placed in a separate field, PRSC. Both of these changes were correct tactically and strategically.</p></nowiki>
+
+<nowiki><p>This database structure was used for BOOST<sub>3</sub></nowiki> (1984) and BOOCT (1985).<nowiki></p></nowiki>
+
+<nowiki><p>In terms of procedures, data continued to be keyboarded at Madison on the basis of information supplied by the new editorial team. The database file was then re-sorted and printed, and the resulting print-out was sent to the editors for correction and a new cycle of data input. This process was cumbersome, and it was made more so by FAMULUS’s flat file database management system, which required that each record be complete in and of itself. Thus if a manuscript contained twenty texts, the entire external description of the manuscript had to be repeated in twenty separate records. If new research made it necessary, e.g., to re-date the manuscript, the date would have to be changed in all twenty records.</p></nowiki>
+
+<nowiki><p>The limitations of such a database management system were thrown increasingly into relief by the availability of more sophisticated systems. The next technical change was the 1985 port of BOOST and BOOCT from the Madison system to another main frame system at Berkeley, SPIRES (Stanford Public Information Retrieval System), which was interactive, text-oriented, and allowed repeatable variable-length data elements. Ordering, searching, and report generation were reasonably simple operations, although data entry and correction were more difficult than in the older system.</p></nowiki>
+
+<nowiki><p>Finally, in 1987, thanks to a grant from IBM, both BOOST and BOOCT were ported into Revelation (later Advanced Revelation, from Revelation Technologies), a high-end, DOS-based relational database management system with variable-length repeatable fields that can be linked together into repeatable data structures, with no limitation on the number of records or number of fields, and very little limitation on their size. Records are limited to 64K, while any single field within a record is also limited to 64K.</p></nowiki>
+
+<nowiki><p>A primary consideration in the selection of a relational system was the desire to make the database easier to maintain and update, by allowing changes to be made in one record and then propagated to others related to it rather than by making the same change in multiple records.</p></nowiki>
+
+<nowiki><p>All of the data entry work on all four bibliographies has since been carried out under successive versions of Revelation Technologies' systems.</p></nowiki>
+
+<nowiki><p>The original 1987 database design, the work of Charles Faulhaber and programmer John May, has evolved constantly since then, thanks to nine major NEH grants as well as to smaller ones from other sources and constant input from the members of the other teams. By 2001 PhiloBiblon's structure consisted of ten tables with over 650 separate data fields.</p></nowiki>
+
+<nowiki><p>The 1997 port to the web was based first on mapping the output from a data dump of the MS_Ed table (descriptions of MSS and printed editions) into standard ASCII text files. Berkeley library staff then wrote a PERL script to convert the descriptions of each individual manuscript in the three component bibliographies (BETA, BITECA, BITAGAP) into HTML files. These files were in turn indexed using a public domain program (SWISH), and a simple CGI query form allowed searches by author and title or on free text.</p></nowiki>
+
+<nowiki><p>In 2001 another NEH grant made it possible to port the database from the Advanced Revelation DOS dbms to the corresponding Windows-based dbms. In the process the table structure was rationalized and more data fields were added, to the current total of 987 fields in ten related tables.</p></nowiki>
+
+<nowiki><p>As in the earlier versions, unique record keys are used to identify specific texts (texid), copies of texts (cnum), manuscripts or printed editions (manid), copies of printed editions (copid), and individuals (bioid). These record keys, specific to each bibliography, are enormously helpful in differentiating among, e.g., different works with identical titles or individuals with the same name; and for this reason they have been included in the web version.</p></nowiki>
+
+<nowiki></div></nowiki>
