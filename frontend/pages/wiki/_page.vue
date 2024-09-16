@@ -1,8 +1,7 @@
 <template>
   <v-container>
     <search-simple />
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <div if="contentToView" v-html="contentToView" />
+    <div v-if="contentToView" v-safe-html="contentToView" />
   </v-container>
 </template>
 
@@ -29,8 +28,13 @@ export default {
       }
     ])
     const wikiApiUrl = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.wikiPage}&prop=wikitext&formatversion=2&format=json&origin=*`
-    this.contentToView = await this.$wikibase.wbFetcher(wikiApiUrl)
+    const html = await this.$wikibase.wbFetcher(wikiApiUrl)
       .then(data => this.contentPage(data))
+    this.contentToView = this.$sanitize(html)
+
+    this.$nextTick(() => {
+      this.addScrollBehavior()
+    })
   },
 
   methods: {
@@ -64,6 +68,41 @@ export default {
         link = `/wiki/${link}`
         return `<a href='.${this.localePath(link)}'>${text}</a>`
       }
+    },
+
+    addScrollBehavior () {
+      const header = document.querySelector('#header')
+      const headerHeight = header ? header.offsetHeight : 0
+      const anchorLinks = document.querySelectorAll('a[href^="#"]')
+      anchorLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault()
+          const targetId = this.getTargetId(link)
+          const targetElement = this.getTargetElement(targetId)
+          if (targetId === 'top') {
+            this.scrollTo(0)
+          } else if (targetElement) {
+            const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset
+            const offsetPosition = elementPosition - headerHeight - 80
+            this.scrollTo(offsetPosition)
+          }
+        })
+      })
+    },
+
+    getTargetId (link) {
+      return link.getAttribute('href').substring(1)
+    },
+
+    getTargetElement (targetId) {
+      return document.querySelector(`a[name="${targetId}"]`) || document.getElementById(targetId)
+    },
+
+    scrollTo (top = 0, behavior = 'smooth') {
+      window.scrollTo({
+        top,
+        behavior
+      })
     }
   }
 }
