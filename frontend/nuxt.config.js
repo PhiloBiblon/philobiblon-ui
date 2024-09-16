@@ -55,6 +55,8 @@ export default {
     '~/plugins/config.js',
     '~/plugins/wikibase.js',
     '~/plugins/language.js',
+    '~/plugins/dompurify.js',
+    '~/plugins/directives.js',
     '~/plugins/notification.js'
   ],
 
