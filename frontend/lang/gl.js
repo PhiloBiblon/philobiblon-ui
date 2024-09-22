@@ -74,15 +74,15 @@ export default {
         },
         simple_search: {
           label: 'Busca simple',
-          hint: 'Use this field to search for information not locatable in named fields. For example, in <b>MsEd</b>, codicological information; or, in WORK, type “trad*” in <b>Simple search</b> to produce a list of works which have been translated from their original language.'
+          hint: 'Use este campo para buscar información non localizable en campos con nome. Por exemplo, en <b>MsEd</b>, información codicolóxica; ou, en WORK, escriba “trad*” en <b>Busca sinxela</b> para producir unha lista de obras que foron traducidas desde o seu idioma orixinal.'
         },
         subject: {
           label: 'Tema',
-          hint: 'Keep in mind when searching in Subject that its use is not uniform in all search pages nor in the three bibliographies.<br/>Search using a complete heading or any word contained in any heading (e.g. a place name). For technical reasons, only one subject heading can be searched at a time. Searches for two different subject headings or for words from two different subject headings will return zero results. In BITAGAP, for example, search for “milagres” or for “mariologia” but not for “milagres” and “mariologia”.'
+          hint: 'Ten en conta ao buscar en Asunto que o seu uso non é uniforme en todas as páxinas de busca nin nas tres bibliografías.<br/>Busca usando un título completo ou calquera palabra contida en calquera título (por exemplo, un nome de lugar). Por razóns técnicas, só se pode buscar un título de materia á vez. As buscas de dous títulos de materia diferentes ou de palabras de dous títulos de materias devolverán cero resultados. En BITAGAP, por exemplo, busca “milagres” ou “mariologia”, pero non “milagres” e “mariologia”.'
         },
         place: {
           label: 'Lugar',
-          hint: 'Place names appear on several search pages: WORK - <b>Place of composition</b>; PERSON - <b>Associated place</b>; LIBRARY - <b>City</b>; REFERENCE - <b>Place of publication</b>; MSED - <b>City</b>.'
+          hint: 'Os nomes dos lugares aparecen en varias páxinas de busca: WORK - <b>Lugar de composición</b>; PERSOA - <b>Lugar asociado</b>; BIBLIOTECA - <b>Cidade</b>; REFERENCIA - <b>Lugar de publicación</b>; MSED - <b>Cidade</b>.'
         },
         date: {
           label: 'Data',
@@ -90,7 +90,7 @@ export default {
         },
         personal_name: {
           label: 'Nome persoal',
-          hint: 'To search for a personal name as the <b>Author</b> of a text in WORK, use any form of the name, original, translated, or a variant. For example, search for “Benedictus”, “Bento”, “Benet”, or “Benito.”<br/>On all other search pages and in all other fields, such as (associated) persons, authors of secondary references, previous owners, translators, patrons, copyists, publishers, that is, for any personal name searched in any field other than that of Author in WORK, use the modern version of the name.<br/>Tip: To identify the modern form of a name, search in PERSON for any form in <b>Name</b>, original, translated, pseudonym, etc.'
+          hint: 'Para buscar un nome persoal como <b>Autor</b> dun texto en WORK, utiliza calquera forma do nome, orixinal, traducido ou variante. Por exemplo, busque "Benedictus", "Bento", "Benet" ou "Benito".<br/>En todas as outras páxinas de busca e en todos os demais campos, como persoas (asociadas), autores de referencias secundarias, anteriores propietarios, tradutores, mecenas, copistas, editores, é dicir, para calquera nome persoal buscado en calquera campo que non sexa o de Autor en WORK, use a versión moderna do nome.<br/>Consello: para identificar a forma moderna dun nome. nome, busca en PERSOA calquera forma en <b>Nome</b>, orixinal, traducido, pseudónimo, etc.'
         },
         search_type: {
           all_words: 'Todas as palabras',
@@ -100,19 +100,19 @@ export default {
       texid: {
         author: {
           label: 'Autor',
-          hint: 'To search for a personal name as the <b>Author</b> of a text in WORK, use any form of the name, original, translated, or a variant. For example, search for “Benedictus”, “Bento”, “Benet”, or “Benito.”<br/>On all other search pages and in all other fields, such as (associated) persons, authors of secondary references, previous owners, translators, patrons, copyists, publishers, that is, for any personal name searched in any field other than that of Author in WORK, use the modern version of the name.<br/>Tip: To identify the modern form of a name, search in PERSON for any form in <b>Name</b>, original, translated, pseudonym, etc.'
+          hint: 'Para buscar un nome persoal como <b>Autor</b> dun texto en WORK, utiliza calquera forma do nome, orixinal, traducido ou variante. Por exemplo, busque "Benedictus", "Bento", "Benet" ou "Benito".<br/>En todas as outras páxinas de busca e en todos os demais campos, como persoas (asociadas), autores de referencias secundarias, anteriores propietarios, tradutores, mecenas, copistas, editores, é dicir, para calquera nome persoal buscado en calquera campo que non sexa o de Autor en WORK, use a versión moderna do nome.<br/>Consello: para identificar a forma moderna dun nome. nome, busca en PERSOA calquera forma en <b>Nome</b>, orixinal, traducido, pseudónimo, etc.'
         },
         title: {
           label: 'Título',
-          hint: 'Search for prose works using the modern form of the title or, for a translated work, the original or the translated title. For a broad search, the former (e.g., “vida”) will generally return more works than the latter (“vita”). All searches return works according to any of their known titles. You may also use (any part of) a date to search in this field. For individual poetic texts, see <b>Incipit/Explicit</b> below unless the poem has a commonly-used title, e.g., in BITAGAP, Poema da Batalha do Salado. Songbook titles (e.g., Cancioneiro da Ajuda, Cancionero de Estúñiga, Cançoner dels Masdovelles) can also be searched in this field.'
+          hint: 'Busca obras en prosa utilizando a forma moderna do título ou, para unha obra traducida, o orixinal ou o título traducido. Para unha busca ampla, a primeira (por exemplo, "vida") devolverá xeralmente máis obras que a segunda ("vita"). Todas as buscas devolven obras segundo calquera dos seus títulos coñecidos. Tamén podes usar (calquera parte de) unha data para buscar neste campo. Para textos poéticos individuais, consulte <b>Incipit/Explicit</b> a continuación a menos que o poema teña un título de uso habitual, por exemplo, en BITAGAP, Poema da Batalha do Salado. Tamén se poden buscar neste campo os títulos dos cancioneiros (por exemplo, Cancioneiro da Ajuda, Cancionero de Estúñiga, Cançoner dels Masdovelles).'
         },
         incipit: {
           label: 'Incipit',
-          hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
+          hint: 'Este importante campo de busca pode axudar na identificación dun texto.<br/>Para cada traballo, hai (a) un rexistro mestre (cun ​​<b>texid</b> único) e (b) unha serie de rexistros por cada copia supervivente coñecida da obra (cada unha cun <b>cnum</b> único). Para os primeiros modernizáronse os incipits/explícitos; para estes últimos, os incipits/explícitos reprodúcense paleográfica ou semipaleográficamente, dependendo da bibliografía (con ou sen marcas de supresión, abreviaturas resoltas ou non resoltas, faltas de ortografía, etc.) tal e como se atopa no manuscrito ou na edición impresa ou como se transcribe nun secundario. fonte. Unha busca neste campo debería devolver unha lista de obras baseada tanto nos incipits/explícitos modernizados como nos orixinais. Cando intente identificar un texto, repita a busca utilizando variantes das palabras menos habituais. Nalgúns casos, especialmente para textos con gran número de copias e sen edición moderna, só se rexistraron incipits e explícitos nos rexistros de copias. Este é particularmente o caso de BETA.<br/>Para localizar un texto poético, en <b>Incipit</b> busca calquera palabra ou palabras que aparezan na primeira liña.'
         },
         explicit: {
           label: 'Explicit',
-          hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
+          hint: 'Este importante campo de busca pode axudar na identificación dun texto.<br/>Para cada traballo, hai (a) un rexistro mestre (cun ​​<b>texid</b> único) e (b) unha serie de rexistros por cada copia supervivente coñecida da obra (cada unha cun <b>cnum</b> único). Para os primeiros modernizáronse os incipits/explícitos; para estes últimos, os incipits/explícitos reprodúcense paleográfica ou semipaleográficamente, dependendo da bibliografía (con ou sen marcas de supresión, abreviaturas resoltas ou non resoltas, faltas de ortografía, etc.) tal e como se atopa no manuscrito ou na edición impresa ou como se transcribe nun secundario. fonte. Unha busca neste campo debería devolver unha lista de obras baseada tanto nos incipits/explícitos modernizados como nos orixinais. Cando intente identificar un texto, repita a busca utilizando variantes das palabras menos habituais. Nalgúns casos, especialmente para textos con gran número de copias e sen edición moderna, só se rexistraron incipits e explícitos nos rexistros de copias. Este é particularmente o caso de BETA.<br/>Para localizar un texto poético, en <b>Incipit</b> busca calquera palabra ou palabras que aparezan na primeira liña.'
         },
         associated_person: {
           label: 'Persoa asociada',
@@ -124,7 +124,7 @@ export default {
         },
         date_composition: {
           label: 'Data de composición',
-          hint: ''
+          hint: 'Busca aaaa e/ou mm e/ou dd. Unha busca aquí pode devolver a data de composición, confirmación, revisión, tradución, promulgación, etc.'
         },
         type: {
           label: 'Tipo',
@@ -142,11 +142,11 @@ export default {
       libid: {
         city: {
           label: 'Cidade',
-          hint: 'Search by the name of the city in its native language (e.g., New York, Firenze, etc.).'
+          hint: 'Busca polo nome da cidade na súa lingua nativa (por exemplo, Nova York, Florencia, etc.).'
         },
         library: {
           label: 'Biblioteca',
-          hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
+          hint: 'Busca por calquera dos nomes formais ou de uso habitual da biblioteca (por exemplo, en BETA, busca Real Biblioteca, Biblioteca de Palacio ou simplemente Palacio).'
         },
         call_number: {
           label: 'Número de chamada',
@@ -160,11 +160,11 @@ export default {
         },
         institution_type: {
           label: 'Tipo de institución',
-          hint: 'Search by type of institution'
+          hint: 'Busca por tipo de institución.'
         },
         institution: {
           label: 'Institución',
-          hint: 'Search by any of the institution\'s formal or commonly used names (e.g. in BETA, search for Universidad Complutense, Universidad de Madrid, or Universidad Central).'
+          hint: 'Busca por calquera dos nomes formais ou de uso habitual da institución (por exemplo, en BETA, busca Universidade Complutense, Universidade de Madrid ou Universidade Central).'
         }
       },
       bioid: {
@@ -173,23 +173,23 @@ export default {
         },
         title: {
           label: 'Título',
-          hint: 'This refers to a title conferred on an individual (by king, noble; Church; for a particular period, hereditary, or for life). You may also search any place to which the conferred title is attached (e.g., in BITAGAP, Bispo Ourense, Rei Castela Leão).'
+          hint: 'Isto refírese a un título conferido a un individuo (polo rei, nobre; Igrexa; por un período determinado, hereditario ou de por vida). Tamén se pode buscar en calquera lugar ao que estea adxunto o título conferido (por exemplo, en BITAGAP, Bispo Ourense, Rei Castela Leão).'
         },
         date: {
           label: 'Data',
-          hint: 'Search for date of birth, death, conferral of a title, or other milestone event.'
+          hint: 'Busca a data de nacemento, a morte, a concesión dun título ou outro evento histórico.'
         },
         associated_place: {
           label: 'Lugar asociado',
-          hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
+          hint: 'Busca o lugar (na forma moderna) de nacemento, morte, residencia ou outro evento histórico.'
         },
         religious_order: {
           label: 'Orde relixosa ou militar',
-          hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
+          hint: 'Para as ordes relixiosas busca pola sigla estándar, por exemplo, OSB, OFM, SJ, Ocist. Teña en conta que a identificación de profesións é esporádica nas tres bibliografías.<br/>NOTA: a sección de Persoas Asociadas de cada rexistro debe tratarse con precaución, especialmente para aqueles individuos con numerosas relacións. O programa de base de datos está deseñado para establecer un vínculo recíproco entre dous rexistros automaticamente. Así, cando o rexistro de "Juana la Loca" (BETA bioide 7208) foi vinculado ao de Fernando V (bioide 1104) como a súa filla, o seu rexistro actualizouse automaticamente para mostrarlle como o seu pai. Desafortunadamente, debido a erros de programación este proceso de actualización automática estableceu en ocasións ligazóns erróneas con outros rexistros. Co paso do tempo estes erros eliminaranse. Solicitamos a colaboración dos nosos usuarios para que nos axuden a identificalos.'
         },
         profession: {
           label: 'Profesión, oficio u ocupación',
-          hint: 'For professions see the list in the related help pages. '
+          hint: 'Para profesións consulte a lista nas páxinas de axuda relacionadas.'
         },
         religion: {
           label: 'Relixión',
@@ -199,31 +199,31 @@ export default {
       bibid: {
         author: {
           label: 'Autor/Creador',
-          hint: 'Search by any form or portion of the name of the <b>author</b> (of a monograph or article) and for any individual associated with the work <b>other than the author</b> (e.g., author of prologue, coordinator, editor, or director of series or collection, etc.)'
+          hint: 'Busca por calquera forma ou parte do nome do <b>autor</b> (dunha monografía ou artigo) e calquera persoa asociada coa obra <b>que non sexa o autor</b> (por exemplo, o autor de prólogo, coordinador, editor ou director de serie ou colección, etc.).'
         },
         title: {
           label: 'Título',
-          hint: ' Search by monograph or article title (whole or partial, most distinctive words).'
+          hint: 'Busca por monografía ou título do artigo (enteiras ou parciais, palabras máis distintivas).'
         },
         date: {
           label: 'Data',
-          hint: 'Search by year of publication.'
+          hint: 'Busca por ano de publicación.'
         },
         volume: {
           label: 'Revista / volume colectivo',
-          hint: 'Search by title of the journal (print or electronic) or collected volume (acts or proceedings of congresses, homage volumes, etc.).'
+          hint: 'Busca por título da revista (impresa ou electrónica) ou volume recollido (actas ou actas de congresos, volumes de homenaxe, etc.).'
         },
         place_publication: {
           label: 'Lugar de publicación',
-          hint: 'Search by name of the city of publication in its native language.'
+          hint: 'Busca polo nome da cidade de publicación na súa lingua nativa.'
         },
         publisher: {
           label: 'Editor',
-          hint: 'Search by publisher (e.g., “University of California Press”).'
+          hint: 'Busca por editor (por exemplo, "University of California Press").'
         },
         series: {
           label: 'Colección / serie',
-          hint: 'Search by series (e.g., in BITAGAP, “Subsídios para a história da arte”).'
+          hint: 'Busca por serie (p. ex., en BITAGAP, “Subsídios para a história da arte”).'
         },
         locations: {
           label: 'Localizacións',
@@ -307,9 +307,12 @@ export default {
   item: {
     title: 'Título',
     description: 'Descrición',
-    invalid_id: 'Identificador non válido.',
-    not_found: 'Non atopado.',
-    back: 'Volve'
+    back: 'Volve',
+    messages: {
+      invalid_id: 'Identificador non válido.',
+      not_found: 'Non atopado.',
+      invalid_url: 'Enche un URL válido!'
+    }
   },
   privacyPolicy: {
     label: 'Política de Privacidade',
@@ -356,6 +359,27 @@ export default {
         '• Dereito de oposición<br/>\n' +
         '• Notificación de violacións de datos<br/>\n' +
         '• Dereito a presentar unha reclamación ante unha autoridade de control'
+    }
+  },
+  messages: {
+    error: {
+      session: {
+        expired: 'A sesión caducou'
+      },
+      inputs: {
+        fill: 'Por favor, enche as entradas'
+      },
+      modification: {
+        failed: 'A etiqueta e a descrición do código de idioma gl non poden ter o mesmo valor.'
+      }
+    },
+    success: {
+      updated: 'Actualizouse correctamente'
+    }
+  },
+  wiki: {
+    search: {
+      placeholder: 'Busca en PhiloBiblon'
     }
   }
 }

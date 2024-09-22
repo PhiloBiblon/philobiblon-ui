@@ -124,7 +124,7 @@ export default {
         },
         date_composition: {
           label: 'Date of composition',
-          hint: ''
+          hint: 'Search for yyyy and/or mm and/or dd. A search here might return the date of composition, confirmation, revision, translation, promulgation, etc.'
         },
         type: {
           label: 'Type',
@@ -160,7 +160,7 @@ export default {
         },
         institution_type: {
           label: 'Institution type',
-          hint: 'Search by type of institution'
+          hint: 'Search by type of institution.'
         },
         institution: {
           label: 'Institution',
@@ -184,7 +184,7 @@ export default {
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
         religious_order: {
-          label: 'Religious or military order',
+          label: 'Religious or military',
           hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
         },
         profession: {
@@ -307,9 +307,12 @@ export default {
   item: {
     title: 'Title',
     description: 'Description',
-    invalid_id: 'Invalid identifier.',
-    not_found: 'Not found.',
-    back: 'Go back'
+    back: 'Go back',
+    messages: {
+      invalid_id: 'Invalid identifier.',
+      not_found: 'Not found.',
+      invalid_url: 'Please fill a valid URL!'
+    }
   },
   privacyPolicy: {
     label: 'Privacy policy',
@@ -356,6 +359,27 @@ export default {
         '• The right to object<br/>\n' +
         '• Notification of data breaches<br/>\n' +
         '• The right to lodge a complaint with a supervisory authority'
+    }
+  },
+  messages: {
+    error: {
+      session: {
+        expired: 'Session expired'
+      },
+      inputs: {
+        fill: 'Please, fill inputs'
+      },
+      modification: {
+        failed: 'Label and description for language code en can not have the same value.'
+      }
+    },
+    success: {
+      updated: 'Successfully updated'
+    }
+  },
+  wiki: {
+    search: {
+      placeholder: 'Search in PhiloBiblon'
     }
   }
 }

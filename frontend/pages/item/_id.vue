@@ -19,10 +19,10 @@ export default {
     } else if (this.$wikibase.getPBIDPattern().test(paramId)) {
       this.itemId = await this.$wikibase.getEntityFromPBID(paramId)
       if (this.itemId === null) {
-        this.$notification.error(this.$i18n.t('item.not_found'))
+        this.$notification.error(this.$i18n.t('item.messages.not_found'))
       }
     } else {
-      this.$notification.error(this.$i18n.t('item.invalid_id'))
+      this.$notification.error(this.$i18n.t('item.messages.invalid_id'))
     }
   }
 }

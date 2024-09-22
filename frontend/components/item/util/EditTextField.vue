@@ -88,15 +88,20 @@ export default {
               throw new Error(response.info)
             }
             this.consolidatedText = this.currentText
-            this.$notification.success('Successfully updated')
+            this.$notification.success(this.$i18n.t('messages.success.updated'))
           }
         })
         .catch((error) => {
           // workaround to avoid weird error if the session is expired
           // the first time that we want edit the wikibase
           if (error.message === 'query is undefined') {
-            error = 'Error: Session expired.'
+            error = this.$i18n.t('messages.error.session.expired')
           }
+
+          if (error.message.includes('modification-failed')) {
+            error = this.$i18n.t('messages.error.modification.failed')
+          }
+
           this.$notification.error(error)
         })
       this.$refs.myTextField.blur()
