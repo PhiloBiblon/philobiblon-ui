@@ -26,10 +26,10 @@
       <v-tooltip max-width="40%" bottom ligth open-delay="200">
         <template #activator="{ on }">
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <span class="text-caption hint" v-on="on" v-html="hint && hint.length &lt; hintMaxWidth ? hint : hint.substring(0, hintMaxWidth) + '...'" />
+          <span class="text-caption hint" v-on="on" v-html="hint && hint.length &lt; hintMaxWidth ? $sanitize(hint) : ($sanitize(hint).substring(0, hintMaxWidth) + '...')" />
         </template>
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="hint" />
+        <span v-html="$sanitize(hint)" />
       </v-tooltip>
     </div>
   </div>
