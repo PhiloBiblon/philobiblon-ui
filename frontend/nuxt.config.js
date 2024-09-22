@@ -56,7 +56,8 @@ export default {
     '~/plugins/wikibase.js',
     '~/plugins/language.js',
     '~/plugins/notification.js',
-    '~/plugins/dompurify.js'
+    '~/plugins/dompurify.js',
+    '~/plugins/version-check.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -149,5 +150,10 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    filenames: {
+      app: ({ isDev }) => isDev ? '[name].js' : '[name].[contenthash].js',
+      chunk: ({ isDev })=> isDev ? '[name].js' : '[name].[contenthash].js',
+      css: ({ isDev }) => isDev ? '[name].css' : '[name].[contenthash].css'
+    }
   }
 }
