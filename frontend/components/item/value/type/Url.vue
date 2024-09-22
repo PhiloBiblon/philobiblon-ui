@@ -62,7 +62,7 @@ export default {
     },
     getUrlValue (newValue, oldValue) {
       const valid = this.isURL(newValue)
-      const message = valid ? '' : 'Please fill a valid URL!'
+      const message = valid ? '' : this.$i18n.t('item.messages.invalid_url')
       return {
         validation: {
           valid,
