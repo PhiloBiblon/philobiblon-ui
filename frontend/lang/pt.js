@@ -274,6 +274,19 @@ export default {
           label: 'Pessoa associada',
           hint: ' Search using any form of the name. A search returns the name of a binder, illuminator, annotator, etc.'
         }
+      },
+      geoid: {
+        type: {
+          label: 'Tipo'
+        },
+        class: {
+          label: 'Classe'
+        }
+      },
+      subid: {
+        headings: {
+          label: 'Títulos'
+        }
       }
     },
     button: {

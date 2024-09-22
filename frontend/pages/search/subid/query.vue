@@ -36,6 +36,41 @@ export default {
           visible: true,
           disabled: false
         },
+        headings: {
+          active: true,
+          primary: true,
+          label: 'search.form.subid.headings.label',
+          hint: 'search.form.subid.headings.hint',
+          type: 'autocomplete',
+          value: '',
+          visible: true,
+          disabled: false,
+          autocomplete: {
+            query:
+            `
+            SELECT DISTINCT ?label ?property {
+              {
+                SELECT ?label ?property
+                WHERE { 
+                  ?item wdt:P476 ?pbid .
+                  FILTER regex(?pbid, '(.*) {{table}} ') .
+                  ?item wdt:P1031 ?label .
+                  BIND('P1031' AS ?property)
+                }
+              } UNION {
+                SELECT ?label ?property
+                WHERE { 
+                  ?item wdt:P476 ?pbid .
+                  FILTER regex(?pbid, '(.*) {{table}} ') .
+                  {{langFilter}}
+                  BIND('label' AS ?property)
+                }
+              }
+            }
+            ORDER BY STR(?label)
+            `
+          }
+        },
         search_type: {
           permanent: true,
           value: true,

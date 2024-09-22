@@ -223,6 +223,7 @@ export default {
     if (showResults) {
       this.showResults = showResults
     }
+    this.showAdvancedSearch = this.existsAdvancedFiltersSelected()
     window.addEventListener('keydown', this.keyDownHandler)
   },
 
@@ -286,6 +287,20 @@ export default {
 
     goToHelp () {
       window.location.href = 'https://bancroft.berkeley.edu/philobiblon/help_en.html'
+    },
+
+    existsAdvancedFiltersSelected () {
+      return Object.values(this.form).some(item => item.primary === false && this.isFieldValueNotEmpty(item.value))
+    },
+
+    isFieldValueNotEmpty (item) {
+      if (typeof item === 'string' && item !== '') {
+        return true
+      }
+      if (typeof item === 'object' && item != null && Object.keys(item).length > 0) {
+        return true
+      }
+      return false
     }
   }
 }
