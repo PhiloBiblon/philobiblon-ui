@@ -1,0 +1,187 @@
+<nowiki><h1>La Base de Datos de Windows</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>La base de datos PhiloBiblon se estructura sobre diez tablas interrelacionadas. Cada una de ellas sirve como archivo maestro de las otras nueve a la hora de su indexación. Las cuatro tablas centrales del sistema son:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>UNIFORM TITLE: (título uniforme) contiene la versión normalizada y actualizada del nombre del autor y del título de la obra. También se recogen las variantes del título más conocidas, así como los íncipit y éxplicit normalizados. En esta tabla también se da cabida a las fechas (de composición, traducción, copia, etc.), a la(s) lengua(s) de la obra, a las personas asociadas a ella y también a la relación de esta obra con otros textos.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>MS_ED: (manuscrito o impreso) describe las fuentes primarias, manuscritas o impresas. Aquí podemos hallar información sobre la localización actual del códice o libro, signaturas actuales y antiguas, descripciones codicológicas y bibliográficas, así como información referida a previos dueños del códice y otros individuos relacionados con él. Las relaciones entre esta fuente primaria y otros testimonios impresos o manuscritos de la obra también se recogen en esta tabla.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>COPIES: (ejemplares) se trata de una tabla adjunta a MS_ED, creada para señalar la existencia de ejemplares adicionales de un impreso. De esta forma, en esta tabla se puede hallar información sobre la localización actual, signatura, condición física y previos dueños de un ejemplar concreto.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>ANALYTIC: (ficha analítica) es la descripción completa de un texto hallado en un manuscrito específico o en una copia impresa. Al contrario que UNIFORM_TITLE, estas fichas contienen la forma exacta del título y del íncipit y éxplicit, junto al lugar específico que ocupa en el manuscrito (folios, páginas, etc.) También se identifican las características propias que lo unen o separan a otros testimonios, ediciones o transcripciones. En resumen, la ficha analítica, como su propio nombre indica y de acuerdo con la norma bibliotecaria, analiza el contenido particular de un impreso o manuscrito concreto.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Las otras seis tablas que complementan a las principales son:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>BIBLIOGRAPHY: (bibliografía) contiene todas aquellas fichas de bibliografía secundaria: ediciones de textos, estudios descriptivos o analíticos, estudios críticos, etc.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>BIOGRAPHY: (ficha biográfica) contiene información biográfica de todas aquellas personas relacionadas de una u otra forma con los textos y fuentes primarias: autores, traductores, escribanos, impresores, mecenas, encuadernadores, iluminadores, dueños antiguos y actuales, etc.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>GEOGRAPHY: (ficha geográfica) contiene información sobre lugares, regiones, antiguas circunscripciones políticas o eclesiásticas (condado, ducado, diócesis, reinos, naciones), cuyos nombres aparecen asociados de cualquier manera a los textos, manuscritos, impresos, personas o instituciones.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>INSTITUTIONS: (instituciones) contiene información sobre conventos, monasterios, bibliotecas, órdenes religiosas o militares, universidades, etc., relacionadas de cualquiera manera con los textos y personas, incluidos antiguos posesores de códices o editores de los mismos.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>LIBRARY: (biblioteca) contiene información sobre las bibliotecas que poseen fuentes primarias o bibliografía secundaria. Puede hallarse aquí información relativa a su domicilio, teléfono, horas de apertura a los investigadores, personas de contacto, etc.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>SUBJECT: (materia) contiene información multilingüe sobre los encabezamientos de materia de todas aquellas tratadas en la base de datos, con un tesauro de encabezamientos relacionados, ampliados, restringidos y contrarios.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Al entrar en la base de datos PhiloBiblon, una de las cuatro bibliografías existentes (BETA, BIPA, BITAGAP, BITECA) será elegida por defecto en la pantalla del computador. El usuario tendrá entonces acceso a los menúes que, a su vez, le permitirán acceder a seis diferentes categorías:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>FILES: (ficheros): cualquiera de las diez tablas en la bibliografía a la que se está accediendo.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>TOOLS (herramientas): conjunto de útiles para la modificación de los datos por defecto en cualquiera de los campos de la ficha, así como una serie de utilidades y generadores de informes sobre esos mismos datos.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>ADMINISTRATION: (administración): mecanismo para poder pasar de una bibliografía a otra, así como para poder dar acceso a la base de datos a otros usuarios.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>WINDOWS: (ventanas): modo de organización (en cascada o en cuadrícula) de las ventanas cuando muchas de ellas están abiertas, con objeto de facilitar al usuario la navegación por el programa.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>QUERIES (búsqueda avanzada): esta herramienta permite que una ficha en blanco de cualquier tabla se complete mediante la realización de una búsqueda avanzada por término, o también según un ejemplo concreto.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>HELP: (ayuda): contiene el manual de usuario.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Cada una de los ficheros maestros interrelacionados ("tablas" según la nomenclatura de las bases de datos de tipo relacional) presenta sus fichas en la pantalla con la disposición de varias páginas que contienen los campos en los que incluir la información pertinente.</p></nowiki>
+
+<nowiki><p>Por ejemplo, las fichas de MS_ED presentan cinco páginas con campos a rellenar con datos relacionados con la fuente primaria, tanto manuscrita como impresa. Un código único a modo de identificador numérico de cada nueva ficha (manid en el caso de MS_ED) sirve para conectar esta ficha con cualquier otra que esté relacionada dentro de la base de datos.</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>La primera página en una ficha de MS_ED recoge información relativa a la localización actual de la fuente primaria (biblioteca, signatura, historia y fecha de adquisición), la fecha y el lugar en que fue copiado o imprimido y los nombres de los escribanos, impresores, editores o mecenas relacionados con esa fuente.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>La segunda página presenta información codicológica y bibliográfica detallada de aspectos como el formato del tomo, el número de folios, la colación, las dimensiones (hoja, caja de escritura, columnas, encuadernación, etc.), número de columnas por página, número de líneas por columna o por página, tipo de letra o de fuente, encuadernación, estado general del códice, etc.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>La tercera página está dedicada a la información referente a las filigranas, gráficos, notaciones musicales, rasgos codicológicos, así como a todo lo relativo a los antiguos dueños del mismo.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>La cuarta página muestra un listado de otras personas asociadas con el tomo, tales como encuadernadores, iluminadores, anotadores, etc. Asimismo, informa sobre la presencia de otros textos en el tomo que no estén en la lengua de la bibliografía, la bibliografía secundaria relacionada con el manuscrito o con el impreso, otros manuscritos relacionados con el tomo (como, por ejemplo, copias tardías), así como acceso en Internet a ediciones o facsimiles del códice.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>Por último, la quinta página está dedicada a notas misceláneas, materias relacionadas y algunos detalles internos de la base de datos, tales como la fecha en que la ficha de MS_ED fue creada o actualizada, así como la identidad de la persona que creó esa ficha.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Los campos descriptivos en otras fichas están detallados de forma similar.</p></nowiki>
+
+<nowiki><p>Muchos de los campos a rellenar no sólo están asociados, sino que pueden tener múltiples valores. Por ejemplo, los datos referidos a la fecha, lugar de impresión, impresor y editor de un impreso están todos conectados en una estructura de datos que puede repetirse, ya que los datos pueden ser distintos debido a conflictos de información en las fuentes consultadas. Es frecuente que diferentes autoridades estén en desacuerdo sobre el lugar de impresión o el impresor de una edición, pero lo importante es contar con todos los datos a la vez, mencionando siempre cuál es la fuente de donde proceden y el grado de certidumbre de los mismos:</p></nowiki>
+
+<nowiki><table class="data" cellpadding="3" cellspacing="0"></nowiki>
+
+<nowiki><tbody><tr></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Lugar</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Impresor</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Comenzó</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Terminó</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Base</b></nowiki><nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Castilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Impresor de <nowiki><i>Flos Sanctorum</i></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1472<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1475<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Vindel<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Santiago de Compostela<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Juan de Bobadilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1480<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Haebler<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Sevilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1475<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1480<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Painter<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki></tbody></nowiki><nowiki></table></nowiki>
+
+<nowiki><p>De forma similar, las filigranas pueden enlazarse dentro de estas tablas de múltiples valores con los folios en las que están presentes, o enlazarse también con la fuente autorizada (v.g., en el caso de las filigranas, el catálogo de Briquet) que recoge marcas de agua similares. En cada uno de estos casos existenn campos para indicar el grado de certidumbre del dato dispuesto, así como la autoridad que lo provee.</p></nowiki>
+
+<nowiki><p>Muchos de estos campos se rellenan al vuelo, automáticamente, extrayendo el dato de las fichas relacionadas en la base de datos, por lo que simplemente hace falta indicar el código numérico de esa ficha y no escribir manualmente toda la cita. Por ejemplo, para enlazar una ficha de MS_ED con una ficha de bibliografía secundaria, como un catálogo de manuscritos, se abre una ventana emergente (pop-up) de índice, en la que se selecciona la ficha de BIBLIOGRAPHY, donde se mantiene la ficha completa con todos sus datos; y el programa se encarga de rellenar el campo con el autor, título y fecha de la fuente.</p></nowiki>
+
+<nowiki><p>El sistema de ventanas emergentes (pop-up) también es el utilizado para la navegación entre las diferentes tablas relacionadas, como por ejemplo para pasar de una ficha de MS_ED a una ficha analítica (ANALYTIC), a una de título uniforme (UNIFORM.TITLE), o a una ficha biográfica (BIOGRAPHY).</p></nowiki>
+
+<nowiki><p>Las búsquedas de datos más específicos pueden realizarse a través de dos diferentes mecanismos:</p></nowiki>
+
+<nowiki><ul style="list-style-type: none; color: #000"></nowiki>
+
+<nowiki><li>(1) una ventana emergente que proporciona acceso a los campos ya indexados por el programa.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>(2) una opción de búsqueda específica ("Queries"), que figura en el menú principal, cuyo objetivo es proporcionar una búsqueda de un dato concreto en un campo determinado por el usuario.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Una de las principales lecciones que hemos aprendido en el transcurso de los años diseñando PhiloBiblon es que un programa como éste nunca se termina por completo: cada vez que el software que subyace la base de datos es manipulado para su mejora y actualización resulta igualmente necesario hacer modificaciones en la base de datos para actualizar los datos. Así, es el mismo trabajo con los campos y fichas del programa el que acaba por sugerir los cambios necesarios en la estructura. Por ejemplo, inicialmente creíamos que sólo unos pocos campos necesitarían casillas para indicar la cualificación, la autoridad o fuente que cita el dato y su grado de certidumbre. En la actualidad, pensamos que serían de gran utilidad en casi todos los campos y fichas. Por este motivo, la actual versión de la base de datos de Windows (PhiloBiblon 3.7.0) ha incluido estas casillas para casi todos los campos.</p></nowiki>
+
+<nowiki></div></nowiki>

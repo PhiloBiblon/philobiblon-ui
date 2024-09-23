@@ -1,162 +1,134 @@
-==== analytic ====
+==== cnum (analytic) ====
 * P2 (Instance of) Testimonio textual (pb.cog Q51131)
 * P590 (Work context) TEXT_UNIID_QNUMBER
 :: qualifier P103 (Section) TEXT_PART
-:: qualifier P155 (* Qualifier) TEXT_Q
-:: qualifier P721 (Source [string]) TEXT_BASIS
+:: qualifier P4 (* Qualifier) TEXT_Q
+:: qualifier P721 (* Source) TEXT_BASIS
 * P8 (Part of) TEXT_MANID_QNUMBER
-:: qualifier (position in sequence) TEXT_SEQUENCE
+:: qualifier P90 (Number) TEXT_SEQUENCE
+:: qualifier P700 (Refers to) TEXT_LOCCLASS_QNUMBER
 :: qualifier P577 (physical description) TEXT_LOC
-:: qualifier P700 (Refers to) TEXT_LOCCLASS
-:: qualifier P721 (Source [string]) TEXT_LOCBASIS
-* P476 (PhiloBiblon ID) CNUM
-* P11 (Title) TEXT_TITLE
+:: qualifier P721 (* Source) TEXT_LOCBASIS
+* P5 (Title) TEXT_TITLE
 :: qualifier P700 (Refers to) Title variant (Q51162)
-:: qualifier P155 (* Qualifier) TEXT_TITLEQ
+:: qualifier P4 (* Qualifier) TEXT_TITLEQ
 :: qualifier P577 (Physical description) TEXT_TITLELOC
 :: qualifier P73 (Note) TEXT_TITLELOCQ
-:: qualifier P721 (Source [string]) TEXT_TITLEBASIS
+:: qualifier P721 (* Source) TEXT_TITLEBASIS
 * P543 (Segmentation) INC_EXP_CLASS
 :: qualifier P70 (Incipit) INCIPIT
 :: qualifier P577 (Physical description) INCIPIT_LOC
-* P543 (Segmentation) INC_EXP_CLASS
 :: qualifier P602 (Excipit) EXPLICIT
 :: qualifier P577 (Physical description) EXPLICIT_LOC
 * P769 (Condition (bibliographical) CONDITION
 * P781 (Poetic form) POETIC_FORM
-* P783 (Rhyme scheme) POETIC_STANZA
+* P781 (Poetic form) POETIC_STANZA
 * P18 (Language) DOCUMENT_LANGUAGE
 * P11 (Title) COMMENT_TITLE
 :: qualifier P21 (Author) COMMENT_BIOID_QNUMBER
-:: qualifier P155 (* Qualifier?) COMMENT_BIODQ
-:: qualifier P721 (Source [string]) COMMENT_BIOBASIS
+:: qualifier P4 (* Qualifier?) COMMENT_BIODQ
+:: qualifier P73 (NOTE) COMMENT_BIOBASIS
 :: qualifier P70 (Incipit) COMMENT_INCIPIT
 :: qualifier P577 (Physical description) COMMENT_LOC
-:: qualifier P73 (NOTE) COMMENT_BASIS
-*P34 (Naming) VARIANT _NAMECLASS_QNUMBER
-:: qualifier P73 (Note) VARIANT_NAME
-:: qualifier P155 (How sure?) VARIANT_NAMEQ
+:: qualifier P721 (* SOURCE) COMMENT_BASIS
+* P34 (Naming) VARIANT_NAME
+:: qualifier P700 (Statement refers to) VARIANT _NAMECLASS_QNUMBER
+:: qualifier P4 (* Qualifier) VARIANT_NAMEQ
 :: qualifier P577 (Physical description)  VARIANT_NAMELOC
-:: qualifier P721 (Source [string])  VARIANT_NAMEBASIS
+:: qualifier P721 (* Source)  VARIANT_NAMEBASIS
 * P703 (Associated persons) RELATED_BIOID_QNUMBER
 :: qualifier Object has role (P820) RELATED_BIOCLASS_QNUMBER
 :: qualifier Note (P73) RELATED_BIODETAIL
-:: qualifier P155 (* Qualifier) RELATED_BIOIDQ
+:: qualifier P4 (* Qualifier) RELATED_BIOIDQ
 :: qualifier P49 (Begin date) RELATED_BIOBD
-:: qualifier P787) Precision of begin date) RELATED_BIOBDQ
-:: qualifier P721 (Source [string]) RELATED_BIOBASIS
+:: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
+:: qualifier P721 (* Source) RELATED_BIOBASIS
 * P750 (Related object) RELATED_MANID_QNUMBER
 :: qualifier Object has role) RELATED_MANCLASS_QNUMBER
 :: qualifier Volume (P105) RELATED_MANVOL
 :: qualifier P577 (Physical Description) RELATED_MANLOC
 :: qualifier P90 (Number) RELATED_MANITEM
-* Extra-stemmatic relationship (P740) RELATED_UNIID_QNUMBER
+* P740 (Extra-stemmatic relationship) RELATED_UNIID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_UNICLASS_QNUMBER
 :: qualifier P73 (Note P73) RELATED_UNIDETAIL
-:: qualifier P721 (Source [string]) RELATED_UNIBASIS 
+:: qualifier P721 (* Source) RELATED_UNIBASIS
 * P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
 :: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
+:: qualifier P54 (Page(s)) RELATED_BIBLOC
 :: qualifier P90 (Number) RELATED_BIBITEM
 * P703 (Associated persons) SUBJECT_BIOID_QNUMBER
 * P47 (Localisation) SUBJECT_GEOID_QNUMBER
 * P232 (Institutions mentioned) SUBJECT_INSID_QNUMBER
 * P422 (Subject heading) SUBJECT_SUBID_QNUMBER
 * P843 (FRBR entity class) WEMI Expression (pb.cog, Q51135)
-* P817 (Notes) EXTENDED_NOTES
-:: qualifier P11 (Title) TEXT_TITLE
-:: qualifier P60 (Incipit) INCIPIT
-:: qualifier P602 (Excipit)  EXPLICIT
-:: qualifier P721 (Source [string]) NOTE
 * P146 (Online information) INTERNET_ADDRESS_URL
 :: qualifier P35 (Literal statement) INTERNET_SERVICE
 :: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P722 (Email address) INTERNET_ADDRESS_EMA
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P (URI) INTERNET_ADDRESS_URI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P (URN formatter) INTERNET_ADDRESS_URN
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P131 (Research projects) BETA / ... (pb.cog Q49409)
-:: qualifier P700 (Refers to) PhiloBiblon Object (pb.cog Q76)
-* P799 (Dataset status) PhiloBiblon record updated (pb.cog Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P511 (Contributor) UPDATED BY
-* P17 (Dataset complaint)
+* * P799 (Dataset status) STATUS_QNUMBER
+* P799 (Dataset status) PhiloBiblon record created (Q14)
+:: qualifier P106 (Date) ENTERED
 
-==== bibid ====
+==== bibid (Bibliography) ====
 * P2 (Instance of) FORM_QNUMBER
-:: qualifier P700 (Refers to) TYPE_QNUMBER
-* P15 Medium_QNUMBER 
+* P2 (Instance of) CLASS_QNUMBER
+* P2 (Instance of) TYPE_QNUMBER
+* P15 (Media type) MEDIUM_QNUMBER
 :: qualifier P73 (Note) FORMAT
-* P476 (PhiloBiblon ID) BIBID
+* P1134 (* Creator) CREATOR_FULLNAME
+:: qualifier P820 (Object has role) CREATOR_ROLE_QNUMBER
+* P1134 (* Creator) CREATOR_CNAME
+:: qualifier P820 (Object has role) CREATOR_ROLE_QNUMBER
 * P11 (Title) TITLE
-:: qualifier P613 (number of integrated items) VOLUME
-* P845 (Creator) CREATOR_FULLNAME
-:: qualifier P820 (Object has role) CREATOR_ROLE_QNUMBER
-* P66 (Organisation signing) CREATOR_CNAME
-:: qualifier P820 (Object has role) CREATOR_ROLE_QNUMBER
-* P511 (Contributor) ADJUNCT_FULLNAME
+:: qualifier P613 (number of integrated items) VOLUMES
+* P1137 (* Published in) SOURCE
+:: qualifier P1138 (Abbreviation) SIGLUM
+* P1136 (* Associated person) ADJUNCT_FULLNAME
 :: qualifier P820 (Object has role) ADJUNCT_ROLE_QNUMBER
-* P66 (signing responsible) ADJUNCT_CNAME
-:: qualifier P820 (Object has role) ADJUNCT_ROLE_QNUMBER
-* P1053 (*Secondary literature)
-:: qualifier P64 (Published in) SOURCE
-:: qualifier P294 (Abbreviation) SIGLUM
-:: qualifier P73 (Note) SERIES
-:: qualifier P266 (Publisher) PUBLISHER
-:: qualifier P241 (Place of publication) PUBLISHER_LOC
-* P49 (Begin date) PUBLISHED_BD
-* P50 (End date) PUBLISHED_ED
-* P73 (Note) PUBLISHED_NOTE
+* P1139 (* Series) SERIES
+* P1141 (* Place of publication) PUBLISHER_LOC
+* P1140 (* Publisher) PUBLISHER
 * P105 (Volume) VOLUME
-* P90 (Number) ISSUE_EDITION
-* P577 (Physical description) LOCATION
-:: qualifier P700 (Refers to) LOCATION_CLASS_QNUMBER
-* P115 (Originality of the item) Another edition [Factgrid (Q23282); Sandbox (Q49631)
-:: qualifier P73 (Note) REPRINT
+* P1117 (* Issue) ISSUE_EDITION
+* P577 (* Physical location) LOCATION
+:: qualifier P700 (refers to)  LOCATION_CLASS_QNUMBER
+* P49 (Begin Date) PUBLISHED_BD
+* P50 (End Date) PUBLISHED_ED
+* P73 (Note) PUBLISHED_NOTE
+* P115 (Originality of the item) REPRINT
 * P605 (ISBN-10) ID_NUMBER_ISBN
 * P605 (ISBN-10) ID_NUMBER_ISBN_10
 * P605 (ISBN-10) ID_NUMBER_EISBN
 * P606 (ISBN-13) ID_NUMBER_ISBN_13
 * P743 (ISSN) ID_NUMBER_ISSN
 * P743 (ISSN) ID_NUMBER_ISSN-E
+* P634 (DOI) ID_NUMBER_DOI
 * P329 (Present holding) RELATED_LIBID_QNUMBER
-:: qualifier P123 (Part of the collection) RELATED_LIBCOLLECTION
-:: qualifier P10 (Inventory position RELATED_LIBCALLNO
-:: qualifier P721 (Source [string] RELATED_LIBBASIS
+:: qualifier P1054 (* Collection) RELATED_LIBCOLLECTION
+:: qualifier P10 (Inventory position) RELATED_LIBCALLNO
+:: qualifier P721 (* Source) RELATED_LIBBASIS
 * P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
 :: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
+:: qualifier P54 (Page(s)) RELATED_BIBLOC
 :: qualifier P90 (Number) RELATED_BIBITEM
 * P703 (Associated persons) SUBJECT_BIOID_QNUMBER
-* P47 (Localisation) SUBJECT_GEOID_QNUMBER
 * P232 (Institutions (mentioned) SUBJECT_INSID_QNUMBER
+* P47 (Localisation) SUBJECT_GEOID_QNUMBER
 * P422 (Subject heading) SUBJECT_SUBID_QNUMBER
-* P73 (Note) NOTES
-* P799 (Dataset status) PhiloBiblon record created (Q80)
-:: qualifier P106 (Date) ENTERED
-:: qualifier P511 (Contributor) ENTERED BY
-* P799 (Dataset status) PhiloBiblon record updated (Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P511 (Contributor) UPDATED BY
-* P817 (Notes) EXTENDED_NOTES
-:: qualifier P700 (Refers to) NOTE
 * P146 (Online information) INTERNET_ADDRESS_URL
+:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
+:: qualifier P35 (Literal statement) INTERNET_SERVICE
+:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+* P438 (Online catalog) INTERNET_ADDRESS_CAT
+:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
+:: qualifier P35 (Literal statement) INTERNET_SERVICE
+:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+* P634 (DOI) INTERNET_ADDRESS_DOI
+:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
+:: qualifier P35 (Literal statement) INTERNET_SERVICE
+:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+* P378 (VIAF ID) INTERNET_ADDRESS_VIAF
 :: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
 :: qualifier P35 (Literal statement) INTERNET_SERVICE
 :: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
@@ -164,795 +136,642 @@
 :: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
 :: qualifier P35 (Literal statement) INTERNET_SERVICE
 :: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P131 (Research projects) BETA / ... (Q49409)
-:: P700 (Refers to) PhiloBiblon Object (Q76)
-* P17 (Dataset complaint)
+* P799 (Dataset status) STATUS_QNUMBER
+* P799 (Dataset status) PhiloBiblon record created (Q14)
+:: qualifier P106 (Date) ENTERED
+
+[[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 20:25, 28 March 2024 (UTC)
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 03:11, 28 January 2024 (UTC)
 
-==== bioid ====
+==== bioid (Biography) ====
 * P2 (Instance of) Human (pb.cog Q49418; FG Q7)
-* P476 (PhiloBiblon ID) BIOID
 * P154 (Gender) SEX_QNUMBER
 * P34 (Naming) EXPANDED_NAME
 :: qualifier P700 (Refers to) NAME_CLASS_QNUMBER
-:: qualifier P155 (* Qualifier?) NAME_Q
+:: qualifier P789 (Name ordinal) NAME_NUMBER_QNUMBER
+:: qualifier P745 (Honorific prefix) (NAME_HONORIFIC_QNUMBER
+:: qualifier P784 (Additional name attributes) NAME_EPITHET
+:: qualifier P4 (* Qualifier?) NAME_Q
 :: qualifier P49 (Begin date) NAME_BD
 :: qualifier P787 (Precision of begin date) NAME_BDQ
 :: qualifier P50 (End date) NAME_ED
 :: qualifier P788 (Precision of end date) NAME_EDQ
-:: qualifier P721 (Source [string] NAME_BASIS
-*P248 (Given name) NAME_FIRST
-*P247 (Surname) NAME_LAST
-*P789 (Name ordinal) NAME_NUMBER
-*P745 (Honorific prefix (NAME_HONORIFIC_QNUMBER
-*P171 (Public awards and titles) TITLE_QNUMBER
+:: qualifier P721 (* Source) NAME_BASIS
+* P35 (Literal statement) EXPANDED_TITLE_QNUMBER
 :: qualifier P215 (Aristocratic tenures) TITLE_NUMBER_QNUMBER
-:: qualifier P73 (Note) Needs EXPANDED TITLE: NUMBER, TITLE, CONNECTOR, GEOID
-:: qualifier P73 (NOTE) TITLE CONNECTOR
-:: qualifier P47 (Localisation) TITLE_GEOID_QNUMBER
-:: qualifier P155 (* Qualifier) TITLE_Q
+:: qualifier P4 (* Qualifier) TITLE_Q
 :: qualifier P49 (Begin date) TITLE_BD
 :: qualifier P787 (Precision of begin date) TITLE_BDQ
 :: qualifier P50 (End date) TITLE_ED
 :: qualifier P788 (Precision of end date) TITLE_EDQ
-:: qualifier P721 (Source [string] TITLE_BASIS
+:: qualifier P721 (* Source) TITLE_BASIS
 * P137 (History) MILESTONE_CLASS_QNUMBER
 :: qualifier P73 (NOTE) MILESTONE_DETAIL
 :: qualifier P47 (Localisation) MILESTONE_GEO_ID_QNUMBER
-:: qualifier P155 (* Qualifier) MILESTONE_GEOIDQ
+:: qualifier P4 (* Qualifier) MILESTONE_GEOIDQ
 :: qualifier P49 (Begin date) MILESTONE_BD
 :: qualifier P787 (Precision of begin date) MILESTONE_BDQ
 :: qualifier P50 (End date) MILESTONE_ED
 :: qualifier P788 (Precision of end date) MILESTONE_EDQ
-:: qualifier P721 (Source [string] MILESTONE_BASIS
+:: qualifier P721 (* Source) MILESTONE_BASIS
 * P165 (Career statement) AFFILIATION_TYPE_PRO_QNUMBER
 :: qualifier P73 (NOTE) AFFILIATION_Q
 :: qualifier P47 (Localisation) AFFILIATION_GEO_ID_QNUMBER
-:: qualifier P155 (* Qualifier) AFFILIATION_GEOIDQ
+:: qualifier P4 (* Qualifier) AFFILIATION_GEOIDQ
 :: qualifier P49 (Begin date) AFFILIATION_BD
 :: qualifier P787 (Precision of begin date) AFFILIATION_BDQ
 :: qualifier P50 (End date) AFFILIATION_ED
 :: qualifier P788 (Precision of end date) AFFILIATION_EDQ
-:: qualifier P721 (Source [string] AFFILIATION_BASIS
+:: qualifier P721 (* Source) AFFILIATION_BASIS
 * P746 (Religious order) AFFILIATION_TYPE_ORD_QNUMBER
 :: qualifier P73 (NOTE) AFFILIATION_Q
 :: qualifier P47 (Localisation) AFFILIATION_GEO_ID_QNUMBER
-:: qualifier P155 (* Qualifier) AFFILIATION_GEOIDQ
+:: qualifier P4 (* Qualifier) AFFILIATION_GEOIDQ
 :: qualifier P49 (Begin date) AFFILIATION_BD
 :: qualifier P787 (Precision of begin date) AFFILIATION_BDQ
 :: qualifier P50 (End date) AFFILIATION_ED
 :: qualifier P788 (Precision of end date) AFFILIATION_EDQ
-:: qualifier P721 (Source [string] AFFILIATION_BASIS
-* P712 (Religious background) AFFILIATION_TYPE_REL_QNUMBER
+:: qualifier P721 (* Source) AFFILIATION_BASIS
+* P172 (Religious background) AFFILIATION_TYPE_REL_QNUMBER
 :: qualifier P73 (NOTE) AFFILIATION_Q
 :: qualifier P47 (Localisation) AFFILIATION_GEO_ID_QNUMBER
-:: qualifier P155 (* Qualifier) AFFILIATION_GEOIDQ
+:: qualifier P4 (* Qualifier) AFFILIATION_GEOIDQ
 :: qualifier P49 (Begin date) AFFILIATION_BD
 :: qualifier P787 (Precision of begin date) AFFILIATION_BDQ
 :: qualifier P50 (End date) AFFILIATION_ED
 :: qualifier P788 (Precision of end date) AFFILIATION_EDQ
-:: qualifier P721 (Source [string] AFFILIATION_BASIS
-* P703 (Associated persons) RELATED_BIOID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_BIOCLASS_QNUMBER
+:: qualifier P721 (* Source) AFFILIATION_BASIS
+* P703 (Associated persons) RELATED_BIOID_SUBJECT_QNUMBER
+:: qualifier P277 (Subject has role) RELATED_BIOCLASS_QNUMBER
+:: qualifier P820 (Object has role) RELATED_BIOCLASS_QNUMBER
 :: qualifier P73 (NOTE) RELATED_BIODETAIL
-:: qualifier P155 (* Qualifier) RELATED_BIOIDQ
+:: qualifier P4 (* Qualifier) RELATED_BIOIDQ
 :: qualifier P49 (Begin date) RELATED_BIOBD
 :: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
 :: qualifier P50 (End date) RELATED_BIOED
 :: qualifier P788 (Precision of end date) RELATED_BIOEDQ
-:: qualifier P721 (Source [string] RELATED_BIOBASIS
+:: qualifier P721 (* Source) RELATED_BIOBASIS
 * P232 (Institutions mentioned) RELATED_INSID_QNUMBER
-:: qualifier P820 (Subject has role) RELATED_INSCLASS_QNUMBER
+:: qualifier P277 (Subject has role) RELATED_INSCLASS_QNUMBER
 :: qualifier P73 (NOTE) RELATED_INSDETAIL
-:: qualifier P155 (* Qualifier) RELATED_INSIDQ
+:: qualifier P4 (* Qualifier) RELATED_INSIDQ
 :: qualifier P49 (Begin date) RELATED_INSBD
 :: qualifier P787 (Precision of begin date) RELATED_INSBDQ
 :: qualifier P50 (End date) RELATED_INSED
 :: qualifier P788 (Precision of end date) RELATED_INSEDQ
-:: qualifier P721 (Source [string] RELATED_INSBASIS
+:: qualifier P721 (* Source) RELATED_INSBASIS
 * P750 (Related object) RELATED_MANID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_MANCLASS_QNUMBER
 :: qualifier P105 (Volume) RELATED_MANVOL
 :: qualifier P577 (Physical description) RELATED_MANLOC
 :: qualifier P90 (Number) RELATED_MANITEM
-* P73 (Note) NOTES
 * P12 (Secondary literature) RELATED_BIBID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
-:: qualifier P90 (Number) RELATED_BIBITEM
+::qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
+::qualifier P105 (Volume) RELATED_BIBVOL
+::qualifier P54 (Page(s)) RELATED_BIBLOC
+::qualifier P90 (Number) RELATED_BIBITEM
 * P47 (Localisation) SUBJECT_GEOID_QNUMBER
 * P232 (Subjects mentiond) SUBJECT_INSID_QNUMBER
 * P422 (Subject heading) SUBJECT_SUBID
-* P799 (Dataset status) PhiloBiblon record created (Q80)
-:: qualifier P106 (Date) ENTERED
-:: qualifier P511 (Contributor) ENTERED BY
-* P799 (Dataset status) PhiloBiblon record updated (Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P511 (Contributor) UPDATED BY
-* P817 (Notes) EXTENDED_NOTES
-:: qualifier P700 (Refers to) NOTE
 * P146 (Online information) INTERNET_ADDRESS_URL
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P722 (Email address) INTERNET_ADDRESS_EMA
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
 * P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P131 (Research projects) BETA / ... (Q49409)
-:: P700 (Refers to) PhiloBiblon Object (Q76)
-* P17 (Dataset complaint)
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+* P634 (DOI) INTERNET_ADDRESS_DOI
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+* P799 (Dataset status) PhiloBiblon record created (Q14)
+::qualifier P106 (Date) ENTERED
 
-==== copies ====
-* P2 (Instance of) Printed matter
-* P476 (PhiloBiblon ID) COPID
-* P329 (Present holding) RELATED_LIBID_QNUMBER
-:: qualifier P155 (* Qualifier) RELATED_LIBID_Q
-:: qualifier P324 (Contains documents of) RELATED_LIBCOLLECTION # P324 takes ITEM
-:: qualifier P721 (Source [string] RELATED_LIBBASIS
-:: qualifier P10 (Inventory position) RELATED_LIBCALLNO_C
-:: qualifier P802 (Alternate shelfmark) RELATED_LIBCALLNO_A
-:: qualifier P806 (Reference code) RELATED_LIBCALLNO_E
-:: qualifier P30 (Old inventory position) RELATED_LIBCALLNO_F
-:: qualifier P805 (Barcode) RELATED_LIBCALLNO_B
-:: qualifier P804 (Inventory number) RELATED_LIBCALLNO_I
-:: qualifier P803 (Registry number) RELATED_LIBCALLNO_R
-:: qualifier P1004 (CIBN1945 ID) RELATED_LIBCALLNO_CIBN45
-* P480 (Writing surface) MATERIAL_QNUMBER
-:: qualifier P721 (* Source) MATERIAL_BASIS
-* P93 (Format) FORMAT_QNUMBER
+====copid (Copies)====
+*P2 (Instance of) Printed matter
+*P839 (edition / production model) TEXT_MANID_QNUMBER
+*P329 (Present holding) RELATED_LIBID_QNUMBER
+:: qualifier P4 (* Qualifier) RELATED_LIBID_Q
+:: qualifier P1054 (* Colección) RELATED_LIBCOLLECTION
+:: qualifier P721 (* Source) RELATED_LIBBASIS
+*P10 (Inventory position) RELATED_LIBCALLNO_C
+*P802 (Alternate shelfmark) RELATED_LIBCALLNO_A
+*P30 (Old inventory position) RELATED_LIBCALLNO_F
+*P806 (Reference code) RELATED_LIBCALLNO_E
+*P804 (Inventory number) RELATED_LIBCALLNO_I
+*P803 (Registry number) RELATED_LIBCALLNO_R
+*P1004 (CIBN1945 ID) RELATED_LIBCALLNO_CIBN45
+*P805 (Barcode) RELATED_LIBCALLNO_B
+*P5 (Title page transcript) TITLE
+:: qualifier P4 (* Qualifier) TITLE_LOC
+*P56 (Nickname) TITLE_NICKNAME
+*P480 (Writing surface) MATERIAL_QNUMBER
+::qualifier P721 (* Source) MATERIAL_BASIS
+*P93 (Format) FORMAT_QNUMBER
 :: qualifier P721 (* Source) FORMAT_BASIS
-* P770 (State (bibliographical) STATE
-:: qualifier P721 (* Source) STATE_BASIS
-* P800 (Binding*) BINDING
-:: qualifier P721 (* Source) BINDING_BASIS
-* P769 (Condition (bibliographical) CONDITION
-:: qualifier P721 (* Source) CONDITION_BASIS
-* P577 (Physical description) LEAF_COUNT
-:: qualifier P700 (Refers to) LEAF_CLASS_QNUMBER
-:: qualifier P721 (* Source) LEAF_BASIS
-* P704 (Collation) COLLATION
-:: qualifier P721 (* Source) COLLATION_BASIS
-* P543 (Segmentation) SIZE_CLASS_QNUMBER
-:: qualifier P59 (Height (measure of vertical difference) SIZE_HEIGHT
+*P770 (State (bibliographical) STATE
+::qualifier P721 (* Source) STATE_BASIS
+*P800 (Binding*) BINDING
+::qualifier P721 (* Source) BINDING_BASIS
+*P769 (Condition (bibliographical) CONDITION
+::qualifier P721 (* Source) CONDITION_BASIS
+*P577 (Physical description) LEAF_COUNT
+::qualifier P700 (Refers to) LEAF_CLASS_QNUMBER
+::qualifier P721 (* Source) LEAF_BASIS
+*P704 (Collation) COLLATION
+::qualifier P721 (* Source) COLLATION_BASIS
+*P543 (Segmentation) SIZE_CLASS_QNUMBER
+::qualifier P59 (Height (measure of vertical difference) SIZE_HEIGHT
 :: qualifier P60 (Width) SIZE_WIDTH
-:: qualifier P577 (Physical description) SIZE_LOC
-:: qualifier P721 (Source [string]) SIZE_BASIS
-* P481 (Page layout) PAGE_CLASS_QNUMBER
-:: qualifier P73 (Note) PAGE_DETAIL)
-:: qualifier P54 (Page(s) PAGE_LOC
-:: qualifier P721 (Source [string]) PAGE_BASIS
-* P748 (Typeface) FONT_CLASS_QNUMBER
-:: qualifier P73 (Note) FONT_DETAIL)
-:: qualifier P54 (Page(s) FONT_LOC
-:: qualifier P721 (Source [string]) FONT_BASIS
-* P749 (Watermark) WATERMARK_CLASS_QNUMBER
-:: qualifier P73 (Note) WATERMARK_DETAIL)
-:: qualifier P100 (Folio(s) WATERMARK_LOC
-:: qualifier P721 (Source [string]) WATERMARK_BASIS
-* P801 (Visual work component) GRAPHIC_CLASS_QNUMBER
-:: qualifier P73 (Note) GRAPHIC_DETAIL)
-:: qualifier P54 (Page(s) GRAPHIC_LOC
-:: qualifier P721 (Source [string]) GRAPHIC_BASIS
-* P778 (Physical feature) FEATURE_CLASS_QNUMBER
-:: qualifier P73 (Note) FEATURE_DETAIL)
-:: qualifier P54 (Page(s) FEATURE_LOC
-:: qualifier P721 (Source [string]) FEATURE_BASIS
-* P137 (History) RELATEDLIBEVENTCLASS_QNUMBER
-:: qualifier P73 (NOTE) RELATEDLIBEVENT_DETAIL
-:: qualifier P545 (Value / Price) RELATEDLIBEVENT_PRICE RELATEDLIBEVENT_CURRENCY
-:: qualifier P47 (Localisation) RELATEDLIBEVENTGEOID_QNUMBER
-:: qualifier P155 (* Qualifier?) RELATEDLIBEVENTGEOIDQ
-:: qualifier P49 (Begin date) RELATEDLIBEVENTBD
+::qualifier P577 (Physical description) SIZE_LOC
+::qualifier P721 (* Source) SIZE_BASIS
+*P481 (Page layout) PAGE_CLASS_QNUMBER
+::qualifier P73 (Note) PAGE_DETAIL)
+::qualifier P54 (Page(s) PAGE_LOC
+::qualifier P4 (* Qualifier) PAGE_Q
+::qualifier P721 (* Source) PAGE_BASIS
+*P748 (Typeface) FONT_CLASS_QNUMBER
+::qualifier P73 (Note) FONT_DETAIL)
+::qualifier P54 (Page(s) FONT_LOC
+::qualifier P721 (* Source) FONT_BASIS
+*P749 (Watermark) WATERMARK_CLASS_QNUMBER
+::qualifier P73 (Note) WATERMARK_DETAIL)
+::qualifier P100 (Folio(s) WATERMARK_LOC
+::qualifier P4 (* Qualifier) WATERMARK_Q
+::qualifier P721 (* Source) WATERMARK_BASIS
+*P801 (Visual work component) GRAPHIC_CLASS_QNUMBER
+::qualifier P73 (Note) GRAPHIC_DETAIL)
+::qualifier P54 (Page(s) GRAPHIC_LOC
+::qualifier P721 (* Source) GRAPHIC_BASIS
+*P778 (Physical feature) FEATURE_CLASS_QNUMBER
+::qualifier P73 (Note) FEATURE_DETAIL)
+::qualifier P54 (Page(s) FEATURE_LOC
+::qualifier P721 (* Source) FEATURE_BASIS
+*P229 (Provenance) OWNER_ID_QNUMBER
+::qualifier P4 (* Qualifier) OWNER_IDQ
+::qualifier P30 (Old inventory position) OWNER_CALLNO
+::qualifier P73 (NOTE) OWNER_ARMS
+::qualifier P545 (Value / Price) OWNER_PRICE OWNER_CURRENCY
+::qualifier P47 (Localisation) OWNER_GEO_ID_QNUMBER
+::qualifier P49 (Begin date) OWNER_BD
+::qualifier P787 (Precision of begin date) OWNER_BDQ
+::qualifier P50 (End date) OWNER_ED
+::qualifier P788 (Precision of end date) OWNER_EDQ
+::qualifier P721 (* Source) OWNER_BASIS
+*P137 (History) RELATEDLIBEVENTCLASS_QNUMBER
+::qualifier P73 (NOTE) RELATEDLIBEVENT_DETAIL
+::qualifier P545 (Value / Price) RELATEDLIBEVENT_PRICE RELATEDLIBEVENT_CURRENCY
+::qualifier P47 (Localisation) RELATEDLIBEVENTGEOID_QNUMBER
+::qualifier P4 (* Qualifier?) RELATEDLIBEVENTGEOIDQ
+::qualifier P49 (Begin date) RELATEDLIBEVENTBD
 :: qualifier P787 (Precision of begin date) RELATEDLIBEVENTBDQ
 :: qualifier P50 (End date) RELATEDLIBEVENTED
-:: qualifier P788 (Precision of end date) RELATEDLIBEVENTEDQ
-:: qualifier P721 (Source [string] RELATEDLIBEVENT_BASIS
-* P229 (Provenance) OWNER_ID_QNUMBER
-:: qualifier P155 (* Qualifier) OWNER_IDQ
-:: qualifier P30 (Old inventory position) OWNER_CALLNO
-:: qualifier P73 (NOTE) OWNER_ARMS
-:: qualifier P545 (Value / Price) OWNER_PRICE OWNER_CURRENCY
-:: qualifier P47 (Localisation) OWNER_GEO_ID_QNUMBER
-:: qualifier P49 (Begin date) OWNER_BD
-:: qualifier P787 (Precision of begin date) OWNER_BDQ
-:: qualifier P50 (End date) OWNER_ED
-:: qualifier P788 (Precision of end date) OWNER_EDQ
-:: qualifier P721 (Source [string] OWNER_BASIS
-* P703 (Associated persons) RELATED_BIOID_QNUMBER
-:: qualifier Object has role (P820) RELATED_BIOCLASS_QNUMBER
-:: qualifier Note (P73) RELATED_BIODETAIL
-:: qualifier * Qualifier (P155) RELATED_BIOIDQ
-:: qualifier Begin date (P49) RELATED_BIOBD
-:: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
-:: qualifier P721 (Source [string]) RELATED_BIOBASIS
-* P73 (Note) NOTES
-* P12 (Secondary literature) RELATED_BIBID_QNUMBER
+::qualifier P788 (Precision of end date) RELATEDLIBEVENTEDQ
+::qualifier P721 (* Source) RELATEDLIBEVENT_BASIS
+*P703 (Associated persons) RELATED_BIOID_QNUMBER
+::qualifier Object has role (P820) RELATED_BIOCLASS_QNUMBER
+::qualifier Note (P73) RELATED_BIODETAIL
+::qualifier P4 (Qualifier) RELATED_BIOIDQ
+::qualifier Begin date (P49) RELATED_BIOBD
+::qualifier P787 (Precision of begin date) RELATED_BIOBDQ
+::qualifier P721 (* Source) RELATED_BIOBASIS
+*P750 (Related object) RELATED_MANID_QNUMBER
+::qualifier P820 (Object has role) RELATED_MANCLASS_QNUMBER
+::qualifier P105 (Volume) RELATED_MANVOL
+::qualifier P577 (Physical Description) RELATED_MANLOC
+::qualifier P90 (Number) RELATED_MANITEM
+*P750 (Related object) RELATED_COPID_QNUMBER
+::qualifier P820 (Object has role) RELATED_COPCLASS_QNUMBER
+::qualifier P73 (Note) RELATED_COPDETAIL
+::qualifier P721 (* Source) RELATED_COPBASIS
+*P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
-:: qualifier P90 (Number) RELATED_BIBITEM
-* P750 (Related object) RELATED_MANID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_MANCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_MANVOL
-:: qualifier P577 (Physical Description) RELATED_MANLOC
-:: qualifier P90 (Number) RELATED_MANITEM
-* P750 (Related object) RELATED_COPID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_COPCLASS_QNUMBER
-:: qualifier P73 (Note) RELATED_COPDETAIL
-:: qualifier P721 (Source [string]) RELATED_COPBASIS
-* P703 (Associated persons) SUBJECT_BIOID
-* P47 (Localisation) SUBJECT_GEOID
-* P422 (Subject heading) SUBJECT_SUBID
-* P817 (Notes) EXTENDED_NOTES
-:: qualifier P5 (Title page transcript) TITLE
-:: qualifier P800 (Binding*) BINDING
-:: qualifier P704 (Condition (bibliographical) CONDITION
-:: qualifier P577 (Physical description) LEAF_COUNT
-:: qualifier P(Collation) COLLATION
-:: qualifier P721 (Source [string]) NOTE
-* P843 (FRBR entity class) WEMI Item: ejemplar de una publicación (pb.cog Q51136)
-* P146 (Online information) INTERNET_ADDRESS_URL
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P722 (Email address) INTERNET_ADDRESS_EMA
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+::qualifier P105 (Volume) RELATED_BIBVOL
+::qualifier P54 (Page(s)) RELATED_BIBLOC
+::qualifier P90 (Number) RELATED_BIBITEM
+*P703 (Associated persons) SUBJECT_BIOID
+*P47 (Localisation) SUBJECT_GEOID_QNUMBER
+*P422 (Subject heading) SUBJECT_SUBID_QNUMBER
+*P843 (FRBR entity class) WEMI Item: ejemplar de una publicación (pb.cog Q51136)
+*P146 (Online information) INTERNET_ADDRESS_URL
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
 *P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* PXXX (URI) INTERNET_ADDRESS_URI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P744 (URN formatter) INTERNET_ADDRESS_URN
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P131 (Research projects) BETA / ... (pb.cog Q49409)
-:: P700 (Refers to) PhiloBiblon Object (pb.cog Q76)
-* P799 (Dataset status) PhiloBiblon record created (Q80)
-:: qualifier P106 (Date) ENTERED
-:: qualifier P511 (Contributor) ENTERED BY
-* P799 (Dataset status) PhiloBiblon record updated (Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P511 (Contributor) UPDATED BY
-* P17 (Dataset complaint) PhiloBiblon automation pending (pb.cog Q77
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P799 (Dataset status) STATUS_QNUMBER
+*P799 (Dataset status) PhiloBiblon record created (Q14)
+::qualifier P106 (Date) ENTERED
 
-==== geoid ====
-* P2 (Instance of) TYPE_QNUMBER
-:: qualifier P3 (Subclass) CLASS_QNUMBER
-* P476 (PhiloBiblon ID) GEOID
-* P34 (Naming) NAME
-:: qualifier P49 (Begin date) NAME_BD
-:: qualifier P50 (End date) NAME_ED
-:: qualifier P721 (Source) NAME_BASIS
-* P48 (Coordinate location) LATITUDE
-* P48 (Coordinate location) LONGITUDE
-* P8 (Part of) RELATED_GEOID_P_QNUMBER
-:: qualifier P700 (Refers to) RELATED_GEOCLASS_QNUMBER
-:: qualifier P73 (NOTE) RELATED_GEODETAIL
-:: qualifier P49 (Begin Date) RELATED GEOID_BD
-:: qualifier P787 (Precision of begin date) RELATED GEOID_BDQ
-:: qualifier P50 (End Date) RELATED GEOID_ED
-:: qualifier P788 (Precision of end date) RELATED GEOID_EDQ
-:: qualifier P721 (Source) RELATED GEOID_BASIS
-* P432 (Said to be the same as) RELATED_GEOID_P_QNUMBER
-:: qualifier P700 (Refers to) RELATED_GEOCLASS_QNUMBER
-:: qualifier P73 (NOTE) RELATED_GEODETAIL
-:: qualifier P49 (Begin Date) RELATED GEOID_BD
-:: qualifier P787 (Precision of begin date) RELATED GEOID_BDQ
-:: qualifier P50 (End Date) RELATED GEOID_ED
-:: qualifier P788 (Precision of end date) RELATED GEOID_EDQ
-:: qualifier P721 (Source) RELATED GEOID_BASIS
-* P12 (Secondary literature) RELATED_BIBID_QNUMBER
+====geoid (Geography)====
+*P2 (Instance of) TYPE_QNUMBER
+::qualifier P3 (Subclass) CLASS_QNUMBER
+*P34 (Naming) NAME
+*P700 (Statement refers to) NAME_CLASS
+::qualifier P49 (Begin date) NAME_BD
+::qualifier P50 (End date) NAME_ED
+::qualifier P721 (Source) NAME_BASIS
+*P297 (Territorial affiliation) RELATED_GEOID_P_QNUMBER
+::qualifier P700 (Refers to) RELATED_GEOCLASS_QNUMBER
+::qualifier P73 (NOTE) RELATED_GEODETAIL
+::qualifier P49 (Begin Date) RELATED GEOID_BD
+::qualifier P787 (Precision of begin date) RELATED GEOID_BDQ
+::qualifier P50 (End Date) RELATED GEOID_ED
+::qualifier P788 (Precision of end date) RELATED GEOID_EDQ
+::qualifier P721 (Source) RELATED GEOID_BASIS
+*P493 (Said to be the same as) RELATED_GEOID_P_QNUMBER
+::qualifier P700 (Refers to) RELATED_GEOCLASS_QNUMBER
+::qualifier P73 (NOTE) RELATED_GEODETAIL
+::qualifier P49 (Begin Date) RELATED GEOID_BD
+::qualifier P787 (Precision of begin date) RELATED GEOID_BDQ
+::qualifier P50 (End Date) RELATED GEOID_ED
+::qualifier P788 (Precision of end date) RELATED GEOID_EDQ
+::qualifier P721 (Source) RELATED GEOID_BASIS
+*P740 (Related object) RELATED_MANID_QNUMBER
+::qualifier P700 (Refers to) RELATED_MANCLASS_QNUMBER
+::qualifier P105 (Volume) RELATED_MANVOL
+::qualifier P577 (Physical Description) RELATED_MANLOC
+::qualifier P90 (Number) RELATED_MANITEM
+*P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
-:: qualifier P90 (Number) RELATED_BIBITEM
-* P740 (Related object) RELATED_MANID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_MANCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_MANVOL
-:: qualifier P577 (Physical Description) RELATED_MANLOC
-:: qualifier P90 (Number) RELATED_MANITEM
-* P703 (Associated persons) SUBJECT_BIOID_QNUMBER
-* P232 (Institutions mentioned( SUBJECT_INSID_QNUMBER
-* P422 (Subject heading) SUBJECT_SUBID_QNUMBER
-* P817 (Notes) EXTENDED_NOTES
-:: qualifier (P721) NOTES
-* P146 (Online information) INTERNET_ADDRESS_URL
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P722 (Email address) INTERNET_ADDRESS_EMA
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* PXXX (URI) INTERNET_ADDRESS_URI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P744 (URN formatter) INTERNET_ADDRESS_URN
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P131 (Research projects) BETA / ... (pb.cog Q49409)
-:: P700 (Refers to) PhiloBiblon Object (pb.cog Q76)
-* P799 (Dataset status) PhiloBiblon record created (Q80)
-:: qualifier P106 (Date) ENTERED
-:: qualifier P511 (Contributor) ENTERED BY
-* P799 (Dataset status) PhiloBiblon record updated (Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P511 (Contributor) UPDATED BY
-* P17 (Dataset complaint) PhiloBiblon automation pending (pb.cog Q77
+::qualifier P105 (Volume) RELATED_BIBVOL
+::qualifier P54 (Page(s)) RELATED_BIBLOC
+::qualifier P90 (Number) RELATED_BIBITEM
+*P703 (Associated persons) SUBJECT_BIOID_QNUMBER
+*P232 (Institutions mentioned( SUBJECT_INSID_QNUMBER
+*P422 (Subject heading) SUBJECT_SUBID_QNUMBER
+*P146 (Online information) INTERNET_ADDRESS_URL
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P378 (VIAF) INTERNET_ADDRESS_VIAF
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P799 (Dataset status) PhiloBiblon record created (Q14)
+::qualifier P106 (Date) ENTERED
 
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 23:07, 1 February 2024 (UTC)
-==== insid ====
-* P2 (Instance of) CLASS
-:: qualifier P139 (parent organisation) TYPE
-* P2 (Instance of) Organisation (Q74)
-* P476 (PhiloBiblon ID) INSID
-* P34 (Name history) NAME
-:: qualifier P155 (* Qualifier?) NAME_Q
-:: qualifier P49 (Begin Date) NAME_BD
+
+====insid (Institutions)====
+*P2 (Instance of) CLASS_QNUMBER
+:: qualifier P139 (parent organisation) TYPE_QNUMBER
+*P34 (Name history) NAME
+:: qualifier (P700) NAME_CLASS_QNUMBER
+::qualifier P4 (* Qualifier?) NAME_Q
+::qualifier P49 (Begin Date) NAME_BD
 :: qualifier P787 (Precision of Begin Date) NAME_BDQ
-:: qualifier P50 (End Date) NAME_ED
+::qualifier P50 (End Date) NAME_ED
 :: qualifier P788 (Precision of End Date) NAME_EDQ
-:: qualifier P721 (Source [string]) NAME_BASIS
-* P137 (History) MILESTONE_CLASS
-:: qualifier P73 (Note) MILESTONE_
-:: qualifier P47 Localisation) MILESTONE_DETAIL
-:: qualifier P155 (how sure) MILESTONE_Q
-:: qualifier P49 (Begin Date) MILESTONE_BD
-:: qualifier P787 (Precision of Begin Date) MILESTONE_BDQ
+::qualifier P721 (* Source) NAME_BASIS
+*P137 (History) MILESTONE_CLASS
+::qualifier P73 (Note) MILESTONE_
+::qualifier P47 Localisation) MILESTONE_DETAIL
+:: qualifier P4 (* Qualifier) MILESTONE_Q
+::qualifier P49 (Begin Date) MILESTONE_BD
+::qualifier P787 (Precision of Begin Date) MILESTONE_BDQ
 :: qualifier P50 (End Date) MILESTONE_ED
-:: qualifier P788 (Precision of End Date) MILESTONE_EDQ
-:: qualifier P721 (Source [string]) MILESTONE_BASIS
-* P239 (Territorial affiliation) RELATED_GEOID
-:: qualifier P700 (Refers to)RELATED_GEOCLASS
-:: qualifier P73 (Note) RELATED_GEODETAIL
-:: qualifier P155 (how sure) RELATED_GEOIDQ
-:: qualifier P49 (Begin Date) RELATED_GEOBD
-:: qualifier P787 (Precision of Begin Date) RELATED_GEOBDQ
-:: qualifier P50 (End Date) RELATED_GEOED
-:: qualifier P788 (Precision of End Date) RELATED_GEOEDQ
-:: qualifier P721 (Source [string]) RELATED_GEOBASIS
-* P232 (Institution(s) mentioned) RELATED_INSID
-:: qualifier P155 (how sure) RELATED_INSIDQ
-:: qualifier P700 (Refers to) RELATED_INSCLASS
-:: qualifier P73 (NOTE) RELATED_INSDETAIL
-:: qualifier P49 (Begin Date) RELATED_INSBD
-:: qualifier P787 (Precision of Begin Date) RELATED_INSBDQ
-:: qualifier P50 (End Date) RELATED_INSED
-:: qualifier P788 (Precision of End Date) RELATED_INSEDQ
-:: qualifier P721 (Source [string]) RELATED_INSBASIS
-* P12 (Secondary literature) RELATED_BIBID
-:: qualifier P700 (Refers to RELATED_BIBCLASS
-:: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
-:: qualifier P90 (Number) RELATED_BIBITEM
-* P750 (Related object)
-:: qualifier P700 (Refers to) RELATED_MANCLASS
-:: qualifier P577 (Physical Description) RELATED_MANLOC
-* P703 (Associated persons) SUBJECT_BIOID
-* P47 (Localisation) SUBJECT_GEOID
-* P422 (Subject heading) SUBJECT_SUBID
-* P799 (Dataset status) PhiloBiblon record created (Q80)
-:: qualifier P106 (Date) ENTERED
-:: qualifier P511 (Contributor) ENTERED BY
-* P799 (Dataset status) PhiloBiblon record updated (Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P511 (Contributor) UPDATED BY
-* P817 (Notes) EXTENDEDNOTES
-:: qualifier P700 (Refers to) NO
-* P146 (Online information) INTERNET_ADDRESS_URL
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P722 (Email address) INTERNET_ADDRESS_EMA
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P131 (Research projects) BETA / ... (Q49409)
-:: qualifier P700 (Refers to) PhiloBiblon Object (Q76)
-* P17 (Dataset complaint)
+::qualifier P788 (Precision of End Date) MILESTONE_EDQ
+::qualifier P721 (* Source) MILESTONE_BASIS
+*P297 (Territorial localisation) RELATED_GEOID_QNUMBER
+::qualifier P700 (Refers to)RELATED_GEOCLASS
+::qualifier P73 (Note) RELATED_GEODETAIL
+::qualifier P4 (* Qualifier) RELATED_GEOIDQ
+::qualifier P49 (Begin Date) RELATED_GEOBD
+::qualifier P787 (Precision of Begin Date) RELATED_GEOBDQ
+::qualifier P50 (End Date) RELATED_GEOED
+::qualifier P788 (Precision of End Date) RELATED_GEOEDQ
+::qualifier P721 (* Source) RELATED_GEOBASIS
+*P232 (Institution(s) mentioned) RELATED_INSID_QNUMBER
+::qualifier P700 (Refers to) RELATED_INSCLASS_QNUMBER
+::qualifier P73 (NOTE) RELATED_INSDETAIL
+::qualifier P49 (Begin Date) RELATED_INSBD
+::qualifier P787 (Precision of Begin Date) RELATED_INSBDQ
+::qualifier P50 (End Date) RELATED_INSED
+::qualifier P788 (Precision of End Date) RELATED_INSEDQ
+::qualifier P721 (* Source) RELATED_INSBASIS
+*P750 (Related object) RELATED_MANID_QNUMBER
+::qualifier P820 (Object has relation) RELATED_MANCLASS_QNUMBER
+::qualifier P577 (Physical Description) RELATED_MANLOC
+*P12 (Secondary literature) RELATED_BIBID_QNUMBER
+::qualifier P700 (Refers to RELATED_BIBCLASS_QNUMBER
+::qualifier P105 (Volume) RELATED_BIBVOL
+::qualifier P54 (Page(s)) RELATED_BIBLOC
+::qualifier P90 (Number) RELATED_BIBITEM
+*P703 (Associated persons) SUBJECT_BIOID
+*P47 (Localisation) SUBJECT_GEOID_QNUMBER
+*P422 (Subject heading) SUBJECT_SUBID_QNUMBER
+*P146 (Online information) INTERNET_ADDRESS_URL
+::qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P722 (Email address) INTERNET_ADDRESS_EMA
+::qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P799 (Dataset status) PhiloBiblon record created (Q14)
+::qualifier P106 (Date) ENTERED
+
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 22:34, 30 November 2023 (UTC)
 
-==== libid ====
-* P2 (Instance of) CLASS_QNUMBER
-:: P3 (Subclass of) Organisation (Q74)
-* P476 (PhiloBiblon ID) LIBID
-* P34 (Naming) [es] NAME
-:: qualifier P700 (Refers to) NAME_CLASS_QNUMBER
-:: qualifier P155 (* Qualifier?) NAME_Q
-:: qualifier P49 (Begin Date) NAME_BD
+====libid (Library)====
+*P2 (Instance of) CLASS_QNUMBER
+*P34 (Naming) [und] NAME
+::qualifier P700 (Refers to) NAME_CLASS_QNUMBER
+::qualifier P49 (Begin Date) NAME_BD
 :: qualifier P787 (Precision of Begin Date) NAME_BDQ
-:: qualifier P50 (End Date) NAME_ED
+::qualifier P50 (End Date) NAME_ED
 :: qualifier P788 (Precision of End Date) NAME_EDQ
-:: qualifier P721 (Source) NAME_BASIS
-* P111 (Address [literal]) ADDRESS
-* P111 (Address [literal]) CITY
-* P111 (Address [literal]) STATE
-* P111 (Address [literal]) COUNTRY
-* P986 (Postal code) PCODE
-* P73 (Note) LIBRARY_HOURS
-* P73 (Note) LIBRARY_CLOSED
-* P73 (Note) LIBRARY_DOCUMENTS
-* P846 (Telephone number) PHONE
-:: qualifier P700 (Refers to) PHONE_LOC_QNUMBER
-* P232 Institution(s) mentioned) RELATED_INSID_QNUMBER
-:: qualifier P155 (* Qualifier) RELATED_INSIDQ
-:: qualifier P73 (Note) RELATED_INSDETAIL
-:: qualifier P721 (Notes) RELATED_INSBASIS
-* P12 (Secondary literature) RELATED_BIBID_QNUMBER
+::qualifier P721 (Source) NAME_BASIS
+*P153 (Address [literal]) ADDRESS
+*P153 (Address [literal]) CITY
+*P153 (Address [literal]) STATE
+*P153 (Address [literal]) COUNTRY
+*P153 (Postal code) PCODE
+*P73 (Note) LIBRARY_HOURS
+*P73 (Note) LIBRARY_CLOSED
+*P73 (Note) LIBRARY_DOCUMENTS
+*P846 (Telephone number) PHONE
+::qualifier P700 (Refers to) PHONE_LOC_QNUMBER
+*P232 Institution(s) mentioned) RELATED_INSID_QNUMBER
+::qualifier P700 (See also) RELATED_INSID_CLASS_QNUMBER
+::qualifier P4 (* Qualifier) RELATED_INSIDQ
+::qualifier P73 (Note) RELATED_INSDETAIL
+::qualifier P721 (Notes) RELATED_INSBASIS
+*P47 (Localisation) RELATED_GEOID_QNUMBER
+*P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
-:: qualifier P90 (Number) RELATED_BIBITEM
-* P703 (Associated persons) SUBJECT_BIOID
-* P47 (Localisation) SUBJECT_GEOID
-* P232 (Institution(s) mentioned) SUBJECT_INSID
+::qualifier P105 (Volume) RELATED_BIBVOL
+::qualifier P54 (Page(s)) RELATED_BIBLOC
+::qualifier P90 (Number) RELATED_BIBITEM
+*P703 (Associated persons) SUBJECT_BIOID
+*P47 (Localisation) SUBJECT_GEOID
+*P232 (Institution(s) mentioned) SUBJECT_INSID
 * P422 (Subject heading) SUBJECT_SUBID
-* P817 (Notes) EXTENDED_NOTES
-:: qualifier P700 (Refers to) NO
-* P146 (Online information) INTERNET_ADDRESS_URL
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P722 (Email address) INTERNET_ADDRESS_EMA
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P146 (Online information) INTERNET_ADDRESS_URL
+*P700 (Statement refers to) INTERNET_CLASS_QNUMBER)
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P722 (Email address) INTERNET_ADDRESS_EMA
+*P700 (Statement refers to) INTERNET_CLASS_QNUMBER)
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
 *P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-*P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P (URI) INTERNET_ADDRESS_URI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P (URN formatter) INTERNET_ADDRESS_URN
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P799 (Dataset status) PhiloBiblon record created (Q80)
-:: qualifier P106 (Date) ENTERED
-:: qualifier P721 (Source [string]) ENTERED BY
-* P799 (Dataset status) PhiloBiblon record updated (Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P721 (Source [string]) UPDATED BY
-* P131 (Research projects) BETA / ... (Q49409)
-:: P700 (Refers to) PhiloBiblon Object (Q76)
-* P17 (Dataset complaint)
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P799 (Dataset status) PhiloBiblon record created (Q14)
+::qualifier P106 (Date) ENTERED
 [[User:Charles Faulhaber|Charles Faulhaber]] ([[User talk:Charles Faulhaber|talk]]) 00:42, 3 February 2024 (UTC)
 
-==== manid ====
-* P2 (Instance of) # Manuscript (FG Q15) or Printed matter (FG Q16)
-:: Refers to (P700) CLASS_QNUMBER
-* P476 (PhiloBiblon ID) MANID
-* P329 (Present holding) RELATED_LIBID_QNUMBER
-:: qualifier P155 (* Qualifier) RELATED_LIBID_Q
-:: qualifier P1054 (* Contains documents of)
-:: qualifier P721 (* Source] RELATED_LIBBASIS
-:: qualifier P10 (Inventory position) RELATED_LIBCALLNO_C
-:: qualifier P802 (Alternate shelfmark) RELATED_LIBCALLNO_A
-:: qualifier P806 (Reference code) RELATED_LIBCALLNO_E
-:: qualifier P30 (Old inventory position) RELATED_LIBCALLNO_F
-:: qualifier P805 (Barcode) RELATED_LIBCALLNO_B
-:: qualifier P804 (Inventory number) RELATED_LIBCALLNO_I
-:: qualifier P803 (Registry number) RELATED_LIBCALLNO_R
-:: qualifier P1004 (CIBN1945 ID) RELATED_LIBCALLNO_CIBN45
-* P15 (Title page transcript) TITLE
-* P56 (Nickname) TITLE_NICKNAME
-* P47 (Localisation) MILESTONE_GEOID_QNUMBER
-:: qualifier P7155 (* Qualifier) MILESTONE_GEOIDQ
-:: qualifier P721 (* Source) MILESTONE_GEOIDBASIS
-* P241 (Place of publication) MILESTONE_GEOID_QNUMBER
-:: qualifier P7155 (* Qualifier) MILESTONE_GEOIDQ
-:: qualifier P721 (* Source) MILESTONE_GEOIDBASIS
-* P25 (Handwritten by) MILESTONE_MAKER_ID_QNUMBER
-:: qualifier P155 (* Qualifier) MILESTONE_MAKER_ID_Q
-:: qualifier P721 (*Source) MILESTONE_MAKERBASIS
-* P207 (Printed by) MILESTONE_MAKER_ID_QNUMBER
-:: qualifier P155 (* Qualifier) MILESTONE_MAKER_ID_Q
-:: qualifier P721 (*Source) MILESTONE_MAKERBASIS
-* P67 (Financed by) MILESTONE_FUNDER_ID_QNUMBER
-:: qualifier P155 (* Qualifier) MILESTONE_FUNDER_ID_Q
-:: qualifier P721 (*Source) MILESTONE_FUNDERBASIS
-* P536 (Date of Artifact) MILESTONE_BD
-* P536 (Date of Artifact) MILESTONE_ED
-:: qualifier P787 (* Precision of end date) MILESTONE_EDQ
-:: qualifier P721 (*Source) MILESTONE_BASIS
-* P222 (Date of Publication)  MILESTONE_BD
-* P222 (Date of Publication)  MILESTONE_ED
-* P229 (Provenance) OWNER_ID_QNUMBER
-:: qualifier P155 (* Qualifier) OWNER_IDQ
-:: qualifier P30 (Old inventory position) OWNER_CALLNO
-:: qualifier P73 (NOTE) OWNER_ARMS
-:: qualifier P545 (Value / Price) OWNER_PRICE OWNER_CURRENCY
-:: qualifier P47 (Localisation) OWNER_GEO_ID_QNUMBER
-:: qualifier P49 (Begin date) OWNER_BD
-:: qualifier P787 (Precision of begin date) OWNER_BDQ
-:: qualifier P50 (End date) OWNER_ED
-:: qualifier P788 (Precision of end date) OWNER_EDQ
-:: qualifier P721 (Source [string] OWNER_BASIS
-* P480 (Writing surface) MATERIAL_QNUMBER
-:: qualifier P721 (* Source) MATERIAL_BASIS
-* P93 (Format) FORMAT_QNUMBER
+====manid (MsEd) ====
+* P2 (Instance of) MILESTONE_CLASS_W_QNUMBER
+* P2 (Instance of) MILESTONE_CLASS_P_QNUMBER
+* P442 (Type of event) MILESTONE_CLASS_QNUMBER_W
+* P442 (Type of event) MILESTONE_CLASS_QNUMBER_P
+* P47 (localisation MILESTONE_GEOID_W_QNUMBER
+:: qualifier P4 (* Qualifier)
+:: qualifier P73 (NOTE) MILESTONE_GEOBASIS)
+* P25 (Handwritten by) MILESTONE_MAKER_ID_W_QNUMBER
+:: qualifier P35 (Literal) MILESTONE_MAKER_IDQ
+:: qualifier P721 (* Source) MILESTONE_MAKERBASIS_W
+:: qualifier P49 (Begin Date) MILESTONE_BD_W
+:: qualifier P787 (Precision of Begin Date) MILESTONE_BDQ_W
+:: qualifier P50 (End Date) MILESTONE_ED_W
+:: qualifier P788 (Precision of End Date) MILESTONE_BDQ_W
+:: qualifier P1053 (* Secondary literature) MILESTONE_BASIS_W
+* P241 (Place of publication) MILESTONE_GEOID_P_QNUMBER
+:: qualifier P4 (* Qualifier) MILESTONE_GEOIDQ
+:: qualifier P721 (* Source) MILESTONE_GEOBASIS
+*P207 (Printed by) MILESTONE_MAKER_ID_P_QNUMBER
+:: qualifier P35 (Literal) MILESTONE_MAKER_IDQ
+:: qualifier P721 (* Source) MILESTONE_MAKERBASIS
+:: qualifier P49(Begin Date) MILESTONE_BD_P
+:: qualifier P788 (Precision of Begin Date) MILESTONE_BDQ_P
+:: qualifier P50 (End Date) MILESTONE_ED_P
+:: qualifier P788 (Precision of End Date) MILESTONE_BDQ_P
+:: qualifier P1053 (* Secondary Literature) MILESTONE_BASIS_P
+*P67 (Financed by) MILESTONE_FUNDER_ID_QNUMBER
+::qualifier P4 (* Qualifier) MILESTONE_FUNDER_IDQ
+::qualifier P721 (* Source) MILESTONE_FUNDERBASIS
+*P329 (Present holding) RELATED_LIBID_QNUMBER
+:: qualifier P1054 (* Contains documents of) RELATED_LIBCOLLECTION
+:: qualifier P4 (* Qualifier) RELATED_LIBID_Q
+::qualifier P721 (* Source] RELATED_LIBBASIS
+*P10 (Inventory position) RELATED_LIBCALLNO_C
+*P802 (Alternate shelfmark) RELATED_LIBCALLNO_A
+*P30 (Old inventory position) RELATED_LIBCALLNO_F
+*P806 (Reference code) RELATED_LIBCALLNO_E
+*P804 (Inventory number) RELATED_LIBCALLNO_I
+*P803 (Registry number) RELATED_LIBCALLNO_R
+*P1004 (Incunables de la Biblioteca Nacional ID) RELATED_LIBCALLNO_CIBN45
+*P805 (Barcode) RELATED_LIBCALLNO_B
+*P5 (Title page transcript) TITLE
+:: qualifier P4 (* Qualifier) TITLE_LOC
+*P56 (Nickname) TITLE_NICKNAME
+*P480 (Writing surface) MATERIAL_QNUMBER
+::qualifier P721 (* Source) MATERIAL_BASIS
+*P93 (Format) FORMAT_QNUMBER
 :: qualifier P721 (* Source) FORMAT_BASIS
-* P770 (State (bibliographical) STATE
-:: qualifier P721 (* Source) STATE_BASIS
-* P800 (Binding*) BINDING
-:: qualifier P721 (* Source) BINDING_BASIS
-* P769 (Condition (bibliographical) CONDITION
-:: qualifier P721 (* Source) CONDITION_BASIS
-* P577 (Physical description) LEAF_COUNT
-:: qualifier P700 (Refers to) LEAF_CLASS_QNUMBER
-:: qualifier P721 (* Source) LEAF_BASIS
-* P704 (Collation) COLLATION
-:: qualifier P721 (* Source) COLLATION_BASIS
-* P543 (Segmentation) SIZE_CLASS_QNUMBER
-:: qualifier P59 (Height (measure of vertical difference) SIZE_HEIGHT
-:: qualifier P60 (Width) SIZE_WIDTH
-:: qualifier P577 (Physical description) SIZE_LOC
-:: qualifier P721 (Source [string]) SIZE_BASIS
-* P481 (Page layout) PAGE_CLASS_QNUMBER
-:: qualifier P73 (Note) PAGE_DETAIL)
-:: qualifier P54 (Page(s) PAGE_LOC
-:: qualifier P721 (Source [string]) PAGE_BASIS
-* P7 (Script style) HAND_CLASS_QNUMBER
-:: qualifier P73 (Note) HAND_DETAIL)
-:: qualifier P54 (Page(s) HAND_LOC
-:: qualifier P721 (Source [string]) FONT_BASIS
-* P748 (Typeface) FONT_CLASS_QNUMBER
-:: qualifier P73 (Note) FONT_DETAIL)
-:: qualifier P54 (Page(s) FONT_LOC
-:: qualifier P721 (Source [string]) FONT_BASIS
-* P749 (Watermark) WATERMARK_CLASS_QNUMBER
-:: qualifier P73 (Note) WATERMARK_DETAIL)
-:: qualifier P100 (Folio(s) WATERMARK_LOC
-:: qualifier P721 (Source [string]) WATERMARK_BASIS
-* P801 (Visual work component) GRAPHIC_CLASS_QNUMBER
-:: qualifier P73 (Note) GRAPHIC_DETAIL)
-:: qualifier P54 (Page(s) GRAPHIC_LOC
-:: qualifier P721 (Source [string]) GRAPHIC_BASIS
-* P (Musical notation) MUSIC_CLASS_QNUMBER
-:: qualifier P73 (Note) MUSIC_DETAIL)
-:: qualifier P54 (Page(s) MUSIC_LOC
-:: qualifier P721 (Source [string]) MUSIC_BASIS
-* P778 (Physical feature) FEATURE_CLASS_QNUMBER
-:: qualifier P73 (Note) FEATURE_DETAIL)
-:: qualifier P54 (Page(s) FEATURE_LOC
-:: qualifier P721 (Source [string]) FEATURE_BASIS
-* P137 (History) RELATEDLIBEVENTCLASS_QNUMBER
-:: qualifier P73 (NOTE) RELATEDLIBEVENT_DETAIL
-:: qualifier P545 (Value / Price) RELATEDLIBEVENT_PRICE RELATEDLIBEVENT_CURRENCY
-:: qualifier P47 (Localisation) RELATEDLIBEVENTGEOID_QNUMBER
-:: qualifier P155 (* Qualifier?) RELATEDLIBEVENTGEOIDQ
-:: qualifier P49 (Begin date) RELATEDLIBEVENTBD
+*P770 (State (bibliographical) STATE
+::qualifier P721 (* Source) STATE_BASIS
+*P800 (Binding*) BINDING
+::qualifier P721 (* Source) BINDING_BASIS
+*P769 (Condition (bibliographical) CONDITION
+::qualifier P721 (* Source) CONDITION_BASIS
+*P577 (Physical description) LEAF_COUNT
+::qualifier P700 (Refers to) LEAF_CLASS_QNUMBER
+::qualifier P721 (* Source) LEAF_BASIS
+*P704 (Collation) COLLATION
+::qualifier P721 (* Source) COLLATION_BASIS
+*P543 (Segmentation) SIZE_CLASS_QNUMBER (mm.)
+::qualifier P59 (Height (measure of vertical difference) SIZE_HEIGHT
+::qualifier P60 (Width) SIZE_WIDTH (mm.)
+::qualifier P577 (Physical description) SIZE_LOC
+::qualifier P721 (* Source) SIZE_BASIS
+*P481 (Page layout) PAGE_CLASS_QNUMBER
+::qualifier P73 (Note) PAGE_DETAIL)
+::qualifier P54 (Page(s) PAGE_LOC
+::qualifier P4 (* Qualifier) PAGE_Q
+::qualifier P721 (* Source) PAGE_BASIS
+*P747 (Script style) HAND_CLASS_QNUMBER
+::qualifier P73 (Note) HAND_DETAIL)
+::qualifier P54 (Page(s) HAND_LOC
+::qualifier P4 (* Qualifier) HAND_Q
+::qualifier P721 (* Source) HAND_BASIS
+*P748 (Typeface) FONT_CLASS_QNUMBER
+::qualifier P73 (Note) FONT_DETAIL)
+::qualifier P54 (Page(s) FONT_LOC
+::qualifier P721 (* Source) FONT_BASIS
+*P749 (Watermark) WATERMARK_CLASS_QNUMBER
+::qualifier P73 (Note) WATERMARK_DETAIL)
+::qualifier P100 (Folio(s) WATERMARK_LOC
+::qualifier P4 (* Qualifier)  WATERMARK_Q
+::qualifier P721 (* Source) WATERMARK_BASIS
+*P801 (Visual work component) GRAPHIC_CLASS_QNUMBER
+::qualifier P73 (Note) GRAPHIC_DETAIL)
+::qualifier P54 (Page(s) GRAPHIC_LOC
+::qualifier P721 (* Source) GRAPHIC_BASIS
+*P790 (Musical notation) MUSIC_CLASS_QNUMBER
+::qualifier P73 (Note) MUSIC_DETAIL)
+::qualifier P54 (Page(s) MUSIC_LOC
+::qualifier P721 (* Source) MUSIC_BASIS
+*P778 (Physical feature) FEATURE_CLASS_QNUMBER
+::qualifier P73 (Note) FEATURE_DETAIL)
+::qualifier P54 (Page(s) FEATURE_LOC
+::qualifier P721 (* Source) FEATURE_BASIS
+*P229 (Provenance) OWNER_ID_QNUMBER
+::qualifier P4 (* Qualifier) OWNER_IDQ
+::qualifier P30 (Old inventory position) OWNER_CALLNO
+::qualifier P73 (NOTE) OWNER_ARMS
+::qualifier P545 (Value / Price) OWNER_PRICE OWNER_CURRENCY
+::qualifier P47 (Localisation) OWNER_GEO_ID_QNUMBER
+::qualifier P49 (Begin date) OWNER_BD
+::qualifier P787 (Precision of begin date) OWNER_BDQ
+::qualifier P50 (End date) OWNER_ED
+::qualifier P788 (Precision of end date) OWNER_EDQ
+::qualifier P721 (* Source) OWNER_BASIS
+*P137 (History) RELATEDLIBEVENTCLASS_QNUMBER
+::qualifier P73 (NOTE) RELATEDLIBEVENT_DETAIL
+::qualifier P545 (Value / Price) RELATEDLIBEVENT_PRICE RELATEDLIBEVENT_CURRENCY
+::qualifier P47 (Localisation) RELATEDLIBEVENTGEOID_QNUMBER
+::qualifier P4 (* Qualifier?) RELATEDLIBEVENTGEOIDQ
+::qualifier P49 (Begin date) RELATEDLIBEVENTBD
 :: qualifier P787 (Precision of begin date) RELATEDLIBEVENTBDQ
 :: qualifier P50 (End date) RELATEDLIBEVENTED
-:: qualifier P788 (Precision of end date) RELATEDLIBEVENTEDQ
-:: qualifier P721 (Source [string] RELATEDLIBEVENT_BASIS
-* P703 (Associated persons) RELATED_BIOID_QNUMBER
-:: qualifier Object has role (P820) RELATED_BIOCLASS_QNUMBER
-:: qualifier Note (P73) RELATED_BIODETAIL
-:: qualifier * Qualifier (P155) RELATED_BIOIDQ
-:: qualifier Begin date (P49) RELATED_BIOBD
-:: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
-:: qualifier P721 (Source [string]) RELATED_BIOBASIS
-* P (Related object) RELATED_MANID_QNUMBER
-* P 9 (Includes) RELATED_UNIID_QNUMBER
-* P73 (Note) NOTES
-* P12 (Secondary literature) RELATED_BIBID_QNUMBER
+::qualifier P788 (Precision of end date) RELATEDLIBEVENTEDQ
+::qualifier P721 (* Source) RELATEDLIBEVENT_BASIS
+*P703 (Associated persons) RELATED_BIOID_QNUMBER
+::qualifier Object has role (P820) RELATED_BIOCLASS_QNUMBER
+::qualifier *Note (P73) RELATED_BIODETAIL
+::qualifier P4 (Qualifier) RELATED_BIOIDQ
+::qualifier P49 (Begin date) RELATED_BIOBD
+::qualifier P787 (Precision of begin date) RELATED_BIOBDQ
+::qualifier P50 *End date) RELATED_BIOED
+::qualifier P788 (Precision of end date) RELATED_BIOEDQ
+::qualifier P721 (* Source) RELATED_BIOBASIS
+*P9 (Includes) RELATED_UNIID_QNUMBER
+::qualifier P700 (Refers to) RELATED_UNICLASS_QNUMBER
+::qualifier P73 (NOTE) RELATED_UNIDETAIL
+::qualifier P18 (Language) RELATED_UNILANG
+::qualifier P721 (*Source) RELATED_UNIBASIS
+*P750 (Related object) RELATED_MANID_QNUMBER
+::qualifier P820 (Object has role) RELATED_MANCLASS_QNUMBER
+::qualifier P105 (Volume) RELATED_MANVOL
+::qualifier P577 (Physical Description) RELATED_MANLOC
+::qualifier P90 (Number) RELATED_MANITEM
+*P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
-:: qualifier P90 (Number) RELATED_BIBITEM
-* P750 (Related object) RELATED_MANID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_MANCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_MANVOL
-:: qualifier P577 (Physical Description) RELATED_MANLOC
-:: qualifier P90 (Number) RELATED_MANITEM
-* P750 (Related object) RELATED_COPID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_COPCLASS_QNUMBER
-:: qualifier P73 (Note) RELATED_COPDETAIL
-:: qualifier P721 (Source [string]) RELATED_COPBASIS
-* P703 (Associated persons) SUBJECT_BIOID
-* P47 (Localisation) SUBJECT_GEOID
-* P422 (Subject heading) SUBJECT_SUBID
-* P817 (Notes) EXTENDED_NOTES
-:: qualifier P5 (Title page transcript) TITLE
-:: qualifier P800 (Binding*) BINDING
-:: qualifier P704 (Condition (bibliographical) CONDITION
-:: qualifier P577 (Physical description) LEAF_COUNT
-:: qualifier P(Collation) COLLATION
-:: qualifier P721 (Source [string]) NOTE
-* P843 (FRBR entity class) WEMI Item: ejemplar de una publicación (pb.cog Q51136)
-* P146 (Online information) INTERNET_ADDRESS_URL
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+::qualifier P105 (Volume) RELATED_BIBVOL
+::qualifier P54 (Page(s)) RELATED_BIBLOC
+::qualifier P90 (Number) RELATED_BIBITEM
+*P703 (Associated persons) SUBJECT_BIOID
+*P47 (Localisation) SUBJECT_GEOID
+*P232 (Institution(s) mentioned) SUBJECT_INSID
+*P422 (Subject heading) SUBJECT_SUBID
+*P843 (FRBR entity class) WEMI Manifestation
+*P843 (FRBR entity class) WEMI Item ejemplar de una publicación (FG Q453706)
+*P146 (Online information) INTERNET_ADDRESS_URL
+::qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P146 (Online information) INTERNET_ADDRESS_URI
+::qualifier P700 (Refers to) INTERNET_CLASS_QNUMBER
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
 *P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* PXXX (URI) INTERNET_ADDRESS_URI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P131 (Research projects) BETA / ... (pb.cog Q49409)
-:: P700 (Refers to) PhiloBiblon Object (pb.cog Q76)
-* P799 (Dataset status) PhiloBiblon record created (Q80)
-:: qualifier P106 (Date) ENTERED
-:: qualifier P511 (Contributor) ENTERED BY
-* P799 (Dataset status) PhiloBiblon record updated (Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P511 (Contributor) UPDATED BY
-* P17 (Dataset complaint) PhiloBiblon automation pending (pb.cog Q77
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P799 (Dataset status) STATUS_QNUMBER
+*P799 (Dataset status) PhiloBiblon record created (Q14)
+::qualifier P106 (Date) ENTERED
 
-==== subid ====
-* P2 (Instance of) Subject heading (pb.cog Q49417)
-* P34 (Naming) [es] HEADING_MAIN_QNUMBER
-:: qualifier P721 (* Source) HM_BASIS
-* P73 (Note) HEADING_VARIANT
-:: qualifier P700 (Refers to) HV_CLASS_QNUMBER
-:: qualifier P721 (Source [string]) HV_BASIS
-:: qualifier p18 (Language) Español (cog.pb Q51050)
-* P8 (Part of) HB_SUBID_QNUMBER
-:: qualifier P721 (Source [string]) HB_BASIS
-* P750 (Related object) HR_SUBID_QNUMBER
-:: qualifier P721 (Source [string]) HR_BASIS
-* P12 (Secondary literature) RELATED_BIBID_QNUMBER
+====subid (Subject)====
+*P2 (Instance of) Subject heading (pb.cog Q51065)
+::qualifier P721 (* Source) HM_BASIS
+*P1031 (Literal translation) HEADING_VARIANT
+::qualifier P721 (* Source) HV_BASIS
+*P3 (Subclass of) HB_SUBID_QNUMBER
+:: qualifier P721 (* Source) HB_BASIS
+*P750 (Related object) HR_SUBID_QNUMBER
+::qualifier P721 (* Source) HR_BASIS
+*P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
-:: qualifier P90 (Number) RELATED_BIBITEM
-* P750 (Secondary literature) RELATED_MANID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_MANCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_MANVOL
-:: qualifier P577 (Physical Description) RELATED_MANLOC
-:: qualifier P90 (Number) RELATED_MANITEM
-* P73 (Note) NOTES
-* P476 (PhiloBiblon ID) SUBID
-* P799 (Dataset status) PhiloBiblon record created (pb.cog Q80)
-:: qualifier P106 (Date) ENTERED
-:: qualifier P721 (Source [string]) ENTEREDBY
-* P799 (Dataset status) PhiloBiblon record updated (pb.cog Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P721 (Source [string]) UPDATED BY
-* P17 (Dataset complaint)
+::qualifier P105 (Volume) RELATED_BIBVOL
+::qualifier P54 (Page(s)) RELATED_BIBLOC
+::qualifier P90 (Number) RELATED_BIBITEM
+*P146 (Online information) INTERNET_ADDRESS_URL
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of finding) INTERNET_LAST_SEEN
+*P799 (Dataset status) PhiloBiblon record created (pb.cog Q14)
+::qualifier P106 (Date) ENTERED
 
-==== texid ====
-* P2 (Instance of) Obra [WEMI Work] (pb.cog Q51132)
-* P121 (Type of work) CLASS_QNUMBER
-* P121 (Type of work) TYPE_QNUMBER
-* P476 (PhiloBiblon ID) TEXID
-* P21 (Author) AUTHOR_ID_QNUMBER)
-:: qualifier P155 (* Qualifier?) AUTHOR_IDQ
-:: qualifier P721 (Source [string]) AUTHOR_BASIS
-* P11 (Title) TITLE_UNIFORM
-:: qualifier P700 (Refers to) Title Uniform (pb.cog Q82895)
-:: qualifier P721 (Source [string]) TITLE_UNIFORM_BASIS
+====texid (Uniform_Title / Work) ====
+*P2 (Instance of) Obra [WEMI Work] (pb.cog Q51132)
+*P121 (Type of work) CLASS_QNUMBER
+::qualifier P721 (* Source)TYPE_QNUMBER
+*P21 (Author) AUTHOR_ID_QNUMBER)
+::qualifier P4 (* Qualifier) AUTHOR_IDQ
+::qualifier P721 (* Source) AUTHOR_BASIS
+*P11 (Title) TITLE_UNIFORM
+::qualifier P700 (Refers to) Uniform Title (pb.cog Q82895)
+::qualifier P721 (* Source) TITLE_UNIFORM_BASIS
 * P11 (Title) TITLE_VARIANT
-:: qualifier P700 (Refers to) Title Variant (pb.cog Q51162)
-:: qualifier P721 (Source [string]) TITLE_VARIANT_BASIS
+::qualifier P700 (Refers to) Variant Title (pb.cog Q51162)
+::qualifier P721 (* Source) TITLE_VARIANT_BASIS
 * P11 (Title) TITLE_TRANSLATED
-:: qualifier P700 (Refers to) Translated title  (Q82896)
-:: qualifier P700 (Refers to) Wemi Expression
-:: qualifier P721 (Source [string]) TITLE_TRANSLATED_BASIS
-* P543 (Segmentation) INC_EXP_CLASS_QNumber
-:: qualifier P70 (Incipit)INCIPIT
-:: qualifier P602 (Excipit) EXPLICIT
-* P18 (Language) LANGUAGE_TEXT_QNUMBER
-:: qualifier P700 (Refers to) Lengua del texto (pb.cog Q51139)
-* P18 (Language) LANGUAGE_ORIG_QNUMBER
-:: qualifier P700 (Refers to) Lengua original (pb.cog Q51140)
+::qualifier P700 (Refers to) Translated title  (Q82896)
+::qualifier P700 (Refers to) Wemi Expression
+::qualifier P721 (* Source) TITLE_TRANSLATED_BASIS
+*P543 (Segmentation) INC_EXP_CLASS_QNumber
+::qualifier P70 (Incipit)INCIPIT
+::qualifier P602 (Excipit) EXPLICIT
+*P18 (Language) LANGUAGE_TEXT_QNUMBER
+::qualifier P700 (Refers to) Text language (pb.cog Q51139)
+*P18 (Language) LANGUAGE_ORIG_QNUMBER
+::qualifier P700 (Refers to) Original language (pb.cog Q51140)
 * P18 (Language) LANGUAGE_INTR_QNUMBER
-:: qualifier P700 (Refers to) Lengua intermedia (pb.cog Q51141)
-* P781 (Poetic form) POETIC_FORM
-* P783 (Rhyme scheme) POETIC_STANZA
-* P703 (Associated persons) RELATED_BIOID_QNUMBER
-:: qualifier P820 (Object has role) RELATED_BIOCLASS_QNUMBER
-:: qualifier Note (P73) RELATED_BIODETAIL
-:: qualifier P155 (* Qualifier) RELATED_BIOIDQ
-:: qualifier P49 (Begin date) RELATED_BIOBD
-:: qualifier P787 (Precision of begin date) RELATED_BIOBDQ
-:: qualifier P50 (End date) RELATED_BIOED
-:: qualifier P788 (Precision of end date) RELATED_BIOEDQ
-:: qualifier P721 (Source [string]) RELATED_BIOBASIS
-* P740 (Extra-stemmatic relationship) RELATED_UNIID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_UNICLASS
-:: qualifier P73 (Note) RELATED_UNIDETAIL
-:: qualifier P721 (Source [string]) RELATED_UNIBASIS
-* P750 (Related object) RELATED_MANID_QNUMBER
-:: qualifier P700 (Refers to) RELATED_MANCLASS_QNUMBER
-:: qualifier Volume (P105) RELATED_MANVOL
-:: qualifier P577 (Physical Description) RELATED_MANLOC
-:: qualifier P90 (Number) RELATED_MANITEM
-* P12 (Secondary literature) RELATED_BIBID_QNUMBER
+::qualifier P700 (Refers to) Intermediate language (pb.cog Q51141)
+*P 137 (History) (MILESTONE_CLASS_QNUMBER
+::qualifier Note (P73) MILESTONE_DETAIL
+::qualifer Localisation (P47) MILESTONE_GEOID_QNUMBER
+::qualifier P4 (* Qualifier) MILESTONE_GEOID_IDQ
+::qualifier P49 (Begin date) MILESTONE_BD
+::qualifier P787 (Precision of begin date) MILESTONE_BDQ
+:: qualifier P50 (End date) MILESTONE_ED
+::qualifier P788 (Precision of end date) MILESTONE_EDQ
+::qualifier P721 (* Source) MILESTONE_BASIS
+*P703 (Associated persons) RELATED_BIOID_QNUMBER
+::qualifier P820 (Object has role) RELATED_BIOCLASS_QNUMBER
+::qualifier Note (P73) RELATED_BIODETAIL
+::qualifier P4 (* Qualifier) RELATED_BIOIDQ
+::qualifier P49 (Begin date) RELATED_BIOBD
+::qualifier P787 (Precision of begin date) RELATED_BIOBDQ
+::qualifier P50 (End date) RELATED_BIOED
+::qualifier P788 (Precision of end date) RELATED_BIOEDQ
+::qualifier P721 (* Source) RELATED_BIOBASIS
+:*P781 (Poetic form) METRICS_LENGTH
+:*P781 (Poetic form) METRICS_RHYME
+:*
+*P740 (Extra-stemmatic relationship) RELATED_UNIID_QNUMBER
+::qualifier P700 (Refers to) RELATED_UNICLASS
+::qualifier P73 (Note) RELATED_UNIDETAIL
+::qualifier P721 (* Source) RELATED_UNIBASIS
+*P750 (Related object) RELATED_MANID_QNUMBER
+::qualifier P700 (Refers to) RELATED_MANCLASS_QNUMBER
+::qualifier Volume (P105) RELATED_MANVOL
+::qualifier P577 (Physical Description) RELATED_MANLOC
+::qualifier P90 (Number) RELATED_MANITEM
+*P12 (Secondary literature) RELATED_BIBID_QNUMBER
 :: qualifier P700 (Refers to) RELATED_BIBCLASS_QNUMBER
-:: qualifier P105 (Volume) RELATED_BIBVOL
-:: qualifier P577 (Physical Description) RELATED_BIBLOC
-:: qualifier P90 (Number) RELATED_BIBITEM
-* P703 (Associated persons) SUBJECT_BIOID_QNUMBER
-* P47 (Localisation) SUBJECT_GEOID_QNUMBER
-* P232 (Institutions mentioned) SUBJECT_INSID_QNUMBER
-* P422 (Subject heading) SUBJECT_SUBID_QNUMBER
-* P843 (FRBR entity class) WEMI Expression (Q51133)
-* P817 (Notes) EXTENDED_NOTES
-:: qualifier P11 (Title) TEXT_TITLE
-:: qualifier P60 (Incipit) INCIPIT
-:: qualifier P602 (Excipit)  EXPLICIT
-:: qualifier P721 (Source [string]) NOTE
-* P146 (Online information) INTERNET_ADDRESS_URL
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P722 (Email address) INTERNET_ADDRESS_EMA
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P378 (VIAF) INTERNET_ADDRESS_VIAF
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P438 (Online catalog) INTERNET_ADDRESS_CAT
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P634 (DOI) INTERNET_ADDRESS_DOI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P (URI) INTERNET_ADDRESS_URI
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P (URN formatter) INTERNET_ADDRESS_URN
-:: qualifier P35 (Literal statement) INTERNET_SERVICE
-:: qualifier P432 (Date of Finding) INTERNET_LASTSEEN
-* P131 (Research projects) BETA / ... (pb.cog Q49409)
-:: P700 (Refers to) PhiloBiblon Object (pb.cog Q76)
-* P799 (Dataset status) PhiloBiblon record updated (pb.cog Q81)
-:: qualifier P106 (Date) UPDATED
-:: qualifier P511 (Contributor) UPDATED BY
-* P17 (Dataset complaint)
+::qualifier P105 (Volume) RELATED_BIBVOL
+::qualifier P54 (Page(s)) RELATED_BIBLOC
+::qualifier P90 (Number) RELATED_BIBITEM
+*P703 (Associated persons) SUBJECT_BIOID_QNUMBER
+*P47 (Localisation) SUBJECT_GEOID_QNUMBER
+*P232 (Institutions mentioned) SUBJECT_INSID_QNUMBER
+*P422 (Subject heading) SUBJECT_SUBID_QNUMBER
+*P843 (FRBR entity class) WEMI Work
+*P146 (Online information) INTERNET_ADDRESS_URL
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P722 (Email address) INTERNET_ADDRESS_EMA
+::qualifier P35 (Literal statement) INTERNET_SERVICE
+::qualifier P432 (Date of Finding) INTERNET_LASTSEEN
+*P799 (Dataset status) PhiloBiblon record created (Q14)
+::qualifier P106 (Date) ENTERED

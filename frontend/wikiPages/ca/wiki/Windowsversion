@@ -1,0 +1,193 @@
+<nowiki><h1>Versió Windows</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>Els usuaris que compraren l'edició de 1999 de Philobiblon i desitgin rebre un CD-ROM de la base de datos completa actual, descrita més endavant, han de posar-se en contacte amb Charles Faulhaber (cfaulhab[at]library.berkeley.edu).</p></nowiki>
+
+<nowiki><p>La base de dades PhiloBiblon s'estructura sobre deu taules interrelacionades. Cadascuna d'elles serveix com a arxiu mestre de les altres nou a l'hora de la seva indexació. Les quatre taules centrals del sistema són:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>UNIFORM TITLE: (títol uniforme o títol bàsic) és la versió normalitzada i actualitzada dels noms de l'autor i del títol de l'obra. Normalment, també es recullen les variants del títol més conegudes, així com els incipit i explicit de l'obra normalitzats. En aquesta taula també s'inclouen les dates (composició, traducció, còpia, etc.), la (les) llengua (llengües) de l'obra, les persones associades amb ella i també la relació d'aquesta obra amb d'altres textos.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>MS_ED: (manuscrit o imprès) es correspon amb la font primària d'una obra, manuscrita o impresa. Aquí podem trobar informació sobre la localització actual del còdex o llibre, les signatures actuals i antigues, descripcions codicològiques i bibliogràfiques, així com informació referent als propietaris anteriors del volum i a d'altres individus relacionats amb ell. Les relacions entre aquesta font primària i altres testimonis impresos o manuscrits de l'obra també es recullen en aquesta taula.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>COPIES: (còpies) es tracta d'una taula complementària a MS_ED, creada per assenyalar l'existència de còpies addicionals d'una edició impresa determinada. D'aquesta forma en aquesta taula es pot trobar informació sobre la localització actual, signatura, condició física i posseïdors anteriors d'un imprès concret.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>ANALYTIC: (anàlísi intern) és la descripció completa d'un text trobat en un manuscrit específic o en una edició impresa. Contràriament a UNIFORM TITLE, aquestes fitxes contenen la forma exacta del títol i de l'incipit i explicit, juntament al lloc específic que ocupen en el manuscrit o imprés (folis, pàgines, etc.). En resum, la fitxa analítica, com el seu propi nom indica, analitza tot el contingut particular d'un imprés o d'un manuscrit concret.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Les altres sis taules que complementen a les principals són:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>BIBLIOGRAPHY: (bibliografia) conté tots aquelles referències relatives a la bibliografia secundària (p. e. catàlegs, edicions, descripcions, estudis i anàlisis crítiques).</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>BIOGRAPHY: (biografia) conté informació biogràfica de totes aquelles persones relacionades d'una forma o d'altra amb els textos i fonts primàries catalogats en la base de dades: autors, traductors, copistes, impresors, mecenes, relligadors, iluminadors, propietaris (antics o moderns), etc.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>GEOGRAPHY: (toponímia) conté informació sobre llocs, regions, antigues circumscripcions polítiques o eclesiàstiques (comtat, ducat, diòcesi, etc.), regnes o nacions vinculats de qualsevol forma als textos, als manuscrits, impresos, persones o institucions que es troben catalogades a la base de dades.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>INSTITUTIONS: (institucions) conté informació sobre convents, monestirs, biblioteques, ordes religioses o militars, universitats, etc., relacionades de qualsevol manera amb els textos o amb les persones catalogats a la base de dades, inclosos els antics posseïdors de còdexs o els seus editors.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>LIBRARY: (biblioteca) conté informació sobre les biblioteques que posseeixen fonts primàries o bibliografia secundària relacionada amb els textos catalogats a la base de dades. Pot trobar-se aquí informació relativa a la seva ubicació, telèfon, horari per als investigadors, persones de contacte, etc.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>SUBJECT: (matèria) conté informació multilingüe sobre els encapçalaments de matèria de totes aquelles tractades a la base de dades, amb un tesaurus d'encapçalaments relacionats, ampliats, restringits i contraris.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>A l'entrar a la base de dades PhiloBiblon, una de les quatre bibliografies existents (BETA, BIPA, BITAGAP, BITECA) serà elegida per defecte a la pantalla de l'ordinador. L'usuari tindrà llavors accés als menús que, al seu torn, li permetran accedir a sis diferents categories:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>FILES (fitxers): fitxes de qualsevol de les deu taules existents a la bibliografia a la qual s'està accedint.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>TOOLS (eines): conjunt d'elements per a la modificació de les dades existents en qualsevol dels camps de la fitxa, així com una sèrie d'utilitats i generadores d'informes sobre aquestes mateixes dades.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>ADMINISTRATION (administració): mecanismes per passar d'una bibliografia a una altra, així com per poder donar accès a la base de dades a d'altres usuaris.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>WINDOWS (finestres): tipus d'organització (en cascada o en quadrícula).</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>QUERIES (cerca avançada): aquesta eina permet que un camp en blanc (o varis) de qualsevol fitxa es ompli amb un terme de cerca (recerca "per exemple").</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>AJUDA (ajuda): conté el manual de l'usuari.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Cadascun dels fitxers principals interrelacionats ("taules" segons la terminologia relacionada amb els bases de dades) es presenta en la pantalla disposat en diverses pàgines que contenen els camps on s'inclou la informació pertinent per a cadascuna d'elles.</p></nowiki>
+
+<nowiki><p>Per exemple, les fitxes de MS_ED presenten cinc pàgines amb camps que ofereixen dades relacionades amb la font primària, tant manuscrita com impresa. Cada cop que un nou registre es crea en qualsevol de les deu taules, el programa li dóna automàticament un codi únic a tall d'identificador numèric de cada nova fitxa (manid en el cas de MS_ED), que serveix per connectar aquesta fitxa amb qualsevol altra que estigui relacionada amb ella dins de la base de dades:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>La primera pàgina en una fitxa de MS_ED recull informació relativa a la localització actual d'una font primària qualsevol (biblioteca, signatura, data d'adquisició, història de la seva arribada a la biblioteca), la data i el lloc on el text fou copiat o imprès, i els noms de qualsevol copista, impressor, editor o patrocinador relacionat amb el volum.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>La segona pàgina presenta informació codicològica o bibliogràfica detallada d'aspectes com el format del còdex, el número de folis, la collació, les dimensions (pàgina, caixa d'escriptura, columnes, relligadura, etc.), nombre de columnes per pàgina, nombre de línies per columna o per pàgina, tipus de lletra o de font, relligadura, estat general del còdex, etc.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>La tercera pàgina està dedicada a la informació referent a les filigranes, els gràfics, les notacions musicals presents en el còdex, elements codicològics específics i els antics posseïdors del volum.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>La quarta pàgina mostra una llista de les persones associades amb el volum, com ara relligadors, illuminadors, anotadors, etc. Així mateix, la pàgina informa sobre la presència d'altres textos en el mateix volum, la bibliografia que fa referència amb el volum o amb l'edició dels textos que conté, d'altres manuscrits o impresos que s'hi vinculen (com, per exemple, còpies tardanes), així com l'accés en Internet a edicions o notícies del còdexs.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>Finalment, la cinquena pàgina està dedicada a notes miscellànies, matèries relacionades i alguns detalls interns de la base de dades, com ara la data que la fitxa fou creada o actualitzada, així com la identitat de la persona que creà aquesta fitxa.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Els camps descriptius en la resta de les taules tenen una estructura similar.</p></nowiki>
+
+<nowiki><p>Molts dels camps destinats a les dades no només estan associats, sinó que poden tenir múltiples valors. Per exemple, les dades referides a la data, ubicació, impressor i editor d'un llibre antic imprès es troben tots connectats en una estructura de dades que pot presentar un o més camps repetits, ja que les dades poden divergir degut a conflictes d'informació en les fonts consultades:</nowiki>
+
+<nowiki></p></nowiki>
+
+<nowiki><table class="data" cellpadding="3" cellspacing="0"></nowiki>
+
+<nowiki><tbody><tr></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Lloc</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Impressor</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Inici</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Final</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Base</b></nowiki><nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Castilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Impresor de <nowiki><i>Flos Sanctorum</i></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1472<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1475<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Vindel<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Santiago de Compostela<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Juan de Bobadilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1480<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Haebler<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Sevilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1475<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1480<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Painter<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki></tbody></nowiki><nowiki></table></nowiki>
+
+<nowiki><p>El camp destinat a la "qualificació" (qual) serveix per assenyalar el grau d'incertessa de la dada, i el camp dedicat a la font (base), mostra l'autoritat que proporciona aquesta data.</p></nowiki>
+
+<nowiki><p>De forma semblant, les filigranes trobades en un manuscrit o imprès poden relacionar-se amb els folis on es troben i amb les autoritats de referència (p. e. Briquet) on es recullen marques similars.</p></nowiki>
+
+<nowiki><p>Molts d'aquests camps s'omplen al vol, important la dada de les fitxes relacionades en la base de dades, de forma que senzillament fa falta indicar el codi numèric d'una fitxa i no escriure manualment tota la cita. Per exemple, per enllaçar una fitxa de MS_ED amb una fitxa de bibliografia secundària, amb un catàleg de manuscrits, per exemple, cal obrir una finestra emergent ("pop-up") d'índex, on haurà prou amb escriure el nom de l'autor o algunes paraules del títol del llibre que consta a BIBLIOGRAPHY i la finestra emergent mostrarà la fitxa bibliogràfica completa que podrà seleccionar l'usuari.</p></nowiki>
+
+<nowiki><p>El sistema de finestres emergents ("pop-ups") també és l'utilitzat per a la navegació entre diferents fitxes relacionades, com per exemple per passar d'una fitxa MS_ED a una fitxa analítica (ANALYTIC), a una de títol uniforme (UNIFORM.TITLE), o a una fitxa biogràfica (BIOGRAPHY).</p></nowiki>
+
+<nowiki><p>Les recerques de dades més específics poden realitzar-se a través de dos mecanismes diferents:</p></nowiki>
+
+<nowiki><ul style="list-style-type: none; color: #000"></nowiki>
+
+<nowiki><li>(1) una finestra emergent que proporciona accès als camps ja indexats pel programa.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>(2) una opció de recerca específica ("Queries"), que figura en el menú principal, que serveix per a fer una recerca concreta d'una dada determinada en un camp escollit per l'usuari (recerca "per exemple").</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Una de les coses més importants que hem après en el transcurs dels anys dissenyant PhiloBiblon és que un programa com aquest mai s'acaba per complet: cada cop que el software que dóna suport a la base de dades (v.g., Windows) es manipula per a la seva millora i actualització, resulta igualment necessari fer modificacions en el sistema de gestió de la base de dades. Per exemple, inicialment creiem que només uns pocs camps necessitarien opcions per a qualificar la certesa de la informació proporcionada per la font o per l'autoritat. Actualment pensem que poden ésser útils en gairebé tots els camps i fitxes del programa. És per això que l'actual versió de la base de dades de Windows (PhiloBiblon 3.7.0) ha inclós aquestes opcions per a gairebé tots els camps. </p></nowiki>
+
+<nowiki></div></nowiki>

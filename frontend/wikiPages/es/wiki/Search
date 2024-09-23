@@ -1,0 +1,41 @@
+<nowiki><h1>Buscar</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p><a href="es/search/texid/query/">Obra</a></nowiki> [fuentes primarias: autor, título, íncipit, éxplicit, fecha, persona
+
+asociada, lugar de redacción]<nowiki></p></nowiki>
+
+<nowiki><p><a href="es/search/libid/query/">Biblioteca</a></nowiki> [bibliotecas que contienen fuentes primarias:
+
+ciudad, nombre de la biblioteca, signatura]<nowiki></p></nowiki>
+
+<nowiki><p><a href="es/search/insid/query/">Institución</a></nowiki> [órden religiosa o militar,
+
+monasterio, convento, iglesia, catedral, biblioteca, archivo,  
+
+universidad, colegio, etc.: nombre, lugar, fecha<nowiki></p></nowiki>
+
+<nowiki><p><a href="es/search/bioid/query/">Persona</a></nowiki> [información biográfica
+
+sobre autor, dueño de MSS / impresos, impresor, escribano, editor, encuadernador, miembro de la nobleza
+
+o de la jerarquía eclesiástica, etc.: nombre, título, fecha, lugar asociado,
+
+profesión, orden religiosa o militar]<nowiki></p></nowiki>
+
+<nowiki><p><a href="es/search/bibid/query/">Referencia</a></nowiki> [fuentes secundarias: autor, título,
+
+fuente (revista o volumen colectivo), serie / colección, lugar de publicación, editorial, fecha, persona asociada]<nowiki></p></nowiki>
+
+<nowiki><p><a href="es/search/manid/query/">MsEd</a></nowiki> [Manuscritos e impresos: ciudad, biblioteca,
+
+signatura (actual o antigua), fecha, lugar de copia o impresión,
+
+escribano / impresor, editor / patrón, antiguo dueño, otra persona asociada]<nowiki></p></nowiki>
+
+<nowiki><p><a href="es/search/geoid/query/">Geografía</a></nowiki><nowiki></p></nowiki>
+
+<nowiki><p><a href="es/search/subid/query/">Asunto</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>

@@ -1,0 +1,19 @@
+<nowiki><h1>A versão web</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>Os dados desta nova versão web de PhiloBiblon têm origem numa versão igualmente nova do sistema de base de dados (descrito em detalhe na </nowiki>[[pt_Windowsversion|versão Windows]]), para o qual toda a informação das quatro bibliografias tinha sido transferida no final de 2008. Os dados aqui apresentados são uma parte substancial, e somente uma parte, da informação encontrada na base de dados.<nowiki></p></nowiki>
+
+<nowiki><p>Em contraste com os dados limitados que caracterizam as anteriores versões web, a corrente versão apresenta vestígios quase completos das tabelas MS_ED, UNIFORM. TITLE, BIBLIOGRAPHY, BIOGRAPHY e LIBRARY, às quais foi acrescentada informação das tabelas ANALYTIC, COPIES, GEOGRAPHY, INSTITUTIONS e SUBJECT. Os utlizadores da versão web de PhiloBiblon poderão procurar informação sobre um texto, um manuscrito ou primeiros impressos, uma cópia específica de um texto contido num manuscrito ou numa edição impressa, uma pessoa, uma biblioteca, ou um determinado item na biblioteca de referência. </p></nowiki>
+
+<nowiki><p>O utilizador que, desta maneira, deseje consultar informação acerca de uma biblioteca começaria pelo motor de busca LIBRARY, a qual oferece não só informação mas também uma lista de MSS e de edições impressas que essa biblioteca contenha, desde que se encontrem descritos em PhiloBiblon. O utilizador que deseje saber quais são os testemunhos de um determinado texto começariam pelo motor de busca WORK. Os resultados desta procura mostrarão qualquer informação acerca de um texto, seguida de uma descrição detalhada das cópias desse texto com uma descrição abreviada do manuscrito ou edição impressa que contém cada cópia. Do mesmo modo, o utlizador interessado na descrição e nos conteúdos de um determinado manuscrito ou edição impressa começaria pelo motor de busca MS ou PRINT. Os resultados desta procura apresentarão a descrição externa do volume em questão (incluindo a proveniência e a bibliografia relevante), seguida de uma descrição detalhada dos seus conteúdos, por ordem de fólio, com uma descrição abreviada do próprio texto e, no caso de se tratar de uma edição impressa, dos seus exemplares conhecidos. </p></nowiki>
+
+<nowiki><p>Os motores de busca oferecem detalhes completos para WORK, MS, PRINT, PERSON, REFERENCES e LIBRARY.</p></nowiki>
+
+<nowiki><p>As versões web de todas as bibliografias serão actualizadas com regularidade, normalmente uma vez por trimestre.</p></nowiki>
+
+<nowiki><p>Não constam da versão web as informações relativamente dispersas sobre as tabelas GEOGRAPHY e INSTITUTIONS, que servem essencialmente como ficheiros gerais para as tabelas primárias. A tabela INSTITUTIONS lista as instituições que ou possuíram volumes manuscritos ou impressos, ou que serviram como autores colectivos dos textos neles contidos. A tabela GEOGRAPHY identifica os topónimos mencionados nas várias bibliografias.</p></nowiki>
+
+<nowiki><p>Os utilizadores que tiverem comprado a edição de 1999 de PhiloBiblon e que desejem receber um CD-ROM da presente versão da base de dados PhiloBiblon descrita em baixo devem contactar Charles Faulhaber através do endereço de email cfaulhab[at]library.berkeley.edu.</p></nowiki>
+
+<nowiki></div></nowiki>
