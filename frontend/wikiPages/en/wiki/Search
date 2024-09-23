@@ -1,0 +1,37 @@
+<nowiki><h1>Search</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p><a href="search/texid/query/">Work</a></nowiki> [primary sources:
+
+author, title, incipit/explicit, date, associated person, place of composition]<nowiki></p></nowiki>
+
+<nowiki><p><a href="search/libid/query/">Library</a></nowiki> [libraries holding primary sources:
+
+city, name of library, shelfmark]<nowiki></p></nowiki>
+
+<nowiki><p><a href="search/insid/query/">Institution</a></nowiki> [religious or military
+
+order, monastery, convent, church, cathedral, library, archive,  
+
+university, college, etc.: name, place, date]<nowiki></p></nowiki>
+
+<nowiki><p><a href="search/bioid/query/">Person</a></nowiki> [biographical information for, e.g.,
+
+author, previous owner, printer, scribe, publisher, bookbinder, member of nobility or church hierarchy:
+
+name, title, date, associated place, profession, religious or military order]<nowiki></p></nowiki>
+
+<nowiki><p><a href="search/bibid/query/">Reference</a></nowiki> [secondary sources: author, title, date, place of publication,
+
+publisher, series, associated person]<nowiki></p></nowiki>
+
+<nowiki><p><a href="search/manid/query/">MsEd</a></nowiki> [manuscript or printed edition:
+
+city, library, current or former shelfmark, date, place of production, scribe / printer, publisher / patron, previous owner, other associated person]<nowiki></p></nowiki>
+
+<nowiki><p><a href="search/geoid/query/">Geography</a></nowiki><nowiki></p></nowiki>
+
+<nowiki><p><a href="search/subid/query/">Subject</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>

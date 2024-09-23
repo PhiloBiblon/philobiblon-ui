@@ -1,0 +1,71 @@
+<nowiki><h1>Historia</h1></nowiki>
+
+<nowiki><h2>As Bibliografías</h2></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>PhiloBiblon está baseada e deriva de BOOST</nowiki>
+
+(Bibliography of Old Spanish Texts), rebautizada BETA
+
+(Bibliografía Española de Textos Antiguos) en 1992 para o proxecto ADMYTE (Archivo Digital de Manuscritos y Textos Españoles) en CD-ROM. Para BETA e o proxecto Dictionary of the Old Spanish Language da Universidade de Wisconsin, Madison, proxecto en que tivo orixe BETA, véxase a páxina principal de [[gl_Beta|BETA]]. A primeira edición de BOOST apareceu en 1975, a segunda en 1977 e a terceira en 1984. A primeira edición da Bibliography of Old Catalan Texts (BOOCT), que ten exactamente o
+
+mesmo formato de BOOST<nowiki><sub>3</sub></nowiki>, viu a luz en 1985. En 1988 comezouse a traballar naquilo que, en orixe, ía chamarse Bibliography of Old Portuguese Texts (BOOPT). Ambas as dúas bibliografías, BOOCT e BOOPT, cambiaron o seu nome en 1992 na edición ADMYTE CD-ROM: BITECA e BITAGAP, respectivamente. Finalmente, en 1997, o proxecto Bibliografía de Poesía Áurea (BIPA) estendeu a proxección global do proxecto ata os textos dos séculos XVI e XVII.<nowiki></p></nowiki>
+
+<nowiki><p>A colaboración con colegas de España, especialmente con Francisco Marcos Marín (naquel momento na Universidad Autónoma de Madrid e agora na University of Texas, San Antonio), permitiu que as bibliografías BETA, BITAGAP e BITECA e o propio sistema de xestión da base de datos formasen parte de ADMYTE (Archivo Digital de Manuscritos y Textos Españoles), un dos proxectos financiados pola Sociedad Estatal del Quinto Centenario para conmemorar a primeira viaxe de Cristovo Colombo. As tres bibliografías foron publicadas en 1993 en CD-ROM como parte do disco 0 de ADMYTE, producido por Micronet, S.A. (Madrid). Unha versión revisada e ampliada de PhiloBiblon, que incluíu as mesmas bibliografías, foi publicada en CD-ROM en 1999 pola Bancroft Library, University of California, Berkeley.</p></nowiki>
+
+<nowiki><p>En 1997, grazas ao financiamento NEH e ás subvencións dos Programas de Estudos Cataláns Gaspar de Portolà e de Estudos Portugueses da UC Berkeley e dos Centros de Estudos Portugueses e de Estudos Galegos da UC Santa Barbara, preparouse a páxina web de PhiloBiblon, que fixo posible o acceso a descricións pormenorizadas de manuscritos individuais e de edicións impresas e mais dos textos que estes conteñen. As actualizacións do sitio web facíanse aproximadamente cada trimestre, conforme os equipos do proxecto acrecentaban novos datos ás diferentes bibliografías.</p></nowiki>
+
+<nowiki><p>Desde o portal de BETA de 2001 da versión DOS de Advanced Revelation ata a máis ampliada versión WINDOWS (véxase máis adiante) xa non era posible actualizar a versión web de BETA, pois o software para cargar datos estaba construído sobre a estrutura da versión MS-DOS. Porén, si era posible actualizar BITAGAP e BITECA regularmente, xa que ambas as bibliografías continuaron a usar a versión DOS ata o outono de 2008. Así, só a través deste novo sitio web se puideron reunir todas as bibliografías co mesmo nivel de desenvolvemento.</p></nowiki>
+
+<nowiki></div></nowiki>
+
+<nowiki><h2>Historica Técnica</h2></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>A primeira edición de BOOST (1975) usou un sistema de xestión de base de datos de arquivos simples, FAMULUS, que estivo aloxado nun ordenador modelo Univac 1110 na Universidade de Wisconsin. Escrito orixinariamente en Berkeley en 1967 para a Pacific Southwest Forest and Range Experiment Station (United States Department of Agriculture) para a xestión de ficheiros persoais bibliográficos, FAMULUS recibe datos a partir dun ficheiro ASCII corrente creado con calquera editor de texto, e despois reúne as tabelas e indexa todo o ficheiro. As limitacións que este sistema presenta no que atinxe á organización de materiais máis complexos son moitas: só permite dez campos (de extensión variable) e un máximo de 4000 caracteres por rexistro. Para compensar estas limitacións, os datos relacionados, que en realidade son diferentes entre si, foron agrupados nun único campo na versión orixinal de BOOST. Así, AUTH reuniu autores, editores e tradutores.</p></nowiki>
+
+<nowiki><p>A segunda edición (1977) mantivo o mesmo número de campos e as mesmas limitacións de indexación, pero a presentación era máis elegante: en orientación retrato, en columnas duplas, cun tipo serif máis atractivo, pero aínda con toda a impresión en maiúsculas.</p></nowiki>
+
+<nowiki><p>Cando o control editorial de BOOST pasou en 1981 a un novo equipo de investigación, o Medieval Spanish Seminary de Madison continuou a ser o provedor da axuda técnica, reescribindo FAMULUS como un sistema personalizado de xestión de base de datos, baseado en FAMULUS, mais cunha diminución das limitacións técnicas deste último. Así, a terceira edición de BOOST (1984) contiña catorce campos de datos e permitía termos de indexación de ata 159 caracteres.</p></nowiki>
+
+<nowiki><p>Un cambio técnico na terceira edición - a triaxe da base de datos en termos topográficos (cidade / biblioteca / cota / orde dos folios) - obrigou á adición de dous novos campos:</p></nowiki>
+
+<nowiki><blockquote>(1) CSEQ, a secuencia do MS dentro da biblioteca, necesaria ao non estaren as cotas organizadas de forma estritamente alfanumérica na maioría das bibliotecas (cfr. El Escorial);</blockquote></nowiki>
+
+<nowiki><blockquote>(2) FSEQ, a secuencia do texto dentro do MS por orde de folio.</blockquote></nowiki>
+
+<nowiki><p>Outras mudanzas na estrutura dos rexistros mostran as necesidades de información que observou o novo comité editorial.</p></nowiki>
+
+<nowiki><p>Así, as fórmulas das datas en OPDT (Original PRoduction DaTe, data orixinal de produción) e SPDT (Specific Production DaTe, data específica de produción), por exemplo, mediados do século XVI ou finais do século XVI, non só eran ambiguas, senón que estaban organizadas por orde alfanumérica en vez de por orde cronolóxica.</p></nowiki>
+
+<nowiki><p>Coa mudanza na triaxe xerárquica de autor / título a unha orde topográfica (cidade / biblioteca / cota) fíxose difícil o control da relación entre as entradas correspondentes en BOOST<sub>2</sub></nowiki> e BOOST<nowiki><sub>3</sub></nowiki>. O Número de Control (Control NUMber, CNUM), isto é, o número de identificación do rexistro, que era sempre o mesmo, foi utilizado como elemento de correspondencia.<nowiki></p></nowiki>
+
+<nowiki><p>Outros dous cambios estiveron relacionados coa fusión de campos de datos individuais. Así, toda a información bibliográfica derivada dos campos BIBS e NOTE de BOOST<sub>2</sub></nowiki> (que fora usada para distinguir referencias citadas directamente de referencias tomadas de segunda e terceira man) fundiuse nun único elemento de datos (BIBL). Esta mudanza fíxose para poder crear un só índice bibliográfico unificado, pero provocou que a xestión da bibliografía secundaria se volvese máis difícil.<nowiki></p></nowiki>
+
+<nowiki><p>A fusión dos campos GTIT (General or normalized TITle, título xeral ou normalizado) e STIT (Specific or variant TITle, título variante ou específico) foi un erro do mesmo tipo e respondía ao mesmo obxectivo, isto é, ao desexo de crear un único índice de títulos.</p></nowiki>
+
+<nowiki><p>Porén, noutros dous casos, os elementos dos datos foron divididos para mostrar as diferenzas intrínsecas dos datos que contiñan. Así, os tradutores separáronse do campo AUTH e colocáronse nun campo autónomo, TRAN. Do mesmo modo, os impresores e escribas tiráronse do campo SPRL (Specific PRoduction Location, lugar específico de produción) e integráronse nun campo separado, PRSC (PRinter SCribe, impresor ou escriba). Ambas as dúas mudanzas reveláronse positivas desde un punto de vista táctico e estratéxico.</p></nowiki>
+
+<nowiki><p>Esta estrutura da base de datos foi usada para BOOST<sub>3</sub></nowiki> (1984) e BOOCT (1985).<nowiki></p></nowiki>
+
+<nowiki><p>En termos de procedemento, os datos continuaron a ser inseridos en Madison segundo a información ía sendo enviada polo novo equipo editorial. O ficheiro da base de datos reordenábase de novo e imprimíase, e o resultado enviábase aos editores para a súa corrección e novo ciclo de acrecentamento de datos. Este proceso foi árido e oneroso, sobre todo a causa do sistema de arquivos planos de xestión da base de datos de FAMULUS, que esixía que cada rexistro estivese completo. Así, se un manuscrito contiña vinte textos, toda a súa descrición externa debía ser repetida en vinte rexistros separados. Se o avance da ciencia obrigase, por exemplo, a datar novamente un manuscrito, habería que cambiar a data nos vinte rexistros.</p></nowiki>
+
+<nowiki><p>As limitacións dun sistema de xestión da base de datos coma este fóronse reducindo, tendo en conta a existencia de sistemas máis sofisticados. A seguinte mudanza técnica afecta á versión de 1985, coa migración de BOOST e BOOCT do sistema de Madison ao sistema de Berkeley, SPIRES (Stanford Public Information Retrieval System), que era máis interactivo e orientado aos textos, e que permitía elementos de datos repetitivos de extensión variable. A ordenación, a busca e a xeración de informes convertéronse en operacións razoablemente simples, aínda que a entrada de datos e a corrección fosen operacións aínda máis difíciles de executar ca na versión máis antiga.</p></nowiki>
+
+<nowiki><p>Finalmente, em 1987, mercé ao financiamento de IBM, BOOST e BOOCT foron incorporadas a Revelation (máis tarde Advanced Revelation, de Revelation Technologies), un sistema de xestión de bases de datos de alta tecnoloxía baseado en DOS, con campos repetitivos de extensión variable que podían ser aglomerados en estruturas de datos repetitivos sen limitación do número de rexistros ou do número de campos, e con limitacións moi reducidas no relativo ao seu tamaño. Os rexistros están limitados a 64K, mentres que calquera campo único dentro dun rexistro está igualmente limitado a 64K.</p></nowiki>
+
+<nowiki><p>Unha consideración esencial sobre a selección dun sistema de relacións era a relativa ao desexo de ter unha base de datos máis fácil de manter e de actualizar, ao permitir que un cambio feito nun só rexistro se propagase despois aos outros rexistros asociados, en lugar de facer a mesma mudanza en múltiplos rexistros.</p></nowiki>
+
+<nowiki><p>Desde entón todo o traballo de acrecentamento de datos nas catro bibliografía fíxose nas sucesivas versións dos sistemas de Revelation Technologies.</p></nowiki>
+
+<nowiki><p>O deseño orixinal da base de datos de 1987 e os traballos de Charles Faulhaber e do programador John May desenvolvéronse desde entón grazas á concesión non só de nove grandes subvencións NEH, mais tamén de pequenas axudas doutras fontes e da constante axuda dos membros dos outros equipos de investigación. En 2001, a estrutura de PhiloBiblon estaba constituída por dez tabelas con máis de 650 campos de datos diferentes.</p></nowiki>
+
+<nowiki><p>O transporte de datos á páxina web de PhiloBiblon fíxose en 1997, partindo da tabela MS_ED (descricións de MSS e de impresos) e volcando o seu contido en ficheiros de texto ASCII. O persoal da biblioteca da Universidade de California en Berkeley creou un programa PERL para converter as descricións de cada manuscrito en ficheiros HTML nas tres bibliografías (BETA, BITECA, BITAGAP). Estes ficheiros foron, á súa vez, indexados usando un programa de dominio público (SWISH); así mesmo, un instrumento de busca bastante simple como CGI (Common Gateway Interface) permitiu realizar na rede buscas por autor, título ou palabras clave.</p></nowiki>
+
+<nowiki><p>En 2001 outra axuda financeira de NEH permitiu asociar a base de datos da versión DOS Advanced Revelation á correspondente base de datos da versión Windows. Durante este proceso a estrutura das tabelas foi racionalizada e foron engadidos máis campos de datos aos 987 xa existentes nas dez tabelas.</p></nowiki>
+
+<nowiki><p>Como nas versións anteriores, empréganse claves de rexistro únicas para identificar textos específicos (texid), copias de textos (cnum) e individuos (bioid). Estas claves de rexistro, que son específicas para cada bibliografía, son extremadamente útiles para diferenciar un rexisto doutro; así, por exemplo, diferentes obras con títulos semellantes ou individuos co mesmo nome. Por esta razón, estes códigos foron utilizados na versión web.</p></nowiki>
+
+<nowiki></div></nowiki>

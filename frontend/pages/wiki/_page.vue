@@ -29,9 +29,8 @@ export default {
       }
     ])
     const wikiApiUrl = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.wikiPage}&prop=wikitext&formatversion=2&format=json&origin=*`
-    const html = await this.$wikibase.wbFetcher(wikiApiUrl)
+    this.contentToView = await this.$wikibase.wbFetcher(wikiApiUrl)
       .then(data => this.contentPage(data))
-    this.contentToView = this.$sanitize(html)
   },
 
   methods: {
@@ -52,20 +51,46 @@ export default {
 
     parseLinks (content) {
       // eslint-disable-next-line no-useless-escape
-      const LINK_RE = /\[\[([^\|]*)\|?(.*)?\]\]/g
+      const LINK_RE = /\[\[\s*([^\|\]]+)\s*(?:\|\s*([^\]]+)\s*)?\]\]/gm
       return content.replace(LINK_RE, (match, g1, g2) => this.parseLink(match, g1, g2))
     },
 
     parseLink (match, g1, g2) {
-      let link = g1
+      const firstPart = g1.split('_')[0]
       const text = g2 !== undefined ? g2 : g1
-      if (link.startsWith('/') || link.startsWith('http')) {
-        return `<a href='${link}'>${text}</a>`
-      } else {
-        link = `/wiki/${link}`
-        return `<a href='.${this.localePath(link)}'>${text}</a>`
+      let link = g1.replace(new RegExp(`^${firstPart}_`, 'i'), '').trim()
+
+      if (link.startsWith('/') || !link.startsWith('http')) {
+        if (firstPart.toLowerCase() !== 'en') {
+          link = `/${firstPart.toLowerCase()}/wiki/${link}`
+        } else {
+          link = `/wiki/${link}`
+        }
       }
+      return `<a href='${link}'>${text}</a>`
     }
   }
 }
 </script>
+
+<style scoped>
+::v-deep .content {
+  .data {
+    margin-bottom: 10px;
+    width: 60%;
+    border: 1px solid #e5c992;
+    font-weight: normal;
+    font-size: 100%;
+    color: #000000;
+    td {
+      border: 1px solid #e5c992;
+      padding-left: 3px;
+      font-size: 85%;
+      color: #000000;
+    }
+  }
+  blockquote {
+    margin-left: 24px !important;
+  }
+}
+</style>

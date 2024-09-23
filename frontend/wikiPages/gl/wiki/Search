@@ -1,0 +1,27 @@
+<nowiki><h1>Buscar</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p><a href="gl/search/texid/query/">Obra</a></nowiki> [textos primarios: autor, título, incipit / explicit, data, persoa asociada, lugar de composición]<nowiki></p></nowiki>
+
+<nowiki><p><a href="gl/search/libid/query/">Biblioteca</a></nowiki> [bibliotecas que posúen fontes primarias: cidade, nome da biblioteca, cota]<nowiki></p></nowiki>
+
+<nowiki><p><a href="gl/search/insid/query/">Institución</a></nowiki> [orde relixiosa ou militar, mosteiro, convento, igrexa, catedral,
+
+biblioteca, arquivo, museo, universidad, colegio, etc.: nome, lugar, data<nowiki></p></nowiki>
+
+<nowiki><p><a href="gl/search/bioid/query/">Persoa</a></nowiki> [información biográfica: por exemplo, sobre autor, anterior propietario, impresor, escriba, editor,
+
+encadernador, membro da nobreza ou da xerarquía eclesiástica: nome, título, data, lugar asociado, profesión, orde relixiosa ou militar]<nowiki></p></nowiki>
+
+<nowiki><p><a href="gl/search/bibid/query/">Referencia</a></nowiki> [fontes secundarias: autor, título, data, lugar de publicación, editor, colección / serie, persoa asociada]<nowiki></p></nowiki>
+
+<nowiki><p><a href="gl/search/manid/query/">MsEd</a></nowiki> [manuscritos ou edicións impresas: cidade, biblioteca, cota actual ou antiga, data, lugar de produción,
+
+copista / impresor, editor / mecenas, anterior propietario, otra persoa asociada]<nowiki></p></nowiki>
+
+<nowiki><p><a href="gl/search/geoid/query/">Xeografía</a></nowiki><nowiki></p></nowiki>
+
+<nowiki><p><a href="gl/search/subid/query/">Asunto</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
