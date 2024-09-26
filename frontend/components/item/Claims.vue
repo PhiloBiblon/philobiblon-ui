@@ -72,7 +72,11 @@ export default {
         order = claims
         orderKeys = claimsKeys
       }
-      return orderKeys.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({ property: key, values: this.getOrderedValues(claims[key], order[key]) }))
+      return orderKeys.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({
+        property: key,
+        values: this.getOrderedValues(claims[key], order[key]),
+        hasQualifiers: claims[key].some(value => value.qualifiers && Object.keys(value.qualifiers).length)
+      }))
     }
   }
 }
