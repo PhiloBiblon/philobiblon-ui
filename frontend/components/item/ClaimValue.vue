@@ -1,6 +1,6 @@
 <template>
   <v-row dense :class="{'even-row': index % 2 === 0, 'odd-row': index % 2 !== 0}">
-    <v-col :cols="value.qualifiers ? 3 : 12">
+    <v-col :cols="value.qualifiers ? 2 : 12">
       <item-value-base :claim="value" :value="value.mainsnak" type="claim" />
     </v-col>
     <v-col v-if="value.qualifiers">
@@ -10,6 +10,7 @@
             v-for="(values, property) in value.qualifiers"
             :key="keyValue+'-'+property"
             :cols="Math.max(12 / value.qualifiers)"
+            md="3"
             class="qualifier"
           >
             <item-qualifier
@@ -54,15 +55,17 @@ export default {
   padding-left: 50px;
 }
 .even-row {
-  background-color: rgb(247, 245, 245);
   padding: 3px;
-  margin: 5px;
-  border-radius: 5px;
+  margin: 0;
+  border-bottom: 1px solid white;
 }
 .odd-row {
   background-color: rgb(247, 245, 245);
   padding: 3px;
-  margin: 5px;
-  border-radius: 5px;
+  margin: 0;
+  border-bottom: 1px solid white;
+}
+.even-row .container, .odd-row .container {
+  padding: 3px 12px;
 }
 </style>
