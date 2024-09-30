@@ -31,7 +31,7 @@ export default {
     const wikiApiUrl = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.wikiPage}&prop=wikitext&formatversion=2&format=json&origin=*`
     const html = await this.$wikibase.wbFetcher(wikiApiUrl)
       .then(data => this.contentPage(data))
-    this.contentToView = this.$sanitize(html)
+    this.contentToView = this.$sanitize(html).replaceAll('<a href="#', '<a href="' + window.location.pathname + '#')
   },
 
   methods: {
