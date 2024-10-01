@@ -397,4 +397,15 @@ export class WikibaseService {
       console.error('Error during search:', error)
     }
   }
+
+  async getItemCnums (pbid) {
+    return await this.runSparqlQuery(
+      this.$query.itemCnumsQuery(pbid),
+      true
+    ).then((results) => {
+      return results
+    }).catch(() => {
+      return []
+    })
+  }
 }

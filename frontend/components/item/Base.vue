@@ -58,6 +58,7 @@
         :key="'c-' + index"
         :claim="claim"
       />
+      <item-cnum v-if="cnums.length" :cnums="cnums" />
     </v-container>
   </div>
 </template>
@@ -74,6 +75,7 @@ export default {
 
   data () {
     return {
+      cnums: [],
       item: null,
       label: null,
       showItem: false,
@@ -105,6 +107,7 @@ export default {
             this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
             this.claimsOrdered = await this.getOrderedClaims(tableid, this.item.claims)
+            this.cnums = await this.$wikibase.getItemCnums(this.item.id)
             this.showItem = true
           })
       } catch (err) {

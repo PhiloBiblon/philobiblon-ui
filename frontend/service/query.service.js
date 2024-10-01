@@ -40,13 +40,8 @@ export class QueryService {
     return langFilters
   }
 
-  replaceDiacritics (field) {
-    return `replace(replace(replace(replace(replace(lcase(${field}), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i')`
-  }
-
   generateFilterByWord (filterField, filterValue) {
-    const filterFieldWithoutDiacritics = this.replaceDiacritics(`?${filterField}`)
-    return `contains(${filterFieldWithoutDiacritics}, '${filterValue}')`
+    return `contains(replace(replace(replace(replace(replace(lcase(?${filterField}), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${filterValue}')`
   }
 
   generateFilterByWords (form, filterField, filterValues) {
@@ -571,9 +566,9 @@ export class QueryService {
         OPTIONAL { ?item wdt:P606 ?value_isn_p606 } .\n
         OPTIONAL { ?item wdt:P634 ?value_isn_p634 } .\n
         OPTIONAL { ?item wdt:P743 ?value_isn_p743 } .\n
-        FILTER(str(?value_isn_p605) = "${form.international_standard_number.value.label}" 
-          || str(?value_isn_p606) = "${form.international_standard_number.value.label}" 
-          || str(?value_isn_p634) = "${form.international_standard_number.value.label}" 
+        FILTER(str(?value_isn_p605) = "${form.international_standard_number.value.label}"
+          || str(?value_isn_p606) = "${form.international_standard_number.value.label}"
+          || str(?value_isn_p634) = "${form.international_standard_number.value.label}"
           || str(?value_isn_p743) = "${form.international_standard_number.value.label}") . \n
         `
     }
@@ -588,49 +583,6 @@ export class QueryService {
         `
         ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
         `
-    }
-    return filters
-  }
-
-  addGeographyFilters (form) {
-    let filters = ''
-    if (form.type && form.type.value) {
-      filters +=
-        `
-        ?item wdt:P2 wd:${form.type.value.item} .\n
-        `
-    }
-    if (form.class && form.class.value) {
-      filters +=
-        `
-        ?item p:P2 ?class_statement .
-        ?class_statement pq:P700 wd:${form.class.value.item} .
-        `
-    }
-    if (form.subject && form.subject.value) {
-      filters +=
-        `
-        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
-        `
-    }
-    return filters
-  }
-
-  addSubjectFilters (form) {
-    let filters = ''
-    if (form.headings && form.headings.value) {
-      if (form.headings.value.property === 'label') {
-        filters +=
-          `
-          FILTER(str(?label) = "${form.headings.value.label}") . \n
-          `
-      } else {
-        filters +=
-          `
-          ?item wdt:P1031 ?value_heading .\n
-          FILTER(STR(?value_heading) = "${form.headings.value.label}") . \n
-          `
-      }
     }
     return filters
   }
@@ -658,12 +610,6 @@ export class QueryService {
       case 'bibid':
         filters += this.addReferenceFilters(form)
         break
-      case 'geoid':
-        filters += this.addGeographyFilters(form)
-        break
-      case 'subid':
-        filters += this.addSubjectFilters(form)
-        break
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
   }
@@ -671,7 +617,7 @@ export class QueryService {
   countQuery (table, form, lang) {
     const COUNT_QUERY = $ =>
       `SELECT (COUNT(DISTINCT ?item) AS ?count)
-      WHERE { 
+      WHERE {
         ?item wdt:P476 ?pbid .
         ${this.generateLangFilters(lang)}
         ${$.filters}
@@ -680,14 +626,14 @@ export class QueryService {
   }
 
   getSortClause () {
-    const sortBy = this.$store.state.queryStatus.sortBy === 'id' ? 'xsd:integer(?pbidn)' : this.replaceDiacritics('xsd:string(?label)')
+    const sortBy = this.$store.state.queryStatus.sortBy === 'id' ? 'xsd:integer(?pbidn)' : 'xsd:string(?label)'
     return this.$store.state.queryStatus.isSortDescending ? `DESC(${sortBy})` : sortBy
   }
 
   itemsQuery (table, form, lang, resultsPerPage) {
     const SEARCH_QUERY = $ =>
       `SELECT DISTINCT ?item ?label ?pbid
-      WHERE { 
+      WHERE {
         ?item wdt:P476 ?pbid .
         ${this.generateLangFilters(lang)}
         ${$.filters}
@@ -735,5 +681,20 @@ export class QueryService {
       LIMIT 10
       `
     return this.addPrefixes(SEARCH_QUERY)
+  }
+
+  itemCnumsQuery (pbid, lang) {
+    const query = `
+    SELECT ?item_cnum ?item_cnum_pbid ?item_cnumLabel
+     WHERE {
+      ?item_cnum wdt:P476 ?item_cnum_pbid .
+      FILTER regex(?item_cnum_pbid, '(.*) cnum ') .
+      ?item_cnum wdt:P590 wd:${pbid} .
+
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+    }
+    ORDER BY ?item_cnum_pbid
+    `
+    return this.addPrefixes(query)
   }
 }
