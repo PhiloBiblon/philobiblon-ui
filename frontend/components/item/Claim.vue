@@ -6,18 +6,7 @@
       </v-subheader>
     </v-row>
     <v-container class="claim-values">
-      <template v-if="!claim.hasQualifiers || isUserLogged">
-        <item-claim-value
-          v-for="(value, index) in claim.values"
-          :key="'c-' + claim.property + '-' + index"
-          :index="index"
-          :value="value"
-          :key_value="'c-' + claim.property + '-' + index"
-        />
-      </template>
-      <template v-else>
-        <item-claim-table-value :claim="claim" />
-      </template>
+      <item-claim-values :claim="claim" />
     </v-container>
   </v-container>
 </template>
@@ -34,12 +23,6 @@ export default {
   data () {
     return {
       propertyLabel: null
-    }
-  },
-
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
     }
   },
 
@@ -65,6 +48,6 @@ export default {
 }
 .claim-values {
   padding: 0;
-  background-color: rgb(247, 245, 245)
+  background-color: rgb(247, 245, 245);
 }
 </style>
