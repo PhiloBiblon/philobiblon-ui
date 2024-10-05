@@ -58,7 +58,7 @@
         :key="'c-' + index"
         :claim="claim"
       />
-      <item-cnum v-if="cnums.length" :cnums="cnums" />
+      <item-cnums v-if="cnums.length" :cnums="cnums" />
     </v-container>
   </div>
 </template>
