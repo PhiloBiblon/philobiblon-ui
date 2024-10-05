@@ -1,6 +1,7 @@
 <template>
   <v-data-table
     :headers="formattedHeaders"
+    :hide-default-header="showHeaders"
     :items="claim.values"
     hide-default-footer
     :items-per-page="claim.values.length"
@@ -42,9 +43,12 @@ export default {
     }
   },
   computed: {
+    showHeaders () {
+      return !this.claim.hasQualifiers
+    },
     formattedHeaders () {
       return [
-        { text: 'Event', value: 'event', sortable: false, width: '400px' },
+        { text: '', value: '', sortable: false },
         ...this.headers.map(header => ({
           text: header.label.value,
           value: header.property,
@@ -65,7 +69,6 @@ export default {
 
       const headerPromises = Array.from(qualifierKeys).map(async (property) => {
         const entity = await this.$wikibase.getEntity(property, this.$i18n.locale)
-
         return {
           property,
           label: this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
@@ -83,11 +86,7 @@ export default {
   background-color: #e0e0e0;
   color: black;
   font-weight: bold;
-  text-transform: uppercase;
-}
-
-::v-deep .v-data-table-header th {
-  border-right: 1px solid #b0b0b0;
+  border: none;
 }
 
 ::v-deep .v-data-table-header th:last-child {
@@ -95,12 +94,13 @@ export default {
 }
 
 .table-row {
-  border-bottom: 1px solid #b0b0b0;
+  border: none;
+  background-color: rgb(247, 245, 245);
 }
 
 .table-cell {
-  border-right: 1px solid #b0b0b0;
-  padding: 8px;
+  padding: 4px;
+  border: none;
 }
 
 .table-cell:last-child {
