@@ -635,6 +635,43 @@ export class QueryService {
     return filters
   }
 
+  addManuscriptFilters (form) {
+    let filters = ''
+    if (form.city && form.city.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P329 ?item_lib .
+          ?item_lib wdt:P47 ?item_lib_loc
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P329 ?copid_item_lib .  
+          ?copid_item_lib wdt:P47 ?copid_item_lib_loc
+        }
+        FILTER(?item_lib_loc = wd:${form.city.value.item} || ?copid_item_lib_loc = wd:${form.city.value.item})
+        `
+    }
+    if (form.library && form.library.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P329 ?item_lib .
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P329 ?copid_item_lib .  
+        }
+        FILTER (?item_lib = wd:${form.library.value.item} || ?copid_item_lib = wd:${form.library.value.item})
+        `
+    }
+    return filters
+  }
+
   generateQuery (table, baseQueryFunction, form) {
     let filters = ''
     const group = form.group.value === 'ALL' ? '(.*)' : form.group.value
@@ -663,6 +700,9 @@ export class QueryService {
         break
       case 'subid':
         filters += this.addSubjectFilters(form)
+        break
+      case 'manid':
+        filters += this.addManuscriptFilters(form)
         break
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
