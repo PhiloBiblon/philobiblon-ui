@@ -75,7 +75,6 @@ export default {
       item: null,
       label: null,
       showItem: false,
-      claimsOrdered: [],
       tableid: null
     }
   },
@@ -103,7 +102,6 @@ export default {
             this.item = entity
             this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
-            this.claimsOrdered = await this.getOrderedClaims(this.tableid, this.item.claims)
             this.cnums = await this.$wikibase.getItemCnums(this.item.id)
             this.showItem = true
           })
@@ -127,45 +125,6 @@ export default {
           disabled: true
         }
       ]
-    },
-    getOrderedQualifiers (qualifiers, qualifiersOrder) {
-      if (qualifiersOrder) {
-        const qualifiersKeys = Object.keys(qualifiers)
-        const fullQualifiersOrder = [...new Set([...qualifiersOrder, ...qualifiersKeys])]
-        return fullQualifiersOrder.reduce((result, key) => {
-          if (Object.prototype.hasOwnProperty.call(qualifiers, key)) {
-            result[key] = qualifiers[key]
-          }
-          return result
-        }, {})
-      } else {
-        return qualifiers
-      }
-    },
-    getOrderedValues (values, qualifiersOrder) {
-      return values.map((value) => {
-        if (value.qualifiers) {
-          const clonedValue = { ...value }
-          clonedValue.qualifiers = this.getOrderedQualifiers(clonedValue.qualifiers, qualifiersOrder)
-          return clonedValue
-        } else {
-          return value
-        }
-      })
-    },
-    async getOrderedClaims (table, claims) {
-      const claimsKeys = Object.keys(claims)
-      let order = await this.$wikibase.getClaimsOrder(table)
-      let orderKeys
-      if (order) {
-        orderKeys = Object.keys(order)
-        // remove duplicated keys
-        orderKeys = [...new Set([...orderKeys, ...claimsKeys])]
-      } else {
-        order = claims
-        orderKeys = claimsKeys
-      }
-      return orderKeys.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({ property: key, values: this.getOrderedValues(claims[key], order[key]) }))
     },
     editLabel (label) {
       return this.$wikibase
