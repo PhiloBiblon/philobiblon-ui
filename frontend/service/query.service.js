@@ -740,13 +740,11 @@ export class QueryService {
   itemCnumsQuery (pbid, lang) {
     const query =
       `
-      SELECT ?item ?item_pbid ?label
+      SELECT ?item ?item_pbid
       WHERE {
         ?item wdt:P476 ?item_pbid .
         FILTER regex(?item_pbid, '(.*) cnum ') .
         ?item wdt:P590 wd:${pbid} .
-
-        ${this.generateLangFilters(lang)}
       }
       ORDER BY ?item_pbid
       `

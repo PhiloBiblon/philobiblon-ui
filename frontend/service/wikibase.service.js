@@ -408,4 +408,12 @@ export class WikibaseService {
       return []
     })
   }
+
+  getRelatedTable (entity) {
+    const pbid = this.getPBID(entity)
+    const {
+      groups: { tableid }
+    } = this.getPBIDPattern().exec(pbid)
+    return tableid
+  }
 }

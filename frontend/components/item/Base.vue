@@ -53,11 +53,7 @@
           </v-col>
         </span>
       </v-row>
-      <item-claim
-        v-for="(claim, index) in claimsOrdered"
-        :key="'c-' + index"
-        :claim="claim"
-      />
+      <item-claims :table="tableid" :claims="item.claims" />
       <item-cnums v-if="cnums.length" :cnums="cnums" />
     </v-container>
   </div>
@@ -79,7 +75,8 @@ export default {
       item: null,
       label: null,
       showItem: false,
-      claimsOrdered: []
+      claimsOrdered: [],
+      tableid: null
     }
   },
 
@@ -91,35 +88,28 @@ export default {
 
   async mounted () {
     if (this.id) {
-      await this.getClaims()
+      await this.getEntity()
     }
   },
 
   methods: {
-    async getClaims () {
+    async getEntity () {
       try {
         await this.$wikibase
           .getEntity(this.id, this.$i18n.locale)
           .then(async (entity) => {
-            const tableid = this.getRelatedTable(entity)
-            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(tableid, entity))
+            this.tableid = this.$wikibase.getRelatedTable(entity)
+            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(this.tableid, entity))
             this.item = entity
             this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
-            this.claimsOrdered = await this.getOrderedClaims(tableid, this.item.claims)
+            this.claimsOrdered = await this.getOrderedClaims(this.tableid, this.item.claims)
             this.cnums = await this.$wikibase.getItemCnums(this.item.id)
             this.showItem = true
           })
       } catch (err) {
         this.$notification.error(err)
       }
-    },
-    getRelatedTable (entity) {
-      const pbid = this.$wikibase.getPBID(entity)
-      const {
-        groups: { tableid }
-      } = this.$wikibase.getPBIDPattern().exec(pbid)
-      return tableid
     },
     getBreadcrumbItems (table, entity) {
       return [

@@ -13,7 +13,10 @@
       <v-expansion-panel-content>
         <div>
           <span class="text-subtitle-2">Title(s)</span>
-          <span class="ml-3">{{ title }}</span>
+          <span class="ml-3">
+            <item-util-view-text-lang :value="label" />
+          </span>
+          <item-claims :table="tableid" :claims="item?.claims" />
         </div>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -33,15 +36,42 @@ export default {
       default: null
     }
   },
+
+  data () {
+    return {
+      item: null,
+      tableid: null
+    }
+  },
+
   computed: {
     pbid () {
       return this.value.item_pbid
     },
     url () {
       return this.localePath(`/item/${this.value.item}`)
-    },
-    title () {
-      return this.value?.label
+    }
+  },
+
+  async mounted () {
+    if (this.value.item) {
+      await this.getEntity()
+    }
+  },
+
+  methods: {
+    async getEntity () {
+      try {
+        await this.$wikibase
+          .getEntity(this.value.item, this.$i18n.locale)
+          .then((entity) => {
+            this.tableid = this.$wikibase.getRelatedTable(entity)
+            this.item = entity
+            this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
+          })
+      } catch (err) {
+        this.$notification.error(err)
+      }
     }
   }
 }
