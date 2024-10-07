@@ -669,6 +669,146 @@ export class QueryService {
         FILTER (?item_lib = wd:${form.library.value.item} || ?copid_item_lib = wd:${form.library.value.item})
         `
     }
+    if (form.title && form.title.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P5 ?item_title .
+        }
+        OPTIONAL {
+          ?cnum_item wdt:P476 ?cnum_pbid .
+          FILTER regex(?cnum_pbid, '(.*) cnum ') .
+          ?cnum_item wdt:P8 ?item .
+          ?cnum_item wdt:P5 ?cnum_item_title .
+        }
+        FILTER (?item_title = "${form.title.value.label}" || ?cnum_item_title = "${form.title.value.label}")
+        `
+    }
+    if (form.call_number && form.call_number.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P10 ?item_p10_label . 
+          ?cnum_item wdt:P476 ?cnum_pbid .
+          FILTER regex(?cnum_pbid, '(.*) cnum ') .
+          ?cnum_item wdt:P8 ?item
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P10 ?copid_item_p10_label .
+          ?cnum_item wdt:P476 ?cnum_pbid .
+          FILTER regex(?cnum_pbid, '(.*) cnum ') .
+          ?cnum_item wdt:P8 ?item
+        }
+        OPTIONAL {
+          ?item wdt:P30 ?item_p30_label . 
+          ?cnum_item wdt:P476 ?cnum_pbid .
+          FILTER regex(?cnum_pbid, '(.*) cnum ') .
+          ?cnum_item wdt:P8 ?item
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P30 ?copid_item_p30_label .
+          ?cnum_item wdt:P476 ?cnum_pbid .
+          FILTER regex(?cnum_pbid, '(.*) cnum ') .
+          ?cnum_item wdt:P8 ?item
+        }
+        FILTER (?item_p10_label = "${form.call_number.value.label}" || ?copid_item_p10_label = "${form.call_number.value.label}"
+          || ?item_p30_label = "${form.call_number.value.label}" || ?copid_item_p30_label = "${form.call_number.value.label}"
+        )
+        `
+    }
+    if (form.date.value &&
+      (form.date.value.begin || form.date.value.end)) {
+      let completeRange = false
+      if (form.date.value.begin && form.date.value.end) {
+        completeRange = true
+      }
+      filters +=
+        `
+        ?item p:P137 ?history .
+        `
+      if (form.date.value.begin) {
+        filters +=
+          `
+          OPTIONAL { ?history pq:P49 ?begin_date }
+          `
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime )
+            `
+        } else {
+          filters +=
+            `
+            FILTER(?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            `
+        }
+      }
+      if (form.date.value.end) {
+        filters +=
+          `
+          OPTIONAL { ?history pq:P50 ?end_date }
+          `
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(!BOUND(?end_date) || ?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date) || ?end_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime )
+            `
+        } else {
+          filters +=
+            `
+            FILTER(?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            `
+        }
+      }
+      if (completeRange) {
+        filters +=
+        `
+        FILTER(BOUND(?begin_date) || BOUND(?end_date))
+        `
+      }
+    }
+    if (form.place_production && form.place_production.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item p:P442 ?type_of_event .
+          ?type_of_event pq:P47 ?item_place .
+        }
+        OPTIONAL {
+          ?item p:P442 ?type_of_event .
+          ?type_of_event pq:P241 ?item_place_production .
+        }
+        FILTER (?item_place = wd:${form.place_production.value.item} || ?item_place_production = wd:${form.place_production.value.item})
+        `
+    }
+    if (form.scribe_printer && form.scribe_printer.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item p:P442 ?type_of_event .
+          ?type_of_event pq:P25 ?item_scribe .
+        }
+        OPTIONAL {
+          ?item p:P442 ?type_of_event .
+          ?type_of_event pq:P207 ?item_printer .
+        }
+        FILTER (?item_scribe = wd:${form.scribe_printer.value.item} || ?item_printer = wd:${form.scribe_printer.value.item})
+        `
+    }
+    if (form.publisher_patron && form.publisher_patron.value) {
+      filters +=
+        `
+        ?item wdt:P67 wd:${form.publisher_patron.value.item}
+        `
+    }
     return filters
   }
 

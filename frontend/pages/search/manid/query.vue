@@ -137,8 +137,8 @@ export default {
               } UNION {
                 SELECT ?label ?cnum_item
                 WHERE { 
-                  ?cnum_item wdt:P476 ?copid_pbid .
-                  FILTER regex(?copid_pbid, '(.*) cnum ') .
+                  ?cnum_item wdt:P476 ?cnum_pbid .
+                  FILTER regex(?cnum_pbid, '(.*) cnum ') .
                   ?cnum_item wdt:P8 ?table_item .
                   ?table_item wdt:P476 ?table_pbid .
                   FILTER regex(?table_pbid, '(.*) {{table}} ') .      
@@ -167,7 +167,7 @@ export default {
                 SELECT ?label
                 WHERE { 
                   ?table_item wdt:P476 ?table_pbid .
-                  FILTER regex(?table_pbid, '(.*) manid ') .
+                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
                   ?table_item wdt:P10 ?label . 
                   ?cnum_item wdt:P476 ?cnum_pbid .
                   FILTER regex(?cnum_pbid, '(.*) cnum ') .
@@ -180,7 +180,7 @@ export default {
                   FILTER regex(?copid_pbid, '(.*) copid ') .
                   ?copid_item wdt:P839 ?table_item .
                   ?table_item wdt:P476 ?table_pbid .
-                  FILTER regex(?table_pbid, '(.*) manid ') .      
+                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
                   ?copid_item wdt:P10 ?label .
                   ?cnum_item wdt:P476 ?cnum_pbid .
                   FILTER regex(?cnum_pbid, '(.*) cnum ') .
@@ -190,7 +190,7 @@ export default {
                 SELECT ?label
                 WHERE { 
                   ?table_item wdt:P476 ?table_pbid .
-                  FILTER regex(?table_pbid, '(.*) manid ') .
+                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
                   ?table_item wdt:P30 ?label . 
                   ?cnum_item wdt:P476 ?cnum_pbid .
                   FILTER regex(?cnum_pbid, '(.*) cnum ') .
@@ -203,7 +203,7 @@ export default {
                   FILTER regex(?copid_pbid, '(.*) copid ') .
                   ?copid_item wdt:P839 ?table_item .
                   ?table_item wdt:P476 ?table_pbid .
-                  FILTER regex(?table_pbid, '(.*) manid ') .      
+                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
                   ?copid_item wdt:P30 ?label .
                   ?cnum_item wdt:P476 ?cnum_pbid .
                   FILTER regex(?cnum_pbid, '(.*) cnum ') .
@@ -237,11 +237,11 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?label {
+            SELECT DISTINCT ?item ?label {
               {
                 SELECT ?item ?label ?property {
                   ?table_item wdt:P476 ?table_pbid .
-                  FILTER regex(?table_pbid, '(.*) manid ') .
+                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
                   ?table_item p:P442 ?type_of_event .
                   ?type_of_event ?property ?item .
                   BIND(pq:P47 as ?property)
@@ -250,7 +250,7 @@ export default {
               } UNION {
                 SELECT ?item ?label ?property {
                   ?table_item wdt:P476 ?table_pbid .
-                  FILTER regex(?table_pbid, '(.*) manid ') .
+                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
                   ?table_item p:P442 ?type_of_event .
                   ?type_of_event ?property ?item .
                   BIND(pq:P241 as ?property)
@@ -273,7 +273,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT * {
+            SELECT DISTINCT ?item ?label {
               {
                 SELECT ?item ?label ?property {
                   ?table_item wdt:P476 ?table_pbid .
