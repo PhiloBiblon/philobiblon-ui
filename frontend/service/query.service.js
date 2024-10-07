@@ -736,4 +736,18 @@ export class QueryService {
       `
     return this.addPrefixes(SEARCH_QUERY)
   }
+
+  itemCnumsQuery (pbid, lang) {
+    const query =
+      `
+      SELECT ?item ?item_pbid
+      WHERE {
+        ?item wdt:P476 ?item_pbid .
+        FILTER regex(?item_pbid, '(.*) cnum ') .
+        ?item wdt:P590 wd:${pbid} .
+      }
+      ORDER BY ?item_pbid
+      `
+    return this.addPrefixes(query)
+  }
 }
