@@ -106,10 +106,10 @@ export default {
   data () {
     return {
       links_col_1: [
-        { label: 'ABOUT PhiloBiblon', link: '/about' },
-        { label: 'HELP', link: '/help' },
+        { label: 'ABOUT PhiloBiblon', link: '/wiki/About' },
+        { label: 'HELP', link: '/wiki/Help' },
         { label: 'RESOURCES', link: '/wiki/Resources' },
-        { label: 'COLLABORATE', link: '/collaborate' }
+        { label: 'COLLABORATE', link: '/wiki/Collaborate' }
       ],
       links_col_2: [
         { label: 'BETA', link: '/wiki/Beta' },

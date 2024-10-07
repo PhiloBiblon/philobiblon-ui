@@ -47,6 +47,38 @@ export default {
             label: 'copid'
           }
         }
+      },
+      about: {
+        title: 'Sobre',
+        bibliographies: {
+          title: 'Bibliografias'
+        },
+        citation: {
+          title: 'Formato de Citação Preferido'
+        },
+        language: {
+          title: 'Língua'
+        },
+        statistics: {
+          title: 'Estatísticas'
+        },
+        version: {
+          web: {
+            title: 'A versão web'
+          },
+          windows: {
+            title: 'A versão Windows'
+          }
+        },
+        history: {
+          title: 'História'
+        },
+        acknowledgments: {
+          title: 'Agradecimentos'
+        },
+        copyright: {
+          title: 'Copyright'
+        }
       }
     }
   },

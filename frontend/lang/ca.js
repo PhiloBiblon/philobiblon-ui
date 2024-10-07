@@ -47,6 +47,38 @@ export default {
             label: 'copid'
           }
         }
+      },
+      about: {
+        title: 'Sobre',
+        bibliographies: {
+          title: 'Bibliografies'
+        },
+        citation: {
+          title: 'Com citar-nos'
+        },
+        language: {
+          title: 'Llengua'
+        },
+        statistics: {
+          title: 'Estadístiques'
+        },
+        version: {
+          web: {
+            title: 'Versió Web'
+          },
+          windows: {
+            title: 'Versió Windows'
+          }
+        },
+        history: {
+          title: 'Història'
+        },
+        acknowledgments: {
+          title: 'Agraïments'
+        },
+        copyright: {
+          title: 'Copyright'
+        }
       }
     }
   },
