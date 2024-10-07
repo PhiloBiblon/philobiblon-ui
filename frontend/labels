@@ -1,0 +1,1094 @@
+./pages/wiki/_page.vue:5:    <div if="contentToView" v-html="contentToView" />
+./pages/wiki/_page.vue:25:    this.$store.commit('breadcrumb/setItems', [
+./pages/wiki/_page.vue:40:        page = page.split('_')[1]
+./pages/wiki/_page.vue:46:        return `Error rendering page '${this.wikiPage}': ${data.error.info}`
+./pages/wiki/_page.vue:61:      if (link.startsWith('/') || link.startsWith('http')) {
+./pages/wiki/_page.vue:62:        return `<a href='${link}'>${text}</a>`
+./pages/wiki/_page.vue:65:        return `<a href='.${this.localePath(link)}'>${text}</a>`
+./pages/item/_id.vue:2:  <div class="item">
+./pages/item/_id.vue:3:    <item-base v-if="itemId" :id="itemId" />
+./pages/item/_id.vue:22:        this.$notification.error(this.$i18n.t('item.not_found'))
+./pages/item/_id.vue:25:      this.$notification.error(this.$i18n.t('item.invalid_id'))
+./pages/index.vue:5:      redirect(app.localePath('/wiki/Welcome'))
+./pages/privacy-policy.vue:3:    :breadcrumb-items="breadcrumbItems"
+./pages/privacy-policy.vue:13:          text: this.$i18n.t('privacyPolicy.label'),
+./pages/privacy-policy.vue:20:    this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
+./pages/search/insid/query.vue:3:    table="insid"
+./pages/search/insid/query.vue:4:    :form-definition="form"
+./pages/search/insid/query.vue:5:    :breadcrumb-items="breadcrumb_items"
+./pages/search/insid/query.vue:16:          text: this.$i18n.t('menu.item.search.label'),
+./pages/search/insid/query.vue:20:          text: this.$i18n.t('menu.item.search.item.insid.label'),
+./pages/search/insid/query.vue:27:          value: 'ALL',
+./pages/search/insid/query.vue:33:          label: 'search.form.common.simple_search.label',
+./pages/search/insid/query.vue:34:          hint: 'search.form.common.simple_search.hint',
+./pages/search/insid/query.vue:35:          type: 'text',
+./pages/search/insid/query.vue:36:          value: '',
+./pages/search/insid/query.vue:43:          label: 'search.form.insid.city.label',
+./pages/search/insid/query.vue:44:          hint: 'search.form.insid.city.hint',
+./pages/search/insid/query.vue:45:          type: 'autocomplete',
+./pages/search/insid/query.vue:46:          value: '',
+./pages/search/insid/query.vue:55:                FILTER regex(?pbid, '(.*) geoid ') .
+./pages/search/insid/query.vue:59:                FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/insid/query.vue:68:          label: 'search.form.insid.institution_type.label',
+./pages/search/insid/query.vue:69:          hint: 'search.form.insid.institution_type.hint',
+./pages/search/insid/query.vue:70:          type: 'autocomplete',
+./pages/search/insid/query.vue:71:          value: '',
+./pages/search/insid/query.vue:81:              FILTER regex(?pbid, 'INSTITUTIONS\\\\*CLASS\\\\*') .
+./pages/search/insid/query.vue:90:          label: 'search.form.insid.institution.label',
+./pages/search/insid/query.vue:91:          hint: 'search.form.insid.institution.hint',
+./pages/search/insid/query.vue:92:          type: 'autocomplete',
+./pages/search/insid/query.vue:93:          value: '',
+./pages/search/insid/query.vue:104:                  FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/insid/query.vue:106:                  BIND('P34' AS ?property)
+./pages/search/insid/query.vue:112:                  FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/insid/query.vue:114:                  BIND('label' AS ?property)
+./pages/search/insid/query.vue:125:          label: 'search.form.common.subject.label',
+./pages/search/insid/query.vue:126:          hint: 'search.form.common.subject.hint',
+./pages/search/insid/query.vue:127:          type: 'autocomplete',
+./pages/search/insid/query.vue:128:          value: '',
+./pages/search/insid/query.vue:142:                  FILTER regex(?subject_pbid, '(.*) bioid ')
+./pages/search/insid/query.vue:143:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/insid/query.vue:153:                  FILTER regex(?subject_pbid, '(.*) subid ')
+./pages/search/insid/query.vue:154:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/insid/query.vue:164:                  FILTER regex(?subject_pbid, '(.*) geoid ')
+./pages/search/insid/query.vue:165:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/geoid/query.vue:3:    table="geoid"
+./pages/search/geoid/query.vue:4:    :form-definition="form"
+./pages/search/geoid/query.vue:5:    :breadcrumb-items="breadcrumb_items"
+./pages/search/geoid/query.vue:15:          text: this.$i18n.t('menu.item.search.label'),
+./pages/search/geoid/query.vue:19:          text: this.$i18n.t('menu.item.search.item.geoid.label'),
+./pages/search/geoid/query.vue:26:          value: 'ALL',
+./pages/search/geoid/query.vue:32:          label: 'search.form.common.simple_search.label',
+./pages/search/geoid/query.vue:33:          hint: 'search.form.common.simple_search.hint',
+./pages/search/geoid/query.vue:34:          type: 'text',
+./pages/search/geoid/query.vue:35:          value: '',
+./pages/search/libid/query.vue:3:    table="libid"
+./pages/search/libid/query.vue:4:    :form-definition="form"
+./pages/search/libid/query.vue:5:    :breadcrumb-items="breadcrumb_items"
+./pages/search/libid/query.vue:15:          text: this.$i18n.t('menu.item.search.label'),
+./pages/search/libid/query.vue:19:          text: this.$i18n.t('menu.item.search.item.libid.label'),
+./pages/search/libid/query.vue:26:          value: 'ALL',
+./pages/search/libid/query.vue:32:          label: 'search.form.common.simple_search.label',
+./pages/search/libid/query.vue:33:          hint: 'search.form.common.simple_search.hint',
+./pages/search/libid/query.vue:34:          value: '',
+./pages/search/libid/query.vue:35:          type: 'text',
+./pages/search/libid/query.vue:42:          label: 'search.form.libid.city.label',
+./pages/search/libid/query.vue:43:          hint: 'search.form.libid.city.hint',
+./pages/search/libid/query.vue:44:          type: 'autocomplete',
+./pages/search/libid/query.vue:45:          value: '',
+./pages/search/libid/query.vue:54:              FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/libid/query.vue:64:          label: 'search.form.libid.library.label',
+./pages/search/libid/query.vue:65:          hint: 'search.form.libid.library.hint',
+./pages/search/libid/query.vue:66:          type: 'autocomplete',
+./pages/search/libid/query.vue:67:          value: '',
+./pages/search/libid/query.vue:78:                  FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/libid/query.vue:80:                  BIND('P34' AS ?property)
+./pages/search/libid/query.vue:86:                  FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/libid/query.vue:88:                  BIND('label' AS ?property)
+./pages/search/libid/query.vue:99:          label: 'search.form.libid.call_number.label',
+./pages/search/libid/query.vue:100:          hint: 'search.form.libid.call_number.hint',
+./pages/search/libid/query.vue:101:          type: 'autocomplete',
+./pages/search/libid/query.vue:102:          value: '',
+./pages/search/libid/query.vue:111:              FILTER regex(?manid_pbid, '(.*) manid ')
+./pages/search/libid/query.vue:114:              FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/libid/query.vue:124:          label: 'search.form.common.subject.label',
+./pages/search/libid/query.vue:125:          hint: 'search.form.common.subject.hint',
+./pages/search/libid/query.vue:126:          type: 'autocomplete',
+./pages/search/libid/query.vue:127:          value: '',
+./pages/search/libid/query.vue:141:                  FILTER regex(?subject_pbid, '(.*) bioid ')
+./pages/search/libid/query.vue:142:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/libid/query.vue:152:                  FILTER regex(?subject_pbid, '(.*) subid ')
+./pages/search/libid/query.vue:153:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/libid/query.vue:163:                  FILTER regex(?subject_pbid, '(.*) geoid ')
+./pages/search/libid/query.vue:164:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/libid/query.vue:174:                  FILTER regex(?subject_pbid, '(.*) insid ')
+./pages/search/libid/query.vue:175:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/manid/query.vue:3:    table="manid"
+./pages/search/manid/query.vue:4:    :form-definition="form"
+./pages/search/manid/query.vue:5:    :breadcrumb-items="breadcrumb_items"
+./pages/search/manid/query.vue:15:          text: this.$i18n.t('menu.item.search.label'),
+./pages/search/manid/query.vue:19:          text: this.$i18n.t('menu.item.search.item.manid.label'),
+./pages/search/manid/query.vue:26:          value: 'ALL',
+./pages/search/manid/query.vue:32:          label: 'search.form.common.simple_search.label',
+./pages/search/manid/query.vue:33:          hint: 'search.form.common.simple_search.hint',
+./pages/search/manid/query.vue:34:          type: 'text',
+./pages/search/manid/query.vue:35:          value: '',
+./pages/search/manid/query.vue:42:          label: 'search.form.msed.city.label',
+./pages/search/manid/query.vue:43:          hint: 'search.form.msed.city.hint',
+./pages/search/manid/query.vue:44:          type: 'text',
+./pages/search/manid/query.vue:45:          value: '',
+./pages/search/manid/query.vue:52:          label: 'search.form.msed.library.label',
+./pages/search/manid/query.vue:53:          hint: 'search.form.msed.library.hint',
+./pages/search/manid/query.vue:54:          type: 'autocomplete',
+./pages/search/manid/query.vue:55:          value: '',
+./pages/search/manid/query.vue:66:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:74:                  FILTER regex(?copid_pbid, '(.*) copid ') .
+./pages/search/manid/query.vue:77:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:90:          label: 'search.form.msed.title.label',
+./pages/search/manid/query.vue:91:          hint: 'search.form.msed.title.hint',
+./pages/search/manid/query.vue:92:          type: 'autocomplete',
+./pages/search/manid/query.vue:93:          value: '',
+./pages/search/manid/query.vue:104:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:111:                  FILTER regex(?copid_pbid, '(.*) cnum ') .
+./pages/search/manid/query.vue:114:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:126:          label: 'search.form.msed.call_number.label',
+./pages/search/manid/query.vue:127:          hint: 'search.form.msed.call_number.hint',
+./pages/search/manid/query.vue:128:          type: 'autocomplete',
+./pages/search/manid/query.vue:129:          value: '',
+./pages/search/manid/query.vue:140:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:143:                  FILTER regex(?cnum_pbid, '(.*) cnum ') .
+./pages/search/manid/query.vue:150:                  FILTER regex(?copid_pbid, '(.*) copid ') .
+./pages/search/manid/query.vue:153:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:156:                  FILTER regex(?cnum_pbid, '(.*) cnum ') .
+./pages/search/manid/query.vue:168:          label: 'search.form.msed.date.label',
+./pages/search/manid/query.vue:169:          hint: 'search.form.msed.date.hint',
+./pages/search/manid/query.vue:170:          type: 'date',
+./pages/search/manid/query.vue:178:          label: 'search.form.msed.place_production.label',
+./pages/search/manid/query.vue:179:          hint: 'search.form.msed.place_production.hint',
+./pages/search/manid/query.vue:180:          type: 'autocomplete',
+./pages/search/manid/query.vue:181:          value: '',
+./pages/search/manid/query.vue:193:          label: 'search.form.msed.scribe_printer.label',
+./pages/search/manid/query.vue:194:          hint: 'search.form.msed.scribe_printer.hint',
+./pages/search/manid/query.vue:195:          type: 'autocomplete',
+./pages/search/manid/query.vue:196:          value: '',
+./pages/search/manid/query.vue:206:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:215:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:229:          label: 'search.form.msed.publisher_patron.label',
+./pages/search/manid/query.vue:230:          hint: 'search.form.msed.publisher_patron.hint',
+./pages/search/manid/query.vue:231:          type: 'autocomplete',
+./pages/search/manid/query.vue:232:          value: '',
+./pages/search/manid/query.vue:241:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:252:          label: 'search.form.msed.previous_owner.label',
+./pages/search/manid/query.vue:253:          hint: 'search.form.msed.previous_owner.hint',
+./pages/search/manid/query.vue:254:          type: 'autocomplete',
+./pages/search/manid/query.vue:255:          value: '',
+./pages/search/manid/query.vue:266:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:274:                  FILTER regex(?copid_pbid, '(.*) copid ') .
+./pages/search/manid/query.vue:277:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:290:          label: 'search.form.msed.associated_person.label',
+./pages/search/manid/query.vue:291:          hint: 'search.form.msed.associated_person.hint',
+./pages/search/manid/query.vue:292:          type: 'autocomplete',
+./pages/search/manid/query.vue:293:          value: '',
+./pages/search/manid/query.vue:304:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:312:                  FILTER regex(?copid_pbid, '(.*) copid ') .
+./pages/search/manid/query.vue:315:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:328:          label: 'search.form.msed.type.label',
+./pages/search/manid/query.vue:329:          hint: 'search.form.msed.type.hint',
+./pages/search/manid/query.vue:330:          type: 'autocomplete',
+./pages/search/manid/query.vue:331:          value: '',
+./pages/search/manid/query.vue:340:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:351:          label: 'search.form.msed.writing_surface.label',
+./pages/search/manid/query.vue:352:          hint: 'search.form.msed.writing_surface.hint',
+./pages/search/manid/query.vue:353:          type: 'autocomplete',
+./pages/search/manid/query.vue:354:          value: '',
+./pages/search/manid/query.vue:365:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:373:                  FILTER regex(?copid_pbid, '(.*) copid ') .
+./pages/search/manid/query.vue:376:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:389:          label: 'search.form.msed.format.label',
+./pages/search/manid/query.vue:390:          hint: 'search.form.msed.format.hint',
+./pages/search/manid/query.vue:391:          type: 'autocomplete',
+./pages/search/manid/query.vue:392:          value: '',
+./pages/search/manid/query.vue:401:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:412:          label: 'search.form.msed.binding.label',
+./pages/search/manid/query.vue:413:          hint: 'search.form.msed.binding.hint',
+./pages/search/manid/query.vue:414:          type: 'autocomplete',
+./pages/search/manid/query.vue:415:          value: '',
+./pages/search/manid/query.vue:426:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:434:                  FILTER regex(?copid_pbid, '(.*) copid ') .
+./pages/search/manid/query.vue:437:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:450:          label: 'search.form.msed.collation.label',
+./pages/search/manid/query.vue:451:          hint: 'search.form.msed.collation.hint',
+./pages/search/manid/query.vue:452:          type: 'autocomplete',
+./pages/search/manid/query.vue:453:          value: '',
+./pages/search/manid/query.vue:462:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:473:          label: 'search.form.msed.hand.label',
+./pages/search/manid/query.vue:474:          hint: 'search.form.msed.hand.hint',
+./pages/search/manid/query.vue:475:          type: 'autocomplete',
+./pages/search/manid/query.vue:476:          value: '',
+./pages/search/manid/query.vue:485:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:496:          label: 'search.form.msed.font.label',
+./pages/search/manid/query.vue:497:          hint: 'search.form.msed.font.hint',
+./pages/search/manid/query.vue:498:          type: 'autocomplete',
+./pages/search/manid/query.vue:499:          value: '',
+./pages/search/manid/query.vue:508:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:519:          label: 'search.form.msed.watermark.label',
+./pages/search/manid/query.vue:520:          hint: 'search.form.msed.watermark.hint',
+./pages/search/manid/query.vue:521:          type: 'autocomplete',
+./pages/search/manid/query.vue:522:          value: '',
+./pages/search/manid/query.vue:533:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:541:                  FILTER regex(?copid_pbid, '(.*) copid ') .
+./pages/search/manid/query.vue:544:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:557:          label: 'search.form.msed.graphic_feature.label',
+./pages/search/manid/query.vue:558:          hint: 'search.form.msed.graphic_feature.hint',
+./pages/search/manid/query.vue:559:          type: 'autocomplete',
+./pages/search/manid/query.vue:560:          value: '',
+./pages/search/manid/query.vue:571:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:579:                  FILTER regex(?copid_pbid, '(.*) copid ') .
+./pages/search/manid/query.vue:582:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+./pages/search/manid/query.vue:595:          label: 'search.form.msed.physical_feature.label',
+./pages/search/manid/query.vue:596:          hint: 'search.form.msed.physical_feature.hint',
+./pages/search/manid/query.vue:597:          type: 'autocomplete',
+./pages/search/manid/query.vue:598:          value: '',
+./pages/search/manid/query.vue:607:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:618:          label: 'search.form.msed.music.label',
+./pages/search/manid/query.vue:619:          hint: 'search.form.msed.music.hint',
+./pages/search/manid/query.vue:620:          type: 'autocomplete',
+./pages/search/manid/query.vue:621:          value: '',
+./pages/search/manid/query.vue:630:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/manid/query.vue:641:          label: 'search.form.common.subject.label',
+./pages/search/manid/query.vue:642:          hint: 'search.form.common.subject.hint',
+./pages/search/manid/query.vue:643:          type: 'autocomplete',
+./pages/search/manid/query.vue:644:          value: '',
+./pages/search/manid/query.vue:658:                      FILTER regex(?subject_pbid, '(.*) subid ')
+./pages/search/manid/query.vue:659:                      FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/manid/query.vue:669:                      FILTER regex(?subject_pbid, '(.*) insid ')
+./pages/search/manid/query.vue:670:                      FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/manid/query.vue:680:                      FILTER regex(?subject_pbid, '(.*) bioid ')
+./pages/search/manid/query.vue:681:                      FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/manid/query.vue:691:                      FILTER regex(?geo_pbid, '(.*) geoid ')
+./pages/search/manid/query.vue:692:                      FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/subid/query.vue:3:    table="subid"
+./pages/search/subid/query.vue:4:    :form-definition="form"
+./pages/search/subid/query.vue:5:    :breadcrumb-items="breadcrumb_items"
+./pages/search/subid/query.vue:15:          text: this.$i18n.t('menu.item.search.label'),
+./pages/search/subid/query.vue:19:          text: this.$i18n.t('menu.item.search.item.subid.label'),
+./pages/search/subid/query.vue:26:          value: 'ALL',
+./pages/search/subid/query.vue:32:          label: 'search.form.common.simple_search.label',
+./pages/search/subid/query.vue:33:          hint: 'search.form.common.simple_search.hint',
+./pages/search/subid/query.vue:34:          type: 'text',
+./pages/search/subid/query.vue:35:          value: '',
+./pages/search/bibid/query.vue:3:    table="bibid"
+./pages/search/bibid/query.vue:4:    :form-definition="form"
+./pages/search/bibid/query.vue:5:    :breadcrumb-items="breadcrumb_items"
+./pages/search/bibid/query.vue:15:          text: this.$i18n.t('menu.item.search.label'),
+./pages/search/bibid/query.vue:19:          text: this.$i18n.t('menu.item.search.item.bibid.label'),
+./pages/search/bibid/query.vue:26:          value: 'ALL',
+./pages/search/bibid/query.vue:32:          label: 'search.form.common.simple_search.label',
+./pages/search/bibid/query.vue:33:          hint: 'search.form.common.simple_search.hint',
+./pages/search/bibid/query.vue:34:          type: 'text',
+./pages/search/bibid/query.vue:35:          value: '',
+./pages/search/bibid/query.vue:42:          label: 'search.form.bibid.author.label',
+./pages/search/bibid/query.vue:43:          hint: 'search.form.bibid.author.hint',
+./pages/search/bibid/query.vue:44:          type: 'autocomplete',
+./pages/search/bibid/query.vue:45:          value: '',
+./pages/search/bibid/query.vue:57:                      FILTER regex(?pbid, '(.*) {{table}} ')
+./pages/search/bibid/query.vue:65:                      FILTER regex(?pbid, '(.*) {{table}} ')
+./pages/search/bibid/query.vue:77:          label: 'search.form.bibid.title.label',
+./pages/search/bibid/query.vue:78:          hint: 'search.form.bibid.title.hint',
+./pages/search/bibid/query.vue:79:          type: 'autocomplete',
+./pages/search/bibid/query.vue:80:          value: '',
+./pages/search/bibid/query.vue:89:              FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:99:          label: 'search.form.bibid.date.label',
+./pages/search/bibid/query.vue:100:          hint: 'search.form.bibid.date.hint',
+./pages/search/bibid/query.vue:101:          type: 'date',
+./pages/search/bibid/query.vue:109:          label: 'search.form.bibid.volume.label',
+./pages/search/bibid/query.vue:110:          hint: 'search.form.bibid.volume.hint',
+./pages/search/bibid/query.vue:111:          type: 'autocomplete',
+./pages/search/bibid/query.vue:112:          value: '',
+./pages/search/bibid/query.vue:121:              FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:131:          label: 'search.form.bibid.place_publication.label',
+./pages/search/bibid/query.vue:132:          hint: 'search.form.bibid.place_publication.hint',
+./pages/search/bibid/query.vue:133:          type: 'autocomplete',
+./pages/search/bibid/query.vue:134:          value: '',
+./pages/search/bibid/query.vue:143:              FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:153:          label: 'search.form.bibid.publisher.label',
+./pages/search/bibid/query.vue:154:          hint: 'search.form.bibid.publisher.hint',
+./pages/search/bibid/query.vue:155:          type: 'autocomplete',
+./pages/search/bibid/query.vue:156:          value: '',
+./pages/search/bibid/query.vue:165:              FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:175:          label: 'search.form.bibid.series.label',
+./pages/search/bibid/query.vue:176:          hint: 'search.form.bibid.series.hint',
+./pages/search/bibid/query.vue:177:          type: 'autocomplete',
+./pages/search/bibid/query.vue:178:          value: '',
+./pages/search/bibid/query.vue:187:              FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:197:          label: 'search.form.bibid.locations.label',
+./pages/search/bibid/query.vue:198:          hint: 'search.form.bibid.locations.hint',
+./pages/search/bibid/query.vue:199:          type: 'autocomplete',
+./pages/search/bibid/query.vue:200:          value: '',
+./pages/search/bibid/query.vue:209:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:220:          label: 'search.form.bibid.international_standard_number.label',
+./pages/search/bibid/query.vue:221:          hint: 'search.form.bibid.international_standard_number.hint',
+./pages/search/bibid/query.vue:222:          type: 'autocomplete',
+./pages/search/bibid/query.vue:223:          value: '',
+./pages/search/bibid/query.vue:234:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:241:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:248:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:255:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:267:          label: 'search.form.bibid.type.label',
+./pages/search/bibid/query.vue:268:          hint: 'search.form.bibid.type.hint',
+./pages/search/bibid/query.vue:269:          type: 'autocomplete',
+./pages/search/bibid/query.vue:270:          value: '',
+./pages/search/bibid/query.vue:279:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bibid/query.vue:290:          label: 'search.form.common.subject.label',
+./pages/search/bibid/query.vue:291:          hint: 'search.form.common.subject.hint',
+./pages/search/bibid/query.vue:292:          type: 'autocomplete',
+./pages/search/bibid/query.vue:293:          value: '',
+./pages/search/bibid/query.vue:307:                  FILTER regex(?subject_pbid, '(.*) subid ')
+./pages/search/bibid/query.vue:308:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/bibid/query.vue:318:                  FILTER regex(?subject_pbid, '(.*) geoid ')
+./pages/search/bibid/query.vue:319:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/bibid/query.vue:329:                  FILTER regex(?subject_pbid, '(.*) insid ')
+./pages/search/bibid/query.vue:330:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/bibid/query.vue:340:                  FILTER regex(?subject_pbid, '(.*) bioid ')
+./pages/search/bibid/query.vue:341:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/texid/query.vue:3:    table="texid"
+./pages/search/texid/query.vue:4:    :form-definition="form"
+./pages/search/texid/query.vue:5:    :breadcrumb-items="breadcrumb_items"
+./pages/search/texid/query.vue:15:          text: this.$i18n.t('menu.item.search.label'),
+./pages/search/texid/query.vue:19:          text: this.$i18n.t('menu.item.search.item.texid.label'),
+./pages/search/texid/query.vue:26:          value: 'ALL',
+./pages/search/texid/query.vue:32:          label: 'search.form.common.simple_search.label',
+./pages/search/texid/query.vue:33:          hint: 'search.form.common.simple_search.hint',
+./pages/search/texid/query.vue:34:          type: 'text',
+./pages/search/texid/query.vue:35:          value: '',
+./pages/search/texid/query.vue:42:          label: 'search.form.texid.author.label',
+./pages/search/texid/query.vue:43:          hint: 'search.form.texid.author.hint',
+./pages/search/texid/query.vue:44:          type: 'autocomplete',
+./pages/search/texid/query.vue:45:          value: '',
+./pages/search/texid/query.vue:55:                  FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:62:                  FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
+./pages/search/texid/query.vue:65:                  FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:77:          label: 'search.form.texid.title.label',
+./pages/search/texid/query.vue:78:          hint: 'search.form.texid.title.hint',
+./pages/search/texid/query.vue:79:          type: 'autocomplete',
+./pages/search/texid/query.vue:80:          value: '',
+./pages/search/texid/query.vue:90:                  FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:96:                  FILTER regex(?analytic_pbid, '(.*) cnum ') .
+./pages/search/texid/query.vue:99:                  FILTER regex(?item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:111:          label: 'search.form.texid.incipit.label',
+./pages/search/texid/query.vue:112:          hint: 'search.form.texid.incipit.hint',
+./pages/search/texid/query.vue:113:          type: 'autocomplete',
+./pages/search/texid/query.vue:114:          value: '',
+./pages/search/texid/query.vue:124:                  FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:131:                  FILTER regex(?analytic_pbid, '(.*) cnum ') .
+./pages/search/texid/query.vue:134:                  FILTER regex(?item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:147:          label: 'search.form.texid.explicit.label',
+./pages/search/texid/query.vue:148:          hint: 'search.form.texid.explicit.hint',
+./pages/search/texid/query.vue:149:          type: 'autocomplete',
+./pages/search/texid/query.vue:150:          value: '',
+./pages/search/texid/query.vue:160:                  FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:167:                  FILTER regex(?analytic_pbid, '(.*) cnum ') .
+./pages/search/texid/query.vue:170:                  FILTER regex(?item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:183:          label: 'search.form.texid.associated_person.label',
+./pages/search/texid/query.vue:184:          hint: 'search.form.common.personal_name.hint',
+./pages/search/texid/query.vue:185:          type: 'autocomplete',
+./pages/search/texid/query.vue:186:          value: '',
+./pages/search/texid/query.vue:196:                  FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:203:                  FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
+./pages/search/texid/query.vue:206:                  FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:219:          label: 'search.form.texid.place_composition.label',
+./pages/search/texid/query.vue:220:          hint: 'search.form.common.place.hint',
+./pages/search/texid/query.vue:221:          type: 'autocomplete',
+./pages/search/texid/query.vue:222:          value: '',
+./pages/search/texid/query.vue:230:              FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:234:              FILTER regex(?item_pbid, '(.*) geoid ') .
+./pages/search/texid/query.vue:243:          label: 'search.form.texid.date_composition.label',
+./pages/search/texid/query.vue:244:          hint: 'search.form.texid.date_composition.hint',
+./pages/search/texid/query.vue:245:          type: 'date',
+./pages/search/texid/query.vue:253:          label: 'search.form.texid.type.label',
+./pages/search/texid/query.vue:254:          hint: 'search.form.texid.type.hint',
+./pages/search/texid/query.vue:255:          type: 'autocomplete',
+./pages/search/texid/query.vue:256:          value: '',
+./pages/search/texid/query.vue:264:              FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:275:          label: 'search.form.texid.language.label',
+./pages/search/texid/query.vue:276:          hint: 'search.form.texid.language.hint',
+./pages/search/texid/query.vue:277:          type: 'autocomplete',
+./pages/search/texid/query.vue:278:          value: '',
+./pages/search/texid/query.vue:288:                  FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:295:                  FILTER regex(?analytic_pbid, '(.*) cnum ') .
+./pages/search/texid/query.vue:298:                  FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:311:          label: 'search.form.texid.poetic_form.label',
+./pages/search/texid/query.vue:312:          hint: 'search.form.texid.poetic_form.hint',
+./pages/search/texid/query.vue:313:          type: 'autocomplete',
+./pages/search/texid/query.vue:314:          value: '',
+./pages/search/texid/query.vue:324:                  FILTER regex(?item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:330:                  FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
+./pages/search/texid/query.vue:333:                  FILTER regex(?item_pbid, '(.*) {{table}} ') .
+./pages/search/texid/query.vue:345:          label: 'search.form.common.subject.label',
+./pages/search/texid/query.vue:346:          hint: 'search.form.common.subject.hint',
+./pages/search/texid/query.vue:347:          type: 'autocomplete',
+./pages/search/texid/query.vue:348:          value: '',
+./pages/search/texid/query.vue:357:              FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:3:    table="bioid"
+./pages/search/bioid/query.vue:4:    :form-definition="form"
+./pages/search/bioid/query.vue:5:    :breadcrumb-items="breadcrumb_items"
+./pages/search/bioid/query.vue:15:          text: this.$i18n.t('menu.item.search.label'),
+./pages/search/bioid/query.vue:19:          text: this.$i18n.t('menu.item.search.item.bioid.label'),
+./pages/search/bioid/query.vue:26:          value: 'ALL',
+./pages/search/bioid/query.vue:32:          label: 'search.form.common.simple_search.label',
+./pages/search/bioid/query.vue:33:          hint: 'search.form.common.simple_search.hint',
+./pages/search/bioid/query.vue:34:          type: 'text',
+./pages/search/bioid/query.vue:35:          value: '',
+./pages/search/bioid/query.vue:42:          label: 'search.form.bioid.name.label',
+./pages/search/bioid/query.vue:43:          hint: 'search.form.common.personal_name.hint',
+./pages/search/bioid/query.vue:44:          type: 'autocomplete',
+./pages/search/bioid/query.vue:45:          value: '',
+./pages/search/bioid/query.vue:56:                  FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:58:                  BIND('P34' AS ?property)
+./pages/search/bioid/query.vue:64:                  FILTER regex(?pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:66:                  BIND('label' AS ?property)
+./pages/search/bioid/query.vue:77:          label: 'search.form.bioid.title.label',
+./pages/search/bioid/query.vue:78:          hint: 'search.form.bioid.title.hint',
+./pages/search/bioid/query.vue:79:          type: 'autocomplete',
+./pages/search/bioid/query.vue:80:          value: '',
+./pages/search/bioid/query.vue:89:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:100:          label: 'search.form.bioid.date.label',
+./pages/search/bioid/query.vue:101:          hint: 'search.form.bioid.date.hint',
+./pages/search/bioid/query.vue:102:          type: 'date',
+./pages/search/bioid/query.vue:110:          label: 'search.form.bioid.associated_place.label',
+./pages/search/bioid/query.vue:111:          hint: 'search.form.bioid.associated_place.hint',
+./pages/search/bioid/query.vue:112:          type: 'autocomplete',
+./pages/search/bioid/query.vue:113:          value: '',
+./pages/search/bioid/query.vue:123:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:127:                  FILTER regex(?geo_pbid, '(.*) geoid ') .
+./pages/search/bioid/query.vue:134:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:138:                  FILTER regex(?geo_pbid, '(.*) geoid ') .
+./pages/search/bioid/query.vue:145:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:149:                  FILTER regex(?geo_pbid, '(.*) geoid ') .
+./pages/search/bioid/query.vue:156:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:160:                  FILTER regex(?geo_pbid, '(.*) geoid ') .
+./pages/search/bioid/query.vue:167:                  FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:170:                  FILTER regex(?geo_pbid, '(.*) geoid ') .
+./pages/search/bioid/query.vue:183:          label: 'search.form.bioid.religion.label',
+./pages/search/bioid/query.vue:184:          hint: 'search.form.bioid.religion.hint',
+./pages/search/bioid/query.vue:185:          type: 'autocomplete',
+./pages/search/bioid/query.vue:186:          value: '',
+./pages/search/bioid/query.vue:195:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:206:          label: 'search.form.bioid.religious_order.label',
+./pages/search/bioid/query.vue:207:          hint: 'search.form.bioid.religious_order.hint',
+./pages/search/bioid/query.vue:208:          type: 'autocomplete',
+./pages/search/bioid/query.vue:209:          value: '',
+./pages/search/bioid/query.vue:218:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:229:          label: 'search.form.bioid.profession.label',
+./pages/search/bioid/query.vue:230:          hint: 'search.form.bioid.profession.hint',
+./pages/search/bioid/query.vue:231:          type: 'autocomplete',
+./pages/search/bioid/query.vue:232:          value: '',
+./pages/search/bioid/query.vue:241:              FILTER regex(?table_pbid, '(.*) {{table}} ') .
+./pages/search/bioid/query.vue:252:          label: 'search.form.common.subject.label',
+./pages/search/bioid/query.vue:253:          hint: 'search.form.common.subject.hint',
+./pages/search/bioid/query.vue:254:          type: 'autocomplete',
+./pages/search/bioid/query.vue:255:          value: '',
+./pages/search/bioid/query.vue:269:                  FILTER regex(?subject_pbid, '(.*) subid ')
+./pages/search/bioid/query.vue:270:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/bioid/query.vue:280:                  FILTER regex(?subject_pbid, '(.*) geoid ')
+./pages/search/bioid/query.vue:281:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/search/bioid/query.vue:291:                  FILTER regex(?subject_pbid, '(.*) insid ')
+./pages/search/bioid/query.vue:292:                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+./pages/oauth_callback.vue:11:      this.$notification.success(this.$i18n.t('auth.login.success', { name: this.$store.state.auth.username }))
+./pages/oauth_callback.vue:15:    this.$router.push(this.localePath(this.$cookies.get('previous-path')))
+./layouts/error.vue:3:    <h1 v-if="error.statusCode === 404">
+./layouts/error.vue:9:    <NuxtLink to="/">
+./layouts/error.vue:17:  layout: 'empty',
+./layouts/error.vue:26:      pageNotFound: '404 Not Found',
+./layouts/error.vue:27:      otherError: 'An error occurred'
+./layouts/default.vue:4:      v-model="drawer"
+./layouts/default.vue:5:      style="height: 99vh;"
+./layouts/default.vue:6:      color="primary"
+./layouts/default.vue:7:      :permanent="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs && !$vuetify.breakpoint.md"
+./layouts/default.vue:12:        <v-list-item v-if="username" two-line>
+./layouts/default.vue:26:      <v-list class="mainmenu">
+./layouts/default.vue:27:        <v-list-item :to="localePath('/')">
+./layouts/default.vue:34:            <v-list-item-title>{{ $t('menu.item.welcome.label') }}</v-list-item-title>
+./layouts/default.vue:38:          prepend-icon="mdi-magnify"
+./layouts/default.vue:41:            <v-list-item-title>{{ $t('menu.item.search.label') }}</v-list-item-title>
+./layouts/default.vue:43:          <v-list-item class="subitem" link @click="goTo('/search/texid/query')">
+./layouts/default.vue:45:              <v-list-item-title>{{ $t('menu.item.search.item.texid.label') }}</v-list-item-title>
+./layouts/default.vue:48:          <v-list-item class="subitem" link @click="goTo('/search/libid/query')">
+./layouts/default.vue:50:              <v-list-item-title>{{ $t('menu.item.search.item.libid.label') }}</v-list-item-title>
+./layouts/default.vue:53:          <v-list-item class="subitem" link @click="goTo('/search/insid/query')">
+./layouts/default.vue:55:              <v-list-item-title>{{ $t('menu.item.search.item.insid.label') }}</v-list-item-title>
+./layouts/default.vue:58:          <v-list-item class="subitem" link @click="goTo('/search/bioid/query')">
+./layouts/default.vue:60:              <v-list-item-title>{{ $t('menu.item.search.item.bioid.label') }}</v-list-item-title>
+./layouts/default.vue:63:          <v-list-item class="subitem" link @click="goTo('/search/bibid/query')">
+./layouts/default.vue:65:              <v-list-item-title>{{ $t('menu.item.search.item.bibid.label') }}</v-list-item-title>
+./layouts/default.vue:68:          <v-list-item class="subitem" link @click="goTo('/search/manid/query')">
+./layouts/default.vue:70:              <v-list-item-title>{{ $t('menu.item.search.item.manid.label') }}</v-list-item-title>
+./layouts/default.vue:73:          <v-list-item class="subitem" link @click="goTo('/search/geoid/query')">
+./layouts/default.vue:75:              <v-list-item-title>{{ $t('menu.item.search.item.geoid.label') }}</v-list-item-title>
+./layouts/default.vue:78:          <v-list-item class="subitem" link @click="goTo('/search/subid/query')">
+./layouts/default.vue:80:              <v-list-item-title>{{ $t('menu.item.search.item.subid.label') }}</v-list-item-title>
+./layouts/default.vue:91:      <template #img="{ props }">
+./layouts/default.vue:93:          v-bind="props"
+./layouts/default.vue:94:          gradient="to top right, rgba(33, 33, 33,.7), rgba(250, 250, 250,.7)"
+./layouts/default.vue:97:      <v-app-bar-nav-icon class="d-lg-none" @click.stop="drawer = !drawer" />
+./layouts/default.vue:99:        class="text-h4"
+./layouts/default.vue:100:        style="cursor: pointer"
+./layouts/default.vue:101:        @click="goTo('/')"
+./layouts/default.vue:103:        {{ title_1 }}<span class="font-weight-light">{{ title_2 }}</span>
+./layouts/default.vue:108:        v-if="$store.state.auth.isLogged"
+./layouts/default.vue:111:        <template #activator="{ on }">
+./layouts/default.vue:112:          <v-icon v-on="on" @click="logout">
+./layouts/default.vue:116:        <span>{{ $t('auth.logout.label') }}</span>
+./layouts/default.vue:119:        v-if="!$store.state.auth.isLogged"
+./layouts/default.vue:122:        <template #activator="{ on }">
+./layouts/default.vue:123:          <v-icon v-on="on" @click="login">
+./layouts/default.vue:127:        <span>{{ $t('auth.login.label') }}</span>
+./layouts/default.vue:130:    <v-main class="min-height-full-display">
+./layouts/default.vue:132:        <v-breadcrumbs :items="$store.state.breadcrumb.items" />
+./layouts/default.vue:145:      title_1: 'Philo',
+./layouts/default.vue:146:      title_2: 'Biblon',
+./layouts/default.vue:152:      return this.$store.state.auth.username ? this.$store.state.auth.username : ''
+./layouts/default.vue:157:    window.addEventListener('keydown', this.keyDownHandler)
+./layouts/default.vue:160:    window.removeEventListener('keydown', this.keyDownHandler)
+./layouts/default.vue:164:      if (event.code === 'Escape') {
+./layouts/default.vue:167:      if (event.code === 'F1') {
+./layouts/default.vue:175:      this.$cookies.set('previous-path', this.$route.path, {
+./layouts/default.vue:176:        path: '/',
+./layouts/default.vue:182:      this.$store.commit('auth/logout')
+./layouts/default.vue:183:      this.$notification.success(this.$i18n.t('auth.logout.success'))
+./layouts/default.vue:184:      this.$cookies.remove('oauth')
+./components/LanguagesMenu.vue:3:    <template #activator="{ on }">
+./components/LanguagesMenu.vue:4:      <v-btn text v-on="on">
+./components/LanguagesMenu.vue:10:        v-for="(item, index) in languages"
+./components/LanguagesMenu.vue:11:        :key="index"
+./components/LanguagesMenu.vue:13:        @click="changeLocale(index)"
+./components/LanguagesMenu.vue:16:          <v-img :src="item.image" alt="flag"/>
+./components/LanguagesMenu.vue:29:        { locale: 'ca', name: 'Català', image: 'img/flags/flag_catalonia.gif' },
+./components/LanguagesMenu.vue:30:        { locale: 'es', name: 'Español', image: 'img/flags/flag_spain.gif' },
+./components/LanguagesMenu.vue:31:        { locale: 'en', name: 'English', image: 'img/flags/flag_unitedstates.gif' },
+./components/LanguagesMenu.vue:32:        { locale: 'gl', name: 'Galego', image: 'img/flags/flag_galicia.gif' },
+./components/LanguagesMenu.vue:33:        { locale: 'pt', name: 'Português', image: 'img/flags/flag_portugal.gif' }
+./components/icons/social/TwitterIcon.vue:2:  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="30px" height="30px" fill="gray">
+./components/icons/social/TwitterIcon.vue:4:      d="M 50.0625 10.4375 C 48.214844 11.257813 46.234375 11.808594 44.152344 12.058594 C 46.277344 10.785156 47.910156 8.769531 48.675781 6.371094 C 46.691406 7.546875 44.484375 8.402344 42.144531 8.863281 C 40.269531 6.863281 37.597656 5.617188 34.640625 5.617188 C 28.960938 5.617188 24.355469 10.21875 24.355469 15.898438 C 24.355469 16.703125 24.449219 17.488281 24.625 18.242188 C 16.078125 17.8125 8.503906 13.71875 3.429688 7.496094 C 2.542969 9.019531 2.039063 10.785156 2.039063 12.667969 C 2.039063 16.234375 3.851563 19.382813 6.613281 21.230469 C 4.925781 21.175781 3.339844 20.710938 1.953125 19.941406 C 1.953125 19.984375 1.953125 20.027344 1.953125 20.070313 C 1.953125 25.054688 5.5 29.207031 10.199219 30.15625 C 9.339844 30.390625 8.429688 30.515625 7.492188 30.515625 C 6.828125 30.515625 6.183594 30.453125 5.554688 30.328125 C 6.867188 34.410156 10.664063 37.390625 15.160156 37.472656 C 11.644531 40.230469 7.210938 41.871094 2.390625 41.871094 C 1.558594 41.871094 0.742188 41.824219 -0.0585938 41.726563 C 4.488281 44.648438 9.894531 46.347656 15.703125 46.347656 C 34.617188 46.347656 44.960938 30.679688 44.960938 17.09375 C 44.960938 16.648438 44.949219 16.199219 44.933594 15.761719 C 46.941406 14.3125 48.683594 12.5 50.0625 10.4375 Z"/>
+./components/icons/social/TwitterIcon.vue:10:  name: "TwitterIcon"
+./components/icons/social/InstagramIcon.vue:2:  <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="gray" class="bi bi-instagram"
+./components/icons/social/InstagramIcon.vue:3:       viewBox="0 0 16 16">
+./components/icons/social/InstagramIcon.vue:5:      d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"></path>
+./components/icons/social/InstagramIcon.vue:11:  name: "InstagramIcon"
+./components/icons/social/YoutubeIcon.vue:2:    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="gray" class="bi bi-youtube"
+./components/icons/social/YoutubeIcon.vue:3:         viewBox="0 0 16 16">
+./components/icons/social/YoutubeIcon.vue:5:            d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"></path>
+./components/icons/social/YoutubeIcon.vue:11:    name: "YoutubeIcon"
+./components/icons/social/FbIcon.vue:2:  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+./components/icons/social/FbIcon.vue:3:       width="30px" height="30px">
+./components/icons/social/FbIcon.vue:4:    <g fill="#FFF" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+./components/icons/social/FbIcon.vue:5:       stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+./components/icons/social/FbIcon.vue:6:       font-family="none" font-weight="none" font-size="none" text-anchor="none"
+./components/icons/social/FbIcon.vue:7:       style="mix-blend-mode: normal">
+./components/icons/social/FbIcon.vue:8:      <g transform="scale(5.33333,5.33333)">
+./components/icons/social/FbIcon.vue:10:          fill="gray"
+./components/icons/social/FbIcon.vue:11:          d="M29,3c-5.523,0 -10,4.477 -10,10v5h-6v8h6v19h8v-19h7l1,-8h-8v-4c0,-2.209 1.791,-4 4,-4h4v-6.678c-1.909,-0.197 -4.079,-0.326 -6,-0.322z"/>
+./components/icons/social/FbIcon.vue:19:  name: "FbIcon"
+./components/item/QualifierValue.vue:2:  <div class="qualifier-value">
+./components/item/QualifierValue.vue:3:    <item-value-base :claim="claim" :value="value" type="qualifier" />
+./components/item/Qualifier.vue:3:    <span class="text-subtitle-2 grey--text">
+./components/item/Qualifier.vue:4:      <item-util-view-text-lang :value="propertyLabel" :tooltip="property" />
+./components/item/Qualifier.vue:7:      v-for="(value, index) in values"
+./components/item/Qualifier.vue:8:      :key="keyValue + '-' + index"
+./components/item/Qualifier.vue:9:      :value="value"
+./components/item/Qualifier.vue:10:      :claim="claim"
+./components/item/Qualifier.vue:11:      :key_value="keyValue + '-' + index"
+./components/item/ClaimValue.vue:2:  <v-row dense :class="{'even-row': index % 2 === 0, 'odd-row': index % 2 !== 0}">
+./components/item/ClaimValue.vue:3:    <v-col :cols="value.qualifiers ? 3 : 12">
+./components/item/ClaimValue.vue:4:      <item-value-base :claim="value" :value="value.mainsnak" type="claim" />
+./components/item/ClaimValue.vue:6:    <v-col v-if="value.qualifiers">
+./components/item/ClaimValue.vue:10:            v-for="(values, property) in value.qualifiers"
+./components/item/ClaimValue.vue:11:            :key="keyValue+'-'+property"
+./components/item/ClaimValue.vue:12:            :cols="Math.max(12 / value.qualifiers)"
+./components/item/ClaimValue.vue:13:            class="qualifier"
+./components/item/ClaimValue.vue:16:              :property="property"
+./components/item/ClaimValue.vue:17:              :claim="value"
+./components/item/ClaimValue.vue:18:              :values="values"
+./components/item/ClaimValue.vue:19:              :key_value="keyValue+'-'+property"
+./components/item/util/EditTextField.vue:3:    ref="myTextField"
+./components/item/util/EditTextField.vue:4:    v-model="currentText"
+./components/item/util/EditTextField.vue:5:    :type="type"
+./components/item/util/EditTextField.vue:6:    v-bind="{ ...$attrs, ...commonAttrs }"
+./components/item/util/EditTextField.vue:7:    v-on="$listeners"
+./components/item/util/EditTextField.vue:8:    @blur="blur"
+./components/item/util/EditTextField.vue:9:    @focus="focus"
+./components/item/util/EditTextField.vue:11:    <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
+./components/item/util/EditTextField.vue:12:      <slot :name="scopedSlotName" v-bind="slotData" />
+./components/item/util/EditTextField.vue:14:    <template v-for="(_, slotName) in $slots" #[slotName]>
+./components/item/util/EditTextField.vue:15:      <slot :name="slotName" />
+./components/item/util/EditTextField.vue:19:        v-if="focussed"
+./components/item/util/EditTextField.vue:22:        @click="edit"
+./components/item/util/EditTextField.vue:27:        v-if="focussed"
+./components/item/util/EditTextField.vue:30:        @click="restore"
+./components/item/util/EditTextField.vue:48:      default: 'text'
+./components/item/util/EditTextField.vue:91:            this.$notification.success('Successfully updated')
+./components/item/util/EditTextField.vue:97:          if (error.message === 'query is undefined') {
+./components/item/util/EditTextField.vue:98:            error = 'Error: Session expired.'
+./components/item/util/ViewTextLang.vue:2:  <span v-if="value && value.value">
+./components/item/util/ViewTextLang.vue:3:    <template v-if="value.pbid">
+./components/item/util/ViewTextLang.vue:4:      <NuxtLink :to="getUrlFromPBID(value.item)">
+./components/item/util/ViewTextLang.vue:6:        <span :title="tooltip" v-html="value.value" />
+./components/item/util/ViewTextLang.vue:11:      <span :title="tooltip" v-html="value.value" />
+./components/item/util/ViewTextLang.vue:13:    <sup v-if="value.showLanguage || (value.language && value.language != $i18n.locale)">{{ value.language }}</sup>
+./components/item/util/ViewTextLang.vue:32:      return this.localePath('/item/' + item)
+./components/item/util/EditSelectField.vue:3:    ref="autocomplete"
+./components/item/util/EditSelectField.vue:4:    v-model="currentText"
+./components/item/util/EditSelectField.vue:5:    :items="options"
+./components/item/util/EditSelectField.vue:6:    item-text="label"
+./components/item/util/EditSelectField.vue:9:    variant="outlined"
+./components/item/util/EditSelectField.vue:10:    @blur="blur"
+./components/item/util/EditSelectField.vue:11:    @focus="focus"
+./components/item/util/EditSelectField.vue:12:    @change="onchange"
+./components/item/util/EditSelectField.vue:13:    @update:search-input="$emit('input', $event)"
+./components/item/util/EditSelectField.vue:17:        v-if="focussed"
+./components/item/util/EditSelectField.vue:20:        @click.stop="edit"
+./components/item/util/EditSelectField.vue:25:        v-if="focussed"
+./components/item/util/EditSelectField.vue:28:        @click.stop="restore"
+./components/item/util/EditSelectField.vue:106:              this.$notification.success('Successfully updated')
+./components/item/util/EditSelectField.vue:113:            if (error.message === 'query is undefined') {
+./components/item/util/EditSelectField.vue:114:              error = 'Error: Session expired.'
+./components/item/util/EditSelectField.vue:119:        this.$notification.error('Please fill inputs')
+./components/item/util/EditSelectField.vue:126:      this.$emit('update-options', this.consolidatedOptions)
+./components/item/Base.vue:2:  <div class="all-width">
+./components/item/Base.vue:3:    <v-container v-if="showItem">
+./components/item/Base.vue:9:      <v-row class="back">
+./components/item/Base.vue:10:        <a class="link" @click="$router.go(-1)">
+./components/item/Base.vue:12:            <template #activator="{ on, attrs }">
+./components/item/Base.vue:13:              <v-icon color="primary" v-bind="attrs" v-on="on">
+./components/item/Base.vue:17:            <span>{{ $t("item.back") }}</span>
+./components/item/Base.vue:23:          <span v-if="isUserLogged">
+./components/item/Base.vue:24:            <item-util-edit-text-field :label="$t('item.title')" :save="editLabel" :value="label.value" class="text-h4">
+./components/item/Base.vue:28:                  class="text-subtitle-2 link"
+./components/item/Base.vue:29:                  :href="$config.wikibaseBaseUrl + '/wiki/Item:' + item.id"
+./components/item/Base.vue:30:                  target="_blank"
+./components/item/Base.vue:35:          <span v-else class="text-h4">
+./components/item/Base.vue:36:            <item-util-view-text-lang :value="label" />
+./components/item/Base.vue:39:              class="text-subtitle-2 link"
+./components/item/Base.vue:40:              :href="$config.wikibaseBaseUrl + '/wiki/Item:' + item.id"
+./components/item/Base.vue:41:              target="_blank"
+./components/item/Base.vue:46:      <v-row class="pb-5">
+./components/item/Base.vue:47:        <span v-if="isUserLogged" class="full-width">
+./components/item/Base.vue:48:          <item-util-edit-text-field :label="$t('item.description')" :save="editDescription" :value="description.value" class="text-subtitle-1" />
+./components/item/Base.vue:50:        <span v-else class="text-subtitle-1">
+./components/item/Base.vue:51:          <v-col class="text-subtitle-1">
+./components/item/Base.vue:52:            <item-util-view-text-lang :value="description" />
+./components/item/Base.vue:57:        v-for="(claim, index) in claimsOrdered"
+./components/item/Base.vue:58:        :key="'c-' + index"
+./components/item/Base.vue:59:        :claim="claim"
+./components/item/Base.vue:103:            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(tableid, entity))
+./components/item/Base.vue:124:          text: this.$i18n.t('menu.item.search.label'),
+./components/item/Base.vue:128:          text: this.$i18n.t('menu.item.search.item.' + table + '.label'),
+./components/item/Base.vue:130:          to: this.localePath('/search/' + table + '/query')
+./components/item/Base.vue:182:          this.$store.getters['auth/getRequestConfig']
+./components/item/Base.vue:190:          this.$store.getters['auth/getRequestConfig']
+./components/item/Claim.vue:2:  <v-container class="claim">
+./components/item/Claim.vue:4:      <v-subheader class="claim-header grey--text">
+./components/item/Claim.vue:5:        <item-util-view-text-lang :value="propertyLabel" :tooltip="claim.property" />
+./components/item/Claim.vue:8:    <v-container class="claim-values">
+./components/item/Claim.vue:10:        v-for="(value, index) in claim.values"
+./components/item/Claim.vue:11:        :key="'c-' + claim.property + '-' + index"
+./components/item/Claim.vue:12:        :index="index"
+./components/item/Claim.vue:13:        :value="value"
+./components/item/Claim.vue:14:        :key_value="'c-' + claim.property + '-' + index"
+./components/item/value/Base.vue:2:  <div v-if="valueToView">
+./components/item/value/Base.vue:3:    <component :is="'item-value-type-' + valueToView.type" :is-user-logged="isUserLogged" :value-to-view="valueToView" :save="editValue" />
+./components/item/value/Base.vue:53:      if (this.type === 'claim') {
+./components/item/value/Base.vue:58:        this.$store.getters['auth/getRequestConfig'])
+./components/item/value/Base.vue:59:      } else if (this.type === 'qualifier') {
+./components/item/value/Base.vue:66:        this.$store.getters['auth/getRequestConfig'])
+./components/item/value/type/Time.vue:3:    <template v-if="!isUserLogged">
+./components/item/value/type/Time.vue:8:        <v-row dense class="justify-start">
+./components/item/value/type/Time.vue:9:          <v-col dense class="flex-shrink-1">
+./components/item/value/type/Time.vue:11:              type="date"
+./components/item/value/type/Time.vue:12:              :save="editValue"
+./components/item/value/type/Time.vue:13:              :value="valueToView_.value"
+./components/item/value/type/Time.vue:14:              style="width: 200px"
+./components/item/value/type/Time.vue:15:              class="ma-0 pa-0"
+./components/item/value/type/Time.vue:18:              v-model="valueToView_.calendar"
+./components/item/value/type/Time.vue:19:              :label="$t('common.calendar')"
+./components/item/value/type/Time.vue:20:              :items="['Gregorian', 'Julian']"
+./components/item/value/type/Time.vue:21:              class="ma-0 pa-0"
+./components/item/value/type/Time.vue:22:              style="width: 100px"
+./components/item/value/type/Time.vue:23:              @change="editCalendarType"
+./components/item/value/type/Time.vue:63:            this.$notification.success('Successfully updated')
+./components/item/value/type/Time.vue:88:      const isoMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2)
+./components/item/value/type/Time.vue:89:      const isoDay = ('0' + date.getUTCDate()).slice(-2)
+./components/item/value/type/Text.vue:3:    <span v-if="!isUserLogged">
+./components/item/value/type/Text.vue:5:      <span v-html="valueToView.value" />
+./components/item/value/type/Text.vue:8:      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+./components/item/value/type/Image.vue:3:    :href="valueToView.descriptionurl"
+./components/item/value/type/Image.vue:4:    target="_blank"
+./components/item/value/type/Image.vue:6:    width="300"
+./components/item/value/type/Image.vue:7:    :src="valueToView.url"
+./components/item/value/type/TextLang.vue:3:    <template v-if="!isUserLogged">
+./components/item/value/type/TextLang.vue:4:      <item-util-view-text-lang :value="valueToView" />
+./components/item/value/type/TextLang.vue:8:        <v-row dense class="justify-start">
+./components/item/value/type/TextLang.vue:9:          <v-col dense class="flex-shrink-1">
+./components/item/value/type/TextLang.vue:10:            <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+./components/item/value/type/TextLang.vue:12:              v-model="valueToView_.language"
+./components/item/value/type/TextLang.vue:13:              item-text="title"
+./components/item/value/type/TextLang.vue:14:              item-value="value"
+./components/item/value/type/TextLang.vue:15:              :items="languages"
+./components/item/value/type/TextLang.vue:16:              :label="$t('common.language')"
+./components/item/value/type/TextLang.vue:17:              class="ma-0 pa-0"
+./components/item/value/type/TextLang.vue:18:              style="width: 100px"
+./components/item/value/type/TextLang.vue:19:              @change="editLanguage"
+./components/item/value/type/TextLang.vue:51:          title: 'English',
+./components/item/value/type/TextLang.vue:52:          value: 'en'
+./components/item/value/type/TextLang.vue:55:          title: 'Español',
+./components/item/value/type/TextLang.vue:56:          value: 'es'
+./components/item/value/type/TextLang.vue:59:          title: 'Português',
+./components/item/value/type/TextLang.vue:60:          value: 'pt'
+./components/item/value/type/TextLang.vue:63:          title: 'Català',
+./components/item/value/type/TextLang.vue:64:          value: 'ca'
+./components/item/value/type/TextLang.vue:67:          title: 'Galego',
+./components/item/value/type/TextLang.vue:68:          value: 'gl'
+./components/item/value/type/TextLang.vue:83:            this.$notification.success('Successfully updated')
+./components/item/value/type/Entity.vue:3:    <template v-if="!isUserLogged">
+./components/item/value/type/Entity.vue:4:      <item-util-view-text-lang :value="valueToView" :tooltip="valueToView.item" />
+./components/item/value/type/Entity.vue:8:        v-if="isItemWithCustomOptions"
+./components/item/value/type/Entity.vue:9:        :value="selectedOption"
+./components/item/value/type/Entity.vue:10:        :save="editValue"
+./components/item/value/type/Entity.vue:11:        :options="options"
+./components/item/value/type/Entity.vue:15:        :save="editValue"
+./components/item/value/type/Entity.vue:16:        :options="options"
+./components/item/value/type/Entity.vue:17:        @update-options="options = $event"
+./components/item/value/type/Entity.vue:18:        @input="oninput($event)"
+./components/item/value/type/Entity.vue:48:          sparqlQuery: `SELECT ?item ?itemLabel WHERE { VALUES ?item { wd:Q5 wd:Q14 wd:Q15 } SERVICE wikibase:label { bd:serviceParam wikibase:language "${this.$i18n.locale},en,es". } }`
+./components/item/value/type/Html.vue:3:  <span v-html="valueToView.value" />
+./components/item/value/type/Quantity.vue:3:    <span v-if="!isUserLogged">
+./components/item/value/type/Quantity.vue:4:      {{ valueToView.value.amount }} <item-util-view-text-lang :value="unitLabel" />
+./components/item/value/type/Quantity.vue:47:      return url.substring(url.lastIndexOf('/') + 1)
+./components/item/value/type/ExternalId.vue:3:    <span v-if="!isUserLogged">
+./components/item/value/type/ExternalId.vue:4:      <a :href="valueToView.url" target="_blank">{{ valueToView.value }}</a>
+./components/item/value/type/ExternalId.vue:7:      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+./components/item/value/type/Url.vue:3:    <template v-if="!isUserLogged">
+./components/item/value/type/Url.vue:5:        :href="imageLink"
+./components/item/value/type/Url.vue:6:        target="_blank"
+./components/item/value/type/Url.vue:9:          width="300"
+./components/item/value/type/Url.vue:10:          :src="imageLink"
+./components/item/value/type/Url.vue:14:        :href="valueToView.value"
+./components/item/value/type/Url.vue:15:        target="_blank"
+./components/item/value/type/Url.vue:22:      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+./components/item/value/type/Url.vue:53:        'https://the-visionary-git-master-austininseoul.vercel.app/api?url=' + this.valueToView.value
+./components/item/value/type/Url.vue:65:      const message = valid ? '' : 'Please fill a valid URL!'
+./components/privacy-policy/Base.vue:2:  <div class="container">
+./components/privacy-policy/Base.vue:3:    <h2>{{ $i18n.t('privacyPolicy.label') }}</h2>
+./components/privacy-policy/Base.vue:4:    <h3>{{ $i18n.t('privacyPolicy.consent.title') }}</h3>
+./components/privacy-policy/Base.vue:6:    <p v-html="$i18n.t('privacyPolicy.consent.desc')" />
+./components/privacy-policy/Base.vue:7:    <h3>{{ $i18n.t('privacyPolicy.comments.title') }}</h3>
+./components/privacy-policy/Base.vue:9:      <strong>{{ $i18n.t('privacyPolicy.comments.subtitle') }}:</strong>
+./components/privacy-policy/Base.vue:10:      {{ $i18n.t('privacyPolicy.comments.subtitleDesc') }}
+./components/privacy-policy/Base.vue:13:    <p v-html="$i18n.t('privacyPolicy.comments.desc')" />
+./components/privacy-policy/Base.vue:15:      <strong>{{ $i18n.t('privacyPolicy.userAgent.subtitle') }}:</strong>
+./components/privacy-policy/Base.vue:16:      {{ $i18n.t('privacyPolicy.userAgent.subtitleDesc') }}
+./components/privacy-policy/Base.vue:19:      <strong>{{ $i18n.t('privacyPolicy.retentionPeriod.subtitle') }}:</strong>
+./components/privacy-policy/Base.vue:20:      {{ $i18n.t('privacyPolicy.retentionPeriod.subtitleDesc') }}
+./components/privacy-policy/Base.vue:22:    <h3>{{ $i18n.t('privacyPolicy.legitimateInterest.title') }}</h3>
+./components/privacy-policy/Base.vue:24:    <p v-html="$i18n.t('privacyPolicy.legitimateInterest.desc')" />
+./components/privacy-policy/Base.vue:25:    <h3>{{ $i18n.t('privacyPolicy.statistics.title') }}</h3>
+./components/privacy-policy/Base.vue:27:    <p v-html="$i18n.t('privacyPolicy.statistics.desc')" />
+./components/privacy-policy/Base.vue:28:    <h3>{{ $i18n.t('privacyPolicy.embedContent.title') }}</h3>
+./components/privacy-policy/Base.vue:30:    <p v-html="$i18n.t('privacyPolicy.embedContent.desc')" />
+./components/privacy-policy/Base.vue:31:    <h3>{{ $i18n.t('privacyPolicy.rights.title') }}</h3>
+./components/privacy-policy/Base.vue:33:    <p v-html="$i18n.t('privacyPolicy.rights.desc')" />
+./components/privacy-policy/Base.vue:35:    <p v-html="$i18n.t('privacyPolicy.rights.data')" />
+./components/privacy-policy/Base.vue:48:    this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
+./components/PhiloFooter.vue:2:  <v-footer color="white" class="z-index-100 mt-10" padless>
+./components/PhiloFooter.vue:4:      <v-col cols="12" sm="3" class="text-center" align-self="center">
+./components/PhiloFooter.vue:5:        <span class="text-black text-h4">Philo</span>
+./components/PhiloFooter.vue:6:        <a class="footer_a" target="_blank" href="https://update.lib.berkeley.edu/Topics/philobiblon/">
+./components/PhiloFooter.vue:7:          <span class="font-weight-light text-h4">BLOG</span>
+./components/PhiloFooter.vue:10:      <v-col cols="12" sm="3">
+./components/PhiloFooter.vue:13:            <v-list-item v-for="(item, index) in links_col_1" :key="index" link @click="goTo(item.link)">
+./components/PhiloFooter.vue:14:              <v-list-item-title class="text-subtitle-2">
+./components/PhiloFooter.vue:21:      <v-col cols="12" sm="3">
+./components/PhiloFooter.vue:24:            <v-list-item v-for="(item, index) in links_col_2" :key="index" link @click="goTo(item.link)">
+./components/PhiloFooter.vue:25:              <v-list-item-title class="text-subtitle-2">
+./components/PhiloFooter.vue:32:      <v-col cols="12" sm="3">
+./components/PhiloFooter.vue:36:              <a href="https://facebook.com/pages/PhiloBiblon/289959314407502" class="me-3">
+./components/PhiloFooter.vue:39:              <a href="https://twitter.com/PPhiloBiblon" class="me-3">
+./components/PhiloFooter.vue:42:              <a href="https://youtube.com/channel/UCOVWrLQiC1bPvt57pYQQeJQ/videos" class="me-3">
+./components/PhiloFooter.vue:45:              <a href="https://instagram.com/p/B6Ihdigpv1G/" class="me-3">
+./components/PhiloFooter.vue:52:              <a role="button" class="footer_a text-body-2" @click="goTo('/wiki/Citation')">
+./components/PhiloFooter.vue:58:            <v-col class="text-caption">
+./components/PhiloFooter.vue:64:      <v-col cols="12" class="text-center">
+./components/PhiloFooter.vue:68:              <img src="img/footer/universitat_barcelona.png">
+./components/PhiloFooter.vue:71:              <img src="img/footer/upf.png">
+./components/PhiloFooter.vue:74:              <img src="img/footer/the_bancroft.png">
+./components/PhiloFooter.vue:77:              <img src="img/footer/ilf.png">
+./components/PhiloFooter.vue:82:      <v-col class="text-center text-caption">
+./components/PhiloFooter.vue:84:        <span class="version">
+./components/PhiloFooter.vue:88:          <template #activator="{ on, attrs }">
+./components/PhiloFooter.vue:89:            <span v-bind="attrs" v-on="on">
+./components/PhiloFooter.vue:90:              <a class="version" @click="goTo('/privacy-policy')">
+./components/PhiloFooter.vue:91:                {{ $i18n.t('privacyPolicy.label') }}
+./components/PhiloFooter.vue:95:          <p class="tooltip">
+./components/PhiloFooter.vue:96:            {{ $i18n.t('privacyPolicy.tooltip') }}
+./components/PhiloFooter.vue:109:        { label: 'ABOUT PhiloBiblon', link: '/about' },
+./components/PhiloFooter.vue:110:        { label: 'HELP', link: '/help' },
+./components/PhiloFooter.vue:111:        { label: 'RESOURCES', link: '/wiki/Resources' },
+./components/PhiloFooter.vue:112:        { label: 'COLLABORATE', link: '/collaborate' }
+./components/PhiloFooter.vue:115:        { label: 'BETA', link: '/wiki/Beta' },
+./components/PhiloFooter.vue:116:        { label: 'BIPA', link: '/wiki/Bipa' },
+./components/PhiloFooter.vue:117:        { label: 'BITAGAP', link: '/wiki/Bitagap' },
+./components/PhiloFooter.vue:118:        { label: 'BITECA', link: '/wiki/Biteca' }
+./components/search/Results.vue:4:      v-if="showResults"
+./components/search/Results.vue:5:      v-model="currentTab"
+./components/search/Results.vue:6:      height="20"
+./components/search/Results.vue:8:      <v-tab key="results">
+./components/search/Results.vue:9:        {{ $t('search.results.results') }} ({{ totalResults }})
+./components/search/Results.vue:13:      v-if="showResults"
+./components/search/Results.vue:14:      v-model="currentTab"
+./components/search/Results.vue:16:      <v-tab-item key="results">
+./components/search/Results.vue:17:        <v-container v-if="totalResults == 0">
+./components/search/Results.vue:18:          <span>{{ $t('search.results.not_found') }}</span>
+./components/search/Results.vue:20:        <v-container v-if="totalResults > 0" class="container-max">
+./components/search/Results.vue:22:            <v-col class="order-last order-sm-first" cols="10">
+./components/search/Results.vue:25:                  v-model="selectedItem"
+./components/search/Results.vue:26:                  color="primary"
+./components/search/Results.vue:28:                  <v-list-item v-for="(result, index) in results" :key="'r-'+index" @click="goToItem(result.item)">
+./components/search/Results.vue:30:                      <span>{{ result.label }}&nbsp;&nbsp;&nbsp;<span class="text-caption">{{ result.pbid }}</span></span>
+./components/search/Results.vue:37:              <v-container class="container-max">
+./components/search/Results.vue:38:                <v-row justify="end" dense>
+./components/search/Results.vue:39:                  <v-col class="text-right text-caption">
+./components/search/Results.vue:40:                    <span>{{ $t('search.results.sort_by') }}</span>
+./components/search/Results.vue:42:                  <v-col cols="auto" class="sort-select-field">
+./components/search/Results.vue:44:                      v-model="sortBy"
+./components/search/Results.vue:45:                      :items="sortItems"
+./components/search/Results.vue:46:                      items-text="text"
+./components/search/Results.vue:47:                      items-value="value"
+./components/search/Results.vue:48:                      class="text-body-2"
+./components/search/Results.vue:50:                      @change="changeSortByID"
+./components/search/Results.vue:53:                  <v-col cols="auto">
+./components/search/Results.vue:55:                      v-if="!isSortByID && !isSortDescending"
+./components/search/Results.vue:57:                      @click="changeSortDescending"
+./components/search/Results.vue:62:                      v-if="!isSortByID && isSortDescending"
+./components/search/Results.vue:64:                      @click="changeSortDescending"
+./components/search/Results.vue:69:                      v-if="isSortByID && !isSortDescending"
+./components/search/Results.vue:71:                      @click="changeSortDescending"
+./components/search/Results.vue:76:                      v-if="isSortByID && isSortDescending"
+./components/search/Results.vue:78:                      @click="changeSortDescending"
+./components/search/Results.vue:84:                <v-row justify="end" dense>
+./components/search/Results.vue:85:                  <v-col class="text-right text-caption">
+./components/search/Results.vue:86:                    <a :href="$config.sparqlBaseUrl+'/#'+encodeURI(sparqlQuery)" target="_blank">SPARQL</a>
+./components/search/Results.vue:93:        <div class="text-center">
+./components/search/Results.vue:95:            v-if="showResults && results.length > 0"
+./components/search/Results.vue:96:            v-model="currentPage"
+./components/search/Results.vue:97:            :length="Math.ceil(totalResults / resultsPerPage)"
+./components/search/Results.vue:98:            :total-visible="5"
+./components/search/Results.vue:100:            @input="changePage"
+./components/search/Results.vue:137:      selectedItem: '',
+./components/search/Results.vue:140:          text: this.$i18n.t('search.results.sort_option.id'),
+./components/search/Results.vue:141:          value: 'id'
+./components/search/Results.vue:144:          text: this.$i18n.t('search.results.sort_option.name'),
+./components/search/Results.vue:145:          value: 'name'
+./components/search/Results.vue:159:      return this.sortBy === 'id'
+./components/search/Results.vue:170:      this.$store.commit('queryStatus/setPage', val)
+./components/search/Results.vue:171:      this.$emit('on-pagination', val)
+./components/search/Results.vue:175:      this.$store.commit('queryStatus/setSortBy', this.sortBy)
+./components/search/Results.vue:176:      this.$emit('on-sort-by-id', this.isSortByID)
+./components/search/Results.vue:180:      this.$store.commit('queryStatus/setSortDescending', !this.isSortDescending)
+./components/search/Results.vue:181:      this.$emit('on-sort-descending', !this.isSortDescending)
+./components/search/Results.vue:185:      this.$router.push(this.localePath('/item/' + id))
+./components/search/Filters.vue:2:  <v-form ref="search_form">
+./components/search/Filters.vue:6:          v-model="search_group.value"
+./components/search/Filters.vue:7:          :disabled="search_group.disabled"
+./components/search/Filters.vue:11:            {{ $t('search.form.common.group.label') }}
+./components/search/Filters.vue:14:            v-for="group in groups"
+./components/search/Filters.vue:15:            :key="'g-'+group"
+./components/search/Filters.vue:16:            class="group-option"
+./components/search/Filters.vue:17:            :label="group.text ? group.text : group"
+./components/search/Filters.vue:18:            :value="group.value ? group.value : group"
+./components/search/Filters.vue:23:        <template v-for="(item, name) in primaryFilters">
+./components/search/Filters.vue:25:            v-if="(item.active && !item.permanent && item.visible)"
+./components/search/Filters.vue:26:            :key="'i-'+name"
+./components/search/Filters.vue:27:            cols="4"
+./components/search/Filters.vue:30:              v-if="item.type === 'text'"
+./components/search/Filters.vue:31:              v-model="item.value"
+./components/search/Filters.vue:32:              :label="$t(item.label)"
+./components/search/Filters.vue:33:              :hint="$t(item.hint)"
+./components/search/Filters.vue:34:              :disabled="item.disabled"
+./components/search/Filters.vue:37:              v-if="item.type === 'autocomplete'"
+./components/search/Filters.vue:38:              :id="'auto-'+name"
+./components/search/Filters.vue:39:              v-model="item.value"
+./components/search/Filters.vue:40:              :label="$t(item.label)"
+./components/search/Filters.vue:41:              :hint="$t(item.hint)"
+./components/search/Filters.vue:42:              :disabled="item.disabled"
+./components/search/Filters.vue:43:              :table="table"
+./components/search/Filters.vue:44:              :autocomplete="item.autocomplete"
+./components/search/Filters.vue:48:              v-if="item.type === 'date'"
+./components/search/Filters.vue:49:              :value="item.value"
+./components/search/Filters.vue:50:              :label="$t(item.label)"
+./components/search/Filters.vue:51:              :hint="$t(item.hint)"
+./components/search/Filters.vue:52:              :disabled="item.disabled"
+./components/search/Filters.vue:53:              @update-begin-date="item.value['begin'] = $event"
+./components/search/Filters.vue:54:              @update-end-date="item.value['end'] = $event"
+./components/search/Filters.vue:59:      <v-row v-if="existsAdvancedFilters && !showResults" dense>
+./components/search/Filters.vue:60:        <span class="advanced-search text-caption mb-2 primary--text" @click="showAdvancedSearch = !showAdvancedSearch">
+./components/search/Filters.vue:61:          {{ $t('common.advanced_search') }} <v-icon class="primary--text">{{ showAdvancedSearch ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+./components/search/Filters.vue:64:      <v-row v-if="showAdvancedSearch" dense>
+./components/search/Filters.vue:65:        <template v-for="(item, name) in advancedFilters">
+./components/search/Filters.vue:67:            v-if="(item.active && !item.permanent && item.visible)"
+./components/search/Filters.vue:68:            :key="'i-'+name"
+./components/search/Filters.vue:69:            cols="4"
+./components/search/Filters.vue:72:              v-if="item.type === 'text'"
+./components/search/Filters.vue:73:              v-model="item.value"
+./components/search/Filters.vue:74:              :label="$t(item.label)"
+./components/search/Filters.vue:75:              :hint="$t(item.hint)"
+./components/search/Filters.vue:76:              :disabled="item.disabled"
+./components/search/Filters.vue:79:              v-if="item.type === 'autocomplete'"
+./components/search/Filters.vue:80:              :id="'auto-'+name"
+./components/search/Filters.vue:81:              v-model="item.value"
+./components/search/Filters.vue:82:              :label="$t(item.label)"
+./components/search/Filters.vue:83:              :hint="$t(item.hint)"
+./components/search/Filters.vue:84:              :disabled="item.disabled"
+./components/search/Filters.vue:85:              :table="table"
+./components/search/Filters.vue:86:              :autocomplete="item.autocomplete"
+./components/search/Filters.vue:90:              v-if="item.type === 'date'"
+./components/search/Filters.vue:91:              :value="item.value"
+./components/search/Filters.vue:92:              :label="$t(item.label)"
+./components/search/Filters.vue:93:              :hint="$t(item.hint)"
+./components/search/Filters.vue:94:              :disabled="item.disabled"
+./components/search/Filters.vue:95:              @update-begin-date="item.value['begin'] = $event"
+./components/search/Filters.vue:96:              @update-end-date="item.value['end'] = $event"
+./components/search/Filters.vue:103:          cols="7"
+./components/search/Filters.vue:106:            v-if="!showResults"
+./components/search/Filters.vue:107:            ref="search"
+./components/search/Filters.vue:108:            class="mr-4"
+./components/search/Filters.vue:110:            elevation="2"
+./components/search/Filters.vue:111:            @click="search"
+./components/search/Filters.vue:113:            {{ $t('search.button.search') }}
+./components/search/Filters.vue:116:            v-if="showResults"
+./components/search/Filters.vue:117:            elevation="2"
+./components/search/Filters.vue:118:            class="mr-4"
+./components/search/Filters.vue:120:            :disabled="waitingResults"
+./components/search/Filters.vue:121:            @click="back"
+./components/search/Filters.vue:123:            {{ $t('search.button.back') }}
+./components/search/Filters.vue:126:            elevation="2"
+./components/search/Filters.vue:127:            class="mr-4"
+./components/search/Filters.vue:129:            :disabled="waitingResults"
+./components/search/Filters.vue:130:            @click="clear"
+./components/search/Filters.vue:132:            {{ $t('search.button.clear') }}
+./components/search/Filters.vue:136:          cols="4"
+./components/search/Filters.vue:137:          class="search-type"
+./components/search/Filters.vue:140:            v-model="search_type.value"
+./components/search/Filters.vue:142:            :disabled="search_type.disabled"
+./components/search/Filters.vue:143:            :label="search_type.value ? $t('search.form.common.search_type.all_words') : $t('search.form.common.search_type.any_word')"
+./components/search/Filters.vue:147:          cols="1"
+./components/search/Filters.vue:150:            color="primary"
+./components/search/Filters.vue:151:            @click="goToHelp"
+./components/search/Filters.vue:190:      return ['BETA', 'BITAGAP', 'BITECA', { text: this.$t('search.form.common.group_all.label'), value: 'ALL' }]
+./components/search/Filters.vue:215:      this.$store.commit('queryStatus/setShowResults', newValue)
+./components/search/Filters.vue:226:    window.addEventListener('keydown', this.keyDownHandler)
+./components/search/Filters.vue:230:    window.removeEventListener('keydown', this.keyDownHandler)
+./components/search/Filters.vue:235:      if (event.code === 'Enter') {
+./components/search/Filters.vue:237:        if (document.activeElement.id && document.activeElement.id.startsWith('auto')) {
+./components/search/Filters.vue:254:      this.$emit('on-search', this.form)
+./components/search/Filters.vue:264:      this.$store.commit('queryStatus/setForm', JSON.parse(JSON.stringify(this.form)))
+./components/search/Filters.vue:265:      this.$emit('back-search')
+./components/search/Filters.vue:271:        if (item.type === 'date') {
+./components/search/Filters.vue:274:          item.value = ''
+./components/search/Filters.vue:279:      this.search_group.value = 'ALL'
+./components/search/Filters.vue:283:      this.$store.commit('queryStatus/setForm', null)
+./components/search/Filters.vue:284:      this.$emit('clear-search')
+./components/search/Filters.vue:288:      window.location.href = 'https://bancroft.berkeley.edu/philobiblon/help_en.html'
+./components/search/util/AutocompleteField.vue:3:    v-bind="{ ...$attrs, ...commonAttrs }"
+./components/search/util/AutocompleteField.vue:4:    :loading="loadingItems"
+./components/search/util/AutocompleteField.vue:5:    :no-data-text="$t('common.no_data')"
+./components/search/util/AutocompleteField.vue:6:    :items="items"
+./components/search/util/AutocompleteField.vue:7:    :value-comparator="compareByLabel"
+./components/search/util/AutocompleteField.vue:8:    v-on="$listeners"
+./components/search/util/AutocompleteField.vue:10:    <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
+./components/search/util/AutocompleteField.vue:11:      <slot :name="scopedSlotName" v-bind="slotData" />
+./components/search/util/AutocompleteField.vue:13:    <template v-for="(_, slotName) in $slots" #[slotName]>
+./components/search/util/AutocompleteField.vue:14:      <slot :name="slotName" />
+./components/search/util/AutocompleteField.vue:16:    <template #message="{ message }">
+./components/search/util/AutocompleteField.vue:17:      <v-tooltip max-width="40%" bottom open-delay="200">
+./components/search/util/AutocompleteField.vue:18:        <template #activator="{ on }">
+./components/search/util/AutocompleteField.vue:20:          <span v-on="on" v-html="message && message.length &lt; hintMaxWidth ? message : message.substring(0, hintMaxWidth) + '...'" />
+./components/search/util/AutocompleteField.vue:23:        <span v-html="message" />
+./components/search/util/AutocompleteField.vue:81:        console.error('No query defined for autocomplete')
+./components/search/util/DateField.vue:3:    <div class="flex-container">
+./components/search/util/DateField.vue:5:        v-model="beginValue"
+./components/search/util/DateField.vue:7:        :label="label + '. ' + $t('common.from')"
+./components/search/util/DateField.vue:8:        type="date"
+./components/search/util/DateField.vue:9:        :disabled="disabled"
+./components/search/util/DateField.vue:10:        @focus="showHint"
+./components/search/util/DateField.vue:11:        @blur="hideHint"
+./components/search/util/DateField.vue:12:        @change="beginDate"
+./components/search/util/DateField.vue:15:        v-model="endValue"
+./components/search/util/DateField.vue:17:        :label="$t('common.to')"
+./components/search/util/DateField.vue:18:        type="date"
+./components/search/util/DateField.vue:19:        :disabled="disabled"
+./components/search/util/DateField.vue:20:        @focus="showHint"
+./components/search/util/DateField.vue:21:        @blur="hideHint"
+./components/search/util/DateField.vue:22:        @change="endDate"
+./components/search/util/DateField.vue:25:    <div v-if="isHintVisible" class="message-container">
+./components/search/util/DateField.vue:26:      <v-tooltip max-width="40%" bottom ligth open-delay="200">
+./components/search/util/DateField.vue:27:        <template #activator="{ on }">
+./components/search/util/DateField.vue:29:          <span class="text-caption hint" v-on="on" v-html="hint && hint.length &lt; hintMaxWidth ? hint : hint.substring(0, hintMaxWidth) + '...'" />
+./components/search/util/DateField.vue:32:        <span v-html="hint" />
+./components/search/util/DateField.vue:44:      default: ''
+./components/search/util/DateField.vue:52:      default: ''
+./components/search/util/DateField.vue:100:      this.$emit('update-begin-date', newValue)
+./components/search/util/DateField.vue:103:      this.$emit('update-end-date', newValue)
+./components/search/util/HelpTooltip.vue:4:    open-delay="200"
+./components/search/util/HelpTooltip.vue:6:    <template #activator="{ on, attrs }">
+./components/search/util/HelpTooltip.vue:10:        v-bind="attrs"
+./components/search/util/HelpTooltip.vue:11:        v-on="on"
+./components/search/util/HelpTooltip.vue:28:      default: 'TODO'
+./components/search/util/TextField.vue:2:  <v-text-field v-bind="{ ...$attrs, ...commonAttrs }" v-on="$listeners">
+./components/search/util/TextField.vue:3:    <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
+./components/search/util/TextField.vue:4:      <slot :name="scopedSlotName" v-bind="slotData" />
+./components/search/util/TextField.vue:6:    <template v-for="(_, slotName) in $slots" #[slotName]>
+./components/search/util/TextField.vue:7:      <slot :name="slotName" />
+./components/search/util/TextField.vue:9:    <template #message="{ message }">
+./components/search/util/TextField.vue:10:      <v-tooltip max-width="40%" bottom open-delay="200">
+./components/search/util/TextField.vue:11:        <template #activator="{ on }">
+./components/search/util/TextField.vue:13:          <span v-on="on" v-html="message && message.length &lt; hintMaxWidth ? message : message.substring(0, hintMaxWidth) + '...'" />
+./components/search/util/TextField.vue:16:        <span v-html="message" />
+./components/search/Base.vue:2:  <div class="content">
+./components/search/Base.vue:4:      ref="qs"
+./components/search/Base.vue:5:      :table="table"
+./components/search/Base.vue:6:      :form="form"
+./components/search/Base.vue:7:      :waiting-results="waitingResults"
+./components/search/Base.vue:8:      @on-search="countAndSearch"
+./components/search/Base.vue:9:      @back-search="clearResults"
+./components/search/Base.vue:10:      @clear-search="clearResults"
+./components/search/Base.vue:13:      ref="qr"
+./components/search/Base.vue:14:      :sparql-query="sparqlQuery"
+./components/search/Base.vue:15:      :results="results"
+./components/search/Base.vue:16:      :total-results="totalResults"
+./components/search/Base.vue:17:      :results-per-page="resultsPerPage"
+./components/search/Base.vue:18:      :show-results="showResults"
+./components/search/Base.vue:19:      @on-sort-by-id="search"
+./components/search/Base.vue:20:      @on-sort-descending="search"
+./components/search/Base.vue:21:      @on-pagination="search"
+./components/search/Base.vue:23:    <div v-if="waitingResults" class="text-center">
+./components/search/Base.vue:25:        size="50"
+./components/search/Base.vue:26:        width="5"
+./components/search/Base.vue:28:        color="primary"
+./components/search/Base.vue:66:      this.$store.commit('queryStatus/resetStatus', this.table)
+./components/search/Base.vue:80:    this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
+./components/search/Base.vue:86:      this.$store.commit('queryStatus/setForm', JSON.parse(JSON.stringify(this.form)))
+./components/search/Base.vue:118:      this.$store.commit('queryStatus/setShowResults', this.showResults)
+./components/search/Base.vue:119:      this.$store.commit('queryStatus/setPage', 1)
+./components/search/Base.vue:120:      this.$store.commit('queryStatus/setSortBy', 'name')
+./components/search/Base.vue:121:      this.$store.commit('queryStatus/setSortDescending', false)
+./components/search/FilterField.vue:3:    v-if="(item.active && !item.permanent && item.visible)"
+./components/search/FilterField.vue:4:    cols="4"
+./components/search/FilterField.vue:7:      v-if="item.type === 'text'"
+./components/search/FilterField.vue:8:      v-model="item.value"
+./components/search/FilterField.vue:9:      :label="$t(item.label)"
+./components/search/FilterField.vue:10:      :hint="$t(item.hint)"
+./components/search/FilterField.vue:11:      :disabled="item.disabled"
+./components/search/FilterField.vue:14:      v-if="item.type === 'autocomplete'"
+./components/search/FilterField.vue:15:      :id="'auto-'+name"
+./components/search/FilterField.vue:16:      v-model="item.value"
+./components/search/FilterField.vue:17:      :label="$t(item.label)"
+./components/search/FilterField.vue:18:      :hint="$t(item.hint)"
+./components/search/FilterField.vue:19:      :disabled="item.disabled"
+./components/search/FilterField.vue:20:      :table="table"
+./components/search/FilterField.vue:21:      :autocomplete="item.autocomplete"
+./components/search/Simple.vue:2:  <div class="search-container" :class="{'welcome-container': isWelcome}">
+./components/search/Simple.vue:6:      :items="items"
+./components/search/Simple.vue:7:      item-value="id"
+./components/search/Simple.vue:8:      item-text="title"
+./components/search/Simple.vue:9:      class="search-bar"
+./components/search/Simple.vue:10:      :class="{welcome: isWelcome}"
+./components/search/Simple.vue:11:      style="max-width: 450px;"
+./components/search/Simple.vue:12:      :loading="loading"
+./components/search/Simple.vue:13:      :search-input.sync="search"
+./components/search/Simple.vue:14:      prepend-inner-icon="mdi-magnify"
+./components/search/Simple.vue:15:      placeholder="Search PhiloBiblon"
+./components/search/Simple.vue:16:      append-inner-icon="mdi-microphone"
+./components/search/Simple.vue:17:      @change="onItemSelected"
+./components/search/Simple.vue:27:      search: '',
+./components/search/Simple.vue:33:      return this.$route.path.includes('Welcome')
+./components/search/Simple.vue:61:        console.error('Error fetching items:', error)
