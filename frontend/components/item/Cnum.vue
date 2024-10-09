@@ -8,14 +8,15 @@
           <NuxtLink class="ml-1 black--text" :to="url">
             <span>{{ pbid }}</span>
           </NuxtLink>
-        </div>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <div>
+          <br></br>
           <span class="text-subtitle-2">Title(s)</span>
           <span class="ml-3">
             <item-util-view-text-lang :value="label" />
           </span>
+        </div>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <div>
           <item-claims :table="tableid" :claims="item?.claims" />
         </div>
       </v-expansion-panel-content>
