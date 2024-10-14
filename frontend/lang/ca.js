@@ -269,6 +269,58 @@ export default {
         associated_person: {
           label: 'Persona relacionada',
           hint: ' Search using any form of the name. A search returns the name of a binder, illuminator, annotator, etc.'
+        },
+        call_number: {
+          label: 'Número d\'inventari',
+          hint: ''
+        },
+        title: {
+          label: 'Títol',
+          hint: ''
+        },
+        type: {
+          label: 'Tipus',
+          hint: ''
+        },
+        writing_surface: {
+          label: 'Superfície d\'escriptura',
+          hint: ''
+        },
+        format: {
+          label: 'Format',
+          hint: ''
+        },
+        binding: {
+          label: 'Enquadernació',
+          hint: ''
+        },
+        collation: {
+          label: 'Col·lació',
+          hint: ''
+        },
+        hand: {
+          label: 'Mà',
+          hint: ''
+        },
+        font: {
+          label: 'Tipus de lletra',
+          hint: ''
+        },
+        watermark: {
+          label: 'Filigrana',
+          hint: ''
+        },
+        graphic_feature: {
+          label: 'Característica gràfica',
+          hint: ''
+        },
+        physical_feature: {
+          label: 'Característica física',
+          hint: ''
+        },
+        music: {
+          label: 'Música',
+          hint: ''
         }
       },
       geoid: {

@@ -269,6 +269,58 @@ export default {
         associated_person: {
           label: 'Associated person',
           hint: ' Search using any form of the name. A search returns the name of a binder, illuminator, annotator, etc.'
+        },
+        call_number: {
+          label: 'Inventory position',
+          hint: ''
+        },
+        title: {
+          label: 'Title',
+          hint: ''
+        },
+        type: {
+          label: 'Type',
+          hint: ''
+        },
+        writing_surface: {
+          label: 'Writing surface',
+          hint: ''
+        },
+        format: {
+          label: 'Format',
+          hint: ''
+        },
+        binding: {
+          label: 'Binding',
+          hint: ''
+        },
+        collation: {
+          label: 'Collation',
+          hint: ''
+        },
+        hand: {
+          label: 'Hand',
+          hint: ''
+        },
+        font: {
+          label: 'Font',
+          hint: ''
+        },
+        watermark: {
+          label: 'Watermark',
+          hint: ''
+        },
+        graphic_feature: {
+          label: 'Graphic feature',
+          hint: ''
+        },
+        physical_feature: {
+          label: 'Physical feature',
+          hint: ''
+        },
+        music: {
+          label: 'Music',
+          hint: ''
         }
       },
       geoid: {

@@ -809,6 +809,145 @@ export class QueryService {
         ?item wdt:P67 wd:${form.publisher_patron.value.item}
         `
     }
+    if (form.previous_owner && form.previous_owner.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P229 ?item_prev_owner .
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P229 ?copid_item_prev_owner .  
+        }
+        FILTER (?item_prev_owner = wd:${form.previous_owner.value.item} || ?copid_item_prev_owner = wd:${form.previous_owner.value.item})
+        `
+    }
+    if (form.associated_person && form.associated_person.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P703 ?item_aso_person .
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P703 ?copid_item_aso_person .  
+        }
+        FILTER (?item_aso_person = wd:${form.associated_person.value.item} || ?copid_item_aso_person = wd:${form.associated_person.value.item})
+        `
+    }
+    if (form.type && form.type.value) {
+      filters +=
+        `
+        ?item wdt:P2 wd:${form.type.value.item}
+        `
+    }
+    if (form.writing_surface && form.writing_surface.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P480 ?item_writing_surf .
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P480 ?copid_item_writing_surf .  
+        }
+        FILTER (?item_writing_surf = wd:${form.writing_surface.value.item} || ?copid_item_writing_surf = wd:${form.writing_surface.value.item})
+        `
+    }
+    if (form.format && form.format.value) {
+      filters +=
+        `
+        ?item wdt:P93 wd:${form.format.value.item}
+        `
+    }
+    if (form.binding && form.binding.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P800 ?item_binding .
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P800 ?copid_item_binding .  
+        }
+        FILTER (?item_binding = "${form.binding.value.label}" || ?copid_item_binding = "${form.binding.value.label}")
+        `
+    }
+    if (form.collation && form.collation.value) {
+      filters +=
+        `
+        ?item wdt:P704 ?item_collation .
+        FILTER(str(?item_collation) = "${form.collation.value.label}")
+        `
+    }
+    if (form.hand && form.hand.value) {
+      filters +=
+        `
+        ?item wdt:P747 wd:${form.hand.value.item}
+        `
+    }
+    if (form.font && form.font.value) {
+      filters +=
+        `
+        ?item wdt:P748 wd:${form.font.value.item}
+        `
+    }
+    if (form.watermark && form.watermark.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P749 ?item_watermark .
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P749 ?copid_item_watermark .  
+        }
+        FILTER (?item_watermark = wd:${form.watermark.value.item} || ?copid_item_watermark = wd:${form.watermark.value.item})
+        `
+    }
+    if (form.graphic_feature && form.graphic_feature.value) {
+      filters +=
+        `
+        OPTIONAL {
+          ?item wdt:P801 ?item_graphic_feature .
+        }
+        OPTIONAL {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P801 ?copid_item_graphic_feature .  
+        }
+        FILTER (?item_graphic_feature = wd:${form.graphic_feature.value.item} || ?copid_item_graphic_feature = wd:${form.graphic_feature.value.item})
+        `
+    }
+    if (form.physical_feature && form.physical_feature.value) {
+      filters +=
+        `
+        ?item wdt:P778 wd:${form.physical_feature.value.item}
+        `
+    }
+    if (form.music && form.music.value) {
+      filters +=
+        `
+        ?item wdt:P790 wd:${form.music.value.item}
+        `
+    }
+    if (form.subject && form.subject.value) {
+      filters +=
+        `
+        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        `
+    }
     return filters
   }
 

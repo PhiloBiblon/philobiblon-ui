@@ -39,8 +39,8 @@ export default {
         city: {
           active: true,
           primary: true,
-          label: 'search.form.msed.city.label',
-          hint: 'search.form.msed.city.hint',
+          label: 'search.form.manid.city.label',
+          hint: 'search.form.manid.city.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -79,8 +79,8 @@ export default {
         library: {
           active: true,
           primary: true,
-          label: 'search.form.msed.library.label',
-          hint: 'search.form.msed.library.hint',
+          label: 'search.form.manid.library.label',
+          hint: 'search.form.manid.library.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -117,8 +117,8 @@ export default {
         title: {
           active: true,
           primary: false,
-          label: 'search.form.msed.title.label',
-          hint: 'search.form.msed.title.hint',
+          label: 'search.form.manid.title.label',
+          hint: 'search.form.manid.title.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -153,8 +153,8 @@ export default {
         call_number: {
           active: true,
           primary: true,
-          label: 'search.form.msed.call_number.label',
-          hint: 'search.form.msed.call_number.hint',
+          label: 'search.form.manid.call_number.label',
+          hint: 'search.form.manid.call_number.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -218,8 +218,8 @@ export default {
         date: {
           active: true,
           primary: true,
-          label: 'search.form.msed.date.label',
-          hint: 'search.form.msed.date.hint',
+          label: 'search.form.manid.date.label',
+          hint: 'search.form.manid.date.hint',
           type: 'date',
           value: {},
           visible: true,
@@ -228,8 +228,8 @@ export default {
         place_production: {
           active: true,
           primary: true,
-          label: 'search.form.msed.place_production.label',
-          hint: 'search.form.msed.place_production.hint',
+          label: 'search.form.manid.place_production.label',
+          hint: 'search.form.manid.place_production.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -264,8 +264,8 @@ export default {
         scribe_printer: {
           active: true,
           primary: true,
-          label: 'search.form.msed.scribe_printer.label',
-          hint: 'search.form.msed.scribe_printer.hint',
+          label: 'search.form.manid.scribe_printer.label',
+          hint: 'search.form.manid.scribe_printer.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -300,8 +300,8 @@ export default {
         publisher_patron: {
           active: true,
           primary: true,
-          label: 'search.form.msed.publisher_patron.label',
-          hint: 'search.form.msed.publisher_patron.hint',
+          label: 'search.form.manid.publisher_patron.label',
+          hint: 'search.form.manid.publisher_patron.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -323,8 +323,8 @@ export default {
         previous_owner: {
           active: true,
           primary: true,
-          label: 'search.form.msed.previous_owner.label',
-          hint: 'search.form.msed.previous_owner.hint',
+          label: 'search.form.manid.previous_owner.label',
+          hint: 'search.form.manid.previous_owner.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -332,7 +332,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?label {
+            SELECT DISTINCT ?item ?label {
               {
                 SELECT ?item ?label
                 WHERE { 
@@ -361,8 +361,8 @@ export default {
         associated_person: {
           active: true,
           primary: true,
-          label: 'search.form.msed.associated_person.label',
-          hint: 'search.form.msed.associated_person.hint',
+          label: 'search.form.manid.associated_person.label',
+          hint: 'search.form.manid.associated_person.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -370,7 +370,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?label {
+            SELECT DISTINCT ?item ?label {
               {
                 SELECT ?item ?label
                 WHERE { 
@@ -399,8 +399,8 @@ export default {
         type: {
           active: true,
           primary: false,
-          label: 'search.form.msed.type.label',
-          hint: 'search.form.msed.type.hint',
+          label: 'search.form.manid.type.label',
+          hint: 'search.form.manid.type.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -422,8 +422,8 @@ export default {
         writing_surface: {
           active: true,
           primary: false,
-          label: 'search.form.msed.writing_surface.label',
-          hint: 'search.form.msed.writing_surface.hint',
+          label: 'search.form.manid.writing_surface.label',
+          hint: 'search.form.manid.writing_surface.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -431,7 +431,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?label {
+            SELECT DISTINCT ?item ?label {
               {
                 SELECT ?item ?label
                 WHERE { 
@@ -460,8 +460,8 @@ export default {
         format: {
           active: true,
           primary: false,
-          label: 'search.form.msed.format.label',
-          hint: 'search.form.msed.format.hint',
+          label: 'search.form.manid.format.label',
+          hint: 'search.form.manid.format.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -483,8 +483,8 @@ export default {
         binding: {
           active: true,
           primary: false,
-          label: 'search.form.msed.binding.label',
-          hint: 'search.form.msed.binding.hint',
+          label: 'search.form.manid.binding.label',
+          hint: 'search.form.manid.binding.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -494,23 +494,21 @@ export default {
             `
             SELECT DISTINCT ?label {
               {
-                SELECT ?item ?label
+                SELECT ?label
                 WHERE { 
                   ?table_item wdt:P476 ?table_pbid .
                   FILTER regex(?table_pbid, '(.*) {{table}} ') .
-                  ?table_item wdt:P800 ?item . 
-                  {{langFilter}}
+                  ?table_item wdt:P800 ?label . 
                 }
               } UNION {
-                SELECT ?item ?label ?copid_item
+                SELECT ?label ?copid_item
                 WHERE { 
                   ?copid_item wdt:P476 ?copid_pbid .
                   FILTER regex(?copid_pbid, '(.*) copid ') .
                   ?copid_item wdt:P839 ?table_item .
                   ?table_item wdt:P476 ?table_pbid .
                   FILTER regex(?table_pbid, '(.*) {{table}} ') .      
-                  ?copid_item wdt:P800 ?item .
-                  {{langFilter}}
+                  ?copid_item wdt:P800 ?label .
                 }
               }
             }
@@ -521,8 +519,8 @@ export default {
         collation: {
           active: true,
           primary: false,
-          label: 'search.form.msed.collation.label',
-          hint: 'search.form.msed.collation.hint',
+          label: 'search.form.manid.collation.label',
+          hint: 'search.form.manid.collation.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -530,12 +528,11 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?item ?label
+            SELECT DISTINCT ?label
             WHERE { 
               ?table_item wdt:P476 ?table_pbid .
               FILTER regex(?table_pbid, '(.*) {{table}} ') .
-              ?table_item wdt:P704 ?item .
-              {{langFilter}}
+              ?table_item wdt:P704 ?label .
             }
             ORDER BY ?label
             `
@@ -544,8 +541,8 @@ export default {
         hand: {
           active: true,
           primary: false,
-          label: 'search.form.msed.hand.label',
-          hint: 'search.form.msed.hand.hint',
+          label: 'search.form.manid.hand.label',
+          hint: 'search.form.manid.hand.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -567,8 +564,8 @@ export default {
         font: {
           active: true,
           primary: false,
-          label: 'search.form.msed.font.label',
-          hint: 'search.form.msed.font.hint',
+          label: 'search.form.manid.font.label',
+          hint: 'search.form.manid.font.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -590,8 +587,8 @@ export default {
         watermark: {
           active: true,
           primary: false,
-          label: 'search.form.msed.watermark.label',
-          hint: 'search.form.msed.watermark.hint',
+          label: 'search.form.manid.watermark.label',
+          hint: 'search.form.manid.watermark.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -599,7 +596,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?label {
+            SELECT DISTINCT ?item ?label {
               {
                 SELECT ?item ?label
                 WHERE { 
@@ -628,8 +625,8 @@ export default {
         graphic_feature: {
           active: true,
           primary: false,
-          label: 'search.form.msed.graphic_feature.label',
-          hint: 'search.form.msed.graphic_feature.hint',
+          label: 'search.form.manid.graphic_feature.label',
+          hint: 'search.form.manid.graphic_feature.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -637,7 +634,7 @@ export default {
           autocomplete: {
             query:
             `
-            SELECT DISTINCT ?label {
+            SELECT DISTINCT ?item ?label {
               {
                 SELECT ?item ?label
                 WHERE { 
@@ -666,8 +663,8 @@ export default {
         physical_feature: {
           active: true,
           primary: false,
-          label: 'search.form.msed.physical_feature.label',
-          hint: 'search.form.msed.physical_feature.hint',
+          label: 'search.form.manid.physical_feature.label',
+          hint: 'search.form.manid.physical_feature.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -689,8 +686,8 @@ export default {
         music: {
           active: true,
           primary: false,
-          label: 'search.form.msed.music.label',
-          hint: 'search.form.msed.music.hint',
+          label: 'search.form.manid.music.label',
+          hint: 'search.form.manid.music.hint',
           type: 'autocomplete',
           value: '',
           visible: true,
@@ -710,7 +707,7 @@ export default {
           }
         },
         subject: {
-          active: false,
+          active: true,
           primary: false,
           label: 'search.form.common.subject.label',
           hint: 'search.form.common.subject.hint',
@@ -723,49 +720,49 @@ export default {
             `
             SELECT DISTINCT * {
               {
-                    SELECT ?item ?label ?property
-                    WHERE { 
-                      ?table wdt:P476 ?table_pbid .
-                      ?table ?property ?item . 
-                      ?item wdt:P476 ?subject_pbid .
-                      # {{langFilter}}
-                      FILTER regex(?subject_pbid, '(.*) subid ')
-                      FILTER regex(?table_pbid, '(.*) {{table}} ')
-                      BIND ( wdt:P422 as ?property)
-                    }
+                SELECT ?item ?label ?property
+                WHERE { 
+                  ?table wdt:P476 ?table_pbid .
+                  ?table ?property ?item . 
+                  ?item wdt:P476 ?subject_pbid .
+                  {{langFilter}}
+                  FILTER regex(?subject_pbid, '(.*) subid ')
+                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+                  BIND ( wdt:P422 as ?property)
+                }
               } UNION {
-                    SELECT ?item ?label ?property
-                    WHERE { 
-                      ?table wdt:P476 ?table_pbid .
-                      ?table ?property ?item . 
-                      ?item wdt:P476 ?subject_pbid .
-                      # {{langFilter}}
-                      FILTER regex(?subject_pbid, '(.*) insid ')
-                      FILTER regex(?table_pbid, '(.*) {{table}} ')
-                      BIND ( wdt:P232 as ?property)
-                    }
+                SELECT ?item ?label ?property
+                WHERE { 
+                  ?table wdt:P476 ?table_pbid .
+                  ?table ?property ?item . 
+                  ?item wdt:P476 ?subject_pbid .
+                  {{langFilter}}
+                  FILTER regex(?subject_pbid, '(.*) insid ')
+                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+                  BIND ( wdt:P232 as ?property)
+                }
               } UNION {
-                    SELECT ?item ?label ?property
-                    WHERE { 
-                      ?table wdt:P476 ?table_pbid .
-                      ?table ?property ?item . 
-                      ?item wdt:P476 ?subject_pbid .
-                      # {{langFilter}}
-                      FILTER regex(?subject_pbid, '(.*) bioid ')
-                      FILTER regex(?table_pbid, '(.*) {{table}} ')
-                      BIND ( wdt:P703 as ?property)
-                    }
+                SELECT ?item ?label ?property
+                WHERE { 
+                  ?table wdt:P476 ?table_pbid .
+                  ?table ?property ?item . 
+                  ?item wdt:P476 ?subject_pbid .
+                  {{langFilter}}
+                  FILTER regex(?subject_pbid, '(.*) bioid ')
+                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+                  BIND ( wdt:P703 as ?property)
+                }
               } UNION {
-                    SELECT ?item ?label ?property
-                    WHERE { 
-                      ?table wdt:P476 ?table_pbid .
-                      ?table ?property ?item . 
-                      ?item wdt:P476 ?geo_pbid .
-                      # {{langFilter}}
-                      FILTER regex(?geo_pbid, '(.*) geoid ')
-                      FILTER regex(?table_pbid, '(.*) {{table}} ')
-                      BIND ( wdt:P47 as ?property)
-                    }
+                SELECT ?item ?label ?property
+                WHERE { 
+                  ?table wdt:P476 ?table_pbid .
+                  ?table ?property ?item . 
+                  ?item wdt:P476 ?geo_pbid .
+                  {{langFilter}}
+                  FILTER regex(?geo_pbid, '(.*) geoid ')
+                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+                  BIND ( wdt:P47 as ?property)
+                }
               }
             }
             ORDER BY ?label
