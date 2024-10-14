@@ -286,7 +286,7 @@ export default {
     },
 
     goToHelp () {
-      window.location.href = 'https://bancroft.berkeley.edu/philobiblon/help_en.html'
+      this.$router.push(`../../wiki/${this.$i18n.locale}_Help`)
     },
 
     existsAdvancedFiltersSelected () {
