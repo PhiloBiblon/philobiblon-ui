@@ -66,8 +66,10 @@ export default {
       this.claim.values.forEach((item) => {
         Object.keys(item.qualifiers ?? {}).forEach(key => qualifierKeys.add(key))
       })
-
-      const headerPromises = Array.from(qualifierKeys).map(async (property) => {
+      const qualifiersKeysOrdered = Array.from(qualifierKeys).sort((a, b) => {
+        return this.claim.qualifiersOrder.indexOf(a) - this.claim.qualifiersOrder.indexOf(b)
+      })
+      const headerPromises = Array.from(qualifiersKeysOrdered).map(async (property) => {
         const entity = await this.$wikibase.getEntity(property, this.$i18n.locale)
         return {
           property,
