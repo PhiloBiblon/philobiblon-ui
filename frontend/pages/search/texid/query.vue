@@ -319,7 +319,7 @@ export default {
             `
             SELECT DISTINCT ?label ?analytic_item {
               {
-                SELECT ?item ?label {
+                SELECT ?label {
                   ?item wdt:P476 ?item_pbid .
                   FILTER regex(?item_pbid, '(.*) {{table}} ') .
                   ?item wdt:P781 ?label

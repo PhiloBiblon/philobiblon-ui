@@ -149,7 +149,7 @@ export default {
           hint: 'Busque por cualquiera de los nombres formales o comúnmente utilizados de la biblioteca (por ejemplo, en BETA, busque Real Biblioteca, Biblioteca de Palacio o simplemente Palacio).'
         },
         call_number: {
-          label: 'Número de llamada',
+          label: 'Signatura',
           hint: ''
         }
       },
@@ -246,10 +246,6 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
         },
-        shelfmark: {
-          label: 'Signatura',
-          hint: 'Search for a current or former shelfmark in the holding library as well as for the shelfmark of a previous owner. Searches are not case-sensitive, e.g., “Inc. 1484” or “inc. 1484.”'
-        },
         date: {
           label: 'Fecha',
           hint: 'You can search for complete or partial dates. A search for “1325“, for example, returns manuscripts copied on any day of that year as well as undated manuscripts which, based on internal or external evidence, have been dated to include the year 1325 (e.g. 1325; 1325 a quo, 1325 ad quem; 1301? - 1325?; 1290? - 1325?; etc.).'
@@ -273,6 +269,58 @@ export default {
         associated_person: {
           label: 'Persona asociada',
           hint: ' Search using any form of the name. A search returns the name of a binder, illuminator, annotator, etc.'
+        },
+        call_number: {
+          label: 'Signatura',
+          hint: ''
+        },
+        title: {
+          label: 'Título',
+          hint: ''
+        },
+        type: {
+          label: 'Tipo',
+          hint: ''
+        },
+        writing_surface: {
+          label: 'Superficie de escritura',
+          hint: ''
+        },
+        format: {
+          label: 'Formato',
+          hint: ''
+        },
+        binding: {
+          label: 'Encuadernación',
+          hint: ''
+        },
+        collation: {
+          label: 'Colación',
+          hint: ''
+        },
+        hand: {
+          label: 'Mano',
+          hint: ''
+        },
+        font: {
+          label: 'Tipo de letra',
+          hint: ''
+        },
+        watermark: {
+          label: 'Marca de agua',
+          hint: ''
+        },
+        graphic_feature: {
+          label: 'Característica gráfica',
+          hint: ''
+        },
+        physical_feature: {
+          label: 'Característica física',
+          hint: ''
+        },
+        music: {
+          label: 'Música',
+          hint: ''
         }
       },
       geoid: {
