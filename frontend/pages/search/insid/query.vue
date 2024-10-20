@@ -22,159 +22,164 @@ export default {
         }
       ],
       form: {
-        group: {
-          permanent: true,
-          value: 'ALL',
-          disabled: false
-        },
-        simple_search: {
-          active: true,
-          primary: true,
-          label: 'search.form.common.simple_search.label',
-          hint: 'search.form.common.simple_search.hint',
-          type: 'text',
-          value: '',
-          visible: true,
-          disabled: false
-        },
-        city: {
-          active: true,
-          primary: true,
-          label: 'search.form.insid.city.label',
-          hint: 'search.form.insid.city.hint',
-          type: 'autocomplete',
-          value: '',
-          visible: true,
-          disabled: false,
-          autocomplete: {
-            query:
+        section: [
+          'primary'
+        ],
+        input: {
+          group: {
+            permanent: true,
+            value: 'ALL',
+            disabled: false
+          },
+          simple_search: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.simple_search.label',
+            hint: 'search.form.common.simple_search.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
+          city: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.insid.city.label',
+            hint: 'search.form.insid.city.hint',
+            type: 'autocomplete',
+            value: '',
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+                `
+                SELECT DISTINCT ?item ?label
+                WHERE { 
+                  ?item wdt:P476 ?pbid .
+                  FILTER regex(?pbid, '(.*) geoid ') .
+                  {{langFilter}}
+                  ?table wdt:P297 ?item . 
+                  ?table wdt:P476 ?table_pbid .
+                  FILTER regex(?table_pbid, '(.*) {{table}} ')
+                }
+                ORDER BY ?label
+                `
+            }
+          },
+          institution_type: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.insid.institution_type.label',
+            hint: 'search.form.insid.institution_type.hint',
+            type: 'autocomplete',
+            value: '',
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
               `
-              SELECT DISTINCT ?item ?label
+              SELECT ?item ?label
               WHERE { 
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '(.*) geoid ') .
+                ?item wdt:P994 ?pbid .
                 {{langFilter}}
-                ?table wdt:P297 ?item . 
-                ?table wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                FILTER regex(?pbid, 'INSTITUTIONS\\\\*CLASS\\\\*') .
               }
               ORDER BY ?label
               `
-          }
-        },
-        institution_type: {
-          active: true,
-          primary: true,
-          label: 'search.form.insid.institution_type.label',
-          hint: 'search.form.insid.institution_type.hint',
-          type: 'autocomplete',
-          value: '',
-          visible: true,
-          disabled: false,
-          autocomplete: {
-            query:
-            `
-            SELECT ?item ?label
-            WHERE { 
-              ?item wdt:P994 ?pbid .
-              {{langFilter}}
-              FILTER regex(?pbid, 'INSTITUTIONS\\\\*CLASS\\\\*') .
             }
-            ORDER BY ?label
-            `
-          }
-        },
-        institution: {
-          active: true,
-          primary: true,
-          label: 'search.form.insid.institution.label',
-          hint: 'search.form.insid.institution.hint',
-          type: 'autocomplete',
-          value: '',
-          visible: true,
-          disabled: false,
-          autocomplete: {
-            query:
-            `
-            SELECT DISTINCT ?label ?property {
-              {
-                SELECT ?label ?property
-                WHERE { 
-                  ?item wdt:P476 ?pbid .
-                  FILTER regex(?pbid, '(.*) {{table}} ') .
-                  ?item wdt:P34 ?label .
-                  BIND('P34' AS ?property)
-                }
-              } UNION {
-                SELECT ?label ?property
-                WHERE { 
-                  ?item wdt:P476 ?pbid .
-                  FILTER regex(?pbid, '(.*) {{table}} ') .
-                  {{langFilter}}
-                  BIND('label' AS ?property)
+          },
+          institution: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.insid.institution.label',
+            hint: 'search.form.insid.institution.hint',
+            type: 'autocomplete',
+            value: '',
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?label ?property {
+                {
+                  SELECT ?label ?property
+                  WHERE { 
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '(.*) {{table}} ') .
+                    ?item wdt:P34 ?label .
+                    BIND('P34' AS ?property)
+                  }
+                } UNION {
+                  SELECT ?label ?property
+                  WHERE { 
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '(.*) {{table}} ') .
+                    {{langFilter}}
+                    BIND('label' AS ?property)
+                  }
                 }
               }
+              ORDER BY STR(?label)
+              `
             }
-            ORDER BY STR(?label)
-            `
-          }
-        },
-        subject: {
-          active: true,
-          primary: true,
-          label: 'search.form.common.subject.label',
-          hint: 'search.form.common.subject.hint',
-          type: 'autocomplete',
-          value: '',
-          visible: true,
-          disabled: false,
-          autocomplete: {
-            query:
-            `
-            SELECT DISTINCT * {
-              {
-                SELECT ?item ?label ?property
-                WHERE { 
-                  ?table wdt:P476 ?table_pbid .
-                  ?table ?property ?item . 
-                  ?item wdt:P476 ?subject_pbid .
-                  {{langFilter}}
-                  FILTER regex(?subject_pbid, '(.*) bioid ')
-                  FILTER regex(?table_pbid, '(.*) {{table}} ')
-                  BIND ( wdt:P703 as ?property)
-                }
-              } UNION {
-                SELECT ?item ?label ?property
-                WHERE { 
-                  ?table wdt:P476 ?table_pbid .
-                  ?table ?property ?item . 
-                  ?item wdt:P476 ?subject_pbid .
-                  {{langFilter}}
-                  FILTER regex(?subject_pbid, '(.*) subid ')
-                  FILTER regex(?table_pbid, '(.*) {{table}} ')
-                  BIND ( wdt:P422 as ?property)
-                }
-              } UNION {
-                SELECT ?item ?label ?property
-                WHERE { 
-                  ?table wdt:P476 ?table_pbid .
-                  ?table ?property ?item . 
-                  ?item wdt:P476 ?subject_pbid .
-                  {{langFilter}}
-                  FILTER regex(?subject_pbid, '(.*) geoid ')
-                  FILTER regex(?table_pbid, '(.*) {{table}} ')
-                  BIND ( wdt:P47 as ?property)
+          },
+          subject: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.subject.label',
+            hint: 'search.form.common.subject.hint',
+            type: 'autocomplete',
+            value: '',
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT * {
+                {
+                  SELECT ?item ?label ?property
+                  WHERE { 
+                    ?table wdt:P476 ?table_pbid .
+                    ?table ?property ?item . 
+                    ?item wdt:P476 ?subject_pbid .
+                    {{langFilter}}
+                    FILTER regex(?subject_pbid, '(.*) bioid ')
+                    FILTER regex(?table_pbid, '(.*) {{table}} ')
+                    BIND ( wdt:P703 as ?property)
+                  }
+                } UNION {
+                  SELECT ?item ?label ?property
+                  WHERE { 
+                    ?table wdt:P476 ?table_pbid .
+                    ?table ?property ?item . 
+                    ?item wdt:P476 ?subject_pbid .
+                    {{langFilter}}
+                    FILTER regex(?subject_pbid, '(.*) subid ')
+                    FILTER regex(?table_pbid, '(.*) {{table}} ')
+                    BIND ( wdt:P422 as ?property)
+                  }
+                } UNION {
+                  SELECT ?item ?label ?property
+                  WHERE { 
+                    ?table wdt:P476 ?table_pbid .
+                    ?table ?property ?item . 
+                    ?item wdt:P476 ?subject_pbid .
+                    {{langFilter}}
+                    FILTER regex(?subject_pbid, '(.*) geoid ')
+                    FILTER regex(?table_pbid, '(.*) {{table}} ')
+                    BIND ( wdt:P47 as ?property)
+                  }
                 }
               }
+              ORDER BY ?label
+              `
             }
-            ORDER BY ?label
-            `
+          },
+          search_type: {
+            permanent: true,
+            value: true,
+            disabled: false
           }
-        },
-        search_type: {
-          permanent: true,
-          value: true,
-          disabled: false
         }
       }
     }

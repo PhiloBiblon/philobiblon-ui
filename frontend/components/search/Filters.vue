@@ -19,85 +19,50 @@
           />
         </v-radio-group>
       </v-row>
-      <v-row dense>
-        <template v-for="(item, name) in primaryFilters">
-          <v-col
-            v-if="(item.active && !item.permanent && item.visible)"
-            :key="'i-'+name"
-            cols="4"
-          >
-            <search-util-text-field
-              v-if="item.type === 'text'"
-              v-model="item.value"
-              :label="$t(item.label)"
-              :hint="$t(item.hint)"
-              :disabled="item.disabled"
-            />
-            <search-util-autocomplete-field
-              v-if="item.type === 'autocomplete'"
-              :id="'auto-'+name"
-              v-model="item.value"
-              :label="$t(item.label)"
-              :hint="$t(item.hint)"
-              :disabled="item.disabled"
-              :table="table"
-              :autocomplete="item.autocomplete"
-              @click.stop
-            />
-            <search-util-date-field
-              v-if="item.type === 'date'"
-              :value="item.value"
-              :label="$t(item.label)"
-              :hint="$t(item.hint)"
-              :disabled="item.disabled"
-              @update-begin-date="item.value['begin'] = $event"
-              @update-end-date="item.value['end'] = $event"
-            />
-          </v-col>
-        </template>
-      </v-row>
-      <v-row v-if="existsAdvancedFilters && !showResults" dense>
-        <span class="advanced-search text-caption mb-2 primary--text" @click="showAdvancedSearch = !showAdvancedSearch">
-          {{ $t('common.advanced_search') }} <v-icon class="primary--text">{{ showAdvancedSearch ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-        </span>
-      </v-row>
-      <v-row v-if="showAdvancedSearch" dense>
-        <template v-for="(item, name) in advancedFilters">
-          <v-col
-            v-if="(item.active && !item.permanent && item.visible)"
-            :key="'i-'+name"
-            cols="4"
-          >
-            <search-util-text-field
-              v-if="item.type === 'text'"
-              v-model="item.value"
-              :label="$t(item.label)"
-              :hint="$t(item.hint)"
-              :disabled="item.disabled"
-            />
-            <search-util-autocomplete-field
-              v-if="item.type === 'autocomplete'"
-              :id="'auto-'+name"
-              v-model="item.value"
-              :label="$t(item.label)"
-              :hint="$t(item.hint)"
-              :disabled="item.disabled"
-              :table="table"
-              :autocomplete="item.autocomplete"
-              @click.stop
-            />
-            <search-util-date-field
-              v-if="item.type === 'date'"
-              :value="item.value"
-              :label="$t(item.label)"
-              :hint="$t(item.hint)"
-              :disabled="item.disabled"
-              @update-begin-date="item.value['begin'] = $event"
-              @update-end-date="item.value['end'] = $event"
-            />
-          </v-col>
-        </template>
-      </v-row>
+      <template v-for="(section) in form.section">
+        <v-row v-if="!isPrimarySection(section) && existsSectionFilters(section) && !showResults" :key="'header-' + section" dense>
+          <span class="section-search text-caption mb-2 primary--text" @click="toggleSectionDisplay(section)">
+            {{ $t(`common.search.section.${section}`) }} <v-icon class="primary--text">{{ isSectionDisplayed(section) ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+          </span>
+        </v-row>
+        <v-row v-if="isSectionDisplayed(section)" :key="'body-' + section" dense>
+          <template v-for="(item, name) in getInputsBySection(section)">
+            <v-col
+              v-if="(item.active && !item.permanent && item.visible)"
+              :key="'i-'+name"
+              cols="4"
+            >
+              <search-util-text-field
+                v-if="item.type === 'text'"
+                v-model="item.value"
+                :label="$t(item.label)"
+                :hint="$t(item.hint)"
+                :disabled="item.disabled"
+              />
+              <search-util-autocomplete-field
+                v-if="item.type === 'autocomplete'"
+                :id="'auto-'+name"
+                v-model="item.value"
+                :label="$t(item.label)"
+                :hint="$t(item.hint)"
+                :disabled="item.disabled"
+                :table="table"
+                :autocomplete="item.autocomplete"
+                @click.stop
+              />
+              <search-util-date-field
+                v-if="item.type === 'date'"
+                :value="item.value"
+                :label="$t(item.label)"
+                :hint="$t(item.hint)"
+                :disabled="item.disabled"
+                @update-begin-date="item.value['begin'] = $event"
+                @update-end-date="item.value['end'] = $event"
+              />
+            </v-col>
+          </template>
+        </v-row>
+      </template>
       <v-row dense>
         <v-col
           cols="7"
@@ -180,33 +145,14 @@ export default {
     return {
       search_group: {},
       search_type: {},
-      showResults: false,
-      showAdvancedSearch: false
+      filtersBySection: {},
+      showResults: false
     }
   },
 
   computed: {
     groups () {
       return ['BETA', 'BITAGAP', 'BITECA', { text: this.$t('search.form.common.group_all.label'), value: 'ALL' }]
-    },
-    primaryFilters () {
-      return Object.entries(this.form).reduce((acc, [key, value]) => {
-        if (value.primary) {
-          acc[key] = value
-        }
-        return acc
-      }, {})
-    },
-    advancedFilters () {
-      return Object.entries(this.form).reduce((acc, [key, value]) => {
-        if (!value.primary) {
-          acc[key] = value
-        }
-        return acc
-      }, {})
-    },
-    existsAdvancedFilters () {
-      return Object.values(this.form).some(item => item.primary === false)
     }
   },
 
@@ -216,14 +162,18 @@ export default {
     }
   },
 
-  mounted () {
-    this.search_group = this.form.group
-    this.search_type = this.form.search_type
+  created () {
+    this.search_group = this.form.input.group
+    this.search_type = this.form.input.search_type
+    this.filtersBySection = this.groupFiltersBySection(this.form)
     const showResults = this.$store.state.queryStatus.showResults
     if (showResults) {
       this.showResults = showResults
     }
-    this.showAdvancedSearch = this.existsAdvancedFiltersSelected()
+  },
+
+  mounted () {
+    this.calculateSectionsToDisplay()
     window.addEventListener('keydown', this.keyDownHandler)
   },
 
@@ -232,6 +182,53 @@ export default {
   },
 
   methods: {
+    calculateSectionsToDisplay () {
+      Object.keys(this.filtersBySection).forEach((section) => {
+        if (this.existsSectionFiltersSelected(section)) {
+          this.filtersBySection[section].show = true
+        } else {
+          this.filtersBySection[section].show = false
+        }
+      })
+    },
+    existsSectionFiltersSelected (section) {
+      return Object.values(this.form.input).some(item => item.section === section && this.isFieldValueNotEmpty(item.value))
+    },
+    getInputsBySection (section) {
+      return this.filtersBySection[section].input.reduce((acc, key) => {
+        if (key in this.form.input) {
+          acc[key] = this.form.input[key]
+        }
+        return acc
+      }, {})
+    },
+    isPrimarySection (section) {
+      return section === 'primary'
+    },
+    isSectionDisplayed (section) {
+      return this.isPrimarySection(section) || this.filtersBySection[section].show
+    },
+    toggleSectionDisplay (section) {
+      this.filtersBySection[section].show = !this.filtersBySection[section].show
+    },
+    groupFiltersBySection (form) {
+      const filtersBySection = {}
+      Object.entries(form.input).forEach(([key, value]) => {
+        const section = value.section
+        if (section) {
+          if (!filtersBySection[section]) {
+            filtersBySection[section] = {}
+            filtersBySection[section].input = []
+            filtersBySection[section].show = false
+          }
+          filtersBySection[section].input.push(key)
+        }
+      })
+      return filtersBySection
+    },
+    existsSectionFilters (section) {
+      return Object.values(this.form.input).some(item => item.section === section)
+    },
     keyDownHandler (event) {
       if (event.code === 'Enter') {
         // Not search in autocomplete fields to avoid weird display errors
@@ -243,8 +240,8 @@ export default {
       }
     },
     search () {
-      for (const key in this.form) {
-        const item = this.form[key]
+      for (const key in this.form.input) {
+        const item = this.form.input[key]
         if (!item.value ||
           (item.value instanceof Object && Object.keys(item.value).length === 0)) {
           item.visible = false
@@ -254,21 +251,20 @@ export default {
       this.showResults = true
       this.$emit('on-search', this.form)
     },
-
     back () {
-      for (const key in this.form) {
-        const item = this.form[key]
+      for (const key in this.form.input) {
+        const item = this.form.input[key]
         item.visible = true
         item.disabled = false
       }
       this.showResults = false
+      this.calculateSectionsToDisplay()
       this.$store.commit('queryStatus/setForm', JSON.parse(JSON.stringify(this.form)))
       this.$emit('back-search')
     },
-
     clear () {
-      for (const key in this.form) {
-        const item = this.form[key]
+      for (const key in this.form.input) {
+        const item = this.form.input[key]
         if (item.type === 'date') {
           item.value = {}
         } else {
@@ -280,19 +276,13 @@ export default {
       this.search_group.value = 'ALL'
       this.search_type.value = true
       this.showResults = false
-      this.showAdvancedSearch = false
+      this.calculateSectionsToDisplay()
       this.$store.commit('queryStatus/setForm', null)
       this.$emit('clear-search')
     },
-
     goToHelp () {
       this.$router.push(`../../wiki/${this.$i18n.locale}_Help`)
     },
-
-    existsAdvancedFiltersSelected () {
-      return Object.values(this.form).some(item => item.primary === false && this.isFieldValueNotEmpty(item.value))
-    },
-
     isFieldValueNotEmpty (item) {
       if (typeof item === 'string' && item !== '') {
         return true
@@ -314,7 +304,7 @@ export default {
 .group-option {
   padding-right: 30px;
 }
-.advanced-search {
+.section-search {
   cursor: pointer;
 }
 </style>

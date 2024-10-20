@@ -4,9 +4,14 @@ export default {
     loading: 'Cargando..',
     language: 'Lingua',
     calendar: 'Calendario',
-    advanced_search: 'Busca avanzada',
     from: 'Dende',
-    to: 'a'
+    to: 'a',
+    search: {
+      section: {
+        advanced: 'Busca avanzada',
+        external_description: 'Descrición externa'
+      }
+    }
   },
   menu: {
     item: {
@@ -169,7 +174,8 @@ export default {
       },
       bioid: {
         name: {
-          label: 'Nome'
+          label: 'Nome',
+          hint: ''
         },
         title: {
           label: 'Título',
@@ -240,7 +246,8 @@ export default {
       },
       manid: {
         city: {
-          label: 'Cidade'
+          label: 'Cidade',
+          hint: ''
         },
         library: {
           label: 'Biblioteca',
@@ -325,15 +332,18 @@ export default {
       },
       geoid: {
         type: {
-          label: 'Tipo'
+          label: 'Tipo',
+          hint: ''
         },
         class: {
-          label: 'Clase'
+          label: 'Clase',
+          hint: ''
         }
       },
       subid: {
         headings: {
-          label: 'Títulos'
+          label: 'Títulos',
+          hint: ''
         }
       }
     },

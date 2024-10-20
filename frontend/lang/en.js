@@ -4,9 +4,14 @@ export default {
     loading: 'Loading..',
     language: 'Language',
     calendar: 'Calendar',
-    advanced_search: 'Advanced search',
     from: 'From',
-    to: 'To'
+    to: 'To',
+    search: {
+      section: {
+        advanced: 'Advanced search',
+        external_description: 'External description'
+      }
+    }
   },
   menu: {
     item: {
@@ -169,7 +174,8 @@ export default {
       },
       bioid: {
         name: {
-          label: 'Name'
+          label: 'Name',
+          hint: ''
         },
         title: {
           label: 'Title',
@@ -240,7 +246,8 @@ export default {
       },
       manid: {
         city: {
-          label: 'City'
+          label: 'City',
+          hint: ''
         },
         library: {
           label: 'Library',
@@ -325,15 +332,18 @@ export default {
       },
       geoid: {
         type: {
-          label: 'Type'
+          label: 'Type',
+          hint: ''
         },
         class: {
-          label: 'Class'
+          label: 'Class',
+          hint: ''
         }
       },
       subid: {
         headings: {
-          label: 'Headings'
+          label: 'Headings',
+          hint: ''
         }
       }
     },
