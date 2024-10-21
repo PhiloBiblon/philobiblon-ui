@@ -53,7 +53,7 @@ export class QueryService {
     let wordsFilter = null
     for (const filterValue of filterValues) {
       if (wordsFilter) {
-        wordsFilter += (form.search_type.value ? ' && ' : ' || ')
+        wordsFilter += (form.input.search_type.value ? ' && ' : ' || ')
       } else {
         wordsFilter = '('
       }
@@ -65,7 +65,7 @@ export class QueryService {
 
   generateFilterSimpleSearch (form) {
     const filterFields = ['label', 'desc', 'alias']
-    const filterValues = this.normalize(form.simple_search.value).split(' ')
+    const filterValues = this.normalize(form.input.simple_search.value).split(' ')
     let filters = null
     for (const filterField of filterFields) {
       if (filters) {
@@ -85,36 +85,36 @@ export class QueryService {
 
   addInstitutionFilters (form) {
     let filters = ''
-    if (form.city && form.city.value) {
+    if (form.input.city && form.input.city.value) {
       filters +=
         `
-        ?item wdt:P297 wd:${form.city.value.item} .\n
+        ?item wdt:P297 wd:${form.input.city.value.item} .\n
         `
     }
-    if (form.institution && form.institution.value) {
-      if (form.institution.value.property === 'label') {
+    if (form.input.institution && form.input.institution.value) {
+      if (form.input.institution.value.property === 'label') {
         filters +=
         `
-        FILTER(str(?label) = "${form.institution.value.label}") . \n
+        FILTER(str(?label) = "${form.input.institution.value.label}") . \n
         `
       } else {
         filters +=
         `
         ?item wdt:P34 ?value_institution .\n
-        FILTER(STR(?value_institution) = "${form.institution.value.label}") . \n
+        FILTER(STR(?value_institution) = "${form.input.institution.value.label}") . \n
         `
       }
     }
-    if (form.subject && form.subject.value) {
+    if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
-    if (form.institution_type && form.institution_type.value) {
+    if (form.input.institution_type && form.input.institution_type.value) {
       filters +=
         `
-        ?item wdt:P2 wd:${form.institution_type.value.item} .\n
+        ?item wdt:P2 wd:${form.input.institution_type.value.item} .\n
         `
     }
     return filters
@@ -123,51 +123,51 @@ export class QueryService {
   addWorkFilters (form) {
     let addAnalyticJoin = false
     let filters = ''
-    if (form.type && form.type.value) {
+    if (form.input.type && form.input.type.value) {
       filters +=
         `
         ?item p:P121 ?type_statement .
-        ?type_statement pq:P700 wd:${form.type.value.item} .
+        ?type_statement pq:P700 wd:${form.input.type.value.item} .
         `
     }
-    if (form.author && form.author.value) {
-      if (!form.author.value.analytic_item) {
+    if (form.input.author && form.input.author.value) {
+      if (!form.input.author.value.analytic_item) {
         filters +=
           `
-          ?item wdt:P21 wd:${form.author.value.item} .
+          ?item wdt:P21 wd:${form.input.author.value.item} .
           `
       } else {
         addAnalyticJoin = true
         filters +=
           `
           ?analytic_item wdt:P34 ?author .
-          FILTER (STR(?author) = "${form.author.value.label}")
+          FILTER (STR(?author) = "${form.input.author.value.label}")
           `
       }
     }
-    if (form.title && form.title.value) {
-      if (!form.title.value.analytic_item) {
+    if (form.input.title && form.input.title.value) {
+      if (!form.input.title.value.analytic_item) {
         filters +=
           `
           ?item wdt:P11 ?title.
-          FILTER (STR(?title) = "${form.title.value.label}")
+          FILTER (STR(?title) = "${form.input.title.value.label}")
           `
       } else {
         addAnalyticJoin = true
         filters +=
           `
           ?analytic_item wdt:P11 ?title .
-          FILTER (STR(?title) = "${form.title.value.label}")
+          FILTER (STR(?title) = "${form.input.title.value.label}")
           `
       }
     }
-    if (form.incipit && form.incipit.value) {
-      if (!form.incipit.value.analytic_item) {
+    if (form.input.incipit && form.input.incipit.value) {
+      if (!form.input.incipit.value.analytic_item) {
         filters +=
           `
           ?item p:P543 ?incipit_statement .
           ?incipit_statement pq:P70 ?incipit
-          FILTER (STR(?incipit) = "${form.incipit.value.label}")
+          FILTER (STR(?incipit) = "${form.input.incipit.value.label}")
           `
       } else {
         addAnalyticJoin = true
@@ -175,17 +175,17 @@ export class QueryService {
           `
           ?analytic_item p:P543 ?incipit_statement .
           ?incipit_statement pq:P70 ?incipit
-          FILTER (STR(?incipit) = "${form.incipit.value.label}")
+          FILTER (STR(?incipit) = "${form.input.incipit.value.label}")
           `
       }
     }
-    if (form.explicit && form.explicit.value) {
-      if (!form.explicit.value.analytic_item) {
+    if (form.input.explicit && form.input.explicit.value) {
+      if (!form.input.explicit.value.analytic_item) {
         filters +=
           `
           ?item p:P543 ?explicit_statement .
           ?explicit_statement pq:P602 ?explicit
-          FILTER (STR(?explicit) = "${form.explicit.value.label}")
+          FILTER (STR(?explicit) = "${form.input.explicit.value.label}")
           `
       } else {
         addAnalyticJoin = true
@@ -193,70 +193,70 @@ export class QueryService {
           `
           ?analytic_item p:P543 ?explicit_statement .
           ?explicit_statement pq:P602 ?explicit
-          FILTER (STR(?explicit) = "${form.explicit.value.label}")
+          FILTER (STR(?explicit) = "${form.input.explicit.value.label}")
           `
       }
     }
-    if (form.language && form.language.value) {
-      if (!form.language.value.analytic_item) {
+    if (form.input.language && form.input.language.value) {
+      if (!form.input.language.value.analytic_item) {
         filters +=
           `
-          ?item wdt:P18 wd:${form.language.value.item} .
+          ?item wdt:P18 wd:${form.input.language.value.item} .
           `
       } else {
         addAnalyticJoin = true
         filters +=
           `
-          ?analytic_item wdt:P18 wd:${form.language.value.item} .
+          ?analytic_item wdt:P18 wd:${form.input.language.value.item} .
           `
       }
     }
-    if (form.poetic_form && form.poetic_form.value) {
-      if (!form.poetic_form.value.analytic_item) {
+    if (form.input.poetic_form && form.input.poetic_form.value) {
+      if (!form.input.poetic_form.value.analytic_item) {
         filters +=
           `
           ?item wdt:P781 ?poetic_form
-          FILTER (STR(?poetic_form) = "${form.poetic_form.value.label}")
+          FILTER (STR(?poetic_form) = "${form.input.poetic_form.value.label}")
           `
       } else {
         addAnalyticJoin = true
         filters +=
           `
           ?analytic_item wdt:P781 ?poetic_form .
-          FILTER (STR(?poetic_form) = "${form.poetic_form.value.label}")
+          FILTER (STR(?poetic_form) = "${form.input.poetic_form.value.label}")
           `
       }
     }
-    if (form.associated_person && form.associated_person.value) {
-      if (!form.associated_person.value.analytic_item) {
+    if (form.input.associated_person && form.input.associated_person.value) {
+      if (!form.input.associated_person.value.analytic_item) {
         filters +=
           `
-          ?item wdt:P703 wd:${form.associated_person.value.item} .
+          ?item wdt:P703 wd:${form.input.associated_person.value.item} .
           `
       } else {
         filters +=
           `
-          ?analytic_item wdt:P703 wd:${form.associated_person.value.item} .
+          ?analytic_item wdt:P703 wd:${form.input.associated_person.value.item} .
           `
       }
     }
-    if (form.subject && form.subject.value) {
+    if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P422 wd:${form.subject.value.item} .
+        ?item wdt:P422 wd:${form.input.subject.value.item} .
         `
     }
-    if (form.date_composition.value &&
-      (form.date_composition.value.begin || form.date_composition.value.end)) {
+    if (form.input.date_composition.value &&
+      (form.input.date_composition.value.begin || form.input.date_composition.value.end)) {
       let completeRange = false
-      if (form.date_composition.value.begin && form.date_composition.value.end) {
+      if (form.input.date_composition.value.begin && form.input.date_composition.value.end) {
         completeRange = true
       }
       filters +=
         `
         ?item p:P137 ?history .
         `
-      if (form.date_composition.value.begin) {
+      if (form.input.date_composition.value.begin) {
         filters +=
           `
           OPTIONAL { ?history pq:P49 ?begin_date }
@@ -264,17 +264,17 @@ export class QueryService {
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.input.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.input.date_composition.value.end}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?begin_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?begin_date >= '${form.input.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
-      if (form.date_composition.value.end) {
+      if (form.input.date_composition.value.end) {
         filters +=
           `
           OPTIONAL { ?history pq:P50 ?end_date }
@@ -282,13 +282,13 @@ export class QueryService {
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?end_date) || ?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date) || ?end_date >= '${form.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?end_date) || ?end_date <= '${form.input.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date) || ?end_date >= '${form.input.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?end_date <= '${form.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?end_date <= '${form.input.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
@@ -312,37 +312,37 @@ export class QueryService {
 
   addPersonFilters (form) {
     let filters = ''
-    if (form.name && form.name.value) {
-      if (form.name.value.property === 'label') {
+    if (form.input.name && form.input.name.value) {
+      if (form.input.name.value.property === 'label') {
         filters +=
           `
-          FILTER(str(?label) = "${form.name.value.label}") . \n
+          FILTER(str(?label) = "${form.input.name.value.label}") . \n
           `
       } else {
         filters +=
           `
           ?item wdt:P34 ?value_name .\n
-          FILTER(STR(?value_name) = "${form.name.value.label}") . \n
+          FILTER(STR(?value_name) = "${form.input.name.value.label}") . \n
           `
       }
     }
-    if (form.title && form.title.value) {
+    if (form.input.title && form.input.title.value) {
       filters +=
         `
-        ?item wdt:P171 wd:${form.title.value.item} .\n
+        ?item wdt:P171 wd:${form.input.title.value.item} .\n
         `
     }
-    if (form.date.value &&
-      (form.date.value.begin || form.date.value.end)) {
+    if (form.input.date.value &&
+      (form.input.date.value.begin || form.input.date.value.end)) {
       let completeRange = false
-      if (form.date.value.begin && form.date.value.end) {
+      if (form.input.date.value.begin && form.input.date.value.end) {
         completeRange = true
       }
       filters +=
         `
         ?item p:P137 ?history .
         `
-      if (form.date.value.begin) {
+      if (form.input.date.value.begin) {
         filters +=
           `
           OPTIONAL { ?history pq:P49 ?begin_date }
@@ -350,17 +350,17 @@ export class QueryService {
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
-      if (form.date.value.end) {
+      if (form.input.date.value.end) {
         filters +=
           `
           OPTIONAL { ?history pq:P50 ?end_date }
@@ -368,13 +368,13 @@ export class QueryService {
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?end_date) || ?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date) || ?end_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?end_date) || ?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date) || ?end_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
@@ -385,42 +385,42 @@ export class QueryService {
         `
       }
     }
-    if (form.associated_place && form.associated_place.value) {
-      if (form.associated_place.value.property === 'P47') {
+    if (form.input.associated_place && form.input.associated_place.value) {
+      if (form.input.associated_place.value.property === 'P47') {
         filters +=
           `
-          ?item wdt:${form.associated_place.value.property} wd:${form.associated_place.value.item} .\n
+          ?item wdt:${form.input.associated_place.value.property} wd:${form.input.associated_place.value.item} .\n
           `
       } else {
         filters +=
           `
-          ?item p:${form.associated_place.value.property} ?associated_place_prop .\n
-          ?associated_place_prop pq:P47 wd:${form.associated_place.value.item} .\n
+          ?item p:${form.input.associated_place.value.property} ?associated_place_prop .\n
+          ?associated_place_prop pq:P47 wd:${form.input.associated_place.value.item} .\n
           `
       }
     }
-    if (form.religion && form.religion.value) {
+    if (form.input.religion && form.input.religion.value) {
       filters +=
         `
-        ?item wdt:P172 wd:${form.religion.value.item} .\n
+        ?item wdt:P172 wd:${form.input.religion.value.item} .\n
         `
     }
-    if (form.religious_order && form.religious_order.value) {
+    if (form.input.religious_order && form.input.religious_order.value) {
       filters +=
         `
-        ?item wdt:P746 wd:${form.religious_order.value.item} .\n
+        ?item wdt:P746 wd:${form.input.religious_order.value.item} .\n
         `
     }
-    if (form.profession && form.profession.value) {
+    if (form.input.profession && form.input.profession.value) {
       filters +=
         `
-        ?item wdt:P165 wd:${form.profession.value.item} .\n
+        ?item wdt:P165 wd:${form.input.profession.value.item} .\n
         `
     }
-    if (form.subject && form.subject.value) {
+    if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -428,38 +428,38 @@ export class QueryService {
 
   addLibraryFilters (form) {
     let filters = ''
-    if (form.city && form.city.value) {
+    if (form.input.city && form.input.city.value) {
       filters +=
       `
       ?item wdt:P111 ?value_city .\n
-      FILTER(STR(?value_city) = "${form.city.value.label}") . \n
+      FILTER(STR(?value_city) = "${form.input.city.value.label}") . \n
       `
     }
-    if (form.library && form.library.value) {
-      if (form.library.value.property === 'label') {
+    if (form.input.library && form.input.library.value) {
+      if (form.input.library.value.property === 'label') {
         filters +=
         `
-        FILTER(str(?label) = "${form.library.value.label}") . \n
+        FILTER(str(?label) = "${form.input.library.value.label}") . \n
         `
       } else {
         filters +=
         `
         ?item wdt:P34 ?value_library .\n
-        FILTER(STR(?value_library) = "${form.library.value.label}") . \n
+        FILTER(STR(?value_library) = "${form.input.library.value.label}") . \n
         `
       }
     }
-    if (form.call_number && form.call_number.value) {
+    if (form.input.call_number && form.input.call_number.value) {
       filters +=
       `
       ?item wdt:P10 ?value_call_number .\n
-      FILTER(STR(?value_call_number) = "${form.call_number.value.label}") . \n
+      FILTER(STR(?value_call_number) = "${form.input.call_number.value.label}") . \n
       `
     }
-    if (form.subject && form.subject.value) {
+    if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -467,27 +467,27 @@ export class QueryService {
 
   addReferenceFilters (form) {
     let filters = ''
-    if (form.author && form.author.value) {
+    if (form.input.author && form.input.author.value) {
       filters +=
         `
-        ?item wdt:${form.author.value.property} ?value_author .\n
-        FILTER(STR(?value_author) = "${form.author.value.label}") . \n
+        ?item wdt:${form.input.author.value.property} ?value_author .\n
+        FILTER(STR(?value_author) = "${form.input.author.value.label}") . \n
         `
     }
-    if (form.title && form.title.value) {
+    if (form.input.title && form.input.title.value) {
       filters +=
         `
         ?item wdt:P11 ?value_title .\n
-        FILTER(str(?value_title) = "${form.title.value.label}") . \n
+        FILTER(str(?value_title) = "${form.input.title.value.label}") . \n
         `
     }
-    if (form.date.value &&
-      (form.date.value.begin || form.date.value.end)) {
+    if (form.input.date.value &&
+      (form.input.date.value.begin || form.input.date.value.end)) {
       let completeRange = false
-      if (form.date.value.begin && form.date.value.end) {
+      if (form.input.date.value.begin && form.input.date.value.end) {
         completeRange = true
       }
-      if (form.date.value.begin) {
+      if (form.input.date.value.begin) {
         filters +=
           `
           OPTIONAL { ?item pq:P49 ?begin_date }
@@ -495,17 +495,17 @@ export class QueryService {
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
-      if (form.date.value.end) {
+      if (form.input.date.value.end) {
         filters +=
           `
           OPTIONAL { ?item pq:P50 ?end_date }
@@ -513,13 +513,13 @@ export class QueryService {
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?end_date) || ?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date) || ?end_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?end_date) || ?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date) || ?end_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
             `
         }
         if (completeRange) {
@@ -530,63 +530,63 @@ export class QueryService {
         }
       }
     }
-    if (form.volume && form.volume.value) {
+    if (form.input.volume && form.input.volume.value) {
       filters +=
         `
         ?item wdt:P1137 ?value_volume .\n
-        FILTER(str(?value_volume) = "${form.volume.value.label}") . \n
+        FILTER(str(?value_volume) = "${form.input.volume.value.label}") . \n
         `
     }
-    if (form.place_publication && form.place_publication.value) {
+    if (form.input.place_publication && form.input.place_publication.value) {
       filters +=
         `
         ?item wdt:P1141 ?value_place_publication .\n
-        FILTER(str(?value_place_publication) = "${form.place_publication.value.label}") . \n
+        FILTER(str(?value_place_publication) = "${form.input.place_publication.value.label}") . \n
         `
     }
-    if (form.publisher && form.publisher.value) {
+    if (form.input.publisher && form.input.publisher.value) {
       filters +=
         `
         ?item wdt:P1140 ?value_publisher .\n
-        FILTER(str(?value_publisher) = "${form.publisher.value.label}") . \n
+        FILTER(str(?value_publisher) = "${form.input.publisher.value.label}") . \n
         `
     }
-    if (form.series && form.series.value) {
+    if (form.input.series && form.input.series.value) {
       filters +=
         `
         ?item wdt:P1139 ?value_series .\n
-        FILTER(str(?value_series) = "${form.series.value.label}") . \n
+        FILTER(str(?value_series) = "${form.input.series.value.label}") . \n
         `
     }
-    if (form.locations && form.locations.value) {
+    if (form.input.locations && form.input.locations.value) {
       filters +=
         `
-        ?item wdt:P329 wd:${form.locations.value.item} .\n
+        ?item wdt:P329 wd:${form.input.locations.value.item} .\n
         `
     }
-    if (form.international_standard_number && form.international_standard_number.value) {
+    if (form.input.international_standard_number && form.input.international_standard_number.value) {
       filters +=
         `
         OPTIONAL { ?item wdt:P605 ?value_isn_p605 } .\n
         OPTIONAL { ?item wdt:P606 ?value_isn_p606 } .\n
         OPTIONAL { ?item wdt:P634 ?value_isn_p634 } .\n
         OPTIONAL { ?item wdt:P743 ?value_isn_p743 } .\n
-        FILTER(str(?value_isn_p605) = "${form.international_standard_number.value.label}" 
-          || str(?value_isn_p606) = "${form.international_standard_number.value.label}" 
-          || str(?value_isn_p634) = "${form.international_standard_number.value.label}" 
-          || str(?value_isn_p743) = "${form.international_standard_number.value.label}") . \n
+        FILTER(str(?value_isn_p605) = "${form.input.international_standard_number.value.label}" 
+          || str(?value_isn_p606) = "${form.input.international_standard_number.value.label}" 
+          || str(?value_isn_p634) = "${form.input.international_standard_number.value.label}" 
+          || str(?value_isn_p743) = "${form.input.international_standard_number.value.label}") . \n
         `
     }
-    if (form.type && form.type.value) {
+    if (form.input.type && form.input.type.value) {
       filters +=
         `
-        ?item wdt:P2 wd:${form.type.value.item} .\n
+        ?item wdt:P2 wd:${form.input.type.value.item} .\n
         `
     }
-    if (form.subject && form.subject.value) {
+    if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -594,23 +594,23 @@ export class QueryService {
 
   addGeographyFilters (form) {
     let filters = ''
-    if (form.type && form.type.value) {
+    if (form.input.type && form.input.type.value) {
       filters +=
         `
-        ?item wdt:P2 wd:${form.type.value.item} .\n
+        ?item wdt:P2 wd:${form.input.type.value.item} .\n
         `
     }
-    if (form.class && form.class.value) {
+    if (form.input.class && form.input.class.value) {
       filters +=
         `
         ?item p:P2 ?class_statement .
-        ?class_statement pq:P700 wd:${form.class.value.item} .
+        ?class_statement pq:P700 wd:${form.input.class.value.item} .
         `
     }
-    if (form.subject && form.subject.value) {
+    if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -618,17 +618,17 @@ export class QueryService {
 
   addSubjectFilters (form) {
     let filters = ''
-    if (form.headings && form.headings.value) {
-      if (form.headings.value.property === 'label') {
+    if (form.input.headings && form.input.headings.value) {
+      if (form.input.headings.value.property === 'label') {
         filters +=
           `
-          FILTER(str(?label) = "${form.headings.value.label}") . \n
+          FILTER(str(?label) = "${form.input.headings.value.label}") . \n
           `
       } else {
         filters +=
           `
           ?item wdt:P1031 ?value_heading .\n
-          FILTER(STR(?value_heading) = "${form.headings.value.label}") . \n
+          FILTER(STR(?value_heading) = "${form.input.headings.value.label}") . \n
           `
       }
     }
@@ -637,7 +637,7 @@ export class QueryService {
 
   addManuscriptFilters (form) {
     let filters = ''
-    if (form.city && form.city.value) {
+    if (form.input.city && form.input.city.value) {
       filters +=
         `
         OPTIONAL {
@@ -651,10 +651,10 @@ export class QueryService {
           ?copid_item wdt:P329 ?copid_item_lib .  
           ?copid_item_lib wdt:P47 ?copid_item_lib_loc
         }
-        FILTER(?item_lib_loc = wd:${form.city.value.item} || ?copid_item_lib_loc = wd:${form.city.value.item})
+        FILTER(?item_lib_loc = wd:${form.input.city.value.item} || ?copid_item_lib_loc = wd:${form.input.city.value.item})
         `
     }
-    if (form.library && form.library.value) {
+    if (form.input.library && form.input.library.value) {
       filters +=
         `
         OPTIONAL {
@@ -666,10 +666,10 @@ export class QueryService {
           ?copid_item wdt:P839 ?item .
           ?copid_item wdt:P329 ?copid_item_lib .  
         }
-        FILTER (?item_lib = wd:${form.library.value.item} || ?copid_item_lib = wd:${form.library.value.item})
+        FILTER (?item_lib = wd:${form.input.library.value.item} || ?copid_item_lib = wd:${form.input.library.value.item})
         `
     }
-    if (form.title && form.title.value) {
+    if (form.input.title && form.input.title.value) {
       filters +=
         `
         OPTIONAL {
@@ -681,10 +681,10 @@ export class QueryService {
           ?cnum_item wdt:P8 ?item .
           ?cnum_item wdt:P5 ?cnum_item_title .
         }
-        FILTER (?item_title = "${form.title.value.label}" || ?cnum_item_title = "${form.title.value.label}")
+        FILTER (?item_title = "${form.input.title.value.label}" || ?cnum_item_title = "${form.input.title.value.label}")
         `
     }
-    if (form.call_number && form.call_number.value) {
+    if (form.input.call_number && form.input.call_number.value) {
       filters +=
         `
         OPTIONAL {
@@ -717,22 +717,22 @@ export class QueryService {
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
         }
-        FILTER (?item_p10_label = "${form.call_number.value.label}" || ?copid_item_p10_label = "${form.call_number.value.label}"
-          || ?item_p30_label = "${form.call_number.value.label}" || ?copid_item_p30_label = "${form.call_number.value.label}"
+        FILTER (?item_p10_label = "${form.input.call_number.value.label}" || ?copid_item_p10_label = "${form.input.call_number.value.label}"
+          || ?item_p30_label = "${form.input.call_number.value.label}" || ?copid_item_p30_label = "${form.input.call_number.value.label}"
         )
         `
     }
-    if (form.date.value &&
-      (form.date.value.begin || form.date.value.end)) {
+    if (form.input.date.value &&
+      (form.input.date.value.begin || form.input.date.value.end)) {
       let completeRange = false
-      if (form.date.value.begin && form.date.value.end) {
+      if (form.input.date.value.begin && form.input.date.value.end) {
         completeRange = true
       }
       filters +=
         `
         ?item p:P137 ?history .
         `
-      if (form.date.value.begin) {
+      if (form.input.date.value.begin) {
         filters +=
           `
           OPTIONAL { ?history pq:P49 ?begin_date }
@@ -740,17 +740,17 @@ export class QueryService {
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?begin_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
-      if (form.date.value.end) {
+      if (form.input.date.value.end) {
         filters +=
           `
           OPTIONAL { ?history pq:P50 ?end_date }
@@ -758,13 +758,13 @@ export class QueryService {
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?end_date) || ?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date) || ?end_date >= '${form.date.value.begin}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?end_date) || ?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date) || ?end_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?end_date <= '${form.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
@@ -775,7 +775,7 @@ export class QueryService {
         `
       }
     }
-    if (form.place_production && form.place_production.value) {
+    if (form.input.place_production && form.input.place_production.value) {
       filters +=
         `
         OPTIONAL {
@@ -786,10 +786,10 @@ export class QueryService {
           ?item p:P442 ?type_of_event .
           ?type_of_event pq:P241 ?item_place_production .
         }
-        FILTER (?item_place = wd:${form.place_production.value.item} || ?item_place_production = wd:${form.place_production.value.item})
+        FILTER (?item_place = wd:${form.input.place_production.value.item} || ?item_place_production = wd:${form.input.place_production.value.item})
         `
     }
-    if (form.scribe_printer && form.scribe_printer.value) {
+    if (form.input.scribe_printer && form.input.scribe_printer.value) {
       filters +=
         `
         OPTIONAL {
@@ -800,16 +800,16 @@ export class QueryService {
           ?item p:P442 ?type_of_event .
           ?type_of_event pq:P207 ?item_printer .
         }
-        FILTER (?item_scribe = wd:${form.scribe_printer.value.item} || ?item_printer = wd:${form.scribe_printer.value.item})
+        FILTER (?item_scribe = wd:${form.input.scribe_printer.value.item} || ?item_printer = wd:${form.input.scribe_printer.value.item})
         `
     }
-    if (form.publisher_patron && form.publisher_patron.value) {
+    if (form.input.publisher_patron && form.input.publisher_patron.value) {
       filters +=
         `
-        ?item wdt:P67 wd:${form.publisher_patron.value.item}
+        ?item wdt:P67 wd:${form.input.publisher_patron.value.item}
         `
     }
-    if (form.previous_owner && form.previous_owner.value) {
+    if (form.input.previous_owner && form.input.previous_owner.value) {
       filters +=
         `
         OPTIONAL {
@@ -821,10 +821,10 @@ export class QueryService {
           ?copid_item wdt:P839 ?item .
           ?copid_item wdt:P229 ?copid_item_prev_owner .  
         }
-        FILTER (?item_prev_owner = wd:${form.previous_owner.value.item} || ?copid_item_prev_owner = wd:${form.previous_owner.value.item})
+        FILTER (?item_prev_owner = wd:${form.input.previous_owner.value.item} || ?copid_item_prev_owner = wd:${form.input.previous_owner.value.item})
         `
     }
-    if (form.associated_person && form.associated_person.value) {
+    if (form.input.associated_person && form.input.associated_person.value) {
       filters +=
         `
         OPTIONAL {
@@ -836,16 +836,16 @@ export class QueryService {
           ?copid_item wdt:P839 ?item .
           ?copid_item wdt:P703 ?copid_item_aso_person .  
         }
-        FILTER (?item_aso_person = wd:${form.associated_person.value.item} || ?copid_item_aso_person = wd:${form.associated_person.value.item})
+        FILTER (?item_aso_person = wd:${form.input.associated_person.value.item} || ?copid_item_aso_person = wd:${form.input.associated_person.value.item})
         `
     }
-    if (form.type && form.type.value) {
+    if (form.input.type && form.input.type.value) {
       filters +=
         `
-        ?item wdt:P2 wd:${form.type.value.item}
+        ?item wdt:P2 wd:${form.input.type.value.item}
         `
     }
-    if (form.writing_surface && form.writing_surface.value) {
+    if (form.input.writing_surface && form.input.writing_surface.value) {
       filters +=
         `
         OPTIONAL {
@@ -857,16 +857,16 @@ export class QueryService {
           ?copid_item wdt:P839 ?item .
           ?copid_item wdt:P480 ?copid_item_writing_surf .  
         }
-        FILTER (?item_writing_surf = wd:${form.writing_surface.value.item} || ?copid_item_writing_surf = wd:${form.writing_surface.value.item})
+        FILTER (?item_writing_surf = wd:${form.input.writing_surface.value.item} || ?copid_item_writing_surf = wd:${form.input.writing_surface.value.item})
         `
     }
-    if (form.format && form.format.value) {
+    if (form.input.format && form.input.format.value) {
       filters +=
         `
-        ?item wdt:P93 wd:${form.format.value.item}
+        ?item wdt:P93 wd:${form.input.format.value.item}
         `
     }
-    if (form.binding && form.binding.value) {
+    if (form.input.binding && form.input.binding.value) {
       filters +=
         `
         OPTIONAL {
@@ -878,29 +878,29 @@ export class QueryService {
           ?copid_item wdt:P839 ?item .
           ?copid_item wdt:P800 ?copid_item_binding .  
         }
-        FILTER (?item_binding = "${form.binding.value.label}" || ?copid_item_binding = "${form.binding.value.label}")
+        FILTER (?item_binding = "${form.input.binding.value.label}" || ?copid_item_binding = "${form.input.binding.value.label}")
         `
     }
-    if (form.collation && form.collation.value) {
+    if (form.input.collation && form.input.collation.value) {
       filters +=
         `
         ?item wdt:P704 ?item_collation .
-        FILTER(str(?item_collation) = "${form.collation.value.label}")
+        FILTER(str(?item_collation) = "${form.input.collation.value.label}")
         `
     }
-    if (form.hand && form.hand.value) {
+    if (form.input.hand && form.input.hand.value) {
       filters +=
         `
-        ?item wdt:P747 wd:${form.hand.value.item}
+        ?item wdt:P747 wd:${form.input.hand.value.item}
         `
     }
-    if (form.font && form.font.value) {
+    if (form.input.font && form.input.font.value) {
       filters +=
         `
-        ?item wdt:P748 wd:${form.font.value.item}
+        ?item wdt:P748 wd:${form.input.font.value.item}
         `
     }
-    if (form.watermark && form.watermark.value) {
+    if (form.input.watermark && form.input.watermark.value) {
       filters +=
         `
         OPTIONAL {
@@ -912,10 +912,10 @@ export class QueryService {
           ?copid_item wdt:P839 ?item .
           ?copid_item wdt:P749 ?copid_item_watermark .  
         }
-        FILTER (?item_watermark = wd:${form.watermark.value.item} || ?copid_item_watermark = wd:${form.watermark.value.item})
+        FILTER (?item_watermark = wd:${form.input.watermark.value.item} || ?copid_item_watermark = wd:${form.input.watermark.value.item})
         `
     }
-    if (form.graphic_feature && form.graphic_feature.value) {
+    if (form.input.graphic_feature && form.input.graphic_feature.value) {
       filters +=
         `
         OPTIONAL {
@@ -927,25 +927,25 @@ export class QueryService {
           ?copid_item wdt:P839 ?item .
           ?copid_item wdt:P801 ?copid_item_graphic_feature .  
         }
-        FILTER (?item_graphic_feature = wd:${form.graphic_feature.value.item} || ?copid_item_graphic_feature = wd:${form.graphic_feature.value.item})
+        FILTER (?item_graphic_feature = wd:${form.input.graphic_feature.value.item} || ?copid_item_graphic_feature = wd:${form.input.graphic_feature.value.item})
         `
     }
-    if (form.physical_feature && form.physical_feature.value) {
+    if (form.input.physical_feature && form.input.physical_feature.value) {
       filters +=
         `
-        ?item wdt:P778 wd:${form.physical_feature.value.item}
+        ?item wdt:P778 wd:${form.input.physical_feature.value.item}
         `
     }
-    if (form.music && form.music.value) {
+    if (form.input.music && form.input.music.value) {
       filters +=
         `
-        ?item wdt:P790 wd:${form.music.value.item}
+        ?item wdt:P790 wd:${form.input.music.value.item}
         `
     }
-    if (form.subject && form.subject.value) {
+    if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.subject.value.property} wd:${form.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -953,9 +953,9 @@ export class QueryService {
 
   generateQuery (table, baseQueryFunction, form) {
     let filters = ''
-    const group = form.group.value === 'ALL' ? '(.*)' : form.group.value
+    const group = form.input.group.value === 'ALL' ? '(.*)' : form.input.group.value
     filters = `FILTER regex(?pbid, '${group} ${table} ') .\n`
-    if (form.simple_search && form.simple_search.value) {
+    if (form.input.simple_search && form.input.simple_search.value) {
       filters += this.generateFilterSimpleSearch(form)
     }
     switch (table) {

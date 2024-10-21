@@ -6,7 +6,13 @@ export default {
     calendar: 'Calendário',
     advanced_search: 'Busca avançada',
     from: 'De',
-    to: 'para'
+    to: 'para',
+    search: {
+      section: {
+        advanced: 'Busca avançada',
+        external_description: 'Descrição externa'
+      }
+    }
   },
   menu: {
     item: {
@@ -169,7 +175,8 @@ export default {
       },
       bioid: {
         name: {
-          label: 'Nome'
+          label: 'Nome',
+          hint: ''
         },
         title: {
           label: 'Título',
@@ -325,15 +332,18 @@ export default {
       },
       geoid: {
         type: {
-          label: 'Tipo'
+          label: 'Tipo',
+          hint: ''
         },
         class: {
-          label: 'Classe'
+          label: 'Classe',
+          hint: ''
         }
       },
       subid: {
         headings: {
-          label: 'Títulos'
+          label: 'Títulos',
+          hint: ''
         }
       }
     },

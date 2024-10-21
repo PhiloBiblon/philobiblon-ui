@@ -4,9 +4,14 @@ export default {
     loading: 'Carregant..',
     language: 'Idioma',
     calendar: 'Calendari',
-    advanced_search: 'Cerca avançada',
     from: 'Des de',
-    to: 'a'
+    to: 'a',
+    search: {
+      section: {
+        advanced: 'Cerca avançada',
+        external_description: 'Descripció externa'
+      }
+    }
   },
   menu: {
     item: {
@@ -169,7 +174,8 @@ export default {
       },
       bioid: {
         name: {
-          label: 'Nom'
+          label: 'Nom',
+          hint: ''
         },
         title: {
           label: 'Títol',
@@ -240,7 +246,8 @@ export default {
       },
       manid: {
         city: {
-          label: 'Ciutat'
+          label: 'Ciutat',
+          hint: ''
         },
         library: {
           label: 'Biblioteca',
@@ -325,15 +332,18 @@ export default {
       },
       geoid: {
         type: {
-          label: 'Tipus'
+          label: 'Tipus',
+          hint: ''
         },
         class: {
-          label: 'Classe'
+          label: 'Classe',
+          hint: ''
         }
       },
       subid: {
         headings: {
-          label: 'Encapçalaments'
+          label: 'Encapçalaments',
+          hint: ''
         }
       }
     },

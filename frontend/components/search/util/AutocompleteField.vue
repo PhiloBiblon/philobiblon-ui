@@ -89,7 +89,7 @@ export default {
       }
     },
     compareByLabel (selectedItem, item) {
-      return selectedItem.label === item.label
+      return selectedItem && item && selectedItem.label === item.label
     }
   }
 }
