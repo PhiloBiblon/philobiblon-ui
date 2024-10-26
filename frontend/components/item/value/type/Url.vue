@@ -2,6 +2,7 @@
   <div>
     <template v-if="!isUserLogged">
       <a
+        v-if="isImage"
         :href="imageLink"
         target="_blank"
       >
@@ -11,12 +12,17 @@
         />
       </a>
       <a
+        v-if="isImage === false"
         :href="valueToView.value"
         target="_blank"
       >
         {{ valueToView.value }}
       </a>
-      <v-icon>mdi-link</v-icon>
+      <v-icon
+        v-if="!isImage"
+      >
+        mdi-link
+      </v-icon>
     </template>
     <template v-else>
       <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
@@ -43,18 +49,18 @@ export default {
   },
   data () {
     return {
+      isImage: false,
       imageLink: null,
       valueToView_: { ...this.valueToView }
     }
   },
   mounted () {
-    if (this.isURL(this.valueToView.value)) {
-      fetch(
-        'https://the-visionary-git-master-austininseoul.vercel.app/api?url=' + this.valueToView.value
-      ).then((res) => {
-        this.imageLink = res && res.imageSizes ? res.imageSizes[0].url : this.valueToView.value
-      })
-    }
+    this.isImageUrl(this.valueToView.value).then((isImage) => {
+      this.isImage = isImage
+      if (this.isImage) {
+        this.imageLink = this.valueToView.value
+      }
+    })
   },
   methods: {
     editValue (newValue, oldValue) {
@@ -77,6 +83,14 @@ export default {
     isURL (str) {
       const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
       return urlRegex.test(str)
+    },
+    isImageUrl (url) {
+      return new Promise((resolve) => {
+        const img = new Image()
+        img.onload = () => resolve(true)
+        img.onerror = () => resolve(false)
+        img.src = url
+      })
     }
   }
 }
