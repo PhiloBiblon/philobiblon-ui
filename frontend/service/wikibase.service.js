@@ -398,9 +398,9 @@ export class WikibaseService {
     }
   }
 
-  async getItemCnums (pbid) {
+  async getItemCnums (table, pbid, lang) {
     return await this.runSparqlQuery(
-      this.$query.itemCnumsQuery(pbid),
+      this.$query.itemCnumsQuery(table, pbid, lang),
       true
     ).then((results) => {
       return results
@@ -409,11 +409,14 @@ export class WikibaseService {
     })
   }
 
-  getRelatedTable (entity) {
-    const pbid = this.getPBID(entity)
-    const {
-      groups: { tableid }
-    } = this.getPBIDPattern().exec(pbid)
-    return tableid
+  async getItemCopids (pbid, lang) {
+    return await this.runSparqlQuery(
+      this.$query.itemCopidsQuery(pbid, lang),
+      true
+    ).then((results) => {
+      return results
+    }).catch(() => {
+      return []
+    })
   }
 }
