@@ -370,6 +370,27 @@ export default {
       invalid_id: 'Invalid identifier.',
       not_found: 'Not found.',
       invalid_url: 'Please fill a valid URL!'
+    },
+    related: {
+      texid: {
+        cnum: {
+          count: 'Count of witnesses',
+          id: 'ID no. of Witness',
+          desc: 'Title(s)'
+        }
+      },
+      manid: {
+        cnum: {
+          count: 'Number of texts in volume',
+          id: 'Specific witness ID no.',
+          desc: 'Title(s)'
+        },
+        copid: {
+          count: 'Number of additional copies of edition',
+          id: 'ID no. of additional copy of edition',
+          desc: 'Title(s)'
+        }
+      }
     }
   },
   privacyPolicy: {
