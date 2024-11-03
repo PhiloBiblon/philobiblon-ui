@@ -370,6 +370,27 @@ export default {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',
       invalid_url: 'Enche un URL válido!'
+    },
+    related: {
+      texid: {
+        cnum: {
+          count: 'Contaxe de testemuñas',
+          id: 'Núm. ID de testemuña',
+          desc: 'Título(s)'
+        }
+      },
+      manid: {
+        cnum: {
+          count: 'Número de textos no volume',
+          id: 'Núm. ID específico de testemuña',
+          desc: 'Título(s)'
+        },
+        copid: {
+          count: 'Número de copias adicionais da edición',
+          id: 'Núm. ID da copia adicional da edición',
+          desc: 'Título(s)'
+        }
+      }
     }
   },
   privacyPolicy: {

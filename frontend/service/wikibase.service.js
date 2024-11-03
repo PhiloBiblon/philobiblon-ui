@@ -398,9 +398,9 @@ export class WikibaseService {
     }
   }
 
-  async getItemCnums (pbid) {
+  async getRelatedItems (pbid, relatedTable, property) {
     return await this.runSparqlQuery(
-      this.$query.itemCnumsQuery(pbid),
+      this.$query.getRelatedItems(pbid, relatedTable, property),
       true
     ).then((results) => {
       return results

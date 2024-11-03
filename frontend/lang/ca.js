@@ -370,6 +370,27 @@ export default {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',
       invalid_url: 'Si us plau, ompliu un URL vàlid!'
+    },
+    related: {
+      texid: {
+        cnum: {
+          count: 'Comptador de testimonis',
+          id: 'Núm. ID del testimoni',
+          desc: 'Títol(s)'
+        }
+      },
+      manid: {
+        cnum: {
+          count: 'Nombre de textos en el volum',
+          id: 'Núm. ID específic del testimoni',
+          desc: 'Títol(s)'
+        },
+        copid: {
+          count: 'Nombre de còpies addicionals de l\'edició',
+          id: 'Núm. ID de la còpia addicional de l\'edició',
+          desc: 'Títol(s)'
+        }
+      }
     }
   },
   privacyPolicy: {
