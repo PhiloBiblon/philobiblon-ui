@@ -29,9 +29,10 @@ export default {
       }
     ])
     const wikiApiUrl = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.wikiPage}&prop=wikitext&formatversion=2&format=json&origin=*`
-    const html = await this.$wikibase.wbFetcher(wikiApiUrl)
+    this.contentToView = await this.$wikibase.wbFetcher(wikiApiUrl)
       .then(data => this.contentPage(data))
-    this.contentToView = this.$sanitize(html).replaceAll('<a href="#', '<a href="' + window.location.pathname + '#')
+
+    this.scrollToHashAndAddScrollBehavior()
   },
 
   methods: {
@@ -52,20 +53,84 @@ export default {
 
     parseLinks (content) {
       // eslint-disable-next-line no-useless-escape
-      const LINK_RE = /\[\[([^\|]*)\|?(.*)?\]\]/g
-      return content.replace(LINK_RE, (match, g1, g2) => this.parseLink(match, g1, g2))
+      const LINK_RE = /\[\[\s*([^\|\]]+)\s*(?:\|\s*([^\]]+)\s*)?\]\]/gm
+      return content.replace(LINK_RE, (match, linkTarget, displayText) => this.parseLink(linkTarget, displayText))
     },
 
-    parseLink (match, g1, g2) {
-      let link = g1
-      const text = g2 !== undefined ? g2 : g1
-      if (link.startsWith('/') || link.startsWith('http')) {
-        return `<a href='${link}'>${text}</a>`
-      } else {
-        link = `/wiki/${link}`
-        return `<a href='.${this.localePath(link)}'>${text}</a>`
-      }
+    parseLink (linkTarget, displayText) {
+      const [langPart, ...pageParts] = linkTarget.split('_')
+      const lang = langPart.toLowerCase()
+      const page = pageParts.join('_')
+      const text = displayText || linkTarget
+
+      return lang !== 'en' ? `<a href='/${lang}/wiki/${page}'>${text}</a>` : `<a href='/wiki/${page}'>${text}</a>`
+    },
+    scrollToHashAndAddScrollBehavior () {
+      this.$nextTick(() => {
+        const header = document.querySelector('.v-app-bar--fixed')
+        const headerHeight = header ? header.offsetHeight : 0
+
+        const hash = this.$route.hash
+        if (hash) {
+          const element = document.querySelector(hash)
+          if (element) {
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+            this.scrollTo(elementPosition - headerHeight)
+          }
+        }
+
+        const anchorLinks = document.querySelectorAll('a[href^="#"]')
+        anchorLinks.forEach((link) => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault()
+            const targetId = this.getTargetId(link)
+            const targetElement = this.getTargetElement(targetId)
+
+            if (targetId === 'top') {
+              this.scrollTo(0)
+            } else if (targetElement) {
+              const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset
+              const offsetPosition = elementPosition - headerHeight
+              this.scrollTo(offsetPosition)
+            }
+          })
+        })
+      })
+    },
+    getTargetId (link) {
+      return link.getAttribute('href').substring(1)
+    },
+    getTargetElement (targetId) {
+      return document.querySelector(`a[name="${targetId}"]`) || document.getElementById(targetId)
+    },
+    scrollTo (top = 0, behavior = 'smooth') {
+      window.scrollTo({
+        top,
+        behavior
+      })
     }
   }
 }
 </script>
+
+<style scoped>
+::v-deep .content {
+  .data {
+    margin-bottom: 10px;
+    width: 60%;
+    border: 1px solid #e5c992;
+    font-weight: normal;
+    font-size: 100%;
+    color: #000000;
+    td {
+      border: 1px solid #e5c992;
+      padding-left: 3px;
+      font-size: 85%;
+      color: #000000;
+    }
+  }
+  blockquote {
+    margin-left: 24px !important;
+  }
+}
+</style>
