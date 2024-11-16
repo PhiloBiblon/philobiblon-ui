@@ -1,0 +1,187 @@
+<nowiki><h1>A versão Windows</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>A base de dados PhiloBiblon está estruturada com base em dez tabelas relacionadas entre si, cada uma das quais serve como ficheiro geral para as restantes nove. Quatro destas tabelas são fundamentais para o sistema:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>UNIFORM TITLE (título uniforme): contém a versão normalizada do nome do autor e do título do texto (com as frequentes variantes), e a versão modernizada do incipit / explicit, bem como as datas (de composição, tradução, revisão, etc.), língua(s) do texto, pessoas associadas, relações com outros textos.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>MS_ED (manuscrito ou impresso): fonte primária de manuscritos e edições: localização actual, cota, descrição codicológica e bibliográfica, anteriores proprietários e outras pessoas associadas, relação com outros manuscritos ou edições.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>COPIES (exemplares): funciona juntamente com o registo de exemplares adicionais de uma determinada edição impressa: localização actual, cota, estado e anteriores proprietários.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>ANALYTIC (ficha analítica): descrição de um determinado texto que se encontra num manuscrito específico ou numa fonte impressa (forma exacta do título, incipit, explicit), juntamente com a especificação do seu fólio ou localização da página e qualquer outra característica particular. (Chamada assim porque, seguindo uma prática corrente das bibliotecas, analisa o conteúdo de um determinado manuscrito ou edição impressa.)</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Além destas tabelas, existem outras seis complementares que servem como ficheiro geral para as tabelas primárias:</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>BIBLIOGRAPHY (bibliografia): Referências secundárias (por ex., catálogos, edições, descrições, estudos e comentários críticos)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>BIOGRAPHY (biografia): pessoas relacionadas por qualquer razão com os textos catalogados e as fontes primárias (autores, tradutores, escribas, impressores, patronos, encadernadores, iluminadores, proprietários anteriores e actuais, etc.)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>GEOGRAFIA (geografia): lugares, regiões, divisões políticas ou eclesiásticas (condado, ducado, diocese), reinos e nações associadas em várias maneiras a um texto, manuscrito, edição, pessoa ou instituição.</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>INSTITUTIONS: instituições (por ex., mosteiros, bibliotecas, ordens religiosas, universidades) relacionadas por qualquer razão com os textos catalogados, fontes primárias ou pessoas (incluindo anteriores proprietários ou editores).</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>LIBRARY: bibliotecas cujo acervo contém as fontes primárias ou exemplares de itens na bibliografia secundária (endereço, telefone, horas, instalações, contactos de pessoas).</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>SUBJECT (assunto): ficheiro geral multilíngue para os cabeçalhos temáticos com um léxico de títulos / cabeçalhos relacionados, mais e menos alargados, e rejeitados.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Ao aceder à versão Windows, uma das bibliografias (BETA, BIPA, BITAGAP, BITECA) fica imediatamente pré-definida. De seguida, um menu dá acesso a</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>FILES (ficheiros): qualquer um dos ficheiros gerais da bibliografia em uso</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>TOOLS (ferramentas): para modificação de dados pré-definidos para um determinado campo, utilidades e geradores de relatórios</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>ADMINISTRATION (administração): para mudar de bibliografia, adição de novos utilizadores</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>WINDOWS (janelas): opções de visualização (em mosaico ou em cascata)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>QUERIES (perguntas): permite que cada estrutura vazia de dados de qualquer tabela seja preenchida com um ou mais termos de procura através de exemplos</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>AJUDA (ajuda): manual do utilizador</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Cada uma das tabelas gerais relacionadas entre si apresenta-se num conjunto de páginas que contêm campos adaptados para os dados em questão.</p></nowiki>
+
+<nowiki><p>Por exemplo, a tabela MS_ED regista em cinco páginas dados relacionados com as fontes primárias de manuscritos e edições. Um único número de código ou chave de registo (manid) serve para ligar essa tabela aos registos de tabelas associadas a ela.</p></nowiki>
+
+<nowiki><ul style="list-style-type: disc; color: #000"></nowiki>
+
+<nowiki><li>A primeira página regista informação que diz respeito à localização actual de um determindo volume (biblioteca, cota, história da aquisição), a data e local de 	impressão ou cópia, e os nomes dos escribas, impressores, editores e patronos;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>A segunda, informação codicológica ou bibliográfica detalhada: formato, número de folhas, colação, dimensões (da folhas, folha de texto, coluna, encadernação), número de colunas por página e linhas por coluna ou página, tipo de letra, encadernação, estado;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>A terceira, marcas de água, desenhos, anotação musical, aspectos codicológicos, anteriores proprietários;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>A quarta lista outras pessoas associadas ao volume (encadernadores, iluminadores, anotadores), outros textos contidos no volume (não na língua de destino), bibliografia relacionada com o manuscrito ou edição, outros manuscritos relacionados (por ex., cópias tardias) e acesso a estes, por ex., edições facsimiladas electrónicas;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>A quinta oferece notas miscelâneas, acesso temático e detalhes de gestão: a data em que o registo foi criado ou actualizado, a identidade do criador do registo.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Os campos descritivos nas restantes tabelass encontram-se detalhados da mesma maneira.</p></nowiki>
+
+<nowiki><p>Muitos dos campos a preencher não só estão relacionados entre si, como também podem ter múltiplos valores dentro dos quadros de edição. Por exemplo, data, localização, impressor e editor estão todos relacionados numa estrutura repetitiva de dados para estabelecer uma rubrica bibliográfica. Isto permite um registo de opiniões quando as fontes oferecem informações conflituosas. Assim, os especialistas podem divergir quanto ao local e por quem foi impressa uma determinada edição:</p></nowiki>
+
+<nowiki><table class="data" cellpadding="3" cellspacing="0"></nowiki>
+
+<nowiki><tbody><tr></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Local</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Impressor</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Início</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Fim</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Qual</b></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki><b>Base</b></nowiki><nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Castilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Impresor de <nowiki><i>Flos Sanctorum</i></nowiki><nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1472<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1475<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Vindel<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Santiago de Compostela<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Juan de Bobadilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>?<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1480<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Haebler<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki><tr></nowiki>
+
+<nowiki><td></nowiki>Sevilla<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki><nowiki>&</nowiki>nbsp;<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1475<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>1480<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>ca.<nowiki></td></nowiki>
+
+<nowiki><td></nowiki>Painter<nowiki></td></nowiki>
+
+<nowiki></tr></nowiki>
+
+<nowiki></tbody></nowiki><nowiki></table></nowiki>
+
+<nowiki><p>Da mesma maneira, as marcas de água encontradas num determinado manuscrito podem estar relacionadas com as folhas onde ocorrem e os especialistas (por ex., Briquet) que registam marcas de água semelhantes. Um campo qualificador que se encontre na estrutura de dados dá indicação do grau de conformidade, e uma fonte ou campo de base mostra a autoridade que providencia os dados.</p></nowiki>
+
+<nowiki><p>Muitos campos são preenchidos directamente para o efeito com os dados provenientes de tabelas gerais que lhes estão associadas (identificadas pelo respectivo número de código). Assim, de forma a associar um determinado registo em MS_ED a uma fonte secundária, tal como um catálogo, basta escrever o nome do autor ou uma palavra do título numa janela do índice que surja para o efeito e seleccionar o registo apropriado da BIBLIOGRAPHY, onde a totalidade da referência bibliográfica está registada.</p></nowiki>
+
+<nowiki><p>A navegação pelas variadas tabelas associadas (por ex., de MS_ED para ANALYTIC para UNIFORM. TITLE para BIOGRAPHY) é feita através das janelas que surjam para o efeito.</p></nowiki>
+
+<nowiki><p>As pesquisas para tipos específicos de dados são feitas através de dois mecanismos distintos:</p></nowiki>
+
+<nowiki><ul style="list-style-type: none; color: #000"></nowiki>
+
+<nowiki><li>(1) uma janela emergente que possibilite o acesso a tabelas pré-indexadas;</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>(2) uma opção de Perguntas ("Queries") no menu principal que permite colocar 	perguntas através de exemplos em qualquer campo.</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Uma das lições que aprendemos ao conceber PhiloBiblon foi que um programa como este nunca está acabado: o software de gestão de base de dados usado está sujeito a actualizações, por isso requer modificações na sua aplicação de forma a mantê-lo actualizado; e à medida que se ganha experiência, as modificações na estrutura de dados vão surgindo automaticamente com o seu uso. Assim, no início acreditámos que apenas alguns campos necessitassem qualificadores e bases para indicar o grau de conformidade e autorização dos dados. Agora acreditamos que os qualificadores e as bases são necessárias para todo o quadro; na presente versão Windows (PhiloBiblon 3.7.0) eles foram aplicados a quase todos os campos.</p></nowiki>
+
+<nowiki></div></nowiki>

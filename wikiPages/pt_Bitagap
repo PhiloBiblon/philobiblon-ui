@@ -1,0 +1,468 @@
+<nowiki><h1>BITAGAP</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>A base de dados da <i>Bibliografia de Textos Antigos Galegos e Portugueses</i></nowiki>
+
+consta de um catálogo unido para todos os textos originariamente compostos
+
+em galego-português, português e galego ou traduzidos
+
+para estes idiomas durante o período medieval.<nowiki></p></nowiki>
+
+<nowiki><p align="center">Um Projecto patrocinado por<br></nowiki><nowiki><br></nowiki> 
+
+<a href="http://bancroft.berkeley.edu/">The Bancroft Library, University of California, Berkeley</a>
+
+<nowiki><br></nowiki><nowiki><br></nowiki>
+
+<a href="http://www.clul.ul.pt/index.php">Centro de Linguística, Universidade de Lisboa</a>
+
+<nowiki><br></nowiki><nowiki><br></nowiki>
+
+<a href="http://www2.fcsh.unl.pt/ceh/home.html ">Centro de Estudos Históricos, Universidade Nova de Lisboa</a>
+
+<nowiki></p></nowiki>
+
+
+<nowiki><hr size="1"></nowiki> 
+
+<nowiki><p></nowiki>
+
+<nowiki><a href="#compiled">Compiladores</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#sitescoordinated">Sítios coordenados com a BITAGAP</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#collaborators">Os colaboradores da BITAGAP</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#scopecontent">Finalidade do projecto e seu conteúdo</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#databaseusage">Uso geral da base de dados</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#orthography">Sobre o Acordo Ortográfico de 1990 e a BITAGAP</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#citingbitagap">Para citar a BITAGAP e os seus dados</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#history">História do projecto</a></nowiki><nowiki><br></nowiki>
+
+<a href="#acknowledgments">Agradecimentos</a>
+
+<nowiki></p></nowiki>
+
+<a id="compiled"></a>
+
+<nowiki><p><b>Compiladores  (1988 - ):</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p></nowiki>
+
+<nowiki><a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a></nowiki>, University of California, Berkeley <nowiki><br></nowiki>
+
+<nowiki><a href="mailto:sharrer@ucsb.edu">Harvey L. Sharrer</a></nowiki>, University of California, Santa Barbara (co-director)<nowiki><br></nowiki>
+
+<nowiki><a href="mailto:schafferm@usfca.edu">Martha E. Schaffer</a></nowiki>, Universidade de San Francisco (co-director) <nowiki><br></nowiki>
+
+<nowiki><a href="mailto:csobral@campus.ul.pt">Cristina Sobral</a></nowiki>, Faculdade de Letras, Universidade de Lisboa<nowiki><br></nowiki>
+
+<nowiki><a href="mailto:pedroacpinto@gmail.com">Pedro Pinto</a></nowiki>, Centro de Estudos Históricos, Universidade Nova de Lisboa<nowiki><br></nowiki>
+
+<nowiki><a href="mailto:gomeseanes@gmail.com">Filipe Alves Moreira</a></nowiki>, Universidade do Porto<nowiki><br></nowiki>
+
+<nowiki><a href="mailto:dronurim@gmail.com">Maria de Lurdes Rosa</a></nowiki>, Departamento de História, Faculdade de Ciências Sociais e Humanas, Universidade Nova de Lisboa<nowiki><br></nowiki>
+
+<nowiki><a href="mailto:ripichel@gmail.com">Ricardo Pichel Gotérrez</a></nowiki>, Universidad de Alcalá<nowiki><br></nowiki>
+
+Aida Fernanda Dias (†), Universidade de Coimbra
+
+<nowiki></p></nowiki>
+
+<nowiki><p>En asociación con (2008 - ):</p></nowiki>
+
+<nowiki><p></nowiki>
+
+<nowiki><a href="mailto:marina.arbor@usc.es">Mariña Arbor Aldea</a></nowiki>, Facultade de Filoloxía, Universidade de Santiago de Compostela<nowiki><br></nowiki>
+
+<nowiki></p></nowiki>
+
+<a id="sitescoordinated"></a>
+
+<nowiki><p><b>Sítios coordenados com a BITAGAP</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>A BITAGAP coopera e coordena-se com vários sítios com finalidade e conteúdo relevante. </nowiki>
+
+Uma pesquisa na BITAGAP produz ligações com estes sítios onde elas forem possíveis,.  A BITAGAP prevê a coordenação com mais sítios, além dos indicados: 
+
+<nowiki></p></nowiki><nowiki><p><a href="http://www.ulusiada.pt/clima/">Clima - Corpus Legislativo da Idade Média Anotado</a></nowiki><nowiki><br></nowiki>
+
+Dir. José Domingues.  Porto: Universidade Lusíada.<nowiki><br></nowiki><nowiki></p></nowiki>
+
+<nowiki><p><a href="http://www.governodosoutros.ics.ul.pt/?menu=arquivo">ius lusitaniae - Fontes Históricas de Direito Português</a></nowiki><nowiki><br></nowiki>
+
+Dir. Pedro Cardim.  Lisboa: Universidade Nova de Lisboa.<nowiki><br></nowiki><nowiki></p></nowiki>
+
+<nowiki><p><a href="http://csm.mml.ox.ac.uk/?p=mhmts#oxforscsm">The Oxford Cantigas de Santa Maria Database</a></nowiki><nowiki><br></nowiki>
+
+Dir. Stephen Parkinson.  Oxford: Oxford University.<nowiki><br></nowiki><nowiki></p></nowiki>
+
+<nowiki><p><a href="http://teitok.clul.ul.pt/cta/">Corpus de Textos Antigos em português até 1525.</a></nowiki><nowiki><br></nowiki>
+
+Dir. Cristina Sobral. Lisboa: Universidade de Lisboa - Centro de Linguística.<nowiki><br></nowiki><nowiki></p></nowiki><nowiki><p></nowiki>
+
+<nowiki></p></nowiki><nowiki><p><a href="http://www.scrinium.pt">Scrinium - Traduções Medievais Portuguesas</a></nowiki> (Sítio em baixo)<nowiki><br></nowiki>
+
+Dir. Mafalda Frade.  Lisboa: Universidade Nova de Lisboa - Centro de Linguística.<nowiki><br></nowiki><nowiki></p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="collaborators"></a>
+
+<nowiki><p><b>Os colaboradores da BITAGAP</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Queremos manifestar o nosso profundo agradecimento aos seguintes colegas que forneceram informações à BITAGAP.  Ao mesmo tempo respeitamos o pedido de anonimato de vários coleccionadores particulares que generosamente permitiram a consulta dos seus manuscritos.</p></nowiki>
+
+<nowiki><p>Luís Urbano de Oliveira Afonso, José Antonio Alarcón Caballero, Martim de Albuquerque, Margarida Alpalhão, </nowiki>
+
+Teresa Amado (†), Ricardo Aniceto, Artur Anselmo, 
+
+Luís Filipe Barbosa de Araújo, Gemma Avenoza (†), Paulo J. S. Barata, 
+
+Avelino Bolzón, Gualdino Borrões, Ana Isabel Boullón Agrelo, Esperança Caldeira, 
+
+César Nardelli Cambraia, Maria Amélia Alvaro de Campos, Pedro Cardim, Ivo Castro, Aníbal Pinto de Castro (†),
+
+Isabel Cepeda, Maria José Bigotte Chorão, Isabel Cid, Maria Helena Cruz Coelho, 
+
+Lívia Cristina Coito, Isabel Correia, Avelino de Jesus da Costa (†), 
+
+Mário Costa, Jerry Craddock, Marta Louro Cruz, Vivane Cunha, Diogo Ramada Curto, 
+
+John Dagenais, Isabel Dias, João José Alves Dias, João Dionísio, Agostinho Faria, 
+
+Diogo Pinto Faria, Charles Faulhaber, Ana Maria Fernandes, Cristina Célia Fernandes, 
+
+Inés Fernández-Ordóñez, Maria do Carmo Jasmins Dias Farinha, 
+
+Américo Venâncio Machado Filho, Vicente Fino, Diana Fontão, María Jesús Fortes Alén, 
+
+Mafalda Frade, Helena Garvão, Maria da Conceição Geada, Helder Godinho (†), 
+
+Rita Costa Gomes, Saul António Gomes, Paloma Gómez Varela, Michelle Hamilton, 
+
+Kellye Hawkins, Maria de Lurdes Henriques, Silvestre Lacerda, Ana Sofia Laranjinha,
+
+Francisco da Cunha Leão, Margarida Leme, Irene da Glória Gonçalves Linda, 
+
+Maria Luisa López-Vidriero, Jorge Borges de Macedo (†), Ana Machado, 
+
+Odete Martins, Raquel Oliveira Martins, José de Pina Martins (†), Diana Martins, 
+
+José Mattoso (†), Ana Sandra Meneses, António Vasco de Mello da Silva César de Menezes, 
+
+José E. Mindlin (†), Ana Miranda, Gilberto Coralejo Moiteiro, 
+
+Henrique Monteagudo, Ana Paiva Morais, Rosário Morujão, Carlos Silva Moura, 
+
+Aires Nascimento, Sílvio de Almeida Toledo Neto, João Nisa, Bernardo Sá Nogueira, 
+
+Irene Freire Nunes, John O'Neil, Inês Olaia, Marta Páscoa, Stephen Parkinson, 
+
+Susana Tavares Pedro, Pedro Penteado, 
+
+Maria Dolores Pereira Oliveira, Miriam Halpern Pereira, Gerardo Pérez Barcala,
+
+José Artur Pestana, Sandra Magalhães Pinto, Carlos Pio, Teresa Ponces, 
+
+Adelaide Proença, Manu Radhakrishnan, Maria Ana Ramos, António Manuel Ribeiro Rebelo,
+
+Maria João Toscano Rico, Ana Maria Rodrigues, Mário Filipe da Costa Rodrigues,
+
+Nanci Romero, João Ruas, David Saah, Carmen de Santiago Gómez, Gilda Santos, Carla Serôdi, Ana Cristina de Santana Silva, André Silva, 
+
+José António Silva, Graça Maria Sucena Pinto da Silva, Joseph Snow, António Sousa,
+
+Paulo Tremoceiro, Bernardo Vasconcelos e Sousa, Aurelio Vargas Toledo, 
+
+Ricardo Vasconcelos, Yara Frateschi Vieira, David Wacks, 
+
+Teresa Álvares Pereira Schönborn Weisentheid.<nowiki></p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Return to top of page</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="scopecontent"></a>
+
+<nowiki><p><b>Finalidade do projecto e seu conteúdo</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Para os textos em prosa anteriores a 1501, BITAGAP tem em conta todas as obras literárias, </nowiki>
+
+ao lado de textos históricos, legais, religiosos, científicos, medicinais, etc., 
+
+excluindo somente os documentos notariais. Os conteúdos de todas as colecções de 
+
+textos hagiográficos, presentemente conhecidas, e de leis de todo o reino são devidamente 
+
+especificados. Também são incluídos certos textos em prosa ditos "clássicos" 
+
+(tais como a <nowiki><i>Notícia de Torto </i></nowiki>e o 
+
+conjunto de crónicas portuguesas dos fins do século XV e inícios do XVI, 
+
+especificamente as de Rui de Pina, Duarte Galvão, Cristóvão Rodrigues Acenheiro e Gaspar Correia), os quais, não correspondendo exactamente aos princípios descritos acima para a cronologia ou tipo de textos, são relevantes para o estudo dos itens oportunamente registados.<nowiki></p></nowiki>
+
+<nowiki><p>Para a poesia, a data limite é fixada em 1520, seguindo a prática de Brian Dutton (1982, </nowiki>
+
+BITAGAP bibid 1717), o que permite a inclusão, como fontes primárias, de cancioneiros dos 
+
+começos do século XVI, que contêm obras compostas durante o período focado, 
+
+isto é, anteriores a 1501, e. g., o  <nowiki><i>Cancioneiro Geral</i></nowiki> de Garcia de Resende (1516) e os seus derivados, bem como o <nowiki><i>Cancioneiro Musical da Biblioteca Nacional</i></nowiki> (c. 1520). Por conseguinte, BITAGAP recolhe e individualiza todos os textos da antiga poesia galego-portuguesa (séculos XII-XIV), assim como os textos poéticos portugueses e da "Escola Galega" do século XV e do início do imediato, tanto profanos como religiosos.<nowiki></p></nowiki>
+
+<nowiki><p>A BITAGAP também regista os textos encontrados e atribuídos a este período—quer em prosa quer em verso— considerados perdidos, problemáticos e apócrifos.</p></nowiki>
+
+<nowiki><p>Todos os testemunhos manuscritos de um texto, sejam do período em questão ou posteriores, são considerados como fontes primárias. Também o são todos os incunábulos, acrescidos de impressões posteriores derivadas (principalmente mas não de forma exclusiva até ao século XVIII). A maior parte das impressões críticas e comerciais, aparecidas entre os séculos XVIII e XXI, são, contudo, identificadas na secção bibliografia de REFERÊNCIA.</p></nowiki>
+
+<nowiki><p>A secção bibliografia de REFERÊNCIA inclui itens de interesse directo para as descrições, localização e edições de manuscritos, bem como para impressões antigas dos textos. A bibliografia registada contendo apreciações críticas e estudos </nowiki>
+
+tematicamente orientados é extensiva, mas NÃO é exaustiva.<nowiki></p></nowiki>
+
+<nowiki><p>A BITAGAP não pretende, de momento, incorporar sistematicamente a bibliografia crítica compilada por Silvio Pellegrini e por Giovanna Marroni (1981, BITAGAP bibid 1087), tendo em vista a poesia antiga, ou por Joseph Snow (1977, BITAGAP bibid 1930; 2012, BITAGAP bibid 14612), para a poesia mariana e para a poesia profana de Afonso X de Leão e Castela, ou por Giuliano Macchi (1964, BITAGAP bibid 1284) e por Teresa Amado (1991, BITAGAP bibid 2598), para Fernão Lopes, ou por António J. Dias Dinis (1949, BITAGAP bibid 1257), para Gomes Eanes de Zurara, ou por Isabel Villares Cepeda (1989, BITAGAP bibid 2309; 1996, BITAGAP bibid 5108), para o campo da prosa medieva em geral, ou da bibliografia anotada para a literatura portuguesa e galego-portuguesa, publicada anualmente no <i>Boletín Bibliográfico de la Asociación Hispánica de Literatura Medieval </i></nowiki>(1987-).<nowiki></p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="databaseusage"></a>
+
+<nowiki><p><b>Uso geral da base de dados</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>A BITAGAP oferece várias possibilidades de pesquisa, descritas nas páginas de AJUDA de </nowiki>
+
+[[pt_Welcome|PhiloBiblon]] e da [[pt_Help|BITAGAP]], principalmente pelo título/incipit (na página WORK/OBRA, pela fonte manuscrita/impressa (na página MSED), pelo autor ou outras pessoas associadas (na página PERSON/INDIVÍDUO) e pela bibliografia (na página REFERENCE/REFERÊNCIA).<nowiki></p></nowiki>
+
+<nowiki><p>Em geral, se houver problemas com uma pesquisa particular, utilize palavras únicas; utilize menos palavras; utilize o campo <b>Palavras-chave ou números</b></nowiki>.  Se uma pesquisa recupera demasiados exemplares, utilize a função “Procurar” do seu navegador para localizar o(s) desejado(s) ou faça uma pesquisa com outros parâmetros.<nowiki></p></nowiki>
+
+<nowiki><p>Lembra-se que os editores adicionam informações à base de dados constantemente, </nowiki>
+
+que os parâmetros da base de dados evoluem, e que alguns tipos de informação são ligados a campos 
+
+específicos <nowiki><i>selectivamente</i></nowiki>.  Portanto, os resultados das pesquisas podem ser desiguais, e às vezes
+
+é melhor abandonar uma pesquisa (que pareça intuitiva) em favor de outra.  
+
+É por isso que os editores pedem que os usuários da BITAGAP enviem correcções, informações novas e perguntas a  <nowiki><a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a></nowiki>.<nowiki></p></nowiki>
+
+<nowiki><p></p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="orthography"></a>
+
+<nowiki><p><b>Sobre o Acordo Ortográfico de 1990 e a BITAGAP</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Os dados pesquisáveis na BITAGAP incluem palavras que sofreram alterações com a entrada em vigor do Acordo Ortográfico de 1990. Palavras como <i>colecta</i></nowiki>, <nowiki><i>acta</i></nowiki>, <nowiki><i>Actos</i></nowiki>, <nowiki><i>redacção</i></nowiki>, <nowiki><i>baptismo</i></nowiki> fazem parte de títulos normalizados ou de metadados que respondem a uma pesquisa feita por palavra-chave. A adopção imediata do Acordo Ortográfico poderia comprometer a eficácia das pesquisas, por isso a BITAGAP não segue, por enquanto, o AO. Procurará, no futuro, chegar a uma forma de compatibilização da aplicação informática com ambas as ortografias.<nowiki></p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="citingbitagap"></a>
+
+<nowiki><p><b>Para citar a BITAGAP e os seus dados</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Os utilizadores da BITAGAP devem citar estes recursos nas suas investigações e publicações.  A prática preferida é referir-se ao projecto PhiloBiblon e também à BITAGAP.  </nowiki>
+
+<nowiki></p></nowiki>
+
+<nowiki><ul></nowiki>
+
+<nowiki><p><i>PhiloBiblon</i></nowiki>. Dir. Charles B. Faulhaber. Bancroft Library. University of California, Berkeley, 
+
+1997-. Volume 2016, n. 3. Web: <nowiki>http://vm136.lib.berkeley.edu/BANC/philobiblon/index.html</nowiki>. Consultada: [Data]<nowiki></p></nowiki>
+
+<nowiki><p><i>BITAGAP (Bibliografia de Textos Antigos Galegos e Portugueses)</i></nowiki>. Dir. Arthur L-F. Askins. The 
+
+Bancroft Library. University of California, Berkeley, 
+
+1997-. Web: <nowiki>http://vm136.lib.berkeley.edu/BANC/philobiblon/bitagap_en.html</nowiki>. Consultada: [Data]
+
+<nowiki></p></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Dado que a BITAGAP e as outras bibliografias medievais identificam obras, manuscritos, edições </nowiki>
+
+impressas e indivíduos (autores, tradutores, copistas, impressores, proprietários) específicos, 
+
+pedimos que os usuários, nas suas publicações, citem os números de identificação (IDs) da BITAGAP 
+
+(texid, cnum, manid, bibid, bioid, etc.).  O uso do bioid, por exemplo, permite distinguir entre João Afonso Telo de Meneses, o primeiro (BITAGAP bioid 4831), quarto (BITAGAP bioid 3478) ou sexto (BITAGAP bioid 3782) Conde de Barcelos.<nowiki></p></nowiki>
+
+<nowiki><p>Seguem as formas de citações preferidas:</p></nowiki>
+
+<nowiki><p>Para obras: <b>BITAGAP texid 0000</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote><i>Memorial da Infanta Santa Joana</i></nowiki> (BITAGAP texid 6287)<nowiki></blockquote></nowiki>
+
+<nowiki><p>Para exemplares específicas de uma obra: <b>BITAGAP cnum 0000</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote><i>Memorial da Infanta Santa Joana</i></nowiki>. Madrid: Biblioteca Nacional de España, MSS/2420 (BITAGAP cnum 27530)<nowiki></blockquote></nowiki>
+
+<nowiki><p>Para manuscritos: <b>BITAGAP manid 0000</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Madrid. Biblioteca Nacional, MSS/2135 (olim I. 6) </nowiki>
+
+(BITAGAP manid 5348)<nowiki></blockquote></nowiki>
+
+<nowiki><p>Para impressos há duas possibilidades.</p></nowiki>
+
+<nowiki><p>O exemplar principal ou "master" de um impresso cita-se desta forma: <b>BITAGAP manid 0000</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Diogo de Sousa. <i>Constituições do Bispado do Porto</i></nowiki>. Porto: Rodrigo Álvares, 1497-01-04. Porto: Biblioteca Pública Municipal, Inc. 83 (BITAGAP manid 1010)<nowiki></blockquote></nowiki>
+
+<nowiki><p>Outro exemplar de um impresso cita-se desta forma: <b>BITAGAP copid 0000</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Diogo de Sousa. <i>Constituições do Bispado do Porto</i></nowiki>. Porto: Rodrigo Álvares, 1497-01-04.  Vila Viçosa: Biblioteca da Casa de Bragança, 45 Adq (BITAGAP copid 1055)<nowiki></blockquote></nowiki>
+
+<nowiki><p>Para indivíduos: <b>BITAGAP bioid 0000</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>João Afonso Telo de Meneses, 1. Conde de Barcelos (BITAGAP bioid 4831)</blockquote></nowiki>
+
+<nowiki><p></p></nowiki>
+
+<nowiki><p>NOTE: Os formatos apropriados para citar as bases de dados próprias (PhiloBiblon, BETA, BITAGAP, BITECA) nas suas publicações podem ser encontrados em "SOBRE PhiloBiblon", nas secções "Citação preferida" e "Copyright".</p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="history"></a>
+
+<nowiki><p><b>História do projecto</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>O trabalho do Projecto iniciou-se no Verão de 1988 por solicitação do Hispanic </nowiki>
+
+Seminary of Medieval Studies (Wisconsin-Madison), como um complemento da Bibliografía Española de Textos Antiguos (BETA) e da Bibliografia de Textos Catalans Antics (BITECA). 
+
+O trabalho de colaboração de Arthur L-F. Askins (UC Berkeley), de Harvey L. Sharrer 
+
+(UC Santa Barbara) e de Martha E. Schaffer (U. of San Francisco) foi suportado, em 1992-93, en 2002 e 
+
+en 2007-2008 por um Research Tools Grant da <a href="http://www.neh.gov/">National Endowment for the 
+
+Humanities</a>, pelo <a href="http://www.ihc.ucsb.edu/">Interdisciplinary Humanities Center 
+
+(UC Santa Barbara)</a> e por bolsas de investigação das respectivas universidades. 
+
+A <a href="http://www.neh.gov/">National Endowment for the Humanities</a>, para 
+
+lá dos subsídios já referidos, concedeu ainda donativos individuais de viagem 
+
+aos mesmos investigadores, extensivos também ao outro membro da equipa, Aida Fernanda 
+
+Dias (U. de Coimbra). Um apoio adicional, no que toca às versões WWW, foi patrocinado pelo <nowiki><a href="http://ies.berkeley.edu/psp/">Portuguese Studies Program (UC Berkeley)</a></nowiki>, pelo <nowiki><a href="http://www.portcenter.ucsb.edu/">Center for Portuguese Studies (UC Santa Barbara)</a></nowiki>, pelo <nowiki><a href="http://www.spanport.ucsb.edu/index.php/research/galician-studies">Center for Galician Studies (UC Santa Barbara)</a></nowiki> e por <nowiki><a href="http://www.lib.berkeley.edu/">The Library (UC Berkeley)</a></nowiki>.  A equipa do projecto inicial expandiu-se no Verão de 2008 com a adição de dois associados, Cristina Sobral da Faculdade de Letras da Universidade de Lisboa e Pedro Pinto do Centro de Estudos Históricos da Universidade Nova de Lisboa, na Primavera de 2010 com outro associado, Filipe Alves Moreira da Faculdade de Letras da Universidade do Porto, e no Verão de 2014 com outra associada, Mariña Arbor Aldea, da Facultade de Filoloxía da Universidade de Santiago de Compostela.<nowiki></p></nowiki><nowiki><p></nowiki>
+
+<nowiki></p></nowiki><nowiki><p>A tarefa inicial dos compiladores centrou-se no estabelecimento de um corpus básico, através de uma intensa revisão e clarificação de informações já disponíveis em bibliografias tradicionais nesta área, e. g., Barbosa Machado (1741-59, BITAGAP bibid 1223), Inocêncio Francisco da Silva (1858-1923, BITAGAP bibid 1034), Fidelino de Figueiredo (1934, BITAGAP bibid 1040; 1936, BITAGAP bibid 1561), Serafim da Silva Neto (1956, BITAGAP bibid 1063) e Maria Adelaide Valle Cintra (1960, BITAGAP bibid 1045). Este corpus básico tem sofrido, todavia, um enorme desenvolvimento, fruto de um perseverante trabalho de campo realizado em bibliotecas localizadas não só em Portugal e na Galiza, mas ainda em diversos pontos de Espanha, em França, em Inglaterra, no Brasil e nos Estados-Unidos.</p></nowiki>
+
+<nowiki><p>A BITAGAP é um projecto em continuidade, com versões disponíveis em formato </nowiki>
+
+electrónico. Uma versão mais antiga, usando uma dbms DOS, surgiu em 1993, no CD-ROM ADMYTE, 
+
+Disk 0, emitido por <a href="http://www.micronet.es/">Micronet-Madrid</a>. Em 1999 uma versão 
+
+actualizada em CD-ROM foi produzida (ainda com a dbms DOS) por The Bancroft Library, Universidade da 
+
+Califórnia, Berkeley. No interim apareceu (1997) a primeira versão da Internet, patrocinada por 
+
+The Library da Universidade da Califórnia, Berkeley; foi mantida com 
+
+actualizações frequentes durante onze anos. Em 2008 a base de dados foi então 
+
+transferida para o sistema operativo Windows. A presente versão na Internet, disponível 
+
+desde 2011 e alojada por The Bancroft Library da Universidade de Califórnia, Berkeley, 
+
+oferece assinalável espansão das possibilidades de procura e recuperação de dados. <nowiki></p></nowiki>
+
+<nowiki><p>O valor dos recursos electrónicos nas pesquisas científicas aumenta de forma exponencial cada ano. </nowiki>
+
+A BITAGAP depende dos seus usuários para oferecer informações sobre (a) manuscritos, textos e pessoas 
+
+relacionadas, (b) publicações e (c) materiais relevantes disponíveis na internet (e.g. digitalizações, 
+
+sítios especializados, etc.).<nowiki></p></nowiki>  
+
+<nowiki><p>Os editores solicitam, muito cordialmente, a contribuição de colegas, quer enviando correcções, quer fornecendo novas informações e sugestões, que podem ser dirigidas a <a href="mailto:alfa@berkeley.edu">Arthur L-F. Askins</a></nowiki>.  Por favor visite "[[pt_Collaborate|COLABORAR]]" para mais informações.<nowiki></p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="acknowledgments"></a>
+
+<nowiki><p><b>Agradecimentos</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>As instituições que contribuíram significativamente para o desenvolvimento de BITAGAP são:</p></nowiki>
+
+<nowiki><p></nowiki>
+
+<nowiki><a href="http://ies.berkeley.edu/psp/">The Portuguese Studies Program</a></nowiki>, University of California, Berkeley  <nowiki><br></nowiki>
+
+<nowiki><a href="http://www.portcenter.ucsb.edu/">The Center for Portuguese Studies</a></nowiki>, University of California, Santa Bárbara <nowiki><br></nowiki>
+
+<nowiki><a href="http://www.spanport.ucsb.edu/index.php/research/galician-studies">The Center for Galician Studies</a></nowiki>, University of California, Santa Bárbara <nowiki><br></nowiki>
+
+<nowiki><a href="http://www.lib.berkeley.edu/">The Library</a></nowiki>, University of California, Berkeley  <nowiki><br></nowiki>
+
+<nowiki><a href="http://bancroft.berkeley.edu">The Bancroft Library</a></nowiki>, University of California, Berkeley  <nowiki><br></nowiki>
+
+<nowiki><a href="http://www.neh.gov/">The National Endowment for the Humanities</a></nowiki>, Washington D.C. <nowiki><br></nowiki>
+
+<nowiki><a href="http://www.hispanicsociety.org/hispanic/HSMS.htm">Hispanic Seminary of Medieval Studies</a></nowiki>, Hispanic Society of America (antes na Universidade de Wisconsin)<nowiki><br></nowiki>
+
+DataBase Design &amp;amp; Engineering, Walnut Creek, Califórnia
+
+<nowiki></p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<nowiki><p>O acesso a WWW e ao uso de PhiloBiblon estão isentos de encargos. </nowiki>
+
+A reprodução de quaisquer materiais, aqui registados, está 
+
+sujeita às restrições expressas nas nossas [[pt_Copyright|Normas de Copyright]].<nowiki></p></nowiki>
+
+<nowiki><p>Os utentes desta Página de Entrada e da PhiloBiblon, via Internet, </nowiki>
+
+obterão melhores resultados com a versão mais recente de browsers 
+
+que não só fornecem os índices como suportam o JavaTM. 
+
+Sendo assim, envidar-se-ão todos os esforços no sentido de apresentar 
+
+um serviço genérico acessível através de qualquer browser.<nowiki></p></nowiki>
+
+<nowiki><p>Para aperfeiçoamento deste sítio, solicita-se aos leitores que enviem perguntas, comentários e quaisquer sugestões para <a href="mailto:cfaulhab@library.berkeley.edu">Charles B. Faulhaber</a></nowiki>.<nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
