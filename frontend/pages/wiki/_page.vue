@@ -17,24 +17,46 @@ export default {
   },
 
   created () {
-    this.pageName = this.removeLocalePrefix(this.$route.params.page)
-    this.wikiPage = `${this.$i18n.locale}_${this.pageName}`
+    this.pageName = this.$route.params.page
+    this.wikiPage = this.getWikiPage(this.pageName)
   },
 
   async mounted () {
     this.$store.commit('breadcrumb/setItems', [
       {
-        text: this.$i18n.t(this.pageName),
+        text: this.$i18n.t(this.removeLocalePrefix(this.pageName)),
         disabled: true
       }
     ])
     const wikiApiUrl = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.wikiPage}&prop=wikitext&formatversion=2&format=json&origin=*`
     const html = await this.$wikibase.wbFetcher(wikiApiUrl)
       .then(data => this.contentPage(data))
-    this.contentToView = this.$sanitize(html).replaceAll('<a href="#', '<a href="' + window.location.pathname + '#')
+    this.contentToView = this.prepareContent(html)
   },
 
   methods: {
+    prepareContent (html) {
+      return this.$sanitize(html)
+        .replaceAll('<a href="#', '<a href="' + window.location.pathname + '#')
+        .replaceAll('<a id=', '<a style="padding-top: 50px;" id=')
+        .replaceAll('<blockquote>', '<blockquote style="padding-left: 50px;">')
+    },
+    getWikiPage (pageName) {
+      let localePrefix = this.getLocalePrefix(pageName)
+      if (localePrefix === null) {
+        localePrefix = this.$i18n.locale
+      } else {
+        pageName = this.removeLocalePrefix(pageName)
+      }
+      return `${localePrefix}_${pageName}`
+    },
+    getLocalePrefix (page) {
+      const regex = /^[a-z]{2}_/
+      if (regex.test(page)) {
+        return page.split('_')[0]
+      }
+      return null
+    },
     removeLocalePrefix (page) {
       const regex = /^[a-z]{2}_/
       if (regex.test(page)) {
@@ -51,8 +73,7 @@ export default {
     },
 
     parseLinks (content) {
-      // eslint-disable-next-line no-useless-escape
-      const LINK_RE = /\[\[([^\|]*)\|?(.*)?\]\]/g
+      const LINK_RE = /\[\[([^\]|]*)\|([^\]]*)\]\]/g
       return content.replace(LINK_RE, (match, g1, g2) => this.parseLink(match, g1, g2))
     },
 

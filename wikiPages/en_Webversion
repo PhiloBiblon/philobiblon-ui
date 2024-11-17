@@ -1,0 +1,17 @@
+<nowiki><h1>Web version</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>This newly developed web version of PhiloBiblon draws its data from an equally new version of the underlying database system [discussed in detail in the </nowiki>[[en_Windowsversion|Windows version]]], to which all the information of the four component bibliographies was ported in late 2008. The data provided here represent a substantial portion, but only a portion, of the information found in the database. In contrast to the limited data characteristic of the previous web version, the current version presents almost complete data dumps of the MS_ED, UNIFORM.TITLE, BIBLIOGRAPHY, BIOGRAPHY, and LIBRARY tables, augmented with information drawn from the ANALYTIC, COPIES, GEOGRAPHY, INSTITUTIONS, and SUBJECT tables. PhiloBiblon web users can seek information about a text, a manuscript or early printed edition, a specific copy of a text in a manuscript or printed edition, an individual, a library, or an item in the reference bibliography.<nowiki></p></nowiki>
+
+<nowiki><p>Thus a user who wishes to see information about a given library would start with the LIBRARY search screen, which provides not only that information but also a list of the MSS and printed editions the library contains, insofar as they are described in PhiloBiblon. A user who wishes to see the witnesses of a given text would start with the WORK search screen. The results of such a search will list the invariant information about a given text, followed by a detailed description of the copies of that text with an abbreviated description of the manuscript or printed edition containing each copy. Conversely, a user interested in the description and contents of a given manuscript or printed edition would start the search from the MS or PRINT search screen. The results of such a search would present the external description of the volume in question (including provenance and relevant bibliography), followed by a detailed description of its contents, in folio order, with an abbreviated description of the text itself; and, for printed editions, a list of known copies.</p></nowiki>
+
+<nowiki><p>Full details are given in the search screens for WORK, MS, PRINT, PERSON, REFERENCES, and LIBRARY.</p></nowiki>
+
+<nowiki><p>The Web versions of the bibliographies will be updated periodically, usually once a quarter.</p></nowiki>
+
+<nowiki><p>Missing from the Web version is the rather sparse information from the related GEOGRAPHY and INSTITUTIONS tables, which serve essentially as authority files for the primary tables. The latter lists institutions which either owned specific volumes, manuscript or printed, or served as corporate authors of the texts contained in them. The former identifies the toponyms mentioned in the various bibliographies.</p></nowiki>
+
+<nowiki><p>Users who bought the 1999 edition of PhiloBiblon and wish to receive a CD-ROM of the current PhiloBiblon database described below should write to Charles Faulhaber (cfaulhab[at]library.berkeley.edu)</p></nowiki>
+
+<nowiki></div></nowiki>

@@ -1,0 +1,85 @@
+<nowiki><h1>Copyright</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>Los datos contenidos en PhiloBiblon pueden ser citados de forma libre, </nowiki>
+
+gratuita y sin necesidad de pedir permiso especial con la condición de que sean utilizados 
+
+para fines académicos o educativos. En ningún caso se podrán utilizar para asuntos comerciales 
+
+sin el permiso explícito de <nowiki><a href="mailto:cbf@berkeley.edu">Charles B. Faulhaber</a></nowiki>.<nowiki></p></nowiki>
+
+<nowiki><p></nowiki>
+
+Estaríamos muy agradecidos si pudieran citar adecuadamente el uso de PhiloBiblon en conjunto, 
+
+o de cualquiera de sus bibliografías, caso de haber sido de utilidad en sus investigaciones. 
+
+La práctica que preferimos es que se citen los dos, tanto PhiloBiblon como la base de datos bibliográfica 
+
+utilizada específicamente, BETA, BITAGAP o BITECA.  
+
+<nowiki></p></nowiki>
+
+<nowiki><ul></nowiki>
+
+<nowiki><p><i>PhiloBiblon</i></nowiki>. Dir. Charles B. Faulhaber. Bancroft Library. University of California, Berkeley, 
+
+1997-. Web: <nowiki>https://vm136.lib.berkeley.edu/BANC/philobiblon/index.html</nowiki>. Consultada: [Fecha]<nowiki></p></nowiki>
+
+<nowiki><p><i>BETA (Bibliografía Española de Textos Antiguos)</i></nowiki>. Dir. Charles B. Faulhaber. The 
+
+Bancroft Library. University of California, Berkeley, 
+
+1997-. Web: <nowiki>https://vm136.lib.berkeley.edu/BANC/philobiblon/beta_en.html</nowiki>. Consultada: [Fecha]<nowiki></p></nowiki>
+
+<nowiki><p><i>BITAGAP (Bibliografia de Textos Antigos Galegos e Portugueses)</i></nowiki>. Dir. Arthur L-F. Askins. The 
+
+Bancroft Library. University of California, Berkeley, 
+
+1997-. Web: <nowiki>https://vm136.lib.berkeley.edu/BANC/philobiblon/bitagap_en.html</nowiki>. Consultada: [Fecha]
+
+<nowiki></p></nowiki>
+
+<nowiki><p><i>BITECA (Bibliografia de Textos Antics Catalans, Valencians i Balears)</i></nowiki>. Dirs. Gemma Avenoza, Lourdes Soriano, i Vicenç Beltran. The 
+
+Bancroft Library. University of California, Berkeley, 
+
+1997-. Web: <nowiki>https://vm136.lib.berkeley.edu/BANC/philobiblon/biteca_en.html</nowiki>. Consultada: [Fecha]        
+
+<nowiki></p></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>Debido a que cada una de las bibliografías que forman parte de PhiloBiblon trata de identificar de forma específica a autores, trabajos, manuscritos, ediciones impresas e individuos relacionados, se recomienda que, quienes usen estos datos en sus trabajos de investigación, citen nuestros números de identificación con el fin de evitar ambigüedades. Por poner un ejemplo, solo a través de este método se diferenciará de forma adecuada a Íñigo López de Mendoza, I Marqués de Santillana (BETA bioid 1031) de su nieto, Íñigo López de Mendoza y Luna, III Marqués de Santillana y II Duque del Infantado (BETA bioid 3034).</p></nowiki>
+
+<nowiki><p>El método preferido para citar los datos de PhiloBiblon es el siguiente:</p></nowiki>
+
+<nowiki><p>Para una obra: <b>Bibliografía (BETA/BITECA/BITAGAP/BIPA) texid 0000:</b></nowiki><nowiki><br></nowiki>
+
+<nowiki></p></nowiki><nowiki><blockquote>Cantar de mio Cid (BETA texid 1109)</blockquote></nowiki><nowiki><p></p></nowiki>
+
+<nowiki><p>Para una copia específica de un trabajo concreto: <b>Bibliografía cnum 0000:</b></nowiki><nowiki><br></nowiki>
+
+<nowiki></p></nowiki><nowiki><blockquote><i>Cantar de mió Cid</i></nowiki>. Madrid: Biblioteca Nacional, VITR/7/17 (BETA cnum 1231)<nowiki></blockquote></nowiki>
+
+<nowiki><p>Para una fuente manuscrita: <b>Bibliografía manid 0000:</b></nowiki><nowiki><br></nowiki>
+
+<nowiki></p></nowiki><nowiki><blockquote>Barcelona. Biblioteca de Catalunya, 267 (olim D-67, D-123) (BITECA manid 1482)</blockquote></nowiki><nowiki><p></p></nowiki>
+
+<nowiki><p>Para una fuente impresa existen dos posibilidades.</p></nowiki>
+
+<nowiki><p>La "copia maestra" de una edición concreta se cita: <b>Bibliografía manid 0000:</b></nowiki><nowiki><br></nowiki>
+
+<nowiki></p></nowiki><nowiki><blockquote>Ludolphus de Saxonia. Vita Christi [Pt. 2]. Lisboa: Nicolau de Saxónia ~ Valentim Fernandes, 1495-09-07. Lisboa: Biblioteca Nacional, Inc. 566 [2] (olim Inc. 479) (BITAGAP manid 1006)</blockquote></nowiki><nowiki><p></p></nowiki>
+
+<nowiki><p>Cualquier otra copia de una edición concreta se cita:: <b>Bibliografía copid 0000:</b></nowiki><nowiki><br></nowiki>
+
+<nowiki></p></nowiki><nowiki><blockquote>Ludolphus de Saxonia. Vita Christi [Pt. 2]. Lisboa: Nicolau de Saxónia ~ Valentim Fernandes, 1495-09-07. Viseu: Biblioteca Municipal, INC 26-II-13 (2) (BITAGAP copid 1036)</blockquote></nowiki><nowiki><p></p></nowiki>
+
+<nowiki><p>Para cualquier persona relacionada a los textos o a las fuentes (autor, traductor, posesor, etc.): <b>Bibliografía bioid 0000:</b></nowiki><nowiki><br></nowiki>
+
+<nowiki></p></nowiki><nowiki><blockquote>Garcilaso de la Vega (BIPA bioid 1170)</blockquote></nowiki><nowiki><p></p></nowiki>
+
+<nowiki></div></nowiki>

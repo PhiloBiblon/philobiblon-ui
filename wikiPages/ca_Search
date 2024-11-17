@@ -1,0 +1,47 @@
+<nowiki><h1>Cerca</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p><a href="ca/search/texid/query/">Obra</a></nowiki> [fonts primàries:
+
+autor, títol, incipit / explicit, data, persona relacionada, lloc de composició]<nowiki></p></nowiki>
+
+<nowiki><p><a href="ca/search/libid/query/">Biblioteca</a></nowiki>
+
+[biblioteques que contenen fonts primàries: ciutat, nom de la biblioteca, signatura]<nowiki></p></nowiki>
+
+<nowiki><p><a href="ca/search/insid/query/">Institució</a></nowiki> [ordes religiosos o militars, monestir, convent, església, catedral, biblioteca, arxiu, 
+
+universitat, col·legi, etc.: nom, lloc, data]<nowiki></p></nowiki>
+
+<nowiki><p><a href="ca/search/bioid/query/">Persona</a></nowiki>
+
+[informació biogràfica sobre persones, com ara autor,
+
+antic posseïdor, copista, enquadernador, membre de la noblesa o de la
+
+jerarquia eclesiàstica: nom, títol, data, lloc relacionat, professió,
+
+orde militar o religiós]<nowiki></p></nowiki>
+
+<nowiki><p><a href="ca/search/bibid/query/">Referència</a></nowiki>
+
+[fonts secundàries: autor, títol, data, lloc d'edició, editor,
+
+col·lecció, persona relacionada]<nowiki></p></nowiki>
+
+<nowiki><p><a href="ca/search/manid/query/">MsEd</a></nowiki>
+
+[manuscrits o edicions impreses: ciutat, biblioteca,
+
+signatura actual o anterior, data, lloc de producció,
+
+copista / impressor, editor / mecenes, antic posseïdor,
+
+altra persona relacionada]<nowiki></p></nowiki>
+
+<nowiki><p><a href="ca/search/geoid/query/">Geografia</a></nowiki><nowiki></p></nowiki>
+
+<nowiki><p><a href="ca/search/subid/query/">Matèria</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>

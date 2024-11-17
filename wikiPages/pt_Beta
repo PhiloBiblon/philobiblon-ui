@@ -1,0 +1,511 @@
+<nowiki><h1>BETA: Bibliografía Española de Textos Antiguos</h1></nowiki>
+
+<nowiki><div class="content"></nowiki>
+
+<nowiki><p>Uma pesquisa em <a href="pt/search/texid/query/">Obra</a></nowiki> proporciona-nos uma lista de registos que contêm os termos inseridos na pesquisa. Clique no nome da obra que lhe interessa e obterá uma lista dos respetivos testemunhos, apresentados em ordem cronológica. Cada um dos testemunhos está ligado ao manuscrito ou à edição impressa que o contém. <nowiki></p></nowiki>
+
+
+
+<nowiki><p>Uma pesquisa em <a href="pt/search/manid/query/">MsEd</a></nowiki> proporciona-nos uma lista de registos que contêm os termos inseridos na pesquisa. Clique no manuscrito ou na edição impressa que lhe interessa e terá acesso a uma descrição externa do exemplar, seguida de uma descrição do seu conteúdo em que as diversas obras transmitidas por esse mesmo exemplar estão ordenadas de acordo com o seu aparecimento no volume.<nowiki></p></nowiki>
+
+<nowiki><p>BETA baseia-se e deriva de BOOST (Bibliography of Old Spanish Texts), compilado originalmente em 1974, como parte do projecto assistido por computador Dictionary of the Old Spanish Language, do Seminário de Espanhol Medieval da Universidade de Wisconsin, Madison. O objectivo de BOOST era o de ajudar na selecção do corpus que serviria de base àquele dicionário. </p></nowiki>
+
+<nowiki><p>BETA desenvolveu-se extraordinariamente desde 1974, tanto nos seus objectivos como na sua abrangência. Tal como acontece com as suas congéneres BITAGAP, BITECA e BIPA, o objectivo de BETA é agora nada menos do que o de disponibilizar um catálogo unificado de fontes primárias, manuscritas e impressas, para o estudo da cultura espanhola medieval. As 966 entradas iniciais da primeira edição de BOOST (1975) foram expandidas e deram lugar às quase 30.000 desta nova edição Web.</p></nowiki>
+
+<nowiki><p>BETA está orientada para textos escritos em Castelhano, mas também inclui materiais de interesse cultural em dialectos afines: Leonês, Navarro, Aragonês e Moçárabe, bem como materiais em aljamiado em escrita hebraica ou árabe em qualquer destes dialectos. Definimos "interesse cultural" em sentido lato: todos os textos não notariais relacionados com qualquer disciplina—por exemplo história, direito, ciência, agricultura, teologia, filosofia—, bem como prosa e poesia criativas.</nowiki>
+
+<nowiki></p></nowiki>
+
+<nowiki><p></nowiki>
+
+<nowiki><a href="#compiled">Responsáveis</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#sitescoordinated">Projetos coordenados com a BETA</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#preferredcitation">Formato de citação preferido</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#conventions">Convenções</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#history">História</a></nowiki><nowiki><br></nowiki>
+
+<a href="#acknowledgments">Agradecimentos</a>
+
+<nowiki></p></nowiki>
+
+<a id="compiled"></a>
+
+<nowiki><p><b>Responsáveis:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p></nowiki>
+
+<a href="mailto:cbf@berkeley.edu">Charles B. Faulhaber</a>, University of California, Berkeley, 
+
+<nowiki><a href="https://escholarship.org/uc/item/8hh2t6gf">Bibliografia</a></nowiki>, <nowiki><a href="https://escholarship.org/uc/item/1fb531dp">CV</a></nowiki><nowiki><br></nowiki>
+
+<a href="mailto:agomezmoreno@filol.ucm.es">Angel Gómez Moreno</a>, Universidad Complutense de Madrid, 
+
+<nowiki><a href="http://emui.academia.edu/%C3%81ngelG%C3%B3mezMoreno">CV</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="mailto:nsalvadormiguel@telefonica.net">Nicasio Salvador Miguel</a></nowiki>, Universidad Complutense de Madrid, <nowiki><a href="http://www.fuesp.com/pdfs_revistas/cilh/40/cilh40art1.pdf">CV</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="mailto:cortijo@spanport.ucsb.edu">Antonio Cortijo Ocaña</a></nowiki>, University of California, Santa Barbara, <nowiki><a href="http://www.spanport.ucsb.edu/people/antonio-cortijo-oca%C3%B1">CV</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="mailto:maria.morras@upf.edu">María Morrás</a></nowiki>, Universitat Pompeu Fabra / Oxford University,  <nowiki><a href="https://www.upf.edu/web/humanitats/entry/-/-/1003/404/maria-morras">CV</a></nowiki><nowiki><br></nowiki>
+
+<a href="mailto:o.perea.r@gmail.com">Óscar Perea Rodríguez</a>, Universidad Complutense de Madrid, 
+
+<nowiki><a href="http://ucriverside.academia.edu/OscarPereaRodriguez">CV</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="mailto:alvarobustos@filol.ucm.es">Álvaro Bustos Táuler</a></nowiki>, Universidad Complutense de Madrid, <nowiki><a href="http://www.ucm.es/directorio?id=24049">CV</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="mailto:jlgonz01@pdi.ucm.es)">José Luis Gonzalo Sánchez-Molero</a></nowiki>, Universidad Complutense de Madrid, <nowiki><a href="http://www.ucm.es/directorio?id=18036">CV</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="mailto:aiandreu@ucm.es)">Almudena Izquierdo Andreu</a></nowiki>, Universidad de Salamanca, <nowiki><a href="https://scholar.google.com/citations?user=loKYZcIAAAAJ&amp;amp;hl=es">CV</a></nowiki><nowiki><br></nowiki>
+
+<a href="mailto:pgsanchezmigallon@ucm.es)">Patricia García Sánchez-Migallón</a>, École normale supérieure de Lyon, <a href="https://scholar.google.es/citations?user=31oL9QYAAAAJ&amp;amp;hl=es">CV</a>
+
+<nowiki></p></nowiki>
+
+<a id="sitescoordinated"></a>
+
+<nowiki><p><b>Projetos coordenados com a BETA</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>A BETA coopera e colabora com os seguintes projetos com finalidade e conteúdo relevant. Onde forem possíveis, uma pesquisa na BITAGAP produz ligações com estes sítios:</nowiki>
+
+<nowiki></p></nowiki><nowiki><p><a href="http://www.hispanicseminary.org/textconc-en.htm">Digital Library of Old Spanish Texts</a></nowiki><nowiki><br></nowiki>
+
+Dir. Francisco Gago Jover (Hispanic Seminary of Medieval Studies. College of the Holy Cross).<nowiki><br></nowiki>
+
+<nowiki></p></nowiki><nowiki><p><a href="http://osta.oldspanishtextualarchive.org/">Old Spanish Textual Archive</a></nowiki><nowiki><br></nowiki>
+
+Dir. Francisco Gago Jover (College of the Holy Cross) <nowiki>&</nowiki>amp; Javier Pueyo Mena (CSIC).<nowiki><br></nowiki>
+
+<nowiki></p></nowiki><nowiki><p><a href="https://comedic.unizar.es/">Catálogo de obras medievales impresas en castellano (COMEDIC)</a></nowiki><nowiki><br></nowiki>
+
+Dir. María Jesús Lacarra (Universidad de Zaragoza).<nowiki><br></nowiki>
+
+<nowiki></p></nowiki>
+
+<nowiki><p><b>Colaboradores:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Desejamos expressar a nossa mais profunda gratidão a todos aqueles que forneceram informação para BOOST e BETA desde o ano 1975:</p></nowiki>
+
+<nowiki><p> Xavier Agenjo, Carlos Alvar Ezquerra, Manuel Alvar Ezquerra (†), David Anderson, José Aragües, </nowiki>
+
+David Arbesu, Robert Archer, Nicholas Asbury, Arthur Askins, 
+
+Gemma Avenoza (†), Reinaldo Ayerbe-Chaux, Heather Bamford, Fernando Baños, María Teresa Barbadillo, Francisco Bautista, Miles Becker,  
+
+Vicenç Beltran, Carmen Benítez, John Bidwell, Hugo Bizzarri, Soledad Bohdziewicz, Inocencio Bombín
+
+Hans Braun, Mercedes Brea, Linde Brocato, Kenneth Buelow, Gustavo Bueno, Victoria Burrus, María del Mar de Bustos, 
+
+Denise Cabanel, José Luis Canet, Irene Capdevila, Miguel Carabias Orgaz, Mario Antonio Cossio Olavide,
+
+Thomas Capuano, Anthony Cárdenas, Dwayne Carpenter, Derek Carr, Alexander F. Caskey, Diego Catalán (†), 
+
+Pedro Cátedra, María Céu Silva, Eugene Chang, Neil Chase, James R. Chatham, Carlos Clavería, 
+
+Beatrice Concheff (†), Juan Carlos Conde, Porter Conerly, 
+
+Judith Connick, Carol Copenhagen, Ivy Corfis, Adelaida Cortijo, Jerry Craddock, Charity Cúellar, 
+
+Salvador Cuenca, Luis de la Fuente, 
+
+Nitzaira Delgado-García, Alan Deyermond (†), Aida F. Dias (†), Ralph DiFranco, Victoria Dorn, 
+
+Stephen Duffy, Consuelo Dutschke, Brian Dutton (†), 
+
+Daniel Eisenberg, Anton von Euw (†), Raymond G. Feilner, Jr., Estefanía Ferrer del Río, Inés Fernández-Ordóñez, 
+
+José Manuel Fradejas, Enzo Franchini, H. Frick, Juan Héctor Fuentes, Francisco Gago-Jover, Mercedes García-Arenal, María Cruz García de Enterria, 
+
+Jorge García López, Patricia García Sánchez-Migallón,
+
+Michael Gerli, Joan Gili (†), Rosalie Gimeno, Harriet Goldberg (†), Ana María Gómez Bravo,
+
+Margarita Gómez Gómez, Fernando González Ollé, José Luis Gonzalo Sánchez-Molero, Jean M. Gosebrink, George Greenia, Anna Gudayol,
+
+C. Guzmán, Joseph Gwara, Scott Gwara, Cinthia María Hamlin, Albert Hauf, 
+
+Francisca Hernández, Vanesa Hernández Amez, María Teresa Herrera,  
+
+Richard Hitchcock, Fred Hodcroft (†), David Hook, Víctor Infantes, John R. Jensen, 
+
+Harold G. Jones, Lloyd Kasten (†), John E. Keller (†) 
+
+Maxim Kerkhof, Richard Kinkade (†), Steven D. Kirby, 
+
+Douglas Koepke, H.P. Kraus (†), Thomas Kren, Paul Oskar Kristeller (†),
+
+José Julián Labrador, María Jesús Lacarra, James B. Larkin, Jeremy Lawrance, Linda Lefkowitz, 
+
+John Lihani, Mark Littlefield (†), D.W. Lomax (†), 
+
+Maria Mercé López Casas, Laura López Drusetta, Santiago López-Ríos, María Luisa López Vidriero,
+
+José Manuel Lucía, Anthony T. Luttrell, David Mackenzie (†), 
+
+Robert A. MacDonald (†), Fiona Maguire, R. Maier (†), Antoni Malet, Hugo Mancuso, 
+
+Francisco Marcos-Marín, Alexander Marey, Ana María Marín, 
+
+Massimo Marini, Julián Martín Abad, Lorenzo Martín del Burgo, Hope Mayo, Ian Michael (†), 
+
+Angela Moll Dexeus, Concepción Morales, Filipe Alves Moreira, Margherita Morreale (†), Jay Moschella, 
+
+Lucía Mosquera, Cristina Moya, Isabel Muñoz, Elena Muñoz Rodríguez, Martha Narváez, 
+
+Eric W. Naylor (†), Hans-Josef Niederehe, Georgina Olivetto, 
+
+Marilyn Olsen, John O'Neill, Germán Orduna (†), David Pattison (†), Icela Pelayo,
+
+René Pellen, Miguel Pérez Rosado, Ricardo Pichel Gotérrez,
+
+Pedro Pinto, Dawn Prince, Jaume de Puig i Oliver, Manu Radhakrishnan,
+
+Stephen Raulston, Klaus Reinhardt, 
+
+Dennis Rhodes (†), Benjamin Richler, Francisco Rico, Jaume Riera (†), Jesús Rodríguez Velasco, Elvira Roca Barea, Paul Rodgers, 
+
+Albert Roqué, Lenore Rouse, Carmen Rovira, Adeline Ruquoi, Suzanne Rutter, Carlos Sáez, 
+
+Ángel Sáenz-Badillos (†), Pedro Sainz Rodríguez (†), María Nieves Sánchez, Rafael Sánchez Grande Moreno, Rebeca Sanmartín, Israel Sanz
+
+Pablo Saracino, Martha Schaffer, Svato Schutzner, Emma Scoles, Dennis Seniff (†), Miriam Shadis, Ellen Shaffer, Harvey Sharrer, 
+
+Sandra Sider, Joel Silver, María Lourdes Simó, Munair Simpson, Amadeu-J. Soberanes-Lleó (†), Michael Solomon, 
+
+Lourdes Soriano Robles, Thomas Spaccarelli, Ronald Surtz, R. Brian Tate (†), 
+
+Barry Taylor, Juan C. Temprano, Miguel Torrens, Marta Torres Santo Domingo, Kimberly Tully, 
+
+Juan Miguel Valero Moreno, Mercedes Vaquero, Martha Waller, John K. (Jack) Walsh (†), 
+
+Franklin Waltman, Aengus Ward, Julie Ward, 
+
+Keith Whinnom (†), Julian Weiss, Constance Wilkins, Raymond S. Willis (†)
+
+Edward M. Wilson (†)
+
+Curt Wittlin (†), Abby Yokelson.<nowiki></p></nowiki>
+
+<a id="preferredcitation"></a>
+
+<nowiki><p><b>Formato de citação preferido</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Uma vez que BETA e as suas biblografias irmãs tentam identificar trabalhos, manuscritos, edições impressas e indivíduos (autores, tradutores, copistas, impressores, detentores, endereços...), recomendamos que em trabalhos académicos se cite os seus números de identificação por ordem, para desfazer ambiguidades, como por exemplo, entre Íñigo López de Mendoza, Primeiro Marquês de Santillana (bioid 1031) e o seu neto e homónimo, Íñigo López de Mendoza y Luna, Terceiro Marquês de Santillana e Segundo Duque do Infantado (bioid 3034). </p></nowiki>
+
+<nowiki><p>O formato de citação preferido é o seguinte:</p></nowiki>
+
+<nowiki><p>Para obras: <b>BETA texid 0000:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Poema del mío Cid (BETA texid 1109)</blockquote></nowiki>
+
+<nowiki><p>Para cópias específicas de um determinado trabalho: <b>BETA cnum 0000:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Poema del mío Cid. Madrid: Biblioteca Nacional, VITR/7/17 (BETA cnum 1231)</blockquote></nowiki>
+
+<nowiki><p>Para manuscritos: <b>BETA manid 0000:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Madrid. Biblioteca Nacional, MSS/800 (olim D-67, D-123) (BETA manid 1372)</blockquote></nowiki>
+
+<nowiki><p>Para edições impressas há duas possibilidades.</p></nowiki>
+
+<nowiki><p>O exemplar principal de uma dada edição é citado como: <b>BETA manid 0000:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Antonio de Nebrija. <i>Gramática castellana</i></nowiki>. Salamanca: Nebrija (Impresor de la Gramática de [¿Juan de Porras?]), 1492-08-18. Madrid: Biblioteca Nacional, INC/1259 (BETA manid 2022)<nowiki></blockquote></nowiki>
+
+<nowiki><p>Outra cópia da mesma edição é citada como: <b>BETA copid 0000:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Antonio de Nebrija. <i>Gramática castellana</i></nowiki>. Salamanca: Nebrija (Impresor de la Gramática de [¿Juan de Porras?]), 1492-08-18. Oxford: Bodleian, Inc. b. S. 97. 1(4) (BETA copid 1600)<nowiki></blockquote></nowiki>
+
+<nowiki><p>Para indivíduos específicos: <b>BETA bioid 0000:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><blockquote>Iñigo López de Mendoza, 1. marqués de Santillana (BETA bioid 1031)</blockquote></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="conventions"></a>
+
+<nowiki><p><b>Convenções</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p><b>Texto-tipo:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>O texto-tipo é a cópia específica de um dado trabalho utilizada para estabelecer a sua identidade. Isto é, quando nos referimos a uma cópia de um trabalho num dado manuscrito ou edição impressa como o texto-tipo desse trabalho, queremos dizer que este texto, tal como encontrado no manuscrito ou na edição impressa, é a referência em relação à qual todas as outras cópias do texto devem ser comparadas. Isto não significa necessariamente que este seja o arquétipo, a cópia mais velha do texto, ou a melhor cópia do texto.</p></nowiki>
+
+<nowiki><p>Por exemplo, parece haver pelo menos oito traduções diferentes da Epistola de gubernatione rei familiaris atribuída a São Bernardo de Claraval. Os textos-tipo para as três que se seguem encontram-se em manuscritos no Escorial ou na Biblioteca Nacional de Espanha (BNE): </p></nowiki>
+
+<nowiki><ul style="color: #000; list-style-type: disc"></nowiki>
+
+<nowiki><li>Bernardus Claravallensis (pseudo). Epístola de San Bernardo a Raimundo, caballero, su sobrino. (BETA texid 3758). Texto-tipo en San Lorenzo de El Escorial: Monasterio, K.III.7 (4), ff. 1r-4v (=238r-241v) (BETA manid 3614)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>Bernardus Claravallensis (pseudo). Carta de gobernación de la casa (BETA texid 4227). Texto-tipo en Madrid: Nacional, 9247, ff. 117v-119v (BETA manid 2684)</li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>Bernardus Claravallensis (pseudo). Carta de san Bernardo enviada a un noble caballero (BETA texid 4229). Texto-tipo en Madrid: Nacional, 9428, ff. 29r-32r (BETA manid 3292)</li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p> medida que se descobrem outras cópias das várias traduções, estas podem ser agrupadas em famílias em torno do texto-tipo.</p></nowiki>
+
+<nowiki><p><b>Datas:</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>As datas encontradas nas descrições de manuscritos em catálogos impressos tradicionais (e.g., "s. XV in.," "middle of </nowiki>
+
+the 15th c.," "s. XV ex.") foram convertidas em números equivalentes, para facilitar a pesquisa e a selecção. 
+
+Assim "s. XV in." é convertido para "1401-1410". No entanto isto não significa que um dado manuscrito seja necessariamente escrito entre as duas datas.
+
+O significado é exactamente o veiculado por "s. XV in." ou "middle of the 15th c." <nowiki></p></nowiki>
+
+<nowiki><p>A título de ilustração, as equivalências seguintes referem-se a datas do século quinze:</p></nowiki>
+
+<nowiki><p></nowiki>
+
+1401-1500 = s. XV<nowiki><br></nowiki>
+
+1401-1410 = s. XV in. (início do séc. XV)<nowiki><br></nowiki>
+
+1401-1425 = s. XV<nowiki><sup>1/4</sup></nowiki> (primeiro quartel do séc. XV)<nowiki><br></nowiki>
+
+1401-1433 = s. XV<nowiki><sup>1/3</sup></nowiki> (primeiro terço do séc. XV)<nowiki><br></nowiki>
+
+1401-1450 = s. XV<nowiki><sup>1</sup></nowiki> (primeira metade do séc. XV)<nowiki><br></nowiki>
+
+1426-1450 = s. XV<nowiki><sup>2/4</sup></nowiki> (segundo quartel do séc. XV)<nowiki><br></nowiki>
+
+1441-1460 = s. XV med.<nowiki><br></nowiki>
+
+1451-1475 = s. XV<nowiki><sup>3/4</sup></nowiki> (terceiro quartel do séc. XV)<nowiki><br></nowiki>
+
+1451-1500 = s. XV<nowiki><sup>2</sup></nowiki> (segunda metade do séc. XV)<nowiki><br></nowiki>
+
+1491-1500 = s. XV ex. (fim do séc. XV)<nowiki><br></nowiki>
+
+1491-1510 = s. XV ex. — s. XVI in. (fim do séc. XV ou começo do séc. XVI)<nowiki><br></nowiki>
+
+1401-1600 = s. XV-XVI (15th or 16th c.). Tentamos evitar esta referência; é usada principalmente quando se encontra "s. XV-XVI" numa fonte secundária.<nowiki><br></nowiki>
+
+1500 ca. = cerca de 1500<nowiki><br></nowiki>
+
+1415 a quo = após 1415<nowiki><br></nowiki>
+
+1415 ad quem = antes de 1415<nowiki><br></nowiki>
+
+<nowiki></p></nowiki>
+
+<nowiki><p>As datas exactas são expressas em numeração árabe no formato — Ano-Mês-Dia, uma vez mais para facilitar a pesquisa e a selecção. Vejam-se os exemplos seguintes:</p></nowiki>
+
+<nowiki><p></nowiki>
+
+1463 = datação precisa com base no colofão ou noutra prova credível<nowiki><br></nowiki><nowiki><br></nowiki>
+
+1463-03 = Março de 1463<nowiki><br></nowiki><nowiki><br></nowiki>
+
+1463-03-08 = 8 de Março de 1463<nowiki><br></nowiki><nowiki><br></nowiki>
+
+1463 a quo — 1475 ad quem = entre 1463 e 1475 (Datas que podem ser deduzidas, geralmente com base no conteúdo.)<nowiki><br></nowiki><nowiki><br></nowiki>
+
+1406-12-31 a quo — 1423-09-18 ad quem = entre 31 de Dezembro de 1406 e 18 de Setembro de 1423. (Datas que podem ser deduzidas, geralmente com base no conteúdo.)<nowiki><br></nowiki><nowiki><br></nowiki>
+
+1453 [?] = datado de 1453, mas sem certeza<nowiki><br></nowiki><nowiki><br></nowiki>
+
+1453 [!] = datado erradamente de 1453<nowiki><br></nowiki><nowiki><br></nowiki>
+
+1493 ca. [?] = datado de cerca de 1493, mas sem certeza. (Normalmente a data é indicada por uma fonte mas disputada por outra.)<nowiki><br></nowiki><nowiki><br></nowiki>
+
+1488-1491 [!], 1491 ca. [!], 1490 = Manuscrito ou edição impressa datado erradamente de entre 1488 e 1491 por uma fonte, e cerca de 1491 por outra, também erradamente, e corrigido para 1490 por uma terceira fonte.
+
+<nowiki></p></nowiki>
+
+<nowiki><p>As datas de trabalhos e manuscritos foram estabelecidas tanto quanto possível com recurso também a meios comparativos. Assim, o terminus a quo dum manuscrito pode ser estabelecido pela data do último trabalho nele incluído, enquanto que o terminus ad quem dum trabalho pode ser definido pela data do primeiro manuscrito que o contém ou por documentação interna. Por exemplo a Parte IV da General estoria de Afonso X foi forçosamente terminada antes da transcrição do primeiro manuscrito que a contém, Vat. Urb. lat. 539 (1280) (BETA manid 1077); ao mesmo tempo que a cópia da parte I do mesmo texto em BNM 10236 (BETA manid 1059) foi forçosamente terminada antes de 25 de Março de 1458, a data da morte de Íñígo López de Mendoza, Marquês de Santillana, para quem foi transcrita. Do mesmo modo, a tradução de Gonzalo de Ocaña dos Diálogos de São Gregório (BETA texid 1360) tem de ter sido terminada antes de cerca de 1460, a data da morte de Fernán Pérez de Guzmán, a quem a tradução foi dedicada.</p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="history"></a>
+
+<nowiki><p><b>História</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p></nowiki>
+
+<nowiki><a href="#madison">Madison</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#berkeley">Berkeley</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#changesovertime">Alterações ao longo do tempo</a></nowiki><nowiki><br></nowiki>
+
+<nowiki><a href="#scopecontent">Abrangência e conteúdo</a></nowiki><nowiki><br></nowiki>
+
+<a href="#electronicresources">Recursos electrónicos</a>
+
+<nowiki></p></nowiki>
+
+<a id="madison"></a>
+
+<nowiki><p><b>Madison</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Uma vez que o Dictionary of the Old Spanish Language (DOSL) foi concebido como um léxico baseado em citações, à semelhança do Oxford English Dictionary (OED), Lloyd Kasten, o seu director, e John Nitti, director associado, compreenderam a necessidade de procurar essas citações em autênticos textos medievais produzidos antes de 1500 e não em edições modernas, cujos critérios editoriais variam substancialmente. Nesse sentido, a primeira edição de BOOST (1975), compilada internamente por Jean Gilkinson e Anthony Cárdenas, sob a supervisão de Nitti, incluiu em exclusivo referências a manuscritos copiados antes de 1501 e a incunábulos, i.e., edições impressas antes de 1501. Estas referências foram retiradas inicialmente da primeira edição da Bibliografía de la literatura española de José Simón Díaz, cujo volume sobre literatura medieval foi publicado em 1953, e suplementadas com referências aos manuscritos do Escorial pré-1501 encontradas no Catálogo de los manuscritos castellanos de la Real Biblioteca de El Escorial (1924-29) de Julián Zarco Cuevas, o primeiro catálogo de manuscritos medievais espanhóis digno desse nome, tal como nas introduções às várias edições de trabalhos medievais espanhóis e outros materiais no Seminário. As fontes da segunda edição (1977) incluíram também os nove volumes publicados do Inventario general de manuscritos de la Biblioteca Nacional (os únicos publicados até então).</p></nowiki>
+
+<nowiki><p>Para obter informações sobre a história dos aspectos técnicos de BOOST e BETA, consulte a página principal de PhiloBiblon.</p></nowiki>
+
+<nowiki><p>A primeira edição de BOOST (1975) continha 966 entradas, cada uma listando um determinado texto num determinado manuscrito ou numa edição impressa, organizado por autor e título. A segunda edição (1977), organizada do mesmo modo, continha 1869 entradas. A terceira edição (1984), agora sob o controlo editorial duma equipa de investigadores externos (Charles Faulhaber, Ángel Gómez Moreno, David Mackenzie, Brian Dutton), continha 3378 entradas, organizadas topograficamente por cidade, biblioteca, cota e ordem de fólio num determinado volume. </p></nowiki>
+
+<nowiki><p>Uma vez que BOOST deixara de estar orientado exclusivamente para o apoio ao DOSL, uma das primeiras decisões da nova equipa editorial foi a inclusão de manuscritos produzidos após 1501, embora por razões puramente práticas se tenha mantido esse ano como limite para as edições impressas.</p></nowiki>
+
+<a id="berkeley"></a>
+
+<nowiki><p><b>Berkeley</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Em 1985 o trabalho editorial e de produção foi centralizado em Berkeley, embora a equipa editorial continuasse a colaborar de perto com o Seminário de Espanhol Medieval de Madison. Em 1987, graças ao apoio financeiro da IBM, BOOST foi transportado duma base de dados de ficheiros planos num computador de grande porte para Revelation (mais tarde Advanced Revelation, da empresa Revelation Technologies), um sofisticado sistema de gestão relacional de bases de dados, baseado em DOS. </p></nowiki>
+
+<nowiki><p>Em 1993, a versão DOS de PhiloBiblon, com três das suas bibliografias componentes (BETA, BITAGAP, BITECA) foi publicada em CD-ROM como parte do disco 0 de ADMYTE (Archivo Digital de Manuscritos y Textos Españoles), produzido pela empresa Micronet, S.A. (Madrid). Esta publicação teve o apoio da Biblioteca Nacional e da Sociedad Estatal del Quinto Centenario e sob a supervisão de Francisco Marcos Marín juntamente com Faulhaber e Gómez Moreno. Uma nova edição, revista e ampliada, da versão DOS foi publicada em 1999 pela Biblioteca Bancroft, e está agora esgotada.</nowiki>
+
+<nowiki></p></nowiki>
+
+<a id="changesovertime"></a>
+
+<nowiki><p><b>Alterações ao longo do tempo</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Com a terceira edição de BOOST (1984), as descrições originais retiradas de fontes secundárias foram suplementadas com informações decorrentes de consultas dos manuscritos em primeira-mão por parte duma equipa de investigadores, mas especialmente pelos compiladores daquela edição, e a abrangência de BOOST foi radicalmente ampliada. </p></nowiki>
+
+<nowiki><p>Actualmente todos os Mss de obras medievais espanholas produzidos antes de 1800 estão incluídos, juntamente com Mss seleccionados do século XIX e mesmo do século XX que reflectem originais hoje perdidos. Quanto a livros impressos, foram incluídas algumas edições posteriores a 1501, sobretudo com base na obra fundamental de F. J. Norton, A Descriptive Catalogue of Printing in Spain and Portugal 1501-1520 (Cambridge, 1978). Progressivamente seremos capazes de aproveitar de forma mais produtiva a obra, ainda mais importante, de Julián Martín Abad, Post-incunables ibéricos (Madrid: Ollero y Ramos, 2001; Adenda, 2007); embora a equipa editorial ainda não tenha tido a possibilidade de colher informação desse trabalho de uma forma sistemática.</p></nowiki>
+
+<nowiki><p>Na base de dados actual a tabela analítica, que corresponde mais de perto à organização de BOOST, uma vez que também lista um determinado texto num determinado manuscrito ou edição impressa, continha 9162 entradas a 1 de Janeiro de 2009, quase dez vezes mais do que as 966 entradas da primeira edição. As outras tabelas de BETA continham 20 000 entradas com descrições detalhadas de manuscritos e edições impressas, textos, indivíduos, obras de referência e bibliotecas.</p></nowiki>
+
+<nowiki><p>Como em qualquer projecto de base de dados com mais de trinta anos, os critérios para a entrada de dados foram sendo alargados à medida que o próprio sistema de gestão da base de dados possibilitou capturar mais informação. Assim, nos últimos anos, apenas se registou informação absolutamente essencial aos propósitos do DOSL: Autor, Título, Localização Actual, Data de Produção Original, Data de Produção Específica, e Bibliografia Secundária. Com o passar do tempo tornou-se óbvio que os dados codicológicos e bibliográficos deveriam ser incorporados de forma a apoiar a informação relativa à Data de Produção Específica; e que os incipits e explicits deveriam ser adicionados de forma a ajudar a identificar cópias específicas de uma dada obra.</p></nowiki>
+
+<nowiki><p>Mais recentemente, os compiladores de BETA tentaram documentar exaustivamente cada manuscrito e cada cópia de cada edição a partir de informação obtida em primeira-mão. Nos casos em que não foi possível examinar o próprio volume, esta informação foi adicionada com base em fontes secundárias fidedignas. Assim, durante 2007-2008, o catálogo Zarco Cuevas dos manuscritos espanhóis no Escorial foi analisado sistematicamente com vista a colher-se a informação mais relevante, suplementando-se detalhada e exaustivamente as descrições originais dele retiradas em Madison para a primeira e segunda edição de BOOST.</p></nowiki>
+
+<nowiki><p>De igual modo, as transcrições, e.g. os incipits e explicits de textos encontrados em manuscritos, foram feitas de forma mais detalhada. Assim, a ausência de letras maiúsculas iniciais é indicada pela sua colocação entre parêntesis rectos: [A]. A altura das iniciais também é indicada em expoente para mostrar o número de linhas ocupadas: [A]6 significa que o espaço para a inicial em falta "A" tem seis linhas de altura. A pontuação, quando omitida nas transcrições originais de incipits e explicits devido ao seu uso arbitrário em edições modernas, foi transcrita dos originais. As mudanças de linha foram apresentadas tanto na prosa como na poesia. Este últimos detalhes são particularmente importantes no que diz respeito aos textos impressos, já que podem frequentemente servir para distinguir uma edição de outra.</p></nowiki>
+
+<nowiki><p>No entanto, não foi possível rever sistematicamente todas os registos de forma a actualizá-los para os padrões correntes. Assim, na prática, algumas descrições serão extremamente detalhadas e explícitas, enquanto a maior parte delas será bastante sucinta. Com o tempo, à medida que a equipa editorial examina in situ cada manuscrito ou impresso, todas as descrições serão adaptadas para os padrões actuais. No entretanto, ficaremos extremamente gratos por adições e correcções aos nosso dados. Estas deverão ser enviadas para cfaulhab[at]library.berkeley.edu.</nowiki>
+
+<nowiki></p></nowiki>
+
+<a id="scopecontent"></a>
+
+<nowiki><p><b>Abrangência e conteúdo</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>O número de manuscritos descritos em primeira mão aumentou consideravelmente. As suas descrições na Hispanic Society of America beneficiaram do trabalho de Faulhaber nesta instituição. A BNE foi também objecto de numerosas visitas com o propósito de examinar em primeira mão a riqueza quase inesgotável dos seus manuscritos e primeiros livros impressos. Estas visitas foram suplementadas com informação retirada das descrições detalhadas nos volumes 1-9 do Inventario general de manuscritos de la Biblioteca Nacional (1953-70; Mss 1-3026) e das descrições sumárias nos volumes 10-15 (1984-2001; Mss 3027-11.000). As descrições nos cinco volumes inéditos (Mss 11.001-12981) foram-nos fornecidas em formato de leitura electrónica graças ao apoio generoso de Julián Martín Abad e à equipa da Sala Cervantes, particularmente Lourdes Alonso. Para além disso, Gómez Moreno e Faulhaber reviram sistematicamente as fichas de arquivo da BNE. Durante o Outono de 2006 ambos examinaram os manuscritos pertencentes à Biblioteca Histórica "Marqués de Valdecilla" da Universidade Complutense de Madrid bem como os da biblioteca da Duquesa de Alba no Palácio de Liria. No entanto, apenas 1000 dos mais de 5700 manuscritos ou cópias de edição impressas foram examinados em primeira-mão pelos compiladores. </p></nowiki>
+
+<nowiki><p>Felizmente, o número de excelentes catálogos de manuscritos medievais publicados em bibliotecas espanholas aumentou extraordinariamente nos últimos quinze ou vinte anos; sendo exemplos disso mesmo os seguintes volumes: Catálogo de manuscritos de la Real Academia Española (1991), o Catálogo de la Real Biblioteca. Manuscritos (1994-1997), Catálogo de manuscritos de la Biblioteca Universitaria de Salamanca (1997-2002), e Manuscritos españoles de la Biblioteca Lázaro Galdiano (1998). Fizemos uso de todos eles, mas ainda não conseguimos colher toda a informação neles eles contida: falta de mano de obra.</p></nowiki>
+
+<nowiki><p>No que diz respeito aos primeiros textos impressos, BETA tenta registar cada cópia de cada edição juntamente com a informação acerca do seu estado e da sua proveniência. Os reportórios básicos de incunábulos espanhóis (Haebler 1903-17, Vindel 1945-51) foram utilizados mas não esgotados. No entanto temos sistematicamente explorado o Catálogo general de incunables en bibliotecas españolas de Francisco García Craviotto e as Adiciones y correcciones de Martín Abad. Os principais catálogos nacionais foram também examinados (e.g., Goff 1964, 1972 para os Estados Unidos; Pellechet para a França), mas não necessariamente de forma sistemática. Temos ainda que analisar o Incunabula Short Title Catalogue (<a href="http://www.bl.uk/catalogues/istc/index.html">http://www.bl.uk/catalogues/istc/index.html</nowiki><nowiki></a></nowiki>) mantido pela Biblioteca Britnica. Essencialmente um catálogo electrónico unificado internacional, este destina-se a ser uma lista compreensiva de todos os incunábulos com a localização das cópias sobreviventes. Contudo, trata-se dum trabalho ainda in fieri e, ao contrário de BETA, sem intenção de listar todas as cópias duma dada biblioteca. BETA é também um trabalho in fieri; mas é já e continuará a ser a bibliografia enumerativa e descritiva de serviço para os primeiros livros impressos em espanhol. <nowiki></p></nowiki>
+
+<nowiki><p>Apesar dos mais de trinta anos de existência de BETA, é claro que há muito ainda a fazer, especialmente no que diz respeito à descrição codicológica detalhada de manuscritos individuais, à transcrição de incipits e explicits, e à identificação de trabalhos anónimos. </p></nowiki>
+
+<nowiki><p>Para além do nosso trabalho com textos, manuscritos e edições impressas, também prestámos atenção ao pano de fundo prosopográfico da literatura espanhola medieval. Por exemplo, a pesquisa arquival de Perea Rodríguez em Valência forneceu uma considerável quantidade de informação acerca dos poetas do Cancionero general (1511), enquanto os cinco volumes do Diccionario de historia eclesiástica de España (1972-75; supl. 1987) nos forneceram os nomes e as datas de todos os bispos de Castela e Leão de ca. 1200 até 1500 e informação biográfica essencial sobre os mais importantes dentre eles. O mesmo trabalho forneceu informação sobre ordens monásticas e militares medievais e seus líderes (abades, priores, comandantes).</p></nowiki>
+
+<nowiki><p>A bibliografia de referência de BETA não tenta disponibilizar um acesso compreensivo a estudos sobre literatura espanhol medieval, uma função desempenhada de forma mais adequada pelo Boletín Bibliográfico de la Asociación Hispánica de Literatura Medieval. Preferimos focar a nossa atenção em catálogos de manuscritos, estudos codicológicos de manuscritos individuais, edições de textos, estudos biográficos e obras similares, e não tanto em estudos críticos de autores, textos e géneros.</p></nowiki>
+
+<nowiki><p>Em termos de áreas temáticas e géneros, estamos confiantes que identificámos a maior parte dos fueros, cortes e outros textos legais vernaculares com base em edições do século XIX da Real Academia de la Historia e outros manuscritos no Escorial, embora numerosos testemunhos pós-medievais permaneçam por incluir. A lista dos mais importantes poemas narrativos do cancionero está virtualmente completa. Os textos e testemunhos da maior parte da lírica do cancionero ainda está por integrar, mas os investigadores têm a ela acesso graças ao monumental El cancionero del siglo XV. c. 1360-1520 de Brian Dutton, especialmente tal como disponível no An Electronic Corpus of 15th Century Castilian Cancionero Manuscripts <a href="http://cancionerovirtual.liv.ac.uk/main-page.htm">http://cancionerovirtual.liv.ac.uk/main-page.htm</nowiki><nowiki></a></nowiki>, dirigido por Dorothy Severin, na Universidade de Liverpool. Apesar de tudo, a inclusão da lírica medieval em BETA continua a ser um grande objectivo. As "jarchas" apresentam questões linguísticas que preferimos não abordar até este momento. (No entanto os manuscritos em que estão conservados foram bem descritos por outros investigadores ao longo do último quarto de século.) Excepto no que diz respeito a testemunhos que antecedem 1501, omitimos a lírica tradicional (coligida sistematicamente por Margit Frenk no seu Nuevo corpus de la antigua lírica popular hispánica (siglos XV a XVII), Cidade do México: UNAM-Colegio de México-Fondo de Cultura Económica, 2003, que nos poupa esta tarefa) e o romancero (catalogado igualmente pelo Seminário Menéndez Pidal).<nowiki></p></nowiki>
+
+<a id="electronicresources"></a>
+
+<nowiki><p><b>Recursos electrónicos</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Temos tido acesso progressivamente a um manancial de inovações electrónicas na Web. Uma das mudanças cruciais que têm ocorrido ao longo dos últimos cerca de quinze anos é a disponibilidade de textos e edições electrónicas online. Assim, citamos e fornecemos hiperligações para transcrições electrónicas disponíveis em LEMIR (Literatura Española Medieval y Renacimiento <a href="http://parnaseo.uv.es/lemir.htm">http://parnaseo.uv.es/lemir.htm</nowiki><nowiki></a></nowiki>). <nowiki></p></nowiki>
+
+<nowiki><p>Ainda mais útil, para aqueles investigadores mais escrupulosos que não confiam em nenhuma transcrição ou edição, são os facsímiles electrónicos parciais ou completos tanto de manuscritos como de edições impressas que começam a estar disponíveis online. Pioneiro a este respeito foi ADMYTE, cujas 55 000 páginas de texto e facsímiles, originalmente publicadas em CD-ROM, estão agora disponíveis online mediante subscripção (<a href="http://www.admyte.com/home.htm">http://www.admyte.com/home.htm</nowiki><nowiki></a></nowiki>).<nowiki></p></nowiki>
+
+<nowiki><p>O Projecto Dioscorides da Biblioteca Histórica "Marqués de Valdecilla" da Universidade Complutense de Madrid é o primeiro em que uma biblioteca espanhola produz facsímiles da sua importante colecção de manuscritos medievais e primeiros livros impressos e os disponibiliza de forma sistemática (<a href="http://biblioteca.ucm.es/foa/25889.php">Biblioteca Digital Dioscórides</a></nowiki>). Poder-se-ia citar peças tão espantosas quanto o manuscrito do scriptorium real afonsino dos Libros del saber de astronomía, BH Mss 156 (BETA manid 1091). <nowiki></p></nowiki>
+
+<nowiki><p>Outros projectos disponibilizam facsímiles parciais. O <a href="http://bancroft.berkeley.edu/digitalscriptorium/">Digital Scriptorium</a></nowiki>, um projecto colaborativo iniciado em 1996 pela Biblioteca Brancroft de Berkeley e a Universidade de Columbia, tornou-se um catálogo unificado visual de Mss medievais em todas as línguas ocidentais até ca. de 1550. Actualmente disponibiliza descrições e facsímiles parciais de resolução extremamente elevada de 5300 manuscritos de 27 instituições americanas. Destes, sessenta e três são espanhóis, incluindo:<nowiki></p></nowiki>
+
+<nowiki><ul style="color: #000; list-style-type: disc"></nowiki>
+
+<nowiki><li>Fragmentos do único MS conhecido de <a href="http://ucblibrary4.berkeley.edu:8088/xtf22/search?smode=basic;rmode=digscript;text=amadis%20de%20gaula;docsPerPage=1;startDoc=1;fullview=yes">Amadís de Gaula</a></nowiki>, do primeiro quartel do século XV (<nowiki><i>BETA</i></nowiki> manid 1182. Berkeley: The Bancroft Library)<nowiki></li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>O melhor MS da <a href="http://ucblibrary4.berkeley.edu:8088/xtf22/search?smode=basic;text=cronica%20sarracina;rmode=digscript;docsPerPage=1;startDoc=1;fullview=yes">Crónica sarracina</a></nowiki>, de meados do século 15 (<nowiki><i>BETA</i></nowiki> manid 3602. Berkeley: The Bancroft Library)<nowiki></li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>Um manuscrito de meados do século XV dos <a href="http://ucblibrary4.berkeley.edu:8088/xtf22/search?shelfmark=lodge%2013;smode=basic;rmode=digscript;docsPerPage=1;startDoc=1;fullview=yes">Dichos y hechos</a></nowiki> de Valerio Máximo, com estrofes introdutórias únicas (<nowiki><i>BETA</i></nowiki> manid 2848. New York: Columbia University)<nowiki></li></nowiki><nowiki><br></nowiki>
+
+<nowiki><li>Uma cópia tardia do século XIII do <a href="http://ucblibrary4.berkeley.edu:8088/xtf22/search?smode=basic;rmode=digscript;text=fuero%20real;docsPerPage=1;startDoc=1;fullview=yes">Fuero real</a></nowiki> (<nowiki><i>BETA</i></nowiki> manid 2966. Philadelphia: Free Library)<nowiki></li></nowiki>
+
+<nowiki></ul></nowiki>
+
+<nowiki><p>O trabalho no PhiloBiblon enfatizou a necessidade imperiosa de ter facsímiles adequados, transcrições e edições de todos os textos medievais. Até dois terços de todos os manuscritos medievais espanhóis estão presentes num único manuscrito. Se esse manuscrito se perder ou destruir antes de o texto ser copiado de alguma forma, o próprio texto perder-se-á, juntamente com um elemento insubstituível da cultura espanhola medieval. Manos a la obra!</p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<a id="acknowledgments"></a>
+
+<nowiki><p><b>Agradecimentos</b></nowiki><nowiki></p></nowiki>
+
+<nowiki><p>Desde 1987 um grande número de estudantes de licenciatura e de pós-graduação de Berkeley ofereceu uma preciosa ajuda a este projecto. Estamos gratos ao Programa de Aprendizagem de Investigação para Estudantes de Licenciatura  (Undergraduate Research Apprenticeship Program) de Berkeley bem como ao Comité do Senado Académico para a Investigação (Academic Senate Committee on Research), pelo seu apoio.</nowiki>
+
+Entre os estudantes de licenciatura que colaboraram neste projecto destacamos Nicholas Asbury, Eugene Chang, Charity Cuéllar, Victoria Dorn, Icela Pelayo e Munir Simpson. Entre os estudantes de pós-graduação, agradecemos a Heather Bamford, Miles Becker, Denise Cabanel, Adelaida Cortijo-Ocaña, Ana María Gómez Bravo, Angela Moll, María Morrás, Stephen Raulston, Israel Sanz e Julie Ward.
+
+<nowiki></p></nowiki>
+
+<nowiki><p>BETA deve muita da sua informação ao apoio desinteressado de numerosos investigadores. Estamos especialmente gratos a Gemma Avenoza (†) por descrições de Mss e incunábulos em vora e muitas outras bibliotecas, a José Aragés, Fernando Baños e a Vanessa Hernández Amez pelo seu trabalho nas traduções castelhanas do Legenda Áurea, a Hugo Bizzarri por referências a literatura de sabedoria, a Thomas Capuano pela sua ajuda com obras sobre agricultura, a Juan Carlos Conde por informação sobre MSS e textos do século XV, a Ivy Corfis por materiais sobre literatura de cavalaria e numerosas transcrições electrónicas, a José Manual Fradejas Rueda por referências a trabalhos sobre falcoaria, a David Hook por informação sobre textos históricos, a Francisco Marcos-Marín pelo catálogo dos manuscritos da Biblioteca Nacional da Argentina, a Georgina Olivetto pelas descrições de Mss na Biblioteca Britnica, a Rebeca Sanmartín pelas descrições de manuscritos em Santiago de Compostela e Orense, a Jesús Rodríguez Velasco e Harvey Sharrer por materiais sobre literatura de cavalaria, </nowiki>
+
+a Sharrer e Arthur L-F. Askins, Filipe Alves Moreira e Pedro Pinto por manuscritos espanhóis em bibliotecas Portuguesas, e a muitas outras pessoas pela sua assistência com manuscritos e textos específicos. <nowiki></p></nowiki>
+
+<nowiki><p>Os compiladores de BETA estão também gratos pelo apoio das seguintes instituições:</p></nowiki>
+
+<nowiki><p></nowiki>
+
+<nowiki><a href="http://bancroft.berkeley.edu/">The Bancroft Library</a></nowiki>, University of California, Berkeley<nowiki><br></nowiki>
+
+<nowiki><a href="http://www.portcenter.ucsb.edu/">Center for Portuguese Studies</a></nowiki>, University of California, Santa Barbara<nowiki><br></nowiki>
+
+<nowiki><a href="http://www.spanport.ucsb.edu/index.php/research/galician-studies">Center for Galician Studies</a></nowiki>, University of California, Santa Barbara<nowiki><br></nowiki>
+
+DataBase Design <nowiki>&</nowiki>amp; Engineering, Walnut Creek, California<nowiki><br></nowiki>
+
+<nowiki><a href="http://www.fundacionmapfre.org/fundacion/es_es/default.jsp">Fundación MAPFRE</a></nowiki>, Madrid<nowiki><br></nowiki>
+
+Fundación del Amo, Universidad Complutense de Madrid<nowiki><br></nowiki>
+
+Gaspar de Portolà Catalonian Studies Program, University of California, Berkeley<nowiki><br></nowiki>
+
+<nowiki><a href="http://www.hispanicseminary.org/index-en.htm">Hispanic Seminary of Medieval Studies, Hispanic Society of America</a></nowiki>, New York, New York<nowiki><br></nowiki>
+
+<nowiki><a href="http://lib.berkeley.edu/">The Library</a></nowiki>, University of California, Berkeley<nowiki><br></nowiki>
+
+<nowiki><a href="http://www.mecd.gob.es/portada-mecd/">Ministerio de Educación</a></nowiki>, Cultura y Deporte, Spain<nowiki><br></nowiki>
+
+<nowiki><a href="http://www.mineco.gob.es/portal/site/mineco/">Ministerio de Economía y Competividad. Secretaría de Estado de Investigación, Desarrollo e Innovación</a></nowiki>, Spain<nowiki><br></nowiki>
+
+<nowiki><a href="http://www.neh.gov/">National Endowment for the Humanities</a></nowiki>, Washington D.C.<nowiki><br></nowiki>
+
+Program for Cultural Cooperation Between Spain's Ministry of Culture <nowiki>&</nowiki>amp; United States' Universities<nowiki><br></nowiki>
+
+<nowiki><a href="http://www.oclc.org/research.html">Research Libraries Group, now OCLC Research, part of OCLC</a></nowiki>, Dublin, Ohio<nowiki><br></nowiki>
+
+<a href="http://ies.berkeley.edu/psp/">Portuguese Studies Program</a>, University of California, Berkeley
+
+<nowiki></p></nowiki>
+
+<nowiki><div align="right"></nowiki>
+
+<nowiki><p><a href="#top">Voltar ao índice</a></nowiki><nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
+
+<nowiki><p>O acesso à página Web e a utilização de Philobiblon são gratuitos.</nowiki>
+
+A reprodução de quaisquer materiais aqui disponibilizados está sujeita às restrições indicadas na nossa [[pt_Copyright|declaração de direitos autorais]].
+
+<nowiki></p></nowiki>
+
+<nowiki><p>Os melhores resultados serão obtidos utilizando-se versões actualizadas dos browsers capazes de reproduzir as tabelas e de suportar Java, mas é feito um esforço no sentido de apresentar um serviço genérico, acessível a qualquer instrumento de visualização de conteúdos Web.</p></nowiki>
+
+<nowiki><p>Encorajamos os leitores a enviarem questões, comentários e quaisquer sugestões com vista à melhoria deste site a Charles B. Faulhaber [cfaulhab[at]library.berkeley.edu].</nowiki>
+
+<nowiki></p></nowiki>
+
+<nowiki></div></nowiki>
