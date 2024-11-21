@@ -264,8 +264,7 @@ export class WikibaseService {
         pbIdValue.includes('bibid') ||
         pbIdValue.includes('texid') ||
         pbIdValue.includes('geoid') ||
-        pbIdValue.includes('cnum') ||
-        pbIdValue.includes('subid')
+        pbIdValue.includes('cnum')
       ) {
         return true
       }
@@ -397,24 +396,5 @@ export class WikibaseService {
       // eslint-disable-next-line no-console
       console.error('Error during search:', error)
     }
-  }
-
-  async getRelatedItems (pbid, relatedTable, property) {
-    return await this.runSparqlQuery(
-      this.$query.getRelatedItems(pbid, relatedTable, property),
-      true
-    ).then((results) => {
-      return results
-    }).catch(() => {
-      return []
-    })
-  }
-
-  getRelatedTable (entity) {
-    const pbid = this.getPBID(entity)
-    const {
-      groups: { tableid }
-    } = this.getPBIDPattern().exec(pbid)
-    return tableid
   }
 }

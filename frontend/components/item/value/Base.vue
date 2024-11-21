@@ -1,6 +1,12 @@
 <template>
   <div v-if="valueToView">
-    <component :is="'item-value-type-' + valueToView.type" :is-user-logged="isUserLogged" :value-to-view="valueToView" :save="editValue" />
+    <component
+      :is="`item-value-type-${valueToView.type}`"
+      :type="type"
+      :save="editValue"
+      :delete="deleteValue"
+      :value-to-view="valueToView"
+    />
   </div>
 </template>
 
@@ -67,6 +73,16 @@ export default {
       } else {
         // eslint-disable-next-line no-console
         console.log(`Unknown type to edit: ${this.type}`)
+      }
+    },
+    deleteValue () {
+      if (this.type === 'claim') {
+        const res = this.$wikibase.getWbEdit().claim.remove({
+          guid: this.claim.id
+        }, this.$store.getters['auth/getRequestConfig'])
+
+        this.$emit('delete-claim', this.claim)
+        return res
       }
     }
   }

@@ -2,7 +2,6 @@
   <div>
     <template v-if="!isUserLogged">
       <a
-        v-if="isImage"
         :href="imageLink"
         target="_blank"
       >
@@ -12,20 +11,20 @@
         />
       </a>
       <a
-        v-if="isImage === false"
         :href="valueToView.value"
         target="_blank"
       >
         {{ valueToView.value }}
       </a>
-      <v-icon
-        v-if="!isImage"
-      >
-        mdi-link
-      </v-icon>
+      <v-icon>mdi-link</v-icon>
     </template>
     <template v-else>
-      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+      <item-util-edit-text-field
+        :save="editValue"
+        :value="valueToView_.value"
+        :delete="deleteValue"
+        :can-delete="canDelete"
+      />
     </template>
   </div>
 </template>
@@ -34,41 +33,56 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
     },
+    type: {
+      type: String,
+      required: true
+    },
     save: {
+      type: Function,
+      required: true
+    },
+    delete: {
       type: Function,
       required: true
     }
   },
   data () {
     return {
-      isImage: false,
       imageLink: null,
       valueToView_: { ...this.valueToView }
     }
   },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
+    },
+    canDelete () {
+      return this.type === 'claim'
+    }
+  },
   mounted () {
-    this.isImageUrl(this.valueToView.value).then((isImage) => {
-      this.isImage = isImage
-      if (this.isImage) {
-        this.imageLink = this.valueToView.value
-      }
-    })
+    if (this.isURL(this.valueToView.value)) {
+      fetch(
+        'https://the-visionary-git-master-austininseoul.vercel.app/api?url=' + this.valueToView.value
+      ).then((res) => {
+        this.imageLink = res && res.imageSizes ? res.imageSizes[0].url : this.valueToView.value
+      })
+    }
   },
   methods: {
     editValue (newValue, oldValue) {
       return this.save(this.getUrlValue(newValue, oldValue))
     },
+    deleteValue () {
+      return this.delete()
+    },
     getUrlValue (newValue, oldValue) {
       const valid = this.isURL(newValue)
-      const message = valid ? '' : this.$i18n.t('item.messages.invalid_url')
+      const message = valid ? '' : 'Please fill a valid URL!'
       return {
         validation: {
           valid,
@@ -83,14 +97,6 @@ export default {
     isURL (str) {
       const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
       return urlRegex.test(str)
-    },
-    isImageUrl (url) {
-      return new Promise((resolve) => {
-        const img = new Image()
-        img.onload = () => resolve(true)
-        img.onerror = () => resolve(false)
-        img.src = url
-      })
     }
   }
 }

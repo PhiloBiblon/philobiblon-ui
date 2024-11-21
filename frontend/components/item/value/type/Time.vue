@@ -33,10 +33,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
@@ -51,6 +47,11 @@ export default {
       valueToView_: { ...this.valueToView }
     }
   },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
+    }
+  },
   methods: {
     editCalendarType (newCalendar) {
       this.valueToView_.calendar = newCalendar
@@ -60,7 +61,7 @@ export default {
             if (!response.success) {
               throw new Error(response.info)
             }
-            this.$notification.success(this.$i18n.t('messages.success.updated'))
+            this.$notification.success('Successfully updated')
           }
         })
     },
