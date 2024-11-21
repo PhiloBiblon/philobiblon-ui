@@ -12,17 +12,9 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
-    },
-    save: {
-      type: Function,
-      required: true
     }
   }
 }

@@ -4,14 +4,11 @@ export default {
     loading: 'Loading..',
     language: 'Language',
     calendar: 'Calendar',
+    advanced_search: 'Advanced search',
     from: 'From',
     to: 'To',
-    search: {
-      section: {
-        advanced: 'Advanced search',
-        external_description: 'External description'
-      }
-    }
+    add_value: 'add value',
+    cancel: 'cancel'
   },
   menu: {
     item: {
@@ -129,7 +126,7 @@ export default {
         },
         date_composition: {
           label: 'Date of composition',
-          hint: 'Search for yyyy and/or mm and/or dd. A search here might return the date of composition, confirmation, revision, translation, promulgation, etc.'
+          hint: ''
         },
         type: {
           label: 'Type',
@@ -154,7 +151,7 @@ export default {
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
         },
         call_number: {
-          label: 'Inventory position',
+          label: 'Call number',
           hint: ''
         }
       },
@@ -165,7 +162,7 @@ export default {
         },
         institution_type: {
           label: 'Institution type',
-          hint: 'Search by type of institution.'
+          hint: 'Search by type of institution'
         },
         institution: {
           label: 'Institution',
@@ -174,8 +171,7 @@ export default {
       },
       bioid: {
         name: {
-          label: 'Name',
-          hint: ''
+          label: 'Name'
         },
         title: {
           label: 'Title',
@@ -190,7 +186,7 @@ export default {
           hint: 'Search for place (in the modern form) of birth, death, residence, or other milestone event.'
         },
         religious_order: {
-          label: 'Religious or military order',
+          label: 'Religious or military',
           hint: 'For religious orders search by the standard sigla, e.g., OSB, OFM, SJ, Ocist. Note that identification of professions is sporadic in all three bibliographies.<br/>NOTE: The Associated Persons section of each record must be treated with caution, especially for those individuals with numerous relationships. The database program is designed to establish a reciprocal link between two records automatically. Thus when the record of "Juana la Loca" (BETA bioid 7208) was linked to that of Fernando V (bioid 1104) as his daughter, his record was automatically updated to show him as her father. Unfortunately, due to programming errors this automatic updating process sometimes established erroneous links with other records. Over time these errors will be eliminated. We request the collaboration of our users to help us identify them.'
         },
         profession: {
@@ -246,12 +242,15 @@ export default {
       },
       manid: {
         city: {
-          label: 'City',
-          hint: ''
+          label: 'City'
         },
         library: {
           label: 'Library',
           hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
+        },
+        shelfmark: {
+          label: 'Shelfmark',
+          hint: 'Search for a current or former shelfmark in the holding library as well as for the shelfmark of a previous owner. Searches are not case-sensitive, e.g., “Inc. 1484” or “inc. 1484.”'
         },
         date: {
           label: 'Date',
@@ -276,74 +275,6 @@ export default {
         associated_person: {
           label: 'Associated person',
           hint: ' Search using any form of the name. A search returns the name of a binder, illuminator, annotator, etc.'
-        },
-        call_number: {
-          label: 'Inventory position',
-          hint: ''
-        },
-        title: {
-          label: 'Title',
-          hint: ''
-        },
-        type: {
-          label: 'Type',
-          hint: ''
-        },
-        writing_surface: {
-          label: 'Writing surface',
-          hint: ''
-        },
-        format: {
-          label: 'Format',
-          hint: ''
-        },
-        binding: {
-          label: 'Binding',
-          hint: ''
-        },
-        collation: {
-          label: 'Collation',
-          hint: ''
-        },
-        hand: {
-          label: 'Hand',
-          hint: ''
-        },
-        font: {
-          label: 'Font',
-          hint: ''
-        },
-        watermark: {
-          label: 'Watermark',
-          hint: ''
-        },
-        graphic_feature: {
-          label: 'Graphic feature',
-          hint: ''
-        },
-        physical_feature: {
-          label: 'Physical feature',
-          hint: ''
-        },
-        music: {
-          label: 'Music',
-          hint: ''
-        }
-      },
-      geoid: {
-        type: {
-          label: 'Type',
-          hint: ''
-        },
-        class: {
-          label: 'Class',
-          hint: ''
-        }
-      },
-      subid: {
-        headings: {
-          label: 'Headings',
-          hint: ''
         }
       }
     },
@@ -365,33 +296,9 @@ export default {
   item: {
     title: 'Title',
     description: 'Description',
-    back: 'Go back',
-    messages: {
-      invalid_id: 'Invalid identifier.',
-      not_found: 'Not found.',
-      invalid_url: 'Please fill a valid URL!'
-    },
-    related: {
-      texid: {
-        cnum: {
-          count: 'Count of witnesses',
-          id: 'ID no. of Witness',
-          desc: 'Title(s)'
-        }
-      },
-      manid: {
-        cnum: {
-          count: 'Number of texts in volume',
-          id: 'Specific witness ID no.',
-          desc: 'Title(s)'
-        },
-        copid: {
-          count: 'Number of additional copies of edition',
-          id: 'ID no. of additional copy of edition',
-          desc: 'Title(s)'
-        }
-      }
-    }
+    invalid_id: 'Invalid identifier.',
+    not_found: 'Not found.',
+    back: 'Go back'
   },
   privacyPolicy: {
     label: 'Privacy policy',
@@ -438,27 +345,6 @@ export default {
         '• The right to object<br/>\n' +
         '• Notification of data breaches<br/>\n' +
         '• The right to lodge a complaint with a supervisory authority'
-    }
-  },
-  messages: {
-    error: {
-      session: {
-        expired: 'Session expired'
-      },
-      inputs: {
-        fill: 'Please, fill inputs'
-      },
-      modification: {
-        failed: 'Label and description for language code en can not have the same value.'
-      }
-    },
-    success: {
-      updated: 'Successfully updated'
-    }
-  },
-  wiki: {
-    search: {
-      placeholder: 'Search in PhiloBiblon'
     }
   }
 }

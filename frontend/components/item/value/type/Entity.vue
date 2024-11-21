@@ -9,13 +9,17 @@
         :value="selectedOption"
         :save="editValue"
         :options="options"
+        :delete="deleteValue"
+        :can-delete="canDelete"
       />
       <item-util-edit-select-field
         v-else
         :save="editValue"
         :options="options"
-        @update-options="options = $event"
+        :delete="deleteValue"
+        :can-delete="canDelete"
         @input="oninput($event)"
+        @update-options="options = $event"
       />
     </template>
   </div>
@@ -25,15 +29,19 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
     },
+    type: {
+      type: String,
+      required: true
+    },
     save: {
+      type: Function,
+      required: true
+    },
+    delete: {
       type: Function,
       required: true
     }
@@ -51,6 +59,12 @@ export default {
     }
   },
   computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
+    },
+    canDelete () {
+      return this.type === 'claim'
+    },
     isItemWithCustomOptions () {
       return this.valueToView.property in this.property_autocomplete
     }
@@ -61,6 +75,9 @@ export default {
   methods: {
     editValue (newValue, oldValue) {
       return this.save(this.getWikiBaseEntityIdValue(newValue, oldValue))
+    },
+    deleteValue () {
+      return this.delete()
     },
     getWikiBaseEntityIdValue (newValue, oldValue) {
       return {

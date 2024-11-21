@@ -24,6 +24,14 @@
         <v-icon>mdi-check</v-icon>
       </v-btn>
       <v-btn
+        v-if="focussed && canDelete"
+        text
+        icon
+        @click.stop="deleteValue"
+      >
+        <v-icon>mdi-trash-can</v-icon>
+      </v-btn>
+      <v-btn
         v-if="focussed"
         text
         icon
@@ -50,6 +58,14 @@ export default {
     save: {
       type: Function,
       required: true
+    },
+    canDelete: {
+      type: Boolean,
+      default: false
+    },
+    delete: {
+      type: Function,
+      default: null
     }
   },
   data () {
@@ -88,27 +104,39 @@ export default {
               throw new Error(response.info)
             }
             this.consolidatedText = this.currentText
-            this.$notification.success(this.$i18n.t('messages.success.updated'))
+            this.$notification.success('Successfully updated')
           }
         })
         .catch((error) => {
           // workaround to avoid weird error if the session is expired
           // the first time that we want edit the wikibase
           if (error.message === 'query is undefined') {
-            error = this.$i18n.t('messages.error.session.expired')
+            error = 'Error: Session expired.'
           }
-
-          if (error.message.includes('modification-failed')) {
-            error = this.$i18n.t('messages.error.modification.failed')
-          }
-
           this.$notification.error(error)
         })
-      this.$refs.myTextField.blur()
+      this.$refs.myTextField?.blur()
     },
 
     restore () {
       this.currentText = this.consolidatedText
+    },
+    async deleteValue () {
+      await this.delete()
+        .then((response) => {
+          if (response) {
+            if (!response.success) {
+              throw new Error(response.info)
+            }
+            this.$notification.success('Successfully deleted')
+          }
+        })
+        .catch((error) => {
+          if (error.message === 'query is undefined') {
+            error = 'Error: Session expired.'
+          }
+          this.$notification.error(error)
+        })
     }
   }
 }

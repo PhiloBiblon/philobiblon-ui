@@ -29,10 +29,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
@@ -70,6 +66,11 @@ export default {
       ]
     }
   },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
+    }
+  },
   methods: {
     editLanguage (_newLanguage) {
       // We are only changing the language, so the old and new values (text) are the same.
@@ -80,7 +81,7 @@ export default {
               throw new Error(response.info)
             }
             this.consolidatedLanguage = this.valueToView_.language
-            this.$notification.success(this.$i18n.t('messages.success.updated'))
+            this.$notification.success('Successfully updated')
           }
         })
     },
