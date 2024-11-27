@@ -13,10 +13,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
@@ -30,6 +26,11 @@ export default {
     return {
       valueToView_: { ...this.valueToView },
       unitLabel: null
+    }
+  },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
     }
   },
   async mounted () {

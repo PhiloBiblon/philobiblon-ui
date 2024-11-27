@@ -53,7 +53,7 @@
           </v-col>
         </span>
       </v-row>
-      <item-claims :table="tableid" :claims="item.claims" />
+      <item-claims :table="tableid" :claims="item.claims" :item="item" />
       <item-related-items v-if="cnums.length" :table="tableid" related-table="cnum" :items="cnums" />
       <item-related-items v-if="copids.length" :table="tableid" related-table="copid" :items="copids" />
     </v-container>

@@ -7,10 +7,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
@@ -21,8 +17,11 @@ export default {
     }
   },
   computed: {
-    contentView() {
-      return this.$sanitize(this.valueToView.value);
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
+    },
+    contentView () {
+      return this.$sanitize(this.valueToView.value)
     }
   }
 }

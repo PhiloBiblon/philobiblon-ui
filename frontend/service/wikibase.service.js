@@ -379,12 +379,13 @@ export class WikibaseService {
     return hash
   }
 
-  async searchEntityByName (search, language, uselang) {
+  async searchEntityByName (search, language, uselang, type) {
     try {
       const searchOptions = {
         search,
         uselang,
-        language
+        language,
+        type
       }
 
       const url = await this.getWbk().searchEntities(searchOptions)
