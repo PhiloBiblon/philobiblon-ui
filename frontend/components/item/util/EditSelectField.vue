@@ -22,20 +22,22 @@
         <v-icon>mdi-check</v-icon>
       </v-btn>
       <v-btn
-        v-if="focussed && canDelete"
-        text
-        icon
-        @click.stop="deleteValue"
-      >
-        <v-icon>mdi-trash-can</v-icon>
-      </v-btn>
-      <v-btn
         v-if="focussed"
         text
         icon
         @click.stop="restore"
       >
         <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </template>
+    <template #append-outer>
+      <v-btn
+        v-if="focussed && canDelete"
+        text
+        icon
+        @click.stop="deleteValue"
+      >
+        <v-icon>mdi-trash-can</v-icon>
       </v-btn>
     </template>
   </v-autocomplete>
