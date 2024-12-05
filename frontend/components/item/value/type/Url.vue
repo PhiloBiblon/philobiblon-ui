@@ -25,7 +25,7 @@
       </v-icon>
     </template>
     <template v-else>
-      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" :delete="deleteValue" :can-delete="true" />
     </template>
   </div>
 </template>
@@ -34,15 +34,19 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
     },
+    type: {
+      type: String,
+      required: true
+    },
     save: {
+      type: Function,
+      required: true
+    },
+    delete: {
       type: Function,
       required: true
     }
@@ -52,6 +56,11 @@ export default {
       isImage: false,
       imageLink: null,
       valueToView_: { ...this.valueToView }
+    }
+  },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
     }
   },
   mounted () {
@@ -65,6 +74,9 @@ export default {
   methods: {
     editValue (newValue, oldValue) {
       return this.save(this.getUrlValue(newValue, oldValue))
+    },
+    deleteValue () {
+      return this.delete()
     },
     getUrlValue (newValue, oldValue) {
       const valid = this.isURL(newValue)
