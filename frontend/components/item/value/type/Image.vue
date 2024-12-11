@@ -12,10 +12,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
