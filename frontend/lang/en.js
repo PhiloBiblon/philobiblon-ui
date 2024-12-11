@@ -6,6 +6,9 @@ export default {
     calendar: 'Calendar',
     from: 'From',
     to: 'To',
+    add_value: 'add value',
+    add_qualifier: 'add qualifier',
+    cancel: 'cancel',
     search: {
       section: {
         advanced: 'Advanced search',

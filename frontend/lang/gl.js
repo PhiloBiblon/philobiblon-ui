@@ -6,6 +6,9 @@ export default {
     calendar: 'Calendario',
     from: 'Dende',
     to: 'a',
+    add_value: 'valor engadido',
+    add_qualifier: 'engadir cualificativo',
+    cancel: 'cancelar',
     search: {
       section: {
         advanced: 'Busca avanzada',

@@ -7,6 +7,9 @@ export default {
     advanced_search: 'Busca avançada',
     from: 'De',
     to: 'para',
+    add_value: 'agregar valor',
+    add_qualifier: 'adicionar qualificador',
+    cancel: 'Cancelar',
     search: {
       section: {
         advanced: 'Busca avançada',
