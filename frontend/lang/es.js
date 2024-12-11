@@ -6,6 +6,9 @@ export default {
     calendar: 'Calendario',
     from: 'De',
     to: 'a',
+    add_value: 'añadir valor',
+    add_qualifier: 'añadir calificador',
+    cancel: 'cancelar',
     search: {
       section: {
         advanced: 'Búsqueda avanzada',
