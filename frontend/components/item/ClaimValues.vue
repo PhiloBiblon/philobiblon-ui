@@ -21,7 +21,7 @@
           <item-qualifier-value
             v-if="item.qualifiers?.[header.value]"
             :value="item.qualifiers[header.value][0]"
-            :claim="claim"
+            :claim="item"
           />
         </td>
       </tr>

@@ -7,8 +7,7 @@
       <v-container>
         <v-row dense class="justify-start">
           <v-col dense class="flex-shrink-1">
-            <item-util-edit-text-field
-              type="date"
+            <item-util-edit-date-picker-field
               :save="editValue"
               :value="valueToView_.value"
               style="width: 200px"
