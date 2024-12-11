@@ -2,8 +2,11 @@
   <div>
     <item-claim
       v-for="(claim, index) in claimsOrdered"
-      :key="'c-' + index"
+      :key="`c-${claim.property}-${index}-${claim.values.length}`"
+      :item="item"
       :claim="claim"
+      @delete-claim="deleteClaim"
+      @create-claim="createClaim"
     />
   </div>
 </template>
@@ -16,6 +19,10 @@ export default {
       type: String,
       default: null
     },
+    item: {
+      type: Object,
+      default: null
+    },
     claims: {
       type: Object,
       default: null
@@ -25,6 +32,11 @@ export default {
   data () {
     return {
       claimsOrdered: []
+    }
+  },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
     }
   },
 
@@ -78,6 +90,27 @@ export default {
         hasQualifiers: claims[key].some(value => value.qualifiers && Object.keys(value.qualifiers).length),
         qualifiersOrder: order[key]
       }))
+    },
+    createClaim (data) {
+      this.claimsOrdered.forEach((value, key) => {
+        if (value.property === data.property) {
+          this.claimsOrdered[key].values.push(data.claim)
+        }
+      })
+    },
+    deleteClaim (data) {
+      this.claimsOrdered.forEach((value, key) => {
+        if (value.property === data.mainsnak.property) {
+          if (this.claimsOrdered[key].values.length === 1) {
+            this.claimsOrdered.splice(key, 1)
+          } else {
+            const index = this.claimsOrdered[key].values.findIndex(item => item.id === data.id)
+            if (index !== -1) {
+              this.claimsOrdered[key].values.splice(index, 1)
+            }
+          }
+        }
+      })
     }
   }
 }
