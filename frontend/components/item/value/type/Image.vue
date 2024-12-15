@@ -38,6 +38,12 @@ export default {
   methods: {
     editValue (newValue, oldValue) {
       return this.save(this.getWikiBaseImageValue(newValue, oldValue))
+        .then((result) => {
+          return result
+        })
+        .catch((error) => {
+          this.$notification.error(error)
+        })
     },
     getWikiBaseImageValue (newValue, oldValue) {
       return {
