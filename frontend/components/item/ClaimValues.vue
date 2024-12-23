@@ -1,13 +1,14 @@
 <template>
   <v-data-table
+    v-if="claimValue"
     :headers="formattedHeaders"
-    :hide-default-header="showHeaders"
-    :items="claim.values"
+    :hide-default-header="!Object.values(headers).length"
+    :items="claimValue.values"
     hide-default-footer
-    :items-per-page="claim.values.length"
+    :items-per-page="claimValue.values.length"
     class="elevation-1"
   >
-    <template #item="{ item }">
+    <template #item="{ item, index }">
       <tr class="table-row">
         <td v-for="(header, key) in formattedHeaders" :key="header.value" class="table-cell">
           <item-value-base
@@ -17,12 +18,21 @@
             type="claim"
             :in-table="true"
             :column-width="header.width"
+            @delete-claim="$emit('delete-claim', $event)"
           />
           <item-qualifier-value
             v-if="item.qualifiers?.[header.value]"
             :value="item.qualifiers[header.value][0]"
-            type="qualifier"
             :claim="item"
+            @delete-qualifier="deleteQualifier($event, index)"
+          />
+        </td>
+      </tr>
+      <tr v-if="isUserLogged" class="table-row">
+        <td :colspan="formattedHeaders.length" class="table-cell-full-width">
+          <item-qualifier-create
+            :claim="item"
+            @create-qualifier="createQualifier($event, index)"
           />
         </td>
       </tr>
@@ -40,12 +50,13 @@ export default {
   },
   data () {
     return {
-      headers: []
+      headers: [],
+      claimValue: null
     }
   },
   computed: {
-    showHeaders () {
-      return !this.claim.hasQualifiers
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
     },
     formattedHeaders () {
       return [
@@ -59,16 +70,17 @@ export default {
     }
   },
   async mounted () {
+    this.claimValue = this.claim
     await this.getHeaders()
   },
   methods: {
     async getHeaders () {
       const qualifierKeys = new Set()
-      this.claim.values.forEach((item) => {
+      this.claimValue.values.forEach((item) => {
         Object.keys(item.qualifiers ?? {}).forEach(key => qualifierKeys.add(key))
       })
       const qualifiersKeysOrdered = Array.from(qualifierKeys).sort((a, b) => {
-        return this.claim.qualifiersOrder ? this.claim.qualifiersOrder.indexOf(a) - this.claim.qualifiersOrder.indexOf(b) : -1
+        return this.claimValue.qualifiersOrder ? this.claimValue.qualifiersOrder.indexOf(a) - this.claimValue.qualifiersOrder.indexOf(b) : -1
       })
       const headerPromises = Array.from(qualifiersKeysOrdered).map(async (property) => {
         const entity = await this.$wikibase.getEntity(property, this.$i18n.locale)
@@ -79,6 +91,19 @@ export default {
       })
 
       this.headers = await Promise.all(headerPromises)
+    },
+    async createQualifier (data, index) {
+      this.claimValue.values[index].qualifiers = data.claim.qualifiers
+
+      await this.getHeaders()
+    },
+    async deleteQualifier (data, index) {
+      const findIndex = this.claimValue.values[index].qualifiers[data.property].findIndex(item => item.id === data.id)
+      if (findIndex !== -1) {
+        delete this.claimValue.values[index].qualifiers[data.property]
+      }
+
+      await this.getHeaders()
     }
   }
 }

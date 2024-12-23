@@ -6,6 +6,10 @@ export default {
     calendar: 'Calendar',
     from: 'From',
     to: 'To',
+    add_value: 'add value',
+    add_qualifier: 'add qualifier',
+    add_statement: 'add statement',
+    cancel: 'cancel',
     search: {
       section: {
         advanced: 'Advanced search',
@@ -442,6 +446,7 @@ export default {
   },
   messages: {
     error: {
+      something_went_wrong: 'Something went wrong!',
       session: {
         expired: 'Session expired'
       },

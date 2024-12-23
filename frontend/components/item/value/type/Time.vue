@@ -13,6 +13,7 @@
               :value="valueToView_.value"
               style="width: 200px"
               class="ma-0 pa-0"
+              :delete="deleteValue"
             />
             <v-select
               v-model="valueToView_.calendar"
@@ -33,10 +34,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
@@ -44,11 +41,20 @@ export default {
     save: {
       type: Function,
       required: true
+    },
+    delete: {
+      type: Function,
+      required: true
     }
   },
   data () {
     return {
       valueToView_: { ...this.valueToView }
+    }
+  },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
     }
   },
   methods: {
@@ -67,6 +73,9 @@ export default {
     editValue (newValue, oldValue) {
       this.valueToView_.value = newValue
       return this.save(this.getTimeValue(newValue, oldValue))
+    },
+    deleteValue () {
+      return this.delete()
     },
     getTimeValue (newValue, oldValue) {
       return {

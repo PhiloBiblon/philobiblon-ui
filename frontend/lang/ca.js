@@ -6,6 +6,10 @@ export default {
     calendar: 'Calendari',
     from: 'Des de',
     to: 'a',
+    add_value: 'valor afegit',
+    add_qualifier: 'afegir qualificador',
+    add_statement: 'afegir declaració',
+    cancel: 'cancel·lar',
     search: {
       section: {
         advanced: 'Cerca avançada',
@@ -442,6 +446,7 @@ export default {
   },
   messages: {
     error: {
+      something_went_wrong: 'Alguna cosa va fallar!',
       session: {
         expired: 'Sessió expirada'
       },

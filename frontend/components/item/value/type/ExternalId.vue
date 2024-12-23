@@ -4,7 +4,7 @@
       <a :href="valueToView.url" target="_blank">{{ valueToView.value }}</a>
     </span>
     <div v-else>
-      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+      <item-util-edit-text-field :save="editValue" :delete="deleteValue" :value="valueToView_.value" />
     </div>
   </div>
 </template>
@@ -13,15 +13,19 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
     },
+    type: {
+      type: String,
+      required: true
+    },
     save: {
+      type: Function,
+      required: true
+    },
+    delete: {
       type: Function,
       required: true
     }
@@ -31,9 +35,17 @@ export default {
       valueToView_: { ...this.valueToView }
     }
   },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
+    }
+  },
   methods: {
     editValue (newValue, oldValue) {
       return this.save(this.getStringValue(newValue, oldValue))
+    },
+    deleteValue () {
+      return this.delete()
     },
     getStringValue (newValue, oldValue) {
       return {
