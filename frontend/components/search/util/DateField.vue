@@ -1,26 +1,40 @@
 <template>
   <div>
     <div class="flex-container">
-      <v-text-field
-        v-model="beginValue"
-        dense
-        :label="label + '. ' + $t('common.from')"
-        type="date"
-        :disabled="disabled"
-        @focus="showHint"
-        @blur="hideHint"
-        @change="beginDate"
-      />
-      <v-text-field
-        v-model="endValue"
-        dense
-        :label="$t('common.to')"
-        type="date"
-        :disabled="disabled"
-        @focus="showHint"
-        @blur="hideHint"
-        @change="endDate"
-      />
+      <v-menu v-model="activeBegin" offset-y :close-on-content-click="false">
+        <template #activator="{ on, attrs }">
+          <v-text-field
+            v-model="beginValue"
+            class="date-input"
+            :disabled="disabled"
+            :label="label + '. ' + $t('common.from')"
+            dense
+            v-bind="attrs"
+            v-on="on"
+            @focus="showHint"
+            @blur="hideHint"
+            @change="beginDate"
+          />
+        </template>
+        <v-date-picker v-model="beginValue" @input="onBeginDateSelect" />
+      </v-menu>
+      <v-menu v-model="activeEnd" offset-y :close-on-content-click="false">
+        <template #activator="{ on, attrs }">
+          <v-text-field
+            v-model="endValue"
+            class="date-input"
+            :disabled="disabled"
+            :label="$t('common.to')"
+            dense
+            v-bind="attrs"
+            v-on="on"
+            @blur="hideHint"
+            @focus="showHint"
+            @change="endDate"
+          />
+        </template>
+        <v-date-picker v-model="endValue" @input="onEndDateSelect" />
+      </v-menu>
     </div>
     <div v-if="isHintVisible" class="message-container">
       <v-tooltip max-width="40%" bottom ligth open-delay="200">
@@ -63,6 +77,8 @@ export default {
 
   data () {
     return {
+      activeEnd: false,
+      activeBegin: false,
       beginValue: null,
       endValue: null,
       isHintVisible: false
@@ -90,6 +106,12 @@ export default {
   },
 
   methods: {
+    onBeginDateSelect () {
+      this.activeBegin = false
+    },
+    onEndDateSelect () {
+      this.activeEnd = false
+    },
     showHint () {
       this.isHintVisible = true
     },
@@ -125,5 +147,14 @@ export default {
 
 .hint {
   color: rgba(0, 0, 0, 0.6);
+}
+
+.v-menu__content {
+  min-width: 0 !important;
+  width: 290px !important;
+}
+
+.date-input {
+  width: 165px;
 }
 </style>
