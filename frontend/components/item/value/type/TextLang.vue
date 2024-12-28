@@ -29,10 +29,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    isUserLogged: {
-      type: Boolean,
-      default: false
-    },
     valueToView: {
       type: Object,
       default: null
@@ -68,6 +64,11 @@ export default {
           value: 'gl'
         }
       ]
+    }
+  },
+  computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
     }
   },
   methods: {

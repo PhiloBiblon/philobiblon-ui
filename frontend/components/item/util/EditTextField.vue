@@ -19,7 +19,7 @@
         v-if="focussed"
         text
         icon
-        @click="edit"
+        @click.stop="edit"
       >
         <v-icon>mdi-check</v-icon>
       </v-btn>
@@ -27,9 +27,17 @@
         v-if="focussed"
         text
         icon
-        @click="restore"
+        @click.stop="restore"
       >
         <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-btn
+        v-if="focussed"
+        text
+        icon
+        @click.stop="deleteValue"
+      >
+        <v-icon>mdi-trash-can</v-icon>
       </v-btn>
     </template>
   </v-text-field>
@@ -50,6 +58,10 @@ export default {
     save: {
       type: Function,
       required: true
+    },
+    delete: {
+      type: Function,
+      default: null
     }
   },
   data () {
@@ -104,11 +116,29 @@ export default {
 
           this.$notification.error(error)
         })
-      this.$refs.myTextField.blur()
+      this.$refs.myTextField?.blur()
     },
 
     restore () {
       this.currentText = this.consolidatedText
+    },
+
+    async deleteValue () {
+      await this.delete()
+        .then((response) => {
+          if (response) {
+            if (!response.success) {
+              throw new Error(response.info)
+            }
+            this.$notification.success('Successfully deleted')
+          }
+        })
+        .catch((error) => {
+          if (error.message === 'query is undefined') {
+            error = 'Error: Session expired.'
+          }
+          this.$notification.error(error)
+        })
     }
   }
 }

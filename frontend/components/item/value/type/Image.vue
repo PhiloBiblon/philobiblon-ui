@@ -1,12 +1,11 @@
 <template>
-  <div>
-    <div v-if="!isUserLogged">
-      <a :href="valueToView.descriptionurl" target="_blank">
-        <v-img width="300" :src="valueToView.url" />
-      </a>
-    </div>
-    <item-util-edit-text-field v-else :key="consolidatedUrl" :save="editValue" :value="consolidatedUrl" />
-  </div>
+  <a
+    :href="valueToView.descriptionurl"
+    target="_blank"
+  ><v-img
+    width="300"
+    :src="valueToView.url"
+  /></a>
 </template>
 
 <script>
@@ -20,44 +19,6 @@ export default {
     save: {
       type: Function,
       required: true
-    }
-  },
-  data () {
-    return {
-      consolidatedUrl: null
-    }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    }
-  },
-  mounted () {
-    this.consolidatedUrl = this.getFileNameFromURL(this.valueToView.url)
-  },
-  methods: {
-    editValue (newValue, oldValue) {
-      return this.save(this.getWikiBaseImageValue(newValue, oldValue))
-        .then((result) => {
-          return result
-        })
-        .catch((error) => {
-          this.$notification.error(error)
-        })
-    },
-    getWikiBaseImageValue (newValue, oldValue) {
-      return {
-        validation: {
-          valid: true
-        },
-        values: {
-          newValue,
-          oldValue
-        }
-      }
-    },
-    getFileNameFromURL (url) {
-      return url.substring(url.lastIndexOf('/') + 1)
     }
   }
 }

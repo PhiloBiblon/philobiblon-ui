@@ -29,6 +29,14 @@
       >
         <v-icon>mdi-close</v-icon>
       </v-btn>
+      <v-btn
+        v-if="focussed"
+        text
+        icon
+        @click.stop="deleteValue"
+      >
+        <v-icon>mdi-trash-can</v-icon>
+      </v-btn>
     </template>
   </v-autocomplete>
 </template>
@@ -48,6 +56,10 @@ export default {
     save: {
       type: Function,
       required: true
+    },
+    delete: {
+      type: Function,
+      default: null
     }
   },
   data () {
@@ -104,7 +116,7 @@ export default {
               }
               this.consolidatedText = this.currentText
               this.$notification.success(this.$i18n.t('messages.success.updated'))
-              this.$refs.autocomplete.blur()
+              this.$refs.autocomplete?.blur()
             }
           })
           .catch((error) => {
@@ -125,6 +137,24 @@ export default {
       this.consolidatedOptions = [this.currentText]
       this.$emit('update-options', this.consolidatedOptions)
       this.$refs.autocomplete.blur()
+    },
+
+    async deleteValue () {
+      await this.delete()
+        .then((response) => {
+          if (response) {
+            if (!response.success) {
+              throw new Error(response.info)
+            }
+            this.$notification.success('Successfully deleted')
+          }
+        })
+        .catch((error) => {
+          if (error.message === 'query is undefined') {
+            error = 'Error: Session expired.'
+          }
+          this.$notification.error(error)
+        })
     }
   }
 }

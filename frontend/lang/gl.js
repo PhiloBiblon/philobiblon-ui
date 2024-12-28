@@ -6,6 +6,10 @@ export default {
     calendar: 'Calendario',
     from: 'Dende',
     to: 'a',
+    add_value: 'valor engadido',
+    add_qualifier: 'engadir cualificativo',
+    add_statement: 'engadir declaración',
+    cancel: 'cancelar',
     search: {
       section: {
         advanced: 'Busca avanzada',
@@ -442,6 +446,7 @@ export default {
   },
   messages: {
     error: {
+      something_went_wrong: 'Algo salió mal!',
       session: {
         expired: 'A sesión caducou'
       },

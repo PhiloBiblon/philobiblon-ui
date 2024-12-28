@@ -7,6 +7,10 @@ export default {
     advanced_search: 'Busca avançada',
     from: 'De',
     to: 'para',
+    add_value: 'agregar valor',
+    add_qualifier: 'adicionar qualificador',
+    add_statement: 'adicionar declaração',
+    cancel: 'Cancelar',
     search: {
       section: {
         advanced: 'Busca avançada',
@@ -442,6 +446,7 @@ export default {
   },
   messages: {
     error: {
+      something_went_wrong: 'Algo correu mal!',
       session: {
         expired: 'Sessão expirada'
       },
