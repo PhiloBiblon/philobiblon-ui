@@ -29,10 +29,8 @@
       >
         <v-icon>mdi-close</v-icon>
       </v-btn>
-    </template>
-    <template #append-outer>
       <v-btn
-        v-if="focussed && canDelete"
+        v-if="focussed"
         text
         icon
         @click.stop="deleteValue"
@@ -58,10 +56,6 @@ export default {
     save: {
       type: Function,
       required: true
-    },
-    canDelete: {
-      type: Boolean,
-      default: false
     },
     delete: {
       type: Function,

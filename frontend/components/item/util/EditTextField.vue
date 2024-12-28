@@ -19,7 +19,7 @@
         v-if="focussed"
         text
         icon
-        @click="edit"
+        @click.stop="edit"
       >
         <v-icon>mdi-check</v-icon>
       </v-btn>
@@ -27,12 +27,10 @@
         v-if="focussed"
         text
         icon
-        @click="restore"
+        @click.stop="restore"
       >
         <v-icon>mdi-close</v-icon>
       </v-btn>
-    </template>
-    <template #append-outer>
       <v-btn
         v-if="focussed"
         text

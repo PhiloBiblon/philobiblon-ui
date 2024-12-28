@@ -1,11 +1,11 @@
 <template>
   <v-data-table
-    v-if="claimValue"
+    v-if="claim"
     :headers="formattedHeaders"
     :hide-default-header="!Object.values(headers).length"
-    :items="claimValue.values"
+    :items="claim.values"
     hide-default-footer
-    :items-per-page="claimValue.values.length"
+    :items-per-page="claim.values.length"
     class="elevation-1"
   >
     <template #item="{ item, index }">
@@ -50,8 +50,7 @@ export default {
   },
   data () {
     return {
-      headers: [],
-      claimValue: null
+      headers: []
     }
   },
   computed: {
@@ -70,17 +69,16 @@ export default {
     }
   },
   async mounted () {
-    this.claimValue = this.claim
     await this.getHeaders()
   },
   methods: {
     async getHeaders () {
       const qualifierKeys = new Set()
-      this.claimValue.values.forEach((item) => {
+      this.claim.values.forEach((item) => {
         Object.keys(item.qualifiers ?? {}).forEach(key => qualifierKeys.add(key))
       })
       const qualifiersKeysOrdered = Array.from(qualifierKeys).sort((a, b) => {
-        return this.claimValue.qualifiersOrder ? this.claimValue.qualifiersOrder.indexOf(a) - this.claimValue.qualifiersOrder.indexOf(b) : -1
+        return this.claim.qualifiersOrder ? this.claim.qualifiersOrder.indexOf(a) - this.claim.qualifiersOrder.indexOf(b) : -1
       })
       const headerPromises = Array.from(qualifiersKeysOrdered).map(async (property) => {
         const entity = await this.$wikibase.getEntity(property, this.$i18n.locale)
@@ -93,14 +91,16 @@ export default {
       this.headers = await Promise.all(headerPromises)
     },
     async createQualifier (data, index) {
-      this.claimValue.values[index].qualifiers = data.claim.qualifiers
+      // eslint-disable-next-line vue/no-mutating-props
+      this.claim.values[index].qualifiers = data.claim.qualifiers
 
       await this.getHeaders()
     },
     async deleteQualifier (data, index) {
-      const findIndex = this.claimValue.values[index].qualifiers[data.property].findIndex(item => item.id === data.id)
+      const findIndex = this.claim.values[index].qualifiers[data.property].findIndex(item => item.id === data.id)
       if (findIndex !== -1) {
-        delete this.claimValue.values[index].qualifiers[data.property]
+        // eslint-disable-next-line vue/no-mutating-props
+        delete this.claim.values[index].qualifiers[data.property]
       }
 
       await this.getHeaders()
