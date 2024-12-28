@@ -10,7 +10,7 @@
   >
     <template #item="{ item, index }">
       <tr class="table-row">
-        <td v-for="(header, key) in formattedHeaders" :key="header.value" class="table-cell">
+        <td v-for="(header, key) in formattedHeaders" :key="header.value" :class="isUserLogged?'table-cell-value-edit':'table-cell'">
           <item-value-base
             v-if="!key"
             :claim="item"
@@ -28,8 +28,8 @@
           />
         </td>
       </tr>
-      <tr v-if="isUserLogged" class="table-row">
-        <td :colspan="formattedHeaders.length" class="table-cell-full-width">
+      <tr v-if="isUserLogged" class="table-row-edit">
+        <td :colspan="formattedHeaders.length" class="table-cell-btn-edit">
           <item-qualifier-create
             :claim="item"
             @create-qualifier="createQualifier($event, index)"
@@ -126,9 +126,24 @@ export default {
   background-color: rgb(247, 245, 245);
 }
 
+.table-row-edit {
+  border: none;
+  background-color: rgb(247, 245, 245);
+}
+
 .table-cell {
   padding: 4px;
   border: none;
+}
+
+.table-cell-value-edit {
+  padding: 4px;
+  border-bottom: none !important;
+}
+
+.table-cell-btn-edit {
+  border-top: none !important;
+  height: 30px !important;
 }
 
 .table-cell:last-child {
@@ -137,5 +152,9 @@ export default {
 
 .table-row:hover {
   background-color: #f0f0f0;
+}
+
+.table-row-edit:hover {
+  background-color: rgb(247, 245, 245) !important;
 }
 </style>

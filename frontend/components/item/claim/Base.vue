@@ -7,7 +7,7 @@
     </v-row>
     <v-container class="claim-values">
       <item-claim-values :claim="claim" @delete-claim="$emit('delete-claim', $event)" />
-      <item-claim-create
+      <item-claim-add-value
         v-if="isUserLogged"
         :key="claim.values.length"
         :item="item"

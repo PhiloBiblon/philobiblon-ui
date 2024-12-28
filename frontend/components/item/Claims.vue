@@ -1,6 +1,6 @@
 <template>
   <div>
-    <item-claim
+    <item-claim-base
       v-for="(claim, index) in claimsOrdered"
       :key="`c-${claim.property}-${index}-${claim.values.length}`"
       :item="item"
@@ -8,7 +8,7 @@
       @delete-claim="deleteClaim"
       @create-claim="createClaim"
     />
-    <item-statement-create v-if="isUserLogged" :item="item" @update-claims="updateClaims" />
+    <item-claim-create v-if="isUserLogged" :item="item" @update-claims="updateClaims" />
   </div>
 </template>
 

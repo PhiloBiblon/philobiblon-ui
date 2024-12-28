@@ -45,7 +45,7 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-row class="back pr-5 mb-2 mt-2" justify="end">
+    <v-row class="back pr-5" justify="end">
       <a role="button" class="link" @click="addQualifier">
         <div class="align-center">
           <v-icon color="primary">

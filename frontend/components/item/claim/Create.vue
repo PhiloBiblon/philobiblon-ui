@@ -1,42 +1,67 @@
 <template>
-  <v-container class="claim">
-    <v-row v-if="showClaimInput" class="even-row" dense>
-      <v-col>
-        <item-util-edit-select-field
-          v-if="isAutocomplete"
-          :options="claims"
-          :save="createClaim"
-          @input="oninput($event)"
-        />
-        <item-util-edit-text-field
-          v-else
-          :options="claims"
-          :save="createClaim"
-          @input="oninput($event)"
-        />
+  <div class="statement">
+    <v-row
+      v-for="(statement, key) in statements"
+      :key="key"
+      align="center"
+      class="even-row"
+      no-gutters
+      dense
+    >
+      <v-col class="p-0 pr-3">
+        <v-subheader class="statement-header grey--text">
+          <v-autocomplete
+            v-model="statement.property"
+            required
+            :items="properties[key]"
+            item-text="label"
+            return-object
+            label="Property"
+            variant="outlined"
+            @update:search-input="onInput($event, 'property', key)"
+          />
+        </v-subheader>
       </v-col>
+      <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
+        <v-btn :disabled="!canCreate(key)" text icon @click.stop="createStatement(key)">
+          <v-icon>mdi-check</v-icon>
+        </v-btn>
+        <v-btn text icon @click.stop="removeStatement(key)">
+          <v-icon>mdi-trash-can</v-icon>
+        </v-btn>
+      </v-col>
+      <v-container class="statement-values">
+        <div v-if="statement.property">
+          <v-autocomplete
+            v-if="isAutocomplete(key)"
+            v-model="statement.value"
+            :items="propertyValues[key]"
+            item-text="label"
+            return-object
+            required
+            variant="outlined"
+            @update:search-input="onInput($event, 'item', key)"
+          />
+          <v-text-field
+            v-else
+            v-model="statement.value"
+            :type="fieldType(key)"
+          />
+        </div>
+        <item-qualifier-create :key="statement?.property?.id" @update-qualifiers="updateQualifiers($event, key)" />
+      </v-container>
     </v-row>
-    <v-row class="back pr-5 mt-2 pb-2" justify="end">
-      <a role="button" class="link" @click="showClaimInput = !showClaimInput">
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <div class="align-center">
-              <v-icon v-if="!showClaimInput" color="primary" v-bind="attrs" v-on="on">
-                mdi-plus
-              </v-icon>
-              <v-icon v-else color="primary" v-bind="attrs" v-on="on">
-                mdi-minus
-              </v-icon>
-              <span v-if="!showClaimInput">{{ $t("common.add_value") }}</span>
-              <span v-else>{{ $t("common.cancel") }}</span>
-            </div>
-          </template>
-          <span v-if="!showClaimInput">{{ $t("common.add_value") }}</span>
-          <span v-else>{{ $t("common.cancel") }}</span>
-        </v-tooltip>
+    <v-row class="back pr-5 mb-2 mt-2" justify="end">
+      <a role="button" class="link" @click="addStatement">
+        <div class="align-center">
+          <v-icon color="primary">
+            mdi-plus
+          </v-icon>
+          <span>{{ $t("common.add_statement") }}</span>
+        </div>
       </a>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -45,62 +70,116 @@ export default {
     item: {
       type: Object,
       default: null
-    },
-    claim: {
-      type: Object,
-      default: null
     }
   },
   data () {
     return {
-      claims: [],
-      showClaimInput: false
-    }
-  },
-  computed: {
-    isAutocomplete () {
-      return this.claim.values[0].mainsnak.datatype === 'wikibase-item'
+      statements: [],
+      properties: [],
+      propertyValues: []
     }
   },
   methods: {
-    oninput (value) {
+    canCreate (index) {
+      const statement = this.statements[index]
+
+      if (!statement.property || !statement.value) {
+        return false
+      }
+
+      return statement.qualifiers.every(
+        qualifier => qualifier.property && qualifier.value
+      )
+    },
+    addStatement () {
+      this.statements.push({
+        value: null,
+        property: null,
+        qualifiers: []
+      })
+    },
+    removeStatement (index) {
+      this.statements.splice(index, 1)
+      this.properties.splice(index, 1)
+      this.propertyValues.splice(index, 1)
+    },
+    isAutocomplete (index) {
+      return this.statements[index].property.datatype === 'wikibase-item'
+    },
+    fieldType (index) {
+      return this.statements[index].property.datatype !== 'time' ? 'text' : 'date'
+    },
+    async onInput (value, type, index) {
       if (value && typeof value === 'string') {
-        this.handleSearchChange(value)
+        const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale, type)
+        if (search && search.length) {
+          if (type === 'property') {
+            this.$set(this.properties, index, search)
+          } else {
+            this.$set(this.propertyValues, index, search)
+          }
+        }
       }
     },
-    async handleSearchChange (value) {
-      const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale)
-      if (search && search.length) {
-        this.claims = search
-      }
+    async createStatement (index) {
+      return await this.createClaim(index).then((res) => {
+        if (res.success) {
+          this.updateClaims(res)
+          this.removeStatement(index)
+          this.$notification.success(this.$t('messages.success.updated'))
+        } else {
+          this.$notification.error(this.$t('messages.error.something_went_wrong'))
+        }
+      }).catch((error) => {
+        this.$notification.error(error.message)
+      })
     },
-    async createClaim (value) {
-      const res = await this.$wikibase.getWbEdit().claim.add({
+    async createClaim (index) {
+      const { property, value, qualifiers: rawQualifiers } = this.statements[index]
+
+      const formattedQualifiers = Object.fromEntries(
+        (rawQualifiers || [])
+          .filter(q => q.property && q.value)
+          .map(({ property, value }) => [property, { value }])
+      )
+
+      return await this.$wikibase.getWbEdit().claim.create({
         id: this.item.id,
+        property: property.id,
         value: value.id ?? value,
-        property: this.claim.property
+        qualifiers: Object.keys(formattedQualifiers).length ? formattedQualifiers : undefined
       }, this.$store.getters['auth/getRequestConfig'])
-      this.updateClaims(res)
-      return res
+    },
+    updateQualifiers (data, key) {
+      this.statements[key].qualifiers = data.map((qualifier) => {
+        return {
+          property: qualifier?.property?.id,
+          value: qualifier?.value?.id ?? qualifier.value
+        }
+      })
     },
     updateClaims (res) {
       const data = {
-        claim: res.claim,
-        property: this.claim.property
+        values: [res.claim],
+        hasQualifiers: res.claim?.qualifiers,
+        property: res.claim.mainsnak.property,
+        qualifiersOrder: res.claim['qualifiers-order'] ?? false
       }
-      this.$emit('create-claim', data)
+      this.$emit('update-claims', data)
     }
   }
 }
 </script>
+
 <style scoped>
-.claim {
+.statement {
   padding: 0;
+  margin-top: 25px;
 }
-.even-row {
+.statement-header {
+  font-size: 16px;
+}
+.statement-values {
   background-color: rgb(247, 245, 245);
-  padding: 3px;
-  margin: 5px;
-  border-radius: 5px;
 }
 </style>
