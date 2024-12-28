@@ -20,7 +20,11 @@
       </v-text-field>
     </template>
 
-    <v-date-picker v-model="currentText" @input="onDateSelect" />
+    <v-date-picker
+      v-model="currentText"
+      min="1000-01-01"
+      @input="onDateSelect"
+    />
   </v-menu>
 </template>
 

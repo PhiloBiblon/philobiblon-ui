@@ -9,14 +9,19 @@
             :disabled="disabled"
             :label="label + '. ' + $t('common.from')"
             dense
+            readonly
             v-bind="attrs"
             v-on="on"
             @focus="showHint"
             @blur="hideHint"
-            @change="beginDate"
           />
         </template>
-        <v-date-picker v-model="beginValue" @input="onBeginDateSelect" />
+        <v-date-picker
+          v-model="beginValue"
+          min="1000-01-01"
+          @input="onBeginDateSelect"
+          @change="beginDate"
+        />
       </v-menu>
       <v-menu v-model="activeEnd" offset-y :close-on-content-click="false">
         <template #activator="{ on, attrs }">
@@ -26,14 +31,19 @@
             :disabled="disabled"
             :label="$t('common.to')"
             dense
+            readonly
             v-bind="attrs"
             v-on="on"
             @blur="hideHint"
             @focus="showHint"
-            @change="endDate"
           />
         </template>
-        <v-date-picker v-model="endValue" @input="onEndDateSelect" />
+        <v-date-picker
+          v-model="endValue"
+          min="1000-01-01"
+          @input="onEndDateSelect"
+          @change="endDate"
+        />
       </v-menu>
     </div>
     <div v-if="isHintVisible" class="message-container">
