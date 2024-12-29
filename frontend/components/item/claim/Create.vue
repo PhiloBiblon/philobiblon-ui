@@ -1,7 +1,7 @@
 <template>
-  <div class="statement">
+  <div class="claim">
     <v-row
-      v-for="(statement, key) in statements"
+      v-for="(claim, key) in claims"
       :key="key"
       align="center"
       class="even-row"
@@ -9,55 +9,65 @@
       dense
     >
       <v-col class="p-0 pr-3">
-        <v-subheader class="statement-header grey--text">
+        <v-subheader class="claim-header grey--text">
           <v-autocomplete
-            v-model="statement.property"
+            v-model="claim.property"
             required
             :items="properties[key]"
             item-text="label"
             return-object
-            label="Property"
+            :label="$t('common.property')"
             variant="outlined"
             @update:search-input="onInput($event, 'property', key)"
           />
         </v-subheader>
       </v-col>
       <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
-        <v-btn :disabled="!canCreate(key)" text icon @click.stop="createStatement(key)">
+        <v-btn :disabled="!canCreate(key)" text icon @click.stop="addClaim(key)">
           <v-icon>mdi-check</v-icon>
         </v-btn>
-        <v-btn text icon @click.stop="removeStatement(key)">
+        <v-btn text icon @click.stop="removeClaim(key)">
           <v-icon>mdi-trash-can</v-icon>
         </v-btn>
       </v-col>
-      <v-container class="statement-values">
-        <div v-if="statement.property">
-          <v-autocomplete
-            v-if="isAutocomplete(key)"
-            v-model="statement.value"
-            :items="propertyValues[key]"
-            item-text="label"
-            return-object
-            required
-            variant="outlined"
-            @update:search-input="onInput($event, 'item', key)"
-          />
-          <v-text-field
-            v-else
-            v-model="statement.value"
-            :type="fieldType(key)"
-          />
+      <v-container class="claim-values">
+        <div v-if="claim.property">
+          <div v-if="fieldType(key) === 'autocomplete'">
+            <v-autocomplete
+              v-model="claim.value"
+              :items="propertyValues[key]"
+              item-text="label"
+              return-object
+              required
+              variant="outlined"
+              @update:search-input="onInput($event, 'item', key)"
+            />
+          </div>
+          <div v-if="fieldType(key) === 'date'">
+            <item-util-edit-date-picker-field
+              :value="claim.value"
+              style="width: 200px"
+              class="ma-0 pa-0"
+              @new-value="claim.value = $event"
+            />
+          </div>
+          <div v-if="fieldType(key) === 'text'">
+            <v-text-field
+              v-model="claim.value"
+              :type="fieldType(key)"
+            />
+          </div>
         </div>
-        <item-qualifier-create :key="statement?.property?.id" @update-qualifiers="updateQualifiers($event, key)" />
+        <item-qualifier-create :key="claim?.property?.id" @update-qualifiers="updateQualifiers($event, key)" />
       </v-container>
     </v-row>
     <v-row class="back pr-5 mb-2 mt-2" justify="end">
-      <a role="button" class="link" @click="addStatement">
+      <a role="button" class="link" @click="addNewClaim">
         <div class="align-center">
           <v-icon color="primary">
             mdi-plus
           </v-icon>
-          <span>{{ $t("common.add_statement") }}</span>
+          <span>{{ $t("common.add_claim") }}</span>
         </div>
       </a>
     </v-row>
@@ -74,40 +84,44 @@ export default {
   },
   data () {
     return {
-      statements: [],
+      claims: [],
       properties: [],
       propertyValues: []
     }
   },
   methods: {
     canCreate (index) {
-      const statement = this.statements[index]
+      const claim = this.claims[index]
 
-      if (!statement.property || !statement.value) {
+      if (!claim.property || !claim.value) {
         return false
       }
 
-      return statement.qualifiers.every(
+      return claim.qualifiers.every(
         qualifier => qualifier.property && qualifier.value
       )
     },
-    addStatement () {
-      this.statements.push({
+    addNewClaim () {
+      this.claims.push({
         value: null,
         property: null,
         qualifiers: []
       })
     },
-    removeStatement (index) {
-      this.statements.splice(index, 1)
+    removeClaim (index) {
+      this.claims.splice(index, 1)
       this.properties.splice(index, 1)
       this.propertyValues.splice(index, 1)
     },
-    isAutocomplete (index) {
-      return this.statements[index].property.datatype === 'wikibase-item'
-    },
     fieldType (index) {
-      return this.statements[index].property.datatype !== 'time' ? 'text' : 'date'
+      switch (this.claims[index].property.datatype) {
+        case 'wikibase-item':
+          return 'autocomplete'
+        case 'time':
+          return 'date'
+        default:
+          return 'text'
+      }
     },
     async onInput (value, type, index) {
       if (value && typeof value === 'string') {
@@ -121,11 +135,11 @@ export default {
         }
       }
     },
-    async createStatement (index) {
+    async addClaim (index) {
       return await this.createClaim(index).then((res) => {
         if (res.success) {
           this.updateClaims(res)
-          this.removeStatement(index)
+          this.removeClaim(index)
           this.$notification.success(this.$t('messages.success.updated'))
         } else {
           this.$notification.error(this.$t('messages.error.something_went_wrong'))
@@ -135,7 +149,7 @@ export default {
       })
     },
     async createClaim (index) {
-      const { property, value, qualifiers: rawQualifiers } = this.statements[index]
+      const { property, value, qualifiers: rawQualifiers } = this.claims[index]
 
       const formattedQualifiers = Object.fromEntries(
         (rawQualifiers || [])
@@ -151,7 +165,7 @@ export default {
       }, this.$store.getters['auth/getRequestConfig'])
     },
     updateQualifiers (data, key) {
-      this.statements[key].qualifiers = data.map((qualifier) => {
+      this.claims[key].qualifiers = data.map((qualifier) => {
         return {
           property: qualifier?.property?.id,
           value: qualifier?.value?.id ?? qualifier.value
@@ -172,14 +186,14 @@ export default {
 </script>
 
 <style scoped>
-.statement {
+.claim {
   padding: 0;
   margin-top: 25px;
 }
-.statement-header {
+.claim-header {
   font-size: 16px;
 }
-.statement-values {
+.claim-values {
   background-color: rgb(247, 245, 245);
 }
 </style>

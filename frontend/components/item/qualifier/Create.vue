@@ -2,7 +2,7 @@
   <div class="create-qualifier">
     <v-row
       v-for="(qualifier, key) in qualifiers"
-      v-bind:key="key"
+      :key="key"
       align="center"
       class="even-row"
       no-gutters
@@ -11,6 +11,7 @@
       <v-col class="p-0 pr-3">
         <v-autocomplete
           v-model="qualifier.property"
+          :label="$t('common.property')"
           required
           return-object
           :items="properties[key]"
@@ -19,33 +20,46 @@
           @update:search-input="onInput($event, 'property', key)"
         />
       </v-col>
-      <v-col v-if="qualifier.property" class="p-0 pr-3">
-        <v-autocomplete
-          v-if="isAutocomplete(key)"
-          v-model="qualifier.value"
-          required
-          return-object
-          :items="propertyValues[key]"
-          item-text="label"
-          variant="outlined"
-          @update:search-input="onInput($event, 'item', key)"
-        />
-        <v-text-field
-          v-else
-          v-model="qualifier.value"
-          :type="fieldType(key)"
-        />
+      <v-col class="p-0 pr-3">
+        <div v-if="qualifier.property">
+          <div v-if="fieldType(key) === 'autocomplete'">
+            <v-autocomplete
+              v-model="qualifier.value"
+              :label="$t('common.value')"
+              required
+              return-object
+              :items="propertyValues[key]"
+              item-text="label"
+              variant="outlined"
+              @update:search-input="onInput($event, 'item', key)"
+            />
+          </div>
+          <div v-if="fieldType(key) === 'date'">
+            <item-util-edit-date-picker-field
+              :value="qualifier.value"
+              style="width: 200px"
+              class="ma-0 pa-0"
+              @new-value="qualifier.value = $event"
+            />
+          </div>
+          <div v-if="fieldType(key) === 'text'">
+            <v-text-field
+              v-model="qualifier.value"
+              :label="$t('common.value')"
+            />
+          </div>
+        </div>
       </v-col>
       <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
         <v-btn v-if="claim && qualifier.property && qualifier.value" text icon @click.stop="createQualifier(key)">
           <v-icon>mdi-check</v-icon>
         </v-btn>
-        <v-btn text icon @click.stop="removeQualifier(key)">
+        <v-btn v-if="claim" text icon @click.stop="removeQualifier(key)">
           <v-icon>mdi-trash-can</v-icon>
         </v-btn>
       </v-col>
     </v-row>
-    <v-row class="back pr-5" justify="end">
+    <v-row class="add-qualifier pr-5" justify="end">
       <a role="button" class="link" @click="addQualifier">
         <div class="align-center">
           <v-icon color="primary">
@@ -95,11 +109,15 @@ export default {
       this.properties.splice(index, 1)
       this.propertyValues.splice(index, 1)
     },
-    isAutocomplete (index) {
-      return this.qualifiers[index].property.datatype === 'wikibase-item'
-    },
     fieldType (index) {
-      return this.qualifiers[index].property.datatype !== 'time' ? 'text' : 'date'
+      switch (this.qualifiers[index].property.datatype) {
+        case 'wikibase-item':
+          return 'autocomplete'
+        case 'time':
+          return 'date'
+        default:
+          return 'text'
+      }
     },
     async onInput (value, type, index) {
       if (value && typeof value === 'string') {
@@ -140,6 +158,9 @@ export default {
 }
 </script>
 <style scoped>
+.add-qualifier {
+  margin-bottom: 5px;
+}
 .create-qualifier {
   padding: 0;
 }

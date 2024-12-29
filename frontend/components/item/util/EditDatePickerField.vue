@@ -3,6 +3,7 @@
     <template #activator="{ on, attrs }">
       <v-text-field
         v-model="currentText"
+        :label="$t('common.value')"
         class="date-input"
         readonly
         v-bind="attrs"
@@ -10,11 +11,29 @@
         @focus="focus"
       >
         <template #append>
-          <v-btn v-if="focussed && currentText !== consolidatedText" text icon @click="edit">
+          <v-btn
+            v-if="canBeSaved && focussed && currentText !== consolidatedText"
+            text
+            icon
+            @click="edit"
+          >
             <v-icon>mdi-check</v-icon>
           </v-btn>
-          <v-btn v-if="focussed && currentText !== consolidatedText" text icon @click="restore">
+          <v-btn
+            v-if="canBeSaved && focussed && currentText !== consolidatedText"
+            text
+            icon
+            @click="restore"
+          >
             <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-btn
+            v-if="canBeDeleted && focussed && currentText !== consolidatedText"
+            text
+            icon
+            @click.stop="deleteValue"
+          >
+            <v-icon>mdi-trash-can</v-icon>
           </v-btn>
         </template>
       </v-text-field>
@@ -37,7 +56,11 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
+    },
+    delete: {
+      type: Function,
+      default: null
     }
   },
   data () {
@@ -48,9 +71,17 @@ export default {
       isDatePickerActive: false
     }
   },
+  computed: {
+    canBeDeleted () {
+      return this.delete
+    },
+    canBeSaved () {
+      return this.save
+    }
+  },
   watch: {
     currentText (newVal, oldVal) {
-      if (newVal !== oldVal) {
+      if (oldVal != null && newVal !== oldVal) {
         this.focussed = true
       }
     }
@@ -65,6 +96,8 @@ export default {
     },
     onDateSelect () {
       this.isDatePickerActive = false
+      this.focussed = false
+      this.$emit('new-value', this.currentText)
     },
     async edit () {
       try {
@@ -85,6 +118,23 @@ export default {
     restore () {
       this.currentText = this.consolidatedText
       this.focussed = false
+    },
+    async deleteValue () {
+      await this.delete()
+        .then((response) => {
+          if (response) {
+            if (!response.success) {
+              throw new Error(response.info)
+            }
+            this.$notification.success('Successfully deleted')
+          }
+        })
+        .catch((error) => {
+          if (error.message === 'query is undefined') {
+            error = 'Error: Session expired.'
+          }
+          this.$notification.error(error)
+        })
     }
   }
 }

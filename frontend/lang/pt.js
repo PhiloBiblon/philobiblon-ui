@@ -1,5 +1,7 @@
 export default {
   common: {
+    property: 'Propiedade',
+    value: 'Valor',
     no_data: 'Nenhum dado disponível',
     loading: 'Carregando..',
     language: 'Linguagem',
@@ -9,7 +11,7 @@ export default {
     to: 'para',
     add_value: 'agregar valor',
     add_qualifier: 'adicionar qualificador',
-    add_statement: 'adicionar declaração',
+    add_claim: 'adicionar declaração',
     cancel: 'Cancelar',
     search: {
       section: {

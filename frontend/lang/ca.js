@@ -1,5 +1,7 @@
 export default {
   common: {
+    property: 'Propietat',
+    value: 'Valor',
     no_data: 'No hi ha dades disponibles',
     loading: 'Carregant..',
     language: 'Idioma',
@@ -8,7 +10,7 @@ export default {
     to: 'a',
     add_value: 'valor afegit',
     add_qualifier: 'afegir qualificador',
-    add_statement: 'afegir declaració',
+    add_claim: 'afegir declaració',
     cancel: 'cancel·lar',
     search: {
       section: {
