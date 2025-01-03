@@ -82,7 +82,7 @@ export default {
               WHERE { 
                 ?item wdt:P994 ?pbid .
                 {{langFilter}}
-                FILTER regex(?pbid, 'INSTITUTIONS\\\\*CLASS\\\\*') .
+                FILTER regex(?pbid, 'INSTITUTIONS\\\\*(CLASS|TYPE)\\\\*') .
               }
               ORDER BY ?label
               `

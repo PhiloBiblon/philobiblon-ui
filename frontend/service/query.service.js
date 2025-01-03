@@ -114,9 +114,17 @@ export class QueryService {
     if (form.input.institution_type && form.input.institution_type.value) {
       filters +=
         `
-        ?item wdt:P2 wd:${form.input.institution_type.value.item} .\n
+        OPTIONAL {
+          ?item wdt:P2 ?institution_class .
+        }
+        OPTIONAL {
+          ?item p:P2 ?institution_type_stat .
+          ?institution_type_stat pq:P319 ?institution_type .
+        }
+        FILTER (?institution_class = wd:${form.input.institution_type.value.item} || ?institution_type = wd:${form.input.institution_type.value.item})
         `
     }
+
     return filters
   }
 
