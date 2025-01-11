@@ -183,63 +183,77 @@ export class WikibaseService {
         }
       })
     } else if (datatype === 'wikibase-item') {
-      return this.getEntity(datavalue.id, lang).then((entity) => {
-        const label = this.getValueByLang(entity.labels, lang)
-        if (this.isEntityFromPB(entity)) {
-          return {
-            property,
-            value: label.value,
-            language: label.language,
-            type: 'entity',
-            item: datavalue.id,
-            pbid: this.getPBID(entity)
+      if (datavalue) {
+        return this.getEntity(datavalue.id, lang).then((entity) => {
+          const label = this.getValueByLang(entity.labels, lang)
+          if (this.isEntityFromPB(entity)) {
+            return {
+              property,
+              value: label.value,
+              language: label.language,
+              type: 'entity',
+              item: datavalue.id,
+              pbid: this.getPBID(entity)
+            }
+          } else {
+            return {
+              property,
+              value: label.value,
+              language: label.language,
+              type: 'entity',
+              item: datavalue.id
+            }
           }
-        } else {
-          return {
-            property,
-            value: label.value,
-            language: label.language,
-            type: 'entity',
-            item: datavalue.id
-          }
+        })
+      } else {
+        return {
+          property,
+          value: '',
+          language: null,
+          type: 'entity',
+          item: null
         }
-      })
+      }
     } else if (datatype === 'string') {
       return { value: datavalue, type: 'text' }
     } else if (datatype === 'monolingualtext') {
       return {
-        value: datavalue.text,
-        language: datavalue.language,
+        value: datavalue?.text,
+        language: datavalue?.language,
         type: 'text-lang',
         showLanguage: true
       }
     } else if (datatype === 'time') {
-      let isJulian = null
-      if (
-        datavalue.calendarmodel === 'http://www.wikidata.org/entity/Q1985727'
-      ) {
+      let isJulian = false
+      if (datavalue?.calendarmodel === 'http://www.wikidata.org/entity/Q1985727') {
         isJulian = false
-      } else if (
-        datavalue.calendarmodel === 'http://www.wikidata.org/entity/Q1985786'
-      ) {
+      } else if (datavalue?.calendarmodel === 'http://www.wikidata.org/entity/Q1985786') {
         isJulian = true
       }
       return {
-        value: this.wbk.wikibaseTimeToSimpleDay(datavalue),
+        value: (datavalue === null) ? null : this.wbk.wikibaseTimeToSimpleDay(datavalue),
         calendar: isJulian ? 'Julian' : 'Gregorian',
         type: 'time'
       }
     } else if (datatype === 'commonsMedia') {
-      return fetch(COMMONS_WIKIMEDIA_URL_ENDPOINT.replace('$file', datavalue))
-        .then(response => response.json())
-        .then((data) => {
-          const imageinfo = data.query.pages[-1].imageinfo[0]
-          return {
-            descriptionurl: imageinfo.descriptionurl,
-            url: imageinfo.url,
-            type: 'image'
-          }
-        })
+      if (datavalue) {
+        return fetch(COMMONS_WIKIMEDIA_URL_ENDPOINT.replace('$file', datavalue))
+          .then(response => response.json())
+          .then((data) => {
+            const imageinfo = data.query.pages[-1].imageinfo[0]
+            return {
+              descriptionurl: imageinfo.descriptionurl,
+              url: imageinfo.url,
+              type: 'image'
+            }
+          })
+      } else {
+        return {
+          descriptionurl: '',
+          url: '',
+          type: 'image'
+        }
+      }
     } else if (datatype === 'url' && property === PROPERTY_NOTES) {
       const notesApiUrl =
         datavalue.replace('/wiki/', '/w/api.php?action=parse&page=') +

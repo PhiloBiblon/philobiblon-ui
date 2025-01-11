@@ -7,7 +7,13 @@
       <v-container>
         <v-row dense class="justify-start">
           <v-col dense class="flex-shrink-1">
-            <item-util-edit-text-field :save="editValue" :value="valueToView_.value" />
+            <item-util-edit-text-field
+              :value="valueToView_.value"
+              :save="editValue"
+              :delete="deleteValue"
+              :mode="mode"
+              @new-value="newTextValue"
+            />
             <v-select
               v-model="valueToView_.language"
               item-text="title"
@@ -16,7 +22,7 @@
               :label="$t('common.language')"
               class="ma-0 pa-0"
               style="width: 100px"
-              @change="editLanguage"
+              @change="onChangeLanguage"
             />
           </v-col>
         </v-row>
@@ -35,7 +41,15 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
+    },
+    delete: {
+      type: Function,
+      default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
@@ -69,21 +83,31 @@ export default {
   computed: {
     isUserLogged () {
       return this.$store.state.auth.isLogged
+    },
+    isEditable () {
+      return this.mode === 'edit'
     }
   },
   methods: {
-    editLanguage (_newLanguage) {
-      // We are only changing the language, so the old and new values (text) are the same.
-      this.save(this.getMonolingualTextValue(this.valueToView_.value, this.valueToView_.value))
-        .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
+    newTextValue (value) {
+      this.valueToView_.value = value
+      this.$emit('new-value', this.getMonolingualTextNewValue(this.valueToView_.value))
+    },
+    onChangeLanguage (_newLanguage) {
+      if (this.isEditable) {
+        // We are only changing the language, so the old and new values (text) are the same.
+        this.save(this.getMonolingualTextValue(this.valueToView_.value, this.valueToView_.value))
+          .then((response) => {
+            if (response) {
+              if (!response.success) {
+                throw new Error(response.info)
+              }
+              this.consolidatedLanguage = this.valueToView_.language
+              this.$notification.success(this.$i18n.t('messages.success.updated'))
             }
-            this.consolidatedLanguage = this.valueToView_.language
-            this.$notification.success(this.$i18n.t('messages.success.updated'))
-          }
-        })
+          })
+      }
+      this.$emit('new-value', this.getMonolingualTextNewValue(this.valueToView_.value))
     },
     editValue (newValue, oldValue) {
       this.valueToView_.value = newValue
@@ -99,12 +123,18 @@ export default {
             text: oldValue,
             language: this.consolidatedLanguage
           },
-          newValue: {
-            text: newValue,
-            language: this.valueToView_.language
-          }
+          newValue: this.getMonolingualTextNewValue(newValue)
         }
       }
+    },
+    getMonolingualTextNewValue (value) {
+      return {
+        text: value,
+        language: this.valueToView_.language
+      }
+    },
+    deleteValue () {
+      return this.delete()
     }
   }
 }

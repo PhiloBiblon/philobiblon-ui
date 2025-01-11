@@ -1,18 +1,23 @@
 <template>
-  <v-menu v-model="isDatePickerActive" offset-y :close-on-content-click="false">
+  <v-menu
+    v-model="isDatePickerActive"
+    offset-y
+    :close-on-content-click="false"
+  >
     <template #activator="{ on, attrs }">
       <v-text-field
         v-model="currentText"
-        :label="$t('common.value')"
+        :label="$t('common.date')"
         class="date-input"
         readonly
         v-bind="attrs"
         v-on="on"
         @focus="focus"
+        @blur="blur"
       >
         <template #append>
           <v-btn
-            v-if="canBeSaved && focussed && currentText !== consolidatedText"
+            v-if="isEditable && currentText !== consolidatedText"
             text
             icon
             @click="edit"
@@ -20,7 +25,7 @@
             <v-icon>mdi-check</v-icon>
           </v-btn>
           <v-btn
-            v-if="canBeSaved && focussed && currentText !== consolidatedText"
+            v-if="isEditable && currentText !== consolidatedText"
             text
             icon
             @click="restore"
@@ -28,7 +33,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-btn
-            v-if="canBeDeleted && focussed && currentText !== consolidatedText"
+            v-if="isEditable && focussed"
             text
             icon
             @click.stop="deleteValue"
@@ -61,6 +66,10 @@ export default {
     delete: {
       type: Function,
       default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
@@ -72,11 +81,8 @@ export default {
     }
   },
   computed: {
-    canBeDeleted () {
-      return this.delete
-    },
-    canBeSaved () {
-      return this.save
+    isEditable () {
+      return this.mode === 'edit'
     }
   },
   watch: {
@@ -94,6 +100,9 @@ export default {
     focus () {
       this.focussed = true
     },
+    blur () {
+      this.focussed = false
+    },
     onDateSelect () {
       this.isDatePickerActive = false
       this.focussed = false
@@ -101,6 +110,7 @@ export default {
     },
     async edit () {
       try {
+        this.focussed = false
         const response = await this.save(this.currentText, this.consolidatedText)
         if (response && response.success) {
           this.consolidatedText = this.currentText
@@ -109,6 +119,8 @@ export default {
           throw new Error(response.info || 'Update failed')
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
         const errorMessage = error.message.includes('modification-failed')
           ? this.$i18n.t('messages.error.modification.failed')
           : this.$i18n.t('messages.error.session.expired')

@@ -18,6 +18,7 @@
             return-object
             :label="$t('common.property')"
             variant="outlined"
+            @change="onChangeProperty($event, claim)"
             @update:search-input="onInput($event, 'property', key)"
           />
         </v-subheader>
@@ -31,32 +32,14 @@
         </v-btn>
       </v-col>
       <v-container class="claim-values">
-        <div v-if="claim.property">
-          <div v-if="fieldType(key) === 'autocomplete'">
-            <v-autocomplete
-              v-model="claim.value"
-              :items="propertyValues[key]"
-              item-text="label"
-              return-object
-              required
-              variant="outlined"
-              @update:search-input="onInput($event, 'item', key)"
-            />
-          </div>
-          <div v-if="fieldType(key) === 'date'">
-            <item-util-edit-date-picker-field
-              :value="claim.value"
-              style="width: 200px"
-              class="ma-0 pa-0"
-              @new-value="claim.value = $event"
-            />
-          </div>
-          <div v-if="fieldType(key) === 'text'">
-            <v-text-field
-              v-model="claim.value"
-              :type="fieldType(key)"
-            />
-          </div>
+        <div v-if="showValue">
+          <item-value-base
+            :claim="claim"
+            :value="claim.value"
+            type="claim"
+            mode="creation"
+            @new-value="onNewValue($event, claim)"
+          />
         </div>
         <item-qualifier-create :key="claim?.property?.id" @update-qualifiers="updateQualifiers($event, key)" />
       </v-container>
@@ -84,26 +67,46 @@ export default {
   },
   data () {
     return {
+      showValue: false,
       claims: [],
       properties: [],
       propertyValues: []
     }
   },
   methods: {
+    onChangeProperty (property, claim) {
+      claim.property = property
+      claim.value.property = property.id
+      claim.value.datatype = property.datatype
+      this.refreshValueSection()
+    },
+    refreshValueSection () {
+      this.showValue = false
+      this.$nextTick(() => {
+        this.showValue = true
+      })
+    },
+    onNewValue (event, claim) {
+      claim.value.datavalue.value = event
+    },
     canCreate (index) {
       const claim = this.claims[index]
-
       if (!claim.property || !claim.value) {
         return false
       }
-
       return claim.qualifiers.every(
         qualifier => qualifier.property && qualifier.value
       )
     },
     addNewClaim () {
       this.claims.push({
-        value: null,
+        value: {
+          property: null,
+          datatype: null,
+          datavalue: {
+            value: null
+          }
+        },
         property: null,
         qualifiers: []
       })
@@ -112,16 +115,7 @@ export default {
       this.claims.splice(index, 1)
       this.properties.splice(index, 1)
       this.propertyValues.splice(index, 1)
-    },
-    fieldType (index) {
-      switch (this.claims[index].property.datatype) {
-        case 'wikibase-item':
-          return 'autocomplete'
-        case 'time':
-          return 'date'
-        default:
-          return 'text'
-      }
+      this.showValue = false
     },
     async onInput (value, type, index) {
       if (value && typeof value === 'string') {
@@ -136,17 +130,19 @@ export default {
       }
     },
     async addClaim (index) {
-      return await this.createClaim(index).then((res) => {
-        if (res.success) {
-          this.updateClaims(res)
-          this.removeClaim(index)
-          this.$notification.success(this.$t('messages.success.updated'))
-        } else {
-          this.$notification.error(this.$t('messages.error.something_went_wrong'))
-        }
-      }).catch((error) => {
-        this.$notification.error(error.message)
-      })
+      if (this.claims[index].value.datavalue?.value) {
+        return await this.createClaim(index).then((res) => {
+          if (res.success) {
+            this.updateClaims(res)
+            this.removeClaim(index)
+            this.$notification.success(this.$t('messages.success.updated'))
+          } else {
+            this.$notification.error(this.$t('messages.error.something_went_wrong'))
+          }
+        }).catch((error) => {
+          this.$notification.error(error.message)
+        })
+      }
     },
     async createClaim (index) {
       const { property, value, qualifiers: rawQualifiers } = this.claims[index]
@@ -160,15 +156,15 @@ export default {
       return await this.$wikibase.getWbEdit().claim.create({
         id: this.item.id,
         property: property.id,
-        value: value.id ?? value,
+        value: value.datavalue.value.id ?? value.datavalue.value,
         qualifiers: Object.keys(formattedQualifiers).length ? formattedQualifiers : undefined
       }, this.$store.getters['auth/getRequestConfig'])
     },
     updateQualifiers (data, key) {
       this.claims[key].qualifiers = data.map((qualifier) => {
         return {
-          property: qualifier?.property?.id,
-          value: qualifier?.value?.id ?? qualifier.value
+          property: qualifier?.property,
+          value: qualifier?.datavalue?.value?.id ?? qualifier.datavalue?.value
         }
       })
     },

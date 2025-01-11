@@ -16,7 +16,7 @@
     </template>
     <template #append>
       <v-btn
-        v-if="focussed"
+        v-if="focussed && isEditable"
         text
         icon
         @click.stop="edit"
@@ -32,7 +32,7 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
       <v-btn
-        v-if="focussed"
+        v-if="focussed && isEditable"
         text
         icon
         @click.stop="deleteValue"
@@ -57,11 +57,15 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
     },
     delete: {
       type: Function,
       default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
@@ -76,6 +80,9 @@ export default {
       return {
         dense: true
       }
+    },
+    isEditable () {
+      return this.mode === 'edit'
     }
   },
   mounted () {
@@ -85,7 +92,11 @@ export default {
   methods: {
     blur () {
       this.focussed = false
-      this.restore()
+      if (this.isEditable) {
+        this.restore()
+      } else {
+        this.$emit('new-value', this.currentText)
+      }
     },
 
     focus () {
@@ -93,29 +104,31 @@ export default {
     },
 
     async edit () {
-      await this.save(this.currentText, this.consolidatedText)
-        .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
+      if (this.isEditable) {
+        await this.save(this.currentText, this.consolidatedText)
+          .then((response) => {
+            if (response) {
+              if (!response.success) {
+                throw new Error(response.info)
+              }
+              this.consolidatedText = this.currentText
+              this.$notification.success(this.$i18n.t('messages.success.updated'))
             }
-            this.consolidatedText = this.currentText
-            this.$notification.success(this.$i18n.t('messages.success.updated'))
-          }
-        })
-        .catch((error) => {
-          // workaround to avoid weird error if the session is expired
-          // the first time that we want edit the wikibase
-          if (error.message === 'query is undefined') {
-            error = this.$i18n.t('messages.error.session.expired')
-          }
+          })
+          .catch((error) => {
+            // workaround to avoid weird error if the session is expired
+            // the first time that we want edit the wikibase
+            if (error.message === 'query is undefined') {
+              error = this.$i18n.t('messages.error.session.expired')
+            }
 
-          if (error.message.includes('modification-failed')) {
-            error = this.$i18n.t('messages.error.modification.failed')
-          }
+            if (error.message.includes('modification-failed')) {
+              error = this.$i18n.t('messages.error.modification.failed')
+            }
 
-          this.$notification.error(error)
-        })
+            this.$notification.error(error)
+          })
+      }
       this.$refs.myTextField?.blur()
     },
 

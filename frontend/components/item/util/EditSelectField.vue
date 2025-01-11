@@ -7,6 +7,7 @@
     return-object
     required
     variant="outlined"
+    v-bind="{ ...$attrs, ...commonAttrs }"
     @blur="blur"
     @focus="focus"
     @change="onchange"
@@ -14,7 +15,7 @@
   >
     <template #append>
       <v-btn
-        v-if="focussed"
+        v-if="isEditable && focussed"
         text
         icon
         @click.stop="edit"
@@ -30,7 +31,7 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
       <v-btn
-        v-if="focussed"
+        v-if="isRemovable && focussed"
         text
         icon
         @click.stop="deleteValue"
@@ -55,11 +56,15 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
     },
     delete: {
       type: Function,
       default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
@@ -75,6 +80,12 @@ export default {
       return {
         dense: true
       }
+    },
+    isEditable () {
+      return this.mode === 'edit'
+    },
+    isRemovable () {
+      return this.isEditable && this.delete
     }
   },
   watch: {
@@ -97,13 +108,16 @@ export default {
   methods: {
     onchange () {
       this.focussed = true
+      this.$emit('new-value', this.currentText)
     },
     focus () {
       this.focussed = true
     },
     blur () {
       this.focussed = false
-      this.restore()
+      if (this.isEditable) {
+        this.restore()
+      }
     },
     async edit () {
       this.$refs.autocomplete.isMenuActive = false

@@ -1,6 +1,14 @@
 <template>
   <div v-if="valueToView">
-    <component :is="`item-value-type-${valueToView.type}`" :type="type" :save="editValue" :delete="deleteValue" :value-to-view="valueToView" />
+    <component
+      :is="`item-value-type-${valueToView.type}`"
+      :type="type"
+      :save="isEditable ? editValue : null"
+      :delete="isEditable ? deleteValue : null"
+      :mode="mode"
+      :value-to-view="valueToView"
+      @new-value="$emit('new-value', $event)"
+    />
   </div>
 </template>
 
@@ -18,11 +26,20 @@ export default {
     type: {
       type: String,
       default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
     return {
       valueToView: null
+    }
+  },
+  computed: {
+    isEditable () {
+      return this.mode === 'edit'
     }
   },
   async mounted () {
@@ -40,7 +57,7 @@ export default {
         if (editableData.validation.message) {
           this.$notification.error(editableData.validation.message)
         }
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
           return resolve()
         })
       }
@@ -61,7 +78,7 @@ export default {
         this.$store.getters['auth/getRequestConfig'])
       } else {
         // eslint-disable-next-line no-console
-        console.log(`Unknown type to edit: ${this.type}`)
+        console.error(`Unknown type to edit: ${this.type}`)
       }
     },
     deleteValue () {

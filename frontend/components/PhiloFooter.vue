@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="white" class="z-index-100 mt-10" padless>
+  <v-footer color="white" class="over-menu mt-10" padless>
     <v-row dense>
       <v-col cols="12" sm="3" class="text-center" align-self="center">
         <span class="text-black text-h4">Philo</span>
@@ -128,8 +128,8 @@ export default {
 </script>
 
 <style scoped>
-.z-index-100 {
-  z-index: 100;
+.over-menu {
+  z-index: 7;
 }
 .footer_a {
   text-decoration: none;

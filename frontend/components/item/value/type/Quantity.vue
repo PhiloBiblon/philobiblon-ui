@@ -8,18 +8,25 @@
         <v-row dense class="justify-start">
           <v-col dense class="flex-shrink-1">
             <item-util-edit-text-field
-              :save="editAmount"
+              :label="$t('common.amount')"
               :value="valueToView_.value.amount"
+              :save="editAmount"
+              :delete="deleteValue"
+              :mode="mode"
               style="width: 200px"
               class="ma-0 pa-0"
+              @new-value="newDateValue"
             />
             <item-util-edit-select-field
+              :label="$t('common.unit')"
               :value="selectedUnit"
               :save="editUnit"
               :options="unitOptions"
+              :mode="mode"
               style="width: 200px"
               @update-options="unitOptions = $event"
               @input="oninput($event)"
+              @new-value="newUnitValue"
             />
           </v-col>
         </v-row>
@@ -38,12 +45,24 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
+    },
+    delete: {
+      type: Function,
+      default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
     return {
-      valueToView_: { ...this.valueToView },
+      valueToView_: this.getInitialValue(),
+      newValue_: {
+        amount: null,
+        unit: null
+      },
       unitItemId: null,
       unitLabel: null,
       selectedUnit: '',
@@ -53,32 +72,58 @@ export default {
   computed: {
     isUserLogged () {
       return this.$store.state.auth.isLogged
+    },
+    isEditable () {
+      return this.mode === 'edit'
     }
   },
   async mounted () {
-    this.unitItemId = this.extractItemNumber(this.valueToView.value.unit)
-    await this.$wikibase
-      .getEntity(this.unitItemId, this.$i18n.locale)
-      .then((entity) => {
-        this.unitLabel = this.$wikibase.getValueByLang(
-          entity.labels,
-          this.$i18n.locale
-        )
-        this.setUnitOptions()
-      })
+    if (this.valueToView_?.value?.unit) {
+      this.unitItemId = this.extractItemNumber(this.valueToView_.value.unit)
+      // it seems that 1 is the default value for undefined unit
+      if (this.unitItemId !== '1') {
+        await this.$wikibase
+          .getEntity(this.unitItemId, this.$i18n.locale)
+          .then((entity) => {
+            this.unitLabel = this.$wikibase.getValueByLang(
+              entity.labels,
+              this.$i18n.locale
+            )
+            this.setUnitOptions()
+          })
+      }
+    }
   },
   methods: {
+    getInitialValue () {
+      const initialValue = this.valueToView
+      if (!initialValue.value) {
+        initialValue.value = {
+          amount: '',
+          unit: ''
+        }
+      }
+      return initialValue
+    },
+    newDateValue (value) {
+      this.newValue_.amount = value
+      this.$emit('new-value', this.newValue_)
+    },
+    newUnitValue (value) {
+      this.newValue_.unit = value.concepturi
+      this.$emit('new-value', this.newValue_)
+    },
     extractItemNumber (url) {
       return url.substring(url.lastIndexOf('/') + 1)
     },
     editUnit (newUnit) {
       const oldUnit = this.valueToView_.value.unit
       this.valueToView_.value.unit = newUnit.concepturi
-      return this.save(this.getQuantityValue({ amount: this.valueToView_.value.amount, unit: newUnit.concepturi }, { amount: this.valueToView_.value.amount, unit: oldUnit }))
+      return this.save(this.getQuantityValue(this.valueToView_.value, { amount: this.valueToView_.value.amount, unit: oldUnit }))
     },
     editAmount (newAmount, oldValue) {
       this.valueToView_.value.amount = newAmount
-      return this.save(this.getQuantityValue({ amount: newAmount, unit: this.valueToView_.value.unit }, oldValue))
+      return this.save(this.getQuantityValue(this.valueToView_.value, oldValue))
     },
     getQuantityValue (newValue, oldValue) {
       return {
@@ -106,6 +151,9 @@ export default {
         label: this.unitLabel.value
       }]
       this.selectedUnit = this.unitLabel.value
+    },
+    deleteValue () {
+      return this.delete()
     }
   }
 }

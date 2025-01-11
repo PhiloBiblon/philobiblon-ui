@@ -5,7 +5,15 @@
         <v-img width="300" :src="valueToView.url" />
       </a>
     </div>
-    <item-util-edit-text-field v-else :key="consolidatedUrl" :save="editValue" :value="consolidatedUrl" />
+    <item-util-edit-text-field
+      v-else
+      :key="consolidatedUrl"
+      :value="consolidatedUrl"
+      :save="editValue"
+      :delete="deleteValue"
+      :mode="mode"
+      @new-value="$emit('new-value', $event)"
+    />
   </div>
 </template>
 
@@ -19,7 +27,15 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
+    },
+    delete: {
+      type: Function,
+      default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
@@ -58,6 +74,9 @@ export default {
     },
     getFileNameFromURL (url) {
       return url.substring(url.lastIndexOf('/') + 1)
+    },
+    deleteValue () {
+      return this.delete()
     }
   }
 }

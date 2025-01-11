@@ -25,7 +25,13 @@
       </v-icon>
     </template>
     <template v-else>
-      <item-util-edit-text-field :save="editValue" :value="valueToView_.value" :delete="deleteValue" />
+      <item-util-edit-text-field
+        :value="valueToView_.value"
+        :save="editValue"
+        :delete="deleteValue"
+        :mode="mode"
+        @new-value="newValue"
+      />
     </template>
   </div>
 </template>
@@ -44,11 +50,15 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
     },
     delete: {
       type: Function,
-      required: true
+      default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
@@ -72,6 +82,14 @@ export default {
     })
   },
   methods: {
+    newValue (value) {
+      const valid = this.isURL(value)
+      if (!valid) {
+        this.$notification.error(this.$i18n.t('item.messages.invalid_url'))
+        value = ''
+      }
+      this.$emit('new-value', value)
+    },
     editValue (newValue, oldValue) {
       return this.save(this.getUrlValue(newValue, oldValue))
     },

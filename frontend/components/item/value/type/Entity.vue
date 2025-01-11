@@ -10,14 +10,18 @@
         :save="editValue"
         :options="options"
         :delete="deleteValue"
+        :mode="mode"
+        @new-value="$emit('new-value', $event)"
       />
       <item-util-edit-select-field
         v-else
         :save="editValue"
         :options="options"
         :delete="deleteValue"
+        :mode="mode"
         @update-options="options = $event"
         @input="oninput($event)"
+        @new-value="$emit('new-value', $event)"
       />
     </template>
   </div>
@@ -37,11 +41,15 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
     },
     delete: {
       type: Function,
-      required: true
+      default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
@@ -62,6 +70,9 @@ export default {
     },
     isItemWithCustomOptions () {
       return this.valueToView.property in this.property_autocomplete
+    },
+    isEditable () {
+      return this.mode === 'edit'
     }
   },
   created () {

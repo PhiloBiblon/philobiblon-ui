@@ -14,11 +14,12 @@ export default async ({ app }) => {
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(`Server error ${err}`)
+        console.error(`Server error ${err}`)
       })
   } else {
     // eslint-disable-next-line no-console
-    console.log('No API url server configured.')
-    console.log(app.$config)
+    console.error('No API url server configured.')
+    // eslint-disable-next-line no-console
+    console.error(app.$config)
   }
 }
