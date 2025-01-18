@@ -16,42 +16,25 @@
           return-object
           :items="properties[key]"
           item-text="label"
+          item-value="id"
           variant="outlined"
+          @change="onChangeProperty($event, key)"
           @update:search-input="onInput($event, 'property', key)"
         />
       </v-col>
       <v-col class="p-0 pr-3">
-        <div v-if="qualifier.property">
-          <div v-if="fieldType(key) === 'autocomplete'">
-            <v-autocomplete
-              v-model="qualifier.value"
-              :label="$t('common.value')"
-              required
-              return-object
-              :items="propertyValues[key]"
-              item-text="label"
-              variant="outlined"
-              @update:search-input="onInput($event, 'item', key)"
-            />
-          </div>
-          <div v-if="fieldType(key) === 'date'">
-            <item-util-edit-date-picker-field
-              :value="qualifier.value"
-              style="width: 200px"
-              class="ma-0 pa-0"
-              @new-value="qualifier.value = $event"
-            />
-          </div>
-          <div v-if="fieldType(key) === 'text'">
-            <v-text-field
-              v-model="qualifier.value"
-              :label="$t('common.value')"
-            />
-          </div>
+        <div v-if="showValue">
+          <item-value-base
+            :claim="claim"
+            :value="qualifier"
+            type="qualifier"
+            mode="creation"
+            @new-value="onNewValue($event, qualifier)"
+          />
         </div>
       </v-col>
       <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
-        <v-btn v-if="claim && qualifier.property && qualifier.value" text icon @click.stop="createQualifier(key)">
+        <v-btn v-if="allowCreateQualifier(qualifier)" text icon @click.stop="createQualifier(key)">
           <v-icon>mdi-check</v-icon>
         </v-btn>
         <v-btn v-if="claim" text icon @click.stop="removeQualifier(key)">
@@ -82,6 +65,7 @@ export default {
   },
   data () {
     return {
+      showValue: false,
       properties: [],
       qualifiers: [],
       propertyValues: []
@@ -98,26 +82,42 @@ export default {
     }
   },
   methods: {
+    allowCreateQualifier (qualifier) {
+      return this.claim && qualifier.property && qualifier.datavalue?.value
+    },
+    onNewValue (event, qualifier) {
+      qualifier.datavalue.value = event
+    },
+    onChangeProperty (event, index) {
+      const qualifier = this.qualifiers[index]
+      qualifier.property = event.id
+      qualifier.datatype = event.datatype
+      qualifier.datavalue = {
+        value: null
+      }
+      this.refreshValueSection()
+    },
+    refreshValueSection () {
+      this.showValue = false
+      this.$nextTick(() => {
+        this.showValue = true
+      })
+    },
     addQualifier () {
       this.qualifiers.push({
         value: null,
-        property: null
+        property: null,
+        type: null,
+        datavalue: {
+          value: null
+        }
       })
     },
     removeQualifier (index) {
       this.qualifiers.splice(index, 1)
       this.properties.splice(index, 1)
       this.propertyValues.splice(index, 1)
-    },
-    fieldType (index) {
-      switch (this.qualifiers[index].property.datatype) {
-        case 'wikibase-item':
-          return 'autocomplete'
-        case 'time':
-          return 'date'
-        default:
-          return 'text'
-      }
+      this.showValue = false
     },
     async onInput (value, type, index) {
       if (value && typeof value === 'string') {
@@ -134,8 +134,8 @@ export default {
     async createQualifier (index) {
       await this.$wikibase.getWbEdit().qualifier.add({
         guid: this.claim.id,
-        value: this.qualifiers[index].value.id ?? this.qualifiers[index].value,
-        property: this.qualifiers[index].property.id
+        value: this.qualifiers[index].datavalue.value.id ?? this.qualifiers[index].datavalue.value,
+        property: this.qualifiers[index].property
       }, this.$store.getters['auth/getRequestConfig']).then((res) => {
         if (res.success) {
           this.updateQualifiers(res)

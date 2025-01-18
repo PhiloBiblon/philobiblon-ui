@@ -4,7 +4,13 @@
       <a :href="valueToView.url" target="_blank">{{ valueToView.value }}</a>
     </span>
     <div v-else>
-      <item-util-edit-text-field :save="editValue" :delete="deleteValue" :value="valueToView_.value" />
+      <item-util-edit-text-field
+        :value="valueToView_.value"
+        :save="editValue"
+        :delete="deleteValue"
+        :mode="mode"
+        @new-value="$emit('new-value', $event)"
+      />
     </div>
   </div>
 </template>
@@ -23,11 +29,15 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
     },
     delete: {
       type: Function,
-      required: true
+      default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {

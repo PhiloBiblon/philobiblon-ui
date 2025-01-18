@@ -8,11 +8,13 @@
         <v-row dense class="justify-start">
           <v-col dense class="flex-shrink-1">
             <item-util-edit-date-picker-field
-              :save="editValue"
               :value="valueToView_.value"
+              :mode="mode"
               style="width: 200px"
               class="ma-0 pa-0"
+              :save="editValue"
               :delete="deleteValue"
+              @new-value="newDateValue"
             />
             <v-select
               v-model="valueToView_.calendar"
@@ -20,7 +22,7 @@
               :items="['Gregorian', 'Julian']"
               class="ma-0 pa-0"
               style="width: 100px"
-              @change="editCalendarType"
+              @change="onChangeCalendarType"
             />
           </v-col>
         </v-row>
@@ -39,11 +41,15 @@ export default {
     },
     save: {
       type: Function,
-      required: true
+      default: null
     },
     delete: {
       type: Function,
-      required: true
+      default: null
+    },
+    mode: {
+      type: String,
+      default: 'edit'
     }
   },
   data () {
@@ -54,20 +60,30 @@ export default {
   computed: {
     isUserLogged () {
       return this.$store.state.auth.isLogged
+    },
+    isEditable () {
+      return this.mode === 'edit'
     }
   },
   methods: {
-    editCalendarType (newCalendar) {
+    newDateValue (value) {
+      this.valueToView_.value = value
+      this.$emit('new-value', this.getTimeNewValue(this.valueToView_.value))
+    },
+    onChangeCalendarType (newCalendar) {
       this.valueToView_.calendar = newCalendar
-      this.save(this.getTimeValue(this.valueToView_.value, this.valueToView_.value))
-        .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
+      if (this.isEditable) {
+        this.save(this.getTimeValue(this.valueToView_.value, this.valueToView_.value))
+          .then((response) => {
+            if (response) {
+              if (!response.success) {
+                throw new Error(response.info)
+              }
+              this.$notification.success(this.$i18n.t('messages.success.updated'))
             }
-            this.$notification.success(this.$i18n.t('messages.success.updated'))
-          }
-        })
+          })
+      }
+      this.$emit('new-value', this.getTimeNewValue(this.valueToView_.value))
     },
     editValue (newValue, oldValue) {
       this.valueToView_.value = newValue
@@ -83,11 +99,14 @@ export default {
         },
         values: {
           oldValue,
-          newValue: {
-            time: this.formatDate(newValue),
-            calendar: this.valueToView_.calendar.toLowerCase()
-          }
+          newValue: this.getTimeNewValue(newValue)
         }
+      }
+    },
+    getTimeNewValue (value) {
+      return {
+        time: this.formatDate(value),
+        calendar: this.valueToView_.calendar.toLowerCase()
       }
     },
     formatDate (dateString) {
