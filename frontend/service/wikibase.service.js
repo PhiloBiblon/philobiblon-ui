@@ -183,84 +183,70 @@ export class WikibaseService {
         }
       })
     } else if (datatype === 'wikibase-item') {
-      if (datavalue) {
-        return this.getEntity(datavalue.id, lang).then((entity) => {
-          const label = this.getValueByLang(entity.labels, lang)
-          if (this.isEntityFromPB(entity)) {
-            return {
-              property,
-              value: label.value,
-              language: label.language,
-              type: 'entity',
-              item: datavalue.id,
-              pbid: this.getPBID(entity)
-            }
-          } else {
-            return {
-              property,
-              value: label.value,
-              language: label.language,
-              type: 'entity',
-              item: datavalue.id
-            }
+      return this.getEntity(datavalue.id, lang).then((entity) => {
+        const label = this.getValueByLang(entity.labels, lang)
+        if (this.isEntityFromPB(entity)) {
+          return {
+            property,
+            value: label.value,
+            language: label.language,
+            type: 'entity',
+            item: datavalue.id,
+            pbid: this.getPBID(entity)
           }
-        })
-      } else {
-        return {
-          property,
-          value: '',
-          language: null,
-          type: 'entity',
-          item: null
+        } else {
+          return {
+            property,
+            value: label.value,
+            language: label.language,
+            type: 'entity',
+            item: datavalue.id
+          }
         }
-      }
+      })
     } else if (datatype === 'string') {
       return { value: datavalue, type: 'text' }
     } else if (datatype === 'monolingualtext') {
       return {
-        value: datavalue?.text,
-        language: datavalue?.language,
+        value: datavalue.text,
+        language: datavalue.language,
         type: 'text-lang',
         showLanguage: true
       }
     } else if (datatype === 'time') {
-      let isJulian = false
-      if (datavalue?.calendarmodel === 'http://www.wikidata.org/entity/Q1985727') {
+      let isJulian = null
+      if (
+        datavalue.calendarmodel === 'http://www.wikidata.org/entity/Q1985727'
+      ) {
         isJulian = false
-      } else if (datavalue?.calendarmodel === 'http://www.wikidata.org/entity/Q1985786') {
+      } else if (
+        datavalue.calendarmodel === 'http://www.wikidata.org/entity/Q1985786'
+      ) {
         isJulian = true
       }
       return {
-        value: (datavalue === null) ? null : this.wbk.wikibaseTimeToSimpleDay(datavalue),
+        value: this.wbk.wikibaseTimeToSimpleDay(datavalue),
         calendar: isJulian ? 'Julian' : 'Gregorian',
         type: 'time'
       }
     } else if (datatype === 'commonsMedia') {
-      if (datavalue) {
-        return fetch(COMMONS_WIKIMEDIA_URL_ENDPOINT.replace('$file', datavalue))
-          .then(response => response.json())
-          .then((data) => {
-            const imageinfo = data.query.pages[-1].imageinfo[0]
-            return {
-              descriptionurl: imageinfo.descriptionurl,
-              url: imageinfo.url,
-              type: 'image'
-            }
-          })
-      } else {
-        return {
-          descriptionurl: '',
-          url: '',
-          type: 'image'
-        }
-      }
+      return fetch(COMMONS_WIKIMEDIA_URL_ENDPOINT.replace('$file', datavalue))
+        .then(response => response.json())
+        .then((data) => {
+          const imageinfo = data.query.pages[-1].imageinfo[0]
+          return {
+            descriptionurl: imageinfo.descriptionurl,
+            url: imageinfo.url,
+            type: 'image'
+          }
+        })
     } else if (datatype === 'url' && property === PROPERTY_NOTES) {
       const notesApiUrl =
         datavalue.replace('/wiki/', '/w/api.php?action=parse&page=') +
         '&prop=wikitext&formatversion=2&format=json&origin=*'
       return this.wbFetcher(notesApiUrl)
         .then((data) => {
-          return { value: data.parse.wikitext, type: 'html' }
+          return { title: data.parse.title, value: data.parse.wikitext, type: 'html' }
         })
     } else {
       return { value: datavalue, type: datatype }
@@ -393,13 +379,12 @@ export class WikibaseService {
     return hash
   }
 
-  async searchEntityByName (search, language, uselang, type) {
+  async searchEntityByName (search, language, uselang) {
     try {
       const searchOptions = {
         search,
         uselang,
-        language,
-        type
+        language
       }
 
       const url = await this.getWbk().searchEntities(searchOptions)
@@ -431,5 +416,54 @@ export class WikibaseService {
       groups: { tableid }
     } = this.getPBIDPattern().exec(pbid)
     return tableid
+  }
+
+  async getCsrfToken () {
+    try {
+      const csrfResponse = await fetch(
+        `${this.$config.apiBaseUrl}/w/api.php?action=query&meta=tokens&type=csrf&format=json`,
+        {
+          method: 'GET',
+          headers: this.$store.getters['auth/getAuthHeaders']
+        }
+      )
+      const csrfData = await csrfResponse.json()
+      const csrfToken = csrfData?.query?.tokens?.csrftoken
+
+      if (!csrfToken) {
+        throw new Error('Failed to fetch CSRF token')
+      }
+
+      return csrfToken
+    } catch (error) {
+      console.error('Failed to fetch CSRF token', error)
+      return error
+    }
+  }
+
+  async updateDiscussionPage (title, text) {
+    try {
+      const csrfToken = await this.getCsrfToken()
+
+      const response = await fetch(
+        `${this.$config.apiBaseUrl}/w/api.php?action=edit&format=json`,
+        {
+          method: 'POST',
+          headers: {
+            ...this.$store.getters['auth/getAuthHeaders'],
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: new URLSearchParams({
+            title,
+            text,
+            token: csrfToken
+          })
+        }
+      )
+
+      return await response.json()
+    } catch (error) {
+      console.error('Error updating discussion page:', error)
+    }
   }
 }

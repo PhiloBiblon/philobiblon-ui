@@ -27,7 +27,9 @@ export const getters = {
       }
     }
   },
-  getAccessToken(state) {
-    return state.accessToken;
+  getAuthHeaders (state) {
+    return {
+      Authorization: `OAuth oauth_token="${state.accessToken.token}", oauth_token_secret="${state.accessToken.tokenSecret}"`
+    }
   }
 }
