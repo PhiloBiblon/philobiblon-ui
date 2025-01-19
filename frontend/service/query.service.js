@@ -438,10 +438,17 @@ export class QueryService {
     let filters = ''
     if (form.input.city && form.input.city.value) {
       filters +=
-      `
-      ?item wdt:P111 ?value_city .\n
-      FILTER(STR(?value_city) = "${form.input.city.value.label}") . \n
-      `
+        `
+        OPTIONAL {
+          ?item wdt:P47 ?item_lib_loc
+        }
+        OPTIONAL {
+          ?item wdt:P243 ?item_topic_loc .
+          ?item_topic_loc wdt:P476 ?geo_pbid .
+          FILTER regex(?geo_pbid, '(.*) geoid ') .
+        }
+        FILTER(?item_lib_loc = wd:${form.input.city.value.item} || ?item_topic_loc = wd:${form.input.city.value.item})
+        `
     }
     if (form.input.library && form.input.library.value) {
       if (form.input.library.value.property === 'label') {

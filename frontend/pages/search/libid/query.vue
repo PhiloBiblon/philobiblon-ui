@@ -52,13 +52,28 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label
-              WHERE { 
-                ?item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ')
-                ?item wdt:P111 ?label . 
+              SELECT DISTINCT ?item ?label {
+                {
+                  SELECT ?item ?label
+                  WHERE { 
+                    ?table_item wdt:P476 ?table_pbid .
+                    FILTER regex(?table_pbid, '(.*) libid ')
+                    ?table_item wdt:P47 ?item .
+                    {{langFilter}}
+                  }
+                } UNION {
+                  SELECT ?item ?label
+                  WHERE { 
+                    ?table_item wdt:P476 ?table_pbid .
+                    ?table_item wdt:P243 ?item . 
+                    ?item wdt:P476 ?geo_pbid .
+                    FILTER regex(?geo_pbid, '(.*) geoid ')
+                    FILTER regex(?table_pbid, '(.*) libid ')
+                    {{langFilter}}
+                  }
+                }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
