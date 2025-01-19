@@ -108,7 +108,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     if (form.input.institution_type && form.input.institution_type.value) {
@@ -251,7 +251,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P422 wd:${form.input.subject.value.item} .
+        ?item wdt:P243 wd:${form.input.subject.value.item} .
         `
     }
     if (form.input.date_composition.value &&
@@ -428,7 +428,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -467,7 +467,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -594,7 +594,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -618,7 +618,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -953,7 +953,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
