@@ -78,7 +78,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -116,7 +116,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -286,7 +286,7 @@ export default {
                 ?table_item wdt:P67 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -324,7 +324,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -362,7 +362,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -426,7 +426,7 @@ export default {
                 ?table_item wdt:P2 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -488,7 +488,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -511,7 +511,7 @@ export default {
                 ?table_item wdt:P93 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -592,7 +592,7 @@ export default {
                 ?table_item wdt:P747 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -615,7 +615,7 @@ export default {
                 ?table_item wdt:P748 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -653,7 +653,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -691,7 +691,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -714,7 +714,7 @@ export default {
                 ?table_item wdt:P778 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -737,7 +737,7 @@ export default {
                 ?table_item wdt:P790 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           }

@@ -60,7 +60,7 @@ export default {
                 ?table_item wdt:P2 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },

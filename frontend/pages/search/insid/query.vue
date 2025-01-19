@@ -62,7 +62,7 @@ export default {
                   ?table wdt:P476 ?table_pbid .
                   FILTER regex(?table_pbid, '(.*) {{table}} ')
                 }
-                ORDER BY ?label
+                ORDER BY STR(?label)
                 `
             }
           },
@@ -84,7 +84,7 @@ export default {
                 {{langFilter}}
                 FILTER regex(?pbid, 'INSTITUTIONS\\\\*(CLASS|TYPE)\\\\*') .
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
