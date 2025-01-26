@@ -1,19 +1,18 @@
 import { QueryService } from '~/service/query.service'
 import { OAuthService } from '~/service/oauth.service'
 
-const PROPERTY_FORMATTER_URL = 'P236'
-const PROPERTY_NOTES = 'P817'
-
-const COMMONS_WIKIMEDIA_URL_ENDPOINT =
-  'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
-
-const PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
-const QITEM_PATTERN = /^Q\d+/
-const PITEM_PATTERN = /^P\d+/
-
-const ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
-
 export class WikibaseService {
+  static PROPERTY_FORMATTER_URL = 'P236'
+  static PROPERTY_NOTES = 'P817'
+  static COMMONS_WIKIMEDIA_URL_ENDPOINT =
+    'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
+
+  static PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
+  static QITEM_PATTERN = /^Q\d+/
+  static PITEM_PATTERN = /^P\d+/
+
+  static ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
+
   constructor (app, store) {
     const WBK = require('wikibase-sdk')
     this.$config = app.$config
@@ -38,15 +37,15 @@ export class WikibaseService {
   }
 
   getPBIDPattern () {
-    return PBID_PATTERN
+    return this.constructor.PBID_PATTERN
   }
 
   getQItemPattern () {
-    return QITEM_PATTERN
+    return this.constructor.QITEM_PATTERN
   }
 
   getPItemPattern () {
-    return PITEM_PATTERN
+    return this.constructor.PITEM_PATTERN
   }
 
   // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
@@ -103,7 +102,7 @@ export class WikibaseService {
   }
 
   async getClaimsOrder (table) {
-    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
+    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.constructor.ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
     if (data.error) {
       // eslint-disable-next-line no-console
@@ -174,8 +173,8 @@ export class WikibaseService {
   getWbValue (property, datatype, datavalue, lang) {
     if (datatype === 'external-id') {
       return this.getEntity(property, lang).then((entity) => {
-        if (entity.claims && PROPERTY_FORMATTER_URL in entity.claims) {
-          const url = entity.claims[PROPERTY_FORMATTER_URL][0]
+        if (entity.claims && this.constructor.PROPERTY_FORMATTER_URL in entity.claims) {
+          const url = entity.claims[this.constructor.PROPERTY_FORMATTER_URL][0]
             .mainsnak.datavalue.value.replace('$1', encodeURIComponent(datavalue))
           return { value: datavalue, url, type: 'external-id' }
         } else {
@@ -237,7 +236,7 @@ export class WikibaseService {
       }
     } else if (datatype === 'commonsMedia') {
       if (datavalue) {
-        return fetch(COMMONS_WIKIMEDIA_URL_ENDPOINT.replace('$file', datavalue))
+        return fetch(this.constructor.COMMONS_WIKIMEDIA_URL_ENDPOINT.replace('$file', datavalue))
           .then(response => response.json())
           .then((data) => {
             const imageinfo = data.query.pages[-1].imageinfo[0]
@@ -254,7 +253,7 @@ export class WikibaseService {
           type: 'image'
         }
       }
-    } else if (datatype === 'url' && property === PROPERTY_NOTES) {
+    } else if (datatype === 'url' && property === this.constructor.PROPERTY_NOTES) {
       const notesApiUrl =
         datavalue.replace('/wiki/', '/w/api.php?action=parse&page=') +
         '&prop=wikitext&formatversion=2&format=json&origin=*'
@@ -431,5 +430,56 @@ export class WikibaseService {
       groups: { tableid }
     } = this.getPBIDPattern().exec(pbid)
     return tableid
+  }
+
+  async getCsrfToken () {
+    try {
+      const csrfResponse = await fetch(
+        `${this.$config.apiBaseUrl}/w/api.php?action=query&meta=tokens&type=csrf&format=json`,
+        {
+          method: 'GET',
+          headers: this.$store.getters['auth/getAuthHeaders']
+        }
+      )
+      const csrfData = await csrfResponse.json()
+      const csrfToken = csrfData?.query?.tokens?.csrftoken
+
+      if (!csrfToken) {
+        throw new Error('Failed to fetch CSRF token')
+      }
+
+      return csrfToken
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to fetch CSRF token', error)
+      return error
+    }
+  }
+
+  async updateDiscussionPage (title, text) {
+    try {
+      const csrfToken = await this.getCsrfToken()
+
+      const response = await fetch(
+        `${this.$config.apiBaseUrl}/w/api.php?action=edit&format=json`,
+        {
+          method: 'POST',
+          headers: {
+            ...this.$store.getters['auth/getAuthHeaders'],
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: new URLSearchParams({
+            title,
+            text,
+            token: csrfToken
+          })
+        }
+      )
+
+      return await response.json()
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error updating discussion page:', error)
+    }
   }
 }

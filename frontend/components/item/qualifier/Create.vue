@@ -42,7 +42,11 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-row class="add-qualifier pr-5" justify="end">
+    <v-row
+      v-if="isAllowedAddQualifier"
+      class="add-qualifier pr-5"
+      justify="end"
+    >
       <a role="button" class="link" @click="addQualifier">
         <div class="align-center">
           <v-icon color="primary">
@@ -69,6 +73,11 @@ export default {
       properties: [],
       qualifiers: [],
       propertyValues: []
+    }
+  },
+  computed: {
+    isAllowedAddQualifier () {
+      return this.claim.mainsnak.property !== this.$wikibase.constructor.PROPERTY_NOTES
     }
   },
   watch: {

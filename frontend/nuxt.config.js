@@ -150,6 +150,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: ['quill'],
     filenames: {
       app: ({ isDev }) => isDev ? '[name].js' : '[name].[contenthash].js',
       chunk: ({ isDev })=> isDev ? '[name].js' : '[name].[contenthash].js',
