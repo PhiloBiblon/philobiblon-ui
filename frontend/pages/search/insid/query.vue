@@ -62,7 +62,7 @@ export default {
                   ?table wdt:P476 ?table_pbid .
                   FILTER regex(?table_pbid, '(.*) {{table}} ')
                 }
-                ORDER BY ?label
+                ORDER BY STR(?label)
                 `
             }
           },
@@ -84,7 +84,7 @@ export default {
                 {{langFilter}}
                 FILTER regex(?pbid, 'INSTITUTIONS\\\\*(CLASS|TYPE)\\\\*') .
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -135,43 +135,15 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT * {
-                {
-                  SELECT ?item ?label ?property
-                  WHERE { 
-                    ?table wdt:P476 ?table_pbid .
-                    ?table ?property ?item . 
-                    ?item wdt:P476 ?subject_pbid .
-                    {{langFilter}}
-                    FILTER regex(?subject_pbid, '(.*) bioid ')
-                    FILTER regex(?table_pbid, '(.*) {{table}} ')
-                    BIND ( wdt:P703 as ?property)
-                  }
-                } UNION {
-                  SELECT ?item ?label ?property
-                  WHERE { 
-                    ?table wdt:P476 ?table_pbid .
-                    ?table ?property ?item . 
-                    ?item wdt:P476 ?subject_pbid .
-                    {{langFilter}}
-                    FILTER regex(?subject_pbid, '(.*) subid ')
-                    FILTER regex(?table_pbid, '(.*) {{table}} ')
-                    BIND ( wdt:P422 as ?property)
-                  }
-                } UNION {
-                  SELECT ?item ?label ?property
-                  WHERE { 
-                    ?table wdt:P476 ?table_pbid .
-                    ?table ?property ?item . 
-                    ?item wdt:P476 ?subject_pbid .
-                    {{langFilter}}
-                    FILTER regex(?subject_pbid, '(.*) geoid ')
-                    FILTER regex(?table_pbid, '(.*) {{table}} ')
-                    BIND ( wdt:P47 as ?property)
-                  }
-                }
+              SELECT DISTINCT ?item ?label
+              WHERE { 
+                ?table wdt:P476 ?table_pbid .
+                ?table ?property ?item . 
+                {{langFilter}}
+                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                BIND ( wdt:P243 as ?property)
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },

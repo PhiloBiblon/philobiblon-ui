@@ -214,7 +214,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -306,7 +306,7 @@ export default {
                   }
                 }
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -358,12 +358,13 @@ export default {
               `
               SELECT DISTINCT ?item ?label
               WHERE { 
-                ?table_item wdt:P476 ?table_item_pbid .
-                FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
-                ?table_item wdt:P422 ?item . 
+                ?table wdt:P476 ?table_pbid .
+                ?table ?property ?item . 
                 {{langFilter}}
+                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                BIND ( wdt:P243 as ?property)
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },

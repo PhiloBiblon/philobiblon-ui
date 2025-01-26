@@ -215,7 +215,7 @@ export default {
                 ?table_item wdt:P329 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -285,7 +285,7 @@ export default {
                 ?table_item wdt:P2 ?item .
                 {{langFilter}}
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
@@ -301,54 +301,15 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT * {
-                {
-                  SELECT ?item ?label ?property
-                  WHERE { 
-                    ?table wdt:P476 ?table_pbid .
-                    ?table ?property ?item . 
-                    ?item wdt:P476 ?subject_pbid .
-                    {{langFilter}}
-                    FILTER regex(?subject_pbid, '(.*) subid ')
-                    FILTER regex(?table_pbid, '(.*) {{table}} ')
-                    BIND ( wdt:P422 as ?property)
-                  }
-                } UNION {
-                  SELECT ?item ?label ?property
-                  WHERE { 
-                    ?table wdt:P476 ?table_pbid .
-                    ?table ?property ?item . 
-                    ?item wdt:P476 ?subject_pbid .
-                    {{langFilter}}
-                    FILTER regex(?subject_pbid, '(.*) geoid ')
-                    FILTER regex(?table_pbid, '(.*) {{table}} ')
-                    BIND ( wdt:P47 as ?property)
-                  }
-                } UNION {
-                  SELECT ?item ?label ?property
-                  WHERE { 
-                    ?table wdt:P476 ?table_pbid .
-                    ?table ?property ?item . 
-                    ?item wdt:P476 ?subject_pbid .
-                    {{langFilter}}
-                    FILTER regex(?subject_pbid, '(.*) insid ')
-                    FILTER regex(?table_pbid, '(.*) {{table}} ')
-                    BIND ( wdt:P232 as ?property)
-                  }
-                } UNION {
-                  SELECT ?item ?label ?property
-                  WHERE { 
-                    ?table wdt:P476 ?table_pbid .
-                    ?table ?property ?item . 
-                    ?item wdt:P476 ?subject_pbid .
-                    {{langFilter}}
-                    FILTER regex(?subject_pbid, '(.*) bioid ')
-                    FILTER regex(?table_pbid, '(.*) {{table}} ')
-                    BIND ( wdt:P703 as ?property)
-                  }
-                }
+              SELECT DISTINCT ?item ?label
+              WHERE { 
+                ?table wdt:P476 ?table_pbid .
+                ?table ?property ?item . 
+                {{langFilter}}
+                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                BIND ( wdt:P243 as ?property)
               }
-              ORDER BY ?label
+              ORDER BY STR(?label)
               `
             }
           },
