@@ -1,19 +1,18 @@
 import { QueryService } from '~/service/query.service'
 import { OAuthService } from '~/service/oauth.service'
 
-const PROPERTY_FORMATTER_URL = 'P236'
-const PROPERTY_NOTES = 'P817'
-
-const COMMONS_WIKIMEDIA_URL_ENDPOINT =
-  'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
-
-const PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
-const QITEM_PATTERN = /^Q\d+/
-const PITEM_PATTERN = /^P\d+/
-
-const ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
-
 export class WikibaseService {
+  static PROPERTY_FORMATTER_URL = 'P236'
+  static PROPERTY_NOTES = 'P817'
+  static COMMONS_WIKIMEDIA_URL_ENDPOINT =
+    'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
+
+  static PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
+  static QITEM_PATTERN = /^Q\d+/
+  static PITEM_PATTERN = /^P\d+/
+
+  static ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
+
   constructor (app, store) {
     const WBK = require('wikibase-sdk')
     this.$config = app.$config
@@ -38,15 +37,15 @@ export class WikibaseService {
   }
 
   getPBIDPattern () {
-    return PBID_PATTERN
+    return this.constructor.PBID_PATTERN
   }
 
   getQItemPattern () {
-    return QITEM_PATTERN
+    return this.constructor.QITEM_PATTERN
   }
 
   getPItemPattern () {
-    return PITEM_PATTERN
+    return this.constructor.PITEM_PATTERN
   }
 
   // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
@@ -103,7 +102,7 @@ export class WikibaseService {
   }
 
   async getClaimsOrder (table) {
-    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
+    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.constructor.ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
     if (data.error) {
       // eslint-disable-next-line no-console
@@ -174,8 +173,8 @@ export class WikibaseService {
   getWbValue (property, datatype, datavalue, lang) {
     if (datatype === 'external-id') {
       return this.getEntity(property, lang).then((entity) => {
-        if (entity.claims && PROPERTY_FORMATTER_URL in entity.claims) {
-          const url = entity.claims[PROPERTY_FORMATTER_URL][0]
+        if (entity.claims && this.constructor.PROPERTY_FORMATTER_URL in entity.claims) {
+          const url = entity.claims[this.constructor.PROPERTY_FORMATTER_URL][0]
             .mainsnak.datavalue.value.replace('$1', encodeURIComponent(datavalue))
           return { value: datavalue, url, type: 'external-id' }
         } else {
@@ -183,70 +182,84 @@ export class WikibaseService {
         }
       })
     } else if (datatype === 'wikibase-item') {
-      return this.getEntity(datavalue.id, lang).then((entity) => {
-        const label = this.getValueByLang(entity.labels, lang)
-        if (this.isEntityFromPB(entity)) {
-          return {
-            property,
-            value: label.value,
-            language: label.language,
-            type: 'entity',
-            item: datavalue.id,
-            pbid: this.getPBID(entity)
+      if (datavalue) {
+        return this.getEntity(datavalue.id, lang).then((entity) => {
+          const label = this.getValueByLang(entity.labels, lang)
+          if (this.isEntityFromPB(entity)) {
+            return {
+              property,
+              value: label.value,
+              language: label.language,
+              type: 'entity',
+              item: datavalue.id,
+              pbid: this.getPBID(entity)
+            }
+          } else {
+            return {
+              property,
+              value: label.value,
+              language: label.language,
+              type: 'entity',
+              item: datavalue.id
+            }
           }
-        } else {
-          return {
-            property,
-            value: label.value,
-            language: label.language,
-            type: 'entity',
-            item: datavalue.id
-          }
+        })
+      } else {
+        return {
+          property,
+          value: '',
+          language: null,
+          type: 'entity',
+          item: null
         }
-      })
+      }
     } else if (datatype === 'string') {
       return { value: datavalue, type: 'text' }
     } else if (datatype === 'monolingualtext') {
       return {
-        value: datavalue.text,
-        language: datavalue.language,
+        value: datavalue?.text,
+        language: datavalue?.language,
         type: 'text-lang',
         showLanguage: true
       }
     } else if (datatype === 'time') {
-      let isJulian = null
-      if (
-        datavalue.calendarmodel === 'http://www.wikidata.org/entity/Q1985727'
-      ) {
+      let isJulian = false
+      if (datavalue?.calendarmodel === 'http://www.wikidata.org/entity/Q1985727') {
         isJulian = false
-      } else if (
-        datavalue.calendarmodel === 'http://www.wikidata.org/entity/Q1985786'
-      ) {
+      } else if (datavalue?.calendarmodel === 'http://www.wikidata.org/entity/Q1985786') {
         isJulian = true
       }
       return {
-        value: this.wbk.wikibaseTimeToSimpleDay(datavalue),
+        value: (datavalue === null) ? null : this.wbk.wikibaseTimeToSimpleDay(datavalue),
         calendar: isJulian ? 'Julian' : 'Gregorian',
         type: 'time'
       }
     } else if (datatype === 'commonsMedia') {
-      return fetch(COMMONS_WIKIMEDIA_URL_ENDPOINT.replace('$file', datavalue))
-        .then(response => response.json())
-        .then((data) => {
-          const imageinfo = data.query.pages[-1].imageinfo[0]
-          return {
-            descriptionurl: imageinfo.descriptionurl,
-            url: imageinfo.url,
-            type: 'image'
-          }
-        })
-    } else if (datatype === 'url' && property === PROPERTY_NOTES) {
+      if (datavalue) {
+        return fetch(this.constructor.COMMONS_WIKIMEDIA_URL_ENDPOINT.replace('$file', datavalue))
+          .then(response => response.json())
+          .then((data) => {
+            const imageinfo = data.query.pages[-1].imageinfo[0]
+            return {
+              descriptionurl: imageinfo.descriptionurl,
+              url: imageinfo.url,
+              type: 'image'
+            }
+          })
+      } else {
+        return {
+          descriptionurl: '',
+          url: '',
+          type: 'image'
+        }
+      }
+    } else if (datatype === 'url' && property === this.constructor.PROPERTY_NOTES) {
       const notesApiUrl =
         datavalue.replace('/wiki/', '/w/api.php?action=parse&page=') +
         '&prop=wikitext&formatversion=2&format=json&origin=*'
       return this.wbFetcher(notesApiUrl)
         .then((data) => {
-          return { title: data.parse.title, value: data.parse.wikitext, type: 'html' }
+          return { value: data.parse.wikitext, type: 'html' }
         })
     } else {
       return { value: datavalue, type: datatype }
@@ -379,12 +392,13 @@ export class WikibaseService {
     return hash
   }
 
-  async searchEntityByName (search, language, uselang) {
+  async searchEntityByName (search, language, uselang, type) {
     try {
       const searchOptions = {
         search,
         uselang,
-        language
+        language,
+        type
       }
 
       const url = await this.getWbk().searchEntities(searchOptions)
@@ -436,6 +450,7 @@ export class WikibaseService {
 
       return csrfToken
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch CSRF token', error)
       return error
     }
@@ -463,6 +478,7 @@ export class WikibaseService {
 
       return await response.json()
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error updating discussion page:', error)
     }
   }

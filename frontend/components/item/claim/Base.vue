@@ -8,7 +8,7 @@
     <v-container class="claim-values">
       <item-claim-values :claim="claim" @delete-claim="$emit('delete-claim', $event)" />
       <item-claim-add-value
-        v-if="isUserLogged"
+        v-if="isUserLogged && isAllowedAddValue"
         :key="claim.values.length"
         :item="item"
         :claim="claim"
@@ -40,6 +40,9 @@ export default {
   computed: {
     isUserLogged () {
       return this.$store.state.auth.isLogged
+    },
+    isAllowedAddValue () {
+      return this.claim.property !== this.$wikibase.constructor.PROPERTY_NOTES
     }
   },
 
