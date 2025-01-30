@@ -20,11 +20,12 @@
             :column-width="header.width"
             @delete-claim="$emit('delete-claim', $event)"
           />
-          <item-qualifier-value
+          <item-qualifier-list
             v-if="item.qualifiers?.[header.value]"
-            :value="item.qualifiers[header.value][0]"
             :claim="item"
-            @delete-qualifier="deleteQualifier($event, index)"
+            :qualifiers="item.qualifiers[header.value]"
+            :key="item.qualifiers[header.value].length"
+            @delete-qualifier="deleteQualifier(index, header.value)"
           />
         </td>
       </tr>
@@ -96,12 +97,9 @@ export default {
 
       await this.getHeaders()
     },
-    async deleteQualifier (data, index) {
-      const findIndex = this.claim.values[index].qualifiers[data.property].findIndex(item => item.id === data.id)
-      if (findIndex !== -1) {
-        // eslint-disable-next-line vue/no-mutating-props
-        delete this.claim.values[index].qualifiers[data.property]
-      }
+    async deleteQualifier (index, qualifier) {
+      // eslint-disable-next-line vue/no-mutating-props
+      delete this.claim.values[index].qualifiers[qualifier]
 
       await this.getHeaders()
     }
