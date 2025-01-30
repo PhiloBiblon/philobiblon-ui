@@ -24,7 +24,7 @@
         </v-subheader>
       </v-col>
       <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
-        <v-btn :disabled="!canCreate(key)" text icon @click.stop="addClaim(key)">
+        <v-btn v-if="!forCreate" :disabled="!canCreate(key)" text icon @click.stop="addClaim(key)">
           <v-icon>mdi-check</v-icon>
         </v-btn>
         <v-btn text icon @click.stop="removeClaim(key)">
@@ -63,6 +63,10 @@ export default {
     item: {
       type: Object,
       default: null
+    },
+    forCreate: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -73,7 +77,33 @@ export default {
       propertyValues: []
     }
   },
+  watch: {
+    claims: {
+      handler (newValue) {
+        if (this.forCreate) {
+          this.$emit('update-claims', this.generateClaimsData(newValue))
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
+    generateClaimsData (data) {
+      const claims = {}
+
+      data.forEach((claim) => {
+        claims[claim.value.property] = {
+          value: claim.value.datavalue.value?.id ?? claim.value.datavalue.value,
+          qualifiers: {}
+        }
+
+        claim.qualifiers.forEach((qualifier) => {
+          claims[claim.value.property].qualifiers[qualifier.property] = qualifier.value
+        })
+      })
+
+      return claims
+    },
     onChangeProperty (property, claim) {
       claim.property = property
       claim.value.property = property.id
