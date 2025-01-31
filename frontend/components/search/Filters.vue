@@ -96,6 +96,16 @@
           >
             {{ $t('search.button.clear') }}
           </v-btn>
+          <v-btn
+            v-if="isUserLogged"
+            small
+            color="primary"
+            class="mr-4"
+            elevation="2"
+            @click="goTo(`/item/${table}/create`)"
+          >
+            {{ $t('common.create') }}
+          </v-btn>
         </v-col>
         <v-col
           cols="4"
@@ -113,7 +123,7 @@
         >
           <v-icon
             color="primary"
-            @click="goToHelp"
+            @click="goTo('../../wiki/${this.$i18n.locale}_Help')"
           >
             mdi-help-circle
           </v-icon>
@@ -151,6 +161,9 @@ export default {
   },
 
   computed: {
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
+    },
     groups () {
       return ['BETA', 'BITAGAP', 'BITECA', { text: this.$t('search.form.common.group_all.label'), value: 'ALL' }]
     }
@@ -280,8 +293,8 @@ export default {
       this.$store.commit('queryStatus/setForm', null)
       this.$emit('clear-search')
     },
-    goToHelp () {
-      this.$router.push(`../../wiki/${this.$i18n.locale}_Help`)
+    goTo (path) {
+      this.$router.push(path)
     },
     isFieldValueNotEmpty (item) {
       if (typeof item === 'string' && item !== '') {

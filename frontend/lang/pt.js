@@ -16,6 +16,7 @@ export default {
     add_qualifier: 'adicionar qualificador',
     add_claim: 'adicionar declaração',
     cancel: 'Cancelar',
+    create: 'criar',
     search: {
       section: {
         advanced: 'Busca avançada',
@@ -372,6 +373,7 @@ export default {
     }
   },
   item: {
+    label: 'Artigo',
     title: 'Título',
     description: 'Descrição',
     back: 'Volte',
