@@ -2,6 +2,7 @@
   <div v-if="valueToView">
     <component
       :is="`item-value-type-${valueToView.type}`"
+      :label="label"
       :type="type"
       :save="isEditable ? editValue : null"
       :delete="isEditable ? deleteValue : null"
@@ -17,6 +18,10 @@ export default {
   props: {
     claim: {
       type: Object,
+      default: null
+    },
+    label: {
+      type: String,
       default: null
     },
     value: {

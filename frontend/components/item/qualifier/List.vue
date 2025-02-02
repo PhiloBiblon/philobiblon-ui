@@ -2,9 +2,9 @@
   <div>
     <item-qualifier-value
       v-for="(qualifier, index) in values"
+      :key="index + '-' + values.length"
       :claim="claim"
       :value="qualifier"
-      :key="index + '-' + values.length"
       @delete-qualifier="deleteQualifier($event)"
     />
   </div>
@@ -27,6 +27,9 @@ export default {
       values: []
     }
   },
+  mounted () {
+    this.values = [...this.qualifiers]
+  },
   methods: {
     deleteQualifier (data) {
       const findIndex = this.values.findIndex(item => item.hash === data.hash)
@@ -35,13 +38,8 @@ export default {
         this.values.splice(findIndex, 1)
       }
 
-      if (!this.values.length) {
-        this.$emit('delete-qualifier', data)
-      }
+      this.$emit('delete-qualifier', data)
     }
-  },
-  mounted () {
-    this.values = [...this.qualifiers]
   }
 }
 </script>

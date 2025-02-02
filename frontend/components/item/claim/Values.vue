@@ -22,10 +22,10 @@
           />
           <item-qualifier-list
             v-if="item.qualifiers?.[header.value]"
+            :key="item.qualifiers[header.value].length"
             :claim="item"
             :qualifiers="item.qualifiers[header.value]"
-            :key="item.qualifiers[header.value].length"
-            @delete-qualifier="deleteQualifier(index, header.value)"
+            @delete-qualifier="deleteQualifier($event, index)"
           />
         </td>
       </tr>
@@ -88,19 +88,23 @@ export default {
           label: this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
         }
       })
-
       this.headers = await Promise.all(headerPromises)
     },
-    async createQualifier (data, index) {
+    async createQualifier (qualifiers, index) {
       // eslint-disable-next-line vue/no-mutating-props
-      this.claim.values[index].qualifiers = data.claim.qualifiers
-
+      this.claim.values[index].qualifiers[qualifiers[0].property] = qualifiers
       await this.getHeaders()
     },
-    async deleteQualifier (index, qualifier) {
-      // eslint-disable-next-line vue/no-mutating-props
-      delete this.claim.values[index].qualifiers[qualifier]
-
+    async deleteQualifier (qualifier, index) {
+      const qualifiers = this.claim.values[index].qualifiers[qualifier.property]
+      const findIndex = qualifiers.findIndex(item => item.hash === qualifier.hash)
+      if (findIndex !== -1) {
+        qualifiers.splice(findIndex, 1)
+      }
+      if (!qualifiers.length) {
+        // eslint-disable-next-line vue/no-mutating-props
+        delete this.claim.values[index].qualifiers[qualifier.property]
+      }
       await this.getHeaders()
     }
   }
@@ -130,12 +134,11 @@ export default {
 }
 
 .table-cell {
-  padding: 4px;
   border: none;
 }
 
 .table-cell-value-edit {
-  padding: 4px;
+  padding-top: 8px !important;
   border-bottom: none !important;
 }
 

@@ -8,6 +8,7 @@
         <v-row dense class="justify-start">
           <v-col dense class="flex-shrink-1">
             <item-util-edit-text-field
+              :label="label"
               :value="valueToView_.value"
               :save="editValue"
               :delete="deleteValue"
@@ -35,6 +36,10 @@
 export default {
   inheritAttrs: false,
   props: {
+    label: {
+      type: String,
+      default: null
+    },
     valueToView: {
       type: Object,
       default: null

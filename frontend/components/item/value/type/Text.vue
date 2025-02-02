@@ -6,6 +6,7 @@
     </span>
     <div v-else>
       <item-util-edit-text-field
+        :label="label"
         :value="valueToView_.value"
         :save="editValue"
         :delete="deleteValue"
@@ -20,6 +21,10 @@
 export default {
   inheritAttrs: false,
   props: {
+    label: {
+      type: String,
+      default: null
+    },
     valueToView: {
       type: Object,
       default: null
