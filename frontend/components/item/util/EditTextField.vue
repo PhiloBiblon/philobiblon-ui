@@ -7,6 +7,7 @@
     v-on="$listeners"
     @blur="blur"
     @focus="focus"
+    @input="handleInput"
   >
     <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
       <slot :name="scopedSlotName" v-bind="slotData" />
@@ -94,13 +95,15 @@ export default {
       this.focussed = false
       if (this.isEditable) {
         this.restore()
-      } else {
-        this.$emit('new-value', this.currentText)
       }
     },
 
     focus () {
       this.focussed = true
+    },
+
+    handleInput (value) {
+      this.$emit('new-value', this.currentText)
     },
 
     async edit () {

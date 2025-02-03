@@ -6,6 +6,7 @@
     <template v-else>
       <item-util-edit-select-field
         v-if="isItemWithCustomOptions"
+        :label="label"
         :value="selectedOption"
         :save="editValue"
         :options="options"
@@ -15,6 +16,7 @@
       />
       <item-util-edit-select-field
         v-else
+        :label="label"
         :save="editValue"
         :options="options"
         :delete="deleteValue"
@@ -31,6 +33,10 @@
 export default {
   inheritAttrs: false,
   props: {
+    label: {
+      type: String,
+      default: null
+    },
     valueToView: {
       type: Object,
       default: null
