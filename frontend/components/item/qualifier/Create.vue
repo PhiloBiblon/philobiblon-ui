@@ -22,9 +22,10 @@
           @update:search-input="onInput($event, 'property', key)"
         />
       </v-col>
-      <v-col class="p-0 pr-3">
+      <v-col class="p-0 pr-3 pt-3">
         <div v-if="showValue">
           <item-value-base
+            :label="$t('common.value')"
             :claim="claim"
             :value="qualifier"
             type="qualifier"
@@ -114,7 +115,6 @@ export default {
     },
     addQualifier () {
       this.qualifiers.push({
-        value: null,
         property: null,
         type: null,
         datavalue: {
@@ -141,13 +141,14 @@ export default {
       }
     },
     async createQualifier (index) {
+      const qualifier = this.qualifiers[index]
       await this.$wikibase.getWbEdit().qualifier.add({
         guid: this.claim.id,
-        value: this.qualifiers[index].datavalue.value.id ?? this.qualifiers[index].datavalue.value,
-        property: this.qualifiers[index].property
+        value: qualifier.datavalue.value.id ?? qualifier.datavalue.value,
+        property: qualifier.property
       }, this.$store.getters['auth/getRequestConfig']).then((res) => {
         if (res.success) {
-          this.updateQualifiers(res)
+          this.updateQualifiers(res.claim.qualifiers[qualifier.property])
           this.removeQualifier(index)
           this.$notification.success(this.$t('messages.success.updated'))
         } else {
@@ -157,11 +158,8 @@ export default {
         this.$notification.error(error)
       })
     },
-    updateQualifiers (res) {
-      const data = {
-        claim: res.claim
-      }
-      this.$emit('create-qualifier', data)
+    updateQualifiers (qualifiers) {
+      this.$emit('create-qualifier', qualifiers)
     }
   }
 }
