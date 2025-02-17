@@ -1,12 +1,11 @@
 <template>
   <div>
-    <template v-if="!isUserLogged">
+    <template v-if="!isUserLogged && !propose?.approved">
       <item-util-view-text-lang :value="valueToView" :tooltip="valueToView.item" />
     </template>
     <template v-else>
       <item-util-edit-select-field
         v-if="isItemWithCustomOptions"
-        :label="label"
         :value="selectedOption"
         :save="editValue"
         :options="options"
@@ -16,7 +15,6 @@
       />
       <item-util-edit-select-field
         v-else
-        :label="label"
         :save="editValue"
         :options="options"
         :delete="deleteValue"
@@ -33,10 +31,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    label: {
-      type: String,
-      default: null
-    },
     valueToView: {
       type: Object,
       default: null
@@ -76,6 +70,9 @@ export default {
     },
     isItemWithCustomOptions () {
       return this.valueToView.property in this.property_autocomplete
+    },
+    propose () {
+      return this.$store.getters['admin/getPropose']
     },
     isEditable () {
       return this.mode === 'edit'

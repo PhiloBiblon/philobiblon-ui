@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="!isUserLogged">
+    <template v-if="!isUserLogged && !propose?.approved">
       <item-util-view-text-lang :value="valueToView" />
     </template>
     <template v-else>
@@ -8,7 +8,6 @@
         <v-row dense class="justify-start">
           <v-col dense class="flex-shrink-1">
             <item-util-edit-text-field
-              :label="label"
               :value="valueToView_.value"
               :save="editValue"
               :delete="deleteValue"
@@ -36,10 +35,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    label: {
-      type: String,
-      default: null
-    },
     valueToView: {
       type: Object,
       default: null
@@ -91,6 +86,9 @@ export default {
     },
     isEditable () {
       return this.mode === 'edit'
+    },
+    propose () {
+      return this.$store.getters['admin/getPropose']
     }
   },
   methods: {

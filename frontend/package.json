@@ -11,6 +11,7 @@
     "lint": "npm run lint:js"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.5.1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/i18n": "^7.3.0",
     "@nuxtjs/toast": "^3.3.1",
@@ -20,7 +21,6 @@
     "jsonwebtoken": "^8.5.1",
     "nuxt": "^2.15.8",
     "nuxt-material-design-icons": "^1.0.4",
-    "quill": "^2.0.3",
     "vuetify": "^2.6.12",
     "wikibase-edit": "^5.3.2",
     "wikibase-sdk": "^8.1.0"

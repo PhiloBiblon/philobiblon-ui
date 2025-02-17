@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="!isUserLogged">
+    <span v-if="!isUserLogged && !propose?.approved">
       <a :href="valueToView.url" target="_blank">{{ valueToView.value }}</a>
     </span>
     <div v-else>
@@ -48,6 +48,9 @@ export default {
   computed: {
     isUserLogged () {
       return this.$store.state.auth.isLogged
+    },
+    propose () {
+      return this.$store.getters['admin/getPropose']
     }
   },
   methods: {

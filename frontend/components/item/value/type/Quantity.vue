@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="!isUserLogged">
+    <span v-if="!isUserLogged && !propose?.approved">
       {{ valueToView.value.amount }} <item-util-view-text-lang :value="unitLabel" />
     </span>
     <div v-else>
@@ -75,6 +75,9 @@ export default {
     },
     isEditable () {
       return this.mode === 'edit'
+    },
+    propose () {
+      return this.$store.getters['admin/getPropose']
     }
   },
   async mounted () {

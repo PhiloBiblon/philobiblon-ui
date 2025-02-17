@@ -18,18 +18,18 @@ export const mutations = {
 }
 
 export const getters = {
-  getRequestConfig (state) {
+  getRequestConfig (state, getters, rootState) {
+    const propose = rootState.admin.propose
+
     return {
       credentials: {
         oauth: {
-          token: state.accessToken.token
+          token: state.accessToken?.token ? state.accessToken?.token : propose.user.token
         }
       }
     }
   },
-  getAuthHeaders (state) {
-    return {
-      Authorization: `OAuth oauth_token="${state.accessToken.token}", oauth_token_secret="${state.accessToken.tokenSecret}"`
-    }
+  getAccessToken (state) {
+    return state.accessToken
   }
 }
