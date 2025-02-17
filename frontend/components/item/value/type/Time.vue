@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="!isUserLogged">
+    <template v-if="!isUserLogged && !propose?.approved">
       {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
     </template>
     <template v-else>
@@ -63,6 +63,9 @@ export default {
     },
     isEditable () {
       return this.mode === 'edit'
+    },
+    propose () {
+      return this.$store.getters['admin/getPropose']
     }
   },
   methods: {

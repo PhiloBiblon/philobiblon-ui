@@ -16,6 +16,7 @@ export default {
     add_qualifier: 'adicionar qualificador',
     add_claim: 'adicionar declaração',
     cancel: 'Cancelar',
+    propose_changes: 'Propor mudanças',
     search: {
       section: {
         advanced: 'Busca avançada',

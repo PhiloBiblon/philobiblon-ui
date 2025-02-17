@@ -15,6 +15,7 @@ export default {
     add_qualifier: 'add qualifier',
     add_claim: 'add statement',
     cancel: 'cancel',
+    propose_changes: 'Propose changes',
     search: {
       section: {
         advanced: 'Advanced search',

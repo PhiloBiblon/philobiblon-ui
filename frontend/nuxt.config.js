@@ -16,6 +16,7 @@ export default {
 
   publicRuntimeConfig: {
     version: '0.8.7',
+    adminApiUrl: process.env.ADMIN_API_URL,
     apiBaseUrl: process.env.API_BASE_URL || '/.',
     wikibaseBaseUrl: process.env.WIKIBASE_BASE_URL,
     sparqlBaseUrl: process.env.SPARQL_BASE_URL,
@@ -57,6 +58,7 @@ export default {
     '~/plugins/language.js',
     '~/plugins/notification.js',
     '~/plugins/dompurify.js',
+    '~/plugins/fingerprint.client.js',
     '~/plugins/version-check.js'
   ],
 
@@ -150,7 +152,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['quill'],
     filenames: {
       app: ({ isDev }) => isDev ? '[name].js' : '[name].[contenthash].js',
       chunk: ({ isDev })=> isDev ? '[name].js' : '[name].[contenthash].js',

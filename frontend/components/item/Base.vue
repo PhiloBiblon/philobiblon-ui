@@ -56,6 +56,11 @@
       <item-claims :table="tableid" :claims="item.claims" :item="item" />
       <item-related-items v-if="cnums.length" :table="tableid" related-table="cnum" :items="cnums" />
       <item-related-items v-if="copids.length" :table="tableid" related-table="copid" :items="copids" />
+      <v-row justify="end">
+        <v-col cols="12" class="d-flex justify-end">
+          <item-util-propose-button v-if="!isUserLogged || propose?.approved" :item="item" class="mt-3" />
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -84,6 +89,9 @@ export default {
   computed: {
     isUserLogged () {
       return this.$store.state.auth.isLogged
+    },
+    propose () {
+      return this.$store.getters['admin/getPropose']
     }
   },
 

@@ -1,12 +1,11 @@
 <template>
   <div>
-    <span v-if="!isUserLogged">
+    <span v-if="!isUserLogged && !propose?.approved">
       <!-- eslint-disable-next-line vue/no-v-html -->
       <span v-html="contentView" />
     </span>
     <div v-else>
       <item-util-edit-text-field
-        :label="label"
         :value="valueToView_.value"
         :save="editValue"
         :delete="deleteValue"
@@ -21,10 +20,6 @@
 export default {
   inheritAttrs: false,
   props: {
-    label: {
-      type: String,
-      default: null
-    },
     valueToView: {
       type: Object,
       default: null
@@ -57,6 +52,9 @@ export default {
     },
     contentView () {
       return this.$sanitize(this.valueToView.value)
+    },
+    propose () {
+      return this.$store.getters['admin/getPropose']
     }
   },
   methods: {
