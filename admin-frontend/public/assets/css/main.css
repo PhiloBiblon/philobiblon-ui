@@ -1,0 +1,4 @@
+/* src/assets/css/main.css or any other global CSS file */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

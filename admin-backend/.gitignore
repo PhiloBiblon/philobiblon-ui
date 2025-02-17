@@ -1,0 +1,46 @@
+# Node modules
+/node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Dependency directories
+/coverage/
+/dist/
+/build/
+
+/.env
+/.env.local
+/.env.*.local
+
+# IDE and editor settings
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# npm package-lock and yarn lock files
+package-lock.json
+yarn.lock
+
+# TypeScript cache (if using TypeScript)
+*.tsbuildinfo
+
+# Docker files (if using Docker)
+docker-compose.yml
+Dockerfile
+
+# Coverage output directory (if using coverage tools)
+coverage/
+
+# Serverless (if using serverless framework)
+.serverless/
+
+# Next.js build output (if using Next.js)
+.next/
