@@ -108,7 +108,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     if (form.input.institution_type && form.input.institution_type.value) {
@@ -251,7 +251,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.item} .
+        ?item wdt:P422 wd:${form.input.subject.value.item} .
         `
     }
     if (form.input.date_composition.value &&
@@ -428,7 +428,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -438,17 +438,10 @@ export class QueryService {
     let filters = ''
     if (form.input.city && form.input.city.value) {
       filters +=
-        `
-        OPTIONAL {
-          ?item wdt:P47 ?item_lib_loc
-        }
-        OPTIONAL {
-          ?item wdt:P243 ?item_topic_loc .
-          ?item_topic_loc wdt:P476 ?geo_pbid .
-          FILTER regex(?geo_pbid, '(.*) geoid ') .
-        }
-        FILTER(?item_lib_loc = wd:${form.input.city.value.item} || ?item_topic_loc = wd:${form.input.city.value.item})
-        `
+      `
+      ?item wdt:P111 ?value_city .\n
+      FILTER(STR(?value_city) = "${form.input.city.value.label}") . \n
+      `
     }
     if (form.input.library && form.input.library.value) {
       if (form.input.library.value.property === 'label') {
@@ -474,7 +467,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -586,9 +579,9 @@ export class QueryService {
         OPTIONAL { ?item wdt:P606 ?value_isn_p606 } .\n
         OPTIONAL { ?item wdt:P634 ?value_isn_p634 } .\n
         OPTIONAL { ?item wdt:P743 ?value_isn_p743 } .\n
-        FILTER(str(?value_isn_p605) = "${form.input.international_standard_number.value.label}" 
-          || str(?value_isn_p606) = "${form.input.international_standard_number.value.label}" 
-          || str(?value_isn_p634) = "${form.input.international_standard_number.value.label}" 
+        FILTER(str(?value_isn_p605) = "${form.input.international_standard_number.value.label}"
+          || str(?value_isn_p606) = "${form.input.international_standard_number.value.label}"
+          || str(?value_isn_p634) = "${form.input.international_standard_number.value.label}"
           || str(?value_isn_p743) = "${form.input.international_standard_number.value.label}") . \n
         `
     }
@@ -601,7 +594,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -625,7 +618,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -663,7 +656,7 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P329 ?copid_item_lib .  
+          ?copid_item wdt:P329 ?copid_item_lib .
           ?copid_item_lib wdt:P47 ?copid_item_lib_loc
         }
         FILTER(?item_lib_loc = wd:${form.input.city.value.item} || ?copid_item_lib_loc = wd:${form.input.city.value.item})
@@ -679,7 +672,7 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P329 ?copid_item_lib .  
+          ?copid_item wdt:P329 ?copid_item_lib .
         }
         FILTER (?item_lib = wd:${form.input.library.value.item} || ?copid_item_lib = wd:${form.input.library.value.item})
         `
@@ -703,7 +696,7 @@ export class QueryService {
       filters +=
         `
         OPTIONAL {
-          ?item wdt:P10 ?item_p10_label . 
+          ?item wdt:P10 ?item_p10_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
@@ -718,7 +711,7 @@ export class QueryService {
           ?cnum_item wdt:P8 ?item
         }
         OPTIONAL {
-          ?item wdt:P30 ?item_p30_label . 
+          ?item wdt:P30 ?item_p30_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
@@ -834,7 +827,7 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P229 ?copid_item_prev_owner .  
+          ?copid_item wdt:P229 ?copid_item_prev_owner .
         }
         FILTER (?item_prev_owner = wd:${form.input.previous_owner.value.item} || ?copid_item_prev_owner = wd:${form.input.previous_owner.value.item})
         `
@@ -849,7 +842,7 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P703 ?copid_item_aso_person .  
+          ?copid_item wdt:P703 ?copid_item_aso_person .
         }
         FILTER (?item_aso_person = wd:${form.input.associated_person.value.item} || ?copid_item_aso_person = wd:${form.input.associated_person.value.item})
         `
@@ -870,7 +863,7 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P480 ?copid_item_writing_surf .  
+          ?copid_item wdt:P480 ?copid_item_writing_surf .
         }
         FILTER (?item_writing_surf = wd:${form.input.writing_surface.value.item} || ?copid_item_writing_surf = wd:${form.input.writing_surface.value.item})
         `
@@ -891,7 +884,7 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P800 ?copid_item_binding .  
+          ?copid_item wdt:P800 ?copid_item_binding .
         }
         FILTER (?item_binding = "${form.input.binding.value.label}" || ?copid_item_binding = "${form.input.binding.value.label}")
         `
@@ -925,7 +918,7 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P749 ?copid_item_watermark .  
+          ?copid_item wdt:P749 ?copid_item_watermark .
         }
         FILTER (?item_watermark = wd:${form.input.watermark.value.item} || ?copid_item_watermark = wd:${form.input.watermark.value.item})
         `
@@ -940,7 +933,7 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P801 ?copid_item_graphic_feature .  
+          ?copid_item wdt:P801 ?copid_item_graphic_feature .
         }
         FILTER (?item_graphic_feature = wd:${form.input.graphic_feature.value.item} || ?copid_item_graphic_feature = wd:${form.input.graphic_feature.value.item})
         `
@@ -960,7 +953,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
+        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -1005,7 +998,7 @@ export class QueryService {
   countQuery (table, form, lang) {
     const COUNT_QUERY = $ =>
       `SELECT (COUNT(DISTINCT ?item) AS ?count)
-      WHERE { 
+      WHERE {
         ?item wdt:P476 ?pbid .
         ${this.generateLangFilters(lang)}
         ${$.filters}
@@ -1021,7 +1014,7 @@ export class QueryService {
   itemsQuery (table, form, lang, resultsPerPage) {
     const SEARCH_QUERY = $ =>
       `SELECT DISTINCT ?item ?label ?pbid
-      WHERE { 
+      WHERE {
         ?item wdt:P476 ?pbid .
         ${this.generateLangFilters(lang)}
         ${$.filters}
@@ -1082,6 +1075,19 @@ export class QueryService {
       }
       ORDER BY ?item_pbid
       `
+    return this.addPrefixes(query)
+  }
+
+  getTableLastItem (table) {
+    const query = `
+    SELECT ?item ?item_pbid
+    WHERE {
+      ?item wdt:P476 ?item_pbid .
+      FILTER regex(?item_pbid, '(.*) ${table} ') .
+    }
+    ORDER BY DESC(?item_pbid)
+    LIMIT 1
+  `
     return this.addPrefixes(query)
   }
 }
