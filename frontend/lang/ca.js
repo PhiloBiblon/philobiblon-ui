@@ -11,6 +11,8 @@ export default {
     calendar: 'Calendari',
     from: 'Des de',
     to: 'a',
+    add: 'afegir',
+    add_reference: 'afegir referència',
     add_value: 'valor afegit',
     add_qualifier: 'afegir qualificador',
     add_claim: 'afegir declaració',

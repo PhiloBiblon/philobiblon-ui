@@ -37,6 +37,11 @@
           />
         </td>
       </tr>
+      <tr class="table-row-edit">
+        <td :colspan="formattedHeaders.length" :class="isUserLogged?'table-cell-value-edit':'table-cell'">
+          <item-reference-base :claim="item" />
+        </td>
+      </tr>
     </template>
   </v-data-table>
 </template>

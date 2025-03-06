@@ -20,6 +20,10 @@ export default {
       type: Object,
       default: null
     },
+    reference: {
+      type: Object,
+      default: null
+    },
     label: {
       type: String,
       default: null
@@ -81,6 +85,13 @@ export default {
           newValue: editableData.values.newValue
         },
         this.$store.getters['auth/getRequestConfig'])
+      } else if (this.type === 'reference') {
+        const snaks = Object.entries(this.reference.snaks).reduce((acc, [key, values]) => {
+          acc[key] = values.map(v => v.hash === this.value.hash ? editableData.values.newValue : v.datavalue.value.id ?? v.datavalue.value)
+          return acc
+        }, {})
+
+        return this.setReference(snaks)
       } else {
         // eslint-disable-next-line no-console
         console.error(`Unknown type to edit: ${this.type}`)
@@ -93,6 +104,20 @@ export default {
         }, this.$store.getters['auth/getRequestConfig'])
         this.$emit('delete-claim', this.claim)
         return res
+      } else if (this.type === 'reference') {
+        const snaks = Object.entries(this.reference.snaks).reduce((acc, [key, values]) => {
+          const filteredValues = values.filter(v => v.hash !== this.value.hash)
+          if (filteredValues.length > 0) {
+            acc[key] = filteredValues.map(v => v.datavalue.value.id ?? v.datavalue.value)
+          }
+          return acc
+        }, {})
+
+        if (!Object.keys(snaks).length) {
+          return this.removeReference()
+        } else {
+          return this.setReference(snaks)
+        }
       } else {
         const res = this.$wikibase.getWbEdit().qualifier.remove({
           guid: this.claim.id,
@@ -101,6 +126,26 @@ export default {
         this.$emit('delete-qualifier', this.value)
         return res
       }
+    },
+    setReference (snaks) {
+      return this.$wikibase.getWbEdit().reference.set({
+        snaks,
+        guid: this.claim.id,
+        hash: this.reference.hash,
+        property: this.value.property
+      }, this.$store.getters['auth/getRequestConfig']).then((res) => {
+        this.$emit('create-reference', res)
+        return res
+      })
+    },
+    removeReference () {
+      return this.$wikibase.getWbEdit().reference.remove({
+        guid: this.claim.id,
+        hash: this.reference.hash
+      }, this.$store.getters['auth/getRequestConfig']).then((res) => {
+        this.$emit('delete-reference', this.reference)
+        return res
+      })
     }
   }
 }
