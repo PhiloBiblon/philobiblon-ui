@@ -12,6 +12,8 @@ export default {
     advanced_search: 'Busca avançada',
     from: 'De',
     to: 'para',
+    add: 'adicionar',
+    add_reference: 'adicionar referência',
     add_value: 'agregar valor',
     add_qualifier: 'adicionar qualificador',
     add_claim: 'adicionar declaração',
