@@ -424,6 +424,17 @@ export class WikibaseService {
     })
   }
 
+  async getTableLastItem (table) {
+    return await this.runSparqlQuery(
+      this.$query.getTableLastItem(table),
+      true
+    ).then((results) => {
+      return results
+    }).catch(() => {
+      return []
+    })
+  }
+
   getRelatedTable (entity) {
     const pbid = this.getPBID(entity)
     const {
