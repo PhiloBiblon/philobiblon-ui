@@ -108,7 +108,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     if (form.input.institution_type && form.input.institution_type.value) {
@@ -251,7 +251,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P422 wd:${form.input.subject.value.item} .
+        ?item wdt:P243 wd:${form.input.subject.value.item} .
         `
     }
     if (form.input.date_composition.value &&
@@ -428,7 +428,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -438,10 +438,17 @@ export class QueryService {
     let filters = ''
     if (form.input.city && form.input.city.value) {
       filters +=
-      `
-      ?item wdt:P111 ?value_city .\n
-      FILTER(STR(?value_city) = "${form.input.city.value.label}") . \n
-      `
+        `
+        OPTIONAL {
+          ?item wdt:P47 ?item_lib_loc
+        }
+        OPTIONAL {
+          ?item wdt:P243 ?item_topic_loc .
+          ?item_topic_loc wdt:P476 ?geo_pbid .
+          FILTER regex(?geo_pbid, '(.*) geoid ') .
+        }
+        FILTER(?item_lib_loc = wd:${form.input.city.value.item} || ?item_topic_loc = wd:${form.input.city.value.item})
+        `
     }
     if (form.input.library && form.input.library.value) {
       if (form.input.library.value.property === 'label') {
@@ -467,7 +474,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -594,7 +601,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -618,7 +625,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
@@ -953,7 +960,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:${form.input.subject.value.property} wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
         `
     }
     return filters
