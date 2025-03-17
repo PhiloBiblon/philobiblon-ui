@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels class="mb-2 bg-gray none-z-index">
+  <v-expansion-panels class="ma-2 pa-2 bg-gray none-z-index">
     <v-expansion-panel class="bg-gray">
       <v-expansion-panel-header class="bg-gray header">
         <p class="text-subtitle-2 mb-0">
@@ -70,7 +70,7 @@ export default {
 
 <style scoped>
 .bg-gray {
-  background-color: rgb(247, 245, 245);
+  background-color: #ECEFF1;
 }
 
 .none-z-index {
