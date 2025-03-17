@@ -15,7 +15,7 @@ export default {
     add_qualifier: 'añadir calificador',
     add_claim: 'añadir declaración',
     cancel: 'cancelar',
-    create: 'crear',
+    create: 'Crear',
     search: {
       section: {
         advanced: 'Búsqueda avanzada',
@@ -382,6 +382,14 @@ export default {
       not_found: 'No encontrado.',
       invalid_url: '¡Por favor rellene una URL válida!'
     },
+    create: {
+      button: {
+        text: 'Crear elemento',
+        enabled: 'Crea un elemento nevo',
+        disabled: 'Seleccione una de las bases de datos: BETA, BITECA o BITAGAP.'
+      },
+      calculating_new_pbid: 'Calculando nuevo PhiloBiblon ID ..'
+    },
     related: {
       texid: {
         cnum: {
@@ -462,6 +470,9 @@ export default {
       },
       modification: {
         failed: 'La etiqueta y la descripción del código de idioma en no pueden tener el mismo valor.'
+      },
+      creation: {
+        pbid_already_exists: 'El PhiloBiblon ID "{pbid}" ya existe en {item}.'
       }
     },
     success: {

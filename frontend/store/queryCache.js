@@ -1,5 +1,5 @@
 const CACHE_MAX_ENTRIES = 100
-const CACHE_EXPIRATION_MILLIS = 120000
+const CACHE_EXPIRATION_MILLIS = 1200000
 
 export const state = () => ({
   // a key-value object, where key is a query hash

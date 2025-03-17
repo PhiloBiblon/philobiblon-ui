@@ -2,6 +2,7 @@
   <div v-if="valueToView">
     <component
       :is="`item-value-type-${valueToView.type}`"
+      v-if="valueToView.type"
       :label="label"
       :type="type"
       :save="isEditable ? editValue : null"
@@ -51,7 +52,7 @@ export default {
     this.valueToView = await this.$wikibase.getWbValue(
       this.value.property,
       this.value.datatype,
-      this.value.datavalue.value,
+      this.value.datavalue?.value,
       this.$i18n.locale
     )
   },

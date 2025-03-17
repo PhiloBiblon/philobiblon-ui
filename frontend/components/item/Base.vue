@@ -26,7 +26,7 @@
                 &nbsp;
                 <a
                   class="text-subtitle-2 link"
-                  :href="$config.wikibaseBaseUrl + '/wiki/Item:' + item.id"
+                  :href="$wikibase.getQItemUrl(item.id)"
                   target="_blank"
                 >{{ item.id }}</a>
               </template>
@@ -37,7 +37,7 @@
             &nbsp;
             <a
               class="text-subtitle-2 link"
-              :href="$config.wikibaseBaseUrl + '/wiki/Item:' + item.id"
+              :href="$wikibase.getQItemUrl(item.id)"
               target="_blank"
             >{{ item.id }}</a>
           </span>

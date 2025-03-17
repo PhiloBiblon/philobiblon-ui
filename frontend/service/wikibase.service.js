@@ -2,6 +2,7 @@ import { QueryService } from '~/service/query.service'
 import { OAuthService } from '~/service/oauth.service'
 
 export class WikibaseService {
+  static PROPERTY_PBID = 'P476'
   static PROPERTY_FORMATTER_URL = 'P236'
   static PROPERTY_NOTES = 'P817'
   static COMMONS_WIKIMEDIA_URL_ENDPOINT =
@@ -46,6 +47,10 @@ export class WikibaseService {
 
   getPItemPattern () {
     return this.constructor.PITEM_PATTERN
+  }
+
+  getQItemUrl (itemId) {
+    return this.$config.wikibaseBaseUrl + '/wiki/Item:' + itemId
   }
 
   // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
@@ -324,18 +329,21 @@ export class WikibaseService {
     }
   }
 
-  runSparqlQuery (query, minimize = false) {
+  runSparqlQuery (query, minimize = false, useCache = true) {
     if (process.env.debug) {
       // eslint-disable-next-line no-console
       console.log(query)
     }
 
-    const queryHash = this.hashCode(query)
-    const entry = this.getResultsFromCache(queryHash)
-    if (entry) {
-      return new Promise((resolve, reject) => {
-        return resolve(entry.value)
-      })
+    let queryHash = null
+    if (useCache) {
+      queryHash = this.hashCode(query)
+      const entry = this.getResultsFromCache(queryHash)
+      if (entry) {
+        return new Promise((resolve, reject) => {
+          return resolve(entry.value)
+        })
+      }
     }
 
     const [url, sparql] = this.wbk.sparqlQuery(query).split('?')
@@ -356,10 +364,12 @@ export class WikibaseService {
       })
       .then(results => this.wbk.simplify.sparqlResults(results, { minimize }))
       .then((simplifiedResults) => {
-        this.$store.commit('queryCache/addEntry', {
-          key: queryHash,
-          value: simplifiedResults
-        })
+        if (useCache) {
+          this.$store.commit('queryCache/addEntry', {
+            key: queryHash,
+            value: simplifiedResults
+          })
+        }
         return simplifiedResults
       })
   }
@@ -424,10 +434,11 @@ export class WikibaseService {
     })
   }
 
-  async getTableLastItem (table) {
+  async getTableLastItem (database, table) {
     return await this.runSparqlQuery(
-      this.$query.getTableLastItem(table),
-      true
+      this.$query.getTableLastItem(database, table),
+      true,
+      false
     ).then((results) => {
       return results
     }).catch(() => {
