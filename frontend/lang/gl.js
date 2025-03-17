@@ -11,6 +11,8 @@ export default {
     calendar: 'Calendario',
     from: 'Dende',
     to: 'a',
+    add: 'engadir',
+    add_reference: 'engadir referencia',
     add_value: 'valor engadido',
     add_qualifier: 'engadir cualificativo',
     add_claim: 'engadir declaración',

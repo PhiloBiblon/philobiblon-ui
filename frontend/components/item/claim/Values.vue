@@ -10,7 +10,7 @@
   >
     <template #item="{ item, index }">
       <tr class="table-row">
-        <td v-for="(header, key) in formattedHeaders" :key="header.value" :class="isUserLogged?'table-cell-value-edit':'table-cell'">
+        <td v-for="(header, key) in formattedHeaders" :key="header.value" class="table-cell">
           <item-value-base
             v-if="!key"
             :claim="item"
@@ -35,6 +35,11 @@
             :claim="item"
             @create-qualifier="createQualifier($event, index)"
           />
+        </td>
+      </tr>
+      <tr v-if="isUserLogged || item.references" class="table-row-edit">
+        <td :colspan="formattedHeaders.length">
+          <item-reference-base :claim="item" />
         </td>
       </tr>
     </template>
@@ -134,16 +139,13 @@ export default {
 }
 
 .table-cell {
-  border: none;
-}
-
-.table-cell-value-edit {
-  padding-top: 8px !important;
   border-bottom: none !important;
+  padding-top: 8px !important;
 }
 
 .table-cell-btn-edit {
   border-top: none !important;
+  border-bottom: none !important;
   height: 30px !important;
 }
 
