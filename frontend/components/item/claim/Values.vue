@@ -96,6 +96,10 @@ export default {
       this.headers = await Promise.all(headerPromises)
     },
     async createQualifier (qualifiers, index) {
+      if (!this.claim.values[index].qualifiers) {
+        // eslint-disable-next-line vue/no-mutating-props
+        this.claim.values[index].qualifiers = []
+      }
       // eslint-disable-next-line vue/no-mutating-props
       this.claim.values[index].qualifiers[qualifiers[0].property] = qualifiers
       await this.getHeaders()

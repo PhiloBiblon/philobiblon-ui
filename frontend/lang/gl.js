@@ -17,6 +17,7 @@ export default {
     add_qualifier: 'engadir cualificativo',
     add_claim: 'engadir declaración',
     cancel: 'cancelar',
+    create: 'Crear',
     search: {
       section: {
         advanced: 'Busca avanzada',
@@ -374,6 +375,7 @@ export default {
     }
   },
   item: {
+    label: 'Elemento',
     title: 'Título',
     description: 'Descrición',
     back: 'Volve',
@@ -381,6 +383,14 @@ export default {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',
       invalid_url: 'Enche un URL válido!'
+    },
+    create: {
+      button: {
+        text: 'Crear elemento',
+        enabled: 'Crea un novo elemento',
+        disabled: 'Seleccione unha das bases de datos: BETA, BITECA ou BITAGAP.'
+      },
+      calculating_new_pbid: 'Calculando o novo ID de PhiloBiblon ..'
     },
     related: {
       texid: {
@@ -462,6 +472,9 @@ export default {
       },
       modification: {
         failed: 'A etiqueta e a descrición do código de idioma gl non poden ter o mesmo valor.'
+      },
+      creation: {
+        pbid_already_exists: 'O PhiloBiblon ID "{pbid}" xa existe en {item}.'
       }
     },
     success: {

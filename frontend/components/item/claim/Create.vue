@@ -3,8 +3,7 @@
     <v-row
       v-for="(claim, key) in claims"
       :key="key"
-      align="center"
-      class="even-row"
+      class="even-row text-center pt-5"
       no-gutters
       dense
     >
@@ -24,14 +23,14 @@
         </v-subheader>
       </v-col>
       <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
-        <v-btn :disabled="!canCreate(key)" text icon @click.stop="addClaim(key)">
+        <v-btn v-if="!forCreate" :disabled="!canCreate(key)" text icon @click.stop="addClaim(key)">
           <v-icon>mdi-check</v-icon>
         </v-btn>
         <v-btn text icon @click.stop="removeClaim(key)">
           <v-icon>mdi-trash-can</v-icon>
         </v-btn>
       </v-col>
-      <v-container class="claim-values">
+      <v-container class="claim-values elevation-1">
         <div v-if="showValue">
           <item-value-base
             :claim="claim"
@@ -40,8 +39,12 @@
             mode="creation"
             @new-value="onNewValue($event, claim)"
           />
+          <item-qualifier-create
+            :key="claim?.property?.id"
+            :initial-qualifiers="claim.qualifiers"
+            @update-qualifiers="updateQualifiers($event, key)"
+          />
         </div>
-        <item-qualifier-create :key="claim?.property?.id" @update-qualifiers="updateQualifiers($event, key)" />
       </v-container>
     </v-row>
     <v-row class="back pr-5 mb-2 mt-2" justify="end">
@@ -63,6 +66,14 @@ export default {
     item: {
       type: Object,
       default: null
+    },
+    initialClaims: {
+      type: Array,
+      default: null
+    },
+    forCreate: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -73,11 +84,32 @@ export default {
       propertyValues: []
     }
   },
+  watch: {
+    claims: {
+      handler (newValue) {
+        if (this.forCreate) {
+          this.$emit('update-claims', newValue)
+        }
+      },
+      deep: true
+    }
+  },
+  created () {
+    if (this.initialClaims) {
+      this.initialClaims.forEach((claim, index) => {
+        this.$set(this.properties, index, [claim.property])
+        this.showValue = true
+        this.claims.push(claim)
+      })
+    }
+  },
   methods: {
     onChangeProperty (property, claim) {
       claim.property = property
       claim.value.property = property.id
       claim.value.datatype = property.datatype
+      claim.value.datavalue.value = ''
+      claim.qualifiers = []
       this.refreshValueSection()
     },
     refreshValueSection () {
@@ -116,6 +148,9 @@ export default {
       this.properties.splice(index, 1)
       this.propertyValues.splice(index, 1)
       this.showValue = false
+      setTimeout(() => {
+        this.showValue = true
+      }, 10)
     },
     async onInput (value, type, index) {
       if (value && typeof value === 'string') {
@@ -126,6 +161,7 @@ export default {
           } else {
             this.$set(this.propertyValues, index, search)
           }
+          return search
         }
       }
     },
