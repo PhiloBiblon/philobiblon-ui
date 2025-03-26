@@ -11,13 +11,10 @@ export default {
     calendar: 'Calendar',
     from: 'From',
     to: 'To',
-    add: 'add',
-    add_reference: 'add reference',
     add_value: 'add value',
     add_qualifier: 'add qualifier',
     add_claim: 'add statement',
     cancel: 'cancel',
-    create: 'Create',
     search: {
       section: {
         advanced: 'Advanced search',
@@ -84,7 +81,7 @@ export default {
     form: {
       common: {
         group: {
-          label: 'Bibliographical database'
+          label: 'Database'
         },
         group_all: {
           label: 'All'
@@ -375,7 +372,6 @@ export default {
     }
   },
   item: {
-    label: 'Item',
     title: 'Title',
     description: 'Description',
     back: 'Go back',
@@ -383,14 +379,6 @@ export default {
       invalid_id: 'Invalid identifier.',
       not_found: 'Not found.',
       invalid_url: 'Please fill a valid URL!'
-    },
-    create: {
-      button: {
-        text: 'Create item',
-        enabled: 'Create a new item',
-        disabled: 'Select one of the databases: BETA, BITECA or BITAGAP.'
-      },
-      calculating_new_pbid: 'Calculating new PhiloBiblon ID ..'
     },
     related: {
       texid: {
@@ -472,9 +460,6 @@ export default {
       },
       modification: {
         failed: 'Label and description for language code en can not have the same value.'
-      },
-      creation: {
-        pbid_already_exists: 'The PhiloBiblon ID "{pbid}" already exists in {item}.'
       }
     },
     success: {

@@ -12,13 +12,10 @@ export default {
     advanced_search: 'Busca avançada',
     from: 'De',
     to: 'para',
-    add: 'adicionar',
-    add_reference: 'adicionar referência',
     add_value: 'agregar valor',
     add_qualifier: 'adicionar qualificador',
     add_claim: 'adicionar declaração',
     cancel: 'Cancelar',
-    create: 'Criar',
     search: {
       section: {
         advanced: 'Busca avançada',
@@ -85,7 +82,7 @@ export default {
     form: {
       common: {
         group: {
-          label: 'Banco de dados bibliográfico'
+          label: 'Banco de dados'
         },
         group_all: {
           label: 'Todos'
@@ -375,7 +372,6 @@ export default {
     }
   },
   item: {
-    label: 'Artigo',
     title: 'Título',
     description: 'Descrição',
     back: 'Volte',
@@ -383,14 +379,6 @@ export default {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',
       invalid_url: 'Por favor preencha um URL válido!'
-    },
-    create: {
-      button: {
-        text: 'Criar elemento',
-        enabled: 'Criar um novo item',
-        disabled: 'Selecione uma das bases de dados: BETA, BITECA ou BITAGAP.'
-      },
-      calculating_new_pbid: 'Calculando o novo ID PhiloBiblon ..'
     },
     related: {
       texid: {
@@ -470,8 +458,8 @@ export default {
       inputs: {
         fill: 'Por favor preencha as entradas'
       },
-      creation: {
-        pbid_already_exists: 'O PhiloBiblon ID "{pbid}" já existe em {item}.'
+      modification: {
+        failed: 'O rótulo e a descrição do código do idioma en não podem ter o mesmo valor.'
       }
     },
     success: {
