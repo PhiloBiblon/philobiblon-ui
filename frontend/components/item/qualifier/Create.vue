@@ -66,10 +66,6 @@ export default {
     claim: {
       type: Object,
       default: null
-    },
-    initialQualifiers: {
-      type: Array,
-      default: null
     }
   },
   data () {
@@ -82,7 +78,7 @@ export default {
   },
   computed: {
     isAllowedAddQualifier () {
-      return this.claim && this.claim.mainsnak.property !== this.$wikibase.constructor.PROPERTY_NOTES
+      return this.claim?.mainsnak?.property !== this.$wikibase.constructor.PROPERTY_NOTES
     }
   },
   watch: {
@@ -93,15 +89,6 @@ export default {
         }
       },
       deep: true
-    }
-  },
-  created () {
-    if (this.initialQualifiers) {
-      this.initialQualifiers.forEach((qualifier, index) => {
-        this.$set(this.properties, index, [qualifier.property])
-        this.showValue = true
-        this.qualifiers.push(qualifier)
-      })
     }
   },
   methods: {
@@ -129,7 +116,7 @@ export default {
     addQualifier () {
       this.qualifiers.push({
         property: null,
-        datatype: null,
+        type: null,
         datavalue: {
           value: null
         }

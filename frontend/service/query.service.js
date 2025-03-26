@@ -1085,18 +1085,16 @@ export class QueryService {
     return this.addPrefixes(query)
   }
 
-  getTableLastItem (database, table) {
-    const query =
-      `
-      SELECT ?item ?item_pbid ?item_number
-      WHERE {
-        ?item wdt:P476 ?item_pbid .
-        FILTER regex(?item_pbid, '${database} ${table} ') .
-        BIND(REPLACE(?item_pbid, ".* ([0-9]+)$", "$1") AS ?item_number)
-      }
-      ORDER BY DESC(xsd:integer(?item_number))
-      LIMIT 1
-      `
+  getTableLastItem (table) {
+    const query = `
+    SELECT ?item ?item_pbid
+    WHERE {
+      ?item wdt:P476 ?item_pbid .
+      FILTER regex(?item_pbid, '(.*) ${table} ') .
+    }
+    ORDER BY DESC(?item_pbid)
+    LIMIT 1
+  `
     return this.addPrefixes(query)
   }
 }

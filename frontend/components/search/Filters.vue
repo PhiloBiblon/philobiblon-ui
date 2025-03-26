@@ -2,48 +2,22 @@
   <v-form ref="search_form">
     <v-container>
       <v-row dense>
-        <v-col cols="10">
-          <v-radio-group
-            v-model="search_group.value"
-            :disabled="search_group.disabled"
-            row
-            @change="onGroupChange"
-          >
-            <template #label>
-              {{ $t('search.form.common.group.label') }}
-            </template>
-            <v-radio
-              v-for="group in groups"
-              :key="'g-'+group"
-              class="group-option"
-              :label="group.text ? group.text : group"
-              :value="group.value ? group.value : group"
-            />
-          </v-radio-group>
-        </v-col>
-        <v-col>
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <div v-bind="attrs" v-on="on">
-                <v-btn
-                  v-if="isUserLogged"
-                  small
-                  color="primary"
-                  class="mr-4"
-                  elevation="2"
-                  :disabled="isCreateDisabled"
-                  v-bind="attrs"
-                  v-on="on"
-                  @click="goTo(`/item/${table}/create`, { database: search_group.value })"
-                >
-                  {{ $t('item.create.button.text') }}
-                </v-btn>
-              </div>
-            </template>
-            <span v-if="isCreateDisabled">{{ $t('item.create.button.disabled') }}</span>
-            <span v-else>{{ $t('item.create.button.enabled') }}</span>
-          </v-tooltip>
-        </v-col>
+        <v-radio-group
+          v-model="search_group.value"
+          :disabled="search_group.disabled"
+          row
+        >
+          <template #label>
+            {{ $t('search.form.common.group.label') }}
+          </template>
+          <v-radio
+            v-for="group in groups"
+            :key="'g-'+group"
+            class="group-option"
+            :label="group.text ? group.text : group"
+            :value="group.value ? group.value : group"
+          />
+        </v-radio-group>
       </v-row>
       <template v-for="(section) in form.section">
         <v-row v-if="!isPrimarySection(section) && existsSectionFilters(section) && !showResults" :key="'header-' + section" dense>
@@ -122,6 +96,16 @@
           >
             {{ $t('search.button.clear') }}
           </v-btn>
+          <v-btn
+            v-if="isUserLogged"
+            small
+            color="primary"
+            class="mr-4"
+            elevation="2"
+            @click="goTo(`/item/${table}/create`)"
+          >
+            {{ $t('common.create') }}
+          </v-btn>
         </v-col>
         <v-col
           cols="4"
@@ -139,7 +123,7 @@
         >
           <v-icon
             color="primary"
-            @click="goToHelp()"
+            @click="goTo('../../wiki/${this.$i18n.locale}_Help')"
           >
             mdi-help-circle
           </v-icon>
@@ -172,8 +156,7 @@ export default {
       search_group: {},
       search_type: {},
       filtersBySection: {},
-      showResults: false,
-      isCreateDisabled: true
+      showResults: false
     }
   },
 
@@ -310,17 +293,8 @@ export default {
       this.$store.commit('queryStatus/setForm', null)
       this.$emit('clear-search')
     },
-    goTo (path, params) {
-      if (this.$i18n.locale !== 'en') {
-        path = `/${this.$i18n.locale}${path}`
-      }
-      this.$router.push({
-        path,
-        query: params
-      })
-    },
-    goToHelp () {
-      this.$router.push(`../../wiki/${this.$i18n.locale}_Help`)
+    goTo (path) {
+      this.$router.push(path)
     },
     isFieldValueNotEmpty (item) {
       if (typeof item === 'string' && item !== '') {
@@ -330,9 +304,6 @@ export default {
         return true
       }
       return false
-    },
-    onGroupChange (newDatabase) {
-      this.isCreateDisabled = newDatabase === 'ALL'
     }
   }
 }
