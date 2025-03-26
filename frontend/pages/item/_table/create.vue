@@ -1,7 +1,6 @@
 <template>
   <item-create
     v-if="table"
-    :database="database"
     :table="table"
   />
 </template>
@@ -14,7 +13,6 @@ export default {
     }
   },
   mounted () {
-    this.database = this.$route.query.database
     this.table = this.$route.params.table
     this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(this.table))
   },

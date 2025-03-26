@@ -3,15 +3,17 @@
     <v-row
       v-for="(claim, key) in claims"
       :key="key"
-      class="even-row text-center pt-5"
+      align="center"
+      class="even-row"
       no-gutters
       dense
     >
-      <v-col class="p-0 pr-3">
+      <v-col class="p-0 pr-3 mt-3">
         <v-subheader class="claim-header grey--text">
           <v-autocomplete
             v-model="claim.property"
             required
+            :readonly="claim.default"
             :items="properties[key]"
             item-text="label"
             return-object
@@ -26,25 +28,22 @@
         <v-btn v-if="!forCreate" :disabled="!canCreate(key)" text icon @click.stop="addClaim(key)">
           <v-icon>mdi-check</v-icon>
         </v-btn>
-        <v-btn text icon @click.stop="removeClaim(key)">
+        <v-btn v-if="!claim.default" text icon @click.stop="removeClaim(key)">
           <v-icon>mdi-trash-can</v-icon>
         </v-btn>
       </v-col>
-      <v-container class="claim-values elevation-1">
-        <div v-if="showValue">
+      <v-container class="claim-values">
+        <div v-if="claim?.property?.id || claim.default">
           <item-value-base
+            :key="claim.property.id"
             :claim="claim"
             :value="claim.value"
             type="claim"
             mode="creation"
             @new-value="onNewValue($event, claim)"
           />
-          <item-qualifier-create
-            :key="claim?.property?.id"
-            :initial-qualifiers="claim.qualifiers"
-            @update-qualifiers="updateQualifiers($event, key)"
-          />
         </div>
+        <item-qualifier-create :key="claim?.property?.id" @update-qualifiers="updateQualifiers($event, key)" />
       </v-container>
     </v-row>
     <v-row class="back pr-5 mb-2 mt-2" justify="end">
@@ -67,18 +66,17 @@ export default {
       type: Object,
       default: null
     },
-    initialClaims: {
-      type: Array,
-      default: null
-    },
     forCreate: {
       type: Boolean,
       default: false
+    },
+    table: {
+      type: String,
+      default: null
     }
   },
   data () {
     return {
-      showValue: false,
       claims: [],
       properties: [],
       propertyValues: []
@@ -88,35 +86,39 @@ export default {
     claims: {
       handler (newValue) {
         if (this.forCreate) {
-          this.$emit('update-claims', newValue)
+          this.$emit('update-claims', this.generateClaimsData(newValue))
         }
       },
       deep: true
     }
   },
-  created () {
-    if (this.initialClaims) {
-      this.initialClaims.forEach((claim, index) => {
-        this.$set(this.properties, index, [claim.property])
-        this.showValue = true
-        this.claims.push(claim)
-      })
+  async mounted () {
+    if (this.forCreate && this.table) {
+      await this.getClaims()
     }
   },
   methods: {
-    onChangeProperty (property, claim) {
-      claim.property = property
-      claim.value.property = property.id
-      claim.value.datatype = property.datatype
-      claim.value.datavalue.value = ''
-      claim.qualifiers = []
-      this.refreshValueSection()
-    },
-    refreshValueSection () {
-      this.showValue = false
-      this.$nextTick(() => {
-        this.showValue = true
+    generateClaimsData (data) {
+      const claims = {}
+
+      data.forEach((claim) => {
+        claims[claim.value.property] = {
+          value: claim.value.datavalue.value?.id ?? claim.value.datavalue.value,
+          qualifiers: {}
+        }
+
+        claim.qualifiers.forEach((qualifier) => {
+          claims[claim.value.property].qualifiers[qualifier.property] = qualifier.value
+        })
       })
+
+      return claims
+    },
+    onChangeProperty (property, claim) {
+      claim.property = property ?? null
+      claim.value.datavalue.value = null
+      claim.value.property = property?.id ?? null
+      claim.value.datatype = property?.datatype ?? null
     },
     onNewValue (event, claim) {
       claim.value.datavalue.value = event
@@ -132,6 +134,7 @@ export default {
     },
     addNewClaim () {
       this.claims.push({
+        default: false,
         value: {
           property: null,
           datatype: null,
@@ -147,10 +150,6 @@ export default {
       this.claims.splice(index, 1)
       this.properties.splice(index, 1)
       this.propertyValues.splice(index, 1)
-      this.showValue = false
-      setTimeout(() => {
-        this.showValue = true
-      }, 10)
     },
     async onInput (value, type, index) {
       if (value && typeof value === 'string') {
@@ -161,7 +160,6 @@ export default {
           } else {
             this.$set(this.propertyValues, index, search)
           }
-          return search
         }
       }
     },
@@ -212,6 +210,34 @@ export default {
         qualifiersOrder: res.claim['qualifiers-order'] ?? false
       }
       this.$emit('update-claims', data)
+    },
+    async getClaims () {
+      try {
+        const res = await this.$wikibase.getClaimsOrder(this.table)
+        const entities = await this.$wikibase.getEntities(Object.keys(res), this.$i18n.locale)
+
+        Object.entries(entities)
+          .filter(([_, value]) => value?.title?.startsWith('Property:') && value?.labels)
+          .forEach(([key, entity], index) => {
+            const propertyLabel = this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
+            this.onInput(propertyLabel.value, 'property', index)
+
+            this.claims.push({
+              default: true,
+              value: {
+                property: entity.id,
+                datatype: entity.datatype,
+                datavalue: {
+                  value: null
+                }
+              },
+              property: propertyLabel,
+              qualifiers: []
+            })
+          })
+      } catch (error) {
+        this.$notification.error(error)
+      }
     }
   }
 }

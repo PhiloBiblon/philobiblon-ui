@@ -117,6 +117,8 @@ export default {
       this.focussed = false
       if (this.isEditable) {
         this.restore()
+      } else {
+        this.$emit('new-value', this.currentText)
       }
     },
     async edit () {
