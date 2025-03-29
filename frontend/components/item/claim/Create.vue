@@ -146,7 +146,6 @@ export default {
     removeClaim (index) {
       this.claims.splice(index, 1)
       this.properties.splice(index, 1)
-      this.propertyValues.splice(index, 1)
       this.showValue = false
       setTimeout(() => {
         this.showValue = true
