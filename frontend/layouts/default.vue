@@ -198,7 +198,7 @@ export default {
   min-height: 100vh;
 }
 
-::v-deep .search-page-breadcrumb {
+::v-deep .large-font-breadcrumb {
   li {
     font-size: large !important;
   }

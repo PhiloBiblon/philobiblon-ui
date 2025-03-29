@@ -78,7 +78,7 @@ export default {
 
   mounted () {
     this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
-    this.$store.commit('breadcrumb/setClass', 'search-page-breadcrumb')
+    this.$store.commit('breadcrumb/setClass', 'large-font-breadcrumb')
   },
 
   destroyed () {
