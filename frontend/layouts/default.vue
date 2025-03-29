@@ -129,7 +129,7 @@
     </v-app-bar>
     <v-main class="min-height-full-display">
       <v-container fluid ma-50>
-        <v-breadcrumbs :items="$store.state.breadcrumb.items" />
+        <v-breadcrumbs :items="$store.state.breadcrumb.items" :class="$store.state.breadcrumb.class" />
         <nuxt />
       </v-container>
     </v-main>
@@ -196,5 +196,11 @@ export default {
 }
 .min-height-full-display {
   min-height: 100vh;
+}
+
+::v-deep .large-font-breadcrumb {
+  li {
+    font-size: large !important;
+  }
 }
 </style>

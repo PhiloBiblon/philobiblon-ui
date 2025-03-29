@@ -93,6 +93,10 @@ export default {
     }
   },
 
+  destroyed () {
+    this.$store.commit('breadcrumb/setClass', '')
+  },
+
   methods: {
     async getEntity () {
       try {
@@ -100,7 +104,6 @@ export default {
           .getEntity(this.id, this.$i18n.locale)
           .then(async (entity) => {
             this.tableid = this.$wikibase.getRelatedTable(entity)
-            this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(this.tableid, entity))
             this.item = entity
             this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
@@ -111,11 +114,17 @@ export default {
               this.cnums = await this.$wikibase.getRelatedItems(this.item.id, 'cnum', 'P8')
               this.copids = await this.$wikibase.getRelatedItems(this.item.id, 'copid', 'P839')
             }
+            this.setBreadCrumb(this.tableid, entity)
             this.showItem = true
           })
       } catch (err) {
         this.$notification.error(err)
       }
+    },
+    setBreadCrumb (table, entity) {
+      this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(table, entity))
+      console.log('set-class')
+      this.$store.commit('breadcrumb/setClass', 'large-font-breadcrumb')
     },
     getBreadcrumbItems (table, entity) {
       return [

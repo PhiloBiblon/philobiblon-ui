@@ -84,7 +84,7 @@ export default {
     form: {
       common: {
         group: {
-          label: 'Bibliographical database'
+          label: 'Database'
         },
         group_all: {
           label: 'All'
@@ -474,7 +474,7 @@ export default {
         failed: 'Label and description for language code en can not have the same value.'
       },
       creation: {
-        pbid_already_exists: 'The PhiloBiblon ID "{pbid}" already exists in {item}.'
+        pbid_already_exists: 'PhiloBiblon ID "{pbid}" already exists in {item}.'
       }
     },
     success: {

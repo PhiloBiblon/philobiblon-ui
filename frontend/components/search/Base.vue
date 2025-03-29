@@ -78,6 +78,11 @@ export default {
 
   mounted () {
     this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
+    this.$store.commit('breadcrumb/setClass', 'large-font-breadcrumb')
+  },
+
+  destroyed () {
+    this.$store.commit('breadcrumb/setClass', '')
   },
 
   methods: {
