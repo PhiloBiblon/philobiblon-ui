@@ -11,10 +11,13 @@ export default {
     calendar: 'Calendari',
     from: 'Des de',
     to: 'a',
+    add: 'afegir',
+    add_reference: 'afegir referència',
     add_value: 'valor afegit',
     add_qualifier: 'afegir qualificador',
     add_claim: 'afegir declaració',
     cancel: 'cancel·lar',
+    create: 'Crear',
     search: {
       section: {
         advanced: 'Cerca avançada',
@@ -372,6 +375,7 @@ export default {
     }
   },
   item: {
+    label: 'Item',
     title: 'Títol',
     description: 'Descripció',
     back: 'Torna',
@@ -379,6 +383,14 @@ export default {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',
       invalid_url: 'Si us plau, ompliu un URL vàlid!'
+    },
+    create: {
+      button: {
+        text: 'Crear element',
+        enabled: 'Crea un element nou',
+        disabled: 'Sel.lecciona una de les bases de dades: BETA, BITECA o BITAGAP.'
+      },
+      calculating_new_pbid: 'Calculant nou PhiloBiblon ID ..'
     },
     related: {
       texid: {
@@ -460,6 +472,9 @@ export default {
       },
       modification: {
         failed: 'L\'etiqueta i la descripció del codi d\'idioma en no poden tenir el mateix valor.'
+      },
+      creation: {
+        pbid_already_exists: 'El PhiloBiblon ID "{pbid}" ja existeix en {item}.'
       }
     },
     success: {
