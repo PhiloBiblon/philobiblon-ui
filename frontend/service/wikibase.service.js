@@ -147,6 +147,16 @@ export class WikibaseService {
       })
   }
 
+  getEntityLabel (id, lang) {
+    return this.getEntity(id, lang)
+      .then((entity) => {
+        return this.getValueByLang(
+          entity.labels,
+          lang
+        )
+      })
+  }
+
   wbFetcher (url) {
     const urlHash = this.hashCode(url)
     const entry = this.getResultsFromCache(urlHash)

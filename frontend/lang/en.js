@@ -395,23 +395,121 @@ export default {
       calculating_new_pbid: 'Calculating new PhiloBiblon ID ..'
     },
     related: {
+      title: 'Title(s)',
+      by: 'related by',
       texid: {
         cnum: {
-          count: 'Count of witnesses',
-          id: 'ID no. of Witness',
-          desc: 'Title(s)'
+          P590: {
+            header: 'Uniform Title'
+          },
+          P740: {
+            header: 'Related Uniform Tiles'
+          }
+        },
+        manid: {
+          P9: {
+            header: 'Related Uniform titles'
+          }
+        },
+        texid: {
+          P740: {
+            header: 'Related Uniform titles'
+          }
         }
       },
       manid: {
         cnum: {
-          count: 'Number of texts in volume',
-          id: 'Specific witness ID no.',
-          desc: 'Title(s)'
+          P8: {
+            header: 'Manuscript Edition'
+          },
+          P750: {
+            header: 'Related Ms/Ed'
+          }
+        },
+        bioid: {
+          P750: {
+            header: 'Related Ms/Ed'
+          }
         },
         copid: {
-          count: 'Number of additional copies of edition',
-          id: 'ID no. of additional copy of edition',
-          desc: 'Title(s)'
+          P839: {
+            header: 'Text'
+          },
+          P750: {
+            header: 'Related Ms/Ed'
+          }
+        },
+        geoid: {
+          P740: {
+            header: 'Related Ms/Ed'
+          }
+        },
+        insid: {
+          P750: {
+            header: 'Related Ms/Ed'
+          }
+        },
+        manid: {
+          P750: {
+            header: 'Related Ms/Ed'
+          }
+        },
+        texid: {
+          P750: {
+            header: 'Related Ms/Ed'
+          }
+        }
+      },
+      bibid: {
+        cnum: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        bibid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        bioid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        copid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        geoid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        insid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        libid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        manid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        subid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
+        },
+        texid: {
+          P12: {
+            header: 'Related Bibliography'
+          }
         }
       }
     }

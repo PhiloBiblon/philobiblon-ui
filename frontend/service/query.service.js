@@ -1079,8 +1079,9 @@ export class QueryService {
         ?item wdt:P476 ?item_pbid .
         FILTER regex(?item_pbid, '(.*) ${relatedTable} ') .
         ?item wdt:${property} wd:${pbid} .
+        BIND(REPLACE(?item_pbid, ".* ([0-9]+)$", "$1") AS ?item_number)
       }
-      ORDER BY ?item_pbid
+      ORDER BY xsd:integer(?item_number)
       `
     return this.addPrefixes(query)
   }
