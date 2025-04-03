@@ -14,6 +14,7 @@
           :label="$t('common.property')"
           required
           return-object
+          :readonly="qualifier?.default"
           :items="properties[key]"
           item-text="label"
           item-value="id"
@@ -23,8 +24,9 @@
         />
       </v-col>
       <v-col class="p-0 pr-3 pt-3">
-        <div v-if="showValue">
+        <div v-if="claim?.mainsnak?.property || qualifier.default">
           <item-value-base
+            :key="`${qualifier.property}-${key}`"
             :label="$t('common.value')"
             :claim="claim"
             :value="qualifier"
@@ -38,7 +40,7 @@
         <v-btn v-if="allowCreateQualifier(qualifier)" text icon @click.stop="createQualifier(key)">
           <v-icon>mdi-check</v-icon>
         </v-btn>
-        <v-btn v-if="claim" text icon @click.stop="removeQualifier(key)">
+        <v-btn v-if="claim && !qualifier?.default" text icon @click.stop="removeQualifier(key)">
           <v-icon>mdi-trash-can</v-icon>
         </v-btn>
       </v-col>
@@ -70,11 +72,14 @@ export default {
     initialQualifiers: {
       type: Array,
       default: null
+    },
+    forCreate: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
-      showValue: false,
       properties: [],
       qualifiers: [],
       propertyValues: []
@@ -88,7 +93,7 @@ export default {
   watch: {
     qualifiers: {
       handler (val) {
-        if (!this.claim) {
+        if (!this.claim || this.forCreate) {
           this.$emit('update-qualifiers', val)
         }
       },
@@ -99,14 +104,13 @@ export default {
     if (this.initialQualifiers) {
       this.initialQualifiers.forEach((qualifier, index) => {
         this.$set(this.properties, index, [qualifier.property])
-        this.showValue = true
         this.qualifiers.push(qualifier)
       })
     }
   },
   methods: {
     allowCreateQualifier (qualifier) {
-      return this.claim && qualifier.property && qualifier.datavalue?.value
+      return this.claim && !this.forCreate && qualifier.property && qualifier.datavalue?.value
     },
     onNewValue (event, qualifier) {
       qualifier.datavalue.value = event
@@ -118,13 +122,6 @@ export default {
       qualifier.datavalue = {
         value: null
       }
-      this.refreshValueSection()
-    },
-    refreshValueSection () {
-      this.showValue = false
-      this.$nextTick(() => {
-        this.showValue = true
-      })
     },
     addQualifier () {
       this.qualifiers.push({
@@ -139,7 +136,6 @@ export default {
       this.qualifiers.splice(index, 1)
       this.properties.splice(index, 1)
       this.propertyValues.splice(index, 1)
-      this.showValue = false
     },
     async onInput (value, type, index) {
       if (value && typeof value === 'string') {

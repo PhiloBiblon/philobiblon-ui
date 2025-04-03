@@ -136,6 +136,17 @@ export class WikibaseService {
       })
   }
 
+  getEntities (ids, lang) {
+    const url = this.wbk.getEntities({
+      ids,
+      language: [lang, 'en']
+    })
+    return this.wbFetcher(url)
+      .then((data) => {
+        return data.entities
+      })
+  }
+
   wbFetcher (url) {
     const urlHash = this.hashCode(url)
     const entry = this.getResultsFromCache(urlHash)
@@ -259,6 +270,13 @@ export class WikibaseService {
         }
       }
     } else if (datatype === 'url' && property === this.constructor.PROPERTY_NOTES) {
+      if (!datavalue) {
+        return {
+          type: 'url',
+          value: null
+        }
+      }
+
       const notesApiUrl =
         datavalue.replace('/wiki/', '/w/api.php?action=parse&page=') +
         '&prop=wikitext&formatversion=2&format=json&origin=*'
