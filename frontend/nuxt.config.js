@@ -15,7 +15,7 @@ export default {
   },
 
   publicRuntimeConfig: {
-    version: '0.8.11',
+    version: '0.8.7',
     apiBaseUrl: process.env.API_BASE_URL || '/.',
     wikibaseBaseUrl: process.env.WIKIBASE_BASE_URL,
     sparqlBaseUrl: process.env.SPARQL_BASE_URL,
@@ -118,6 +118,7 @@ export default {
       }
     ],
     langDir: 'lang/',
+    strategy: 'prefix',
     defaultLocale: 'en',
     detectBrowserLanguage: {
       useCookie: true,
