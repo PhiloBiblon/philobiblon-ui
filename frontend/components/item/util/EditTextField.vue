@@ -96,6 +96,7 @@ export default {
       if (this.isEditable) {
         this.restore()
       }
+      this.$emit('new-value', this.currentText)
     },
 
     focus () {
