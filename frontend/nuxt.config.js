@@ -118,6 +118,7 @@ export default {
       }
     ],
     langDir: 'lang/',
+    strategy: 'prefix',
     defaultLocale: 'en',
     detectBrowserLanguage: {
       useCookie: true,
