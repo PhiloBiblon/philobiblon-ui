@@ -4,12 +4,12 @@
     :headers="formattedHeaders"
     :hide-default-header="!Object.values(headers).length"
     :items="claim.values"
-    hide-default-footer
-    :items-per-page="claim.values.length"
+    :footer-props="footerProps"
+    :hide-default-footer="shouldHideFooter"
     class="elevation-1"
   >
     <template #item="{ item, index }">
-      <tr class="table-row">
+      <tr :key="item.mainsnak.hash" class="table-row">
         <td v-for="(header, key) in formattedHeaders" :key="header.value" class="table-cell">
           <item-value-base
             v-if="!key"
@@ -56,7 +56,15 @@ export default {
   },
   data () {
     return {
-      headers: []
+      headers: [],
+      perPageOptions: [
+        { text: '20', value: 20 },
+        { text: '40', value: 40 },
+        { text: '60', value: 60 },
+        { text: '80', value: 80 },
+        { text: '100', value: 100 },
+        { text: this.$i18n.t('search.form.common.group_all.label'), value: -1 }
+      ]
     }
   },
   computed: {
@@ -72,6 +80,17 @@ export default {
           sortable: false
         }))
       ]
+    },
+    shouldHideFooter () {
+      return this.claim?.values?.length <= this.perPageOptions[0].value
+    },
+    footerProps () {
+      return {
+        showCurrentPage: true,
+        showFirstLastPage: true,
+        itemsPerPageOptions: this.perPageOptions,
+        itemsPerPageText: `${this.$i18n.t('common.properties')} ${this.$i18n.t('common.per_page')}`
+      }
     }
   },
   async mounted () {
@@ -163,5 +182,16 @@ export default {
 
 .table-row-edit:hover {
   background-color: rgb(247, 245, 245) !important;
+}
+
+::v-deep .v-data-footer {
+  background-color: rgb(247, 245, 245);
+  border-top: none;
+  width: 100%;
+  padding: 8px 16px;
+}
+
+::v-deep .v-data-footer__pagination {
+  justify-content: flex-end;
 }
 </style>
