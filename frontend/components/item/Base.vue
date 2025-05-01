@@ -123,7 +123,6 @@ export default {
     },
     setBreadCrumb (table, entity) {
       this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(table, entity))
-      console.log('set-class')
       this.$store.commit('breadcrumb/setClass', 'large-font-breadcrumb')
     },
     getBreadcrumbItems (table, entity) {

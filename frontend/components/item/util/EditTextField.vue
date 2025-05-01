@@ -96,6 +96,7 @@ export default {
       if (this.isEditable) {
         this.restore()
       }
+      this.$emit('on-blur', this.currentText)
     },
 
     focus () {
@@ -137,6 +138,7 @@ export default {
 
     restore () {
       this.currentText = this.consolidatedText
+      this.$emit('new-value', this.currentText)
     },
 
     async deleteValue () {

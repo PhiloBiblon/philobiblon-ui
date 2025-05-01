@@ -69,6 +69,7 @@ export default {
     newDateValue (value) {
       this.valueToView_.value = value
       this.$emit('new-value', this.getTimeNewValue(this.valueToView_.value))
+      this.$emit('on-blur', this.getTimeNewValue(this.valueToView_.value))
     },
     onChangeCalendarType (newCalendar) {
       this.valueToView_.calendar = newCalendar

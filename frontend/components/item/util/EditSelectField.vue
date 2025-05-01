@@ -118,6 +118,7 @@ export default {
       if (this.isEditable) {
         this.restore()
       }
+      this.$emit('on-blur', this.currentText)
     },
     async edit () {
       this.$refs.autocomplete.isMenuActive = false

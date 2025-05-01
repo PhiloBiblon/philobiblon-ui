@@ -31,6 +31,7 @@
         :delete="deleteValue"
         :mode="mode"
         @new-value="newValue"
+        @on-blur="$emit('on-blur', $event)"
       />
     </template>
   </div>

@@ -11,7 +11,7 @@
         v-if="isUserLogged && isAllowedAddValue"
         :key="claim.values.length"
         :item="item"
-        :claim="claim"
+        :value="claim?.values[0]?.mainsnak"
         @create-claim="$emit('create-claim', $event)"
       />
     </v-container>

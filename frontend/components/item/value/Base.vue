@@ -9,6 +9,7 @@
       :delete="isEditable ? deleteValue : null"
       :mode="mode"
       :value-to-view="valueToView"
+      @on-blur="$emit('on-blur', $event)"
       @new-value="$emit('new-value', $event)"
     />
   </div>

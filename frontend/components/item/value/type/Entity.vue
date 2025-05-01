@@ -12,6 +12,7 @@
         :options="options"
         :delete="deleteValue"
         :mode="mode"
+        @on-blur="$emit('on-blur', $event)"
         @new-value="$emit('new-value', $event)"
       />
       <item-util-edit-select-field
@@ -23,6 +24,7 @@
         :mode="mode"
         @update-options="options = $event"
         @input="oninput($event)"
+        @on-blur="$emit('on-blur', $event)"
         @new-value="$emit('new-value', $event)"
       />
     </template>

@@ -35,19 +35,32 @@
         <v-alert v-if="!initialClaimsLoaded" type="info">
           {{ $t('item.create.calculating_new_pbid') }}
         </v-alert>
-        <item-claim-create v-if="initialClaimsLoaded" :for-create="true" :initial-claims="initialClaims" @update-claims="updateClaims" />
-        <v-row dense>
+        <item-claim-create
+          v-if="initialClaimsLoaded"
+          :for-create="true"
+          :initial-claims="initialClaims"
+          @update-claims="updateClaims"
+        />
+        <v-row class="mt-2" dense>
           <v-spacer />
-          <v-btn
-            class="mt-4"
-            color="primary"
-            small
-            elevation="2"
-            :disabled="isCreateDisabled"
-            @click="create"
-          >
-            {{ $t('common.create') }}
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <div v-bind="attrs" v-on="on">
+                <v-btn
+                  class="mt-4"
+                  color="primary"
+                  small
+                  elevation="2"
+                  :disabled="isCreateDisabled"
+                  @click="create"
+                >
+                  {{ $t('common.create') }}
+                </v-btn>
+              </div>
+            </template>
+            <span v-if="isCreateDisabled" class="text-no-wrap">{{ $t('messages.error.inputs.fill') }}</span>
+            <span v-else>{{ $t('item.create.button.enabled') }}</span>
+          </v-tooltip>
         </v-row>
       </template>
     </v-container>
@@ -85,91 +98,142 @@ export default {
         !this.label ||
         !this.description ||
         !this.initialClaimsLoaded ||
-        Object.values(this.claims).some(claim =>
-          !claim.value || Object.values(claim.qualifiers || {}).includes(null)
-        )
+        Object.values(this.claims).some(claimArray => claimArray.some(entry =>
+          entry?.value == null || entry?.value === '' ||
+          Object.entries(entry.qualifiers || {}).some(([key, value]) => key == null || key === '' || value == null || value === ''))) ||
+        Object.values(this.initialClaims).some(claim =>
+          !claim?.value?.datavalue?.value ||
+          Object.values(claim?.value?.datavalue?.value).some(val => val == null || val === '') ||
+          Object.values(claim.qualifiers || {}).some(q => !q?.datavalue?.value || Object.values(q?.datavalue?.value).some(val => val == null || val === '')))
       )
     },
     pbid () {
-      return this.claims[this.$wikibase.constructor.PROPERTY_PBID].value
+      return this.initialClaims.find(item => item.property.id === this.$wikibase.constructor.PROPERTY_PBID).value
     }
   },
   created () {
-    this.getLastItem()
+    if (!this.isUserLogged || this.database === 'All') {
+      return this.$router.push(this.localePath('/'))
+    } else {
+      this.loadInitialClaims()
+    }
   },
   methods: {
-    getLastItem () {
-      this.$wikibase.getTableLastItem(this.database, this.table).then(async (res) => {
-        if (res && res.length && res[0]) {
-          this.initialClaims = [
-            {
-              property: await this.getClaimProperty('P476'),
-              value: {
-                property: 'P476',
-                datatype: 'external-id',
-                datavalue: {
-                  value: this.generatePbId(res[0].item_number)
-                }
-              }
-            },
-            {
-              property: await this.getClaimProperty('P131'),
-              value: {
+    async loadInitialClaims () {
+      try {
+        const res = await this.$wikibase.getTableLastItem(this.database, this.table)
+        if (res?.length && res[0]) {
+          await this.getDefaultClaims(res[0].item_number)
+          this.initialClaimsLoaded = true
+        }
+      } catch (error) {
+        this.$notification.error(error?.body?.error?.info || this.$t('messages.error.something_went_wrong'))
+      }
+    },
+    buildClaim (entity, qualifiers = [], value = null) {
+      const label = this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)?.value || entity.id
+      return {
+        default: true,
+        property: {
+          label,
+          id: entity.id,
+          datatype: entity.datatype
+        },
+        mainsnak: {
+          property: entity.id
+        },
+        claimsValues: [],
+        value: {
+          property: entity.id,
+          datatype: entity.datatype,
+          datavalue: {
+            default: true,
+            value
+          }
+        },
+        qualifiers
+      }
+    },
+    buildQualifier (claim, qualifier) {
+      return {
+        default: true,
+        property: qualifier.id,
+        datatype: qualifier.datatype,
+        datavalue: {
+          value: null
+        }
+      }
+    },
+    async getDefaultClaims (itemNumber) {
+      const def = ['P476', 'P131']
+      const res = await this.$wikibase.getClaimsOrder(this.table)
+      const propertyIds = [...new Set([...def, ...Object.keys(res)])]
+      const qualifiersProperties = [...new Set(Object.values(res).flat())]
+      const entities = await this.$wikibase.getEntities(propertyIds, this.$i18n.locale)
+      const qualifiersArr = await this.$wikibase.getEntities(qualifiersProperties, this.$i18n.locale)
+
+      Object.values(entities).forEach((entity) => {
+        if (this.isValidPropertyEntity(entity)) {
+          const qualifiers = []
+
+          res[entity.id]?.forEach((property) => {
+            if (this.isValidPropertyEntity(qualifiersArr[property])) {
+              qualifiers.push(this.buildQualifier(entity, qualifiersArr[property]))
+            }
+          })
+
+          let claim = this.buildClaim(entity, qualifiers, null)
+
+          if (entity.id === 'P476') {
+            claim = this.buildClaim(entity, [], this.generatePbId(itemNumber))
+          } else if (entity.id === 'P131') {
+            const qualifiers = [
+              {
+                default: true,
+                property: 'P700',
                 datatype: 'wikibase-item',
                 datavalue: {
                   value: {
-                    id: 'Q4'
+                    id: 'Q6'
                   }
                 }
-              },
-              qualifiers: [
-                {
-                  property: 'P700',
-                  datatype: 'wikibase-item',
-                  datavalue: {
-                    value: {
-                      id: 'Q6'
-                    }
-                  }
-                }
-              ]
-            }
-          ]
-          this.initialClaimsLoaded = true
+              }
+            ]
+
+            claim = this.buildClaim(entity, qualifiers, { id: 'Q4' })
+          }
+
+          this.initialClaims.push(claim)
         }
-      }).catch((error) => {
-        this.$notification.error(error.body.error.info ?? this.$t('messages.error.something_went_wrong'))
       })
     },
-    getClaimProperty (id) {
-      return this.$wikibase
-        .getEntity(id, this.$i18n.locale)
-        .then((entity) => {
-          const value = this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale).value
-          return {
-            id: entity.id,
-            label: value,
-            datatype: entity.datatype
-          }
-        })
+    isValidPropertyEntity (entity) {
+      return entity?.title?.startsWith('Property:') && entity?.labels
     },
     generatePbId (lastItemPbId) {
       return `${this.database} ${this.table} ${parseInt(lastItemPbId) + 1}`
     },
     updateClaims (data) {
+      this.initialClaims = data
       this.claims = this.generateClaimsData(data)
     },
     generateClaimsData (data) {
       const claims = {}
       data.forEach((claim) => {
         if (claim.property) {
-          const claimKey = claim.property.id
-          claims[claimKey] = {
-            value: claim.value.datavalue.value?.id ?? claim.value.datavalue.value,
-            qualifiers: {}
-          }
-          claim.qualifiers?.forEach((qualifier) => {
-            claims[claimKey].qualifiers[qualifier.property] = qualifier.value
+          const claimKey = claim?.property?.id
+
+          claims[claimKey] = claims[claimKey] || []
+          const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
+
+          const createClaim = (val, qualifiers = {}) => ({ value: extractValue(val), qualifiers })
+
+          const qualifiers = Object.fromEntries((claim.qualifiers || []).map(q => [q.property, extractValue(q)]))
+
+          claims[claimKey].push(createClaim(claim.value, qualifiers))
+
+          ;(Object.values(claim.claimsValues || {}) || []).forEach((v) => {
+            claims[claimKey].push(createClaim(v))
           })
         }
       })
