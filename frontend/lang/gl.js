@@ -1,6 +1,8 @@
 export default {
   common: {
     property: 'Propiedade',
+    properties: 'Propiedades',
+    per_page: 'por páxina',
     value: 'Valor',
     no_data: 'Non hai datos dispoñibles',
     loading: 'Cargando..',

@@ -1,6 +1,8 @@
 export default {
   common: {
     property: 'Property',
+    properties: 'Properties',
+    per_page: 'per page',
     value: 'Value',
     no_data: 'No data available',
     loading: 'Loading..',
