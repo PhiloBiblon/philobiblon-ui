@@ -85,7 +85,6 @@ export default {
     newValue (value) {
       const valid = this.isURL(value)
       if (!valid) {
-        this.$notification.error(this.$i18n.t('item.messages.invalid_url'))
         value = ''
       }
       this.$emit('new-value', value)
