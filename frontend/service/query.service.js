@@ -1071,17 +1071,57 @@ export class QueryService {
     return this.addPrefixes(SEARCH_QUERY)
   }
 
-  getRelatedItems (pbid, relatedTable, property) {
+  getRefTableCondition (pbid, refTable) {
+    const commonCondition = `
+          ?item wdt:P476 ?item_pbid .
+          FILTER regex(?item_pbid, '(.*) ${refTable.refTable} ') .`
+    if (refTable.qualifier) {
+      return `
+          ${commonCondition}
+          ?item p:${refTable.property} ?related_prop .
+          ?related_prop pq:${refTable.qualifier} wd:${pbid} .
+        `
+    } else {
+      return `
+          ${commonCondition}
+          ?item wdt:${refTable.property} wd:${pbid} .
+        `
+    }
+  }
+
+  getRefTableConditions (pbid, refTables) {
+    let conditions = ''
+    for (const refTable of refTables) {
+      conditions += `${conditions === '' ? '{' : ' UNION {'}${this.getRefTableCondition(pbid, refTable)}}`
+    }
+    return conditions
+  }
+
+  getRelatedItems (pbid, refTables, currentPage, resultsPerPage) {
     const query =
       `
       SELECT ?item ?item_pbid
       WHERE {
-        ?item wdt:P476 ?item_pbid .
-        FILTER regex(?item_pbid, '(.*) ${relatedTable} ') .
-        ?item wdt:${property} wd:${pbid} .
+        ${this.getRefTableConditions(pbid, refTables)}
         BIND(REPLACE(?item_pbid, ".* ([0-9]+)$", "$1") AS ?item_number)
+        BIND(REPLACE(?item_pbid, " \\\\S+$", "") AS ?item_type)
       }
-      ORDER BY xsd:integer(?item_number)
+      ORDER BY ?item_type xsd:integer(?item_number) ?item_pbid
+      OFFSET ${(currentPage - 1) * resultsPerPage}
+      LIMIT ${resultsPerPage}
+      `
+    return this.addPrefixes(query)
+  }
+
+  getRelatedItemsCount (pbid, refTables) {
+    const query =
+      `
+      SELECT (COUNT(?item) AS ?total)
+      WHERE {
+        ${this.getRefTableConditions(pbid, refTables)}
+        BIND(REPLACE(?item_pbid, ".* ([0-9]+)$", "$1") AS ?item_number)
+        BIND(REPLACE(?item_pbid, " \\\\S+$", "") AS ?item_type)
+      }
       `
     return this.addPrefixes(query)
   }
