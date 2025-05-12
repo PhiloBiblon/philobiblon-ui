@@ -20,6 +20,7 @@ export default {
     add_claim: 'añadir declaración',
     cancel: 'cancelar',
     create: 'Crear',
+    items: 'elementos',
     search: {
       section: {
         advanced: 'Búsqueda avanzada',
@@ -395,24 +396,70 @@ export default {
       calculating_new_pbid: 'Calculando nuevo PhiloBiblon ID ..'
     },
     related: {
-      texid: {
-        cnum: {
-          count: 'Cantidad de testimonios',
-          id: 'Núm. ID del testimonio',
-          desc: 'Título(s)'
-        }
-      },
       manid: {
-        cnum: {
-          count: 'Número de textos en el volumen',
-          id: 'Núm. ID específico del testimonio',
-          desc: 'Título(s)'
-        },
-        copid: {
-          count: 'Número de copias adicionales de la edición',
-          id: 'Núm. ID de la copia adicional de la edición',
-          desc: 'Título(s)'
-        }
+        related_ms_ed: 'Ms/Ed relacionados',
+        manuscript_edition: 'Edición manuscrita',
+        text: 'Texto'
+      },
+      texid: {
+        uniform_title: 'Título uniforme',
+        related_uniform_titles: 'Títulos uniformes relacionados'
+      },
+      bibid: {
+        related_bibliography: 'Bibliografía relacionada'
+      },
+      bioid: {
+        subject_references: 'Referencias del tema',
+        authors: 'Autores',
+        commentary: 'Comentario',
+        financed_by: 'Financiado por',
+        former_owners: 'Ex propietarios',
+        handwritten_by: 'Escrito a mano por',
+        milestones: 'Hitos',
+        owner: 'Propietario',
+        printed_by: 'Impreso por',
+        related_individuals: 'Personas relacionadas',
+        translator: 'Traductor'
+      },
+      copid: {
+        related_copies: 'Ejemplares relacionados'
+      },
+      geoid: {
+        career_statement: 'Declaración de carrera',
+        first_known_date: 'Primera fecha conocida',
+        former_owners: 'Ex propietarios',
+        from_place: 'Del lugar mencionado',
+        history: 'Historia',
+        itinerary: 'Itinerario',
+        last_known_date: 'Última fecha conocida',
+        location: 'Ubicación',
+        milestones: 'Hitos',
+        owner: 'Propietario',
+        place_of_birth: 'Lugar de nacimiento',
+        place_of_death: 'Lugar de defunción',
+        place_of_publication: 'Lugar de publicación',
+        related_places: 'Lugares relacionados',
+        religious_background: 'Antecedentes religiosos',
+        religious_order: 'Orden religiosa',
+        subject_references: 'Referencias del tema'
+      },
+      insid: {
+        authors: 'Autores',
+        financed_by: 'Financiado por',
+        former_owners: 'Ex propietarios',
+        handwritten_by: 'Escrito a mano por',
+        milestones: 'Hitos',
+        owner: 'Propietario',
+        printed_by: 'Impreso por',
+        related_institutions: 'Instituciones relacionadas',
+        subject_references: 'Referencias del tema'
+      },
+      libid: {
+        related_libraries: 'Bibliotecas relacionadas',
+        present_holding: 'Posesión actual'
+      },
+      subid: {
+        subject_references: 'Referencias del tema'
       }
     }
   },

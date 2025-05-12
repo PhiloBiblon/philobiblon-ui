@@ -1,17 +1,26 @@
 <template>
   <v-container v-if="items.length" class="mt-2">
     <div class="grey--text">
-      {{ $t(`item.related.${table}.${relatedTable}.${property}.header`) }} ( {{ $t('item.related.by') }} <item-util-view-text-lang :value="relatedPropertyLabel" />) : {{ items.length }}
+      {{ $t(references.label) }} : {{ totalResults }} {{ $t('common.items') }}
     </div>
     <item-related-ritem
       v-for="(value, index) in items"
       :key="'related-item-' + index"
       :table="table"
-      :related-table="relatedTable"
-      :index="index"
+      :index="index + ((currentPage -1) * resultsPerPage)"
       :value="value"
       class="mt-2"
     />
+    <div class="text-center">
+      <v-pagination
+        v-if="items.length > 0"
+        v-model="currentPage"
+        :length="Math.ceil(totalResults / resultsPerPage)"
+        :total-visible="5"
+        circle
+        @input="changePage"
+      />
+    </div>
   </v-container>
 </template>
 
@@ -26,27 +35,32 @@ export default {
       type: String,
       default: null
     },
-    relatedTable: {
-      type: String,
-      default: null
-    },
-    property: {
-      type: String,
+    references: {
+      type: Object,
       default: null
     }
   },
   data () {
     return {
       items: [],
-      relatedPropertyLabel: {}
+      currentPage: 1,
+      totalResults: 0,
+      resultsPerPage: 10
     }
   },
   async mounted () {
     if (this.itemId) {
-      this.items = await this.$wikibase.getRelatedItems(this.itemId, this.relatedTable, this.property)
-      if (this.items && this.items.length > 0) {
-        this.relatedPropertyLabel = await this.$wikibase.getEntityLabel(this.property, this.$i18n.locale)
-      }
+      this.count()
+      this.items = await this.$wikibase.getRelatedItems(this.itemId, this.references.refTables, this.currentPage, this.resultsPerPage)
+    }
+  },
+  methods: {
+    count () {
+      this.$wikibase.runSparqlQuery(this.$wikibase.$query.getRelatedItemsCount(this.itemId, this.references.refTables), true)
+        .then((results) => { this.totalResults = results[0] })
+    },
+    async changePage () {
+      this.items = await this.$wikibase.getRelatedItems(this.itemId, this.references.refTables, this.currentPage, this.resultsPerPage)
     }
   }
 }

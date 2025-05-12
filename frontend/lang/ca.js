@@ -20,6 +20,7 @@ export default {
     add_claim: 'afegir declaració',
     cancel: 'cancel·lar',
     create: 'Crear',
+    items: 'elements',
     search: {
       section: {
         advanced: 'Cerca avançada',
@@ -395,24 +396,70 @@ export default {
       calculating_new_pbid: 'Calculant nou PhiloBiblon ID ..'
     },
     related: {
-      texid: {
-        cnum: {
-          count: 'Comptador de testimonis',
-          id: 'Núm. ID del testimoni',
-          desc: 'Títol(s)'
-        }
-      },
       manid: {
-        cnum: {
-          count: 'Nombre de textos en el volum',
-          id: 'Núm. ID específic del testimoni',
-          desc: 'Títol(s)'
-        },
-        copid: {
-          count: 'Nombre de còpies addicionals de l\'edició',
-          id: 'Núm. ID de la còpia addicional de l\'edició',
-          desc: 'Títol(s)'
-        }
+        related_ms_ed: 'Ms/Ed relacionats',
+        manuscript_edition: 'Edició manuscrita',
+        text: 'Text'
+      },
+      texid: {
+        uniform_title: 'Títol uniforme',
+        related_uniform_titles: 'Títols uniformes relacionats'
+      },
+      bibid: {
+        related_bibliography: 'Bibliografia relacionada'
+      },
+      bioid: {
+        subject_references: 'Referències temàtiques',
+        authors: 'Autors',
+        commentary: 'Comentari',
+        financed_by: 'Finançat per',
+        former_owners: 'Antics propietaris',
+        handwritten_by: 'Escrit a mà per',
+        milestones: 'Fites',
+        owner: 'Propietari',
+        printed_by: 'Imprès per',
+        related_individuals: 'Persones relacionades',
+        translator: 'Traductor'
+      },
+      copid: {
+        related_copies: 'Còpies relacionades'
+      },
+      geoid: {
+        career_statement: 'Declaració de carrera profissional',
+        first_known_date: 'Primera data coneguda',
+        former_owners: 'Antics propietaris',
+        from_place: 'Del lloc esmentat',
+        history: 'Història',
+        itinerary: 'Itinerari',
+        last_known_date: 'Última data coneguda',
+        location: 'Ubicació',
+        milestones: 'Fites',
+        owner: 'Propietari',
+        place_of_birth: 'Lloc de naixement',
+        place_of_death: 'Lloc de la defunció',
+        place_of_publication: 'Lloc de publicació',
+        related_places: 'Llocs relacionats',
+        religious_background: 'Antecedents religiosos',
+        religious_order: 'Ordre religiós',
+        subject_references: 'Referències temàtiques'
+      },
+      insid: {
+        authors: 'Autors',
+        financed_by: 'Finançat per',
+        former_owners: 'Antics propietaris',
+        handwritten_by: 'Escrit a mà per',
+        milestones: 'Fites',
+        owner: 'Propietat',
+        printed_by: 'Imprès per',
+        related_institutions: 'Institucions relacionades',
+        subject_references: 'Referències temàtiques'
+      },
+      libid: {
+        related_libraries: 'Biblioteques relacionades',
+        present_holding: 'Actual possessió'
+      },
+      subid: {
+        subject_references: 'Referències temàtiques'
       }
     }
   },

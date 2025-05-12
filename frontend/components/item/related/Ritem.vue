@@ -7,9 +7,7 @@
           <NuxtLink class="ml-1 black--text" :to="url">
             <span>{{ pbid }}</span>
           </NuxtLink>
-          <br></br>
-          <span class="text-subtitle-2">{{ $t(`item.related.title`) }}</span>
-          <span class="ml-3">
+          <span class="ml-1">
             <item-util-view-text-lang :value="label" />
           </span>
         </div>
@@ -28,10 +26,6 @@ export default {
   inheritAttrs: false,
   props: {
     table: {
-      type: String,
-      default: null
-    },
-    relatedTable: {
       type: String,
       default: null
     },

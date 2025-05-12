@@ -47,47 +47,7 @@ export default {
   },
 
   async mounted () {
-    const cachedValue = this.$store.state.itemCache.cache[this.getLabelCacheKey()]
-    if (cachedValue) {
-      this.propertyLabel = cachedValue
-    } else {
-      await this.$wikibase
-        .getEntity(this.claim.property, this.$i18n.locale)
-        .then((entity) => {
-          this.propertyLabel = this.getLabelFromP34(entity)
-          if (!this.propertyLabel) {
-            this.propertyLabel = this.$wikibase.getValueByLang(
-              entity.labels,
-              this.$i18n.locale
-            )
-          }
-          this.$store.commit('itemCache/addEntry', {
-            key: this.getLabelCacheKey(),
-            value: this.propertyLabel
-          })
-        })
-    }
-  },
-
-  methods: {
-    getLabelCacheKey () {
-      return this.claim.property + '_' + this.$i18n.locale
-    },
-    getLabelFromP34 (entity) {
-      if (entity.claims?.P34) {
-        const customLabel = entity.claims.P34
-          .map(claim => claim.mainsnak?.datavalue)
-          .find(datavalue => datavalue?.value?.language === this.$i18n.locale)
-          ?.value?.text
-        if (customLabel) {
-          return {
-            item: this.claim.property,
-            value: customLabel,
-            language: this.$i18n.locale
-          }
-        }
-      }
-    }
+    this.propertyLabel = await this.$wikibase.getEntityLabel(this.claim.property, this.$i18n.locale)
   }
 }
 </script>
