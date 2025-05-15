@@ -13,6 +13,7 @@
               :save="editValue"
               :delete="deleteValue"
               :mode="mode"
+              :deletable="deletable"
               @new-value="newTextValue"
             />
             <v-select
@@ -51,6 +52,10 @@ export default {
     delete: {
       type: Function,
       default: null
+    },
+    deletable: {
+      type: Boolean,
+      default: true
     },
     mode: {
       type: String,
