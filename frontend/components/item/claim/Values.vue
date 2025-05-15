@@ -3,9 +3,9 @@
     v-if="claim"
     :headers="formattedHeaders"
     :hide-default-header="!Object.values(headers).length"
-    :items="claim.values"
+    :items="claimValues"
     hide-default-footer
-    :items-per-page="claim.values.length"
+    :items-per-page="claimValues.length"
     class="elevation-1"
   >
     <template #item="{ item, index }">
@@ -22,9 +22,10 @@
           />
           <item-qualifier-list
             v-if="item.qualifiers?.[header.value]"
-            :key="item.qualifiers[header.value].length"
+            :key="`${item.qualifiers[header.value].length}-${toggle}`"
             :claim="item"
             :qualifiers="item.qualifiers[header.value]"
+            @create-qualifier="createQualifier($event, index)"
             @delete-qualifier="deleteQualifier($event, index)"
           />
         </td>
@@ -56,7 +57,9 @@ export default {
   },
   data () {
     return {
-      headers: []
+      toggle: 1,
+      headers: [],
+      claimValues: JSON.parse(JSON.stringify(this.claim.values))
     }
   },
   computed: {
@@ -80,7 +83,7 @@ export default {
   methods: {
     async getHeaders () {
       const qualifierKeys = new Set()
-      this.claim.values.forEach((item) => {
+      this.claimValues.forEach((item) => {
         Object.keys(item.qualifiers ?? {}).forEach(key => qualifierKeys.add(key))
       })
       const qualifiersKeysOrdered = Array.from(qualifierKeys).sort((a, b) => {
@@ -96,23 +99,24 @@ export default {
       this.headers = await Promise.all(headerPromises)
     },
     async createQualifier (qualifiers, index) {
-      if (!this.claim.values[index].qualifiers) {
-        // eslint-disable-next-line vue/no-mutating-props
-        this.claim.values[index].qualifiers = []
+      if (!this.claimValues[index].qualifiers) {
+        this.claimValues[index].qualifiers = []
       }
-      // eslint-disable-next-line vue/no-mutating-props
-      this.claim.values[index].qualifiers[qualifiers[0].property] = qualifiers
+      this.claimValues[index].qualifiers[qualifiers[0].property] = qualifiers
       await this.getHeaders()
+      this.toggle++
     },
     async deleteQualifier (qualifier, index) {
-      const qualifiers = this.claim.values[index].qualifiers[qualifier.property]
+      const qualifiers = this.claimValues[index].qualifiers[qualifier.property]
       const findIndex = qualifiers.findIndex(item => item.hash === qualifier.hash)
+
       if (findIndex !== -1) {
         qualifiers.splice(findIndex, 1)
       }
+
+      this.claimValues[index].qualifiers[qualifier.property] = qualifiers
       if (!qualifiers.length) {
-        // eslint-disable-next-line vue/no-mutating-props
-        delete this.claim.values[index].qualifiers[qualifier.property]
+        delete this.claimValues[index].qualifiers[qualifier.property]
       }
       await this.getHeaders()
     }

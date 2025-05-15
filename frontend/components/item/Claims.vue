@@ -32,6 +32,21 @@ export default {
 
   data () {
     return {
+      P34: [
+        {
+          hash: '',
+          property: 'P34',
+          snaktype: 'value',
+          datatype: 'monolingualtext',
+          datavalue: {
+            type: 'monolingualtext',
+            value: {
+              language: 'en',
+              text: 'PhiloBiblon label'
+            }
+          }
+        }
+      ],
       claimsOrdered: []
     }
   },
@@ -85,12 +100,22 @@ export default {
         order = claims
         orderKeys = claimsKeys
       }
-      return orderKeys.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({
-        property: key,
-        values: this.getOrderedValues(claims[key], order[key]),
-        hasQualifiers: claims[key].some(value => value.qualifiers && Object.keys(value.qualifiers).length),
-        qualifiersOrder: order[key]
-      }))
+      return orderKeys.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map((key) => {
+        claims[key].forEach((el) => {
+          if (!el.qualifiers) {
+            el.qualifiers = {}
+          }
+          if (!el.qualifiers.P34) {
+            el.qualifiers.P34 = this.P34
+          }
+        })
+        return {
+          property: key,
+          values: this.getOrderedValues(claims[key], order[key]),
+          hasQualifiers: claims[key].some(value => value.qualifiers && Object.keys(value.qualifiers).length),
+          qualifiersOrder: order[key]
+        }
+      })
     },
     createClaim (data) {
       this.claimsOrdered.forEach((value, key) => {

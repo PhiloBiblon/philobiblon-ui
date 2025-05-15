@@ -36,6 +36,7 @@
         v-if="focussed && isEditable"
         text
         icon
+        :disabled="!deletable"
         @click.stop="deleteValue"
       >
         <v-icon>mdi-trash-can</v-icon>
@@ -63,6 +64,10 @@ export default {
     delete: {
       type: Function,
       default: null
+    },
+    deletable: {
+      type: Boolean,
+      default: true
     },
     mode: {
       type: String,
