@@ -8,6 +8,7 @@
       :save="isEditable ? editValue : null"
       :delete="isEditable ? deleteValue : null"
       :mode="mode"
+      :deletable="deletable"
       :value-to-view="valueToView"
       @new-value="$emit('new-value', $event)"
     />
@@ -37,6 +38,10 @@ export default {
       type: String,
       default: null
     },
+    deletable: {
+      type: Boolean,
+      default: true
+    },
     mode: {
       type: String,
       default: 'edit'
@@ -61,7 +66,7 @@ export default {
     )
   },
   methods: {
-    editValue (editableData) {
+    async editValue (editableData) {
       if (!editableData.validation.valid ||
         (JSON.stringify(editableData.values.newValue) === JSON.stringify(editableData.values.oldValue))) {
         if (editableData.validation.message) {
@@ -79,13 +84,22 @@ export default {
         },
         this.$store.getters['auth/getRequestConfig'])
       } else if (this.type === 'qualifier') {
-        return this.$wikibase.getWbEdit().qualifier.update({
-          guid: this.claim.id,
-          property: this.value.property,
-          oldValue: editableData.values.oldValue,
-          newValue: editableData.values.newValue
-        },
-        this.$store.getters['auth/getRequestConfig'])
+        if (!this.value.hash) {
+          const res = await this.$wikibase.getWbEdit().qualifier.add({
+            guid: this.claim.id,
+            value: editableData.values.newValue,
+            property: this.value.property
+          }, this.$store.getters['auth/getRequestConfig'])
+          this.$emit('create-qualifier', res.claim.qualifiers[this.value.property])
+          return res
+        } else {
+          return this.$wikibase.getWbEdit().qualifier.update({
+            guid: this.claim.id,
+            property: this.value.property,
+            oldValue: editableData.values.oldValue,
+            newValue: editableData.values.newValue
+          }, this.$store.getters['auth/getRequestConfig'])
+        }
       } else if (this.type === 'reference') {
         const snaks = Object.entries(this.reference.snaks).reduce((acc, [key, values]) => {
           acc[key] = values.map(v => v.hash === this.value.hash ? editableData.values.newValue : v.datavalue.value.id ?? v.datavalue.value)

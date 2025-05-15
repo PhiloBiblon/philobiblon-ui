@@ -5,7 +5,8 @@
       :key="index + '-' + values.length"
       :claim="claim"
       :value="qualifier"
-      @delete-qualifier="deleteQualifier($event)"
+      @create-qualifier="$emit('create-qualifier', $event)"
+      @delete-qualifier="$emit('delete-qualifier', $event)"
     />
   </div>
 </template>
