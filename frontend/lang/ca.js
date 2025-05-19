@@ -384,7 +384,8 @@ export default {
     messages: {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',
-      invalid_url: 'Si us plau, ompliu un URL vàlid!'
+      invalid_url: 'Si us plau, ompliu un URL vàlid!',
+      invalid_email: 'Si us plau, ompliu un correu electrònic vàlid!'
     },
     create: {
       button: {

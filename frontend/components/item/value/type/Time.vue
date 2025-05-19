@@ -13,7 +13,7 @@
               style="width: 200px"
               class="ma-0 pa-0"
               :save="editValue"
-              :delete="deleteValue"
+              :delete="!deletable ? null : deleteValue"
               @new-value="newDateValue"
             />
             <v-select
@@ -46,6 +46,10 @@ export default {
     delete: {
       type: Function,
       default: null
+    },
+    deletable: {
+      type: Boolean,
+      default: true
     },
     mode: {
       type: String,

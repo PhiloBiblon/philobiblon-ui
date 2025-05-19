@@ -384,7 +384,8 @@ export default {
     messages: {
       invalid_id: 'Invalid identifier.',
       not_found: 'Not found.',
-      invalid_url: 'Please fill a valid URL!'
+      invalid_url: 'Please fill a valid URL!',
+      invalid_email: 'Please fill a valid E-mail!'
     },
     create: {
       button: {

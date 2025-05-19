@@ -11,7 +11,7 @@
               :label="label"
               :value="valueToView_.value"
               :save="editValue"
-              :delete="deleteValue"
+              :delete="!deletable ? null : deleteValue"
               :mode="mode"
               @new-value="newTextValue"
               @on-blur="$emit('on-blur', $event)"
@@ -52,6 +52,10 @@ export default {
     delete: {
       type: Function,
       default: null
+    },
+    deletable: {
+      type: Boolean,
+      default: true
     },
     mode: {
       type: String,
