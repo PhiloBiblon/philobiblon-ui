@@ -10,7 +10,7 @@
       :key="consolidatedUrl"
       :value="consolidatedUrl"
       :save="editValue"
-      :delete="deleteValue"
+      :delete="!deletable ? null : deleteValue"
       :mode="mode"
       @new-value="$emit('new-value', $event)"
     />
@@ -32,6 +32,10 @@ export default {
     delete: {
       type: Function,
       default: null
+    },
+    deletable: {
+      type: Boolean,
+      default: true
     },
     mode: {
       type: String,
