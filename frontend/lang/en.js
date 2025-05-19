@@ -468,7 +468,13 @@ export default {
         expired: 'Session expired'
       },
       inputs: {
-        fill: 'Please, fill inputs'
+        label: 'Please fill label',
+        fill: 'Please, fill inputs',
+        description: 'Please fill description',
+        initial_claims: 'Claims are still loading',
+        claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
+        qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
+        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
       },
       modification: {
         failed: 'Label and description for language code en can not have the same value.'

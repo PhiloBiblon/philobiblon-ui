@@ -35,19 +35,33 @@
         <v-alert v-if="!initialClaimsLoaded" type="info">
           {{ $t('item.create.calculating_new_pbid') }}
         </v-alert>
-        <item-claim-create v-if="initialClaimsLoaded" :key="initialClaims.length" :for-create="true" :initial-claims="initialClaims" @update-claims="updateClaims" />
-        <v-row dense>
+        <item-claim-create
+          v-if="initialClaimsLoaded"
+          :for-create="true"
+          :initial-claims="initialClaims"
+          @update-claims="updateClaims"
+        />
+        <v-row class="mt-2" dense>
           <v-spacer />
-          <v-btn
-            class="mt-4"
-            color="primary"
-            small
-            elevation="2"
-            :disabled="isCreateDisabled"
-            @click="create"
-          >
-            {{ $t('common.create') }}
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <div v-bind="attrs" v-on="on">
+                <v-btn
+                  class="mt-4"
+                  color="primary"
+                  small
+                  elevation="2"
+                  :disabled="isCreateDisabled"
+                  @click="create"
+                >
+                  {{ $t('common.create') }}
+                </v-btn>
+              </div>
+            </template>
+            <span class="text-no-wrap">
+             {{ getCreateDisabledReason() || $t('item.create.button.enabled') }}
+           </span>
+          </v-tooltip>
         </v-row>
       </template>
     </v-container>
@@ -81,18 +95,7 @@ export default {
       return this.$store.state.auth.isLogged
     },
     isCreateDisabled () {
-      return (
-        !this.label ||
-        !this.description ||
-        !this.initialClaimsLoaded ||
-        Object.values(this.initialClaims).some(claim =>
-          !claim?.value?.datavalue?.value ||
-          Object.values(claim?.value?.datavalue?.value).some(val => val == null || val === '') ||
-          Object.values(claim.qualifiers || {}).some((q) => {
-            return !q?.datavalue?.value || Object.values(q?.datavalue?.value).some(val => val == null || val === '')
-          })
-        )
-      )
+      return !!this.getCreateDisabledReason()
     },
     pbid () {
       return this.initialClaims.find(item => item.property.id === this.$wikibase.constructor.PROPERTY_PBID).value
@@ -106,6 +109,45 @@ export default {
     }
   },
   methods: {
+    getCreateDisabledReason () {
+      if (!this.label) {
+        return this.$t('messages.error.inputs.label')
+      }
+      if (!this.description) {
+        return this.$t('messages.error.inputs.description')
+      }
+      if (!this.initialClaimsLoaded) {
+        return this.$t('messages.error.inputs.initial_claims')
+      }
+
+      const claims = Object.entries(this.claims)
+
+      for (let propIndex = 0; propIndex < claims.length; propIndex++) {
+        const [, claimArray] = claims[propIndex]
+        const initialClaim = this.initialClaims[propIndex]
+        const propertyLabel = initialClaim?.property?.label
+
+        for (const item of claimArray) {
+          if (item?.value == null || item?.value === '') {
+            return this.$t('messages.error.inputs.claim_value_missing', { propertyLabel })
+          }
+
+          const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
+
+          for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
+            if (!qualifierKey || qualifierKey === 'null') {
+              return this.$t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
+            }
+
+            if (!qualifierVal || qualifierVal === 'null') {
+              return this.$t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
+            }
+          }
+        }
+      }
+
+      return null
+    },
     async loadInitialClaims () {
       try {
         const res = await this.$wikibase.getTableLastItem(this.database, this.table)
@@ -129,6 +171,7 @@ export default {
         mainsnak: {
           property: entity.id
         },
+        claimsValues: [],
         value: {
           property: entity.id,
           datatype: entity.datatype,
@@ -207,13 +250,19 @@ export default {
       const claims = {}
       data.forEach((claim) => {
         if (claim.property) {
-          const claimKey = claim.property.id
-          claims[claimKey] = {
-            value: claim?.value?.datavalue?.value?.id ?? claim?.value?.datavalue?.value,
-            qualifiers: {}
-          }
-          claim.qualifiers?.forEach((qualifier) => {
-            claims[claimKey].qualifiers[qualifier.property] = qualifier?.datavalue?.value?.id ?? qualifier?.datavalue?.value
+          const claimKey = claim?.property?.id
+
+          claims[claimKey] = claims[claimKey] || []
+          const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
+
+          const createClaim = (val, qualifiers = {}) => ({ value: extractValue(val), qualifiers })
+
+          const qualifiers = Object.fromEntries((claim.qualifiers || []).map(q => [q.property, extractValue(q)]))
+
+          claims[claimKey].push(createClaim(claim.value, qualifiers))
+
+          ;(Object.values(claim.claimsValues || {}) || []).forEach((v) => {
+            claims[claimKey].push(createClaim(v))
           })
         }
       })
