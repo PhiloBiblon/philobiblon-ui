@@ -5,6 +5,7 @@ export class WikibaseService {
   static PROPERTY_PBID = 'P476'
   static PROPERTY_FORMATTER_URL = 'P236'
   static PROPERTY_NOTES = 'P817'
+  static PROPERTY_EMAIL = 'P722'
   static COMMONS_WIKIMEDIA_URL_ENDPOINT =
     'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
 
@@ -264,8 +265,10 @@ export class WikibaseService {
         '&prop=wikitext&formatversion=2&format=json&origin=*'
       return this.wbFetcher(notesApiUrl)
         .then((data) => {
-          return { title: data.parse.title, value: data.parse.wikitext, type: 'html' }
+          return { value: data.parse.wikitext, type: 'html' }
         })
+    } else if (datatype === 'url' && property === this.constructor.PROPERTY_EMAIL) {
+      return { value: datavalue, type: 'email' }
     } else {
       return { value: datavalue, type: datatype }
     }

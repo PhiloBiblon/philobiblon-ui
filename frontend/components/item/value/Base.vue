@@ -5,6 +5,7 @@
       v-if="valueToView.type"
       :label="label"
       :type="type"
+      :deletable="deletable"
       :save="isEditable ? editValue : null"
       :delete="isEditable ? deleteValue : null"
       :mode="mode"
@@ -17,6 +18,10 @@
 <script>
 export default {
   props: {
+    item: {
+      type: Object,
+      default: null
+    },
     claim: {
       type: Object,
       default: null
@@ -40,6 +45,10 @@ export default {
     mode: {
       type: String,
       default: 'edit'
+    },
+    deletable: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -61,7 +70,7 @@ export default {
     )
   },
   methods: {
-    editValue (editableData) {
+    async editValue (editableData) {
       if (!editableData.validation.valid ||
         (JSON.stringify(editableData.values.newValue) === JSON.stringify(editableData.values.oldValue))) {
         if (editableData.validation.message) {
@@ -78,6 +87,21 @@ export default {
           newValue: editableData.values.newValue
         },
         this.$store.getters['auth/getRequestConfig'])
+      } else if (this.type === 'claim-creation') {
+        const res = await this.$wikibase.getWbEdit().claim.add({
+          id: this.item.id,
+          property: this.value.property,
+          value: editableData.values.newValue
+        }, this.$store.getters['auth/getRequestConfig'])
+
+        const data = {
+          claim: res.claim,
+          property: this.value.property
+        }
+
+        this.$emit('create-claim', data)
+
+        return res
       } else if (this.type === 'qualifier') {
         return this.$wikibase.getWbEdit().qualifier.update({
           guid: this.claim.id,

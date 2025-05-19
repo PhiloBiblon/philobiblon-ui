@@ -2,17 +2,12 @@
   <v-container class="claim">
     <v-row v-if="showClaimInput" class="even-row" dense>
       <v-col>
-        <item-util-edit-select-field
-          v-if="isAutocomplete"
-          :options="claims"
-          :save="createClaim"
-          @input="oninput($event)"
-        />
-        <item-util-edit-text-field
-          v-else
-          :options="claims"
-          :save="createClaim"
-          @input="oninput($event)"
+        <item-value-base
+          :item="item"
+          :deletable="false"
+          type="claim-creation"
+          :value="defaultClaim"
+          @create-claim="$emit('create-claim', $event)"
         />
       </v-col>
     </v-row>
@@ -52,15 +47,21 @@ export default {
   data () {
     return {
       claims: [],
-      showClaimInput: false
-    }
-  },
-  computed: {
-    isAutocomplete () {
-      return this.claim.values[0].mainsnak.datatype === 'wikibase-item'
+      showClaimInput: false,
+      defaultClaim: this.createDefaultClaim()
     }
   },
   methods: {
+    createDefaultClaim () {
+      const firstClaim = this.claim?.values?.[0]?.mainsnak
+      return {
+        property: firstClaim?.property || '',
+        datatype: firstClaim?.datatype || '',
+        datavalue: {
+          value: ''
+        }
+      }
+    },
     oninput (value) {
       if (value && typeof value === 'string') {
         this.handleSearchChange(value)
@@ -71,22 +72,6 @@ export default {
       if (search && search.length) {
         this.claims = search
       }
-    },
-    async createClaim (value) {
-      const res = await this.$wikibase.getWbEdit().claim.add({
-        id: this.item.id,
-        value: value.id ?? value,
-        property: this.claim.property
-      }, this.$store.getters['auth/getRequestConfig'])
-      this.updateClaims(res)
-      return res
-    },
-    updateClaims (res) {
-      const data = {
-        claim: res.claim,
-        property: this.claim.property
-      }
-      this.$emit('create-claim', data)
     }
   }
 }
