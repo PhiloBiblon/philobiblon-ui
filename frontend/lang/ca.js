@@ -468,7 +468,13 @@ export default {
         expired: 'Sessió expirada'
       },
       inputs: {
-        fill: 'Si us plau, ompliu les entrades'
+        label: 'Please fill label',
+        fill: 'Si us plau, ompliu les entrades',
+        description: 'Please fill description',
+        initial_claims: 'Claims are still loading',
+        claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
+        qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
+        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
       },
       modification: {
         failed: 'L\'etiqueta i la descripció del codi d\'idioma en no poden tenir el mateix valor.'

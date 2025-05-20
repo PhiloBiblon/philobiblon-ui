@@ -10,11 +10,12 @@
 export default {
   data () {
     return {
-      table: ''
+      table: '',
+      database: ''
     }
   },
   mounted () {
-    this.database = this.$route.query.database
+    this.database = this.$route.query.database ?? 'All'
     this.table = this.$route.params.table
     this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(this.table))
   },

@@ -468,7 +468,13 @@ export default {
         expired: 'Sesión expirada'
       },
       inputs: {
-        fill: 'Por favor, rellene los campos'
+        label: 'Please fill label',
+        fill: 'Por favor, rellene los campos',
+        description: 'Please fill description',
+        initial_claims: 'Claims are still loading',
+        claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
+        qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
+        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
       },
       modification: {
         failed: 'La etiqueta y la descripción del código de idioma en no pueden tener el mismo valor.'
