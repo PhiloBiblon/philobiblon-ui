@@ -47,14 +47,7 @@ export default {
   },
 
   async mounted () {
-    await this.$wikibase
-      .getEntity(this.claim.property, this.$i18n.locale)
-      .then((entity) => {
-        this.propertyLabel = this.$wikibase.getValueByLang(
-          entity.labels,
-          this.$i18n.locale
-        )
-      })
+    this.propertyLabel = await this.$wikibase.getEntityLabel(this.claim.property, this.$i18n.locale)
   }
 }
 </script>

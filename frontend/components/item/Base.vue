@@ -54,14 +54,12 @@
         </span>
       </v-row>
       <item-claims :table="tableid" :claims="item.claims" :item="item" />
-      <item-related-items v-if="cnums.length" :table="tableid" related-table="cnum" :items="cnums" />
-      <item-related-items v-if="copids.length" :table="tableid" related-table="copid" :items="copids" />
+      <item-related-tables v-if="!isUserLogged" :item-id="item.id" :table="tableid" />
     </v-container>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     id: {
@@ -107,13 +105,6 @@ export default {
             this.item = entity
             this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
             this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
-            if (this.tableid === 'texid') {
-              this.cnums = await this.$wikibase.getRelatedItems(this.item.id, 'cnum', 'P590')
-            }
-            if (this.tableid === 'manid') {
-              this.cnums = await this.$wikibase.getRelatedItems(this.item.id, 'cnum', 'P8')
-              this.copids = await this.$wikibase.getRelatedItems(this.item.id, 'copid', 'P839')
-            }
             this.setBreadCrumb(this.tableid, entity)
             this.showItem = true
           })

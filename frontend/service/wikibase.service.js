@@ -136,6 +136,16 @@ export class WikibaseService {
       })
   }
 
+  getEntityLabel (id, lang) {
+    return this.getEntity(id, lang)
+      .then((entity) => {
+        return this.getValueByLang(
+          entity.labels,
+          lang
+        )
+      })
+  }
+
   wbFetcher (url) {
     const urlHash = this.hashCode(url)
     const entry = this.getResultsFromCache(urlHash)
@@ -423,9 +433,9 @@ export class WikibaseService {
     }
   }
 
-  async getRelatedItems (pbid, relatedTable, property) {
+  async getRelatedItems (pbid, refTables, currentPage, resultsPerPage) {
     return await this.runSparqlQuery(
-      this.$query.getRelatedItems(pbid, relatedTable, property),
+      this.$query.getRelatedItems(pbid, refTables, currentPage, resultsPerPage),
       true
     ).then((results) => {
       return results
