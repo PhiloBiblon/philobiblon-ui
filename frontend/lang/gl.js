@@ -85,7 +85,7 @@ export default {
     form: {
       common: {
         group: {
-          label: 'Base de datos bibliográfica'
+          label: 'Base de datos'
         },
         group_all: {
           label: 'Todos'

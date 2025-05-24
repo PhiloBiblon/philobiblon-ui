@@ -1,5 +1,6 @@
 export const state = () => ({
-  items: []
+  items: [],
+  class: ''
 })
 
 export const mutations = {
@@ -8,6 +9,9 @@ export const mutations = {
   },
   setItems (state, items) {
     state.items = JSON.parse(JSON.stringify(items))
+  },
+  setClass (state, style) {
+    state.class = style
   },
   resetItems (state) {
     state.items = []

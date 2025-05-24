@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import Quill from 'quill';
-import 'quill/dist/quill.snow.css';
+import Quill from 'quill'
+import 'quill/dist/quill.snow.css'
 
 export default {
   props: {
@@ -19,13 +19,13 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       quill: null,
-      content: '',
-    };
+      content: ''
+    }
   },
-  async mounted() {
+  async mounted () {
     await this.initQuill()
   },
   methods: {
@@ -39,39 +39,39 @@ export default {
             [{ header: 1 }, { header: 2 }],
             [{ list: 'ordered' }, { list: 'bullet' }],
             ['link', 'image'],
-            [{ align: [] }],
-          ],
-        },
-      });
+            [{ align: [] }]
+          ]
+        }
+      })
 
       this.quill.root.innerHTML = this.value
-      this.insertCustomButtons();
+      this.insertCustomButtons()
     },
-    insertCustomButtons() {
-      const toolbarModule = this.quill.getModule('toolbar');
-      const toolbar = toolbarModule.container;
+    insertCustomButtons () {
+      const toolbarModule = this.quill.getModule('toolbar')
+      const toolbar = toolbarModule.container
 
       if (toolbar) {
-        const customButtonsContainer = document.createElement('div');
-        customButtonsContainer.classList.add('custom-buttons-container');
-        toolbar.appendChild(customButtonsContainer);
+        const customButtonsContainer = document.createElement('div')
+        customButtonsContainer.classList.add('custom-buttons-container')
+        toolbar.appendChild(customButtonsContainer)
 
-        const checkButton = this.createButton('edit', 'mdi mdi-check');
-        const closeButton = this.createButton('restore', 'mdi mdi-close');
-        customButtonsContainer.appendChild(checkButton);
-        customButtonsContainer.appendChild(closeButton);
+        const checkButton = this.createButton('edit', 'mdi mdi-check')
+        const closeButton = this.createButton('restore', 'mdi mdi-close')
+        customButtonsContainer.appendChild(checkButton)
+        customButtonsContainer.appendChild(closeButton)
       }
     },
-    createButton(type, icon) {
-      const button = document.createElement('button');
-      button.classList.add('ql-custom-button');
-      button.setAttribute('type', 'button');
-      button.innerHTML = `<i class="${icon}"></i>`;
+    createButton (type, icon) {
+      const button = document.createElement('button')
+      button.classList.add('ql-custom-button')
+      button.setAttribute('type', 'button')
+      button.innerHTML = `<i class="${icon}"></i>`
 
       button.addEventListener('click', () => {
-        this[type]();
-      });
-      return button;
+        this[type]()
+      })
+      return button
     },
     async edit () {
       if (this.quill.root.innerHTML === this.value) {
@@ -99,11 +99,11 @@ export default {
           this.$notification.error(error)
         })
     },
-    restore() {
+    restore () {
       this.quill.root.innerHTML = this.value
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>

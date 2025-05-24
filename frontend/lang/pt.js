@@ -86,7 +86,7 @@ export default {
     form: {
       common: {
         group: {
-          label: 'Banco de dados bibliográfico'
+          label: 'Banco de dados'
         },
         group_all: {
           label: 'Todos'
@@ -516,6 +516,9 @@ export default {
       },
       inputs: {
         fill: 'Por favor preencha as entradas'
+      },
+      modification: {
+        failed: 'O rótulo e a descrição do código do idioma en não podem ter o mesmo valor.'
       },
       creation: {
         pbid_already_exists: 'O PhiloBiblon ID "{pbid}" já existe em {item}.'
