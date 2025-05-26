@@ -68,6 +68,7 @@ export default {
   },
   data () {
     return {
+      MAILTO_PREFIX: 'mailto:',
       isImage: false,
       imageLink: null,
       valueToView_: { ...this.valueToView }
@@ -88,21 +89,31 @@ export default {
   },
   methods: {
     newValue (value) {
-      const valid = this.isURL(value)
+      const valid = this.isValid(value)
       if (!valid) {
         this.$notification.error(this.$i18n.t('item.messages.invalid_url'))
         value = ''
+      } else {
+        value = this.addProtocol(value)
       }
       this.$emit('new-value', value)
     },
     editValue (newValue, oldValue) {
-      return this.save(this.getUrlValue(newValue, oldValue))
+      return this.save(this.getUrlValue(this.addProtocol(newValue), oldValue))
+    },
+    addProtocol (value) {
+      if (this.isEmail(value)) {
+        if (!value.startsWith(this.MAILTO_PREFIX)) {
+          return this.MAILTO_PREFIX + value
+        }
+      }
+      return value
     },
     deleteValue () {
       return this.delete()
     },
     getUrlValue (newValue, oldValue) {
-      const valid = this.isURL(newValue)
+      const valid = this.isValid(newValue)
       const message = valid ? '' : this.$i18n.t('item.messages.invalid_url')
       return {
         validation: {
@@ -114,6 +125,13 @@ export default {
           oldValue
         }
       }
+    },
+    isValid (str) {
+      return this.isURL(str) || this.isEmail(str)
+    },
+    isEmail (str) {
+      const emailRegex = new RegExp(`^(${this.MAILTO_PREFIX})?[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$`)
+      return emailRegex.test(str)
     },
     isURL (str) {
       const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
