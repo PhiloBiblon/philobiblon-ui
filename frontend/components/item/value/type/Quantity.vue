@@ -16,6 +16,7 @@
               style="width: 200px"
               class="ma-0 pa-0"
               @new-value="newDateValue"
+              @on-blur="$emit('on-blur', $event)"
             />
             <item-util-edit-select-field
               :label="$t('common.unit')"
@@ -27,6 +28,7 @@
               @update-options="unitOptions = $event"
               @input="oninput($event)"
               @new-value="newUnitValue"
+              @on-blur="$emit('on-blur', $event)"
             />
           </v-col>
         </v-row>

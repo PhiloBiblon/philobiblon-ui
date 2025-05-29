@@ -11,6 +11,7 @@
         :save="editValue"
         :delete="deleteValue"
         :mode="mode"
+        @on-blur="$emit('on-blur', $event)"
         @new-value="$emit('new-value', $event)"
       />
     </div>

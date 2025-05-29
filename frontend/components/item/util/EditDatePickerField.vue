@@ -102,6 +102,7 @@ export default {
     },
     blur () {
       this.focussed = false
+      this.$emit('on-blur', this.currentText)
     },
     onDateSelect () {
       this.isDatePickerActive = false
@@ -130,6 +131,7 @@ export default {
     restore () {
       this.currentText = this.consolidatedText
       this.focussed = false
+      this.$emit('new-value', this.currentText)
     },
     async deleteValue () {
       await this.delete()
