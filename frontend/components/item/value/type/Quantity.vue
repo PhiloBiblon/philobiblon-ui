@@ -11,7 +11,7 @@
               :label="$t('common.amount')"
               :value="valueToView_.value.amount"
               :save="editAmount"
-              :delete="deleteValue"
+              :delete="!deletable ? null : deleteValue"
               :mode="mode"
               style="width: 200px"
               class="ma-0 pa-0"
@@ -52,6 +52,10 @@ export default {
     delete: {
       type: Function,
       default: null
+    },
+    deletable: {
+      type: Boolean,
+      default: true
     },
     mode: {
       type: String,

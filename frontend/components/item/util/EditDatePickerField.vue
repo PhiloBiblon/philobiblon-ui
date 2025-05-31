@@ -33,7 +33,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-btn
-            v-if="isEditable && focussed"
+            v-if="isRemovable"
             text
             icon
             @click.stop="deleteValue"
@@ -83,6 +83,9 @@ export default {
   computed: {
     isEditable () {
       return this.mode === 'edit'
+    },
+    isRemovable () {
+      return this.isEditable && this.delete && this.focussed
     }
   },
   watch: {

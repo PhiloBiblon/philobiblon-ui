@@ -10,7 +10,7 @@
         :value="selectedOption"
         :save="editValue"
         :options="options"
-        :delete="deleteValue"
+        :delete="!deletable ? null : deleteValue"
         :mode="mode"
         @on-blur="$emit('on-blur', $event)"
         @new-value="$emit('new-value', $event)"
@@ -20,7 +20,7 @@
         :label="label"
         :save="editValue"
         :options="options"
-        :delete="deleteValue"
+        :delete="!deletable ? null : deleteValue"
         :mode="mode"
         @update-options="options = $event"
         @input="oninput($event)"
@@ -43,10 +43,6 @@ export default {
       type: Object,
       default: null
     },
-    type: {
-      type: String,
-      required: true
-    },
     save: {
       type: Function,
       default: null
@@ -54,6 +50,10 @@ export default {
     delete: {
       type: Function,
       default: null
+    },
+    deletable: {
+      type: Boolean,
+      default: true
     },
     mode: {
       type: String,
