@@ -3,20 +3,20 @@
     v-if="valueToView && Object.keys(snaks).length"
     :key="valueToView.hash"
     :items="snaks"
-    hide-default-header
+    :headers="headers"
     hide-default-footer
     :items-per-page="snaks.length"
     class="elevation-1 mt-1 mb-3 bg-gray"
   >
     <template #item="{ item, index }">
-      <tr :key="valueToView.hash" class="table-row">
+      <tr :key="`${valueToView.hash}-${item.property}-${index}`" class="table-row">
         <td :class="isUserLogged ? 'table-cell-value-edit' : 'table-cell'" class="col-4">
           <span>{{ item.propertyLabel.value }}</span>
         </td>
         <td :class="isUserLogged ? 'table-cell-value-edit' : 'table-cell'" class="col-8">
           <item-reference-values
             v-if="item.property"
-            :key="`${valueToView.hash}-${index}`"
+            :key="`${valueToView.hash}-${item.property}-${index}`"
             :claim="claim"
             :values="item.data"
             :reference="valueToView"
@@ -58,7 +58,11 @@ export default {
   data () {
     return {
       properties: [],
-      valueToView: null
+      valueToView: null,
+      headers: [
+        { text: 'Property', value: 'propertyLabel.value', sortable: true },
+        { text: 'Value', value: 'data', sortable: false }
+      ]
     }
   },
   computed: {
@@ -126,5 +130,9 @@ export default {
 }
 .full-width {
   width: 100% !important;
+}
+
+::v-deep .v-data-table-header__icon {
+  margin-left: 8px;
 }
 </style>
