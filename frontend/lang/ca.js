@@ -13,7 +13,7 @@ export default {
     to: 'a',
     add: 'afegir',
     add_reference: 'afegir referència',
-    add_value: 'valor afegit',
+    add_value: 'afegir valor',
     add_qualifier: 'afegir qualificador',
     add_claim: 'afegir declaració',
     cancel: 'cancel·lar',
