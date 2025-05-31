@@ -20,6 +20,7 @@ export default {
     add_claim: 'engadir declaración',
     cancel: 'cancelar',
     create: 'Crear',
+    items: 'elementos',
     search: {
       section: {
         advanced: 'Busca avanzada',
@@ -395,24 +396,70 @@ export default {
       calculating_new_pbid: 'Calculando o novo ID de PhiloBiblon ..'
     },
     related: {
-      texid: {
-        cnum: {
-          count: 'Contaxe de testemuñas',
-          id: 'Núm. ID de testemuña',
-          desc: 'Título(s)'
-        }
-      },
       manid: {
-        cnum: {
-          count: 'Número de textos no volume',
-          id: 'Núm. ID específico de testemuña',
-          desc: 'Título(s)'
-        },
-        copid: {
-          count: 'Número de copias adicionais da edición',
-          id: 'Núm. ID da copia adicional da edición',
-          desc: 'Título(s)'
-        }
+        related_ms_ed: 'Ms/Ed relacionados',
+        manuscript_edition: 'Edición manuscrita',
+        text: 'Texto'
+      },
+      texid: {
+        uniform_title: 'Título uniforme',
+        related_uniform_titles: 'Títulos uniformes relacionados'
+      },
+      bibid: {
+        related_bibliography: 'Bibliografía relacionada'
+      },
+      bioid: {
+        subject_references: 'Referencias temáticas',
+        authors: 'Autores',
+        commentary: 'Comentario',
+        financed_by: 'Financiado por',
+        former_owners: 'Antigos propietarios',
+        handwritten_by: 'Escrito a man por',
+        milestones: 'Fitos',
+        owner: 'Propietario',
+        printed_by: 'Impreso por',
+        related_individuals: 'Individuos relacionados',
+        translator: 'Tradutor'
+      },
+      copid: {
+        related_copies: 'Copias relacionadas'
+      },
+      geoid: {
+        career_statement: 'Declaración de carreira',
+        first_known_date: 'Primeira data coñecida',
+        former_owners: 'Antigos propietarios',
+        from_place: 'Do lugar mencionado',
+        history: 'Historia',
+        itinerary: 'Itinerario',
+        last_known_date: 'Última data coñecida',
+        location: 'Localización',
+        milestones: 'Fitos',
+        owner: 'Propietario',
+        place_of_birth: 'Lugar de nacemento',
+        place_of_death: 'Lugar da morte',
+        place_of_publication: 'Lugar de publicación',
+        related_places: 'Lugares relacionados',
+        religious_background: 'Antecedentes relixiosos',
+        religious_order: 'Orde relixiosa',
+        subject_references: 'Referencias temáticas'
+      },
+      insid: {
+        authors: 'Autores',
+        financed_by: 'Financiado por',
+        former_owners: 'Antigos propietarios',
+        handwritten_by: 'Escrito a man por',
+        milestones: 'Fitos',
+        owner: 'Propietario',
+        printed_by: 'Impreso por',
+        related_institutions: 'Institucións relacionadas',
+        subject_references: 'Referencias temáticas'
+      },
+      libid: {
+        related_libraries: 'Bibliotecas relacionadas',
+        present_holding: 'Tenencia actual'
+      },
+      subid: {
+        subject_references: 'Referencias temáticas'
       }
     }
   },

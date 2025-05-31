@@ -147,6 +147,49 @@ export class WikibaseService {
       })
   }
 
+  getEntityLabel (id, lang) {
+    const cachedValue = this.$store.state.itemCache.cache[this.getLabelCacheKey(id, lang)]
+    if (cachedValue) {
+      return cachedValue
+    } else {
+      return this.getEntity(id, lang)
+        .then((entity) => {
+          let propertyLabel = this.getLabelFromP34(entity, id, lang)
+          if (!propertyLabel) {
+            propertyLabel = this.getValueByLang(
+              entity.labels,
+              lang
+            )
+          }
+          this.$store.commit('itemCache/addEntry', {
+            key: this.getLabelCacheKey(),
+            value: propertyLabel
+          })
+          return propertyLabel
+        })
+    }
+  }
+
+  getLabelCacheKey (id, lang) {
+    return id + '_' + lang
+  }
+
+  getLabelFromP34 (entity, id, lang) {
+    if (entity.claims?.P34) {
+      const customLabel = entity.claims.P34
+        .map(claim => claim.mainsnak?.datavalue)
+        .find(datavalue => datavalue?.value?.language === lang)
+        ?.value?.text
+      if (customLabel) {
+        return {
+          item: id,
+          value: customLabel,
+          language: lang
+        }
+      }
+    }
+  }
+
   wbFetcher (url) {
     const urlHash = this.hashCode(url)
     const entry = this.getResultsFromCache(urlHash)
@@ -441,9 +484,9 @@ export class WikibaseService {
     }
   }
 
-  async getRelatedItems (pbid, relatedTable, property) {
+  async getRelatedItems (pbid, refTables, currentPage, resultsPerPage) {
     return await this.runSparqlQuery(
-      this.$query.getRelatedItems(pbid, relatedTable, property),
+      this.$query.getRelatedItems(pbid, refTables, currentPage, resultsPerPage),
       true
     ).then((results) => {
       return results

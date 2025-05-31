@@ -3,14 +3,11 @@
     <v-expansion-panel class="cnum">
       <v-expansion-panel-header class="cnum">
         <div>
-          <span class="text-subtitle-2 mb-0">{{ $t(`item.related.${table}.${relatedTable}.id`) }}</span>
-          <span class="mb-0 ml-3">{{ index + 1 }}</span>
+          <span class="mb-0 ml-3">#{{ index + 1 }}</span>
           <NuxtLink class="ml-1 black--text" :to="url">
             <span>{{ pbid }}</span>
           </NuxtLink>
-          <br></br>
-          <span class="text-subtitle-2">{{ $t(`item.related.${table}.${relatedTable}.desc`) }}</span>
-          <span class="ml-3">
+          <span class="ml-1">
             <item-util-view-text-lang :value="label" />
           </span>
         </div>
@@ -29,10 +26,6 @@ export default {
   inheritAttrs: false,
   props: {
     table: {
-      type: String,
-      default: null
-    },
-    relatedTable: {
       type: String,
       default: null
     },

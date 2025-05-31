@@ -20,6 +20,7 @@ export default {
     add_claim: 'add statement',
     cancel: 'cancel',
     create: 'Create',
+    items: 'items',
     search: {
       section: {
         advanced: 'Advanced search',
@@ -395,24 +396,70 @@ export default {
       calculating_new_pbid: 'Calculating new PhiloBiblon ID ..'
     },
     related: {
-      texid: {
-        cnum: {
-          count: 'Count of witnesses',
-          id: 'ID no. of Witness',
-          desc: 'Title(s)'
-        }
-      },
       manid: {
-        cnum: {
-          count: 'Number of texts in volume',
-          id: 'Specific witness ID no.',
-          desc: 'Title(s)'
-        },
-        copid: {
-          count: 'Number of additional copies of edition',
-          id: 'ID no. of additional copy of edition',
-          desc: 'Title(s)'
-        }
+        related_ms_ed: 'Related Ms/Ed',
+        manuscript_edition: 'Manuscript edition',
+        text: 'Text'
+      },
+      texid: {
+        uniform_title: 'Uniform title',
+        related_uniform_titles: 'Related uniform titles'
+      },
+      bibid: {
+        related_bibliography: 'Related bibliography'
+      },
+      bioid: {
+        subject_references: 'Subject references',
+        authors: 'Authors',
+        commentary: 'Commentary',
+        financed_by: 'Financed by',
+        former_owners: 'Former owners',
+        handwritten_by: 'Handwritten by',
+        milestones: 'Milestones',
+        owner: 'Owner',
+        printed_by: 'Printed by',
+        related_individuals: 'Related individuals',
+        translator: 'Translator'
+      },
+      copid: {
+        related_copies: 'Related copies'
+      },
+      geoid: {
+        career_statement: 'Career statement',
+        first_known_date: 'First known date',
+        former_owners: 'Former owners',
+        from_place: 'From place as mentioned',
+        history: 'History',
+        itinerary: 'Itinerary',
+        last_known_date: 'Last known date',
+        location: 'Location',
+        milestones: 'Milestones',
+        owner: 'Owner',
+        place_of_birth: 'Place of birth',
+        place_of_death: 'Place of death',
+        place_of_publication: 'Place of publication',
+        related_places: 'Related places',
+        religious_background: 'Religious background',
+        religious_order: 'Religious order',
+        subject_references: 'Subject references'
+      },
+      insid: {
+        authors: 'Authors',
+        financed_by: 'Financed by',
+        former_owners: 'Former owners',
+        handwritten_by: 'Handwritten by',
+        milestones: 'Milestones',
+        owner: 'Owner',
+        printed_by: 'Printed by',
+        related_institutions: 'Related institutions',
+        subject_references: 'Subject references'
+      },
+      libid: {
+        related_libraries: 'Related libraries',
+        present_holding: 'Present holding'
+      },
+      subid: {
+        subject_references: 'Subject references'
       }
     }
   },
