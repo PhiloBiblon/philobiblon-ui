@@ -1,37 +1,55 @@
 <template>
   <v-container class="claim">
-    <v-row v-if="showClaimInput" class="even-row" dense>
-      <v-col>
-        <item-util-edit-select-field
-          v-if="isAutocomplete"
-          :options="claims"
-          :save="createClaim"
-          @input="oninput($event)"
-        />
-        <item-util-edit-text-field
-          v-else
-          :options="claims"
-          :save="createClaim"
-          @input="oninput($event)"
-        />
+    <v-row
+      v-for="(claim, key) in claims"
+      :key="key"
+      class="even-row"
+      dense
+    >
+      <v-col class="p-0 pr-3 pt-3">
+        <div class="d-flex">
+          <v-autocomplete
+            v-if="claim.datatype === 'wikibase-item'"
+            class="ma-0 pa-0"
+            :label="$t('item.label')"
+            required
+            return-object
+            :items="items[key]"
+            item-text="label"
+            item-value="id"
+            variant="outlined"
+            @change="updateClaimValue($event, key,true)"
+            @update:search-input="onInput($event, 'item', key)"
+          />
+          <item-value-base
+            v-else
+            :key="`${claim.value}-${key}`"
+            class="full-width"
+            :label="$t('common.value')"
+            :value="claim"
+            type="claim"
+            mode="creation"
+            @on-blur="updateClaimValue($event, key)"
+          />
+          <div class="d-flex ml-3 mt-1">
+            <v-btn v-if="!forCreate" :disabled="!claim?.datavalue?.value" text icon @click.stop="createClaim(key)">
+              <v-icon>mdi-check</v-icon>
+            </v-btn>
+            <v-btn text icon @click.stop="removeClaim(key)">
+              <v-icon>mdi-trash-can</v-icon>
+            </v-btn>
+          </div>
+        </div>
       </v-col>
     </v-row>
     <v-row class="back pr-5 mt-1 add-value" justify="end">
-      <a role="button" class="link" @click="showClaimInput = !showClaimInput">
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <div class="align-center">
-              <v-icon v-if="!showClaimInput" color="primary" v-bind="attrs" v-on="on">
-                mdi-plus
-              </v-icon>
-              <v-icon v-else color="primary" v-bind="attrs" v-on="on">
-                mdi-minus
-              </v-icon>
-              <span v-if="!showClaimInput">{{ $t("common.add_value") }}</span>
-              <span v-else>{{ $t("common.cancel") }}</span>
-            </div>
-          </template>
-        </v-tooltip>
+      <a role="button" class="link" @click.stop="addClaim">
+        <div class="align-center">
+          <v-icon color="primary">
+            mdi-plus
+          </v-icon>
+          <span>{{ $t("common.add_value") }}</span>
+        </div>
       </a>
     </v-row>
   </v-container>
@@ -44,47 +62,78 @@ export default {
       type: Object,
       default: null
     },
-    claim: {
+    value: {
       type: Object,
       default: null
+    },
+    forCreate: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
-      claims: [],
-      showClaimInput: false
-    }
-  },
-  computed: {
-    isAutocomplete () {
-      return this.claim.values[0].mainsnak.datatype === 'wikibase-item'
+      items: {},
+      claims: {}
     }
   },
   methods: {
-    oninput (value) {
+    addClaim () {
+      const newKey = `P${Date.now()}`
+      const { property, datatype } = this.value
+      const newClaim = {
+        property,
+        datatype,
+        datavalue: { value: null, default: false }
+      }
+
+      this.$set(this.claims, newKey, newClaim)
+
+      if (this.forCreate) {
+        this.$emit('update-claims-values', this.claims)
+      }
+    },
+    removeClaim (key) {
+      this.$delete(this.claims, key)
+      this.$delete(this.items, key)
+
+      if (this.forCreate) {
+        this.$emit('update-claims-values', this.claims)
+      }
+    },
+    async onInput (value, type, key) {
       if (value && typeof value === 'string') {
-        this.handleSearchChange(value)
+        const searchResults = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale, type)
+        if (searchResults && searchResults.length) {
+          this.$set(this.items, key, searchResults)
+        }
       }
     },
-    async handleSearchChange (value) {
-      const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale)
-      if (search && search.length) {
-        this.claims = search
+    updateClaimValue (value, key, isObject = false) {
+      this.claims[key].datavalue.value = isObject ? value?.id ?? null : value
+
+      if (this.forCreate) {
+        this.$emit('update-claims-values', this.claims)
       }
     },
-    async createClaim (value) {
+    async createClaim (index) {
+      const value = this.claims[index]?.datavalue?.value
+      if (!value) {
+        return
+      }
       const res = await this.$wikibase.getWbEdit().claim.add({
+        value,
         id: this.item.id,
-        value: value.id ?? value,
-        property: this.claim.property
+        property: this.value.property
       }, this.$store.getters['auth/getRequestConfig'])
+      res.success ? this.$notification.success(this.$i18n.t('messages.success.updated')) : this.$i18n.t('messages.error.modification.failed')
       this.updateClaims(res)
       return res
     },
     updateClaims (res) {
       const data = {
         claim: res.claim,
-        property: this.claim.property
+        property: this.value.property
       }
       this.$emit('create-claim', data)
     }
@@ -92,6 +141,9 @@ export default {
 }
 </script>
 <style scoped>
+.full-width {
+  width: 100%;
+}
 .add-value {
   background-color: white;
 }

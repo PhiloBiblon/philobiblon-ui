@@ -468,7 +468,13 @@ export default {
         expired: 'A sesión caducou'
       },
       inputs: {
-        fill: 'Por favor, enche as entradas'
+        label: 'Please fill label',
+        fill: 'Por favor, enche as entradas',
+        description: 'Please fill description',
+        initial_claims: 'Claims are still loading',
+        claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
+        qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
+        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
       },
       modification: {
         failed: 'A etiqueta e a descrición do código de idioma gl non poden ter o mesmo valor.'

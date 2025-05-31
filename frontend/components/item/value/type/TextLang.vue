@@ -14,6 +14,7 @@
               :delete="deleteValue"
               :mode="mode"
               @new-value="newTextValue"
+              @on-blur="$emit('on-blur', $event)"
             />
             <v-select
               v-model="valueToView_.language"
