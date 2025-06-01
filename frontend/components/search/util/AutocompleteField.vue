@@ -2,7 +2,7 @@
   <v-autocomplete
     v-bind="{ ...$attrs, ...commonAttrs }"
     :loading="loadingItems"
-    :no-data-text="$t('common.no_data')"
+    :no-data-text="checkNoDataText"
     :items="items"
     :value-comparator="compareByLabel"
     v-on="$listeners"
@@ -54,6 +54,9 @@ export default {
       return {
         dense: true
       }
+    },
+    checkNoDataText () {
+      return this.loadingItems ? this.$t('common.loading') : this.$t('common.no_data')
     }
   },
   created () {
