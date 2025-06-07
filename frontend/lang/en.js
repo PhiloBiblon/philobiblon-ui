@@ -402,8 +402,8 @@ export default {
         text: 'Text'
       },
       texid: {
-        uniform_title: 'Uniform title',
-        related_uniform_titles: 'Related uniform titles'
+        uniform_title: 'Textual witnesses',
+        related_uniform_titles: 'Related textual witnesses'
       },
       bibid: {
         related_bibliography: 'Related bibliography'

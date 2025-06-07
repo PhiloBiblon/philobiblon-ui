@@ -794,12 +794,10 @@ export class QueryService {
       filters +=
         `
         OPTIONAL {
-          ?item p:P442 ?type_of_event .
-          ?type_of_event pq:P47 ?item_place .
+          ?item wdt:P47 ?item_place .
         }
         OPTIONAL {
-          ?item p:P442 ?type_of_event .
-          ?type_of_event pq:P241 ?item_place_production .
+          ?item wdt:P241 ?item_place_production .
         }
         FILTER (?item_place = wd:${form.input.place_production.value.item} || ?item_place_production = wd:${form.input.place_production.value.item})
         `
@@ -808,12 +806,10 @@ export class QueryService {
       filters +=
         `
         OPTIONAL {
-          ?item p:P442 ?type_of_event .
-          ?type_of_event pq:P25 ?item_scribe .
+          ?item wdt:P25 ?item_scribe .
         }
         OPTIONAL {
-          ?item p:P442 ?type_of_event .
-          ?type_of_event pq:P207 ?item_printer .
+          ?item wdt:P207 ?item_printer .
         }
         FILTER (?item_scribe = wd:${form.input.scribe_printer.value.item} || ?item_printer = wd:${form.input.scribe_printer.value.item})
         `

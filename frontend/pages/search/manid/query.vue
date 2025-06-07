@@ -212,18 +212,14 @@ export default {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '(.*) {{table}} ') .
-                    ?table_item p:P442 ?type_of_event .
-                    ?type_of_event ?property ?item .
-                    BIND(pq:P47 as ?property)
+                    ?table_item wdt:P47 ?item .
                     {{langFilter}}
                   }
                 } UNION {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '(.*) {{table}} ') .
-                    ?table_item p:P442 ?type_of_event .
-                    ?type_of_event ?property ?item .
-                    BIND(pq:P241 as ?property)
+                    ?table_item wdt:P241 ?item .
                     {{langFilter}}
                   }
                 }
@@ -248,18 +244,14 @@ export default {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '(.*) {{table}} ') .
-                    ?table_item p:P442 ?type_of_event .
-                    ?type_of_event ?property ?item .
-                    BIND(pq:P25 as ?property)
+                    ?table_item wdt:P25 ?item .
                     {{langFilter}}
                   }
                 } UNION {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '(.*) {{table}} ') .
-                    ?table_item p:P442 ?type_of_event .
-                    ?type_of_event ?property ?item .
-                    BIND(pq:P207 as ?property)
+                    ?table_item wdt:P207 ?item .
                     {{langFilter}}
                   }
                 }

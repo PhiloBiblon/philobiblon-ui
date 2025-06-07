@@ -2,6 +2,7 @@
   <v-autocomplete
     v-bind="{ ...$attrs, ...commonAttrs }"
     :loading="loadingItems"
+    :disabled="loadingItems"
     :no-data-text="checkNoDataText"
     :items="items"
     :value-comparator="compareByLabel"

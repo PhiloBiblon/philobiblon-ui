@@ -54,7 +54,7 @@
         </span>
       </v-row>
       <item-claims :table="tableid" :claims="item.claims" :item="item" />
-      <item-related-tables v-if="!isUserLogged" :item-id="item.id" :table="tableid" />
+      <item-related-tables :item-id="item.id" :table="tableid" />
     </v-container>
   </div>
 </template>
