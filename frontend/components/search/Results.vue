@@ -27,7 +27,7 @@
                 >
                   <v-list-item v-for="(result, index) in results" :key="'r-'+index" @click="goToItem(result.item)">
                     <v-list-item-content>
-                      <span>{{ result.label }}&nbsp;&nbsp;&nbsp;<span class="text-caption">{{ result.pbid }}</span></span>
+                      <span>{{ result.label }}&nbsp;&nbsp;&nbsp;<span class="text-caption">{{ result.pbids }}</span></span>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>

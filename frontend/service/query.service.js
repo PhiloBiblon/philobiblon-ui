@@ -1016,13 +1016,14 @@ export class QueryService {
 
   itemsQuery (table, form, lang, resultsPerPage) {
     const SEARCH_QUERY = $ =>
-      `SELECT DISTINCT ?item ?label ?pbid
+      `SELECT DISTINCT ?item ?label (GROUP_CONCAT(?pbid; separator=", ") AS ?pbids)
       WHERE {
         ?item wdt:P476 ?pbid .
         ${this.generateLangFilters(lang)}
         ${$.filters}
         BIND(REPLACE(?pbid, '(.*) ${table} (.*)', '$2') AS ?pbidn)
       }
+      GROUP BY ?item ?label
       ORDER BY ${this.getSortClause()}
       OFFSET ${(this.$store.state.queryStatus.currentPage - 1) * resultsPerPage}
       LIMIT ${resultsPerPage}`
