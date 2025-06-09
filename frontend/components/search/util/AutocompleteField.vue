@@ -2,7 +2,7 @@
   <v-autocomplete
     v-bind="{ ...$attrs, ...commonAttrs }"
     :loading="loadingItems"
-    :disabled="loadingItems"
+    :disabled="isDisabled"
     :no-data-text="checkNoDataText"
     :items="items"
     :value-comparator="compareByLabel"
@@ -42,6 +42,9 @@ export default {
     hintMaxWidth: {
       type: Number,
       default: 50
+    },
+    disabled: {
+      type: Boolean
     }
   },
   data () {
@@ -58,6 +61,9 @@ export default {
     },
     checkNoDataText () {
       return this.loadingItems ? this.$t('common.loading') : this.$t('common.no_data')
+    },
+    isDisabled () {
+      return this.disabled || this.loadingItems
     }
   },
   created () {
