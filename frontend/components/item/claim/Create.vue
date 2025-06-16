@@ -186,6 +186,8 @@ export default {
         }).catch((error) => {
           this.$notification.error(error.message)
         })
+      } else if (this.claims[index].value.datatype === 'url') {
+        this.$notification.error(this.$t('item.messages.invalid_url'))
       }
     },
     async createClaim (index) {
