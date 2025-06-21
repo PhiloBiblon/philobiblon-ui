@@ -357,7 +357,7 @@ export default {
       },
       subid: {
         headings: {
-          label: 'Encabezados',
+          label: 'Materia',
           hint: ''
         }
       }

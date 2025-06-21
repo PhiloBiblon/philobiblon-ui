@@ -97,6 +97,7 @@ export class WikibaseService {
                 console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}: ${line}`)
               }
             } else {
+              // eslint-disable-next-line no-console
               console.warn(`Ignored line: ${line}`)
             }
           } catch (error) {
