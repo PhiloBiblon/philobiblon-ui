@@ -53,9 +53,9 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/config.js',
+    '~/plugins/notification.js',
     '~/plugins/wikibase.js',
     '~/plugins/language.js',
-    '~/plugins/notification.js',
     '~/plugins/dompurify.js',
     '~/plugins/version-check.js'
   ],
