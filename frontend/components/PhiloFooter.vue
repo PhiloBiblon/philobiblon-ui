@@ -33,11 +33,11 @@
         <v-container>
           <v-row dense>
             <v-col>
-              <a href="https://facebook.com/pages/PhiloBiblon/289959314407502" class="me-3">
-                <icons-social-fb-icon />
+              <a href="https://bsky.app/profile/philobiblon.bsky.social" class="me-3">
+                <icons-social-bluesky-icon />
               </a>
-              <a href="https://twitter.com/PPhiloBiblon" class="me-3">
-                <icons-social-twitter-icon />
+              <a href="https://hcommons.social/@PhiloBiblon_Berkeley" class="me-3">
+                <icons-social-mastodon-icon />
               </a>
               <a href="https://youtube.com/channel/UCOVWrLQiC1bPvt57pYQQeJQ/videos" class="me-3">
                 <icons-social-youtube-icon />
