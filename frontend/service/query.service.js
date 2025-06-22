@@ -1016,7 +1016,7 @@ export class QueryService {
 
   itemsQuery (table, form, lang, resultsPerPage) {
     const SEARCH_QUERY = $ =>
-      `SELECT DISTINCT ?item ?label (GROUP_CONCAT(?pbid; separator=", ") AS ?pbids)
+      `SELECT DISTINCT ?item ?label (GROUP_CONCAT(DISTINCT ?pbid; separator=", ") AS ?pbids)
       WHERE {
         ?item wdt:P476 ?pbid .
         ${this.generateLangFilters(lang)}
