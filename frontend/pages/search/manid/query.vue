@@ -185,11 +185,21 @@ export default {
               `
             }
           },
-          date: {
+          date_of_artifact: {
             active: true,
             section: 'primary',
-            label: 'search.form.manid.date.label',
-            hint: 'search.form.manid.date.hint',
+            label: 'search.form.manid.date_of_artifact.label',
+            hint: 'search.form.manid.date_of_artifact.hint',
+            type: 'date',
+            value: {},
+            visible: true,
+            disabled: false
+          },
+          date_of_publication: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.date_of_publication.label',
+            hint: 'search.form.manid.date_of_publication.hint',
             type: 'date',
             value: {},
             visible: true,
