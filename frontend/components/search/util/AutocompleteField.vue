@@ -80,7 +80,7 @@ export default {
       const resultItems = []
       if (this.autocomplete.query) {
         this.loadingItems = true
-        this.$wikibase.runSparqlQuery(this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale), false)
+        this.$wikibase.runSparqlQuery(this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale), false, true)
           .then((results) => {
             Object.entries(results).forEach(
               ([_, result]) => {

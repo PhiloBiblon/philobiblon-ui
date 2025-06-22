@@ -29,6 +29,7 @@ export class WikibaseService {
     this.$oauth = new OAuthService(store, app)
     this.$notification = app.$notification
     this.$i18n = app.i18n
+    this.sparqlBackendEndpoint = this.joinUrl(this.$config.apiBaseUrl, '/sparql/query')
   }
 
   getWbk () {
@@ -405,14 +406,18 @@ export class WikibaseService {
     }
   }
 
-  runSparqlQuery (query, minimize = false, useCache = true) {
+  runSparqlQuery (query, minimize = false, useBackendCache = false, useInternalCache = true) {
+    if (useBackendCache) {
+      useInternalCache = false
+    }
+
     if (process.env.debug) {
       // eslint-disable-next-line no-console
-      console.log(query)
+      console.log(`run sparlql query:\n${query}\ninternal cache: ${useInternalCache}\nbackend cache: ${useBackendCache}`)
     }
 
     let queryHash = null
-    if (useCache) {
+    if (useInternalCache) {
       queryHash = this.hashCode(query)
       const entry = this.getResultsFromCache(queryHash)
       if (entry) {
@@ -422,7 +427,13 @@ export class WikibaseService {
       }
     }
 
-    const [url, sparql] = this.wbk.sparqlQuery(query).split('?')
+    const urlParts = this.wbk.sparqlQuery(query).split('?')
+    let url = urlParts[0]
+    const sparql = urlParts[1]
+
+    if (useBackendCache) {
+      url = this.sparqlBackendEndpoint
+    }
 
     const options = {
       method: 'POST',
@@ -440,7 +451,7 @@ export class WikibaseService {
       })
       .then(results => this.wbk.simplify.sparqlResults(results, { minimize }))
       .then((simplifiedResults) => {
-        if (useCache) {
+        if (useInternalCache) {
           this.$store.commit('queryCache/addEntry', {
             key: queryHash,
             value: simplifiedResults
@@ -524,6 +535,10 @@ export class WikibaseService {
     }).catch(() => {
       return []
     })
+  }
+
+  joinUrl (baseUrl, path) {
+    return new URL(path, baseUrl).toString()
   }
 
   getRelatedTable (entity) {
