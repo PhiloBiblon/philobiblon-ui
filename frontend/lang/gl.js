@@ -268,9 +268,13 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
         },
-        date: {
-          label: 'Data',
-          hint: 'You can search for complete or partial dates. A search for “1325“, for example, returns manuscripts copied on any day of that year as well as undated manuscripts which, based on internal or external evidence, have been dated to include the year 1325 (e.g. 1325; 1325 a quo, 1325 ad quem; 1301? - 1325?; 1290? - 1325?; etc.).'
+        date_of_artifact: {
+          label: 'Data do obxecto',
+          hint: ''
+        },
+        date_of_publication: {
+          label: 'Data de publicación',
+          hint: ''
         },
         place_production: {
           label: 'Lugar de produción',

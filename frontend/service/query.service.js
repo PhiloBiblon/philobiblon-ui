@@ -262,12 +262,12 @@ export class QueryService {
       }
       filters +=
         `
-        ?item p:P137 ?history .
+        ?item p:P412 ?date_of_creation .
         `
       if (form.input.date_composition.value.begin) {
         filters +=
           `
-          OPTIONAL { ?history pq:P49 ?begin_date }
+          OPTIONAL { ?item wdt:P412 ?begin_date }
           `
         if (completeRange) {
           filters +=
@@ -285,7 +285,7 @@ export class QueryService {
       if (form.input.date_composition.value.end) {
         filters +=
           `
-          OPTIONAL { ?history pq:P50 ?end_date }
+          OPTIONAL { ?date_of_creation pq:P291 ?end_date }
           `
         if (completeRange) {
           filters +=
@@ -505,7 +505,7 @@ export class QueryService {
       if (form.input.date.value.begin) {
         filters +=
           `
-          OPTIONAL { ?item pq:P49 ?begin_date }
+          OPTIONAL { ?item wdt:P49 ?begin_date }
           `
         if (completeRange) {
           filters +=
@@ -517,30 +517,6 @@ export class QueryService {
           filters +=
             `
             FILTER(?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (form.input.date.value.end) {
-        filters +=
-          `
-          OPTIONAL { ?item pq:P50 ?end_date }
-          `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?end_date) || ?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date) || ?end_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(BOUND(?begin_date) || BOUND(?end_date))
             `
         }
       }
@@ -737,56 +713,109 @@ export class QueryService {
         )
         `
     }
-    if (form.input.date.value &&
-      (form.input.date.value.begin || form.input.date.value.end)) {
+    if (form.input.date_of_artifact.value &&
+      (form.input.date_of_artifact.value.begin || form.input.date_of_artifact.value.end)) {
       let completeRange = false
-      if (form.input.date.value.begin && form.input.date.value.end) {
+      if (form.input.date_of_artifact.value.begin && form.input.date_of_artifact.value.end) {
         completeRange = true
       }
       filters +=
         `
-        ?item p:P137 ?history .
+        ?item p:P536 ?date_of_artifact .
         `
-      if (form.input.date.value.begin) {
+      if (form.input.date_of_artifact.value.begin) {
         filters +=
           `
-          OPTIONAL { ?history pq:P49 ?begin_date }
+          OPTIONAL { ?item wdt:P536 ?begin_date_artifact }
           `
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?begin_date_artifact) || ?begin_date_artifact >= '${form.input.date_of_artifact.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date_artifact) || ?begin_date_artifact <= '${form.input.date_of_artifact.value.end}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?begin_date_artifact >= '${form.input.date_of_artifact.value.begin}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
-      if (form.input.date.value.end) {
+      if (form.input.date_of_artifact.value.end) {
         filters +=
           `
-          OPTIONAL { ?history pq:P50 ?end_date }
+          OPTIONAL { ?date_of_artifact pq:P291 ?end_date_artifact }
           `
         if (completeRange) {
           filters +=
             `
-            FILTER(!BOUND(?end_date) || ?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date) || ?end_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?end_date_artifact) || ?end_date_artifact <= '${form.input.date_of_artifact.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date_artifact) || ?end_date_artifact >= '${form.input.date_of_artifact.value.begin}T00:00:00Z'^^xsd:dateTime )
             `
         } else {
           filters +=
             `
-            FILTER(?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?end_date_artifact <= '${form.input.date_of_artifact.value.end}T00:00:00Z'^^xsd:dateTime)
             `
         }
       }
       if (completeRange) {
         filters +=
         `
-        FILTER(BOUND(?begin_date) || BOUND(?end_date))
+        FILTER(BOUND(?begin_date_artifact) || BOUND(?end_date_artifact))
+        `
+      }
+    }
+    if (form.input.date_of_publication.value &&
+      (form.input.date_of_publication.value.begin || form.input.date_of_publication.value.end)) {
+      let completeRange = false
+      if (form.input.date_of_publication.value.begin && form.input.date_of_publication.value.end) {
+        completeRange = true
+      }
+      filters +=
+        `
+        ?item p:P222 ?date_of_publication .
+        `
+      if (form.input.date_of_publication.value.begin) {
+        filters +=
+          `
+          OPTIONAL { ?item wdt:P222 ?begin_date_publication }
+          `
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(!BOUND(?begin_date_publication) || ?begin_date_publication >= '${form.input.date_of_publication.value.begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?begin_date_publication) || ?begin_date_publication <= '${form.input.date_of_publication.value.end}T00:00:00Z'^^xsd:dateTime )
+            `
+        } else {
+          filters +=
+            `
+            FILTER(?begin_date_publication >= '${form.input.date_of_publication.value.begin}T00:00:00Z'^^xsd:dateTime)
+            `
+        }
+      }
+      if (form.input.date_of_publication.value.end) {
+        filters +=
+          `
+          OPTIONAL { ?date_of_publication pq:P291 ?end_date_publication }
+          `
+        if (completeRange) {
+          filters +=
+            `
+            FILTER(!BOUND(?end_date_publication) || ?end_date_publication <= '${form.input.date_of_publication.value.end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?end_date_publication) || ?end_date_publication >= '${form.input.date_of_publication.value.begin}T00:00:00Z'^^xsd:dateTime )
+            `
+        } else {
+          filters +=
+            `
+            FILTER(?end_date_publication <= '${form.input.date_of_publication.value.end}T00:00:00Z'^^xsd:dateTime)
+            `
+        }
+      }
+      if (completeRange) {
+        filters +=
+        `
+        FILTER(BOUND(?begin_date_publication) || BOUND(?end_date_publication))
         `
       }
     }
