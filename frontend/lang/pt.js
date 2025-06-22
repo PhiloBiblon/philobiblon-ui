@@ -93,6 +93,9 @@ export default {
         group_all: {
           label: 'Todos'
         },
+        bitagap_group: {
+          label: 'Subgrupo'
+        },
         simple_search: {
           label: 'Pesquisa simples',
           hint: 'Utilize este campo para pesquisar informações não localizadas em campos nomeados. Por exemplo, em <b>MsEd</b>, informação codiológica; ou, em WORK, digite “trad*” em <b>Simples pesquisa</b> para produzir uma lista de trabalhos que foram traduzidos da sua linguagem original.'

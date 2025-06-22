@@ -85,6 +85,26 @@ export class QueryService {
 
   addInstitutionFilters (form) {
     let filters = ''
+    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
+      filters +=
+       `
+        ?related_work_item wdt:P476 ?related_work_item_pbid .
+        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
+        ?related_work_item wdt:P243 ?item .
+        ?related_work_item rdfs:label ?related_work_label 
+       `
+      if (form.input.bitagap_group.value === 'ORIG') {
+        filters +=
+          `
+            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      } else if (form.input.bitagap_group.value === 'CARTAS') {
+        filters +=
+          `
+            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      }
+    }
     if (form.input.city && form.input.city.value) {
       filters +=
         `
@@ -131,6 +151,24 @@ export class QueryService {
   addWorkFilters (form) {
     let addAnalyticJoin = false
     let filters = ''
+    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
+      filters +=
+        `
+          ?item wdt:P243 ?subjectItem .
+          ?subjectItem rdfs:label ?labelSubjectItem .
+        `
+      if (form.input.bitagap_group.value === 'ORIG') {
+        filters +=
+          `
+            FILTER(!CONTAINS(STR(?labelSubjectItem), "[Cartas de]"))
+          `
+      } else if (form.input.bitagap_group.value === 'CARTAS') {
+        filters +=
+          `
+            FILTER(CONTAINS(STR(?labelSubjectItem), "[Cartas de]"))
+          `
+      }
+    }
     if (form.input.type && form.input.type.value) {
       filters +=
         `
@@ -320,6 +358,26 @@ export class QueryService {
 
   addPersonFilters (form) {
     let filters = ''
+    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
+      filters +=
+       `
+        ?related_work_item wdt:P476 ?related_work_item_pbid .
+        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
+        ?related_work_item wdt:P243 ?item .
+        ?related_work_item rdfs:label ?related_work_label 
+       `
+      if (form.input.bitagap_group.value === 'ORIG') {
+        filters +=
+          `
+            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      } else if (form.input.bitagap_group.value === 'CARTAS') {
+        filters +=
+          `
+            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      }
+    }
     if (form.input.name && form.input.name.value) {
       if (form.input.name.value.property === 'label') {
         filters +=
@@ -482,6 +540,26 @@ export class QueryService {
 
   addReferenceFilters (form) {
     let filters = ''
+    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
+      filters +=
+       `
+        ?related_work_item wdt:P476 ?related_work_item_pbid .
+        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
+        ?related_work_item wdt:P12 ?item .
+        ?related_work_item rdfs:label ?related_work_label 
+       `
+      if (form.input.bitagap_group.value === 'ORIG') {
+        filters +=
+          `
+            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      } else if (form.input.bitagap_group.value === 'CARTAS') {
+        filters +=
+          `
+            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      }
+    }
     if (form.input.author && form.input.author.value) {
       filters +=
         `
@@ -609,6 +687,26 @@ export class QueryService {
 
   addGeographyFilters (form) {
     let filters = ''
+    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
+      filters +=
+       `
+        ?related_work_item wdt:P476 ?related_work_item_pbid .
+        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
+        ?related_work_item wdt:P243 ?item .
+        ?related_work_item rdfs:label ?related_work_label 
+       `
+      if (form.input.bitagap_group.value === 'ORIG') {
+        filters +=
+          `
+            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      } else if (form.input.bitagap_group.value === 'CARTAS') {
+        filters +=
+          `
+            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      }
+    }
     if (form.input.type && form.input.type.value) {
       filters +=
         `
@@ -633,6 +731,26 @@ export class QueryService {
 
   addSubjectFilters (form) {
     let filters = ''
+    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
+      filters +=
+       `
+        ?related_work_item wdt:P476 ?related_work_item_pbid .
+        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
+        ?related_work_item wdt:P243 ?item .
+        ?related_work_item rdfs:label ?related_work_label 
+       `
+      if (form.input.bitagap_group.value === 'ORIG') {
+        filters +=
+          `
+            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      } else if (form.input.bitagap_group.value === 'CARTAS') {
+        filters +=
+          `
+            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          `
+      }
+    }
     if (form.input.headings && form.input.headings.value) {
       if (form.input.headings.value.property === 'label') {
         filters +=
@@ -652,6 +770,26 @@ export class QueryService {
 
   addManuscriptFilters (form) {
     let filters = ''
+    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
+      filters +=
+       `
+        ?related_work_item wdt:P476 ?related_work_item_pbid .
+        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
+        ?related_work_item wdt:P750 ?item .
+        ?related_work_item rdfs:label ?related_work_label 
+       `
+      if (form.input.bitagap_group.value === 'ORIG') {
+        filters +=
+          `
+            FILTER(!CONTAINS(STR(?related_work_item), "[Cartas de]"))
+          `
+      } else if (form.input.bitagap_group.value === 'CARTAS') {
+        filters +=
+          `
+            FILTER(CONTAINS(STR(?related_work_item), "[Cartas de]"))
+          `
+      }
+    }
     if (form.input.city && form.input.city.value) {
       filters +=
         `

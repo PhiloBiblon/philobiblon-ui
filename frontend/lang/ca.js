@@ -92,6 +92,9 @@ export default {
         group_all: {
           label: 'Tots'
         },
+        bitagap_group: {
+          label: 'Subgrup'
+        },
         simple_search: {
           label: 'Cerca simple',
           hint: 'Utilitzeu aquest camp per cercar informació que no es pugui localitzar als camps amb nom. Per exemple, a <b>MsEd</b>, informació codicològica; o, a WORK, escriviu “trad*” a <b>Cerca senzilla</b> per produir una llista d\'obres que s\'han traduït de la seva llengua original.'
