@@ -7,7 +7,7 @@
       </v-row>
       -->
       <v-row class="back">
-        <a class="link" @click="$router.go(-1)">
+        <a class="link" @click="goTo(`/search/${tableid}/query`)">
           <v-tooltip right>
             <template #activator="{ on, attrs }">
               <v-icon color="primary" v-bind="attrs" v-on="on">
@@ -54,7 +54,7 @@
         </span>
       </v-row>
       <item-claims :table="tableid" :claims="item.claims" :item="item" />
-      <item-related-tables :item-id="item.id" :table="tableid" />
+      <item-related-tables v-if="!isUserLogged" :item-id="item.id" :table="tableid" />
     </v-container>
   </div>
 </template>
@@ -96,6 +96,9 @@ export default {
   },
 
   methods: {
+    goTo (path) {
+      this.$router.push(this.localePath(path))
+    },
     async getEntity () {
       try {
         await this.$wikibase
@@ -103,8 +106,8 @@ export default {
           .then(async (entity) => {
             this.tableid = this.$wikibase.getRelatedTable(entity)
             this.item = entity
-            this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
-            this.description = this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
+            this.label = await this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
+            this.description = await this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
             this.setBreadCrumb(this.tableid, entity)
             this.showItem = true
           })

@@ -9,7 +9,7 @@
     class="elevation-1"
   >
     <template #item="{ item, index }">
-      <tr :key="item.mainsnak.hash" class="table-row">
+      <tr class="table-row">
         <td v-for="(header, key) in formattedHeaders" :key="header.value" class="table-cell">
           <item-value-base
             v-if="!key"
