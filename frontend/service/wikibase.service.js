@@ -29,7 +29,7 @@ export class WikibaseService {
     this.$oauth = new OAuthService(store, app)
     this.$notification = app.$notification
     this.$i18n = app.i18n
-    this.sparqlBackendEndpoint = this.joinUrl(this.$config.apiBaseUrl, '/sparql/query')
+    this.sparqlBackendEndpoint = this.joinUrl(this.$config.apiBaseUrl, 'api/sparql/query')
   }
 
   getWbk () {
@@ -537,7 +537,17 @@ export class WikibaseService {
     })
   }
 
-  joinUrl (baseUrl, path) {
+  joinUrl(baseUrl, path) {
+    if (!baseUrl || !path) return ''
+
+    if (!baseUrl.endsWith('/')) {
+      baseUrl += '/'
+    }
+
+    if (path.startsWith('/')) {
+      path = path.substring(1)
+    }
+
     return new URL(path, baseUrl).toString()
   }
 
