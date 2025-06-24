@@ -2,7 +2,7 @@
   <div class="all-width">
     <v-container>
       <v-row class="back">
-        <a class="link" @click="$router.go(-1)">
+        <a class="link" @click="goTo(`/search/${table}/query`)">
           <v-tooltip right>
             <template #activator="{ on, attrs }">
               <v-icon color="primary" v-bind="attrs" v-on="on">
@@ -59,8 +59,8 @@
               </div>
             </template>
             <span class="text-no-wrap">
-             {{ getCreateDisabledReason() || $t('item.create.button.enabled') }}
-           </span>
+              {{ getCreateDisabledReason() || $t('item.create.button.enabled') }}
+            </span>
           </v-tooltip>
         </v-row>
       </template>
@@ -109,6 +109,9 @@ export default {
     }
   },
   methods: {
+    goTo (path) {
+      this.$router.push(this.localePath(path))
+    },
     getCreateDisabledReason () {
       if (!this.label) {
         return this.$t('messages.error.inputs.label')

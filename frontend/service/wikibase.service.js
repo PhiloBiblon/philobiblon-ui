@@ -341,7 +341,7 @@ export class WikibaseService {
         '&prop=wikitext&formatversion=2&format=json&origin=*'
       return this.wbFetcher(notesApiUrl)
         .then((data) => {
-          return { value: data.parse.wikitext, type: 'html' }
+          return { title: data.parse.title, value: data.parse.wikitext, type: 'html' }
         })
     } else {
       return { value: datavalue, type: datatype }
@@ -537,8 +537,10 @@ export class WikibaseService {
     })
   }
 
-  joinUrl(baseUrl, path) {
-    if (!baseUrl || !path) return ''
+  joinUrl (baseUrl, path) {
+    if (!baseUrl || !path) {
+      return ''
+    }
 
     if (!baseUrl.endsWith('/')) {
       baseUrl += '/'

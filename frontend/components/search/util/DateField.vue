@@ -4,21 +4,25 @@
       <v-menu v-model="activeBegin" offset-y :close-on-content-click="false">
         <template #activator="{ on, attrs }">
           <v-text-field
-            v-model="beginValue"
+            :value="beginValue"
             class="date-input"
             :disabled="disabled"
             :label="label + '. ' + $t('common.from')"
             dense
-            readonly
+            placeholder="YYYY-MM-DD"
             v-bind="attrs"
+            :append-icon="'mdi-calendar'"
             v-on="on"
+            @click:append="activeBegin = true"
             @focus="showHint"
             @blur="hideHint"
+            @change="validateBeginDate"
           />
         </template>
         <v-date-picker
           v-model="beginValue"
-          min="1000-01-01"
+          :max="today"
+          min="0001-01-01"
           @input="onBeginDateSelect"
           @change="beginDate"
         />
@@ -26,28 +30,32 @@
       <v-menu v-model="activeEnd" offset-y :close-on-content-click="false">
         <template #activator="{ on, attrs }">
           <v-text-field
-            v-model="endValue"
+            :value="endValue"
             class="date-input"
             :disabled="disabled"
             :label="$t('common.to')"
             dense
-            readonly
+            placeholder="YYYY-MM-DD"
             v-bind="attrs"
+            :append-icon="'mdi-calendar'"
             v-on="on"
-            @blur="hideHint"
+            @click:append="activeEnd = true"
             @focus="showHint"
+            @blur="hideHint"
+            @change="validateEndDate"
           />
         </template>
         <v-date-picker
           v-model="endValue"
-          min="1000-01-01"
+          :max="today"
+          min="0001-01-01"
           @input="onEndDateSelect"
           @change="endDate"
         />
       </v-menu>
     </div>
     <div v-if="isHintVisible" class="message-container">
-      <v-tooltip max-width="40%" bottom ligth open-delay="200">
+      <v-tooltip max-width="40%" bottom light open-delay="200">
         <template #activator="{ on }">
           <!-- eslint-disable-next-line vue/no-v-html -->
           <span class="text-caption hint" v-on="on" v-html="hint && hint.length &lt; hintMaxWidth ? $sanitize(hint) : ($sanitize(hint).substring(0, hintMaxWidth) + '...')" />
@@ -84,7 +92,6 @@ export default {
       default: 50
     }
   },
-
   data () {
     return {
       activeEnd: false,
@@ -94,19 +101,21 @@ export default {
       isHintVisible: false
     }
   },
-
   computed: {
     commonAttrs () {
       return {
         dense: true
       }
+    },
+    today () {
+      return new Date().toISOString().slice(0, 10)
     }
   },
 
   watch: {
-    value (newVal, oldVal) {
-      this.beginValue = newVal.begin
-      this.endValue = newVal.end
+    value (newVal, _) {
+      this.beginValue = newVal?.begin || null
+      this.endValue = newVal?.end || null
     }
   },
 
@@ -116,6 +125,31 @@ export default {
   },
 
   methods: {
+    validateBeginDate (date) {
+      this.beginValue = this.validateDate(date)
+      this.$emit('update-begin-date', this.beginValue)
+    },
+    validateEndDate (date) {
+      this.endValue = this.validateDate(date)
+      this.$emit('update-end-date', this.endValue)
+    },
+    validateDate (date) {
+      const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
+      if (!date) {
+        return null
+      } else if (!DATE_REGEX.test(date)) {
+        this.$notification.error(this.$t('common.search.error.invalid_date'))
+        return null
+      } else {
+        const parsed = new Date(`${date}T00:00:00Z`)
+        const year = parseInt(date.substring(0, 4), 10)
+        if (isNaN(parsed.getTime()) || year > 2125) {
+          this.$notification.error(this.$t('common.search.error.invalid_year'))
+          return null
+        }
+        return date
+      }
+    },
     onBeginDateSelect () {
       this.activeBegin = false
     },
@@ -127,12 +161,6 @@ export default {
     },
     hideHint () {
       this.isHintVisible = false
-    },
-    beginDate (newValue) {
-      this.$emit('update-begin-date', newValue)
-    },
-    endDate (newValue) {
-      this.$emit('update-end-date', newValue)
     }
   }
 }

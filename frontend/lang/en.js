@@ -25,6 +25,10 @@ export default {
       section: {
         advanced: 'Advanced search',
         external_description: 'External description'
+      },
+      error: {
+        invalid_date: 'Invalid date. Use YYYY-MM-DD format',
+        invalid_year: 'Year must be between 0 and 2125'
       }
     }
   },

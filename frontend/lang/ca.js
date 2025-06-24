@@ -25,6 +25,10 @@ export default {
       section: {
         advanced: 'Cerca avançada',
         external_description: 'Descripció externa'
+      },
+      error: {
+        invalid_date: 'Data no vàlida. Utilitzeu el format AAAA-MM-DD',
+        invalid_year: 'L\'any ha d\'estar entre 0 i 2125'
       }
     }
   },
