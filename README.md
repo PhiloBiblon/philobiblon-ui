@@ -32,6 +32,7 @@ ln -s .env.pbuidev .env
 ```
 cd backend
 mvn clean install
+mvn spring-boot:build-image
 ```  
 3. Build frontend container.
 ```
@@ -81,4 +82,3 @@ The configuration is centralized in the `env file`, where we can find all the en
   - ALLOWED_ORIGINS: Allowed origins to access the backend module (for public instances use directly *).
 
 `backend` variables are exposed to the `frontend` via the backend endpoint: `${API_BASE_URL}/api/config`.
-# philo-clone

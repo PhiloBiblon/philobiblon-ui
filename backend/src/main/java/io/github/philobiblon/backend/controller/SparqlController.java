@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/sparql")
+@RequestMapping("/api/sparql")
 @CrossOrigin(origins = "${allowed.origins}")
 public interface SparqlController {
 
