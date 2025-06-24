@@ -27,6 +27,9 @@ export class WikibaseService {
     this.$store = store
     this.$query = new QueryService(store, this.$config)
     this.$oauth = new OAuthService(store, app)
+    this.$notification = app.$notification
+    this.$i18n = app.i18n
+    this.sparqlBackendEndpoint = this.joinUrl(this.$config.apiBaseUrl, 'api/sparql/query')
   }
 
   getWbk () {
@@ -55,47 +58,60 @@ export class WikibaseService {
 
   // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
   transformSortedPropertiesWikiText (inputText) {
-    const sections = inputText.split(/====(.+?)====/).filter(Boolean)
-
     const result = {}
 
-    for (let i = 0; i < sections.length; i += 2) {
-      const sectionName = sections[i].trim().toLowerCase().split(' ')[0]
-      const sectionContent = sections[i + 1].trim()
+    try {
+      const sections = inputText.split(/====(.+?)====/).filter(Boolean)
 
-      const properties = {}
-      const lines = sectionContent.split('\n')
+      for (let i = 0; i < sections.length; i += 2) {
+        const sectionName = sections[i].trim().toLowerCase().split(' ')[0]
+        const sectionContent = sections[i + 1].trim()
 
-      let currentProperty = null
+        const properties = {}
+        const lines = sectionContent.split('\n')
 
-      for (const line of lines) {
-        if (line.startsWith('*')) {
-          const [, property] = line.match(/\* ?(\S+)/)
-          currentProperty = property.trim()
-          if (this.getPItemPattern().test(currentProperty)) {
-            if (!(currentProperty in properties)) {
-              properties[currentProperty] = []
+        let currentProperty = null
+
+        for (const line of lines) {
+          try {
+            if (line.startsWith('*')) {
+              const [, property] = line.match(/\* ?(\S+)/)
+              currentProperty = property.trim()
+              if (this.getPItemPattern().test(currentProperty)) {
+                if (!(currentProperty in properties)) {
+                  properties[currentProperty] = []
+                }
+              } else {
+                // eslint-disable-next-line no-console
+                console.error(`Invalid property ${currentProperty} in section ${sectionName}: ${line}`)
+                currentProperty = null
+              }
+            } else if (/^:: ?qualifier/.test(line)) {
+              let [, qualifier] = line.match(/:: ?qualifier (\S+)/)
+              qualifier = qualifier.trim()
+              if (this.getPItemPattern().test(qualifier)) {
+                if (currentProperty && !properties[currentProperty].includes(qualifier)) {
+                  properties[currentProperty].push(qualifier)
+                }
+              } else {
+                // eslint-disable-next-line no-console
+                console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}: ${line}`)
+              }
+            } else {
+              // eslint-disable-next-line no-console
+              console.warn(`Ignored line: ${line}`)
             }
-          } else {
+          } catch (error) {
             // eslint-disable-next-line no-console
-            console.error(`Invalid property ${currentProperty} in section ${sectionName}: ${line}`)
-            currentProperty = null
-          }
-        } else if (/^:: ?qualifier/.test(line)) {
-          let [, qualifier] = line.match(/:: ?qualifier (\S+)/)
-          qualifier = qualifier.trim()
-          if (this.getPItemPattern().test(qualifier)) {
-            if (currentProperty && !properties[currentProperty].includes(qualifier)) {
-              properties[currentProperty].push(qualifier)
-            }
-          } else {
-            // eslint-disable-next-line no-console
-            console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}: ${line}`)
+            console.error(`Error in line '${line}': ${error}`)
           }
         }
-      }
 
-      result[sectionName] = properties
+        result[sectionName] = properties
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error)
     }
 
     if (process.env.debug) {
@@ -390,14 +406,18 @@ export class WikibaseService {
     }
   }
 
-  runSparqlQuery (query, minimize = false, useCache = true) {
+  runSparqlQuery (query, minimize = false, useBackendCache = false, useInternalCache = true) {
+    if (useBackendCache) {
+      useInternalCache = false
+    }
+
     if (process.env.debug) {
       // eslint-disable-next-line no-console
-      console.log(query)
+      console.log(`run sparlql query:\n${query}\ninternal cache: ${useInternalCache}\nbackend cache: ${useBackendCache}`)
     }
 
     let queryHash = null
-    if (useCache) {
+    if (useInternalCache) {
       queryHash = this.hashCode(query)
       const entry = this.getResultsFromCache(queryHash)
       if (entry) {
@@ -407,7 +427,13 @@ export class WikibaseService {
       }
     }
 
-    const [url, sparql] = this.wbk.sparqlQuery(query).split('?')
+    const urlParts = this.wbk.sparqlQuery(query).split('?')
+    let url = urlParts[0]
+    const sparql = urlParts[1]
+
+    if (useBackendCache) {
+      url = this.sparqlBackendEndpoint
+    }
 
     const options = {
       method: 'POST',
@@ -425,13 +451,17 @@ export class WikibaseService {
       })
       .then(results => this.wbk.simplify.sparqlResults(results, { minimize }))
       .then((simplifiedResults) => {
-        if (useCache) {
+        if (useInternalCache) {
           this.$store.commit('queryCache/addEntry', {
             key: queryHash,
             value: simplifiedResults
           })
         }
         return simplifiedResults
+      })
+      .catch((error) => {
+        this.$notification.error(error)
+        throw error
       })
   }
 
@@ -505,6 +535,22 @@ export class WikibaseService {
     }).catch(() => {
       return []
     })
+  }
+
+  joinUrl (baseUrl, path) {
+    if (!baseUrl || !path) {
+      return ''
+    }
+
+    if (!baseUrl.endsWith('/')) {
+      baseUrl += '/'
+    }
+
+    if (path.startsWith('/')) {
+      path = path.substring(1)
+    }
+
+    return new URL(path, baseUrl).toString()
   }
 
   getRelatedTable (entity) {

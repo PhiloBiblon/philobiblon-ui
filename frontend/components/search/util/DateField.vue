@@ -113,7 +113,7 @@ export default {
   },
 
   watch: {
-    value (newVal, oldVal) {
+    value (newVal, _) {
       this.beginValue = newVal?.begin || null
       this.endValue = newVal?.end || null
     }
@@ -126,49 +126,29 @@ export default {
 
   methods: {
     validateBeginDate (date) {
-      const regex = /^\d{4}-\d{2}-\d{2}$/
-
-      if (!date || !regex.test(date)) {
-        this.$notification.error(this.$t('Invalid begin date. Use YYYY-MM-DD format'))
-        this.beginValue = null
-        return
-      }
-
-      const parsed = new Date(`${date}T00:00:00Z`)
-      const year = parseInt(date.substring(0, 4), 10)
-
-      if (isNaN(parsed.getTime()) || year > 2125) {
-        this.$notification.error(this.$t('Begin date must be between 0 and 2125'))
-        this.beginValue = null
-        return
-      }
-
-      this.beginValue = date
-
-      this.beginDate(this.beginValue)
+      this.beginValue = this.validateDate(date)
+      this.$emit('update-begin-date', this.beginValue)
     },
-
     validateEndDate (date) {
-      const regex = /^\d{4}-\d{2}-\d{2}$/
-
-      if (!date || !regex.test(date)) {
-        this.$notification.error(this.$t('Invalid end date. Use YYYY-MM-DD format'))
-        this.endValue = null
-        return
+      this.endValue = this.validateDate(date)
+      this.$emit('update-end-date', this.endValue)
+    },
+    validateDate (date) {
+      const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
+      if (!date) {
+        return null
+      } else if (!DATE_REGEX.test(date)) {
+        this.$notification.error(this.$t('common.search.error.invalid_date'))
+        return null
+      } else {
+        const parsed = new Date(`${date}T00:00:00Z`)
+        const year = parseInt(date.substring(0, 4), 10)
+        if (isNaN(parsed.getTime()) || year > 2125) {
+          this.$notification.error(this.$t('common.search.error.invalid_year'))
+          return null
+        }
+        return date
       }
-
-      const parsed = new Date(`${date}T00:00:00Z`)
-      const year = parseInt(date.substring(0, 4), 10)
-
-      if (isNaN(parsed.getTime()) || year > 2125 || year < 0) {
-        this.$notification.error(this.$t('End date must be between 0 and 2125'))
-        this.endValue = null
-        return
-      }
-
-      this.endValue = date
-
-      this.endDate(this.endValue)
     },
     onBeginDateSelect () {
       this.activeBegin = false
@@ -181,12 +161,6 @@ export default {
     },
     hideHint () {
       this.isHintVisible = false
-    },
-    beginDate (newValue) {
-      this.$emit('update-begin-date', newValue)
-    },
-    endDate (newValue) {
-      this.$emit('update-end-date', newValue)
     }
   }
 }
