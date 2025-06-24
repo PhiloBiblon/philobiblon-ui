@@ -1,6 +1,8 @@
 package io.github.philobiblon.backend.service.impl;
 
 import io.github.philobiblon.backend.service.SparqlService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
@@ -17,6 +19,8 @@ import java.util.List;
 @Service
 public class SparqlServiceImpl implements SparqlService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SparqlServiceImpl.class);
+
     @Value("${sparql.endpoint}")
     private String sparqlEndpoint;
 
@@ -24,6 +28,8 @@ public class SparqlServiceImpl implements SparqlService {
 
     @Cacheable("sparqlCache")
     public String executeSparqlQuery(String sparqlQuery) {
+        logger.info("Executing sparqlQuery {}...", sparqlQuery);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setAccept(List.of(MediaType.valueOf("application/sparql-results+json")));
