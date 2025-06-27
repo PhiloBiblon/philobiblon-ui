@@ -58,17 +58,17 @@ export default {
                       SELECT DISTINCT ?label ?property
                       WHERE { 
                         ?item wdt:P476 ?pbid .
+                        BIND ( wdt:P1134 as ?property)
                         ?item ?property ?label .
                         FILTER regex(?pbid, '(.*) {{table}} ')
-                        BIND ( wdt:P1134 as ?property)
                       }
                 } UNION {
                       SELECT DISTINCT ?label ?property
                       WHERE { 
                         ?item wdt:P476 ?pbid .
+                        BIND ( wdt:P1136 as ?property)
                         ?item ?property ?label . 
                         FILTER regex(?pbid, '(.*) {{table}} ')
-                        BIND ( wdt:P1136 as ?property)
                       }
                 }
               }
@@ -304,10 +304,10 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table wdt:P476 ?table_pbid .
+                BIND ( wdt:P243 as ?property)
                 ?table ?property ?item . 
                 {{langFilter}}
                 FILTER regex(?table_pbid, '(.*) {{table}} ')
-                BIND ( wdt:P243 as ?property)
               }
               ORDER BY STR(?label)
               `

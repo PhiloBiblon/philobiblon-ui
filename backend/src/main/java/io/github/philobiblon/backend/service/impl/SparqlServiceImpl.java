@@ -1,10 +1,13 @@
 package io.github.philobiblon.backend.service.impl;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import io.github.philobiblon.backend.service.SparqlService;
+import jakarta.annotation.PostConstruct;
+import org.apache.jena.query.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SparqlServiceImpl implements SparqlService {
@@ -25,23 +29,35 @@ public class SparqlServiceImpl implements SparqlService {
     private String sparqlEndpoint;
 
     private final RestTemplate restTemplate = new RestTemplate();
+    private LoadingCache<String, ResultSetRewindable> sparqlCache;
 
-    @Cacheable("sparqlCache")
-    public String executeSparqlQuery(String sparqlQuery) {
+    @PostConstruct
+    public void init() {
+        sparqlCache = Caffeine.newBuilder()
+                .refreshAfterWrite(24, TimeUnit.HOURS)
+                .expireAfterWrite(48, TimeUnit.HOURS)
+                .build(this::executeSparqlQuery);
+    }
+
+    public ResultSetRewindable executeSparqlQuery(String sparqlQuery) {
         logger.info("Executing sparqlQuery {}...", sparqlQuery);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.setAccept(List.of(MediaType.valueOf("application/sparql-results+json")));
+        Query query = QueryFactory.create(sparqlQuery);
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("query", sparqlQuery);
+        try (QueryExecution qexec = QueryExecution.service(sparqlEndpoint, query)) {
+            ResultSet resultSet = qexec.execSelect();
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+            ResultSetRewindable rewindable = ResultSetFactory.copyResults(resultSet);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(sparqlEndpoint, request, String.class);
+            return rewindable;
+        } catch (Exception e) {
+            logger.error("Error executing SPARQL query", e);
+            throw new RuntimeException("SPARQL query execution failed", e);
+        }
+    }
 
-        return response.getBody();
+    public ResultSetRewindable getSparqlQueryResult(String sparqlQuery) {
+        return sparqlCache.get(sparqlQuery);
     }
 }
 

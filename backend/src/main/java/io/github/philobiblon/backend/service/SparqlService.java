@@ -1,5 +1,10 @@
 package io.github.philobiblon.backend.service;
 
+import org.apache.jena.query.ResultSetRewindable;
+
 public interface SparqlService {
-    String executeSparqlQuery(String sparqlQuery);
+
+    ResultSetRewindable getSparqlQueryResult(String sparqlQuery);
+
+    ResultSetRewindable executeSparqlQuery(String sparqlQuery);
 }

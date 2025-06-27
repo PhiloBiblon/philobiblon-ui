@@ -75,6 +75,7 @@
                 :table="table"
                 :autocomplete="item.autocomplete"
                 @click.stop
+                @reset-value="item.value = ''"
               />
               <search-util-date-field
                 v-if="item.type === 'date'"

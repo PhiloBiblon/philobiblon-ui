@@ -5,7 +5,6 @@ public class RequestToken {
     private String token;
     private String authUrl;
 
-
     public RequestToken(String token, String authUrl) {
         this.token = token;
         this.authUrl = authUrl;

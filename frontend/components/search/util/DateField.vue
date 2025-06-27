@@ -24,7 +24,7 @@
           :max="today"
           min="0001-01-01"
           @input="onBeginDateSelect"
-          @change="beginDate"
+          @change="validateBeginDate"
         />
       </v-menu>
       <v-menu v-model="activeEnd" offset-y :close-on-content-click="false">
@@ -50,7 +50,7 @@
           :max="today"
           min="0001-01-01"
           @input="onEndDateSelect"
-          @change="endDate"
+          @change="validateEndDate"
         />
       </v-menu>
     </div>
