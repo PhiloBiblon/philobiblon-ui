@@ -31,6 +31,11 @@ export default {
             value: 'ALL',
             disabled: false
           },
+          bitagap_group: {
+            permanent: true,
+            value: 'ALL',
+            disabled: false
+          },
           simple_search: {
             active: true,
             section: 'primary',

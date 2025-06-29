@@ -2,7 +2,7 @@
   <v-form ref="search_form">
     <v-container>
       <v-row dense>
-        <v-col cols="10">
+        <v-col cols="7">
           <v-radio-group
             v-model="search_group.value"
             :disabled="search_group.disabled"
@@ -21,7 +21,18 @@
             />
           </v-radio-group>
         </v-col>
-        <v-col>
+        <v-col cols="1">
+          <v-select
+            v-if="isBitagapSelected"
+            v-model="bitagap_group.value"
+            :disabled="bitagap_group.disabled"
+            :items="bitagapOptions"
+            item-text="text"
+            item-value="value"
+            :label="$t('search.form.common.bitagap_group.label')"
+          />
+        </v-col>
+        <v-col cols="4" class="d-flex justify-end">
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
               <div v-bind="attrs" v-on="on">
@@ -172,9 +183,11 @@ export default {
     return {
       search_group: {},
       search_type: {},
+      bitagap_group: {},
       filtersBySection: {},
       showResults: false,
-      isCreateDisabled: true
+      isCreateDisabled: true,
+      isBitagapSelected: false
     }
   },
 
@@ -184,6 +197,9 @@ export default {
     },
     groups () {
       return ['BETA', 'BITAGAP', 'BITECA', { text: this.$t('search.form.common.group_all.label'), value: 'ALL' }]
+    },
+    bitagapOptions () {
+      return [{ text: 'All', value: 'ALL' }, { text: 'Original', value: 'ORIG' }, { text: 'Cartas', value: 'CARTAS' }]
     }
   },
 
@@ -196,6 +212,7 @@ export default {
   created () {
     this.search_group = this.form.input.group
     this.search_type = this.form.input.search_type
+    this.bitagap_group = this.form.input.bitagap_group
     this.filtersBySection = this.groupFiltersBySection(this.form)
     const showResults = this.$store.state.queryStatus.showResults
     if (showResults) {
@@ -305,6 +322,7 @@ export default {
         item.disabled = false
       }
       this.search_group.value = 'ALL'
+      this.bitagap_group.value = 'ALL'
       this.search_type.value = true
       this.showResults = false
       this.calculateSectionsToDisplay()
@@ -334,6 +352,12 @@ export default {
     },
     onGroupChange (newDatabase) {
       this.isCreateDisabled = newDatabase === 'ALL'
+      if (newDatabase === 'BITAGAP' && this.table !== 'libid') {
+        this.isBitagapSelected = true
+      } else {
+        this.isBitagapSelected = false
+        this.bitagap_group.value = 'ALL'
+      }
     }
   }
 }

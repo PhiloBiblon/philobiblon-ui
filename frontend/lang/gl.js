@@ -96,6 +96,9 @@ export default {
         group_all: {
           label: 'Todos'
         },
+        bitagap_group: {
+          label: 'Subgrupo'
+        },
         simple_search: {
           label: 'Busca simple',
           hint: 'Use este campo para buscar información non localizable en campos con nome. Por exemplo, en <b>MsEd</b>, información codicolóxica; ou, en WORK, escriba “trad*” en <b>Busca sinxela</b> para producir unha lista de obras que foron traducidas desde o seu idioma orixinal.'
