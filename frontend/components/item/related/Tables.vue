@@ -88,16 +88,16 @@ export default {
           {
             label: 'item.related.bioid.subject_references',
             refTables: [
-              { refTable: 'bibid', property: 'P243', qualifier: 'P703' },
-              { refTable: 'bioid', property: 'P243', qualifier: 'P703' },
-              { refTable: 'copid', property: 'P243', qualifier: 'P703' },
+              { refTable: 'bibid', property: 'P243' },
+              { refTable: 'bioid', property: 'P243' },
               { refTable: 'copid', property: 'P243' },
-              { refTable: 'geoid', property: 'P243', qualifier: 'P703' },
+              { refTable: 'copid', property: 'P243' },
               { refTable: 'geoid', property: 'P243' },
-              { refTable: 'insid', property: 'P243', qualifier: 'P703' },
-              { refTable: 'libid', property: 'P243', qualifier: 'P703' },
-              { refTable: 'manid', property: 'P243', qualifier: 'P703' },
-              { refTable: 'texid', property: 'P243', qualifier: 'P703' }
+              { refTable: 'geoid', property: 'P243' },
+              { refTable: 'insid', property: 'P243' },
+              { refTable: 'libid', property: 'P243' },
+              { refTable: 'manid', property: 'P243' },
+              { refTable: 'texid', property: 'P243' }
             ]
           },
           {
@@ -283,14 +283,14 @@ export default {
           {
             label: 'item.related.geoid.subject_references',
             refTables: [
-              { refTable: 'bibid', property: 'P243', qualifier: 'P47' },
-              { refTable: 'bioid', property: 'P243', qualifier: 'P47' },
-              { refTable: 'copid', property: 'P243', qualifier: 'P47' },
-              { refTable: 'geoid', property: 'P243', qualifier: 'P47' },
-              { refTable: 'insid', property: 'P243', qualifier: 'P47' },
-              { refTable: 'libid', property: 'P243', qualifier: 'P47' },
-              { refTable: 'manid', property: 'P243', qualifier: 'P47' },
-              { refTable: 'texid', property: 'P243', qualifier: 'P47' }
+              { refTable: 'bibid', property: 'P243' },
+              { refTable: 'bioid', property: 'P243' },
+              { refTable: 'copid', property: 'P243' },
+              { refTable: 'geoid', property: 'P243' },
+              { refTable: 'insid', property: 'P243' },
+              { refTable: 'libid', property: 'P243' },
+              { refTable: 'manid', property: 'P243' },
+              { refTable: 'texid', property: 'P243' }
             ]
           }
         ],
@@ -349,14 +349,14 @@ export default {
           {
             label: 'item.related.insid.subject_references',
             refTables: [
-              { refTable: 'bibid', property: 'P243', qualifier: 'P232' },
-              { refTable: 'bioid', property: 'P243', qualifier: 'P232' },
-              { refTable: 'copid', property: 'P243', qualifier: 'P232' },
-              { refTable: 'geoid', property: 'P243', qualifier: 'P232' },
-              { refTable: 'insid', property: 'P243', qualifier: 'P232' },
-              { refTable: 'libid', property: 'P243', qualifier: 'P232' },
-              { refTable: 'manid', property: 'P243', qualifier: 'P232' },
-              { refTable: 'texid', property: 'P243', qualifier: 'P232' }
+              { refTable: 'bibid', property: 'P243' },
+              { refTable: 'bioid', property: 'P243' },
+              { refTable: 'copid', property: 'P243' },
+              { refTable: 'geoid', property: 'P243' },
+              { refTable: 'insid', property: 'P243' },
+              { refTable: 'libid', property: 'P243' },
+              { refTable: 'manid', property: 'P243' },
+              { refTable: 'texid', property: 'P243' }
             ]
           }
         ],

@@ -96,6 +96,9 @@ export default {
         group_all: {
           label: 'All'
         },
+        bitagap_group: {
+          label: 'Subgroup'
+        },
         simple_search: {
           label: 'Simple search',
           hint: 'Use this field to search for information not locatable in named fields. For example, in <b>MsEd</b>, codicological information; or, in WORK, type “trad*” in <b>Simple search</b> to produce a list of works which have been translated from their original language.'
