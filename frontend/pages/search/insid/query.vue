@@ -138,10 +138,10 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table wdt:P476 ?table_pbid .
+                BIND ( wdt:P243 as ?property)
                 ?table ?property ?item . 
                 {{langFilter}}
                 FILTER regex(?table_pbid, '(.*) {{table}} ')
-                BIND ( wdt:P243 as ?property)
               }
               ORDER BY STR(?label)
               `

@@ -5,8 +5,11 @@
     :disabled="isDisabled"
     :no-data-text="checkNoDataText"
     :items="items"
-    :value-comparator="compareByLabel"
+    :search-input.sync="search"
+    hide-select
+    hide-no-data
     v-on="$listeners"
+    @blur="validateSelection"
   >
     <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
       <slot :name="scopedSlotName" v-bind="slotData" />
@@ -50,7 +53,9 @@ export default {
   data () {
     return {
       items: [],
-      loadingItems: false
+      loadingItems: false,
+      search: null,
+      searchTimeout: null
     }
   },
   computed: {
@@ -63,43 +68,65 @@ export default {
       return this.loadingItems ? this.$t('common.loading') : this.$t('common.no_data')
     },
     isDisabled () {
-      return this.disabled || this.loadingItems
+      return this.disabled
+    }
+  },
+  watch: {
+    search (val) {
+      if (!val) {
+        this.items = []
+        return
+      }
+      if (this.value && val === this.value.text) {
+        return
+      }
+      this.loadingItems = true
+      clearTimeout(this.searchTimeout)
+      // Delay to avoid continuous requests when user is writing
+      this.searchTimeout = setTimeout(() => {
+        this.fetchItems(val)
+      }, 500)
     }
   },
   created () {
-    this.populateItemsAutocomplete()
+    // if (!this.items || this.items.length === 0) {
+    //   if (this.value) {
+    //     this.items.push({ text: this.value.label, value: this.value })
+    //   }
+    // }
   },
   methods: {
-    orderItems (items) {
-      return items.sort((a, b) =>
-        a.text.localeCompare(b.text, undefined, { sensitivity: 'base' })
-      )
-    },
-    populateItemsAutocomplete () {
-      const resultFunction = (result) => { return { text: result.label, value: result } }
-      const resultItems = []
-      if (this.autocomplete.query) {
-        this.loadingItems = true
-        this.$wikibase.runSparqlQuery(this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale), false, true)
-          .then((results) => {
-            Object.entries(results).forEach(
-              ([_, result]) => {
-                if (result.label !== undefined) {
-                  resultItems.push(resultFunction(result))
-                }
-              }
-            )
-            this.items = this.orderItems(resultItems)
-            this.loadingItems = false
-          }
-          )
-      } else {
-        // eslint-disable-next-line no-console
-        console.error('No query defined for autocomplete')
+    fetchItems (query) {
+      const sparqlQuery = this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale)
+      const body = `q=${encodeURIComponent(query)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
+      const options = {
+        method: 'POST',
+        body,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }
+      fetch(`${this.$config.apiBaseUrl}/api/search`, options)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error from the server')
+          }
+          return response.json()
+        })
+        .then((data) => {
+          this.items = data
+          this.loadingItems = false
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error('Error loading items:', error)
+          this.$notification.error(error)
+          this.loadingItems = false
+        })
     },
-    compareByLabel (selectedItem, item) {
-      return selectedItem && item && selectedItem.label === item.label
+    validateSelection () {
+      const match = this.items.find(item => item.text === this.search)
+      if (!match) {
+        this.$emit('reset-value')
+      }
     }
   }
 }
