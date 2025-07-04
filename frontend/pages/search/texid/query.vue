@@ -52,7 +52,7 @@ export default {
             label: 'search.form.texid.author.label',
             hint: 'search.form.texid.author.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -87,7 +87,7 @@ export default {
             label: 'search.form.texid.title.label',
             hint: 'search.form.texid.title.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -121,7 +121,7 @@ export default {
             label: 'search.form.texid.incipit.label',
             hint: 'search.form.texid.incipit.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -157,7 +157,7 @@ export default {
             label: 'search.form.texid.explicit.label',
             hint: 'search.form.texid.explicit.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -193,7 +193,7 @@ export default {
             label: 'search.form.texid.associated_person.label',
             hint: 'search.form.common.personal_name.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -229,7 +229,7 @@ export default {
             label: 'search.form.texid.place_composition.label',
             hint: 'search.form.common.place.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -263,7 +263,7 @@ export default {
             label: 'search.form.texid.type.label',
             hint: 'search.form.texid.type.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -285,7 +285,7 @@ export default {
             label: 'search.form.texid.language.label',
             hint: 'search.form.texid.language.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -321,7 +321,7 @@ export default {
             label: 'search.form.texid.poetic_form.label',
             hint: 'search.form.texid.poetic_form.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -355,7 +355,7 @@ export default {
             label: 'search.form.common.subject.label',
             hint: 'search.form.common.subject.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {

@@ -86,7 +86,7 @@
                 :table="table"
                 :autocomplete="item.autocomplete"
                 @click.stop
-                @reset-value="item.value = ''"
+                @reset-value="(val) => item.value = val"
               />
               <search-util-date-field
                 v-if="item.type === 'date'"
@@ -293,6 +293,11 @@ export default {
         if (!item.value ||
           (item.value instanceof Object && Object.keys(item.value).length === 0)) {
           item.visible = false
+          // force to change empty object to empty string for autocomplete fields
+          // if not, query service detects that a value was filled
+          if (item.type === 'autocomplete') {
+            item.value = ''
+          }
         }
         item.disabled = true
       }

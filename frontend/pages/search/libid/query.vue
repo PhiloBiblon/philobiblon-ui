@@ -51,7 +51,7 @@ export default {
             label: 'search.form.libid.city.label',
             hint: 'search.form.libid.city.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -88,7 +88,7 @@ export default {
             label: 'search.form.libid.library.label',
             hint: 'search.form.libid.library.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -123,7 +123,7 @@ export default {
             label: 'search.form.libid.call_number.label',
             hint: 'search.form.libid.call_number.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -148,7 +148,7 @@ export default {
             label: 'search.form.common.subject.label',
             hint: 'search.form.common.subject.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {

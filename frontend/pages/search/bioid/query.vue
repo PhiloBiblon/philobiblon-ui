@@ -52,7 +52,7 @@ export default {
             label: 'search.form.bioid.name.label',
             hint: 'search.form.common.personal_name.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -87,7 +87,7 @@ export default {
             label: 'search.form.bioid.title.label',
             hint: 'search.form.bioid.title.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -120,7 +120,7 @@ export default {
             label: 'search.form.bioid.associated_place.label',
             hint: 'search.form.bioid.associated_place.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -175,10 +175,10 @@ export default {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    BIND(wdt:P47 AS ?property)
                     ?table_item ?property ?item .
                     ?item wdt:P476 ?geo_pbid .
                     FILTER regex(?geo_pbid, '(.*) geoid ') .
-                    BIND(wdt:P47 AS ?property)
                     {{langFilter}}
                   }
                 }      
@@ -193,7 +193,7 @@ export default {
             label: 'search.form.bioid.religion.label',
             hint: 'search.form.bioid.religion.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -216,7 +216,7 @@ export default {
             label: 'search.form.bioid.religious_order.label',
             hint: 'search.form.bioid.religious_order.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -239,7 +239,7 @@ export default {
             label: 'search.form.bioid.profession.label',
             hint: 'search.form.bioid.profession.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -262,7 +262,7 @@ export default {
             label: 'search.form.common.subject.label',
             hint: 'search.form.common.subject.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {

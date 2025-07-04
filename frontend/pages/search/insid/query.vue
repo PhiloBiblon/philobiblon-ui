@@ -52,7 +52,7 @@ export default {
             label: 'search.form.insid.city.label',
             hint: 'search.form.insid.city.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -77,7 +77,7 @@ export default {
             label: 'search.form.insid.institution_type.label',
             hint: 'search.form.insid.institution_type.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -99,7 +99,7 @@ export default {
             label: 'search.form.insid.institution.label',
             hint: 'search.form.insid.institution.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -134,7 +134,7 @@ export default {
             label: 'search.form.common.subject.label',
             hint: 'search.form.common.subject.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {

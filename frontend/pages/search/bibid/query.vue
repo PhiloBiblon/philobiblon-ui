@@ -52,7 +52,7 @@ export default {
             label: 'search.form.bibid.author.label',
             hint: 'search.form.bibid.author.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -87,7 +87,7 @@ export default {
             label: 'search.form.bibid.title.label',
             hint: 'search.form.bibid.title.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -119,7 +119,7 @@ export default {
             label: 'search.form.bibid.volume.label',
             hint: 'search.form.bibid.volume.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -141,7 +141,7 @@ export default {
             label: 'search.form.bibid.place_publication.label',
             hint: 'search.form.bibid.place_publication.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -163,7 +163,7 @@ export default {
             label: 'search.form.bibid.publisher.label',
             hint: 'search.form.bibid.publisher.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -185,7 +185,7 @@ export default {
             label: 'search.form.bibid.series.label',
             hint: 'search.form.bibid.series.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -207,7 +207,7 @@ export default {
             label: 'search.form.bibid.locations.label',
             hint: 'search.form.bibid.locations.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -230,7 +230,7 @@ export default {
             label: 'search.form.bibid.international_standard_number.label',
             hint: 'search.form.bibid.international_standard_number.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -277,7 +277,7 @@ export default {
             label: 'search.form.bibid.type.label',
             hint: 'search.form.bibid.type.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -300,7 +300,7 @@ export default {
             label: 'search.form.common.subject.label',
             hint: 'search.form.common.subject.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {

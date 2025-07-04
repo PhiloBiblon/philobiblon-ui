@@ -52,7 +52,7 @@ export default {
             label: 'search.form.geoid.type.label',
             hint: 'search.form.geoid.type.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -75,7 +75,7 @@ export default {
             label: 'search.form.geoid.class.label',
             hint: 'search.form.geoid.class.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -97,7 +97,7 @@ export default {
             label: 'search.form.common.subject.label',
             hint: 'search.form.common.subject.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {

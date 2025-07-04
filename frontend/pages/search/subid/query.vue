@@ -51,7 +51,7 @@ export default {
             label: 'search.form.subid.headings.label',
             hint: 'search.form.subid.headings.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
