@@ -25,7 +25,7 @@ public class SearchServiceImpl implements SearchService {
             if (solution.contains(LABEL_FIELD)) {
                 String label = solution.getLiteral(LABEL_FIELD).getString();
 
-                if (label.toLowerCase().startsWith(q.toLowerCase())) {
+                if (label.toLowerCase().contains(q.toLowerCase())) {
                     Map<String, String> valueMap = new HashMap<>();
 
                     for (Iterator<String> varNames = resultSet.getResultVars().iterator(); varNames.hasNext(); ) {

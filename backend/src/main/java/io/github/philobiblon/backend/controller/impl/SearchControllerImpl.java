@@ -4,7 +4,6 @@ import io.github.philobiblon.backend.controller.SearchController;
 import io.github.philobiblon.backend.representation.Option;
 import io.github.philobiblon.backend.service.SearchService;
 import io.github.philobiblon.backend.service.SparqlService;
-import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

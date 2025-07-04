@@ -53,7 +53,7 @@ export default {
             label: 'search.form.manid.city.label',
             hint: 'search.form.manid.city.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -93,7 +93,7 @@ export default {
             label: 'search.form.manid.library.label',
             hint: 'search.form.manid.library.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -131,7 +131,7 @@ export default {
             label: 'search.form.manid.call_number.label',
             hint: 'search.form.manid.call_number.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -216,7 +216,7 @@ export default {
             label: 'search.form.manid.place_production.label',
             hint: 'search.form.manid.place_production.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -248,7 +248,7 @@ export default {
             label: 'search.form.manid.scribe_printer.label',
             hint: 'search.form.manid.scribe_printer.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -280,7 +280,7 @@ export default {
             label: 'search.form.manid.publisher_patron.label',
             hint: 'search.form.manid.publisher_patron.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -303,7 +303,7 @@ export default {
             label: 'search.form.manid.previous_owner.label',
             hint: 'search.form.manid.previous_owner.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -341,7 +341,7 @@ export default {
             label: 'search.form.manid.associated_person.label',
             hint: 'search.form.manid.associated_person.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -384,7 +384,7 @@ export default {
             label: 'search.form.manid.title.label',
             hint: 'search.form.manid.title.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -420,7 +420,7 @@ export default {
             label: 'search.form.manid.type.label',
             hint: 'search.form.manid.type.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -443,7 +443,7 @@ export default {
             label: 'search.form.common.subject.label',
             hint: 'search.form.common.subject.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -467,7 +467,7 @@ export default {
             label: 'search.form.manid.writing_surface.label',
             hint: 'search.form.manid.writing_surface.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -505,7 +505,7 @@ export default {
             label: 'search.form.manid.format.label',
             hint: 'search.form.manid.format.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -528,7 +528,7 @@ export default {
             label: 'search.form.manid.binding.label',
             hint: 'search.form.manid.binding.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -564,7 +564,7 @@ export default {
             label: 'search.form.manid.collation.label',
             hint: 'search.form.manid.collation.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -586,7 +586,7 @@ export default {
             label: 'search.form.manid.hand.label',
             hint: 'search.form.manid.hand.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -609,7 +609,7 @@ export default {
             label: 'search.form.manid.font.label',
             hint: 'search.form.manid.font.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -632,7 +632,7 @@ export default {
             label: 'search.form.manid.watermark.label',
             hint: 'search.form.manid.watermark.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -670,7 +670,7 @@ export default {
             label: 'search.form.manid.graphic_feature.label',
             hint: 'search.form.manid.graphic_feature.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -708,7 +708,7 @@ export default {
             label: 'search.form.manid.physical_feature.label',
             hint: 'search.form.manid.physical_feature.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {
@@ -731,7 +731,7 @@ export default {
             label: 'search.form.manid.music.label',
             hint: 'search.form.manid.music.hint',
             type: 'autocomplete',
-            value: '',
+            value: {},
             visible: true,
             disabled: false,
             autocomplete: {

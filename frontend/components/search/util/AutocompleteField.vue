@@ -1,13 +1,13 @@
 <template>
   <v-autocomplete
     v-bind="{ ...$attrs, ...commonAttrs }"
+    v-model="internalValue"
     :loading="loadingItems"
     :disabled="isDisabled"
     :no-data-text="checkNoDataText"
     :items="items"
     :search-input.sync="search"
     hide-select
-    hide-no-data
     v-on="$listeners"
     @blur="validateSelection"
   >
@@ -34,6 +34,10 @@
 export default {
   inheritAttrs: false,
   props: {
+    value: {
+      type: [String, Object],
+      default: null
+    },
     table: {
       type: String,
       required: true
@@ -52,6 +56,7 @@ export default {
   },
   data () {
     return {
+      internalValue: null,
       items: [],
       loadingItems: false,
       search: null,
@@ -72,13 +77,23 @@ export default {
     }
   },
   watch: {
+    value (val) {
+      this.internalValue = val
+      this.search = val ? val?.label : ''
+    },
+    internalValue (val) {
+      this.$emit('reset-value', val)
+    },
     search (val) {
       if (!val) {
         this.items = []
         return
       }
-      if (this.value && val === this.value.text) {
+      if (this.value && val === this.value.label) {
         return
+      }
+      if (val === '-') {
+        val = ''
       }
       this.loadingItems = true
       clearTimeout(this.searchTimeout)
@@ -89,11 +104,10 @@ export default {
     }
   },
   created () {
-    // if (!this.items || this.items.length === 0) {
-    //   if (this.value) {
-    //     this.items.push({ text: this.value.label, value: this.value })
-    //   }
-    // }
+    if (this.value instanceof Object && Object.keys(this.value).length !== 0) {
+      this.internalValue = this.value
+      this.items = [{ text: this.value.label, value: this.value }]
+    }
   },
   methods: {
     fetchItems (query) {
@@ -125,7 +139,7 @@ export default {
     validateSelection () {
       const match = this.items.find(item => item.text === this.search)
       if (!match) {
-        this.$emit('reset-value')
+        this.$emit('reset-value', '')
       }
     }
   }
