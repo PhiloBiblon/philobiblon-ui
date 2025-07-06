@@ -22,6 +22,7 @@ export default {
     create: 'Crear',
     items: 'elementos',
     search: {
+      find_text: 'Busca texto',
       section: {
         advanced: 'Búsqueda avanzada',
         external_description: 'External description'

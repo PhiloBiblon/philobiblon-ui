@@ -23,6 +23,7 @@ export default {
     create: 'Criar',
     items: 'unid',
     search: {
+      find_text: 'Encontrar texto',
       section: {
         advanced: 'Busca avançada',
         external_description: 'Descrição externa'

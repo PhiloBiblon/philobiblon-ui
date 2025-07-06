@@ -41,10 +41,29 @@ export default {
             section: 'primary',
             label: 'search.form.common.simple_search.label',
             hint: 'search.form.common.simple_search.hint',
-            type: 'text',
-            value: '',
+            type: 'autocomplete',
+            value: {},
             visible: true,
-            disabled: false
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT (?textString AS ?label) ?textString ?item
+              WHERE {
+                ?item wdt:P476 ?pbid .
+                FILTER CONTAINS(?pbid, " {{table}} ") .
+                {
+                  ?item rdfs:label ?textString .
+                }
+                UNION
+                {
+                  ?item skos:altLabel ?textString .
+                }
+              }
+              ORDER BY LCASE(?textString)
+              `,
+              allowFreeText: true
+            }
           },
           city: {
             active: true,

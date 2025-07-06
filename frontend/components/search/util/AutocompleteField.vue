@@ -9,7 +9,6 @@
     :search-input.sync="search"
     hide-select
     v-on="$listeners"
-    @blur="validateSelection"
   >
     <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
       <slot :name="scopedSlotName" v-bind="slotData" />
@@ -60,7 +59,8 @@ export default {
       items: [],
       loadingItems: false,
       search: null,
-      searchTimeout: null
+      searchTimeout: null,
+      allowFreeText: false
     }
   },
   computed: {
@@ -78,6 +78,14 @@ export default {
   },
   watch: {
     value (val) {
+      if (this.allowFreeText) {
+        const regex = new RegExp(`${this.$t('common.search.find_text')} "(.*?)"`)
+        const match = val?.label?.match(regex)
+        if (match && match[1]) {
+          val.label = match[1]
+          this.items[0].text = val.label
+        }
+      }
       this.internalValue = val
       this.search = val ? val?.label : ''
     },
@@ -108,6 +116,7 @@ export default {
       this.internalValue = this.value
       this.items = [{ text: this.value.label, value: this.value }]
     }
+    this.allowFreeText = this.autocomplete.allowFreeText
   },
   methods: {
     fetchItems (query) {
@@ -126,6 +135,10 @@ export default {
           return response.json()
         })
         .then((data) => {
+          if (this.allowFreeText) {
+            const findTextLabel = `${this.$t('common.search.find_text')} "${query}"`
+            data.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
+          }
           this.items = data
           this.loadingItems = false
         })
@@ -135,12 +148,6 @@ export default {
           this.$notification.error(error)
           this.loadingItems = false
         })
-    },
-    validateSelection () {
-      const match = this.items.find(item => item.text === this.search)
-      if (!match) {
-        this.$emit('reset-value', '')
-      }
     }
   }
 }

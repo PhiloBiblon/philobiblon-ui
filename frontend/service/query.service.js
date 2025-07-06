@@ -64,23 +64,27 @@ export class QueryService {
   }
 
   generateFilterSimpleSearch (form) {
-    const filterFields = ['label', 'desc', 'alias']
-    const filterValues = this.normalize(form.input.simple_search.value).split(' ')
-    let filters = null
-    for (const filterField of filterFields) {
-      if (filters) {
-        filters += ' || ' + this.generateFilterByWords(form, filterField, filterValues)
-      } else {
-        filters = this.generateFilterByWords(form, filterField, filterValues)
+    if (form.input.simple_search.value.item) {
+      return `FILTER(?item = wd:${form.input.simple_search.value.item})`
+    } else {
+      // Free text search
+      const filterFields = ['label', 'alias']
+      const filterValues = this.normalize(form.input.simple_search.value.textString).split(' ')
+      let filters = null
+      for (const filterField of filterFields) {
+        if (filters) {
+          filters += ' || ' + this.generateFilterByWords(form, filterField, filterValues)
+        } else {
+          filters = this.generateFilterByWords(form, filterField, filterValues)
+        }
       }
+      const SIMPLE_SEARCH_FILTER =
+        `
+          OPTIONAL { ?item skos:altLabel ?alias }
+          FILTER (${filters})
+        `
+      return SIMPLE_SEARCH_FILTER
     }
-    const SIMPLE_SEARCH_FILTER =
-      `
-        OPTIONAL { ?item skos:altLabel ?alias }
-        OPTIONAL { ?item schema:description ?desc }
-        FILTER (${filters})
-      `
-    return SIMPLE_SEARCH_FILTER
   }
 
   addInstitutionFilters (form) {
