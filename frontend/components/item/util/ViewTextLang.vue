@@ -6,6 +6,16 @@
         <span :title="tooltip" v-html="contentView" />
       </NuxtLink>
     </template>
+    <template v-else-if="value.item">
+      <a
+        :href="getUrlForWikibase(value.item)"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span :title="tooltip" v-html="contentView" />
+      </a>
+    </template>
     <template v-else>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <span :title="tooltip" v-html="contentView" />
@@ -28,13 +38,16 @@ export default {
     }
   },
   computed: {
-    contentView() {
-      return this.$sanitize(this.value.value);
+    contentView () {
+      return this.$sanitize(this.value.value)
     }
   },
   methods: {
     getUrlFromPBID (item) {
       return this.localePath('/item/' + item)
+    },
+    getUrlForWikibase (item) {
+      return this.$wikibase.getQItemUrl(item)
     }
   }
 }

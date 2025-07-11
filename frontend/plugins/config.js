@@ -1,6 +1,5 @@
 export default async ({ app }) => {
   // if api url defined, get config parameters from api server
-  // otherwise, config parameters come from env variables
   if (app.$config.apiBaseUrl) {
     await fetch(`${app.$config.apiBaseUrl}/api/config`)
       .then((response) => {
