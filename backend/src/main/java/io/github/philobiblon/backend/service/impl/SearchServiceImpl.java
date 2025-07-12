@@ -13,19 +13,22 @@ import java.util.*;
 public class SearchServiceImpl implements SearchService {
 
     private static final String LABEL_FIELD = "label";
+    private static final int MAX_RESULTS = 100;
 
     @Override
     public List<Option> search(ResultSetRewindable resultSet, String q) {
         List<Option> options = new ArrayList<>();
+        int counter = 0;
 
         resultSet.reset();
-        while (resultSet.hasNext()) {
+        while (resultSet.hasNext() && counter <= MAX_RESULTS) {
             QuerySolution solution = resultSet.next();
 
             if (solution.contains(LABEL_FIELD)) {
                 String label = solution.getLiteral(LABEL_FIELD).getString();
 
                 if (label.toLowerCase().contains(q.toLowerCase())) {
+                    counter++;
                     Map<String, String> valueMap = new HashMap<>();
 
                     for (Iterator<String> varNames = resultSet.getResultVars().iterator(); varNames.hasNext(); ) {
@@ -36,19 +39,23 @@ public class SearchServiceImpl implements SearchService {
                                 valueMap.put(varName, node.asLiteral().getString());
                             } else if (node.isResource()) {
                                 String uri = node.asResource().getURI();
-                                // Si vols extreure el Qnumber o l’últim fragment de la URI
-                                String qNumber = uri.substring(uri.lastIndexOf('/') + 1);
-                                valueMap.put(varName, qNumber);
+                                valueMap.put(varName, extractQNumber(uri));
                             }
                         }
                     }
 
                     Option option = new Option(label, valueMap);
-                    options.add(option);
+                    if (!options.contains(option)) {
+                        options.add(option);
+                    }
                 }
             }
         }
 
         return options;
+    }
+
+    private String extractQNumber(String uri) {
+        return uri.substring(uri.lastIndexOf('/') + 1);
     }
 }
