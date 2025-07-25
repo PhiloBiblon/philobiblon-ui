@@ -550,7 +550,7 @@ export class WikibaseService {
       path = path.substring(1)
     }
 
-    return new URL(path, baseUrl).toString()
+    return baseUrl + path
   }
 
   getRelatedTable (entity) {
