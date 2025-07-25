@@ -383,7 +383,7 @@ export default {
       results: 'Resultados',
       sort_by: 'Ordenar por:',
       sort_option: {
-        name: 'Nom',
+        name: 'Nombre',
         id: 'ID'
       },
       not_found: 'No se ha encontrado resultados.'

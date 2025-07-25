@@ -7,6 +7,7 @@
     :no-data-text="checkNoDataText"
     :items="items"
     :search-input.sync="search"
+    :filter="removeDiacriticsFilter"
     hide-select
     v-on="$listeners"
   >
@@ -148,6 +149,14 @@ export default {
           this.$notification.error(error)
           this.loadingItems = false
         })
+    },
+    removeDiacriticsFilter (item, queryText, itemText) {
+      const normalize = str =>
+        str
+          .normalize('NFD')
+          .replace(/[\u0300-\u036F]/g, '')
+          .toLowerCase()
+      return normalize(itemText || item).includes(normalize(queryText))
     }
   }
 }

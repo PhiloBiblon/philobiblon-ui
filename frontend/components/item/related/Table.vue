@@ -13,7 +13,7 @@
     />
     <div class="text-center">
       <v-pagination
-        v-if="items.length > 0"
+        v-if="totalResults > resultsPerPage"
         v-model="currentPage"
         :length="Math.ceil(totalResults / resultsPerPage)"
         :total-visible="5"
