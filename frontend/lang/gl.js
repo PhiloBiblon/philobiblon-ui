@@ -20,16 +20,13 @@ export default {
     add_claim: 'engadir declaración',
     cancel: 'cancelar',
     create: 'Crear',
+    table: 'Táboa',
+    or: 'ou',
     items: 'elementos',
     search: {
-      find_text: 'Busca texto',
       section: {
         advanced: 'Busca avanzada',
         external_description: 'Descrición externa'
-      },
-      error: {
-        invalid_date: 'Data non válida. Usar o formato AAAA-MM-DD',
-        invalid_year: 'O ano debe estar entre 0 e 2125'
       }
     }
   },
@@ -96,9 +93,6 @@ export default {
         },
         group_all: {
           label: 'Todos'
-        },
-        bitagap_group: {
-          label: 'Subgrupo'
         },
         simple_search: {
           label: 'Busca simple',
@@ -276,13 +270,9 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
         },
-        date_of_artifact: {
-          label: 'Data do obxecto',
-          hint: ''
-        },
-        date_of_publication: {
-          label: 'Data de publicación',
-          hint: ''
+        date: {
+          label: 'Data',
+          hint: 'You can search for complete or partial dates. A search for “1325“, for example, returns manuscripts copied on any day of that year as well as undated manuscripts which, based on internal or external evidence, have been dated to include the year 1325 (e.g. 1325; 1325 a quo, 1325 ad quem; 1301? - 1325?; 1290? - 1325?; etc.).'
         },
         place_production: {
           label: 'Lugar de produción',
@@ -369,7 +359,7 @@ export default {
       },
       subid: {
         headings: {
-          label: 'Materia',
+          label: 'Títulos',
           hint: ''
         }
       }
@@ -405,6 +395,7 @@ export default {
         enabled: 'Crea un novo elemento',
         disabled: 'Seleccione unha das bases de datos: BETA, BITECA ou BITAGAP.'
       },
+      table_selection: 'Seleccione unha das táboas: {tables}.',
       calculating_new_pbid: 'Calculando o novo ID de PhiloBiblon ..'
     },
     related: {

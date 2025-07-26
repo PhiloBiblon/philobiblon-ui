@@ -20,16 +20,13 @@ export default {
     add_claim: 'add statement',
     cancel: 'cancel',
     create: 'Create',
+    table: 'Table',
+    or: 'or',
     items: 'items',
     search: {
-      find_text: 'Find text',
       section: {
         advanced: 'Advanced search',
         external_description: 'External description'
-      },
-      error: {
-        invalid_date: 'Invalid date. Use YYYY-MM-DD format',
-        invalid_year: 'Year must be between 0 and 2125'
       }
     }
   },
@@ -96,9 +93,6 @@ export default {
         },
         group_all: {
           label: 'All'
-        },
-        bitagap_group: {
-          label: 'Subgroup'
         },
         simple_search: {
           label: 'Simple search',
@@ -276,13 +270,9 @@ export default {
           label: 'Library',
           hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
         },
-        date_of_artifact: {
-          label: 'Date of artifact',
-          hint: ''
-        },
-        date_of_publication: {
-          label: 'Date of publication',
-          hint: ''
+        date: {
+          label: 'Date',
+          hint: 'You can search for complete or partial dates. A search for “1325“, for example, returns manuscripts copied on any day of that year as well as undated manuscripts which, based on internal or external evidence, have been dated to include the year 1325 (e.g. 1325; 1325 a quo, 1325 ad quem; 1301? - 1325?; 1290? - 1325?; etc.).'
         },
         place_production: {
           label: 'Place of production',
@@ -369,7 +359,7 @@ export default {
       },
       subid: {
         headings: {
-          label: 'Subject',
+          label: 'Headings',
           hint: ''
         }
       }
@@ -405,6 +395,7 @@ export default {
         enabled: 'Create a new item',
         disabled: 'Select one of the databases: BETA, BITECA or BITAGAP.'
       },
+      table_selection: 'Select one of the tables: {tables}.',
       calculating_new_pbid: 'Calculating new PhiloBiblon ID ..'
     },
     related: {

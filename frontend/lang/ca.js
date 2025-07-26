@@ -20,16 +20,13 @@ export default {
     add_claim: 'afegir declaració',
     cancel: 'cancel·lar',
     create: 'Crear',
+    table: 'Taula',
+    or: 'o',
     items: 'elements',
     search: {
-      find_text: 'Cerca text',
       section: {
         advanced: 'Cerca avançada',
         external_description: 'Descripció externa'
-      },
-      error: {
-        invalid_date: 'Data no vàlida. Utilitzeu el format AAAA-MM-DD',
-        invalid_year: 'L\'any ha d\'estar entre 0 i 2125'
       }
     }
   },
@@ -96,9 +93,6 @@ export default {
         },
         group_all: {
           label: 'Tots'
-        },
-        bitagap_group: {
-          label: 'Subgrup'
         },
         simple_search: {
           label: 'Cerca simple',
@@ -276,13 +270,9 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
         },
-        date_of_artifact: {
-          label: 'Data del objecte',
-          hint: ''
-        },
-        date_of_publication: {
-          label: 'Data de publicació',
-          hint: ''
+        date: {
+          label: 'Data',
+          hint: 'You can search for complete or partial dates. A search for “1325“, for example, returns manuscripts copied on any day of that year as well as undated manuscripts which, based on internal or external evidence, have been dated to include the year 1325 (e.g. 1325; 1325 a quo, 1325 ad quem; 1301? - 1325?; 1290? - 1325?; etc.).'
         },
         place_production: {
           label: 'Lloc de producció',
@@ -369,7 +359,7 @@ export default {
       },
       subid: {
         headings: {
-          label: 'Matèria',
+          label: 'Encapçalaments',
           hint: ''
         }
       }
@@ -405,6 +395,7 @@ export default {
         enabled: 'Crea un element nou',
         disabled: 'Sel.lecciona una de les bases de dades: BETA, BITECA o BITAGAP.'
       },
+      table_selection: 'Seleccioneu una de les taules: {tables}.',
       calculating_new_pbid: 'Calculant nou PhiloBiblon ID ..'
     },
     related: {

@@ -2,7 +2,7 @@
   <div class="all-width">
     <v-container>
       <v-row class="back">
-        <a class="link" @click="goTo(`/search/${table}/query`)">
+        <a class="link" @click="$router.go(-1)">
           <v-tooltip right>
             <template #activator="{ on, attrs }">
               <v-icon color="primary" v-bind="attrs" v-on="on">
@@ -14,6 +14,26 @@
         </a>
       </v-row>
       <template v-if="isUserLogged">
+        <v-row>
+          <v-col v-if="table === 'texid' || table === 'manid'" cols="10">
+            <v-radio-group
+              v-model="selectedTable"
+              row
+              @change="onGroupChange"
+            >
+              <template #label>
+                {{ $t('common.table') }}
+              </template>
+              <v-radio
+                v-for="group in tableGroups"
+                :key="`g-${group.value}`"
+                class="group-option"
+                :label="group.text ? group.text : group"
+                :value="group.value ? group.value : group"
+              />
+            </v-radio-group>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col>
             <v-form ref="form">
@@ -32,7 +52,10 @@
             </v-form>
           </v-col>
         </v-row>
-        <v-alert v-if="!initialClaimsLoaded" type="info">
+        <v-alert v-if="!selectedTable && (table === 'texid' || table === 'manid')" type="info">
+          {{ $t('item.create.table_selection', { tables: formatReadableList(tableGroups) }) }}
+        </v-alert>
+        <v-alert v-else-if="!initialClaimsLoaded" type="info">
           {{ $t('item.create.calculating_new_pbid') }}
         </v-alert>
         <item-claim-create
@@ -83,6 +106,11 @@ export default {
   data () {
     return {
       label: '',
+      selectedTable: null,
+      tableGroups: {
+        texid: [{ text: 'Texid', value: 'texid' }, { text: 'Cnum', value: 'cnum' }],
+        manid: [{ text: 'Manid', value: 'manid' }, { text: 'Cnum', value: 'cnum' }, { text: 'Copid', value: 'copid' }]
+      },
       initialClaimsLoaded: false,
       initialClaims: [],
       claims: [],
@@ -104,13 +132,31 @@ export default {
   created () {
     if (!this.isUserLogged || this.database === 'All') {
       return this.$router.push(this.localePath('/'))
-    } else {
+    }
+
+    if (this.table !== 'texid' && this.table !== 'manid') {
       this.loadInitialClaims()
+    } else {
+      this.tableGroups = this.tableGroups[this.table]
     }
   },
   methods: {
-    goTo (path) {
-      this.$router.push(this.localePath(path))
+    formatReadableList (tables) {
+      const items = tables.map(item => item.text)
+      if (items.length === 0) {
+        return ''
+      }
+
+      if (items.length === 1) {
+        return items[0]
+      }
+      if (items.length === 2) {
+        return `${items[0]} ${this.$t('common.or')} ${items[1]}`
+      }
+
+      const allExceptLast = items.slice(0, -1).join(', ')
+      const last = items[items.length - 1]
+      return `${allExceptLast} ${this.$t('common.or')} ${last}`
     },
     getCreateDisabledReason () {
       if (!this.label) {
@@ -153,7 +199,7 @@ export default {
     },
     async loadInitialClaims () {
       try {
-        const res = await this.$wikibase.getTableLastItem(this.database, this.table)
+        const res = await this.$wikibase.getTableLastItem(this.database, this.selectedTable ?? this.table)
         if (res?.length && res[0]) {
           await this.getDefaultClaims(res[0].item_number)
           this.initialClaimsLoaded = true
@@ -198,7 +244,7 @@ export default {
     },
     async getDefaultClaims (itemNumber) {
       const def = ['P476', 'P131']
-      const res = await this.$wikibase.getClaimsOrder(this.table)
+      const res = await this.$wikibase.getClaimsOrder(this.selectedTable ?? this.table)
       const propertyIds = [...new Set([...def, ...Object.keys(res)])]
       const qualifiersProperties = [...new Set(Object.values(res).flat())]
       const entities = await this.$wikibase.getEntities(propertyIds, this.$i18n.locale)
@@ -243,7 +289,7 @@ export default {
       return entity?.title?.startsWith('Property:') && entity?.labels
     },
     generatePbId (lastItemPbId) {
-      return `${this.database} ${this.table} ${parseInt(lastItemPbId) + 1}`
+      return `${this.database} ${this.selectedTable ?? this.table} ${parseInt(lastItemPbId) + 1}`
     },
     updateClaims (data) {
       this.initialClaims = data
@@ -302,6 +348,13 @@ export default {
           item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
         }))
       }
+    },
+    onGroupChange (newTable) {
+      this.claims = []
+      this.initialClaims = []
+      this.initialClaimsLoaded = false
+      this.selectedTable = newTable
+      this.loadInitialClaims()
     }
   }
 }
@@ -317,5 +370,8 @@ export default {
 .back {
   font-size: 12px;
   height: 25px;
+}
+.group-option {
+  padding-right: 30px;
 }
 </style>
