@@ -104,28 +104,26 @@
       </v-toolbar-title>
       <v-spacer />
       <languages-menu />
-      <v-tooltip
+      <v-btn
         v-if="$store.state.auth.isLogged"
-        bottom
+        text
+        height="0"
+        min-width="0"
+        class="lowercase"
+        @click="logout"
       >
-        <template #activator="{ on }">
-          <v-icon v-on="on" @click="logout">
-            mdi-logout-variant
-          </v-icon>
-        </template>
-        <span>{{ $t('auth.logout.label') }}</span>
-      </v-tooltip>
-      <v-tooltip
-        v-if="!$store.state.auth.isLogged"
-        bottom
+        {{ $t('auth.logout.label') }}
+      </v-btn>
+      <v-btn
+        v-else
+        text
+        height="0"
+        min-width="0"
+        class="lowercase"
+        @click="login"
       >
-        <template #activator="{ on }">
-          <v-icon v-on="on" @click="login">
-            mdi-login-variant
-          </v-icon>
-        </template>
-        <span>{{ $t('auth.login.label') }}</span>
-      </v-tooltip>
+        {{ $t('auth.login.label') }}
+      </v-btn>
     </v-app-bar>
     <v-main class="min-height-full-display">
       <v-container fluid ma-50>
@@ -202,5 +200,9 @@ export default {
   li {
     font-size: large !important;
   }
+}
+
+.lowercase {
+  text-transform: lowercase;
 }
 </style>
