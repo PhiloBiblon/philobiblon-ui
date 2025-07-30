@@ -13,10 +13,11 @@ Main features:
 ## Modules
 
 PhiloBiblon UI has two main modules:
-  - __frontend__: A VUE application (including nuxt) using client side rendering.
-  - __backend__: A Java application (Spring Boot) with two main purposes:
+  - __frontend__: A VUE application (including Nuxt and Vuetify) using client side rendering.
+  - __backend__: A Java application (Spring Boot) with the following features:
     - Authentication with Wikibase via OAuth 1.0.
     - Proxy to wikibase-edit library in frontend in order to edit items in the Wikibase.
+    - Improve performance as a cache for SPARQL queries.
 
 ![philobiblon-ui drawio](https://github.com/faulhaber/PhiloBiblon/assets/13070879/6f08b49c-ed99-4145-b01f-b9663b93278d)
 
@@ -28,35 +29,30 @@ Steps to build the modules:
 ```
 ln -s .env.pbuidev .env
 ```  
-2. Build backend container.
+2. Build application.
 ```
-cd backend
-mvn clean install
-mvn spring-boot:build-image
+docker compose build
 ```  
-3. Build frontend container.
-```
-docker-compose --env-file .env build
-```  
-4. First time only, get `Let's Encrypt` ssl certificates to enable the `https` protocol.
-```
-init-letsencrypt.sh
-```
 
-The last step already starts all modules for PhiloBiblon UI.
 
 ## Run
 
 Start the PhiloBiblon UI:
 
 ```
-docker-compose --env-file .env up -d
+docker compose up -d
+```
+
+To build and run with a single command:
+
+```
+docker compose up --build -d
 ```
 
 Stop the PhiloBiblon UI:
 
 ```
-docker-compose --env-file .env stop
+docker compose stop
 ```
 
 ## Configuration
