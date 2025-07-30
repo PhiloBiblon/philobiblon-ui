@@ -21,7 +21,7 @@
                 v-model="label"
                 type="text"
                 class="text-h4"
-                :label="$t('item.title')"
+                :label="$t('common.label')"
               />
               <v-text-field
                 v-model="description"
@@ -117,9 +117,7 @@ export default {
       if (!this.label) {
         return this.$t("messages.error.inputs.label");
       }
-      if (!this.description) {
-        return this.$t("messages.error.inputs.description");
-      }
+
       if (!this.initialClaimsLoaded) {
         return this.$t("messages.error.inputs.initial_claims");
       }
@@ -131,31 +129,35 @@ export default {
         const initialClaim = this.initialClaims[propIndex];
         const propertyLabel = initialClaim?.property?.label;
 
-        for (const item of claimArray) {
-          if (item?.value == null || item?.value === "") {
-            return this.$t("messages.error.inputs.claim_value_missing", {
-              propertyLabel,
-            });
-          }
-
-          const claimLabel =
-            initialClaim?.value?.datavalue?.value?.label || propertyLabel;
-
-          for (const [qualifierKey, qualifierVal] of Object.entries(
-            item.qualifiers || {},
-          )) {
-            if (!qualifierKey || qualifierKey === "null") {
-              return this.$t("messages.error.inputs.qualifier_key_missing", {
-                claimLabel,
+        if (
+          initialClaim?.property?.id === "P2" ||
+          initialClaim?.property?.id === "P476"
+        ) {
+          for (const item of claimArray) {
+            if (item?.value == null || item?.value === "") {
+              return this.$t("messages.error.inputs.claim_value_missing", {
                 propertyLabel,
               });
             }
 
-            if (!qualifierVal || qualifierVal === "null") {
-              return this.$t("messages.error.inputs.qualifier_value_missing", {
-                claimLabel,
-                propertyLabel,
-              });
+            const claimLabel =
+              initialClaim?.value?.datavalue?.value?.label || propertyLabel;
+
+            for (const [qualifierKey, qualifierVal] of Object.entries(
+              item.qualifiers || {},
+            )) {
+              if (!qualifierKey || qualifierKey === "null") {
+                return this.$t("messages.error.inputs.qualifier_key_missing", {
+                  claimLabel,
+                  propertyLabel,
+                });
+              }
+              if (!qualifierVal || qualifierVal === "null") {
+                return this.$t(
+                  "messages.error.inputs.qualifier_value_missing",
+                  { claimLabel, propertyLabel },
+                );
+              }
             }
           }
         }
@@ -276,7 +278,6 @@ export default {
     updateClaims(data) {
       this.initialClaims = data;
       this.claims = this.generateClaimsData(data);
-      this.generateLabelFromClaims();
     },
     generateClaimsData(data) {
       const claims = {};
@@ -305,21 +306,64 @@ export default {
       });
       return claims;
     },
+    cleanClaims(claims) {
+      const cleanedClaims = {};
+
+      for (const [propertyId, claimArray] of Object.entries(claims)) {
+        const cleanedClaimArray = [];
+
+        for (const claim of claimArray) {
+          const value = claim?.value;
+          if (value == null || value === "") {
+            continue;
+          }
+
+          const cleanedQualifiers = {};
+          for (const [qualKey, qualVal] of Object.entries(
+            claim.qualifiers || {},
+          )) {
+            if (
+              qualKey &&
+              qualKey !== "null" &&
+              qualVal != null &&
+              qualVal !== "null" &&
+              qualVal !== ""
+            ) {
+              cleanedQualifiers[qualKey] = qualVal;
+            }
+          }
+
+          cleanedClaimArray.push({
+            value,
+            qualifiers: cleanedQualifiers,
+          });
+        }
+
+        if (cleanedClaimArray.length) {
+          cleanedClaims[propertyId] = cleanedClaimArray;
+        }
+      }
+
+      return cleanedClaims;
+    },
     async create() {
       const existingPBID = await this.$wikibase.getEntityFromPBID(this.pbid);
       if (existingPBID === null) {
         try {
+          const claims = this.cleanClaims(this.claims);
+
           const data = {
             labels: {
               [this.$i18n.locale]: this.label,
             },
             descriptions: {
-              [this.$i18n.locale]: this.description,
+              [this.$i18n.locale]: this.description || " ",
             },
             claims: {
-              ...this.claims,
+              ...claims,
             },
           };
+
           const response = await this.$wikibase
             .getWbEdit()
             .entity.create(data, this.$store.getters["auth/getRequestConfig"]);
@@ -347,112 +391,6 @@ export default {
           }),
         );
       }
-    },
-    formatTime(raw) {
-      const cleaned = raw.replace(/^\+/, "");
-      const date = new Date(cleaned);
-      return new Intl.DateTimeFormat("en", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }).format(date);
-    },
-    getClaimValue(pbid) {
-      const claim = this.initialClaims.find((cl) => cl.property?.id === pbid);
-      const val = claim?.value?.datavalue?.value;
-
-      if (!val) {
-        return null;
-      }
-      return typeof val === "object"
-        ? val.label || val.text || this.formatTime(val.time) || val.id
-        : val;
-    },
-    generateLabelFromClaims() {
-      let label = "";
-      switch (this.table) {
-        case "texid": {
-          const author = this.getClaimValue("P21");
-          const title = this.getClaimValue("P11");
-          if (author && title) {
-            label = `${author}. ${title}`;
-          }
-          break;
-        }
-        case "cnum": {
-          const work = this.getClaimValue("P590");
-          const partOf = this.getClaimValue("P8");
-          if (work && partOf) {
-            label = `Witness of ${work}, part of ${partOf}`;
-          }
-          break;
-        }
-        case "bibid": {
-          const creator =
-            this.getClaimValue("P1134") || this.getClaimValue("P21");
-          const title = this.getClaimValue("P11");
-          if (creator && title) {
-            label = `${creator}. ${title}`;
-          }
-          break;
-        }
-        case "bioid": {
-          const fallbackProps = ["P34", "P77", "P173", "P291", "P165", "P746"];
-          for (const pbid of fallbackProps) {
-            const val = this.getClaimValue(pbid);
-            if (val) {
-              label = val;
-              break;
-            }
-          }
-          break;
-        }
-        case "manid": {
-          const holding = this.getClaimValue("P329");
-          const position = this.getClaimValue("P10");
-          if (holding && position) {
-            label = `${holding}, ${position}`;
-          }
-          break;
-        }
-        case "copid": {
-          const holding = this.getClaimValue("P329");
-          const position = this.getClaimValue("P10");
-          const edition = this.getClaimValue("P839");
-          if (holding && position && edition) {
-            label = `${holding}, ${position} (${edition})`;
-          }
-          break;
-        }
-        case "geoid":
-        case "insid": {
-          const name = this.getClaimValue("P34");
-          const region = this.getClaimValue("P297");
-          if (name && region) {
-            label = `${name}, ${region}`;
-          }
-          break;
-        }
-        case "libid": {
-          const name = this.getClaimValue("P34");
-          const location = this.getClaimValue("P47");
-          if (name && location) {
-            label = `${name}, ${location}`;
-          }
-          break;
-        }
-        case "subid": {
-          const name = this.getClaimValue("P34");
-          if (name) {
-            label = name;
-          }
-          break;
-        }
-        default:
-          break;
-      }
-
-      this.label = label || "";
     },
   },
 };
