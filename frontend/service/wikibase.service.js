@@ -13,6 +13,7 @@ export class WikibaseService {
   static PITEM_PATTERN = /^P\d+/
 
   static ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
+  static ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM = 'Ui_SortedProperties_NewItem'
 
   constructor (app, store) {
     const WBK = require('wikibase-sdk')
@@ -122,8 +123,13 @@ export class WikibaseService {
     return result
   }
 
-  async getClaimsOrder (table) {
-    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.constructor.ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
+  async getClaimsOrderForNewItem (table) {
+    return this.getClaimsOrder(table, true)
+  }
+
+  async getClaimsOrder (table, new_item=false) {
+    const pageName = new_item ? this.constructor.ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM : this.constructor.ORDER_PROPS_WIKI_PAGE
+    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${pageName}&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
     if (data.error) {
       // eslint-disable-next-line no-console

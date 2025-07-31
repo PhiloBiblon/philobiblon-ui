@@ -198,7 +198,7 @@ export default {
     },
     async getDefaultClaims (itemNumber) {
       const def = ['P476', 'P131']
-      const res = await this.$wikibase.getClaimsOrder(this.table)
+      const res = await this.$wikibase.getClaimsOrderForNewItem(this.table)
       const propertyIds = [...new Set([...def, ...Object.keys(res)])]
       const qualifiersProperties = [...new Set(Object.values(res).flat())]
       const entities = await this.$wikibase.getEntities(propertyIds, this.$i18n.locale)
