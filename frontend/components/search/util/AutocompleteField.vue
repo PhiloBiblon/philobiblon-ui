@@ -122,6 +122,10 @@ export default {
   methods: {
     fetchItems (query) {
       const sparqlQuery = this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale)
+      if (process.env.debug) {
+        // eslint-disable-next-line no-console
+        console.log(`run sparlql query:\n${sparqlQuery}`)
+      }
       const body = `q=${encodeURIComponent(query)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
       const options = {
         method: 'POST',
