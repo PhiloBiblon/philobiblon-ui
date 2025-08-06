@@ -104,6 +104,14 @@ export default {
           label: 'Busca simple',
           hint: 'Use este campo para buscar información non localizable en campos con nome. Por exemplo, en <b>MsEd</b>, información codicolóxica; ou, en WORK, escriba “trad*” en <b>Busca sinxela</b> para producir unha lista de obras que foron traducidas desde o seu idioma orixinal.'
         },
+        q_number: {
+          label: 'Número Q',
+          hint: 'O número Q de wikibase.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduza só o número de identificación de PhiloBiblon.'
+        },
         subject: {
           label: 'Tema',
           hint: 'Ten en conta ao buscar en Asunto que o seu uso non é uniforme en todas as páxinas de busca nin nas tres bibliografías.<br/>Busca usando un título completo ou calquera palabra contida en calquera título (por exemplo, un nome de lugar). Por razóns técnicas, só se pode buscar un título de materia á vez. As buscas de dous títulos de materia diferentes ou de palabras de dous títulos de materias devolverán cero resultados. En BITAGAP, por exemplo, busca “milagres” ou “mariologia”, pero non “milagres” e “mariologia”.'
