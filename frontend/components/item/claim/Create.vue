@@ -221,6 +221,7 @@ export default {
         values: [res.claim],
         hasQualifiers: res.claim?.qualifiers,
         property: res.claim.mainsnak.property,
+        datatype: res.claim.mainsnak.datatype,
         qualifiersOrder: res.claim['qualifiers-order'] ?? false
       }
       this.$emit('update-claims', data)

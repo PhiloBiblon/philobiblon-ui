@@ -394,6 +394,7 @@ export default {
     title: 'Títol',
     description: 'Descripció',
     back: 'Torna',
+    identifiers: 'Identificadors',
     messages: {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',

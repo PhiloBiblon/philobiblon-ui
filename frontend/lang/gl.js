@@ -394,6 +394,7 @@ export default {
     title: 'Título',
     description: 'Descrición',
     back: 'Volve',
+    identifiers: 'Identificadores',
     messages: {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',
