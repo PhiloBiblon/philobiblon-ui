@@ -403,6 +403,7 @@ export default {
     description: 'Descripció',
     back: 'Torna',
     identifiers: 'Identificadors',
+    related_items: 'Elements relacionats',
     messages: {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',

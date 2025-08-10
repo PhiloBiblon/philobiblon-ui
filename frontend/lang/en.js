@@ -403,6 +403,7 @@ export default {
     description: 'Description',
     back: 'Go back',
     identifiers: 'Identifiers',
+    related_items: 'Related items',
     messages: {
       invalid_id: 'Invalid identifier.',
       not_found: 'Not found.',

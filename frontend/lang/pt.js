@@ -403,6 +403,7 @@ export default {
     description: 'Descrição',
     back: 'Volte',
     identifiers: 'Identificadores',
+    related_items: 'Itens relacionados',
     messages: {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',

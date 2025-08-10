@@ -54,6 +54,9 @@
         </span>
       </v-row>
       <item-claims :table="tableid" :claims="item.claims" :item="item" />
+      <div class="text-h6 mt-6">
+        {{ $t('item.related_items') }}
+      </div>
       <item-related-tables :item-id="item.id" :table="tableid" />
     </v-container>
   </div>
