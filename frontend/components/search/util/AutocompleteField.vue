@@ -135,7 +135,7 @@ export default {
       fetch(`${this.$config.apiBaseUrl}/api/search`, options)
         .then((response) => {
           if (!response.ok) {
-            throw new Error('Error from the server')
+            throw new Error('Error from the cache server')
           }
           return response.json()
         })
