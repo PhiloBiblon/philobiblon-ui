@@ -402,6 +402,7 @@ export default {
     title: 'Título',
     description: 'Descrição',
     back: 'Volte',
+    identifiers: 'Identificadores',
     messages: {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',

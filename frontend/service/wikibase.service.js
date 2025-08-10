@@ -466,7 +466,13 @@ export class WikibaseService {
         return simplifiedResults
       })
       .catch((error) => {
-        this.$notification.error(error)
+        let errorMessage
+        if (error.status) {
+          errorMessage = `Error from Query Service: ${error.body} (${error.status})`
+        } else {
+          errorMessage = `Network issue or timeout with Query Service: ${error}`
+        }
+        this.$notification.error(errorMessage)
         throw error
       })
   }

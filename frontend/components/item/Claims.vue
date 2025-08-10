@@ -6,7 +6,17 @@
       :item="item"
       :claim="claim"
       @delete-claim="deleteClaim"
-      @create-claim="createClaim"
+    />
+    <item-claim-create v-if="isUserLogged" :item="item" @update-claims="updateClaims" />
+    <div class="text-h6 mt-6">
+      {{ $t('item.identifiers') }}
+    </div>
+    <item-claim-base
+      v-for="(claim, index) in externalIdClaims"
+      :key="`c-${claim.property}-${index}-${claim.values.length}`"
+      :item="item"
+      :claim="claim"
+      @delete-claim="deleteClaim"
     />
     <item-claim-create v-if="isUserLogged" :item="item" @update-claims="updateClaims" />
   </div>
@@ -32,7 +42,8 @@ export default {
 
   data () {
     return {
-      claimsOrdered: []
+      claimsOrdered: [],
+      externalIdClaims: []
     }
   },
   computed: {
@@ -43,7 +54,15 @@ export default {
 
   async mounted () {
     if (this.claims) {
-      this.claimsOrdered = await this.getOrderedClaims(this.table, this.claims)
+      const allClaims = await this.getOrderedClaims(this.table, this.claims)
+      for (const claim of allClaims) {
+        const entityProperty = await this.$wikibase.getEntity(claim.property, this.$i18n.locale)
+        if (entityProperty.datatype === 'external-id') {
+          this.externalIdClaims.push(claim)
+        } else {
+          this.claimsOrdered.push(claim)
+        }
+      }
     }
   },
 
@@ -92,34 +111,37 @@ export default {
         qualifiersOrder: order[key]
       }))
     },
-    createClaim (data) {
-      this.claimsOrdered.forEach((value, key) => {
-        if (value.property === data.property) {
-          this.claimsOrdered[key].values.push(data.claim)
-        }
-      })
-    },
     deleteClaim (data) {
-      this.claimsOrdered.forEach((value, key) => {
+      this.deleteClaimInGroup(data, this.claimsOrdered)
+      this.deleteClaimInGroup(data, this.externalIdClaims)
+    },
+    deleteClaimInGroup (data, group) {
+      group.forEach((value, key) => {
         if (value.property === data.mainsnak.property) {
-          if (this.claimsOrdered[key].values.length === 1) {
-            this.claimsOrdered.splice(key, 1)
+          if (group[key].values.length === 1) {
+            group.splice(key, 1)
           } else {
-            const index = this.claimsOrdered[key].values.findIndex(item => item.id === data.id)
+            const index = group[key].values.findIndex(item => item.id === data.id)
             if (index !== -1) {
-              this.claimsOrdered[key].values.splice(index, 1)
+              group[key].values.splice(index, 1)
             }
           }
         }
       })
     },
     updateClaims (data) {
-      const existingClaim = this.claimsOrdered.find(claim => claim.property === data.property)
-
+      if (data.datatype === 'external-id') {
+        this.updateClaimsInGroup(data, this.externalIdClaims)
+      } else {
+        this.updateClaimsInGroup(data, this.claimsOrdered)
+      }
+    },
+    updateClaimsInGroup (data, group) {
+      const existingClaim = group.find(claim => claim.property === data.property)
       if (existingClaim) {
         existingClaim.values.push(...data.values)
       } else {
-        this.claimsOrdered.push(data)
+        group.push(data)
       }
     }
   }

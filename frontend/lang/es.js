@@ -402,6 +402,7 @@ export default {
     title: 'Título',
     description: 'Descripción',
     back: 'Ir atrás',
+    identifiers: 'Identificadores',
     messages: {
       invalid_id: 'Identificador inválido.',
       not_found: 'No encontrado.',
