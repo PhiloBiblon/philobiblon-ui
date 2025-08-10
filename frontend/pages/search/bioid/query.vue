@@ -91,8 +91,16 @@ export default {
                   WHERE { 
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '(.*) {{table}} ') .
-                    {{langFilter}}
+                    ?item rdfs:label ?label .
                     BIND('label' AS ?property)
+                  }
+                } UNION {
+                  SELECT DISTINCT ?label ?property
+                  WHERE { 
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '(.*) {{table}} ') .
+                    ?item skos:altLabel ?label .
+                    BIND('alias' AS ?property)
                   }
                 }
               }

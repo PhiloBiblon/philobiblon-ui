@@ -124,11 +124,11 @@ export class WikibaseService {
   }
 
   async getClaimsOrderForNewItem (table) {
-    return this.getClaimsOrder(table, true)
+    return await this.getClaimsOrder(table, true)
   }
 
-  async getClaimsOrder (table, new_item=false) {
-    const pageName = new_item ? this.constructor.ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM : this.constructor.ORDER_PROPS_WIKI_PAGE
+  async getClaimsOrder (table, newItem = false) {
+    const pageName = newItem ? this.constructor.ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM : this.constructor.ORDER_PROPS_WIKI_PAGE
     const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${pageName}&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
     if (data.error) {
@@ -534,8 +534,7 @@ export class WikibaseService {
   async getTableLastItem (database, table) {
     return await this.runSparqlQuery(
       this.$query.getTableLastItem(database, table),
-      true,
-      false
+      true
     ).then((results) => {
       return results
     }).catch(() => {
