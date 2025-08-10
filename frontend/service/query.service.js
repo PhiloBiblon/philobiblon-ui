@@ -1135,9 +1135,16 @@ export class QueryService {
   generateQuery (table, baseQueryFunction, form) {
     let filters = ''
     const group = form.input.group.value === 'ALL' ? '(.*)' : form.input.group.value
-    filters = `FILTER regex(?pbid, '${group} ${table} ') .\n`
     if (form.input.simple_search && form.input.simple_search.value) {
       filters += this.generateFilterSimpleSearch(form)
+    }
+    if (form.input.q_number.value) {
+      filters += `FILTER(?item = wd:${form.input.q_number.value}) .\n`
+    }
+    if (form.input.philobiblon_id.value) {
+      filters += `FILTER regex(?pbid, '${group} ${table} ${form.input.philobiblon_id.value}') . \n`
+    } else {
+      filters += `FILTER regex(?pbid, '${group} ${table} ') .\n`
     }
     switch (table) {
       case 'insid':

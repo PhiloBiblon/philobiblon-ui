@@ -104,6 +104,14 @@ export default {
           label: 'Cerca simple',
           hint: 'Utilitzeu aquest camp per cercar informació que no es pugui localitzar als camps amb nom. Per exemple, a <b>MsEd</b>, informació codicològica; o, a WORK, escriviu “trad*” a <b>Cerca senzilla</b> per produir una llista d\'obres que s\'han traduït de la seva llengua original.'
         },
+        q_number: {
+          label: 'Número Q',
+          hint: 'El número Q de Wikibase.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduïu només el número d\'identificació de PhiloBiblon.'
+        },
         subject: {
           label: 'Matèria',
           hint: 'Quan cerqueu a Subjecte, tingueu en compte que el seu ús no és uniforme a totes les pàgines de cerca ni a les tres bibliografies.<br/>Cerqueu utilitzant un encapçalament complet o qualsevol paraula continguda en qualsevol encapçalament (p. ex., un nom de lloc). Per motius tècnics, només es pot cercar un encapçalament de matèria alhora. Les cerques de dos encapçalaments de matèries diferents o de paraules de dos encapçalaments de matèries diferents no retornaran resultats. Al BITAGAP, per exemple, cerqueu “milagres” o “mariologia”, però no “milagres” i “mariologia”.'

@@ -105,6 +105,14 @@ export default {
           label: 'Pesquisa simples',
           hint: 'Utilize este campo para pesquisar informações não localizadas em campos nomeados. Por exemplo, em <b>MsEd</b>, informação codiológica; ou, em WORK, digite “trad*” em <b>Simples pesquisa</b> para produzir uma lista de trabalhos que foram traduzidos da sua linguagem original.'
         },
+        q_number: {
+          label: 'Número Q',
+          hint: 'O número Q da wikibase.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduza apenas o número de identificação do PhiloBiblon.'
+        },
         subject: {
           label: 'Assunto',
           hint: 'Tenha em mente ao pesquisar em Assunto que a sua utilização não é uniforme em todas as páginas de pesquisa nem nas três bibliografias. <br/>Pesquisar utilizando um título completo ou qualquer palavra contida em qualquer título (por exemplo, um nome de lugar). Por razões técnicas, apenas um título pode ser pesquisado de cada vez. A pesquisa por dois títulos de assuntos diferentes ou por palavras de dois títulos de assuntos diferentes irá devolver os resultados zero. No BITAGAP, por exemplo, pesquise “milagres” ou por “mariologia”, mas não por “milagres” e “mariologia”.'

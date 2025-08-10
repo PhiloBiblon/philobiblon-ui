@@ -104,6 +104,14 @@ export default {
           label: 'Búsqueda sencilla',
           hint: 'Utilice este campo para buscar información no localizable en campos con nombre. Por ejemplo, en <b>MsEd</b>, información codicológica; o, en TRABAJO, escriba "trad*" en <b>Búsqueda simple</b> para producir una lista de trabajos que han sido traducidos de su idioma original.'
         },
+        q_number: {
+          label: 'Número Q',
+          hint: 'El número Q de wikibase.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduzca únicamente el número de identificación de PhiloBiblon.'
+        },
         subject: {
           label: 'Materia',
           hint: 'Tenga en cuenta que al buscar por tema, su uso no es uniforme en todas las páginas de búsqueda ni en las tres bibliografías.<br/>Busque utilizando un encabezamiento completo o cualquier palabra contenida en cualquier encabezamiento (por ejemplo, el nombre de un lugar). Por razones técnicas, solo se puede buscar un encabezamiento de materia a la vez. Las búsquedas de dos encabezamientos de materia diferentes o de palabras de dos encabezamientos de materia diferentes no arrojarán ningún resultado. En BITAGAP, por ejemplo, busque “milagres” o “mariologia”, pero no “milagres” y “mariologia”.'
