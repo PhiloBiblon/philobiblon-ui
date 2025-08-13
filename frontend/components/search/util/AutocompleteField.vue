@@ -160,7 +160,7 @@ export default {
           .normalize('NFD')
           .replace(/[\u0300-\u036F]/g, '')
           .toLowerCase()
-      return normalize(itemText || item).includes(normalize(queryText))
+      return normalize(itemText || item).includes(normalize(queryText)) || queryText === '-'
     }
   }
 }

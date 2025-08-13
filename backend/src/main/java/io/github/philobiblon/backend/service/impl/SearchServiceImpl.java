@@ -3,7 +3,7 @@ package io.github.philobiblon.backend.service.impl;
 import io.github.philobiblon.backend.representation.Option;
 import io.github.philobiblon.backend.service.SearchService;
 import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSetRewindable;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.RDFNode;
 import org.springframework.stereotype.Component;
 
@@ -14,21 +14,21 @@ import java.util.*;
 public class SearchServiceImpl implements SearchService {
 
     private static final String LABEL_FIELD = "label";
+    private static final String ALL_OPTIONS = "-";
     private static final int MAX_RESULTS = 100;
 
     @Override
-    public List<Option> search(ResultSetRewindable resultSet, String q) {
+    public List<Option> search(ResultSet resultSet, String q) {
         List<Option> options = new ArrayList<>();
         int counter = 0;
 
-        resultSet.reset();
         while (resultSet.hasNext() && counter <= MAX_RESULTS) {
             QuerySolution solution = resultSet.next();
 
             if (solution.contains(LABEL_FIELD)) {
                 String label = solution.getLiteral(LABEL_FIELD).getString();
 
-                if (containsIgnoreCaseAndAccents(label, q)) {
+                if (ALL_OPTIONS.equals(q) || containsIgnoreCaseAndAccents(label, q)) {
                     counter++;
                     Map<String, String> valueMap = new HashMap<>();
 
