@@ -1,10 +1,11 @@
 package io.github.philobiblon.backend.service;
 
-import org.apache.jena.query.ResultSetRewindable;
+import org.apache.jena.query.ResultSet;
+
+import java.io.IOException;
 
 public interface SparqlService {
 
-    ResultSetRewindable getSparqlQueryResult(String sparqlQuery);
+    ResultSet getSparqlQueryResult(String sparqlQuery) throws IOException;
 
-    ResultSetRewindable executeSparqlQuery(String sparqlQuery);
 }

@@ -3,6 +3,7 @@ package io.github.philobiblon.backend.controller;
 import io.github.philobiblon.backend.representation.Option;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -11,5 +12,5 @@ import java.util.List;
 public interface SearchController {
 
     @PostMapping(consumes = "application/x-www-form-urlencoded")
-    List<Option> search(@RequestParam String sparqlQuery, @RequestParam String q);
+    List<Option> search(@RequestParam String sparqlQuery, @RequestParam String q) throws IOException;
 }

@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -20,7 +24,7 @@ public class SparqlServiceImpl implements SparqlService {
     @Value("${sparql.endpoint}")
     private String sparqlEndpoint;
 
-    private LoadingCache<String, ResultSetRewindable> sparqlCache;
+    private LoadingCache<String, String> sparqlCache;
 
     @PostConstruct
     public void init() {
@@ -30,7 +34,7 @@ public class SparqlServiceImpl implements SparqlService {
                 .build(this::executeSparqlQuery);
     }
 
-    public ResultSetRewindable executeSparqlQuery(String sparqlQuery) {
+    private String executeSparqlQuery(String sparqlQuery) {
         logger.info("Executing sparqlQuery {}...", sparqlQuery);
 
         Query query = QueryFactory.create(sparqlQuery);
@@ -38,17 +42,25 @@ public class SparqlServiceImpl implements SparqlService {
         try (QueryExecution qexec = QueryExecution.service(sparqlEndpoint, query)) {
             ResultSet resultSet = qexec.execSelect();
 
-            ResultSetRewindable rewindable = ResultSetFactory.copyResults(resultSet);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ResultSetFormatter.outputAsJSON(out, resultSet);
 
-            return rewindable;
+            return out.toString(StandardCharsets.UTF_8);
         } catch (Exception e) {
             logger.error("Error executing SPARQL query", e);
             throw new RuntimeException("SPARQL query execution failed", e);
         }
     }
 
-    public ResultSetRewindable getSparqlQueryResult(String sparqlQuery) {
+    private String getSparqlQueryResultInternal(String sparqlQuery) {
         return sparqlCache.get(sparqlQuery);
+    }
+
+    public ResultSet getSparqlQueryResult(String sparqlQuery) throws IOException {
+        String jsonResult = getSparqlQueryResultInternal(sparqlQuery);
+        try (ByteArrayInputStream in = new ByteArrayInputStream(jsonResult.getBytes(StandardCharsets.UTF_8))) {
+            return ResultSetFactory.fromJSON(in);
+        }
     }
 }
 
