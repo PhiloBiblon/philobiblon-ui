@@ -274,7 +274,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?item ?geo {
+              SELECT DISTINCT ?item ?label {
                 ?table_item wdt:P476 ?table_item_pbid .
                 FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
                 ?table_item p:P137 ?history_statement .
