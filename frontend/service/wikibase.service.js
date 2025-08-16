@@ -147,6 +147,53 @@ export class WikibaseService {
     }
   }
 
+  getOrderedQualifiers (qualifiers, qualifiersOrder) {
+    if (qualifiersOrder) {
+      const qualifiersKeys = Object.keys(qualifiers)
+      const fullQualifiersOrder = [...new Set([...qualifiersOrder, ...qualifiersKeys])]
+      return fullQualifiersOrder.reduce((result, key) => {
+        if (Object.prototype.hasOwnProperty.call(qualifiers, key)) {
+          result[key] = qualifiers[key]
+        }
+        return result
+      }, {})
+    } else {
+      return qualifiers
+    }
+  }
+
+  getOrderedValues (values, qualifiersOrder) {
+    return values.map((value) => {
+      if (value.qualifiers) {
+        const clonedValue = { ...value }
+        clonedValue.qualifiers = this.getOrderedQualifiers(clonedValue.qualifiers, qualifiersOrder)
+        return clonedValue
+      } else {
+        return value
+      }
+    })
+  }
+
+  async getOrderedClaims (table, claims) {
+    const claimsKeys = Object.keys(claims)
+    let order = await this.getClaimsOrder(table)
+    let orderKeys
+    if (order) {
+      orderKeys = Object.keys(order)
+      // remove duplicated keys
+      orderKeys = [...new Set([...orderKeys, ...claimsKeys])]
+    } else {
+      order = claims
+      orderKeys = claimsKeys
+    }
+    return orderKeys.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({
+      property: key,
+      values: this.getOrderedValues(claims[key], order[key]),
+      hasQualifiers: claims[key].some(value => value.qualifiers && Object.keys(value.qualifiers).length),
+      qualifiersOrder: order[key]
+    }))
+  }
+
   getEntity (id, lang) {
     const url = this.wbk.getEntities({
       ids: [id],
@@ -334,21 +381,6 @@ export class WikibaseService {
           type: 'image'
         }
       }
-    } else if (datatype === 'url' && property === this.constructor.PROPERTY_NOTES) {
-      if (!datavalue) {
-        return {
-          type: 'url',
-          value: null
-        }
-      }
-
-      const notesApiUrl =
-        datavalue.replace('/wiki/', '/w/api.php?action=parse&page=') +
-        '&prop=wikitext&formatversion=2&format=json&origin=*'
-      return this.wbFetcher(notesApiUrl)
-        .then((data) => {
-          return { title: data.parse.title, value: data.parse.wikitext, type: 'html' }
-        })
     } else {
       return { value: datavalue, type: datatype }
     }
@@ -596,6 +628,14 @@ export class WikibaseService {
     }
   }
 
+  async getDiscussionPage (itemId) {
+    const notesApiUrl =
+      `${this.$config.apiBaseUrl}/w/api.php?action=parse&page=Item_talk:${itemId}&prop=wikitext&formatversion=2&format=json&origin=*`
+    const response = await fetch(notesApiUrl)
+    const data = await response.json()
+    return { title: data.parse.title, value: data.parse.wikitext }
+  }
+
   async updateDiscussionPage (title, text) {
     try {
       const csrfToken = await this.getCsrfToken()
@@ -616,7 +656,7 @@ export class WikibaseService {
         }
       )
 
-      return await response.json()
+      return await response
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error updating discussion page:', error)

@@ -404,6 +404,7 @@ export default {
     back: 'Torna',
     identifiers: 'Identificadors',
     related_items: 'Elements relacionats',
+    notes: 'Notes',
     messages: {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',

@@ -404,6 +404,7 @@ export default {
     back: 'Volve',
     identifiers: 'Identificadores',
     related_items: 'Elementos relacionados',
+    notes: 'Notas',
     messages: {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',
