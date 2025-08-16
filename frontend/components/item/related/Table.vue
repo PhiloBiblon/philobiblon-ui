@@ -52,6 +52,7 @@ export default {
     if (this.itemId) {
       this.count()
       this.items = await this.$wikibase.getRelatedItems(this.itemId, this.references.refTables, this.currentPage, this.resultsPerPage)
+      this.$emit('has-related-table', this.items.length > 0)
     }
   },
   methods: {
