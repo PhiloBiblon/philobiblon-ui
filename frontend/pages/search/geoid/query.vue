@@ -123,8 +123,7 @@ export default {
               SELECT ?item ?label {
                 ?table_item wdt:P476 ?table_item_pbid .
                 FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
-                ?table_item p:P2 ?statement .
-                ?statement pq:P700 ?item
+                ?table_item wdt:P3 ?item .
                 {{langFilter}}
               }
               `

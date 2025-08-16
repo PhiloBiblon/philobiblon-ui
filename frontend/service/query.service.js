@@ -394,6 +394,12 @@ export class QueryService {
           `
           FILTER(str(?label) = "${form.input.name.value.label}") . \n
           `
+      } else if (form.input.name.value.property === 'alias') {
+        filters +=
+          `
+          ?item skos:altLabel ?alias .
+          FILTER(str(?alias) = "${form.input.name.value.label}") . \n
+          `
       } else {
         filters +=
           `
@@ -535,7 +541,13 @@ export class QueryService {
     if (form.input.call_number && form.input.call_number.value) {
       filters +=
       `
-      ?item wdt:P10 ?value_call_number .\n
+      ?manid_item wdt:P476 ?manid_pbid .
+      FILTER regex(?manid_pbid, '(.*) manid ')
+      ?manid_item wdt:P329 ?item .
+      ?manid_item p:P329 ?library .
+      { ?library pq:P10 ?value_call_number }
+      UNION
+      { ?library pq:P30 ?value_call_number }
       FILTER(STR(?value_call_number) = "${form.input.call_number.value.label}") . \n
       `
     }
@@ -702,8 +714,7 @@ export class QueryService {
     if (form.input.class && form.input.class.value) {
       filters +=
         `
-        ?item p:P2 ?class_statement .
-        ?class_statement pq:P700 wd:${form.input.class.value.item} .
+        ?item wdt:P3 wd:${form.input.class.value.item} .
         `
     }
     if (form.input.subject && form.input.subject.value) {
@@ -820,7 +831,8 @@ export class QueryService {
       filters +=
         `
         OPTIONAL {
-          ?item wdt:P10 ?item_p10_label .
+          ?item p:P329 ?library .
+          ?library pq:P10 ?item_p10_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
@@ -829,13 +841,15 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P10 ?copid_item_p10_label .
+          ?copid_item p:P329 ?library .
+          ?library pq:P10 ?copid_item_p10_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
         }
         OPTIONAL {
-          ?item wdt:P30 ?item_p30_label .
+          ?item p:P329 ?library .
+          ?library pq:P30 ?item_p30_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
@@ -844,7 +858,8 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P30 ?copid_item_p30_label .
+          ?copid_item p:P329 ?library .
+          ?library pq:P30 ?copid_item_p30_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
