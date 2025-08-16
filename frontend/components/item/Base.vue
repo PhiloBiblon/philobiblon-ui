@@ -59,6 +59,10 @@
       </div>
       <item-related-tables :item-id="item.id" :table="tableid" @has-related-table="hasRelatedTable = $event" />
       <div class="text-h6 mt-6">
+        {{ $t('item.notes') }}
+      </div>
+      <item-notes :item-id="item.id" />
+      <div class="text-h6 mt-6">
         {{ $t('item.identifiers') }}
       </div>
       <item-claims :claims="externalIdClaims" :item="item" />

@@ -404,6 +404,7 @@ export default {
     back: 'Go back',
     identifiers: 'Identifiers',
     related_items: 'Related items',
+    notes: 'Notes',
     messages: {
       invalid_id: 'Invalid identifier.',
       not_found: 'Not found.',
