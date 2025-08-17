@@ -175,7 +175,10 @@ export default {
                 ?manid wdt:P329 ?item .
                 ?item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '(.*) {{table}} ')
-                ?item wdt:P10 ?label
+                ?manid p:P329 ?library .
+                { ?library pq:P10 ?label }
+                UNION
+                { ?library pq:P30 ?label }
               }
               ORDER BY ?label
               `
