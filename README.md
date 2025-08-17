@@ -55,6 +55,12 @@ Stop the PhiloBiblon UI:
 docker compose stop
 ```
 
+Remove installation:
+
+```
+docker compose down -v
+```
+
 ## Configuration
 
 The configuration is centralized in the `env file`, where we can find all the environment variables:
