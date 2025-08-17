@@ -6,6 +6,7 @@
       :item-id="itemId"
       :table="table"
       :references="refs"
+      @has-related-table="$emit('has-related-table', $event)"
     />
   </div>
 </template>
