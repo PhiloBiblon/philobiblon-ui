@@ -633,11 +633,12 @@ export class WikibaseService {
       `${this.$config.apiBaseUrl}/w/api.php?action=parse&page=Item_talk:${itemId}&prop=wikitext&formatversion=2&format=json&origin=*`
     const response = await fetch(notesApiUrl)
     const data = await response.json()
-    return { title: data.parse.title, value: data.parse.wikitext }
+    return { title: data.parse?.title, value: data.parse?.wikitext }
   }
 
-  async updateDiscussionPage (title, text) {
+  async updateDiscussionPage (itemId, text) {
     try {
+      const title = `Item talk:${itemId}`
       const csrfToken = await this.getCsrfToken()
 
       const response = await fetch(

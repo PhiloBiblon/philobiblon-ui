@@ -58,10 +58,10 @@
         {{ $t('item.related_items') }}
       </div>
       <item-related-tables :item-id="item.id" :table="tableid" @has-related-table="hasRelatedTable = $event" />
-      <div class="text-h6 mt-6">
+      <div v-if="hasNotes || isUserLogged" class="text-h6 mt-6">
         {{ $t('item.notes') }}
       </div>
-      <item-notes :item-id="item.id" />
+      <item-notes :item-id="item.id" @has-notes="hasNotes = $event" />
       <div class="text-h6 mt-6">
         {{ $t('item.identifiers') }}
       </div>
@@ -89,7 +89,8 @@ export default {
       tableid: null,
       claimsOrdered: [],
       externalIdClaims: [],
-      hasRelatedTable: false
+      hasRelatedTable: false,
+      hasNotes: false
     }
   },
 

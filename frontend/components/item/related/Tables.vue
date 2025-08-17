@@ -6,7 +6,7 @@
       :item-id="itemId"
       :table="table"
       :references="refs"
-      @has-related-table="$emit('has-related-table', $event)"
+      @has-related-table="emitHasRelatedTable"
     />
   </div>
 </template>
@@ -25,6 +25,7 @@ export default {
   },
   data () {
     return {
+      hasRelatedTables: false,
       relatedTables: {
         manid: [
           {
@@ -390,6 +391,14 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    emitHasRelatedTable (hasRelatedTable) {
+      if (!this.hasRelatedTables && hasRelatedTable) {
+        this.hasRelatedTables = true
+      }
+      this.$emit('has-related-table', this.hasRelatedTables)
     }
   }
 }
