@@ -9,7 +9,7 @@
                 mdi-reply
               </v-icon>
             </template>
-            <span>{{ $t("item.back") }}</span>
+            <span>{{ $t('item.back') }}</span>
           </v-tooltip>
         </a>
       </v-row>
@@ -33,7 +33,7 @@
           </v-col>
         </v-row>
         <v-alert v-if="!initialClaimsLoaded" type="info">
-          {{ $t("item.create.calculating_new_pbid") }}
+          {{ $t('item.create.calculating_new_pbid') }}
         </v-alert>
         <item-claim-create
           v-if="initialClaimsLoaded"
@@ -54,13 +54,13 @@
                   :disabled="isCreateDisabled"
                   @click="create"
                 >
-                  {{ $t("common.create") }}
+                  {{ $t('common.create') }}
                 </v-btn>
               </div>
             </template>
             <span class="text-no-wrap">
               {{
-                getCreateDisabledReason() || $t("item.create.button.enabled")
+                getCreateDisabledReason() || $t('item.create.button.enabled')
               }}
             </span>
           </v-tooltip>
@@ -75,126 +75,125 @@ export default {
   props: {
     database: {
       type: String,
-      required: true,
+      required: true
     },
     table: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
-  data() {
+  data () {
     return {
-      label: "",
+      label: '',
       initialClaimsLoaded: false,
       initialClaims: [],
       claims: [],
       disabled: true,
-      description: "",
-    };
+      description: ''
+    }
   },
   computed: {
-    isUserLogged() {
-      return this.$store.state.auth.isLogged;
+    isUserLogged () {
+      return this.$store.state.auth.isLogged
     },
-    isCreateDisabled() {
-      return !!this.getCreateDisabledReason();
+    isCreateDisabled () {
+      return !!this.getCreateDisabledReason()
     },
-    pbid() {
+    pbid () {
       return this.initialClaims.find(
-        (item) => item.property.id === this.$wikibase.constructor.PROPERTY_PBID,
-      ).value;
-    },
+        item => item.property.id === this.$wikibase.constructor.PROPERTY_PBID
+      ).value
+    }
   },
-  created() {
-    if (!this.isUserLogged || this.database === "All") {
-      return this.$router.push(this.localePath("/"));
+  created () {
+    if (!this.isUserLogged || this.database === 'All') {
+      return this.$router.push(this.localePath('/'))
     } else {
-      this.loadInitialClaims();
+      this.loadInitialClaims()
     }
   },
   methods: {
-    getCreateDisabledReason() {
+    getCreateDisabledReason () {
       if (!this.label) {
-        return this.$t("messages.error.inputs.label");
+        return this.$t('messages.error.inputs.label')
       }
 
       if (!this.initialClaimsLoaded) {
-        return this.$t("messages.error.inputs.initial_claims");
+        return this.$t('messages.error.inputs.initial_claims')
       }
 
-      const claims = Object.entries(this.claims);
+      const claims = Object.entries(this.claims)
 
       for (let propIndex = 0; propIndex < claims.length; propIndex++) {
-        const [, claimArray] = claims[propIndex];
-        const initialClaim = this.initialClaims[propIndex];
-        const propertyLabel = initialClaim?.property?.label;
+        const [, claimArray] = claims[propIndex]
+        const initialClaim = this.initialClaims[propIndex]
+        const propertyLabel = initialClaim?.property?.label
 
         if (
-          initialClaim?.property?.id === "P2" ||
-          initialClaim?.property?.id === "P476"
+          initialClaim?.property?.id === 'P2' ||
+          initialClaim?.property?.id === 'P476'
         ) {
           for (const item of claimArray) {
-            if (item?.value == null || item?.value === "") {
-              return this.$t("messages.error.inputs.claim_value_missing", {
-                propertyLabel,
-              });
+            if (item?.value == null || item?.value === '') {
+              return this.$t('messages.error.inputs.claim_value_missing', {
+                propertyLabel
+              })
             }
 
             const claimLabel =
-              initialClaim?.value?.datavalue?.value?.label || propertyLabel;
+              initialClaim?.value?.datavalue?.value?.label || propertyLabel
 
             for (const [qualifierKey, qualifierVal] of Object.entries(
-              item.qualifiers || {},
+              item.qualifiers || {}
             )) {
-              if (!qualifierKey || qualifierKey === "null") {
-                return this.$t("messages.error.inputs.qualifier_key_missing", {
+              if (!qualifierKey || qualifierKey === 'null') {
+                return this.$t('messages.error.inputs.qualifier_key_missing', {
                   claimLabel,
-                  propertyLabel,
-                });
+                  propertyLabel
+                })
               }
-              if (!qualifierVal || qualifierVal === "null") {
+              if (!qualifierVal || qualifierVal === 'null') {
                 return this.$t(
-                  "messages.error.inputs.qualifier_value_missing",
-                  { claimLabel, propertyLabel },
-                );
+                  'messages.error.inputs.qualifier_value_missing',
+                  { claimLabel, propertyLabel }
+                )
               }
             }
           }
         }
       }
 
-      return null;
+      return null
     },
-    async loadInitialClaims() {
+    async loadInitialClaims () {
       try {
         const res = await this.$wikibase.getTableLastItem(
           this.database,
-          this.table,
-        );
+          this.table
+        )
         if (res?.length && res[0]) {
-          await this.getDefaultClaims(res[0].item_number);
-          this.initialClaimsLoaded = true;
+          await this.getDefaultClaims(res[0].item_number)
+          this.initialClaimsLoaded = true
         }
       } catch (error) {
         this.$notification.error(
-          error?.body?.error?.info ||
-            this.$t("messages.error.something_went_wrong"),
-        );
+          error?.body?.error?.info || this.$t('messages.error.something_went_wrong')
+        )
       }
     },
-    buildClaim(entity, qualifiers = [], value = null) {
+    buildClaim (entity, qualifiers = [], value = null) {
       const label =
         this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
-          ?.value || entity.id;
+          ?.value || entity.id
       return {
         default: true,
         property: {
           label,
           id: entity.id,
-          datatype: entity.datatype,
+          datatype: entity.datatype
         },
         mainsnak: {
-          property: entity.id,
+          property: entity.id
         },
         claimsValues: [],
         value: {
@@ -202,198 +201,198 @@ export default {
           datatype: entity.datatype,
           datavalue: {
             default: true,
-            value,
-          },
+            value
+          }
         },
-        qualifiers,
-      };
+        qualifiers
+      }
     },
-    buildQualifier(claim, qualifier) {
+    buildQualifier (claim, qualifier) {
       return {
         default: true,
         property: qualifier.id,
         datatype: qualifier.datatype,
         datavalue: {
-          value: null,
-        },
-      };
+          value: null
+        }
+      }
     },
-    async getDefaultClaims(itemNumber) {
-      const def = ["P476", "P131"];
-      const res = await this.$wikibase.getClaimsOrder(this.table);
-      const propertyIds = [...new Set([...def, ...Object.keys(res)])];
-      const qualifiersProperties = [...new Set(Object.values(res).flat())];
+    async getDefaultClaims (itemNumber) {
+      const def = ['P476', 'P131']
+      const res = await this.$wikibase.getClaimsOrderForNewItem(this.table)
+      const propertyIds = [...new Set([...def, ...Object.keys(res)])]
+      const qualifiersProperties = [...new Set(Object.values(res).flat())]
       const entities = await this.$wikibase.getEntities(
         propertyIds,
-        this.$i18n.locale,
-      );
+        this.$i18n.locale
+      )
       const qualifiersArr = await this.$wikibase.getEntities(
         qualifiersProperties,
-        this.$i18n.locale,
-      );
+        this.$i18n.locale
+      )
 
       Object.values(entities).forEach((entity) => {
         if (this.isValidPropertyEntity(entity)) {
-          const qualifiers = [];
+          const qualifiers = []
 
           res[entity.id]?.forEach((property) => {
             if (this.isValidPropertyEntity(qualifiersArr[property])) {
               qualifiers.push(
-                this.buildQualifier(entity, qualifiersArr[property]),
-              );
+                this.buildQualifier(entity, qualifiersArr[property])
+              )
             }
-          });
+          })
 
-          let claim = this.buildClaim(entity, qualifiers, null);
+          let claim = this.buildClaim(entity, qualifiers, null)
 
-          if (entity.id === "P476") {
-            claim = this.buildClaim(entity, [], this.generatePbId(itemNumber));
-          } else if (entity.id === "P131") {
+          if (entity.id === 'P476') {
+            claim = this.buildClaim(entity, [], this.generatePbId(itemNumber))
+          } else if (entity.id === 'P131') {
             const qualifiers = [
               {
                 default: true,
-                property: "P700",
-                datatype: "wikibase-item",
+                property: 'P700',
+                datatype: 'wikibase-item',
                 datavalue: {
                   value: {
-                    id: "Q6",
-                  },
-                },
-              },
-            ];
+                    id: 'Q6'
+                  }
+                }
+              }
+            ]
 
-            claim = this.buildClaim(entity, qualifiers, { id: "Q4" });
+            claim = this.buildClaim(entity, qualifiers, { id: 'Q4' })
           }
 
-          this.initialClaims.push(claim);
+          this.initialClaims.push(claim)
         }
-      });
+      })
     },
-    isValidPropertyEntity(entity) {
-      return entity?.title?.startsWith("Property:") && entity?.labels;
+    isValidPropertyEntity (entity) {
+      return entity?.title?.startsWith('Property:') && entity?.labels
     },
-    generatePbId(lastItemPbId) {
-      return `${this.database} ${this.table} ${parseInt(lastItemPbId) + 1}`;
+    generatePbId (lastItemPbId) {
+      return `${this.database} ${this.table} ${parseInt(lastItemPbId) + 1}`
     },
-    updateClaims(data) {
-      this.initialClaims = data;
-      this.claims = this.generateClaimsData(data);
+    updateClaims (data) {
+      this.initialClaims = data
+      this.claims = this.generateClaimsData(data)
     },
-    generateClaimsData(data) {
-      const claims = {};
+    generateClaimsData (data) {
+      const claims = {}
       data.forEach((claim) => {
         if (claim.property) {
-          const claimKey = claim?.property?.id;
+          const claimKey = claim?.property?.id
 
-          claims[claimKey] = claims[claimKey] || [];
-          const extractValue = (v) =>
-            v?.datavalue?.value?.id ?? v?.datavalue?.value;
+          claims[claimKey] = claims[claimKey] || []
+          const extractValue = v =>
+            v?.datavalue?.value?.id ?? v?.datavalue?.value
 
           const createClaim = (val, qualifiers = {}) => ({
             value: extractValue(val),
-            qualifiers,
-          });
+            qualifiers
+          })
 
           const qualifiers = Object.fromEntries(
-            (claim.qualifiers || []).map((q) => [q.property, extractValue(q)]),
-          );
+            (claim.qualifiers || []).map(q => [q.property, extractValue(q)])
+          )
 
           claims[claimKey].push(createClaim(claim.value, qualifiers));
           (Object.values(claim.claimsValues || {}) || []).forEach((v) => {
-            claims[claimKey].push(createClaim(v));
-          });
+            claims[claimKey].push(createClaim(v))
+          })
         }
-      });
-      return claims;
+      })
+      return claims
     },
-    cleanClaims(claims) {
-      const cleanedClaims = {};
+    cleanClaims (claims) {
+      const cleanedClaims = {}
 
       for (const [propertyId, claimArray] of Object.entries(claims)) {
-        const cleanedClaimArray = [];
+        const cleanedClaimArray = []
 
         for (const claim of claimArray) {
-          const value = claim?.value;
-          if (value == null || value === "") {
-            continue;
+          const value = claim?.value
+          if (value == null || value === '') {
+            continue
           }
 
-          const cleanedQualifiers = {};
+          const cleanedQualifiers = {}
           for (const [qualKey, qualVal] of Object.entries(
-            claim.qualifiers || {},
+            claim.qualifiers || {}
           )) {
             if (
               qualKey &&
-              qualKey !== "null" &&
+              qualKey !== 'null' &&
               qualVal != null &&
-              qualVal !== "null" &&
-              qualVal !== ""
+              qualVal !== 'null' &&
+              qualVal !== ''
             ) {
-              cleanedQualifiers[qualKey] = qualVal;
+              cleanedQualifiers[qualKey] = qualVal
             }
           }
 
           cleanedClaimArray.push({
             value,
-            qualifiers: cleanedQualifiers,
-          });
+            qualifiers: cleanedQualifiers
+          })
         }
 
         if (cleanedClaimArray.length) {
-          cleanedClaims[propertyId] = cleanedClaimArray;
+          cleanedClaims[propertyId] = cleanedClaimArray
         }
       }
 
-      return cleanedClaims;
+      return cleanedClaims
     },
-    async create() {
-      const existingPBID = await this.$wikibase.getEntityFromPBID(this.pbid);
+    async create () {
+      const existingPBID = await this.$wikibase.getEntityFromPBID(this.pbid)
       if (existingPBID === null) {
         try {
-          const claims = this.cleanClaims(this.claims);
+          const claims = this.cleanClaims(this.claims)
 
           const data = {
             labels: {
-              [this.$i18n.locale]: this.label,
+              [this.$i18n.locale]: this.label
             },
             descriptions: {
-              [this.$i18n.locale]: this.description || " ",
+              [this.$i18n.locale]: this.description || ' '
             },
             claims: {
-              ...claims,
-            },
-          };
+              ...claims
+            }
+          }
 
           const response = await this.$wikibase
             .getWbEdit()
-            .entity.create(data, this.$store.getters["auth/getRequestConfig"]);
+            .entity.create(data, this.$store.getters['auth/getRequestConfig'])
 
           if (response.success) {
             await this.$router.push(
-              this.localePath("/item/" + response.entity.id),
-            );
+              this.localePath('/item/' + response.entity.id)
+            )
           } else {
             this.$notification.error(
-              this.$t("messages.error.something_went_wrong"),
-            );
+              this.$t('messages.error.something_went_wrong')
+            )
           }
         } catch (error) {
           this.$notification.error(
             error.body.error.info ??
-              this.$t("messages.error.something_went_wrong"),
-          );
+              this.$t('messages.error.something_went_wrong')
+          )
         }
       } else {
         this.$notification.error(
-          this.$t("messages.error.creation.pbid_already_exists", {
+          this.$t('messages.error.creation.pbid_already_exists', {
             pbid: this.pbid,
-            item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`,
-          }),
-        );
+            item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
+          })
+        )
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>
