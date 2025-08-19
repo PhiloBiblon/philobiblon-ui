@@ -1,5 +1,6 @@
 export default {
   common: {
+    label: 'Label',
     property: 'Property',
     properties: 'Properties',
     per_page: 'per page',

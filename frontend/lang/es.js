@@ -1,5 +1,6 @@
 export default {
   common: {
+    label: 'Etiqueta',
     property: 'Propiedad',
     properties: 'Propiedades',
     per_page: 'por página',
