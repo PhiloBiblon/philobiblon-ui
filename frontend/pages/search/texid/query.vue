@@ -283,6 +283,7 @@ export default {
                 FILTER regex(?item_pbid, '(.*) geoid ') .
                 {{langFilter}}
               }
+              ORDER BY STR(?label)
               `
             }
           },
@@ -315,6 +316,7 @@ export default {
                 ?statement pq:P700 ?item
                 {{langFilter}}
               }
+              ORDER BY STR(?label)
               `
             }
           },

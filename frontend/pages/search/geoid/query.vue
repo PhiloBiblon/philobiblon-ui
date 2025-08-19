@@ -126,6 +126,7 @@ export default {
                 ?table_item wdt:P3 ?item .
                 {{langFilter}}
               }
+              ORDER BY STR(?label)
               `
             }
           },
