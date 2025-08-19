@@ -66,6 +66,26 @@ export default {
               allowFreeText: true
             }
           },
+          q_number: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.q_number.label',
+            hint: 'search.form.common.q_number.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
+          philobiblon_id: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.philobiblon_id.label',
+            hint: 'search.form.common.philobiblon_id.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
           city: {
             active: true,
             section: 'primary',
@@ -161,8 +181,11 @@ export default {
                   SELECT ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
-                    ?table_item wdt:P10 ?label . 
+                    FILTER regex(?table_pbid, '(.*) manid ') .
+                    ?table_item p:P329 ?library .
+                    { ?library pq:P10 ?label }
+                    UNION
+                    { ?library pq:P30 ?label }
                     ?cnum_item wdt:P476 ?cnum_pbid .
                     FILTER regex(?cnum_pbid, '(.*) cnum ') .
                     ?cnum_item wdt:P8 ?table_item
@@ -174,31 +197,11 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
-                    ?copid_item wdt:P10 ?label .
-                    ?cnum_item wdt:P476 ?cnum_pbid .
-                    FILTER regex(?cnum_pbid, '(.*) cnum ') .
-                    ?cnum_item wdt:P8 ?table_item
-                  }
-                } UNION {
-                  SELECT ?label
-                  WHERE { 
-                    ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
-                    ?table_item wdt:P30 ?label . 
-                    ?cnum_item wdt:P476 ?cnum_pbid .
-                    FILTER regex(?cnum_pbid, '(.*) cnum ') .
-                    ?cnum_item wdt:P8 ?table_item
-                  }
-                } UNION {
-                  SELECT ?label ?copid_item
-                  WHERE { 
-                    ?copid_item wdt:P476 ?copid_pbid .
-                    FILTER regex(?copid_pbid, '(.*) copid ') .
-                    ?copid_item wdt:P839 ?table_item .
-                    ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
-                    ?copid_item wdt:P30 ?label .
+                    FILTER regex(?table_pbid, '(.*) manid ') .   
+                    ?copid_item p:P329 ?library .
+                    { ?library pq:P10 ?label }
+                    UNION
+                    { ?library pq:P30 ?label }
                     ?cnum_item wdt:P476 ?cnum_pbid .
                     FILTER regex(?cnum_pbid, '(.*) cnum ') .
                     ?cnum_item wdt:P8 ?table_item

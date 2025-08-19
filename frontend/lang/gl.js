@@ -1,5 +1,6 @@
 export default {
   common: {
+    label: 'Etiqueta',
     property: 'Propiedade',
     properties: 'Propiedades',
     per_page: 'por páxina',
@@ -103,6 +104,14 @@ export default {
         simple_search: {
           label: 'Busca simple',
           hint: 'Use este campo para buscar información non localizable en campos con nome. Por exemplo, en <b>MsEd</b>, información codicolóxica; ou, en WORK, escriba “trad*” en <b>Busca sinxela</b> para producir unha lista de obras que foron traducidas desde o seu idioma orixinal.'
+        },
+        q_number: {
+          label: 'Número Q',
+          hint: 'O número Q de wikibase.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduza só o número de identificación de PhiloBiblon.'
         },
         subject: {
           label: 'Tema',
@@ -394,6 +403,9 @@ export default {
     title: 'Título',
     description: 'Descrición',
     back: 'Volve',
+    identifiers: 'Identificadores',
+    related_items: 'Elementos relacionados',
+    notes: 'Notas',
     messages: {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',

@@ -1,3 +1,7 @@
+const BITAGAP_DB = 'BITAGAP'
+const CARTAS_TEXT = '[Cartas de]'
+const BITAGAP_GROUP_CARTAS = 'CARTAS'
+const BITAGAP_GROUP_ORIGINAL = 'ORIG'
 export class QueryService {
   constructor (store, config) {
     this.$store = store
@@ -91,21 +95,22 @@ export class QueryService {
     let filters = ''
     if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
       filters +=
-       `
+        `
         ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
+        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
+        ?related_work_item wdt:P243 ?topic_item .
+        ?topic_item rdfs:label ?topic_item_label .
         ?related_work_item wdt:P243 ?item .
-        ?related_work_item rdfs:label ?related_work_label 
-       `
-      if (form.input.bitagap_group.value === 'ORIG') {
+        `
+      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
         filters +=
           `
-            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(!CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
           `
-      } else if (form.input.bitagap_group.value === 'CARTAS') {
+      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
         filters +=
           `
-            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
           `
       }
     }
@@ -158,18 +163,18 @@ export class QueryService {
     if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
       filters +=
         `
-          ?item wdt:P243 ?subjectItem .
-          ?subjectItem rdfs:label ?labelSubjectItem .
+        ?item wdt:P243 ?subjectItem .
+        ?subjectItem rdfs:label ?labelSubjectItem .
         `
-      if (form.input.bitagap_group.value === 'ORIG') {
+      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
         filters +=
           `
-            FILTER(!CONTAINS(STR(?labelSubjectItem), "[Cartas de]"))
+          FILTER(!CONTAINS(STR(?labelSubjectItem), "${CARTAS_TEXT}"))
           `
-      } else if (form.input.bitagap_group.value === 'CARTAS') {
+      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
         filters +=
           `
-            FILTER(CONTAINS(STR(?labelSubjectItem), "[Cartas de]"))
+          FILTER(CONTAINS(STR(?labelSubjectItem), "${CARTAS_TEXT}"))
           `
       }
     }
@@ -364,21 +369,22 @@ export class QueryService {
     let filters = ''
     if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
       filters +=
-       `
+        `
         ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
-        ?related_work_item wdt:P243 ?item .
-        ?related_work_item rdfs:label ?related_work_label 
-       `
-      if (form.input.bitagap_group.value === 'ORIG') {
+        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
+        ?related_work_item wdt:P243 ?topic_item .
+        ?topic_item rdfs:label ?topic_item_label .
+        ?related_work_item wdt:P703 ?item .
+        `
+      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
         filters +=
           `
-            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(!CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
           `
-      } else if (form.input.bitagap_group.value === 'CARTAS') {
+      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
         filters +=
           `
-            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
           `
       }
     }
@@ -387,6 +393,12 @@ export class QueryService {
         filters +=
           `
           FILTER(str(?label) = "${form.input.name.value.label}") . \n
+          `
+      } else if (form.input.name.value.property === 'alias') {
+        filters +=
+          `
+          ?item skos:altLabel ?alias .
+          FILTER(str(?alias) = "${form.input.name.value.label}") . \n
           `
       } else {
         filters +=
@@ -529,7 +541,13 @@ export class QueryService {
     if (form.input.call_number && form.input.call_number.value) {
       filters +=
       `
-      ?item wdt:P10 ?value_call_number .\n
+      ?manid_item wdt:P476 ?manid_pbid .
+      FILTER regex(?manid_pbid, '(.*) manid ')
+      ?manid_item wdt:P329 ?item .
+      ?manid_item p:P329 ?library .
+      { ?library pq:P10 ?value_call_number }
+      UNION
+      { ?library pq:P30 ?value_call_number }
       FILTER(STR(?value_call_number) = "${form.input.call_number.value.label}") . \n
       `
     }
@@ -546,21 +564,21 @@ export class QueryService {
     let filters = ''
     if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
       filters +=
-       `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
-        ?related_work_item wdt:P12 ?item .
-        ?related_work_item rdfs:label ?related_work_label 
-       `
-      if (form.input.bitagap_group.value === 'ORIG') {
+        `
+        ?item wdt:P243 ?related_topic_item .
+        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+        ?related_topic_item rdfs:label ?related_topic_item_label .
+        `
+      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
         filters +=
           `
-            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
           `
-      } else if (form.input.bitagap_group.value === 'CARTAS') {
+      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
         filters +=
           `
-            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
           `
       }
     }
@@ -669,21 +687,21 @@ export class QueryService {
     let filters = ''
     if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
       filters +=
-       `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
-        ?related_work_item wdt:P243 ?item .
-        ?related_work_item rdfs:label ?related_work_label 
-       `
-      if (form.input.bitagap_group.value === 'ORIG') {
+        `
+        ?item wdt:P243 ?related_topic_item .
+        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+        ?related_topic_item rdfs:label ?related_topic_item_label .
+        `
+      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
         filters +=
           `
-            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
           `
-      } else if (form.input.bitagap_group.value === 'CARTAS') {
+      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
         filters +=
           `
-            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
           `
       }
     }
@@ -696,8 +714,7 @@ export class QueryService {
     if (form.input.class && form.input.class.value) {
       filters +=
         `
-        ?item p:P2 ?class_statement .
-        ?class_statement pq:P700 wd:${form.input.class.value.item} .
+        ?item wdt:P3 wd:${form.input.class.value.item} .
         `
     }
     if (form.input.subject && form.input.subject.value) {
@@ -712,22 +729,15 @@ export class QueryService {
   addSubjectFilters (form) {
     let filters = ''
     if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
-      filters +=
-       `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
-        ?related_work_item wdt:P243 ?item .
-        ?related_work_item rdfs:label ?related_work_label 
-       `
-      if (form.input.bitagap_group.value === 'ORIG') {
+      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
         filters +=
           `
-            FILTER(!CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(!CONTAINS(STR(?label), "${CARTAS_TEXT}"))
           `
-      } else if (form.input.bitagap_group.value === 'CARTAS') {
+      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
         filters +=
           `
-            FILTER(CONTAINS(STR(?related_work_label), "[Cartas de]"))
+          FILTER(CONTAINS(STR(?label), "${CARTAS_TEXT}"))
           `
       }
     }
@@ -752,21 +762,21 @@ export class QueryService {
     let filters = ''
     if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
       filters +=
-       `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, 'BITAGAP texid ') .
-        ?related_work_item wdt:P750 ?item .
-        ?related_work_item rdfs:label ?related_work_label 
-       `
-      if (form.input.bitagap_group.value === 'ORIG') {
+        `
+        ?item wdt:P243 ?related_topic_item .
+        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+        ?related_topic_item rdfs:label ?related_topic_item_label .
+        `
+      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
         filters +=
           `
-            FILTER(!CONTAINS(STR(?related_work_item), "[Cartas de]"))
+            FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
           `
-      } else if (form.input.bitagap_group.value === 'CARTAS') {
+      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
         filters +=
           `
-            FILTER(CONTAINS(STR(?related_work_item), "[Cartas de]"))
+            FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
           `
       }
     }
@@ -821,7 +831,8 @@ export class QueryService {
       filters +=
         `
         OPTIONAL {
-          ?item wdt:P10 ?item_p10_label .
+          ?item p:P329 ?library .
+          ?library pq:P10 ?item_p10_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
@@ -830,13 +841,15 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P10 ?copid_item_p10_label .
+          ?copid_item p:P329 ?library .
+          ?library pq:P10 ?copid_item_p10_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
         }
         OPTIONAL {
-          ?item wdt:P30 ?item_p30_label .
+          ?item p:P329 ?library .
+          ?library pq:P30 ?item_p30_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
@@ -845,7 +858,8 @@ export class QueryService {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P30 ?copid_item_p30_label .
+          ?copid_item p:P329 ?library .
+          ?library pq:P30 ?copid_item_p30_label .
           ?cnum_item wdt:P476 ?cnum_pbid .
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
@@ -1136,9 +1150,16 @@ export class QueryService {
   generateQuery (table, baseQueryFunction, form) {
     let filters = ''
     const group = form.input.group.value === 'ALL' ? '(.*)' : form.input.group.value
-    filters = `FILTER regex(?pbid, '${group} ${table} ') .\n`
     if (form.input.simple_search && form.input.simple_search.value) {
       filters += this.generateFilterSimpleSearch(form)
+    }
+    if (form.input.q_number.value) {
+      filters += `FILTER(?item = wd:${form.input.q_number.value}) .\n`
+    }
+    if (form.input.philobiblon_id.value) {
+      filters += `FILTER regex(?pbid, '${group} ${table} ${form.input.philobiblon_id.value}') . \n`
+    } else {
+      filters += `FILTER regex(?pbid, '${group} ${table} ') .\n`
     }
     switch (table) {
       case 'insid':

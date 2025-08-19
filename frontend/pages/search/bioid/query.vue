@@ -65,6 +65,26 @@ export default {
               allowFreeText: true
             }
           },
+          q_number: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.q_number.label',
+            hint: 'search.form.common.q_number.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
+          philobiblon_id: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.philobiblon_id.label',
+            hint: 'search.form.common.philobiblon_id.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
           name: {
             active: true,
             section: 'primary',
@@ -91,8 +111,16 @@ export default {
                   WHERE { 
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '(.*) {{table}} ') .
-                    {{langFilter}}
+                    ?item rdfs:label ?label .
                     BIND('label' AS ?property)
+                  }
+                } UNION {
+                  SELECT DISTINCT ?label ?property
+                  WHERE { 
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '(.*) {{table}} ') .
+                    ?item skos:altLabel ?label .
+                    BIND('alias' AS ?property)
                   }
                 }
               }

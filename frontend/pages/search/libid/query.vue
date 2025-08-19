@@ -64,6 +64,26 @@ export default {
               allowFreeText: true
             }
           },
+          q_number: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.q_number.label',
+            hint: 'search.form.common.q_number.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
+          philobiblon_id: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.philobiblon_id.label',
+            hint: 'search.form.common.philobiblon_id.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
           city: {
             active: true,
             section: 'primary',
@@ -155,7 +175,10 @@ export default {
                 ?manid wdt:P329 ?item .
                 ?item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '(.*) {{table}} ')
-                ?item wdt:P10 ?label
+                ?manid p:P329 ?library .
+                { ?library pq:P10 ?label }
+                UNION
+                { ?library pq:P30 ?label }
               }
               ORDER BY ?label
               `

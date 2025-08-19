@@ -1,5 +1,6 @@
 export default {
   common: {
+    label: 'Label',
     property: 'Property',
     properties: 'Properties',
     per_page: 'per page',
@@ -103,6 +104,14 @@ export default {
         simple_search: {
           label: 'Simple search',
           hint: 'Use this field to search for information not locatable in named fields. For example, in <b>MsEd</b>, codicological information; or, in WORK, type “trad*” in <b>Simple search</b> to produce a list of works which have been translated from their original language.'
+        },
+        q_number: {
+          label: 'Q Number',
+          hint: 'The wikibase Q number.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduce only the PhiloBiblon ID number.'
         },
         subject: {
           label: 'Subject',
@@ -394,6 +403,9 @@ export default {
     title: 'Title',
     description: 'Description',
     back: 'Go back',
+    identifiers: 'Identifiers',
+    related_items: 'Related items',
+    notes: 'Notes',
     messages: {
       invalid_id: 'Invalid identifier.',
       not_found: 'Not found.',

@@ -1,5 +1,5 @@
 # build stage
-FROM node:lts-alpine as build-stage
+FROM node:lts-alpine AS build-stage
 WORKDIR /app
 COPY package.json ./
 ARG BASE_URL
@@ -10,7 +10,7 @@ ENV NODE_OPTIONS --openssl-legacy-provider
 RUN yarn run build
 
 # production stage
-FROM nginx:stable-alpine as production-stage
+FROM nginx:stable-alpine AS production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 EXPOSE 80 443
 COPY entrypoint.sh /entrypoint.sh

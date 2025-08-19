@@ -1,5 +1,6 @@
 export default {
   common: {
+    label: 'Etiqueta',
     property: 'Propietat',
     properties: 'Propietats',
     per_page: 'per pàgina',
@@ -103,6 +104,14 @@ export default {
         simple_search: {
           label: 'Cerca simple',
           hint: 'Utilitzeu aquest camp per cercar informació que no es pugui localitzar als camps amb nom. Per exemple, a <b>MsEd</b>, informació codicològica; o, a WORK, escriviu “trad*” a <b>Cerca senzilla</b> per produir una llista d\'obres que s\'han traduït de la seva llengua original.'
+        },
+        q_number: {
+          label: 'Número Q',
+          hint: 'El número Q de Wikibase.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduïu només el número d\'identificació de PhiloBiblon.'
         },
         subject: {
           label: 'Matèria',
@@ -394,6 +403,9 @@ export default {
     title: 'Títol',
     description: 'Descripció',
     back: 'Torna',
+    identifiers: 'Identificadors',
+    related_items: 'Elements relacionats',
+    notes: 'Notes',
     messages: {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',

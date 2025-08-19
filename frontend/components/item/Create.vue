@@ -2,14 +2,14 @@
   <div class="all-width">
     <v-container>
       <v-row class="back">
-        <a class="link" @click="goTo(`/search/${table}/query`)">
+        <a class="link" @click="$router.go(-1)">
           <v-tooltip right>
             <template #activator="{ on, attrs }">
               <v-icon color="primary" v-bind="attrs" v-on="on">
                 mdi-reply
               </v-icon>
             </template>
-            <span>{{ $t("item.back") }}</span>
+            <span>{{ $t('item.back') }}</span>
           </v-tooltip>
         </a>
       </v-row>
@@ -21,7 +21,7 @@
                 v-model="label"
                 type="text"
                 class="text-h4"
-                :label="$t('item.title')"
+                :label="$t('common.label')"
               />
               <v-text-field
                 v-model="description"
@@ -59,7 +59,9 @@
               </div>
             </template>
             <span class="text-no-wrap">
-              {{ getCreateDisabledReason() || $t('item.create.button.enabled') }}
+              {{
+                getCreateDisabledReason() || $t('item.create.button.enabled')
+              }}
             </span>
           </v-tooltip>
         </v-row>
@@ -98,7 +100,9 @@ export default {
       return !!this.getCreateDisabledReason()
     },
     pbid () {
-      return this.initialClaims.find(item => item.property.id === this.$wikibase.constructor.PROPERTY_PBID).value
+      return this.initialClaims.find(
+        item => item.property.id === this.$wikibase.constructor.PROPERTY_PBID
+      ).value
     }
   },
   created () {
@@ -109,16 +113,11 @@ export default {
     }
   },
   methods: {
-    goTo (path) {
-      this.$router.push(this.localePath(path))
-    },
     getCreateDisabledReason () {
       if (!this.label) {
         return this.$t('messages.error.inputs.label')
       }
-      if (!this.description) {
-        return this.$t('messages.error.inputs.description')
-      }
+
       if (!this.initialClaimsLoaded) {
         return this.$t('messages.error.inputs.initial_claims')
       }
@@ -130,20 +129,35 @@ export default {
         const initialClaim = this.initialClaims[propIndex]
         const propertyLabel = initialClaim?.property?.label
 
-        for (const item of claimArray) {
-          if (item?.value == null || item?.value === '') {
-            return this.$t('messages.error.inputs.claim_value_missing', { propertyLabel })
-          }
-
-          const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
-
-          for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
-            if (!qualifierKey || qualifierKey === 'null') {
-              return this.$t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
+        if (
+          initialClaim?.property?.id === 'P2' ||
+          initialClaim?.property?.id === 'P476'
+        ) {
+          for (const item of claimArray) {
+            if (item?.value == null || item?.value === '') {
+              return this.$t('messages.error.inputs.claim_value_missing', {
+                propertyLabel
+              })
             }
 
-            if (!qualifierVal || qualifierVal === 'null') {
-              return this.$t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
+            const claimLabel =
+              initialClaim?.value?.datavalue?.value?.label || propertyLabel
+
+            for (const [qualifierKey, qualifierVal] of Object.entries(
+              item.qualifiers || {}
+            )) {
+              if (!qualifierKey || qualifierKey === 'null') {
+                return this.$t('messages.error.inputs.qualifier_key_missing', {
+                  claimLabel,
+                  propertyLabel
+                })
+              }
+              if (!qualifierVal || qualifierVal === 'null') {
+                return this.$t(
+                  'messages.error.inputs.qualifier_value_missing',
+                  { claimLabel, propertyLabel }
+                )
+              }
             }
           }
         }
@@ -153,17 +167,24 @@ export default {
     },
     async loadInitialClaims () {
       try {
-        const res = await this.$wikibase.getTableLastItem(this.database, this.table)
+        const res = await this.$wikibase.getTableLastItem(
+          this.database,
+          this.table
+        )
         if (res?.length && res[0]) {
           await this.getDefaultClaims(res[0].item_number)
           this.initialClaimsLoaded = true
         }
       } catch (error) {
-        this.$notification.error(error?.body?.error?.info || this.$t('messages.error.something_went_wrong'))
+        this.$notification.error(
+          error?.body?.error?.info || this.$t('messages.error.something_went_wrong')
+        )
       }
     },
     buildClaim (entity, qualifiers = [], value = null) {
-      const label = this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)?.value || entity.id
+      const label =
+        this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
+          ?.value || entity.id
       return {
         default: true,
         property: {
@@ -198,11 +219,17 @@ export default {
     },
     async getDefaultClaims (itemNumber) {
       const def = ['P476', 'P131']
-      const res = await this.$wikibase.getClaimsOrder(this.table)
+      const res = await this.$wikibase.getClaimsOrderForNewItem(this.table)
       const propertyIds = [...new Set([...def, ...Object.keys(res)])]
       const qualifiersProperties = [...new Set(Object.values(res).flat())]
-      const entities = await this.$wikibase.getEntities(propertyIds, this.$i18n.locale)
-      const qualifiersArr = await this.$wikibase.getEntities(qualifiersProperties, this.$i18n.locale)
+      const entities = await this.$wikibase.getEntities(
+        propertyIds,
+        this.$i18n.locale
+      )
+      const qualifiersArr = await this.$wikibase.getEntities(
+        qualifiersProperties,
+        this.$i18n.locale
+      )
 
       Object.values(entities).forEach((entity) => {
         if (this.isValidPropertyEntity(entity)) {
@@ -210,7 +237,9 @@ export default {
 
           res[entity.id]?.forEach((property) => {
             if (this.isValidPropertyEntity(qualifiersArr[property])) {
-              qualifiers.push(this.buildQualifier(entity, qualifiersArr[property]))
+              qualifiers.push(
+                this.buildQualifier(entity, qualifiersArr[property])
+              )
             }
           })
 
@@ -256,51 +285,110 @@ export default {
           const claimKey = claim?.property?.id
 
           claims[claimKey] = claims[claimKey] || []
-          const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
+          const extractValue = v =>
+            v?.datavalue?.value?.id ?? v?.datavalue?.value
 
-          const createClaim = (val, qualifiers = {}) => ({ value: extractValue(val), qualifiers })
+          const createClaim = (val, qualifiers = {}) => ({
+            value: extractValue(val),
+            qualifiers
+          })
 
-          const qualifiers = Object.fromEntries((claim.qualifiers || []).map(q => [q.property, extractValue(q)]))
+          const qualifiers = Object.fromEntries(
+            (claim.qualifiers || []).map(q => [q.property, extractValue(q)])
+          )
 
-          claims[claimKey].push(createClaim(claim.value, qualifiers))
-
-          ;(Object.values(claim.claimsValues || {}) || []).forEach((v) => {
+          claims[claimKey].push(createClaim(claim.value, qualifiers));
+          (Object.values(claim.claimsValues || {}) || []).forEach((v) => {
             claims[claimKey].push(createClaim(v))
           })
         }
       })
       return claims
     },
+    cleanClaims (claims) {
+      const cleanedClaims = {}
+
+      for (const [propertyId, claimArray] of Object.entries(claims)) {
+        const cleanedClaimArray = []
+
+        for (const claim of claimArray) {
+          const value = claim?.value
+          if (value == null || value === '') {
+            continue
+          }
+
+          const cleanedQualifiers = {}
+          for (const [qualKey, qualVal] of Object.entries(
+            claim.qualifiers || {}
+          )) {
+            if (
+              qualKey &&
+              qualKey !== 'null' &&
+              qualVal != null &&
+              qualVal !== 'null' &&
+              qualVal !== ''
+            ) {
+              cleanedQualifiers[qualKey] = qualVal
+            }
+          }
+
+          cleanedClaimArray.push({
+            value,
+            qualifiers: cleanedQualifiers
+          })
+        }
+
+        if (cleanedClaimArray.length) {
+          cleanedClaims[propertyId] = cleanedClaimArray
+        }
+      }
+
+      return cleanedClaims
+    },
     async create () {
       const existingPBID = await this.$wikibase.getEntityFromPBID(this.pbid)
       if (existingPBID === null) {
         try {
+          const claims = this.cleanClaims(this.claims)
+
           const data = {
             labels: {
               [this.$i18n.locale]: this.label
             },
             descriptions: {
-              [this.$i18n.locale]: this.description
+              [this.$i18n.locale]: this.description || ' '
             },
             claims: {
-              ...this.claims
+              ...claims
             }
           }
-          const response = await this.$wikibase.getWbEdit().entity.create(data, this.$store.getters['auth/getRequestConfig'])
+
+          const response = await this.$wikibase
+            .getWbEdit()
+            .entity.create(data, this.$store.getters['auth/getRequestConfig'])
 
           if (response.success) {
-            await this.$router.push(this.localePath('/item/' + response.entity.id))
+            await this.$router.push(
+              this.localePath('/item/' + response.entity.id)
+            )
           } else {
-            this.$notification.error(this.$t('messages.error.something_went_wrong'))
+            this.$notification.error(
+              this.$t('messages.error.something_went_wrong')
+            )
           }
         } catch (error) {
-          this.$notification.error(error.body.error.info ?? this.$t('messages.error.something_went_wrong'))
+          this.$notification.error(
+            error.body.error.info ??
+              this.$t('messages.error.something_went_wrong')
+          )
         }
       } else {
-        this.$notification.error(this.$t('messages.error.creation.pbid_already_exists', {
-          pbid: this.pbid,
-          item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
-        }))
+        this.$notification.error(
+          this.$t('messages.error.creation.pbid_already_exists', {
+            pbid: this.pbid,
+            item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
+          })
+        )
       }
     }
   }

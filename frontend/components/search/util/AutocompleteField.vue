@@ -7,6 +7,7 @@
     :no-data-text="checkNoDataText"
     :items="items"
     :search-input.sync="search"
+    :filter="removeDiacriticsFilter"
     hide-select
     v-on="$listeners"
   >
@@ -121,6 +122,10 @@ export default {
   methods: {
     fetchItems (query) {
       const sparqlQuery = this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale)
+      if (process.env.debug) {
+        // eslint-disable-next-line no-console
+        console.log(`run sparlql query:\n${sparqlQuery}`)
+      }
       const body = `q=${encodeURIComponent(query)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
       const options = {
         method: 'POST',
@@ -130,7 +135,7 @@ export default {
       fetch(`${this.$config.apiBaseUrl}/api/search`, options)
         .then((response) => {
           if (!response.ok) {
-            throw new Error('Error from the server')
+            throw new Error('Error from the cache server')
           }
           return response.json()
         })
@@ -148,6 +153,14 @@ export default {
           this.$notification.error(error)
           this.loadingItems = false
         })
+    },
+    removeDiacriticsFilter (item, queryText, itemText) {
+      const normalize = str =>
+        str
+          .normalize('NFD')
+          .replace(/[\u0300-\u036F]/g, '')
+          .toLowerCase()
+      return normalize(itemText || item).includes(normalize(queryText)) || queryText === '-'
     }
   }
 }

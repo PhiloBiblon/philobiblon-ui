@@ -13,6 +13,7 @@ export class WikibaseService {
   static PITEM_PATTERN = /^P\d+/
 
   static ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
+  static ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM = 'Ui_SortedProperties_NewItem'
 
   constructor (app, store) {
     const WBK = require('wikibase-sdk')
@@ -122,8 +123,13 @@ export class WikibaseService {
     return result
   }
 
-  async getClaimsOrder (table) {
-    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${this.constructor.ORDER_PROPS_WIKI_PAGE}&prop=wikitext&formatversion=2&format=json&origin=*`
+  async getClaimsOrderForNewItem (table) {
+    return await this.getClaimsOrder(table, true)
+  }
+
+  async getClaimsOrder (table, newItem = false) {
+    const pageName = newItem ? this.constructor.ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM : this.constructor.ORDER_PROPS_WIKI_PAGE
+    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${pageName}&prop=wikitext&formatversion=2&format=json&origin=*`
     const data = await this.wbFetcher(url)
     if (data.error) {
       // eslint-disable-next-line no-console
@@ -139,6 +145,53 @@ export class WikibaseService {
         return null
       }
     }
+  }
+
+  getOrderedQualifiers (qualifiers, qualifiersOrder) {
+    if (qualifiersOrder) {
+      const qualifiersKeys = Object.keys(qualifiers)
+      const fullQualifiersOrder = [...new Set([...qualifiersOrder, ...qualifiersKeys])]
+      return fullQualifiersOrder.reduce((result, key) => {
+        if (Object.prototype.hasOwnProperty.call(qualifiers, key)) {
+          result[key] = qualifiers[key]
+        }
+        return result
+      }, {})
+    } else {
+      return qualifiers
+    }
+  }
+
+  getOrderedValues (values, qualifiersOrder) {
+    return values.map((value) => {
+      if (value.qualifiers) {
+        const clonedValue = { ...value }
+        clonedValue.qualifiers = this.getOrderedQualifiers(clonedValue.qualifiers, qualifiersOrder)
+        return clonedValue
+      } else {
+        return value
+      }
+    })
+  }
+
+  async getOrderedClaims (table, claims) {
+    const claimsKeys = Object.keys(claims)
+    let order = await this.getClaimsOrder(table)
+    let orderKeys
+    if (order) {
+      orderKeys = Object.keys(order)
+      // remove duplicated keys
+      orderKeys = [...new Set([...orderKeys, ...claimsKeys])]
+    } else {
+      order = claims
+      orderKeys = claimsKeys
+    }
+    return orderKeys.filter(key => Object.prototype.hasOwnProperty.call(claims, key)).map(key => ({
+      property: key,
+      values: this.getOrderedValues(claims[key], order[key]),
+      hasQualifiers: claims[key].some(value => value.qualifiers && Object.keys(value.qualifiers).length),
+      qualifiersOrder: order[key]
+    }))
   }
 
   getEntity (id, lang) {
@@ -328,21 +381,6 @@ export class WikibaseService {
           type: 'image'
         }
       }
-    } else if (datatype === 'url' && property === this.constructor.PROPERTY_NOTES) {
-      if (!datavalue) {
-        return {
-          type: 'url',
-          value: null
-        }
-      }
-
-      const notesApiUrl =
-        datavalue.replace('/wiki/', '/w/api.php?action=parse&page=') +
-        '&prop=wikitext&formatversion=2&format=json&origin=*'
-      return this.wbFetcher(notesApiUrl)
-        .then((data) => {
-          return { title: data.parse.title, value: data.parse.wikitext, type: 'html' }
-        })
     } else {
       return { value: datavalue, type: datatype }
     }
@@ -460,7 +498,13 @@ export class WikibaseService {
         return simplifiedResults
       })
       .catch((error) => {
-        this.$notification.error(error)
+        let errorMessage
+        if (error.status) {
+          errorMessage = `Error from Query Service: ${error.body} (${error.status})`
+        } else {
+          errorMessage = `Network issue or timeout with Query Service: ${error}`
+        }
+        this.$notification.error(errorMessage)
         throw error
       })
   }
@@ -528,8 +572,7 @@ export class WikibaseService {
   async getTableLastItem (database, table) {
     return await this.runSparqlQuery(
       this.$query.getTableLastItem(database, table),
-      true,
-      false
+      true
     ).then((results) => {
       return results
     }).catch(() => {
@@ -550,7 +593,7 @@ export class WikibaseService {
       path = path.substring(1)
     }
 
-    return new URL(path, baseUrl).toString()
+    return baseUrl + path
   }
 
   getRelatedTable (entity) {
@@ -585,8 +628,17 @@ export class WikibaseService {
     }
   }
 
-  async updateDiscussionPage (title, text) {
+  async getDiscussionPage (itemId) {
+    const notesApiUrl =
+      `${this.$config.apiBaseUrl}/w/api.php?action=parse&page=Item_talk:${itemId}&prop=wikitext&formatversion=2&format=json&origin=*`
+    const response = await fetch(notesApiUrl)
+    const data = await response.json()
+    return { title: data.parse?.title, value: data.parse?.wikitext }
+  }
+
+  async updateDiscussionPage (itemId, text) {
     try {
+      const title = `Item talk:${itemId}`
       const csrfToken = await this.getCsrfToken()
 
       const response = await fetch(
@@ -605,7 +657,7 @@ export class WikibaseService {
         }
       )
 
-      return await response.json()
+      return await response
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error updating discussion page:', error)
