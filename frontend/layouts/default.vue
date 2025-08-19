@@ -24,7 +24,7 @@
       <v-divider />
 
       <v-list class="mainmenu">
-        <v-list-item :to="localePath('/')">
+        <v-list-item :to="localePath('/wiki/Welcome')">
           <v-list-item-action>
             <v-icon>
               mdi-apps
@@ -40,45 +40,15 @@
           <template #activator>
             <v-list-item-title>{{ $t('menu.item.search.label') }}</v-list-item-title>
           </template>
-          <v-list-item class="subitem" link @click="goTo('/search/texid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.texid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/libid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.libid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/insid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.insid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/bioid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.bioid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/bibid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.bibid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/manid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.manid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/geoid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.geoid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/subid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.subid.label') }}</v-list-item-title>
-            </v-list-item-content>
+          <v-list-item
+            v-for="item in searchItems"
+            :key="item.path"
+            :to="localePath(item.path)"
+            router
+            exact
+            class="subitem"
+          >
+            <v-list-item-title>{{ $t(item.label) }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>
@@ -144,7 +114,17 @@ export default {
     return {
       title_1: 'Philo',
       title_2: 'Biblon',
-      drawer: false
+      drawer: false,
+      searchItems: [
+        { path: '/search/texid/query', label: 'menu.item.search.item.texid.label' },
+        { path: '/search/libid/query', label: 'menu.item.search.item.libid.label' },
+        { path: '/search/insid/query', label: 'menu.item.search.item.insid.label' },
+        { path: '/search/bioid/query', label: 'menu.item.search.item.bioid.label' },
+        { path: '/search/bibid/query', label: 'menu.item.search.item.bibid.label' },
+        { path: '/search/manid/query', label: 'menu.item.search.item.manid.label' },
+        { path: '/search/geoid/query', label: 'menu.item.search.item.geoid.label' },
+        { path: '/search/subid/query', label: 'menu.item.search.item.subid.label' }
+      ]
     }
   },
   computed: {
