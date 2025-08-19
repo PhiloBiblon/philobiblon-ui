@@ -159,7 +159,8 @@ export default {
               { refTable: 'cnum', property: 'P703' },
               { refTable: 'copid', property: 'P703' },
               { refTable: 'manid', property: 'P703' },
-              { refTable: 'texid', property: 'P703' }
+              { refTable: 'texid', property: 'P703' },
+              { refTable: 'texid', property: 'P33' }
             ]
           },
           {

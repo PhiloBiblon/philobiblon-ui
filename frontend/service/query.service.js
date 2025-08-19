@@ -53,6 +53,12 @@ export class QueryService {
     return `contains(${filterFieldWithoutDiacritics}, '${filterValue}')`
   }
 
+  sanitizeSparqlString (input) {
+    return input
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+  }
+
   generateFilterByWords (form, filterField, filterValues) {
     let wordsFilter = null
     for (const filterValue of filterValues) {
@@ -124,13 +130,13 @@ export class QueryService {
       if (form.input.institution.value.property === 'label') {
         filters +=
         `
-        FILTER(str(?label) = "${form.input.institution.value.label}") . \n
+        FILTER(str(?label) = "${this.sanitizeSparqlString(form.input.institution.value.label)}") . \n
         `
       } else {
         filters +=
         `
         ?item wdt:P34 ?value_institution .\n
-        FILTER(STR(?value_institution) = "${form.input.institution.value.label}") . \n
+        FILTER(STR(?value_institution) = "${this.sanitizeSparqlString(form.input.institution.value.label)}") . \n
         `
       }
     }
@@ -196,7 +202,7 @@ export class QueryService {
         filters +=
           `
           ?analytic_item wdt:P34 ?author .
-          FILTER (STR(?author) = "${form.input.author.value.label}")
+          FILTER (STR(?author) = "${this.sanitizeSparqlString(form.input.author.value.label)}")
           `
       }
     }
@@ -205,14 +211,14 @@ export class QueryService {
         filters +=
           `
           ?item wdt:P11 ?title.
-          FILTER (STR(?title) = "${form.input.title.value.label}")
+          FILTER (STR(?title) = "${this.sanitizeSparqlString(form.input.title.value.label)}")
           `
       } else {
         addAnalyticJoin = true
         filters +=
           `
           ?analytic_item wdt:P11 ?title .
-          FILTER (STR(?title) = "${form.input.title.value.label}")
+          FILTER (STR(?title) = "${this.sanitizeSparqlString(form.input.title.value.label)}")
           `
       }
     }
@@ -222,7 +228,7 @@ export class QueryService {
           `
           ?item p:P543 ?incipit_statement .
           ?incipit_statement pq:P70 ?incipit
-          FILTER (STR(?incipit) = "${form.input.incipit.value.label}")
+          FILTER (STR(?incipit) = "${this.sanitizeSparqlString(form.input.incipit.value.label)}")
           `
       } else {
         addAnalyticJoin = true
@@ -230,7 +236,7 @@ export class QueryService {
           `
           ?analytic_item p:P543 ?incipit_statement .
           ?incipit_statement pq:P70 ?incipit
-          FILTER (STR(?incipit) = "${form.input.incipit.value.label}")
+          FILTER (STR(?incipit) = "${this.sanitizeSparqlString(form.input.incipit.value.label)}")
           `
       }
     }
@@ -240,7 +246,7 @@ export class QueryService {
           `
           ?item p:P543 ?explicit_statement .
           ?explicit_statement pq:P602 ?explicit
-          FILTER (STR(?explicit) = "${form.input.explicit.value.label}")
+          FILTER (STR(?explicit) = "${this.sanitizeSparqlString(form.input.explicit.value.label)}")
           `
       } else {
         addAnalyticJoin = true
@@ -248,7 +254,7 @@ export class QueryService {
           `
           ?analytic_item p:P543 ?explicit_statement .
           ?explicit_statement pq:P602 ?explicit
-          FILTER (STR(?explicit) = "${form.input.explicit.value.label}")
+          FILTER (STR(?explicit) = "${this.sanitizeSparqlString(form.input.explicit.value.label)}")
           `
       }
     }
@@ -271,14 +277,14 @@ export class QueryService {
         filters +=
           `
           ?item wdt:P781 ?poetic_form
-          FILTER (STR(?poetic_form) = "${form.input.poetic_form.value.label}")
+          FILTER (STR(?poetic_form) = "${this.sanitizeSparqlString(form.input.poetic_form.value.label)}")
           `
       } else {
         addAnalyticJoin = true
         filters +=
           `
           ?analytic_item wdt:P781 ?poetic_form .
-          FILTER (STR(?poetic_form) = "${form.input.poetic_form.value.label}")
+          FILTER (STR(?poetic_form) = "${this.sanitizeSparqlString(form.input.poetic_form.value.label)}")
           `
       }
     }
@@ -294,6 +300,13 @@ export class QueryService {
           ?analytic_item wdt:P703 wd:${form.input.associated_person.value.item} .
           `
       }
+    }
+    if (form.input.place_composition && form.input.place_composition.value) {
+      filters +=
+        `
+        ?item p:P137 ?history .
+        ?history pq:P47 wd:${form.input.place_composition.value.item} .
+        `
     }
     if (form.input.subject && form.input.subject.value) {
       filters +=
@@ -392,19 +405,19 @@ export class QueryService {
       if (form.input.name.value.property === 'label') {
         filters +=
           `
-          FILTER(str(?label) = "${form.input.name.value.label}") . \n
+          FILTER(str(?label) = "${this.sanitizeSparqlString(form.input.name.value.label)}") . \n
           `
       } else if (form.input.name.value.property === 'alias') {
         filters +=
           `
           ?item skos:altLabel ?alias .
-          FILTER(str(?alias) = "${form.input.name.value.label}") . \n
+          FILTER(str(?alias) = "${this.sanitizeSparqlString(form.input.name.value.label)}") . \n
           `
       } else {
         filters +=
           `
           ?item wdt:P34 ?value_name .\n
-          FILTER(STR(?value_name) = "${form.input.name.value.label}") . \n
+          FILTER(STR(?value_name) = "${this.sanitizeSparqlString(form.input.name.value.label)}") . \n
           `
       }
     }
@@ -528,13 +541,13 @@ export class QueryService {
       if (form.input.library.value.property === 'label') {
         filters +=
         `
-        FILTER(str(?label) = "${form.input.library.value.label}") . \n
+        FILTER(str(?label) = "${this.sanitizeSparqlString(form.input.library.value.label)}") . \n
         `
       } else {
         filters +=
         `
         ?item wdt:P34 ?value_library .\n
-        FILTER(STR(?value_library) = "${form.input.library.value.label}") . \n
+        FILTER(STR(?value_library) = "${this.sanitizeSparqlString(form.input.library.value.label)}") . \n
         `
       }
     }
@@ -548,7 +561,7 @@ export class QueryService {
       { ?library pq:P10 ?value_call_number }
       UNION
       { ?library pq:P30 ?value_call_number }
-      FILTER(STR(?value_call_number) = "${form.input.call_number.value.label}") . \n
+      FILTER(STR(?value_call_number) = "${this.sanitizeSparqlString(form.input.call_number.value.label)}") . \n
       `
     }
     if (form.input.subject && form.input.subject.value) {
@@ -586,14 +599,14 @@ export class QueryService {
       filters +=
         `
         ?item wdt:${form.input.author.value.property} ?value_author .\n
-        FILTER(STR(?value_author) = "${form.input.author.value.label}") . \n
+        FILTER(STR(?value_author) = "${this.sanitizeSparqlString(form.input.author.value.label)}") . \n
         `
     }
     if (form.input.title && form.input.title.value) {
       filters +=
         `
         ?item wdt:P11 ?value_title .\n
-        FILTER(str(?value_title) = "${form.input.title.value.label}") . \n
+        FILTER(str(?value_title) = "${this.sanitizeSparqlString(form.input.title.value.label)}") . \n
         `
     }
     if (form.input.date.value &&
@@ -625,28 +638,28 @@ export class QueryService {
       filters +=
         `
         ?item wdt:P1137 ?value_volume .\n
-        FILTER(str(?value_volume) = "${form.input.volume.value.label}") . \n
+        FILTER(str(?value_volume) = "${this.sanitizeSparqlString(form.input.volume.value.label)}") . \n
         `
     }
     if (form.input.place_publication && form.input.place_publication.value) {
       filters +=
         `
         ?item wdt:P1141 ?value_place_publication .\n
-        FILTER(str(?value_place_publication) = "${form.input.place_publication.value.label}") . \n
+        FILTER(str(?value_place_publication) = "${this.sanitizeSparqlString(form.input.place_publication.value.label)}") . \n
         `
     }
     if (form.input.publisher && form.input.publisher.value) {
       filters +=
         `
         ?item wdt:P1140 ?value_publisher .\n
-        FILTER(str(?value_publisher) = "${form.input.publisher.value.label}") . \n
+        FILTER(str(?value_publisher) = "${this.sanitizeSparqlString(form.input.publisher.value.label)}") . \n
         `
     }
     if (form.input.series && form.input.series.value) {
       filters +=
         `
         ?item wdt:P1139 ?value_series .\n
-        FILTER(str(?value_series) = "${form.input.series.value.label}") . \n
+        FILTER(str(?value_series) = "${this.sanitizeSparqlString(form.input.series.value.label)}") . \n
         `
     }
     if (form.input.locations && form.input.locations.value) {
@@ -662,10 +675,10 @@ export class QueryService {
         OPTIONAL { ?item wdt:P606 ?value_isn_p606 } .\n
         OPTIONAL { ?item wdt:P634 ?value_isn_p634 } .\n
         OPTIONAL { ?item wdt:P743 ?value_isn_p743 } .\n
-        FILTER(str(?value_isn_p605) = "${form.input.international_standard_number.value.label}"
-          || str(?value_isn_p606) = "${form.input.international_standard_number.value.label}"
-          || str(?value_isn_p634) = "${form.input.international_standard_number.value.label}"
-          || str(?value_isn_p743) = "${form.input.international_standard_number.value.label}") . \n
+        FILTER(str(?value_isn_p605) = "${this.sanitizeSparqlString(form.input.international_standard_number.value.label)}"
+          || str(?value_isn_p606) = "${this.sanitizeSparqlString(form.input.international_standard_number.value.label)}"
+          || str(?value_isn_p634) = "${this.sanitizeSparqlString(form.input.international_standard_number.value.label)}"
+          || str(?value_isn_p743) = "${this.sanitizeSparqlString(form.input.international_standard_number.value.label)}") . \n
         `
     }
     if (form.input.type && form.input.type.value) {
@@ -745,13 +758,13 @@ export class QueryService {
       if (form.input.headings.value.property === 'label') {
         filters +=
           `
-          FILTER(str(?label) = "${form.input.headings.value.label}") . \n
+          FILTER(str(?label) = "${this.sanitizeSparqlString(form.input.headings.value.label)}") . \n
           `
       } else {
         filters +=
           `
           ?item wdt:P1031 ?value_heading .\n
-          FILTER(STR(?value_heading) = "${form.input.headings.value.label}") . \n
+          FILTER(STR(?value_heading) = "${this.sanitizeSparqlString(form.input.headings.value.label)}") . \n
           `
       }
     }
@@ -824,7 +837,7 @@ export class QueryService {
           ?cnum_item wdt:P8 ?item .
           ?cnum_item wdt:P5 ?cnum_item_title .
         }
-        FILTER (?item_title = "${form.input.title.value.label}" || ?cnum_item_title = "${form.input.title.value.label}")
+        FILTER (?item_title = "${this.sanitizeSparqlString(form.input.title.value.label)}" || ?cnum_item_title = "${this.sanitizeSparqlString(form.input.title.value.label)}")
         `
     }
     if (form.input.call_number && form.input.call_number.value) {
@@ -864,8 +877,8 @@ export class QueryService {
           FILTER regex(?cnum_pbid, '(.*) cnum ') .
           ?cnum_item wdt:P8 ?item
         }
-        FILTER (?item_p10_label = "${form.input.call_number.value.label}" || ?copid_item_p10_label = "${form.input.call_number.value.label}"
-          || ?item_p30_label = "${form.input.call_number.value.label}" || ?copid_item_p30_label = "${form.input.call_number.value.label}"
+        FILTER (?item_p10_label = "${this.sanitizeSparqlString(form.input.call_number.value.label)}" || ?copid_item_p10_label = "${this.sanitizeSparqlString(form.input.call_number.value.label)}"
+          || ?item_p30_label = "${this.sanitizeSparqlString(form.input.call_number.value.label)}" || ?copid_item_p30_label = "${this.sanitizeSparqlString(form.input.call_number.value.label)}"
         )
         `
     }
@@ -1074,14 +1087,14 @@ export class QueryService {
           ?copid_item wdt:P839 ?item .
           ?copid_item wdt:P800 ?copid_item_binding .
         }
-        FILTER (?item_binding = "${form.input.binding.value.label}" || ?copid_item_binding = "${form.input.binding.value.label}")
+        FILTER (?item_binding = "${this.sanitizeSparqlString(form.input.binding.value.label)}" || ?copid_item_binding = "${this.sanitizeSparqlString(form.input.binding.value.label)}")
         `
     }
     if (form.input.collation && form.input.collation.value) {
       filters +=
         `
         ?item wdt:P704 ?item_collation .
-        FILTER(str(?item_collation) = "${form.input.collation.value.label}")
+        FILTER(str(?item_collation) = "${this.sanitizeSparqlString(form.input.collation.value.label)}")
         `
     }
     if (form.input.hand && form.input.hand.value) {
