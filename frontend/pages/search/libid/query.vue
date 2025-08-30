@@ -50,7 +50,7 @@ export default {
               SELECT (?textString AS ?label) ?textString ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
-                FILTER CONTAINS(?pbid, " {{table}} ") .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {
                   ?item rdfs:label ?textString .
                 }
@@ -101,7 +101,7 @@ export default {
                   SELECT ?item ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) libid ')
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ')
                     ?table_item wdt:P47 ?item .
                     {{langFilter}}
                   }
@@ -112,7 +112,7 @@ export default {
                     ?table_item wdt:P243 ?item . 
                     ?item wdt:P476 ?geo_pbid .
                     FILTER regex(?geo_pbid, '(.*) geoid ')
-                    FILTER regex(?table_pbid, '(.*) libid ')
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ')
                     {{langFilter}}
                   }
                 }
@@ -138,7 +138,7 @@ export default {
                   SELECT DISTINCT ?label ?property
                   WHERE { 
                     ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '(.*) {{table}} ') .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
                     ?item wdt:P34 ?label .
                     BIND('P34' AS ?property)
                   }
@@ -146,7 +146,7 @@ export default {
                   SELECT DISTINCT ?label ?property
                   WHERE { 
                     ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '(.*) {{table}} ') .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{langFilter}}
                     BIND('label' AS ?property)
                   }
@@ -174,7 +174,7 @@ export default {
                 FILTER regex(?manid_pbid, '(.*) manid ')
                 ?manid wdt:P329 ?item .
                 ?item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                FILTER regex(?table_pbid, '{{database}} {{table}} ')
                 ?manid p:P329 ?library .
                 { ?library pq:P10 ?label }
                 UNION
@@ -202,7 +202,7 @@ export default {
                 BIND ( wdt:P243 as ?property)
                 ?table ?property ?item . 
                 {{langFilter}}
-                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                FILTER regex(?table_pbid, '{{database}} {{table}} ')
               }
               ORDER BY STR(?label)
               `

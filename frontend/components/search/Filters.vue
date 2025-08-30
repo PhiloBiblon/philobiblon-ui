@@ -84,6 +84,7 @@
                 :hint="$t(item.hint)"
                 :disabled="item.disabled"
                 :table="table"
+                :database="search_group.value"
                 :autocomplete="item.autocomplete"
                 @click.stop
                 @reset-value="(val) => item.value = val"

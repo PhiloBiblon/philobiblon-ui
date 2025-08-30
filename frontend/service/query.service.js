@@ -1226,8 +1226,12 @@ export class QueryService {
     return template.replace(/{{(\w+)}}/g, (match, p1) => replacements[p1] || '')
   }
 
-  filterQuery (query, table, lang) {
+  filterQuery (query, database, table, lang) {
+    if (database === 'ALL') {
+      database = '(.*)'
+    }
     const replacements = {
+      database,
       table,
       langFilter: this.generateLangFilters(lang)
     }

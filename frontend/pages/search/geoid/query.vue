@@ -51,7 +51,7 @@ export default {
               SELECT (?textString AS ?label) ?textString ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
-                FILTER CONTAINS(?pbid, " {{table}} ") .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {
                   ?item rdfs:label ?textString .
                 }
@@ -100,7 +100,7 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P2 ?item .
                 {{langFilter}}
               }
@@ -122,7 +122,7 @@ export default {
               `
               SELECT ?item ?label {
                 ?table_item wdt:P476 ?table_item_pbid .
-                FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P3 ?item .
                 {{langFilter}}
               }
@@ -147,7 +147,7 @@ export default {
                 BIND ( wdt:P243 as ?property)
                 ?table ?property ?item . 
                 {{langFilter}}
-                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                FILTER regex(?table_pbid, '{{database}} {{table}} ')
               }
               ORDER BY STR(?label)
               `

@@ -52,7 +52,7 @@ export default {
               SELECT (?textString AS ?label) ?textString ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
-                FILTER CONTAINS(?pbid, " {{table}} ") .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {
                   ?item rdfs:label ?textString .
                 }
@@ -103,7 +103,7 @@ export default {
                   SELECT ?item ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P329 ?lib_item .
                     ?lib_item wdt:P47 ?item .
                     {{langFilter}}
@@ -115,7 +115,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?copid_item wdt:P329 ?lib_item .
                     ?lib_item wdt:P47 ?item .
                     {{langFilter}}
@@ -143,7 +143,7 @@ export default {
                   SELECT ?item ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P329 ?item . 
                     {{langFilter}}
                   }
@@ -154,7 +154,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?copid_item wdt:P329 ?item .
                     {{langFilter}}
                   }
@@ -181,7 +181,7 @@ export default {
                   SELECT ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) manid ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item p:P329 ?library .
                     { ?library pq:P10 ?label }
                     UNION
@@ -197,7 +197,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) manid ') .   
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .   
                     ?copid_item p:P329 ?library .
                     { ?library pq:P10 ?label }
                     UNION
@@ -248,14 +248,14 @@ export default {
                 {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P47 ?item .
                     {{langFilter}}
                   }
                 } UNION {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P241 ?item .
                     {{langFilter}}
                   }
@@ -280,14 +280,14 @@ export default {
                 {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P25 ?item .
                     {{langFilter}}
                   }
                 } UNION {
                   SELECT ?item ?label ?property {
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P207 ?item .
                     {{langFilter}}
                   }
@@ -311,7 +311,7 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P67 ?item .
                 {{langFilter}}
               }
@@ -336,7 +336,7 @@ export default {
                   SELECT ?item ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P229 ?item . 
                     {{langFilter}}
                   }
@@ -347,7 +347,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?copid_item wdt:P229 ?item .
                     {{langFilter}}
                   }
@@ -374,7 +374,7 @@ export default {
                   SELECT ?item ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P703 ?item . 
                     {{langFilter}}
                   }
@@ -385,7 +385,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?copid_item wdt:P703 ?item .
                     {{langFilter}}
                   }
@@ -417,7 +417,7 @@ export default {
                   SELECT ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P5 ?label . 
                   }
                 } UNION {
@@ -427,7 +427,7 @@ export default {
                     FILTER regex(?cnum_pbid, '(.*) cnum ') .
                     ?cnum_item wdt:P8 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?cnum_item wdt:P5 ?label .
                   }
                 }
@@ -451,7 +451,7 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P2 ?item .
                 {{langFilter}}
               }
@@ -477,7 +477,7 @@ export default {
                 BIND ( wdt:P243 as ?property)
                 ?table ?property ?item . 
                 {{langFilter}}
-                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                FILTER regex(?table_pbid, '{{database}} {{table}} ')
               }
               ORDER BY STR(?label)
               `
@@ -500,7 +500,7 @@ export default {
                   SELECT ?item ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P480 ?item . 
                     {{langFilter}}
                   }
@@ -511,7 +511,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?copid_item wdt:P480 ?item .
                     {{langFilter}}
                   }
@@ -536,7 +536,7 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P93 ?item .
                 {{langFilter}}
               }
@@ -561,7 +561,7 @@ export default {
                   SELECT ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P800 ?label . 
                   }
                 } UNION {
@@ -571,7 +571,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?copid_item wdt:P800 ?label .
                   }
                 }
@@ -595,7 +595,7 @@ export default {
               SELECT DISTINCT ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P704 ?label .
               }
               ORDER BY ?label
@@ -617,7 +617,7 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P747 ?item .
                 {{langFilter}}
               }
@@ -640,7 +640,7 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P748 ?item .
                 {{langFilter}}
               }
@@ -665,7 +665,7 @@ export default {
                   SELECT ?item ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P749 ?item . 
                     {{langFilter}}
                   }
@@ -676,7 +676,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?copid_item wdt:P749 ?item .
                     {{langFilter}}
                   }
@@ -703,7 +703,7 @@ export default {
                   SELECT ?item ?label
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P801 ?item . 
                     {{langFilter}}
                   }
@@ -714,7 +714,7 @@ export default {
                     FILTER regex(?copid_pbid, '(.*) copid ') .
                     ?copid_item wdt:P839 ?table_item .
                     ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '(.*) {{table}} ') .      
+                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .      
                     ?copid_item wdt:P801 ?item .
                     {{langFilter}}
                   }
@@ -739,7 +739,7 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P778 ?item .
                 {{langFilter}}
               }
@@ -762,7 +762,7 @@ export default {
               SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P790 ?item .
                 {{langFilter}}
               }

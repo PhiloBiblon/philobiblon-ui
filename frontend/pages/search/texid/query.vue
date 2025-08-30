@@ -51,7 +51,7 @@ export default {
               SELECT (?textString AS ?label) ?textString ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
-                FILTER CONTAINS(?pbid, " {{table}} ") .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {
                   ?item rdfs:label ?textString .
                 }
@@ -101,7 +101,7 @@ export default {
                 {
                   SELECT ?item ?label {
                     ?table_item wdt:P476 ?table_item_pbid .
-                    FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P21 ?item .
                     {{langFilter}}
                   }
@@ -111,7 +111,7 @@ export default {
                     FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
                     ?analytic_item wdt:P590 ?table_item .
                     ?table_item wdt:P476 ?table_item_pbid .
-                    FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                     ?analytic_item wdt:P34 ?label
                   }
                 }
@@ -136,7 +136,7 @@ export default {
                 {
                   SELECT ?item ?label {
                     ?item wdt:P476 ?table_item_pbid .
-                    FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                     ?item wdt:P11 ?label .
                   }
                 } UNION {
@@ -145,7 +145,7 @@ export default {
                     FILTER regex(?analytic_pbid, '(.*) cnum ') .
                     ?analytic_item wdt:P590 ?item .
                     ?item wdt:P476 ?item_pbid .
-                    FILTER regex(?item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?item_pbid, '{{database}} {{table}} ') .
                     ?analytic_item wdt:P11 ?label
                   }
                 }
@@ -170,7 +170,7 @@ export default {
                 {
                     SELECT ?item ?label {
                     ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '(.*) {{table}} ') .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
                     ?item p:P543 ?statement .
                     ?statement pq:P70 ?label
                   }
@@ -180,7 +180,7 @@ export default {
                     FILTER regex(?analytic_pbid, '(.*) cnum ') .
                     ?analytic_item wdt:P590 ?item .
                     ?item wdt:P476 ?item_pbid .
-                    FILTER regex(?item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?item_pbid, '{{database}} {{table}} ') .
                     ?analytic_item p:P543 ?statement .
                     ?statement pq:P70 ?label
                   }
@@ -206,7 +206,7 @@ export default {
                 {
                     SELECT ?item ?label {
                     ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '(.*) {{table}} ') .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
                     ?item p:P543 ?statement .
                     ?statement pq:P602 ?label
                   }
@@ -216,7 +216,7 @@ export default {
                     FILTER regex(?analytic_pbid, '(.*) cnum ') .
                     ?analytic_item wdt:P590 ?item .
                     ?item wdt:P476 ?item_pbid .
-                    FILTER regex(?item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?item_pbid, '{{database}} {{table}} ') .
                     ?analytic_item p:P543 ?statement .
                     ?statement pq:P602 ?label
                   }
@@ -242,7 +242,7 @@ export default {
                 {
                   SELECT ?item ?label {
                     ?table_item wdt:P476 ?table_item_pbid .
-                    FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P703 ?item .
                     {{langFilter}}
                   }
@@ -252,7 +252,7 @@ export default {
                     FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
                     ?analytic_item wdt:P590 ?table_item .
                     ?table_item wdt:P476 ?table_item_pbid .
-                    FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                     ?analytic_item wdt:P703 ?item .
                     {{langFilter}}
                   }
@@ -276,7 +276,7 @@ export default {
               `
               SELECT DISTINCT ?item ?label {
                 ?table_item wdt:P476 ?table_item_pbid .
-                FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                 ?table_item p:P137 ?history_statement .
                 ?history_statement pq:P47 ?item .
                 ?item wdt:P476 ?item_pbid .
@@ -310,7 +310,7 @@ export default {
               `
               SELECT DISTINCT ?item ?label {
                 ?table_item wdt:P476 ?table_item_pbid .
-                FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                 ?table_item p:P121 ?statement .
                 ?statement pq:P700 ?item
                 {{langFilter}}
@@ -334,7 +334,7 @@ export default {
                 {
                   SELECT ?item ?label {
                     ?table_item wdt:P476 ?table_item_pbid .
-                    FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                     ?table_item wdt:P18 ?item .
                     {{langFilter}}
                   }
@@ -344,7 +344,7 @@ export default {
                     FILTER regex(?analytic_pbid, '(.*) cnum ') .
                     ?analytic_item wdt:P590 ?table_item .
                     ?table_item wdt:P476 ?table_item_pbid .
-                    FILTER regex(?table_item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                     ?analytic_item wdt:P18 ?item
                     {{langFilter}}
                   }
@@ -370,7 +370,7 @@ export default {
                 {
                   SELECT ?label {
                     ?item wdt:P476 ?item_pbid .
-                    FILTER regex(?item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?item_pbid, '{{database}} {{table}} ') .
                     ?item wdt:P781 ?label
                   }
                 } UNION {
@@ -379,7 +379,7 @@ export default {
                     FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
                     ?analytic_item wdt:P590 ?item .
                     ?item wdt:P476 ?item_pbid .
-                    FILTER regex(?item_pbid, '(.*) {{table}} ') .
+                    FILTER regex(?item_pbid, '{{database}} {{table}} ') .
                     ?analytic_item wdt:P781 ?label
                   }
                 }
@@ -406,7 +406,7 @@ export default {
                 BIND ( wdt:P243 as ?property)
                 ?table ?property ?item . 
                 {{langFilter}}
-                FILTER regex(?table_pbid, '(.*) {{table}} ')
+                FILTER regex(?table_pbid, '{{database}} {{table}} ')
               }
               ORDER BY STR(?label)
               `

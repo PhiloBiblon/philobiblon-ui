@@ -42,6 +42,10 @@ export default {
       type: String,
       required: true
     },
+    database: {
+      type: String,
+      required: true
+    },
     autocomplete: {
       type: Object,
       default: null
@@ -110,6 +114,9 @@ export default {
       this.searchTimeout = setTimeout(() => {
         this.fetchItems(val)
       }, 500)
+    },
+    database (val) {
+      this.items = []
     }
   },
   created () {
@@ -121,7 +128,7 @@ export default {
   },
   methods: {
     fetchItems (query) {
-      const sparqlQuery = this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale)
+      const sparqlQuery = this.$wikibase.$query.filterQuery(this.autocomplete.query, this.database, this.table, this.$i18n.locale)
       if (process.env.debug) {
         // eslint-disable-next-line no-console
         console.log(`run sparlql query:\n${sparqlQuery}`)
