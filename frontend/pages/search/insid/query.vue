@@ -48,19 +48,20 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT (?textString AS ?label) ?textString ?item
+              SELECT (STR(?labelObj) AS ?label) ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {
-                  ?item rdfs:label ?textString .
+                  ?item rdfs:label ?labelObj .
+                  {{langFilter}}
                 }
                 UNION
                 {
-                  ?item skos:altLabel ?textString .
+                  ?item skos:altLabel ?labelObj .
+                  {{langFilter}}
                 }
               }
-              ORDER BY LCASE(?textString)
               `,
               allowFreeText: true
             }
@@ -97,16 +98,16 @@ export default {
             autocomplete: {
               query:
                 `
-                SELECT DISTINCT ?item ?label
-                WHERE { 
+                SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+                WHERE {
                   ?item wdt:P476 ?pbid .
                   FILTER regex(?pbid, '(.*) geoid ') .
+                  ?item rdfs:label ?labelObj .
                   {{langFilter}}
-                  ?table wdt:P297 ?item . 
+                  ?table wdt:P297 ?item .
                   ?table wdt:P476 ?table_pbid .
                   FILTER regex(?table_pbid, '{{database}} {{table}} ')
                 }
-                ORDER BY STR(?label)
                 `
             }
           },
@@ -122,13 +123,13 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?item ?label
-              WHERE { 
+              SELECT ?item (STR(?labelObj) AS ?label)
+              WHERE {
                 ?item wdt:P994 ?pbid .
+                ?item rdfs:label ?labelObj .
                 {{langFilter}}
                 FILTER regex(?pbid, 'INSTITUTIONS\\\\*(CLASS|TYPE)\\\\*') .
               }
-              ORDER BY STR(?label)
               `
             }
           },
@@ -146,24 +147,25 @@ export default {
               `
               SELECT DISTINCT ?label ?property {
                 {
-                  SELECT ?label ?property
-                  WHERE { 
+                  SELECT (STR(?labelObj) AS ?label) ?property
+                  WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    ?item wdt:P34 ?label .
+                    ?item wdt:P34 ?labelObj .
+                    {{langFilter}}
                     BIND('P34' AS ?property)
                   }
                 } UNION {
-                  SELECT ?label ?property
-                  WHERE { 
+                  SELECT (STR(?labelObj) AS ?label) ?property
+                  WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    ?item rdfs:label ?labelObj .
                     {{langFilter}}
                     BIND('label' AS ?property)
                   }
                 }
               }
-              ORDER BY STR(?label)
               `
             }
           },
@@ -179,15 +181,15 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label
-              WHERE { 
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              WHERE {
                 ?table wdt:P476 ?table_pbid .
                 BIND ( wdt:P243 as ?property)
-                ?table ?property ?item . 
+                ?table ?property ?item .
+                ?item rdfs:label ?labelObj .
                 {{langFilter}}
                 FILTER regex(?table_pbid, '{{database}} {{table}} ')
               }
-              ORDER BY STR(?label)
               `
             }
           },

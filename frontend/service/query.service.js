@@ -31,17 +31,8 @@ export class QueryService {
     }
   }
 
-  generateLangFilter (lang) {
-    return `OPTIONAL { ?item rdfs:label ?label FILTER langMatches(lang(?label), '${lang}') }.`
-  }
-
   generateLangFilters (lang) {
-    let langFilters = this.generateLangFilter(lang)
-    // fallback to en if selected lang has no label
-    if (lang !== 'en') {
-      langFilters += '\n' + this.generateLangFilter('en')
-    }
-    return langFilters
+    return "FILTER (lang(?labelObj) = 'ca' || lang(?labelObj) = 'es' || lang(?labelObj) = 'en' || lang(?labelObj) = 'gl' || lang(?labelObj) = 'pt') ."
   }
 
   replaceDiacritics (field) {
