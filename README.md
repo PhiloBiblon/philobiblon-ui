@@ -19,7 +19,8 @@ PhiloBiblon UI has two main modules:
     - Proxy to wikibase-edit library in frontend in order to edit items in the Wikibase.
     - Improve performance as a cache for SPARQL queries.
 
-![philobiblon-ui drawio](https://github.com/faulhaber/PhiloBiblon/assets/13070879/6f08b49c-ed99-4145-b01f-b9663b93278d)
+<img width="535" height="115" alt="253979975-6f08b49c-ed99-4145-b01f-b9663b93278d drawio" src="https://github.com/user-attachments/assets/4222019f-803f-43df-9aac-a71dffce1823" />
+
 
 ## Build
 
