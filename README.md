@@ -26,9 +26,9 @@ PhiloBiblon UI has two main modules:
 
 Steps to build the modules:
 
-1. Set `.env` file which defines the environment variables depending on the platform where we are installing (currently, `.env.local` for local development; `.env.pbuidev` for sandbox).
+1. Set `.env` file which defines the environment variables depending on the platform where we are installing.
 ```
-ln -s .env.pbuidev .env
+ln -s .env.template .env
 ```  
 2. Build application.
 ```
