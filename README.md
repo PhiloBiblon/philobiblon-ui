@@ -68,8 +68,6 @@ The configuration is centralized in the `env file`, where we can find all the en
 - __frontend__
   - FRONTEND_DOMAIN: Public DNS domain.
   - FRONTEND_HTTP_PORT: Public port for frontend.
-  - FRONTEND_HTTPS_PORT: Public port for backend.
-  - LETSENCRYPT_USER: Let's Encrypt user mail.
   - API_BASE_URL: URL for public backend API.
 - __backend__
   - WIKIBASE_BASE_URL: Wikibase base url (i.e, without any request URI)
