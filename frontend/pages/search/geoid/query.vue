@@ -48,19 +48,20 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT (?textString AS ?label) ?textString ?item
+              SELECT (STR(?labelObj) AS ?label) ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {
-                  ?item rdfs:label ?textString .
+                  ?item rdfs:label ?labelObj .
+                  {{langFilter}}
                 }
                 UNION
                 {
-                  ?item skos:altLabel ?textString .
+                  ?item skos:altLabel ?labelObj .
+                  {{langFilter}}
                 }
               }
-              ORDER BY LCASE(?textString)
               `,
               allowFreeText: true
             }
@@ -97,14 +98,14 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label
-              WHERE { 
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              WHERE {
                 ?table_item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P2 ?item .
+                ?item rdfs:label ?labelObj .
                 {{langFilter}}
               }
-              ORDER BY STR(?label)
               `
             }
           },
@@ -120,13 +121,13 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?item ?label {
+              SELECT ?item (STR(?labelObj) AS ?label) {
                 ?table_item wdt:P476 ?table_item_pbid .
                 FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                 ?table_item wdt:P3 ?item .
+                ?item rdfs:label ?labelObj .
                 {{langFilter}}
               }
-              ORDER BY STR(?label)
               `
             }
           },
@@ -142,15 +143,15 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label
-              WHERE { 
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              WHERE {
                 ?table wdt:P476 ?table_pbid .
                 BIND ( wdt:P243 as ?property)
-                ?table ?property ?item . 
+                ?table ?property ?item .
+                ?item rdfs:label ?labelObj .
                 {{langFilter}}
                 FILTER regex(?table_pbid, '{{database}} {{table}} ')
               }
-              ORDER BY STR(?label)
               `
             }
           },

@@ -47,19 +47,20 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT (?textString AS ?label) ?textString ?item
+              SELECT (STR(?labelObj) AS ?label) ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {
-                  ?item rdfs:label ?textString .
+                  ?item rdfs:label ?labelObj .
+                  {{langFilter}}
                 }
                 UNION
                 {
-                  ?item skos:altLabel ?textString .
+                  ?item skos:altLabel ?labelObj .
+                  {{langFilter}}
                 }
               }
-              ORDER BY LCASE(?textString)
               `,
               allowFreeText: true
             }
@@ -99,23 +100,23 @@ export default {
               SELECT DISTINCT ?label ?property {
                 {
                   SELECT ?label ?property
-                  WHERE { 
+                  WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     ?item wdt:P1031 ?label .
                     BIND('P1031' AS ?property)
                   }
                 } UNION {
-                  SELECT ?label ?property
-                  WHERE { 
+                  SELECT (STR(?labelObj) AS ?label) ?property
+                  WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    ?item rdfs:label ?labelObj .
                     {{langFilter}}
                     BIND('label' AS ?property)
                   }
                 }
               }
-              ORDER BY STR(?label)
               `
             }
           },
