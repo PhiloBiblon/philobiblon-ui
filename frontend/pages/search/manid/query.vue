@@ -261,6 +261,7 @@ export default {
                   }
                 }
               }
+              ORDER BY STR(?label)
               `
             }
           },
@@ -293,6 +294,7 @@ export default {
                   }
                 }
               }
+              ORDER BY STR(?label)
               `
             }
           },

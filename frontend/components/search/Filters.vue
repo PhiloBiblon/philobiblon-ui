@@ -327,6 +327,7 @@ export default {
         item.disabled = false
       }
       this.search_group.value = 'ALL'
+      this.isBitagapSelected = false
       this.bitagap_group.value = 'ALL'
       this.search_type.value = true
       this.showResults = false
