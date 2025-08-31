@@ -143,13 +143,19 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?property
               WHERE {
                 ?table_item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '{{database}} {{table}} ') .
-                ?table_item wdt:P171 ?item .
-                ?item rdfs:label ?labelObj .
-                {{langFilter}}
+                {
+                  BIND(wdt:P171 AS ?property)
+                  ?table_item ?property ?item .
+                  ?item rdfs:label ?labelObj .
+                  {{langFilter}}
+                } UNION {
+                  BIND(wdt:P173 AS ?property)
+                  ?table_item ?property ?labelObj .
+                }
               }
               `
             }
