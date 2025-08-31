@@ -70,7 +70,7 @@ public class SearchServiceImpl implements SearchService {
         return StreamSupport
                 .stream(Spliterators.spliteratorUnknownSize(resultSet, Spliterator.ORDERED), false)
                 .filter(qs -> qs.contains(LABEL_FIELD))
-                .map(qs -> new AbstractMap.SimpleEntry<>(qs, rank(qs, queryWords)))
+                .map(qs -> new AbstractMap.SimpleEntry<>(qs, rank(qs.getLiteral(LABEL_FIELD).getString(), queryWords)))
                 // Remove options with no matches
                 .filter(entry -> entry.getValue() < Integer.MAX_VALUE)
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
@@ -79,8 +79,7 @@ public class SearchServiceImpl implements SearchService {
                 .collect(Collectors.toList());
     }
 
-    static int rank(QuerySolution querySolution, List<String> queryWords) {
-        String label = querySolution.getLiteral(LABEL_FIELD).getString();
+    static int rank(String label, List<String> queryWords) {
         String normText = normalize(label);
 
         List<Integer> wordPositions = new ArrayList<>();
@@ -108,8 +107,10 @@ public class SearchServiceImpl implements SearchService {
 
         int orderPenalty = inOrder ? 0 : 200;
 
+        int lengthPenalty = normText.length();
+
         // Reverse ranking: more matches → lower value; lower position → more relevant
-        return 1000 - (totalMatches * 100) + positionScore + orderPenalty;
+        return 1000 - (totalMatches * 100) + positionScore + orderPenalty + lengthPenalty;
     }
 
 }

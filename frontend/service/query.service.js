@@ -31,8 +31,21 @@ export class QueryService {
     }
   }
 
-  generateLangFilters (lang) {
+  generateSearchLangFilters (lang) {
     return "FILTER (lang(?labelObj) = 'ca' || lang(?labelObj) = 'es' || lang(?labelObj) = 'en' || lang(?labelObj) = 'gl' || lang(?labelObj) = 'pt') ."
+  }
+
+  generateLangFilter (lang) {
+    return `OPTIONAL { ?item rdfs:label ?label FILTER langMatches(lang(?label), '${lang}') }.`
+  }
+
+  generateLangFilters (lang) {
+    let langFilters = this.generateLangFilter(lang)
+    // fallback to en if selected lang has no label
+    if (lang !== 'en') {
+      langFilters += '\n' + this.generateLangFilter('en')
+    }
+    return langFilters
   }
 
   replaceDiacritics (field) {
@@ -413,10 +426,18 @@ export class QueryService {
       }
     }
     if (form.input.title && form.input.title.value) {
-      filters +=
-        `
-        ?item wdt:P171 wd:${form.input.title.value.item} .\n
-        `
+      if (form.input.title.value.property === 'P171') {
+        filters +=
+          `
+          ?item wdt:P171 wd:${form.input.title.value.item} .\n
+          `
+      } else if (form.input.title.value.property === 'P173') {
+        filters +=
+          `
+          ?item wdt:P173 ?bio_notes .\n
+          FILTER(STR(?bio_notes) = "${form.input.title.value.label}") . \n
+          `
+      }
     }
     if (form.input.date.value &&
       (form.input.date.value.begin || form.input.date.value.end)) {
@@ -1237,7 +1258,7 @@ export class QueryService {
     const replacements = {
       database,
       table,
-      langFilter: this.generateLangFilters(lang)
+      langFilter: this.generateSearchLangFilters(lang)
     }
     return this.addPrefixes(this.fillTemplate(query, replacements))
   }
