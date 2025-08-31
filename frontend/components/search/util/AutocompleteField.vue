@@ -7,7 +7,7 @@
     :no-data-text="checkNoDataText"
     :items="items"
     :search-input.sync="search"
-    :filter="removeDiacriticsFilter"
+    :filter="acceptAll"
     hide-select
     v-on="$listeners"
   >
@@ -105,9 +105,6 @@ export default {
       if (this.value && val === this.value.label) {
         return
       }
-      if (val === '-') {
-        val = ''
-      }
       this.loadingItems = true
       clearTimeout(this.searchTimeout)
       // Delay to avoid continuous requests when user is writing
@@ -161,13 +158,9 @@ export default {
           this.loadingItems = false
         })
     },
-    removeDiacriticsFilter (item, queryText, itemText) {
-      const normalize = str =>
-        str
-          .normalize('NFD')
-          .replace(/[\u0300-\u036F]/g, '')
-          .toLowerCase()
-      return normalize(itemText || item).includes(normalize(queryText)) || queryText === '-'
+    acceptAll (item, queryText, itemText) {
+      // We accept all the item because the item are already filtered in the backend
+      return true
     }
   }
 }
