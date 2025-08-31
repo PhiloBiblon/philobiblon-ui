@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 public class SearchServiceImpl implements SearchService {
 
     private static final String LABEL_FIELD = "label";
-    private static final int MAX_RESULTS = 100;
+    private static final int MAX_RESULTS = 300;
 
     @Override
     public List<Option> search(ResultSet resultSet, String q) {
@@ -47,6 +47,7 @@ public class SearchServiceImpl implements SearchService {
                 }
             }
         }
+
         return options;
     }
 
