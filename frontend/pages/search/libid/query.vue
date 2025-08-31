@@ -47,10 +47,11 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT (STR(?labelObj) AS ?label) ?item
+              SELECT ?label ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
                   {{langFilter}}
@@ -99,22 +100,24 @@ export default {
               `
               SELECT DISTINCT ?item ?label {
                 {
-                  SELECT ?item (STR(?labelObj) AS ?label)
+                  SELECT ?item ?label
                   WHERE {
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '{{database}} {{table}} ')
+                    {{bitagapGroupFilter}}
                     ?table_item wdt:P47 ?item .
                     ?item rdfs:label ?labelObj .
                     {{langFilter}}
                   }
                 } UNION {
-                  SELECT ?item (STR(?labelObj) AS ?label)
+                  SELECT ?item ?label
                   WHERE {
                     ?table_item wdt:P476 ?table_pbid .
                     ?table_item wdt:P243 ?item .
                     ?item wdt:P476 ?geo_pbid .
                     FILTER regex(?geo_pbid, '(.*) geoid ')
                     FILTER regex(?table_pbid, '{{database}} libid ')
+                    {{bitagapGroupFilter}}
                     ?item rdfs:label ?labelObj .
                     {{langFilter}}
                   }
@@ -137,19 +140,21 @@ export default {
               `
               SELECT DISTINCT ?label ?property {
                 {
-                  SELECT (STR(?labelObj) AS ?label) ?property
+                  SELECT ?label ?property
                   WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
                     ?item wdt:P34 ?labelObj .
                     {{langFilter}}
                     BIND('P34' AS ?property)
                   }
                 } UNION {
-                  SELECT (STR(?labelObj) AS ?label) ?property
+                  SELECT ?label ?property
                   WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
                     ?item rdfs:label ?labelObj .
                     {{langFilter}}
                     BIND('label' AS ?property)
@@ -178,6 +183,7 @@ export default {
                 ?manid wdt:P329 ?item .
                 ?item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '{{database}} {{table}} ')
+                {{bitagapGroupFilter}}
                 ?manid p:P329 ?library .
                 { ?library pq:P10 ?label }
                 UNION
@@ -198,7 +204,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              SELECT DISTINCT ?item ?label
               WHERE {
                 ?table wdt:P476 ?table_pbid .
                 BIND ( wdt:P243 as ?property)
@@ -206,6 +212,7 @@ export default {
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
                 FILTER regex(?table_pbid, '{{database}} {{table}} ')
+                {{bitagapGroupFilter}}
               }
               `
             }

@@ -48,10 +48,11 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT (STR(?labelObj) AS ?label) ?item
+              SELECT ?label ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
                   {{langFilter}}
@@ -106,6 +107,7 @@ export default {
                         BIND ( wdt:P1134 as ?property)
                         ?item ?property ?label .
                         FILTER regex(?pbid, '{{database}} {{table}} ')
+                        {{bitagapGroupFilter}}
                       }
                 } UNION {
                       SELECT DISTINCT ?label ?property
@@ -114,6 +116,7 @@ export default {
                         BIND ( wdt:P1136 as ?property)
                         ?item ?property ?label . 
                         FILTER regex(?pbid, '{{database}} {{table}} ')
+                        {{bitagapGroupFilter}}
                       }
                 }
               }
@@ -136,6 +139,7 @@ export default {
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?item wdt:P11 ?label .
               }
               `
@@ -167,6 +171,7 @@ export default {
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?item wdt:P1137 ?label .
               }
               `
@@ -188,6 +193,7 @@ export default {
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?item wdt:P1141 ?label .
               }
               `
@@ -209,6 +215,7 @@ export default {
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?item wdt:P1140 ?label .
               }
               `
@@ -230,6 +237,7 @@ export default {
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?item wdt:P1139 ?label .
               }
               `
@@ -247,10 +255,11 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?table_item wdt:P329 ?item .
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
@@ -276,6 +285,7 @@ export default {
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
                     ?table_item wdt:P605 ?label .
                   }
                 } UNION {
@@ -283,6 +293,7 @@ export default {
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
                     ?table_item wdt:P606 ?label .
                   }
                 } UNION {
@@ -290,6 +301,7 @@ export default {
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
                     ?table_item wdt:P743 ?label .
                   }
                 } UNION {
@@ -297,6 +309,7 @@ export default {
                   WHERE { 
                     ?table_item wdt:P476 ?table_pbid .
                     FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
                     ?table_item wdt:P634 ?label .
                   }
                 }
@@ -316,10 +329,11 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table_item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?table_item wdt:P2 ?item .
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
@@ -339,7 +353,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              SELECT DISTINCT ?item ?label
               WHERE { 
                 ?table wdt:P476 ?table_pbid .
                 BIND ( wdt:P243 as ?property)
@@ -347,6 +361,7 @@ export default {
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
                 FILTER regex(?table_pbid, '{{database}} {{table}} ')
+                {{bitagapGroupFilter}}
               }
               `
             }

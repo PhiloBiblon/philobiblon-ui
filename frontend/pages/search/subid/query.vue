@@ -47,10 +47,11 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT (STR(?labelObj) AS ?label) ?item
+              SELECT ?label ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
                   {{langFilter}}
@@ -103,14 +104,16 @@ export default {
                   WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
                     ?item wdt:P1031 ?label .
                     BIND('P1031' AS ?property)
                   }
                 } UNION {
-                  SELECT (STR(?labelObj) AS ?label) ?property
+                  SELECT ?label ?property
                   WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
                     ?item rdfs:label ?labelObj .
                     {{langFilter}}
                     BIND('label' AS ?property)
