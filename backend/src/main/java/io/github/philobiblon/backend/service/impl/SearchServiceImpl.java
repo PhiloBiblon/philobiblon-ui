@@ -110,7 +110,7 @@ public class SearchServiceImpl implements SearchService {
         int lengthPenalty = normText.length();
 
         // Reverse ranking: more matches → lower value; lower position → more relevant
-        return 1000 - (totalMatches * 100) + positionScore + orderPenalty + lengthPenalty;
+        return 1000 - (totalMatches * 100) + (positionScore * 50) + lengthPenalty + orderPenalty;
     }
 
 }
