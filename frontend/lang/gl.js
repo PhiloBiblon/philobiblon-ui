@@ -73,6 +73,41 @@ export default {
             label: 'copid'
           }
         }
+      },
+      crete: {
+        label: 'Crear',
+        item: {
+          texid: {
+            label: 'Obra'
+          },
+          libid: {
+            label: 'Biblioteca'
+          },
+          insid: {
+            label: 'Institución'
+          },
+          bioid: {
+            label: 'Persoa'
+          },
+          bibid: {
+            label: 'Referencia'
+          },
+          manid: {
+            label: 'MsEd'
+          },
+          geoid: {
+            label: 'Xeografía'
+          },
+          subid: {
+            label: 'Asunto'
+          },
+          cnum: {
+            label: 'Testimonio textual'
+          },
+          copid: {
+            label: 'Copia adicional'
+          }
+        }
       }
     }
   },

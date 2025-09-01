@@ -1,8 +1,7 @@
 <template>
-  <item-create
-    v-if="table"
-    :database="database"
+  <create-base
     :table="table"
+    :breadcrumb-items="breadcrumb_items"
   />
 </template>
 
@@ -11,13 +10,12 @@ export default {
   data () {
     return {
       table: '',
-      database: ''
+      breadcrumb_items: []
     }
   },
-  mounted () {
-    this.database = this.$route.query.database ?? 'All'
+  created () {
     this.table = this.$route.params.table
-    this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(this.table))
+    this.breadcrumb_items = this.getBreadcrumbItems(this.table)
   },
   methods: {
     getBreadcrumbItems (table) {
