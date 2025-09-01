@@ -27,7 +27,12 @@
         <v-btn v-if="!forCreate" :disabled="!canCreate(key)" text icon @click.stop="addClaim(key)">
           <v-icon>mdi-check</v-icon>
         </v-btn>
-        <v-btn v-if="claim?.property?.id !== pbid" text icon @click.stop="removeClaim(key)">
+        <v-btn
+          v-if="(!forCreate && claim?.property?.id !== pbid) || (forCreate && claim?.removable)"
+          text
+          icon
+          @click.stop="removeClaim(key)"
+        >
           <v-icon>mdi-trash-can</v-icon>
         </v-btn>
       </v-col>

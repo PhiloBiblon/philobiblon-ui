@@ -51,6 +51,24 @@
             <v-list-item-title>{{ $t(item.label) }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
+        <v-list-group
+          v-if="$store.state.auth.isLogged"
+          prepend-icon="mdi-plus"
+        >
+          <template #activator>
+            <v-list-item-title>{{ $t('item.create.button.text') }}</v-list-item-title>
+          </template>
+          <v-list-item
+            v-for="item in createItems"
+            :key="item.path"
+            :to="localePath(item.path)"
+            router
+            exact
+            class="subitem"
+          >
+            <v-list-item-title>{{ $t(item.label) }}</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -122,6 +140,18 @@ export default {
         { path: '/search/manid/query', label: 'menu.item.search.item.manid.label' },
         { path: '/search/geoid/query', label: 'menu.item.search.item.geoid.label' },
         { path: '/search/subid/query', label: 'menu.item.search.item.subid.label' }
+      ],
+      createItems: [
+        { path: '/item/texid/create', label: 'menu.item.create.item.texid.label' },
+        { path: '/item/libid/create', label: 'menu.item.create.item.libid.label' },
+        { path: '/item/insid/create', label: 'menu.item.create.item.insid.label' },
+        { path: '/item/bioid/create', label: 'menu.item.create.item.bioid.label' },
+        { path: '/item/bibid/create', label: 'menu.item.create.item.bibid.label' },
+        { path: '/item/manid/create', label: 'menu.item.create.item.manid.label' },
+        { path: '/item/geoid/create', label: 'menu.item.create.item.geoid.label' },
+        { path: '/item/subid/create', label: 'menu.item.create.item.subid.label' },
+        { path: '/item/cnum/create', label: 'menu.item.create.item.cnum.label' },
+        { path: '/item/copid/create', label: 'menu.item.create.item.copid.label' }
       ]
     }
   },
