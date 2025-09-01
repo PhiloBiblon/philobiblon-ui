@@ -74,6 +74,41 @@ export default {
             label: 'copid'
           }
         }
+      },
+      create: {
+        label: 'Criar',
+        item: {
+          texid: {
+            label: 'Obra'
+          },
+          libid: {
+            label: 'Biblioteca'
+          },
+          insid: {
+            label: 'Instituição'
+          },
+          bioid: {
+            label: 'Pessoa'
+          },
+          bibid: {
+            label: 'Referência'
+          },
+          manid: {
+            label: 'MsEd'
+          },
+          geoid: {
+            label: 'Geografia'
+          },
+          subid: {
+            label: 'Assunto'
+          },
+          cnum: {
+            label: 'Testemunho textual'
+          },
+          copid: {
+            label: 'Cópia adicional'
+          }
+        }
       }
     }
   },
