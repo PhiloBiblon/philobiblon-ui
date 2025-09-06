@@ -48,11 +48,12 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?label ?item
+              SELECT DISTINCT ?label ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
+                {{descLangFilter}}
                 {
                   ?item rdfs:label ?labelObj .
                   {{langFilter}}

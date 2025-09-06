@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "export API_BASE_URL=https://philobiblon.cog.berkeley.edu/ui-dev/ && nuxt",
+    "dev": "export API_BASE_URL=http://localhost:8080 && nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

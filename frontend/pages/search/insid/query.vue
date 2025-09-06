@@ -48,7 +48,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?label ?item
+              SELECT DISTINCT ?label ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -125,7 +125,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?item ?label
+              SELECT DISTINCT ?item ?label
               WHERE {
                 ?item wdt:P994 ?pbid .
                 ?item rdfs:label ?labelObj .
@@ -149,7 +149,7 @@ export default {
               `
               SELECT DISTINCT ?label ?property {
                 {
-                  SELECT ?label ?property
+                  SELECT DISTINCT ?label ?property
                   WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -159,7 +159,7 @@ export default {
                     BIND('P34' AS ?property)
                   }
                 } UNION {
-                  SELECT ?label ?property
+                  SELECT DISTINCT ?label ?property
                   WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .

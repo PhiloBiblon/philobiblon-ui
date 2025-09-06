@@ -17,6 +17,14 @@
     <template v-for="(_, slotName) in $slots" #[slotName]>
       <slot :name="slotName" />
     </template>
+    <template #item="data">
+      <v-list-item-content>
+        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
+        <v-list-item-title v-html="data.item.text" />
+        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
+        <v-list-item-subtitle class="my-item-subtitle" v-html="data.item.value.desc" />
+      </v-list-item-content>
+    </template>
     <template #message="{ message }">
       <v-tooltip max-width="40%" bottom open-delay="200">
         <template #activator="{ on }">
@@ -169,3 +177,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-list--dense .v-list-item .v-list-item__subtitle.my-item-subtitle {
+  font-weight: normal;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0px;
+}
+</style>

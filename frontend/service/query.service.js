@@ -51,6 +51,19 @@ export class QueryService {
     return langFilters
   }
 
+  generateDescLangFilter (lang) {
+    return `OPTIONAL { ?item schema:description ?desc FILTER langMatches(lang(?desc), '${lang}') }.`
+  }
+
+  generateDescLangFilters (lang) {
+    let langFilters = this.generateDescLangFilter(lang)
+    // fallback to en if selected lang has no label
+    if (lang !== 'en') {
+      langFilters += '\n' + this.generateDescLangFilter('en')
+    }
+    return langFilters
+  }
+
   replaceDiacritics (field) {
     return `replace(replace(replace(replace(replace(lcase(${field}), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i')`
   }
@@ -1321,6 +1334,7 @@ export class QueryService {
       database,
       table,
       langFilter: this.generateSearchLangFilters(lang),
+      descLangFilter: this.generateDescLangFilters(lang),
       bitagapGroupFilter: this.generateBitagapGroupFilters(database, bitagapGroup, table)
     }
     return this.addPrefixes(this.fillTemplate(query, replacements))

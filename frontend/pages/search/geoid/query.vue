@@ -48,7 +48,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?label ?item
+              SELECT DISTINCT ?label ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -123,7 +123,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?item ?label {
+              SELECT DISTINCT ?item ?label {
                 ?table_item wdt:P476 ?table_item_pbid .
                 FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
