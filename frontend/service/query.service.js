@@ -32,7 +32,10 @@ export class QueryService {
   }
 
   generateSearchLangFilters (lang) {
-    return "FILTER (lang(?labelObj) = 'ca' || lang(?labelObj) = 'es' || lang(?labelObj) = 'en' || lang(?labelObj) = 'gl' || lang(?labelObj) = 'pt') ."
+    return `
+      FILTER (lang(?labelObj) = 'ca' || lang(?labelObj) = 'es' || lang(?labelObj) = 'en' || lang(?labelObj) = 'gl' || lang(?labelObj) = 'pt') .
+      BIND(STR(?labelObj) AS ?label) .
+      `
   }
 
   generateLangFilter (lang) {
@@ -101,9 +104,9 @@ export class QueryService {
     }
   }
 
-  addInstitutionFilters (form) {
+  generateInstitutionBitagapGroupFilters (bitagapGroup) {
     let filters = ''
-    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
+    if (bitagapGroup && bitagapGroup !== 'ALL') {
       filters +=
         `
         ?related_work_item wdt:P476 ?related_work_item_pbid .
@@ -112,18 +115,189 @@ export class QueryService {
         ?topic_item rdfs:label ?topic_item_label .
         ?related_work_item wdt:P243 ?item .
         `
-      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
+      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
         filters +=
           `
           FILTER(!CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
           `
-      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
+      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
         filters +=
           `
           FILTER(CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
           `
       }
     }
+    return filters
+  }
+
+  generateBitagapGroupWorkFilters (bitagapGroup) {
+    let filters = ''
+    if (bitagapGroup && bitagapGroup !== 'ALL') {
+      filters +=
+        `
+        ?item wdt:P243 ?subjectItem .
+        ?subjectItem rdfs:label ?labelSubjectItem .
+        `
+      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
+        filters +=
+          `
+          FILTER(!CONTAINS(STR(?labelSubjectItem), "${CARTAS_TEXT}"))
+          `
+      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
+        filters +=
+          `
+          FILTER(CONTAINS(STR(?labelSubjectItem), "${CARTAS_TEXT}"))
+          `
+      }
+    }
+    return filters
+  }
+
+  generateBitagapGroupPersonFilters (bitagapGroup) {
+    let filters = ''
+    if (bitagapGroup && bitagapGroup !== 'ALL') {
+      filters +=
+        `
+        ?related_work_item wdt:P476 ?related_work_item_pbid .
+        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
+        ?related_work_item wdt:P243 ?topic_item .
+        ?topic_item rdfs:label ?topic_item_label .
+        ?related_work_item wdt:P703 ?item .
+        `
+      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
+        filters +=
+          `
+          FILTER(!CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
+          `
+      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
+        filters +=
+          `
+          FILTER(CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
+          `
+      }
+    }
+    return filters
+  }
+
+  generateBitagapGroupReferenceFilters (bitagapGroup) {
+    let filters = ''
+    if (bitagapGroup && bitagapGroup !== 'ALL') {
+      filters +=
+        `
+        ?item wdt:P243 ?related_topic_item .
+        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+        ?related_topic_item rdfs:label ?related_topic_item_label .
+        `
+      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
+        filters +=
+          `
+          FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
+          `
+      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
+        filters +=
+          `
+          FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
+          `
+      }
+    }
+    return filters
+  }
+
+  generateBitagapGroupGeographyFilters (bitagapGroup) {
+    let filters = ''
+    if (bitagapGroup && bitagapGroup !== 'ALL') {
+      filters +=
+        `
+        ?item wdt:P243 ?related_topic_item .
+        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+        ?related_topic_item rdfs:label ?related_topic_item_label .
+        `
+      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
+        filters +=
+          `
+          FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
+          `
+      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
+        filters +=
+          `
+          FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
+          `
+      }
+    }
+    return filters
+  }
+
+  generateBitagapGroupSubjectFilters (bitagapGroup) {
+    let filters = ''
+    if (bitagapGroup && bitagapGroup !== 'ALL') {
+      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
+        filters +=
+          `
+          FILTER(!CONTAINS(STR(?label), "${CARTAS_TEXT}"))
+          `
+      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
+        filters +=
+          `
+          FILTER(CONTAINS(STR(?label), "${CARTAS_TEXT}"))
+          `
+      }
+    }
+    return filters
+  }
+
+  generateBitagapGroupManuscriptFilters (bitagapGroup) {
+    let filters = ''
+    if (bitagapGroup && bitagapGroup !== 'ALL') {
+      filters +=
+        `
+        ?item wdt:P243 ?related_topic_item .
+        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+        ?related_topic_item rdfs:label ?related_topic_item_label .
+        `
+      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
+        filters +=
+          `
+            FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
+          `
+      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
+        filters +=
+          `
+            FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
+          `
+      }
+    }
+    return filters
+  }
+
+  generateBitagapGroupFilters (database, bitagapGroup, table) {
+    if (database === BITAGAP_DB) {
+      switch (table) {
+        case 'insid':
+          return this.generateBitagapGroupInstitutionFilters(bitagapGroup)
+        case 'texid':
+          return this.generateBitagapGroupWorkFilters(bitagapGroup)
+        case 'libid':
+          return ''
+        case 'bioid':
+          return this.generateBitagapGroupPersonFilters(bitagapGroup)
+        case 'bibid':
+          return this.generateBitagapGroupReferenceFilters(bitagapGroup)
+        case 'geoid':
+          return this.generateBitagapGroupGeographyFilters(bitagapGroup)
+        case 'subid':
+          return this.generateBitagapGroupSubjectFilters(bitagapGroup)
+        case 'manid':
+          return this.generateBitagapGroupManuscriptFilters(bitagapGroup)
+      }
+    }
+    return ''
+  }
+
+  addInstitutionFilters (form) {
+    let filters = this.generateBitagapGroupInstitutionFilters(form.input.bitagap_group?.value)
     if (form.input.city && form.input.city.value) {
       filters +=
         `
@@ -169,25 +343,7 @@ export class QueryService {
 
   addWorkFilters (form) {
     let addAnalyticJoin = false
-    let filters = ''
-    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
-      filters +=
-        `
-        ?item wdt:P243 ?subjectItem .
-        ?subjectItem rdfs:label ?labelSubjectItem .
-        `
-      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?labelSubjectItem), "${CARTAS_TEXT}"))
-          `
-      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?labelSubjectItem), "${CARTAS_TEXT}"))
-          `
-      }
-    }
+    let filters = this.generateBitagapGroupWorkFilters(form)
     if (form.input.type && form.input.type.value) {
       filters +=
         `
@@ -383,28 +539,7 @@ export class QueryService {
   }
 
   addPersonFilters (form) {
-    let filters = ''
-    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
-      filters +=
-        `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-        ?related_work_item wdt:P243 ?topic_item .
-        ?topic_item rdfs:label ?topic_item_label .
-        ?related_work_item wdt:P703 ?item .
-        `
-      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
+    let filters = this.generateBitagapGroupPersonFilters(form.input.bitagap_group?.value)
     if (form.input.name && form.input.name.value) {
       if (form.input.name.value.property === 'label') {
         filters +=
@@ -586,27 +721,7 @@ export class QueryService {
   }
 
   addReferenceFilters (form) {
-    let filters = ''
-    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
-      filters +=
-        `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        `
-      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
+    let filters = this.generateBitagapGroupReferenceFilters(form.input.bitagap_group?.value)
     if (form.input.author && form.input.author.value) {
       filters +=
         `
@@ -709,27 +824,7 @@ export class QueryService {
   }
 
   addGeographyFilters (form) {
-    let filters = ''
-    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
-      filters +=
-        `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        `
-      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
+    let filters = this.generateBitagapGroupGeographyFilters(form.input.bitagap_group?.value)
     if (form.input.type && form.input.type.value) {
       filters +=
         `
@@ -752,20 +847,7 @@ export class QueryService {
   }
 
   addSubjectFilters (form) {
-    let filters = ''
-    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
-      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?label), "${CARTAS_TEXT}"))
-          `
-      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
+    let filters = this.generateBitagapGroupSubjectFilters(form.input.bitagap_group?.value)
     if (form.input.headings && form.input.headings.value) {
       if (form.input.headings.value.property === 'label') {
         filters +=
@@ -784,27 +866,7 @@ export class QueryService {
   }
 
   addManuscriptFilters (form) {
-    let filters = ''
-    if (form.input.bitagap_group.value && form.input.bitagap_group.value !== 'ALL') {
-      filters +=
-        `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        `
-      if (form.input.bitagap_group.value === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-            FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (form.input.bitagap_group.value === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-            FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
+    let filters = this.generateBitagapGroupManuscriptFilters(form.input.bitagap_group?.value)
     if (form.input.city && form.input.city.value) {
       filters +=
         `
@@ -1251,14 +1313,15 @@ export class QueryService {
     return template.replace(/{{(\w+)}}/g, (match, p1) => replacements[p1] || '')
   }
 
-  filterQuery (query, database, table, lang) {
+  filterQuery (query, database, bitagapGroup, table, lang) {
     if (database === 'ALL') {
       database = '(.*)'
     }
     const replacements = {
       database,
       table,
-      langFilter: this.generateSearchLangFilters(lang)
+      langFilter: this.generateSearchLangFilters(lang),
+      bitagapGroupFilter: this.generateBitagapGroupFilters(database, bitagapGroup, table)
     }
     return this.addPrefixes(this.fillTemplate(query, replacements))
   }

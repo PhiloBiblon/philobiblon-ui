@@ -48,10 +48,11 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT (STR(?labelObj) AS ?label) ?item
+              SELECT ?label ?item
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
                   {{langFilter}}
@@ -98,10 +99,11 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              SELECT DISTINCT ?item ?label
               WHERE {
                 ?table_item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?table_item wdt:P2 ?item .
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
@@ -121,9 +123,10 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?item (STR(?labelObj) AS ?label) {
+              SELECT ?item ?label {
                 ?table_item wdt:P476 ?table_item_pbid .
                 FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 ?table_item wdt:P3 ?item .
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
@@ -143,7 +146,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label)
+              SELECT DISTINCT ?item ?label
               WHERE {
                 ?table wdt:P476 ?table_pbid .
                 BIND ( wdt:P243 as ?property)
@@ -151,6 +154,7 @@ export default {
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
                 FILTER regex(?table_pbid, '{{database}} {{table}} ')
+                {{bitagapGroupFilter}}
               }
               `
             }
