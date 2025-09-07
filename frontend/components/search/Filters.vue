@@ -32,29 +32,6 @@
             :label="$t('search.form.common.bitagap_group.label')"
           />
         </v-col>
-        <v-col cols="4" class="d-flex justify-end">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <div v-bind="attrs" v-on="on">
-                <v-btn
-                  v-if="isUserLogged"
-                  small
-                  color="primary"
-                  class="mr-4"
-                  elevation="2"
-                  :disabled="isCreateDisabled"
-                  v-bind="attrs"
-                  v-on="on"
-                  @click="goTo(`/item/${table}/create`, { database: search_group.value })"
-                >
-                  {{ $t('item.create.button.text') }}
-                </v-btn>
-              </div>
-            </template>
-            <span v-if="isCreateDisabled">{{ $t('item.create.button.disabled') }}</span>
-            <span v-else>{{ $t('item.create.button.enabled') }}</span>
-          </v-tooltip>
-        </v-col>
       </v-row>
       <template v-for="(section) in form.section">
         <v-row v-if="!isPrimarySection(section) && existsSectionFilters(section) && !showResults" :key="'header-' + section" dense>
@@ -188,7 +165,6 @@ export default {
       bitagap_group: {},
       filtersBySection: {},
       showResults: false,
-      isCreateDisabled: true,
       isBitagapSelected: false
     }
   },
@@ -359,7 +335,6 @@ export default {
       return false
     },
     onGroupChange (newDatabase) {
-      this.isCreateDisabled = newDatabase === 'ALL'
       if (newDatabase === 'BITAGAP' && this.table !== 'libid') {
         this.isBitagapSelected = true
       } else {

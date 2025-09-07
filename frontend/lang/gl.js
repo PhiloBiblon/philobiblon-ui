@@ -73,6 +73,41 @@ export default {
             label: 'copid'
           }
         }
+      },
+      crete: {
+        label: 'Crear',
+        item: {
+          texid: {
+            label: 'Obra'
+          },
+          libid: {
+            label: 'Biblioteca'
+          },
+          insid: {
+            label: 'Institución'
+          },
+          bioid: {
+            label: 'Persoa'
+          },
+          bibid: {
+            label: 'Referencia'
+          },
+          manid: {
+            label: 'MsEd'
+          },
+          geoid: {
+            label: 'Xeografía'
+          },
+          subid: {
+            label: 'Asunto'
+          },
+          cnum: {
+            label: 'Testimonio textual'
+          },
+          copid: {
+            label: 'Copia adicional'
+          }
+        }
       }
     }
   },
@@ -414,8 +449,7 @@ export default {
     create: {
       button: {
         text: 'Crear elemento',
-        enabled: 'Crea un novo elemento',
-        disabled: 'Seleccione unha das bases de datos: BETA, BITECA ou BITAGAP.'
+        enabled: 'Crea un novo elemento'
       },
       calculating_new_pbid: 'Calculando o novo ID de PhiloBiblon ..'
     },

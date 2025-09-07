@@ -106,11 +106,13 @@ export default {
     }
   },
   created () {
-    if (!this.isUserLogged || this.database === 'All') {
-      return this.$router.push(this.localePath('/'))
-    } else {
-      this.loadInitialClaims()
-    }
+    this.$nextTick(() => {
+      if (!this.isUserLogged || !this.database) {
+        return this.$router.push(this.localePath('/'))
+      } else {
+        this.loadInitialClaims()
+      }
+    })
   },
   methods: {
     getCreateDisabledReason () {
