@@ -52,7 +52,7 @@ export class QueryService {
   }
 
   generateDescLangFilter (lang) {
-    return `OPTIONAL { ?item schema:description ?desc FILTER langMatches(lang(?desc), '${lang}') }.`
+    return `OPTIONAL { FILTER langMatches(lang(?desc), '${lang}') }.`
   }
 
   generateDescLangFilters (lang) {
@@ -117,7 +117,7 @@ export class QueryService {
     }
   }
 
-  generateInstitutionBitagapGroupFilters (bitagapGroup) {
+  generateBitagapGroupInstitutionFilters (bitagapGroup) {
     let filters = ''
     if (bitagapGroup && bitagapGroup !== 'ALL') {
       filters +=
@@ -805,7 +805,7 @@ export class QueryService {
     if (form.input.locations && form.input.locations.value) {
       filters +=
         `
-        ?item wdt:P329 wd:${form.input.locations.value.item} .\n
+        ?item wdt:P329 wd:${form.input.locations.value.target_item} .\n
         `
     }
     if (form.input.international_standard_number && form.input.international_standard_number.value) {
@@ -824,13 +824,13 @@ export class QueryService {
     if (form.input.type && form.input.type.value) {
       filters +=
         `
-        ?item wdt:P2 wd:${form.input.type.value.item} .\n
+        ?item wdt:P2 wd:${form.input.type.value.target_item} .\n
         `
     }
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.item} .\n
+        ?item wdt:P243 wd:${form.input.subject.value.target_item} .\n
         `
     }
     return filters

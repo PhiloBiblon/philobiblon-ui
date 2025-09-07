@@ -48,11 +48,12 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?item
+              SELECT DISTINCT ?label ?item ?desc
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
+                {{descLangFilter}}
                 {
                   ?item rdfs:label ?labelObj .
                   {{langFilter}}
@@ -99,7 +100,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label
+              SELECT DISTINCT ?item ?label ?desc
               WHERE {
                 ?table_item wdt:P476 ?table_pbid .
                 FILTER regex(?table_pbid, '{{database}} {{table}} ') .
@@ -107,6 +108,7 @@ export default {
                 ?table_item wdt:P2 ?item .
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
+                {{descLangFilter}}
               }
               `
             }
@@ -123,13 +125,14 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label {
+              SELECT DISTINCT ?item ?label ?desc {
                 ?table_item wdt:P476 ?table_item_pbid .
                 FILTER regex(?table_item_pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
                 ?table_item wdt:P3 ?item .
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
+                {{descLangFilter}}
               }
               `
             }
@@ -146,13 +149,14 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label
+              SELECT DISTINCT ?item ?label ?desc
               WHERE {
                 ?table wdt:P476 ?table_pbid .
                 BIND ( wdt:P243 as ?property)
                 ?table ?property ?item .
                 ?item rdfs:label ?labelObj .
                 {{langFilter}}
+                {{descLangFilter}}
                 FILTER regex(?table_pbid, '{{database}} {{table}} ')
                 {{bitagapGroupFilter}}
               }

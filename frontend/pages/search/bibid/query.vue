@@ -48,11 +48,13 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT ?label ?item
+              SELECT DISTINCT ?label ?item ?desc
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
+                ?item schema:description ?desc .
+                {{descLangFilter}}
                 {
                   ?item rdfs:label ?labelObj .
                   {{langFilter}}
@@ -99,24 +101,28 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?property {
+              SELECT DISTINCT ?label ?property ?desc {
                 {
-                      SELECT DISTINCT ?label ?property
+                      SELECT DISTINCT ?label ?property ?desc
                       WHERE { 
                         ?item wdt:P476 ?pbid .
                         BIND ( wdt:P1134 as ?property)
                         ?item ?property ?label .
                         FILTER regex(?pbid, '{{database}} {{table}} ')
                         {{bitagapGroupFilter}}
+                        ?item schema:description ?desc .
+                        {{descLangFilter}}
                       }
                 } UNION {
-                      SELECT DISTINCT ?label ?property
+                      SELECT DISTINCT ?label ?property ?desc
                       WHERE { 
                         ?item wdt:P476 ?pbid .
                         BIND ( wdt:P1136 as ?property)
                         ?item ?property ?label . 
                         FILTER regex(?pbid, '{{database}} {{table}} ')
                         {{bitagapGroupFilter}}
+                        ?item schema:description ?desc .
+                        {{descLangFilter}}
                       }
                 }
               }
@@ -135,12 +141,14 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label
+              SELECT DISTINCT ?label ?desc
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
                 ?item wdt:P11 ?label .
+                ?item schema:description ?desc .
+                {{descLangFilter}}
               }
               `
             }
@@ -167,12 +175,14 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label
+              SELECT DISTINCT ?label ?desc
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
                 ?item wdt:P1137 ?label .
+                ?item schema:description ?desc .
+                {{descLangFilter}}
               }
               `
             }
@@ -189,12 +199,14 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label
+              SELECT DISTINCT ?label ?desc
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
                 ?item wdt:P1141 ?label .
+                ?item schema:description ?desc .
+                {{descLangFilter}}
               }
               `
             }
@@ -211,12 +223,14 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label
+              SELECT DISTINCT ?label ?desc
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
                 ?item wdt:P1140 ?label .
+                ?item schema:description ?desc .
+                {{descLangFilter}}
               }
               `
             }
@@ -233,12 +247,14 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label
+              SELECT DISTINCT ?label ?desc
               WHERE { 
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
                 ?item wdt:P1139 ?label .
+                ?item schema:description ?desc .
+                {{descLangFilter}}
               }
               `
             }
@@ -255,14 +271,16 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label
+              SELECT DISTINCT ?target_item ?label ?desc
               WHERE { 
-                ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
-                ?table_item wdt:P329 ?item .
-                ?item rdfs:label ?labelObj .
+                ?item wdt:P329 ?target_item .
+                ?target_item rdfs:label ?labelObj .
                 {{langFilter}}
+                ?target_item schema:description ?desc .
+                {{descLangFilter}}
               }
               `
             }
@@ -279,38 +297,46 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label {
+              SELECT DISTINCT ?label ?desc {
                 {
-                  SELECT DISTINCT ?label
+                  SELECT DISTINCT ?label ?desc
                   WHERE { 
-                    ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?table_item wdt:P605 ?label .
+                    ?item wdt:P605 ?label .
+                    ?item schema:description ?desc .
+                    {{descLangFilter}}
                   }
                 } UNION {
-                  SELECT DISTINCT ?label
+                  SELECT DISTINCT ?label ?desc
                   WHERE { 
-                    ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?table_item wdt:P606 ?label .
+                    ?item wdt:P606 ?label .
+                    ?item schema:description ?desc .
+                    {{descLangFilter}}
                   }
                 } UNION {
-                  SELECT DISTINCT ?label
+                  SELECT DISTINCT ?label ?desc
                   WHERE { 
-                    ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?table_item wdt:P743 ?label .
+                    ?item wdt:P743 ?label .
+                    ?item schema:description ?desc .
+                    {{descLangFilter}}
                   }
                 } UNION {
-                  SELECT DISTINCT ?label
+                  SELECT DISTINCT ?label ?desc
                   WHERE { 
-                    ?table_item wdt:P476 ?table_pbid .
-                    FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?table_item wdt:P634 ?label .
+                    ?item wdt:P634 ?label .
+                    ?item schema:description ?desc .
+                    {{descLangFilter}}
                   }
                 }
               }
@@ -329,14 +355,16 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label
+              SELECT DISTINCT ?target_item ?label ?desc
               WHERE { 
-                ?table_item wdt:P476 ?table_pbid .
-                FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
-                ?table_item wdt:P2 ?item .
-                ?item rdfs:label ?labelObj .
+                ?item wdt:P2 ?target_item .
+                ?target_item rdfs:label ?labelObj .
                 {{langFilter}}
+                ?target_item schema:description ?desc .
+                {{descLangFilter}}
               }
               `
             }
@@ -353,15 +381,17 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label
+              SELECT DISTINCT ?target_item ?label ?desc
               WHERE { 
-                ?table wdt:P476 ?table_pbid .
+                ?item wdt:P476 ?pbid .
                 BIND ( wdt:P243 as ?property)
-                ?table ?property ?item .
-                ?item rdfs:label ?labelObj .
+                ?item ?property ?target_item .
+                ?target_item rdfs:label ?labelObj .
                 {{langFilter}}
-                FILTER regex(?table_pbid, '{{database}} {{table}} ')
+                FILTER regex(?pbid, '{{database}} {{table}} ')
                 {{bitagapGroupFilter}}
+                ?target_item schema:description ?desc .
+                {{descLangFilter}}
               }
               `
             }
