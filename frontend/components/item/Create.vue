@@ -133,7 +133,9 @@ export default {
 
         if (
           initialClaim?.property?.id === 'P2' ||
-          initialClaim?.property?.id === 'P476'
+          initialClaim?.property?.id === 'P476' ||
+          (this.table === 'cnum' && initialClaim?.property?.id === 'P590') ||
+          (this.table === 'copid' && initialClaim?.property?.id === 'P839')
         ) {
           for (const item of claimArray) {
             if (item?.value == null || item?.value === '') {
@@ -183,12 +185,13 @@ export default {
         )
       }
     },
-    buildClaim (entity, qualifiers = [], value = null) {
+    buildClaim (entity, qualifiers = [], value = null, removable = true) {
       const label =
         this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
           ?.value || entity.id
       return {
         default: true,
+        removable,
         property: {
           label,
           id: entity.id,
@@ -248,7 +251,7 @@ export default {
           let claim = this.buildClaim(entity, qualifiers, null)
 
           if (entity.id === 'P476') {
-            claim = this.buildClaim(entity, [], this.generatePbId(itemNumber))
+            claim = this.buildClaim(entity, [], this.generatePbId(itemNumber), false)
           } else if (entity.id === 'P131') {
             const qualifiers = [
               {
@@ -264,6 +267,10 @@ export default {
             ]
 
             claim = this.buildClaim(entity, qualifiers, { id: 'Q4' })
+          } else if (this.table === 'cnum' && entity.id === 'P590') {
+            claim = this.buildClaim(entity, qualifiers, null, false)
+          } else if (this.table === 'copid' && entity.id === 'P839') {
+            claim = this.buildClaim(entity, qualifiers, null, false)
           }
 
           this.initialClaims.push(claim)
