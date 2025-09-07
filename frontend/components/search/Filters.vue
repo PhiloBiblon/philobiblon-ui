@@ -164,7 +164,6 @@ export default {
       bitagap_group: {},
       filtersBySection: {},
       showResults: false,
-      isCreateDisabled: true,
       isBitagapSelected: false
     }
   },
@@ -335,7 +334,6 @@ export default {
       return false
     },
     onGroupChange (newDatabase) {
-      this.isCreateDisabled = newDatabase === 'ALL'
       if (newDatabase === 'BITAGAP' && this.table !== 'libid') {
         this.isBitagapSelected = true
       } else {

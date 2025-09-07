@@ -449,8 +449,7 @@ export default {
     create: {
       button: {
         text: 'Crear element',
-        enabled: 'Crea un element nou',
-        disabled: 'Sel.lecciona una de les bases de dades: BETA, BITECA o BITAGAP.'
+        enabled: 'Crea un element nou'
       },
       calculating_new_pbid: 'Calculant nou PhiloBiblon ID ..'
     },
