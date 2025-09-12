@@ -88,7 +88,7 @@ export default {
   watch: {
     value (val) {
       if (this.allowFreeText) {
-        const regex = new RegExp(`${this.$t('common.search.find_text')} "(.*?)"`)
+        const regex = new RegExp(`${this.$t('search.form.common.find_text')} "(.*?)"`)
         const match = val?.label?.match(regex)
         if (match && match[1]) {
           val.label = match[1]
@@ -149,7 +149,7 @@ export default {
         })
         .then((data) => {
           if (this.allowFreeText) {
-            const findTextLabel = `${this.$t('common.search.find_text')} "${query}"`
+            const findTextLabel = `${this.$t('search.form.common.find_text')} "${query}"`
             data.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
           }
           this.items = data
