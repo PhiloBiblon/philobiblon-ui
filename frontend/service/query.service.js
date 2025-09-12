@@ -31,10 +31,31 @@ export class QueryService {
     }
   }
 
+  generateSearchLangFiltersWithoutBind (lang) {
+    return "FILTER (lang(?labelObj) IN ('ca', 'es', 'en', 'gl', 'pt')) ."
+  }
+
   generateSearchLangFilters (lang) {
     return `
-      FILTER (lang(?labelObj) = 'ca' || lang(?labelObj) = 'es' || lang(?labelObj) = 'en' || lang(?labelObj) = 'gl' || lang(?labelObj) = 'pt') .
+      ${this.generateSearchLangFiltersWithoutBind(lang)}
       BIND(STR(?labelObj) AS ?label) .
+      `
+  }
+
+  generateSearchLangGroupPattern (itemName, lang) {
+    // the sameAs condition is used for redirections (one item is redirected to another one)
+    return `
+      OPTIONAL {
+        {
+          ?${itemName} rdfs:label ?labelObj .
+        }
+        UNION
+        {
+          ?${itemName} owl:sameAs ?real_target .
+          ?real_target rdfs:label ?labelObj .
+        }
+        ${this.generateSearchLangFilters(lang)}
+      }
       `
   }
 
@@ -359,7 +380,7 @@ export class QueryService {
 
   addWorkFilters (form) {
     let addAnalyticJoin = false
-    let filters = this.generateBitagapGroupWorkFilters(form)
+    let filters = this.generateBitagapGroupWorkFilters(form.input.bitagap_group?.value)
     if (form.input.type && form.input.type.value) {
       filters +=
         `
@@ -1295,11 +1316,14 @@ export class QueryService {
 
   countQuery (table, form, lang) {
     const COUNT_QUERY = $ =>
-      `SELECT (COUNT(DISTINCT ?item) AS ?count)
-      WHERE {
-        ?item wdt:P476 ?pbid .
+      `SELECT (COUNT(DISTINCT ?item) AS ?count) WHERE {
+        {
+          SELECT ?item {
+            ?item wdt:P476 ?pbid .
+            ${$.filters}
+          }
+        }
         ${this.generateLangFilters(lang)}
-        ${$.filters}
       }`
     return this.generateQuery(table, COUNT_QUERY, form)
   }
@@ -1311,12 +1335,14 @@ export class QueryService {
 
   itemsQuery (table, form, lang, resultsPerPage) {
     const SEARCH_QUERY = $ =>
-      `SELECT DISTINCT ?item ?label (GROUP_CONCAT(DISTINCT ?pbid; separator=", ") AS ?pbids)
-      WHERE {
-        ?item wdt:P476 ?pbid .
+      `SELECT DISTINCT ?item ?label (GROUP_CONCAT(DISTINCT ?pbid; separator=", ") AS ?pbids) WHERE {
+        {
+          SELECT DISTINCT ?item ?pbid {
+            ?item wdt:P476 ?pbid .
+            ${$.filters}
+          }
+        }
         ${this.generateLangFilters(lang)}
-        ${$.filters}
-        BIND(REPLACE(?pbid, '(.*) ${table} (.*)', '$2') AS ?pbidn)
       }
       GROUP BY ?item ?label
       ORDER BY ${this.getSortClause()}
@@ -1337,6 +1363,9 @@ export class QueryService {
       database,
       table,
       langFilter: this.generateSearchLangFilters(lang),
+      langFilterWithoutBind: this.generateSearchLangFiltersWithoutBind(lang),
+      itemLangGroupPattern: this.generateSearchLangGroupPattern('item', lang),
+      targetItemLangGroupPattern: this.generateSearchLangGroupPattern('target_item', lang),
       bitagapGroupFilter: this.generateBitagapGroupFilters(database, bitagapGroup, table),
       bitagapGroupSubjectFilter: this.generateBitagapGroupFiltersForSubject(bitagapGroup)
     }

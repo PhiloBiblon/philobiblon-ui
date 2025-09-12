@@ -55,13 +55,12 @@ export default {
                 {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
-                  {{langFilter}}
                 }
                 UNION
                 {
                   ?item skos:altLabel ?labelObj .
-                  {{langFilter}}
                 }
+                {{langFilter}}
               }
               `,
               allowFreeText: true
@@ -99,25 +98,33 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?analytic_item {
+              SELECT DISTINCT ?target_item ?analytic_item ?label {
                 {
-                  SELECT ?target_item ?label {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    ?item wdt:P21 ?target_item .
-                    ?target_item rdfs:label ?labelObj .
-                    {{langFilter}}
+                  {  
+                    SELECT DISTINCT ?target_item {
+                      ?item wdt:P476 ?pbid .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
+                      {{bitagapGroupFilter}}
+                      ?item wdt:P21 ?target_item .
+                    }
                   }
-                } UNION {
-                  SELECT ?label ?analytic_item {
-                    ?analytic_item wdt:P476 ?analytic_item_pbid .
-                    FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
-                    ?analytic_item wdt:P590 ?item .
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    ?analytic_item wdt:P34 ?labelObj
+                  {{targetItemLangGroupPattern}}
+                }
+                UNION
+                {
+                  {  
+                    SELECT DISTINCT ?analytic_item {
+                      ?analytic_item wdt:P476 ?analytic_item_pbid .
+                      FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
+                      ?analytic_item wdt:P590 ?item .
+                      ?item wdt:P476 ?pbid .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
+                      {{bitagapGroupFilter}}
+                      ?analytic_item wdt:P34 ?labelObj
+                    }
+                  }
+                  OPTIONAL {
+                    ?analytic_item wdt:P34 ?labelObj  
                     {{langFilter}}
                   }
                 }
@@ -137,7 +144,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?analytic_item {
+              SELECT DISTINCT ?item ?analytic_item ?label {
                 {
                   SELECT ?item ?label {
                     ?item wdt:P476 ?table_item_pbid .
@@ -146,7 +153,7 @@ export default {
                     ?item wdt:P11 ?label .
                   }
                 } UNION {
-                  SELECT ?label ?analytic_item {
+                  SELECT ?analytic_item ?label {
                     ?analytic_item wdt:P476 ?analytic_pbid .
                     FILTER regex(?analytic_pbid, '(.*) cnum ') .
                     ?analytic_item wdt:P590 ?item .
@@ -172,9 +179,9 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?analytic_item {
+              SELECT DISTINCT ?item ?analytic_item ?label {
                 {
-                    SELECT ?item ?label {
+                  SELECT ?item ?label {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
@@ -211,7 +218,7 @@ export default {
               `
               SELECT DISTINCT ?item ?label ?analytic_item {
                 {
-                    SELECT ?item ?label {
+                  SELECT ?item ?label {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
@@ -246,29 +253,28 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?analytic_item {
+              SELECT DISTINCT ?target_item ?analytic_item ?label {
                 {
-                  SELECT ?target_item ?label {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    ?item wdt:P703 ?target_item .
-                    ?target_item rdfs:label ?labelObj .
-                    {{langFilter}}
-                  }
-                } UNION {
-                  SELECT ?target_item ?label ?analytic_item {
-                    ?analytic_item wdt:P476 ?analytic_item_pbid .
-                    FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
-                    ?analytic_item wdt:P590 ?item .
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    ?analytic_item wdt:P703 ?target_item .
-                    ?target_item rdfs:label ?labelObj .
-                    {{langFilter}}
+                  SELECT ?target_item ?analytic_item ?label {
+                    {
+                      ?item wdt:P476 ?pbid .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
+                      {{bitagapGroupFilter}}
+                      ?item wdt:P703 ?target_item .
+                    }
+                    UNION
+                    {
+                      ?analytic_item wdt:P476 ?analytic_item_pbid .
+                      FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
+                      ?analytic_item wdt:P590 ?item .
+                      ?item wdt:P476 ?pbid .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
+                      {{bitagapGroupFilter}}
+                      ?analytic_item wdt:P703 ?target_item .
+                    }
                   }
                 }
+                {{targetItemLangGroupPattern}}
               }
               `
             }
@@ -286,15 +292,18 @@ export default {
               query:
               `
               SELECT DISTINCT ?target_item ?label {
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                {{bitagapGroupFilter}}
-                ?item p:P137 ?history_statement .
-                ?history_statement pq:P47 ?target_item .
-                ?target_item wdt:P476 ?target_item_pbid .
-                FILTER regex(?target_item_pbid, '(.*) geoid ') .
-                ?target_item rdfs:label ?labelObj .
-                {{langFilter}}
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
+                    ?item p:P137 ?history_statement .
+                    ?history_statement pq:P47 ?target_item .
+                    ?target_item wdt:P476 ?target_item_pbid .
+                    FILTER regex(?target_item_pbid, '(.*) geoid ') .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
               }
               `
             }
@@ -322,13 +331,16 @@ export default {
               query:
               `
               SELECT DISTINCT ?target_item ?label {
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                {{bitagapGroupFilter}}
-                ?item p:P121 ?statement .
-                ?statement pq:P700 ?target_item .
-                ?target_item rdfs:label ?labelObj .
-                {{langFilter}}
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
+                    ?item p:P121 ?statement .
+                    ?statement pq:P700 ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
               }
               `
             }
@@ -345,29 +357,28 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?analytic_item {
+              SELECT DISTINCT ?target_item ?analytic_item ?label {
                 {
-                  SELECT ?target_item ?label {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    ?item wdt:P18 ?target_item .
-                    ?target_item rdfs:label ?labelObj .
-                    {{langFilter}}
-                  }
-                } UNION {
-                  SELECT ?target_item ?label ?analytic_item {
-                    ?analytic_item wdt:P476 ?analytic_pbid .
-                    FILTER regex(?analytic_pbid, '(.*) cnum ') .
-                    ?analytic_item wdt:P590 ?item .
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    ?analytic_item wdt:P18 ?target_item .
-                    ?target_item rdfs:label ?labelObj .
-                    {{langFilter}}
+                  SELECT DISTINCT ?target_item ?analytic_item {
+                    {
+                      ?item wdt:P476 ?pbid .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
+                      {{bitagapGroupFilter}}
+                      ?item wdt:P18 ?target_item .
+                    }
+                    UNION
+                    {
+                      ?analytic_item wdt:P476 ?analytic_pbid .
+                      FILTER regex(?analytic_pbid, '(.*) cnum ') .
+                      ?analytic_item wdt:P590 ?item .
+                      ?item wdt:P476 ?pbid .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
+                      {{bitagapGroupFilter}}
+                      ?analytic_item wdt:P18 ?target_item .
+                    }
                   }
                 }
+                {{targetItemLangGroupPattern}}
               }
               `
             }
@@ -419,15 +430,17 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label
-              WHERE {
-                ?item wdt:P476 ?pbid .
-                BIND ( wdt:P243 as ?property)
-                ?item ?property ?target_item .
-                ?target_item rdfs:label ?labelObj .
-                {{langFilter}}
-                FILTER regex(?pbid, '{{database}} {{table}} ')
-                {{bitagapGroupSubjectFilter}}
+              SELECT DISTINCT ?target_item ?label WHERE {
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ')
+                    {{bitagapGroupSubjectFilter}}
+                    BIND ( wdt:P243 as ?property)
+                    ?item ?property ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
               }
               `
             }

@@ -54,13 +54,12 @@ export default {
                 {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
-                  {{langFilter}}
                 }
                 UNION
                 {
                   ?item skos:altLabel ?labelObj .
-                  {{langFilter}}
                 }
+                {{langFilter}}
               }
               `,
               allowFreeText: true
@@ -100,22 +99,17 @@ export default {
               `
               SELECT DISTINCT ?label ?property {
                 {
-                  SELECT ?label ?property
-                  WHERE {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
+                  ?item wdt:P476 ?pbid .
+                  FILTER regex(?pbid, '{{database}} {{table}} ') .
+                  {{bitagapGroupFilter}}
+                  {
                     ?item wdt:P1031 ?label .
                     BIND('P1031' AS ?property)
                   }
-                } UNION {
-                  SELECT ?label ?property
-                  WHERE {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
+                  UNION
+                  {
                     ?item rdfs:label ?labelObj .
-                    {{langFilter}}
+                    {{itemLangGroupPattern}}
                     BIND('label' AS ?property)
                   }
                 }
