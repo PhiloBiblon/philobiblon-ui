@@ -1,5 +1,6 @@
 export default {
   common: {
+    label: 'Etiqueta',
     property: 'Propiedad',
     properties: 'Propiedades',
     per_page: 'por página',
@@ -20,18 +21,7 @@ export default {
     add_claim: 'añadir declaración',
     cancel: 'cancelar',
     create: 'Crear',
-    items: 'elementos',
-    search: {
-      find_text: 'Busca texto',
-      section: {
-        advanced: 'Búsqueda avanzada',
-        external_description: 'External description'
-      },
-      error: {
-        invalid_date: 'Fecha no válida. Use el formato AAAA-MM-DD',
-        invalid_year: 'El año debe estar entre 0 y 2125'
-      }
-    }
+    items: 'elementos'
   },
   menu: {
     item: {
@@ -72,6 +62,41 @@ export default {
             label: 'copid'
           }
         }
+      },
+      create: {
+        label: 'Crear',
+        item: {
+          texid: {
+            label: 'Obra'
+          },
+          libid: {
+            label: 'Biblioteca'
+          },
+          insid: {
+            label: 'Institución'
+          },
+          bioid: {
+            label: 'Persona'
+          },
+          bibid: {
+            label: 'Referencia'
+          },
+          manid: {
+            label: 'MsEd'
+          },
+          geoid: {
+            label: 'Geografía'
+          },
+          subid: {
+            label: 'Asunto'
+          },
+          cnum: {
+            label: 'Testimonio textual'
+          },
+          copid: {
+            label: 'Ejemplar adicional'
+          }
+        }
       }
     }
   },
@@ -91,6 +116,11 @@ export default {
   search: {
     form: {
       common: {
+        find_text: 'Busca texto',
+        section: {
+          advanced: 'Búsqueda avanzada',
+          external_description: 'External description'
+        },
         group: {
           label: 'Base de datos'
         },
@@ -98,11 +128,24 @@ export default {
           label: 'Todos'
         },
         bitagap_group: {
-          label: 'Subgrupo'
+          label: 'Subgrupo',
+          options: {
+            all: 'Todo',
+            original: 'Original',
+            cartas: 'Cartas'
+          }
         },
         simple_search: {
           label: 'Búsqueda sencilla',
           hint: 'Utilice este campo para buscar información no localizable en campos con nombre. Por ejemplo, en <b>MsEd</b>, información codicológica; o, en TRABAJO, escriba "trad*" en <b>Búsqueda simple</b> para producir una lista de trabajos que han sido traducidos de su idioma original.'
+        },
+        q_number: {
+          label: 'Número Q',
+          hint: 'El número Q de wikibase.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduzca únicamente el número de identificación de PhiloBiblon.'
         },
         subject: {
           label: 'Materia',
@@ -114,7 +157,11 @@ export default {
         },
         date: {
           label: 'Fecha',
-          hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.'
+          hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.',
+          error: {
+            invalid_date: 'Fecha no válida. Use el formato AAAA-MM-DD',
+            invalid_year: 'El año debe estar entre 0 y 2125'
+          }
         },
         personal_name: {
           label: 'Nombre personal',
@@ -383,7 +430,7 @@ export default {
       results: 'Resultados',
       sort_by: 'Ordenar por:',
       sort_option: {
-        name: 'Nom',
+        name: 'Nombre',
         id: 'ID'
       },
       not_found: 'No se ha encontrado resultados.'
@@ -394,6 +441,9 @@ export default {
     title: 'Título',
     description: 'Descripción',
     back: 'Ir atrás',
+    identifiers: 'Identificadores',
+    related_items: 'Elementos relacionados',
+    notes: 'Notas',
     messages: {
       invalid_id: 'Identificador inválido.',
       not_found: 'No encontrado.',
@@ -402,8 +452,7 @@ export default {
     create: {
       button: {
         text: 'Crear elemento',
-        enabled: 'Crea un elemento nevo',
-        disabled: 'Seleccione una de las bases de datos: BETA, BITECA o BITAGAP.'
+        enabled: 'Crea un elemento nevo'
       },
       calculating_new_pbid: 'Calculando nuevo PhiloBiblon ID ..'
     },

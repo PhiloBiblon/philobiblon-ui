@@ -1,5 +1,6 @@
 export default {
   common: {
+    label: 'Etiqueta',
     property: 'Propietat',
     properties: 'Propietats',
     per_page: 'per pàgina',
@@ -20,18 +21,7 @@ export default {
     add_claim: 'afegir declaració',
     cancel: 'cancel·lar',
     create: 'Crear',
-    items: 'elements',
-    search: {
-      find_text: 'Cerca text',
-      section: {
-        advanced: 'Cerca avançada',
-        external_description: 'Descripció externa'
-      },
-      error: {
-        invalid_date: 'Data no vàlida. Utilitzeu el format AAAA-MM-DD',
-        invalid_year: 'L\'any ha d\'estar entre 0 i 2125'
-      }
-    }
+    items: 'elements'
   },
   menu: {
     item: {
@@ -72,6 +62,41 @@ export default {
             label: 'copid'
           }
         }
+      },
+      create: {
+        label: 'Crear',
+        item: {
+          texid: {
+            label: 'Obra'
+          },
+          libid: {
+            label: 'Biblioteca'
+          },
+          insid: {
+            label: 'Institució'
+          },
+          bioid: {
+            label: 'Persona'
+          },
+          bibid: {
+            label: 'Referència'
+          },
+          manid: {
+            label: 'MsEd'
+          },
+          geoid: {
+            label: 'Geogràfia'
+          },
+          subid: {
+            label: 'Assumpte'
+          },
+          cnum: {
+            label: 'Testimoni textual'
+          },
+          copid: {
+            label: 'Exemplar adicional'
+          }
+        }
       }
     }
   },
@@ -91,6 +116,11 @@ export default {
   search: {
     form: {
       common: {
+        find_text: 'Cerca text',
+        section: {
+          advanced: 'Cerca avançada',
+          external_description: 'Descripció externa'
+        },
         group: {
           label: 'Base de dades'
         },
@@ -98,11 +128,24 @@ export default {
           label: 'Tots'
         },
         bitagap_group: {
-          label: 'Subgrup'
+          label: 'Subgrup',
+          options: {
+            all: 'Tot',
+            original: 'Original',
+            cartas: 'Cartes'
+          }
         },
         simple_search: {
           label: 'Cerca simple',
           hint: 'Utilitzeu aquest camp per cercar informació que no es pugui localitzar als camps amb nom. Per exemple, a <b>MsEd</b>, informació codicològica; o, a WORK, escriviu “trad*” a <b>Cerca senzilla</b> per produir una llista d\'obres que s\'han traduït de la seva llengua original.'
+        },
+        q_number: {
+          label: 'Número Q',
+          hint: 'El número Q de Wikibase.'
+        },
+        philobiblon_id: {
+          label: 'PhiloBiblon ID',
+          hint: 'Introduïu només el número d\'identificació de PhiloBiblon.'
         },
         subject: {
           label: 'Matèria',
@@ -114,7 +157,11 @@ export default {
         },
         date: {
           label: 'Data',
-          hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.'
+          hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.',
+          error: {
+            invalid_date: 'Data no vàlida. Utilitzeu el format AAAA-MM-DD',
+            invalid_year: 'L\'any ha d\'estar entre 0 i 2125'
+          }
         },
         personal_name: {
           label: 'Nom personal',
@@ -394,6 +441,9 @@ export default {
     title: 'Títol',
     description: 'Descripció',
     back: 'Torna',
+    identifiers: 'Identificadors',
+    related_items: 'Elements relacionats',
+    notes: 'Notes',
     messages: {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',
@@ -402,8 +452,7 @@ export default {
     create: {
       button: {
         text: 'Crear element',
-        enabled: 'Crea un element nou',
-        disabled: 'Sel.lecciona una de les bases de dades: BETA, BITECA o BITAGAP.'
+        enabled: 'Crea un element nou'
       },
       calculating_new_pbid: 'Calculant nou PhiloBiblon ID ..'
     },

@@ -1,8 +1,20 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on }">
-      <v-btn text v-on="on">
-        {{ $i18n.locale }}
+      <v-btn
+        text
+        class="d-flex align-center pa-0"
+        height="0"
+        min-width="0"
+        v-on="on"
+      >
+        <v-img
+          :src="localeFlag"
+          alt="flag"
+          contain
+          max-width="24"
+          max-height="16"
+        />
       </v-btn>
     </template>
     <v-list>
@@ -13,7 +25,7 @@
         @click="changeLocale(index)"
       >
         <v-list-item-avatar>
-          <v-img :src="item.image" alt="flag"/>
+          <v-img :src="item.image" alt="flag" />
         </v-list-item-avatar>
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item>
@@ -32,6 +44,12 @@ export default {
         { locale: 'gl', name: 'Galego', image: 'img/flags/flag_galicia.gif' },
         { locale: 'pt', name: 'Português', image: 'img/flags/flag_portugal.gif' }
       ]
+    }
+  },
+
+  computed: {
+    localeFlag () {
+      return this.languages.find(lang => lang.locale === this.$i18n.locale)?.image ?? ''
     }
   },
   methods: {

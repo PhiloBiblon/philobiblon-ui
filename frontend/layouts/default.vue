@@ -24,7 +24,7 @@
       <v-divider />
 
       <v-list class="mainmenu">
-        <v-list-item :to="localePath('/')">
+        <v-list-item :to="localePath('/wiki/Welcome')">
           <v-list-item-action>
             <v-icon>
               mdi-apps
@@ -40,45 +40,33 @@
           <template #activator>
             <v-list-item-title>{{ $t('menu.item.search.label') }}</v-list-item-title>
           </template>
-          <v-list-item class="subitem" link @click="goTo('/search/texid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.texid.label') }}</v-list-item-title>
-            </v-list-item-content>
+          <v-list-item
+            v-for="item in searchItems"
+            :key="item.path"
+            :to="localePath(item.path)"
+            router
+            exact
+            class="subitem"
+          >
+            <v-list-item-title>{{ $t(item.label) }}</v-list-item-title>
           </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/libid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.libid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/insid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.insid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/bioid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.bioid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/bibid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.bibid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/manid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.manid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/geoid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.geoid.label') }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="subitem" link @click="goTo('/search/subid/query')">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('menu.item.search.item.subid.label') }}</v-list-item-title>
-            </v-list-item-content>
+        </v-list-group>
+        <v-list-group
+          v-if="$store.state.auth.isLogged"
+          prepend-icon="mdi-plus"
+        >
+          <template #activator>
+            <v-list-item-title>{{ $t('item.create.button.text') }}</v-list-item-title>
+          </template>
+          <v-list-item
+            v-for="item in createItems"
+            :key="item.path"
+            :to="localePath(item.path)"
+            router
+            exact
+            class="subitem"
+          >
+            <v-list-item-title>{{ $t(item.label) }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>
@@ -104,28 +92,26 @@
       </v-toolbar-title>
       <v-spacer />
       <languages-menu />
-      <v-tooltip
+      <v-btn
         v-if="$store.state.auth.isLogged"
-        bottom
+        text
+        height="0"
+        min-width="0"
+        class="lowercase"
+        @click="logout"
       >
-        <template #activator="{ on }">
-          <v-icon v-on="on" @click="logout">
-            mdi-logout-variant
-          </v-icon>
-        </template>
-        <span>{{ $t('auth.logout.label') }}</span>
-      </v-tooltip>
-      <v-tooltip
-        v-if="!$store.state.auth.isLogged"
-        bottom
+        {{ $t('auth.logout.label') }}
+      </v-btn>
+      <v-btn
+        v-else
+        text
+        height="0"
+        min-width="0"
+        class="lowercase"
+        @click="login"
       >
-        <template #activator="{ on }">
-          <v-icon v-on="on" @click="login">
-            mdi-login-variant
-          </v-icon>
-        </template>
-        <span>{{ $t('auth.login.label') }}</span>
-      </v-tooltip>
+        {{ $t('auth.login.label') }}
+      </v-btn>
     </v-app-bar>
     <v-main class="min-height-full-display">
       <v-container fluid ma-50>
@@ -144,7 +130,29 @@ export default {
     return {
       title_1: 'Philo',
       title_2: 'Biblon',
-      drawer: false
+      drawer: false,
+      searchItems: [
+        { path: '/search/texid/query', label: 'menu.item.search.item.texid.label' },
+        { path: '/search/libid/query', label: 'menu.item.search.item.libid.label' },
+        { path: '/search/insid/query', label: 'menu.item.search.item.insid.label' },
+        { path: '/search/bioid/query', label: 'menu.item.search.item.bioid.label' },
+        { path: '/search/bibid/query', label: 'menu.item.search.item.bibid.label' },
+        { path: '/search/manid/query', label: 'menu.item.search.item.manid.label' },
+        { path: '/search/geoid/query', label: 'menu.item.search.item.geoid.label' },
+        { path: '/search/subid/query', label: 'menu.item.search.item.subid.label' }
+      ],
+      createItems: [
+        { path: '/item/texid/create', label: 'menu.item.create.item.texid.label' },
+        { path: '/item/libid/create', label: 'menu.item.create.item.libid.label' },
+        { path: '/item/insid/create', label: 'menu.item.create.item.insid.label' },
+        { path: '/item/bioid/create', label: 'menu.item.create.item.bioid.label' },
+        { path: '/item/bibid/create', label: 'menu.item.create.item.bibid.label' },
+        { path: '/item/manid/create', label: 'menu.item.create.item.manid.label' },
+        { path: '/item/geoid/create', label: 'menu.item.create.item.geoid.label' },
+        { path: '/item/subid/create', label: 'menu.item.create.item.subid.label' },
+        { path: '/item/cnum/create', label: 'menu.item.create.item.cnum.label' },
+        { path: '/item/copid/create', label: 'menu.item.create.item.copid.label' }
+      ]
     }
   },
   computed: {
@@ -202,5 +210,9 @@ export default {
   li {
     font-size: large !important;
   }
+}
+
+.lowercase {
+  text-transform: lowercase;
 }
 </style>

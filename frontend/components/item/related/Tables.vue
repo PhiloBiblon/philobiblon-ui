@@ -6,6 +6,7 @@
       :item-id="itemId"
       :table="table"
       :references="refs"
+      @has-related-table="emitHasRelatedTable"
     />
   </div>
 </template>
@@ -24,6 +25,7 @@ export default {
   },
   data () {
     return {
+      hasRelatedTables: false,
       relatedTables: {
         manid: [
           {
@@ -157,7 +159,8 @@ export default {
               { refTable: 'cnum', property: 'P703' },
               { refTable: 'copid', property: 'P703' },
               { refTable: 'manid', property: 'P703' },
-              { refTable: 'texid', property: 'P703' }
+              { refTable: 'texid', property: 'P703' },
+              { refTable: 'texid', property: 'P33' }
             ]
           },
           {
@@ -389,6 +392,14 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    emitHasRelatedTable (hasRelatedTable) {
+      if (!this.hasRelatedTables && hasRelatedTable) {
+        this.hasRelatedTables = true
+      }
+      this.$emit('has-related-table', this.hasRelatedTables)
     }
   }
 }

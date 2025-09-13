@@ -14,7 +14,7 @@
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <div>
-          <item-claims :table="tableid" :claims="item?.claims" />
+          <item-claims :table="tableid" :claims="claims" />
         </div>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -43,7 +43,8 @@ export default {
     return {
       label: null,
       item: null,
-      tableid: null
+      tableid: null,
+      claims: null
     }
   },
 
@@ -67,9 +68,10 @@ export default {
       try {
         await this.$wikibase
           .getEntity(this.value.item, this.$i18n.locale)
-          .then((entity) => {
+          .then(async (entity) => {
             this.tableid = this.$wikibase.getRelatedTable(entity)
             this.item = entity
+            this.claims = await this.$wikibase.getOrderedClaims(this.tableid, entity.claims)
             this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
           })
       } catch (err) {

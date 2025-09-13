@@ -53,8 +53,19 @@
           </v-col>
         </span>
       </v-row>
-      <item-claims :table="tableid" :claims="item.claims" :item="item" />
-      <item-related-tables :item-id="item.id" :table="tableid" />
+      <item-claims :claims="claimsOrdered" :item="item" />
+      <div v-if="hasRelatedTable" class="text-h6 mt-6">
+        {{ $t('item.related_items') }}
+      </div>
+      <item-related-tables :item-id="item.id" :table="tableid" @has-related-table="hasRelatedTable = $event" />
+      <div v-if="hasNotes || isUserLogged" class="text-h6 mt-6">
+        {{ $t('item.notes') }}
+      </div>
+      <item-notes :item-id="item.id" @has-notes="hasNotes = $event" />
+      <div class="text-h6 mt-6">
+        {{ $t('item.identifiers') }}
+      </div>
+      <item-claims :claims="externalIdClaims" :item="item" />
     </v-container>
   </div>
 </template>
@@ -75,7 +86,11 @@ export default {
       item: null,
       label: null,
       showItem: false,
-      tableid: null
+      tableid: null,
+      claimsOrdered: [],
+      externalIdClaims: [],
+      hasRelatedTable: false,
+      hasNotes: false
     }
   },
 
@@ -110,9 +125,21 @@ export default {
             this.description = await this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
             this.setBreadCrumb(this.tableid, entity)
             this.showItem = true
+            this.handleClaims(entity)
           })
       } catch (err) {
         this.$notification.error(err)
+      }
+    },
+    async handleClaims (entity) {
+      const allClaims = await this.$wikibase.getOrderedClaims(this.tableid, entity.claims)
+      for (const claim of allClaims) {
+        const entityProperty = await this.$wikibase.getEntity(claim.property, this.$i18n.locale)
+        if (entityProperty.datatype === 'external-id') {
+          this.externalIdClaims.push(claim)
+        } else {
+          this.claimsOrdered.push(claim)
+        }
       }
     },
     setBreadCrumb (table, entity) {

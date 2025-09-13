@@ -7,6 +7,7 @@
     :no-data-text="checkNoDataText"
     :items="items"
     :search-input.sync="search"
+    :filter="acceptAll"
     hide-select
     v-on="$listeners"
   >
@@ -38,6 +39,14 @@ export default {
       default: null
     },
     table: {
+      type: String,
+      required: true
+    },
+    database: {
+      type: String,
+      required: true
+    },
+    bitagapGroup: {
       type: String,
       required: true
     },
@@ -79,7 +88,7 @@ export default {
   watch: {
     value (val) {
       if (this.allowFreeText) {
-        const regex = new RegExp(`${this.$t('common.search.find_text')} "(.*?)"`)
+        const regex = new RegExp(`${this.$t('search.form.common.find_text')} "(.*?)"`)
         const match = val?.label?.match(regex)
         if (match && match[1]) {
           val.label = match[1]
@@ -100,15 +109,15 @@ export default {
       if (this.value && val === this.value.label) {
         return
       }
-      if (val === '-') {
-        val = ''
-      }
       this.loadingItems = true
       clearTimeout(this.searchTimeout)
       // Delay to avoid continuous requests when user is writing
       this.searchTimeout = setTimeout(() => {
         this.fetchItems(val)
       }, 500)
+    },
+    database (val) {
+      this.items = []
     }
   },
   created () {
@@ -120,7 +129,11 @@ export default {
   },
   methods: {
     fetchItems (query) {
-      const sparqlQuery = this.$wikibase.$query.filterQuery(this.autocomplete.query, this.table, this.$i18n.locale)
+      const sparqlQuery = this.$wikibase.$query.filterQuery(this.autocomplete.query, this.database, this.bitagapGroup, this.table, this.$i18n.locale)
+      if (process.env.debug) {
+        // eslint-disable-next-line no-console
+        console.log(`run sparlql query:\n${sparqlQuery}`)
+      }
       const body = `q=${encodeURIComponent(query)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
       const options = {
         method: 'POST',
@@ -130,13 +143,13 @@ export default {
       fetch(`${this.$config.apiBaseUrl}/api/search`, options)
         .then((response) => {
           if (!response.ok) {
-            throw new Error('Error from the server')
+            throw new Error('Error from the cache server')
           }
           return response.json()
         })
         .then((data) => {
           if (this.allowFreeText) {
-            const findTextLabel = `${this.$t('common.search.find_text')} "${query}"`
+            const findTextLabel = `${this.$t('search.form.common.find_text')} "${query}"`
             data.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
           }
           this.items = data
@@ -148,6 +161,10 @@ export default {
           this.$notification.error(error)
           this.loadingItems = false
         })
+    },
+    acceptAll (item, queryText, itemText) {
+      // We accept all the item because the item are already filtered in the backend
+      return true
     }
   }
 }

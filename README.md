@@ -13,50 +13,53 @@ Main features:
 ## Modules
 
 PhiloBiblon UI has two main modules:
-  - __frontend__: A VUE application (including nuxt) using client side rendering.
-  - __backend__: A Java application (Spring Boot) with two main purposes:
+  - __frontend__: A VUE application (including Nuxt and Vuetify) using client side rendering.
+  - __backend__: A Java application (Spring Boot) with the following features:
     - Authentication with Wikibase via OAuth 1.0.
     - Proxy to wikibase-edit library in frontend in order to edit items in the Wikibase.
+    - Improve performance as a cache for SPARQL queries.
 
-![philobiblon-ui drawio](https://github.com/faulhaber/PhiloBiblon/assets/13070879/6f08b49c-ed99-4145-b01f-b9663b93278d)
+<img width="535" height="115" alt="253979975-6f08b49c-ed99-4145-b01f-b9663b93278d drawio" src="https://github.com/user-attachments/assets/4222019f-803f-43df-9aac-a71dffce1823" />
+
 
 ## Build
 
 Steps to build the modules:
 
-1. Set `.env` file which defines the environment variables depending on the platform where we are installing (currently, `.env.local` for local development; `.env.pbuidev` for sandbox).
+1. Set `.env` file which defines the environment variables depending on the platform where we are installing.
 ```
-ln -s .env.pbuidev .env
+ln -s .env.template .env
 ```  
-2. Build backend container.
+2. Build application.
 ```
-cd backend
-mvn clean install
-mvn spring-boot:build-image
+docker compose build
 ```  
-3. Build frontend container.
-```
-docker-compose --env-file .env build
-```  
-4. First time only, get `Let's Encrypt` ssl certificates to enable the `https` protocol.
-```
-init-letsencrypt.sh
-```
 
-The last step already starts all modules for PhiloBiblon UI.
 
 ## Run
 
 Start the PhiloBiblon UI:
 
 ```
-docker-compose --env-file .env up -d
+docker compose up -d
+```
+
+To build and run with a single command:
+
+```
+docker compose up --build -d
 ```
 
 Stop the PhiloBiblon UI:
 
 ```
-docker-compose --env-file .env stop
+docker compose stop
+```
+
+Remove installation:
+
+```
+docker compose down -v
 ```
 
 ## Configuration
@@ -65,8 +68,6 @@ The configuration is centralized in the `env file`, where we can find all the en
 - __frontend__
   - FRONTEND_DOMAIN: Public DNS domain.
   - FRONTEND_HTTP_PORT: Public port for frontend.
-  - FRONTEND_HTTPS_PORT: Public port for backend.
-  - LETSENCRYPT_USER: Let's Encrypt user mail.
   - API_BASE_URL: URL for public backend API.
 - __backend__
   - WIKIBASE_BASE_URL: Wikibase base url (i.e, without any request URI)
