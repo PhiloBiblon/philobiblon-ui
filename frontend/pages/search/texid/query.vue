@@ -55,12 +55,17 @@ export default {
                 {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
+                  {{langFilter}}
                 }
                 UNION
                 {
                   ?item skos:altLabel ?labelObj .
+                  {{langFilter}}
                 }
-                {{langFilter}}
+                UNION
+                {
+                  ?item wdt:P11 ?label .
+                }
               }
               `,
               allowFreeText: true
