@@ -142,14 +142,11 @@ export default {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
-                {
-                  BIND(wdt:P171 AS ?property)
-                  ?item ?property ?target_item .
-                  {{targetItemLangGroupPattern}}
-                } UNION {
-                  BIND(wdt:P173 AS ?property)
-                  ?item ?property ?label .
-                }
+
+                VALUES ?property { wdt:P171 wdt:P165 }
+                ?item ?property ?target_item .
+
+                {{targetItemLangGroupPattern}}
               }
               `
             }
