@@ -36,7 +36,7 @@
       <template v-for="(section) in form.section">
         <v-row v-if="!isPrimarySection(section) && existsSectionFilters(section) && !showResults" :key="'header-' + section" dense>
           <span class="section-search text-caption mb-2 primary--text" @click="toggleSectionDisplay(section)">
-            {{ $t(`common.search.section.${section}`) }} <v-icon class="primary--text">{{ isSectionDisplayed(section) ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            {{ $t(`search.form.common.section.${section}`) }} <v-icon class="primary--text">{{ isSectionDisplayed(section) ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
           </span>
         </v-row>
         <v-row v-if="isSectionDisplayed(section)" :key="'body-' + section" dense>
@@ -177,7 +177,9 @@ export default {
       return ['BETA', 'BITAGAP', 'BITECA', { text: this.$t('search.form.common.group_all.label'), value: 'ALL' }]
     },
     bitagapOptions () {
-      return [{ text: 'All', value: 'ALL' }, { text: 'Original', value: 'ORIG' }, { text: 'Cartas', value: 'CARTAS' }]
+      return [{ text: this.$t('search.form.common.bitagap_group.options.all'), value: 'ALL' },
+        { text: this.$t('search.form.common.bitagap_group.options.original'), value: 'ORIG' },
+        { text: this.$t('search.form.common.bitagap_group.options.cartas'), value: 'CARTAS' }]
     }
   },
 

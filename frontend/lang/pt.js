@@ -22,18 +22,7 @@ export default {
     add_claim: 'adicionar declaração',
     cancel: 'Cancelar',
     create: 'Criar',
-    items: 'unid',
-    search: {
-      find_text: 'Encontrar texto',
-      section: {
-        advanced: 'Busca avançada',
-        external_description: 'Descrição externa'
-      },
-      error: {
-        invalid_date: 'Data inválida. Utilize o formato AAAA-MM-DD',
-        invalid_year: 'O ano deve estar entre 0 e 2125'
-      }
-    }
+    items: 'unid'
   },
   menu: {
     item: {
@@ -128,6 +117,11 @@ export default {
   search: {
     form: {
       common: {
+        find_text: 'Encontrar texto',
+        section: {
+          advanced: 'Busca avançada',
+          external_description: 'Descrição externa'
+        },
         group: {
           label: 'Banco de dados'
         },
@@ -135,7 +129,12 @@ export default {
           label: 'Todos'
         },
         bitagap_group: {
-          label: 'Subgrupo'
+          label: 'Subgrupo',
+          options: {
+            all: 'Tudo',
+            original: 'Original',
+            cartas: 'Cartas'
+          }
         },
         simple_search: {
           label: 'Pesquisa simples',
@@ -159,7 +158,11 @@ export default {
         },
         date: {
           label: 'Data',
-          hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.'
+          hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.',
+          error: {
+            invalid_date: 'Data inválida. Utilize o formato AAAA-MM-DD',
+            invalid_year: 'O ano deve estar entre 0 e 2125'
+          }
         },
         personal_name: {
           label: 'Nome pessoal',

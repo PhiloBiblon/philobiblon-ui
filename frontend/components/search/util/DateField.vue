@@ -138,13 +138,13 @@ export default {
       if (!date) {
         return null
       } else if (!DATE_REGEX.test(date)) {
-        this.$notification.error(this.$t('common.search.error.invalid_date'))
+        this.$notification.error(this.$t('search.form.common.date.error.invalid_date'))
         return null
       } else {
         const parsed = new Date(`${date}T00:00:00Z`)
         const year = parseInt(date.substring(0, 4), 10)
         if (isNaN(parsed.getTime()) || year > 2125) {
-          this.$notification.error(this.$t('common.search.error.invalid_year'))
+          this.$notification.error(this.$t('search.form.common.date.error.invalid_year'))
           return null
         }
         return date
