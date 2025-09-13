@@ -5,7 +5,7 @@
     </div>
     <item-related-ritem
       v-for="(value, index) in items"
-      :key="'related-item-' + index"
+      :key="`related-item-${index}-${value.item}`"
       :table="table"
       :index="index + ((currentPage -1) * resultsPerPage)"
       :value="value"
