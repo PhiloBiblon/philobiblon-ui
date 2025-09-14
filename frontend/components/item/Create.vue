@@ -286,6 +286,7 @@ export default {
     updateClaims (data) {
       this.initialClaims = data
       this.claims = this.generateClaimsData(data)
+      this.generateLabelFromClaims()
     },
     generateClaimsData (data) {
       const claims = {}
@@ -307,7 +308,9 @@ export default {
           )
 
           claims[claimKey].push(createClaim(claim.value, qualifiers));
-          (Object.values(claim.claimsValues || {}) || []).forEach((v) => {
+
+          const values = Object.values(claim.claimsValues || {}) || []
+          values.forEach((v) => {
             claims[claimKey].push(createClaim(v))
           })
         }
@@ -392,13 +395,118 @@ export default {
           )
         }
       } else {
-        this.$notification.error(
-          this.$t('messages.error.creation.pbid_already_exists', {
+        this.$notification.error(this.$t('messages.error.creation.pbid_already_exists', {
             pbid: this.pbid,
             item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
           })
         )
       }
+    },
+    formatTime (raw) {
+      const cleaned = raw.replace(/^\+/, '')
+      const date = new Date(cleaned)
+      return new Intl.DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(date)
+    },
+    getClaimValue (pbid) {
+      const claim = this.initialClaims.find(cl => cl.property?.id === pbid)
+      const val = claim?.value?.datavalue?.value
+
+      if (!val) {
+        return null
+      }
+      return typeof val === 'object'
+        ? val.label || val.text || this.formatTime(val.time) || val.id
+        : val
+    },
+    generateLabelFromClaims () {
+      let label = ''
+      switch (this.table) {
+        case 'texid': {
+          const author = this.getClaimValue('P21')
+          const title = this.getClaimValue('P11')
+          if (author && title) {
+            label = `${author}. ${title}`
+          }
+          break
+        }
+        case 'cnum': {
+          const work = this.getClaimValue('P590')
+          const partOf = this.getClaimValue('P8')
+          if (work && partOf) {
+            label = `Witness of ${work}, part of ${partOf}`
+          }
+          break
+        }
+        case 'bibid': {
+          const creator =
+            this.getClaimValue('P1134') || this.getClaimValue('P21')
+          const title = this.getClaimValue('P11')
+          if (creator && title) {
+            label = `${creator}. ${title}`
+          }
+          break
+        }
+        case 'bioid': {
+          const fallbackProps = ['P34', 'P77', 'P173', 'P291', 'P165', 'P746']
+          for (const pbid of fallbackProps) {
+            const val = this.getClaimValue(pbid)
+            if (val) {
+              label = val
+              break
+            }
+          }
+          break
+        }
+        case 'manid': {
+          const holding = this.getClaimValue('P329')
+          const position = this.getClaimValue('P10')
+          if (holding && position) {
+            label = `${holding}, ${position}`
+          }
+          break
+        }
+        case 'copid': {
+          const holding = this.getClaimValue('P329')
+          const position = this.getClaimValue('P10')
+          const edition = this.getClaimValue('P839')
+          if (holding && position && edition) {
+            label = `${holding}, ${position} (${edition})`
+          }
+          break
+        }
+        case 'geoid':
+        case 'insid': {
+          const name = this.getClaimValue('P34')
+          const region = this.getClaimValue('P297')
+          if (name && region) {
+            label = `${name}, ${region}`
+          }
+          break
+        }
+        case 'libid': {
+          const name = this.getClaimValue('P34')
+          const location = this.getClaimValue('P47')
+          if (name && location) {
+            label = `${name}, ${location}`
+          }
+          break
+        }
+        case 'subid': {
+          const name = this.getClaimValue('P34')
+          if (name) {
+            label = name
+          }
+          break
+        }
+        default:
+          break
+      }
+
+      this.label = label || ''
     }
   }
 }
