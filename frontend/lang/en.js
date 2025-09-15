@@ -21,7 +21,20 @@ export default {
     add_claim: 'add statement',
     cancel: 'cancel',
     create: 'Create',
-    items: 'items'
+    items: 'items',
+    save: 'save',
+    remove: 'remove',
+    search: {
+      find_text: 'Find text',
+      section: {
+        advanced: 'Advanced search',
+        external_description: 'External description'
+      },
+      error: {
+        invalid_date: 'Invalid date. Use YYYY-MM-DD format',
+        invalid_year: 'Year must be between 0 and 2125'
+      }
+    }
   },
   menu: {
     item: {
@@ -62,41 +75,6 @@ export default {
             label: 'copid'
           }
         }
-      },
-      create: {
-        label: 'Create',
-        item: {
-          texid: {
-            label: 'Work'
-          },
-          libid: {
-            label: 'Library'
-          },
-          insid: {
-            label: 'Institution'
-          },
-          bioid: {
-            label: 'Person'
-          },
-          bibid: {
-            label: 'Reference'
-          },
-          manid: {
-            label: 'MsEd'
-          },
-          geoid: {
-            label: 'Geography'
-          },
-          subid: {
-            label: 'Subject'
-          },
-          cnum: {
-            label: 'Textual testimony'
-          },
-          copid: {
-            label: 'Additional copy'
-          }
-        }
       }
     }
   },
@@ -116,11 +94,6 @@ export default {
   search: {
     form: {
       common: {
-        find_text: 'Find text',
-        section: {
-          advanced: 'Advanced search',
-          external_description: 'External description'
-        },
         group: {
           label: 'Database'
         },
@@ -128,12 +101,7 @@ export default {
           label: 'All'
         },
         bitagap_group: {
-          label: 'Subgroup',
-          options: {
-            all: 'All',
-            original: 'Original',
-            cartas: 'Letters'
-          }
+          label: 'Subgroup'
         },
         simple_search: {
           label: 'Simple search',
@@ -157,11 +125,7 @@ export default {
         },
         date: {
           label: 'Date',
-          hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.',
-          error: {
-            invalid_date: 'Invalid date. Use YYYY-MM-DD format',
-            invalid_year: 'Year must be between 0 and 2125'
-          }
+          hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.'
         },
         personal_name: {
           label: 'Personal name',
@@ -452,7 +416,8 @@ export default {
     create: {
       button: {
         text: 'Create item',
-        enabled: 'Create a new item'
+        enabled: 'Create a new item',
+        disabled: 'Select one of the databases: BETA, BITECA or BITAGAP.'
       },
       calculating_new_pbid: 'Calculating new PhiloBiblon ID ..'
     },

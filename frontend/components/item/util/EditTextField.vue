@@ -22,7 +22,14 @@
         icon
         @click.stop="edit"
       >
-        <v-icon>mdi-check</v-icon>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-icon v-bind="attrs" v-on="on">
+              mdi-check
+            </v-icon>
+          </template>
+          <span>{{ $t("common.save") }}</span>
+        </v-tooltip>
       </v-btn>
       <v-btn
         v-if="focussed"
@@ -30,7 +37,14 @@
         icon
         @click.stop="restore"
       >
-        <v-icon>mdi-close</v-icon>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-icon v-bind="attrs" v-on="on">
+              mdi-close
+            </v-icon>
+          </template>
+          <span>{{ $t("common.cancel") }}</span>
+        </v-tooltip>
       </v-btn>
       <v-btn
         v-if="focussed && isEditable"
@@ -38,7 +52,14 @@
         icon
         @click.stop="deleteValue"
       >
-        <v-icon>mdi-trash-can</v-icon>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-icon v-bind="attrs" v-on="on">
+              mdi-trash-can
+            </v-icon>
+          </template>
+          <span>{{ $t("common.remove") }}</span>
+        </v-tooltip>
       </v-btn>
     </template>
   </v-text-field>

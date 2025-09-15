@@ -25,15 +25,24 @@
       </v-col>
       <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
         <v-btn v-if="!forCreate" :disabled="!canCreate(key)" text icon @click.stop="addClaim(key)">
-          <v-icon>mdi-check</v-icon>
+          <v-tooltip top>
+            <template #activator="{ on, attrs }">
+              <v-icon v-bind="attrs" v-on="on">
+                mdi-check
+              </v-icon>
+            </template>
+            <span>{{ $t("common.save") }}</span>
+          </v-tooltip>
         </v-btn>
-        <v-btn
-          v-if="(!forCreate && claim?.property?.id !== pbid) || (forCreate && claim?.removable)"
-          text
-          icon
-          @click.stop="removeClaim(key)"
-        >
-          <v-icon>mdi-trash-can</v-icon>
+        <v-btn v-if="claim?.property?.id !== pbid" text icon @click.stop="removeClaim(key)">
+          <v-tooltip top>
+            <template #activator="{ on, attrs }">
+              <v-icon v-bind="attrs" v-on="on">
+                mdi-trash-can
+              </v-icon>
+            </template>
+            <span>{{ $t("common.remove") }}</span>
+          </v-tooltip>
         </v-btn>
       </v-col>
       <v-container class="claim-values elevation-1">

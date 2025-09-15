@@ -57,7 +57,11 @@ export default {
         toolbar.appendChild(customButtonsContainer)
 
         const checkButton = this.createButton('edit', 'mdi mdi-check')
+        checkButton.title = this.$t('common.save')
+
         const closeButton = this.createButton('restore', 'mdi mdi-close')
+        closeButton.title = this.$t('common.cancel')
+
         customButtonsContainer.appendChild(checkButton)
         customButtonsContainer.appendChild(closeButton)
       }
