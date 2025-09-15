@@ -38,10 +38,24 @@
       </v-col>
       <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
         <v-btn v-if="allowCreateQualifier(qualifier)" text icon @click.stop="createQualifier(key)">
-          <v-icon>mdi-check</v-icon>
+          <v-tooltip top>
+            <template #activator="{ on, attrs }">
+              <v-icon v-bind="attrs" v-on="on">
+                mdi-check
+              </v-icon>
+            </template>
+            <span>{{ $t("common.save") }}</span>
+          </v-tooltip>
         </v-btn>
         <v-btn v-if="claim" text icon @click.stop="removeQualifier(key)">
-          <v-icon>mdi-trash-can</v-icon>
+          <v-tooltip top>
+            <template #activator="{ btnOn, btnAttrs }">
+              <v-icon v-bind="btnAttrs" v-on="btnOn">
+                mdi-trash-can
+              </v-icon>
+            </template>
+            <span>{{ $t("common.remove") }}</span>
+          </v-tooltip>
         </v-btn>
       </v-col>
     </v-row>

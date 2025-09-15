@@ -33,10 +33,24 @@
           />
           <div class="d-flex ml-3 mt-1">
             <v-btn v-if="!forCreate" :disabled="!claim?.datavalue?.value" text icon @click.stop="createClaim(key)">
-              <v-icon>mdi-check</v-icon>
+              <v-tooltip top>
+                <template #activator="{ on, attrs }">
+                  <v-icon v-bind="attrs" v-on="on">
+                    mdi-check
+                  </v-icon>
+                </template>
+                <span>{{ $t("common.save") }}</span>
+              </v-tooltip>
             </v-btn>
             <v-btn text icon @click.stop="removeClaim(key)">
-              <v-icon>mdi-trash-can</v-icon>
+              <v-tooltip top>
+                <template #activator="{ on, attrs }">
+                  <v-icon v-bind="attrs" v-on="on">
+                    mdi-trash-can
+                  </v-icon>
+                </template>
+                <span>{{ $t("common.remove") }}</span>
+              </v-tooltip>
             </v-btn>
           </div>
         </div>
