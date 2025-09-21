@@ -15,7 +15,7 @@
       :results="results"
       :total-results="totalResults"
       :results-per-page="resultsPerPage"
-      :show-results="showResults"
+      :show-results="showResults && !waitingResults"
       @on-sort-by-id="search"
       @on-sort-descending="search"
       @on-pagination="search"

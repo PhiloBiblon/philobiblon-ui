@@ -47,7 +47,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?item
+              SELECT DISTINCT ?item ?label ?desc
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -60,6 +60,7 @@ export default {
                   ?item skos:altLabel ?labelObj .
                 }
                 {{langFilter}}
+                {{descLangFilter}}
               }
               `,
               allowFreeText: true
@@ -97,7 +98,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label {
+              SELECT DISTINCT ?target_item ?label ?desc {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -129,22 +130,17 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT (?labelObj AS ?label) ?property {
+              SELECT DISTINCT ?item (?labelObj AS ?label) ?desc {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
                 {
-                  SELECT ?labelObj ?property WHERE {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    {
-                      ?item wdt:P34 ?labelObj .
-                      BIND('P34' AS ?property)
-                    } UNION {
-                      ?item rdfs:label ?labelObj .
-                      BIND('label' AS ?property)
-                    }
-                    {{langFilterWithoutBind}}
-                  }
+                  ?item wdt:P34 ?labelObj .
+                } UNION {
+                  ?item rdfs:label ?labelObj .
                 }
+                {{langFilterWithoutBind}}
+                {{descLangFilter}}
               }
               `
             }
@@ -189,7 +185,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .

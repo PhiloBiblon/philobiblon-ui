@@ -30,7 +30,7 @@ public class SparqlServiceImpl implements SparqlService {
     public void init() {
         sparqlCache = Caffeine.newBuilder()
                 .refreshAfterWrite(24, TimeUnit.HOURS)
-                .expireAfterWrite(48, TimeUnit.HOURS)
+                .expireAfterWrite(36, TimeUnit.HOURS)
                 .build(this::executeSparqlQuery);
     }
 

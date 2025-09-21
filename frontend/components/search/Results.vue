@@ -27,7 +27,12 @@
                 >
                   <v-list-item v-for="(result, index) in results" :key="'r-'+index" @click="goToItem(result.item)">
                     <v-list-item-content>
-                      <span>{{ result.label }}&nbsp;&nbsp;&nbsp;<span class="text-caption">{{ result.pbids }}</span></span>
+                      <v-list-item-title>
+                        {{ result.label }}&nbsp;&nbsp;&nbsp;<span class="text-caption">{{ result.pbids }}</span>
+                      </v-list-item-title>
+                      <v-list-item-subtitle class="my-item-subtitle">
+                        {{ result.desc }}
+                      </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>
@@ -92,7 +97,7 @@
         </v-container>
         <div class="text-center">
           <v-pagination
-            v-if="showResults && results.length > 0"
+            v-if="showResults && totalResults > resultsPerPage"
             v-model="currentPage"
             :length="Math.ceil(totalResults / resultsPerPage)"
             :total-visible="5"

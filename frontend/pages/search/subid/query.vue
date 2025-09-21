@@ -47,7 +47,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?item
+              SELECT DISTINCT ?item ?label ?desc
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -60,6 +60,7 @@ export default {
                   ?item skos:altLabel ?labelObj .
                 }
                 {{langFilter}}
+                {{descLangFilter}}
               }
               `,
               allowFreeText: true
@@ -85,11 +86,11 @@ export default {
             visible: true,
             disabled: false
           },
-          headings: {
+          subject: {
             active: true,
             section: 'primary',
-            label: 'search.form.subid.headings.label',
-            hint: 'search.form.subid.headings.hint',
+            label: 'search.form.subid.subject.label',
+            hint: 'search.form.subid.subject.hint',
             type: 'autocomplete',
             value: {},
             visible: true,
@@ -97,7 +98,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?property {
+              SELECT DISTINCT ?item ?label ?desc {
                 {
                   ?item wdt:P476 ?pbid .
                   FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -109,10 +110,10 @@ export default {
                   UNION
                   {
                     ?item rdfs:label ?labelObj .
-                    {{itemLangGroupPattern}}
                     BIND('label' AS ?property)
                   }
                 }
+                {{itemLangGroupPattern}}
               }
               `
             }

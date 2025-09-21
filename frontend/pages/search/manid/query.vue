@@ -49,7 +49,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?item
+              SELECT DISTINCT ?item ?label ?desc
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -62,6 +62,7 @@ export default {
                   ?item skos:altLabel ?labelObj .
                 }
                 {{langFilter}}
+                {{descLangFilter}}
               }
               `,
               allowFreeText: true
@@ -99,7 +100,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     {
@@ -138,7 +139,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     {
@@ -241,7 +242,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label {
+              SELECT DISTINCT ?target_item ?label ?desc {
                 {
                   SELECT DISTINCT ?target_item {
                     {
@@ -276,7 +277,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label {
+              SELECT DISTINCT ?target_item ?label ?desc {
                 {
                   SELECT DISTINCT ?target_item  {
                     {
@@ -311,7 +312,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -337,7 +338,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label {
+              SELECT DISTINCT ?target_item ?label ?desc {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     {
@@ -375,9 +376,9 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label {
+              SELECT DISTINCT ?target_item ?label ?desc {
                 {
-                  SELECT DISTINCT ?target_item ?label WHERE {
+                  SELECT DISTINCT ?target_item WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -428,7 +429,7 @@ export default {
                     ?item wdt:P5 ?label .
                   }
                 } UNION {
-                  SELECT ?label ?cnum_item
+                  SELECT ?label
                   WHERE {
                     ?cnum_item wdt:P476 ?cnum_pbid .
                     FILTER regex(?cnum_pbid, '(.*) cnum ') .
@@ -455,7 +456,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -481,7 +482,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -508,9 +509,9 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label {
+              SELECT DISTINCT ?target_item ?label ?desc {
                 {
-                  SELECT ?target_item ?label WHERE {
+                  SELECT ?target_item WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -546,7 +547,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -582,7 +583,7 @@ export default {
                     ?item wdt:P800 ?label .
                   }
                 } UNION {
-                  SELECT ?label ?copid_item
+                  SELECT ?label
                   WHERE {
                     ?copid_item wdt:P476 ?copid_pbid .
                     FILTER regex(?copid_pbid, '(.*) copid ') .
@@ -631,7 +632,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -657,7 +658,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -683,7 +684,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label {
+              SELECT DISTINCT ?target_item ?label ?desc {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     {
@@ -721,9 +722,9 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label {
+              SELECT DISTINCT ?target_item ?label ?desc {
                 {
-                  SELECT ?target_item ?label WHERE {
+                  SELECT ?target_item WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -759,7 +760,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -785,7 +786,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
