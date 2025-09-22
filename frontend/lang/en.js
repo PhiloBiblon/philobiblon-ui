@@ -132,7 +132,7 @@ export default {
         bitagap_group: {
           label: 'Subgroup',
           options: {
-            all: 'All',
+            all: 'Omnia',
             original: 'Original',
             cartas: 'Letters'
           }

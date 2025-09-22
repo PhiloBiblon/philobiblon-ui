@@ -132,9 +132,9 @@ export default {
         bitagap_group: {
           label: 'Subgrupo',
           options: {
-            all: 'Todo',
-            original: 'Orixinal',
-            cartas: 'Letras'
+            all: 'Omnia',
+            original: 'Original',
+            cartas: 'Cartas'
           }
         },
         simple_search: {
