@@ -19,6 +19,8 @@ export default {
     add_value: 'añadir valor',
     add_qualifier: 'añadir calificador',
     add_claim: 'añadir declaración',
+    save: 'guardar',
+    remove: 'eliminar',
     cancel: 'cancelar',
     create: 'Crear',
     items: 'elementos'

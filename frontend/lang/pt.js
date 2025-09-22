@@ -20,6 +20,8 @@ export default {
     add_value: 'agregar valor',
     add_qualifier: 'adicionar qualificador',
     add_claim: 'adicionar declaração',
+    save: 'salvar',
+    remove: 'remover',
     cancel: 'Cancelar',
     create: 'Criar',
     items: 'unid'

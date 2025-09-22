@@ -19,6 +19,8 @@ export default {
     add_value: 'add value',
     add_qualifier: 'add qualifier',
     add_claim: 'add statement',
+    save: 'save',
+    remove: 'remove',
     cancel: 'cancel',
     create: 'Create',
     items: 'items'
