@@ -49,8 +49,8 @@
         </v-btn>
         <v-btn v-if="claim" text icon @click.stop="removeQualifier(key)">
           <v-tooltip top>
-            <template #activator="{ btnOn, btnAttrs }">
-              <v-icon v-bind="btnAttrs" v-on="btnOn">
+            <template #activator="{ on, attrs }">
+              <v-icon v-bind="attrs" v-on="on">
                 mdi-trash-can
               </v-icon>
             </template>
