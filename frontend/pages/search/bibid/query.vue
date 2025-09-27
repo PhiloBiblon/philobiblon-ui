@@ -48,7 +48,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?item
+              SELECT DISTINCT ?item ?label ?desc
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -61,6 +61,7 @@ export default {
                   ?item skos:altLabel ?labelObj .
                 }
                 {{langFilter}}
+                {{descLangFilter}}
               }
               `,
               allowFreeText: true
@@ -98,7 +99,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?property
+              SELECT DISTINCT ?label
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -159,6 +160,7 @@ export default {
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 ?item wdt:P1137 ?label .
                 {{bitagapGroupFilter}}
+                {{descLangFilter}}
               }
               `
             }
@@ -241,7 +243,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -289,7 +291,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
@@ -315,7 +317,7 @@ export default {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .

@@ -417,7 +417,7 @@ export default {
         }
       },
       subid: {
-        headings: {
+        subject: {
           label: 'Subject',
           hint: ''
         }
