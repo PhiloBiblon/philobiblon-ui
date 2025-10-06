@@ -35,6 +35,11 @@
           <span v-else class="text-h4">
             <item-util-view-text-lang :value="label" />
             &nbsp;
+            <item-util-view-text-lang
+              v-if="!isUserLogged"
+              class="text-subtitle-2 mr-2"
+              :value="description"
+            />
             <a
               class="text-subtitle-2 link"
               :href="$wikibase.getQItemUrl(item.id)"
@@ -44,14 +49,16 @@
         </v-col>
       </v-row>
       <v-row class="pb-5">
-        <span v-if="isUserLogged" class="full-width">
-          <item-util-edit-text-field :label="$t('item.description')" :save="editDescription" :value="description.value" class="text-subtitle-1" />
-        </span>
-        <span v-else class="text-subtitle-1">
-          <v-col class="text-subtitle-1">
-            <item-util-view-text-lang :value="description" />
-          </v-col>
-        </span>
+        <v-col>
+          <span v-if="isUserLogged" class="full-width">
+            <item-util-edit-text-field
+              :label="$t('item.description')"
+              :save="editDescription"
+              :value="description.value"
+              class="text-subtitle-2"
+            />
+          </span>
+        </v-col>
       </v-row>
       <item-claims :claims="claimsOrdered" :item="item" />
       <div v-if="hasRelatedTable" class="text-h6 mt-6">
