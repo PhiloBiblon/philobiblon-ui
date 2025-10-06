@@ -19,8 +19,6 @@ export default {
     add_value: 'add value',
     add_qualifier: 'add qualifier',
     add_claim: 'add statement',
-    save: 'save',
-    remove: 'remove',
     cancel: 'cancel',
     create: 'Create',
     items: 'items'
@@ -132,7 +130,7 @@ export default {
         bitagap_group: {
           label: 'Subgroup',
           options: {
-            all: 'Omnia',
+            all: 'All',
             original: 'Original',
             cartas: 'Letters'
           }
@@ -417,7 +415,7 @@ export default {
         }
       },
       subid: {
-        subject: {
+        headings: {
           label: 'Subject',
           hint: ''
         }
@@ -465,8 +463,8 @@ export default {
         text: 'Text'
       },
       texid: {
-        uniform_title: 'Textual witnesses',
-        related_uniform_titles: 'Related textual witnesses'
+        uniform_title: 'Works',
+        related_uniform_titles: 'Related works'
       },
       bibid: {
         related_bibliography: 'Related bibliography'
