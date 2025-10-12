@@ -152,7 +152,7 @@ export default {
         id: this.unitItemId,
         label: this.unitLabel.value
       }]
-      this.selectedUnit = this.unitLabel.value
+      this.selectedUnit = this.unitItemId
     },
     deleteValue () {
       return this.delete()

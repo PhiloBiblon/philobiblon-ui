@@ -180,6 +180,8 @@ export default {
           this.initialClaimsLoaded = true
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
         this.$notification.error(
           error?.body?.error?.info || this.$t('messages.error.something_went_wrong')
         )
@@ -307,7 +309,7 @@ export default {
             (claim.qualifiers || []).map(q => [q.property, extractValue(q)])
           )
 
-          claims[claimKey].push(createClaim(claim.value, qualifiers));
+          claims[claimKey].push(createClaim(claim.value, qualifiers))
 
           const values = Object.values(claim.claimsValues || {}) || []
           values.forEach((v) => {
@@ -396,9 +398,9 @@ export default {
         }
       } else {
         this.$notification.error(this.$t('messages.error.creation.pbid_already_exists', {
-            pbid: this.pbid,
-            item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
-          })
+          pbid: this.pbid,
+          item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
+        })
         )
       }
     },

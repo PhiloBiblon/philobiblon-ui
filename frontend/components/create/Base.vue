@@ -70,6 +70,8 @@ export default {
   created () {
     this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
     this.$store.commit('breadcrumb/setClass', 'large-font-breadcrumb')
+    this.$store.commit('breadcrumb/setDatabase', this.database)
+    this.$store.commit('breadcrumb/setTable', this.table)
   },
 
   destroyed () {

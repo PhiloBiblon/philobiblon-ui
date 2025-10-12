@@ -20,7 +20,7 @@ export default {
     },
     table: {
       type: String,
-      default: null
+      required: true
     }
   },
   data () {

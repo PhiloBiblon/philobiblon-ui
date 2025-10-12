@@ -7,7 +7,7 @@
       </v-row>
       -->
       <v-row class="back">
-        <a class="link" @click="goTo(`/search/${tableid}/query`)">
+        <a class="link" @click="goTo(`/search/${table}/query`)">
           <v-tooltip right>
             <template #activator="{ on, attrs }">
               <v-icon color="primary" v-bind="attrs" v-on="on">
@@ -57,7 +57,7 @@
       <div v-if="hasRelatedTable" class="text-h6 mt-6">
         {{ $t('item.related_items') }}
       </div>
-      <item-related-tables :item-id="item.id" :table="tableid" @has-related-table="hasRelatedTable = $event" />
+      <item-related-tables :item-id="item.id" :table="table" @has-related-table="hasRelatedTable = $event" />
       <div v-if="hasNotes || isUserLogged" class="text-h6 mt-6">
         {{ $t('item.notes') }}
       </div>
@@ -76,6 +76,14 @@ export default {
     id: {
       type: String,
       default: null
+    },
+    database: {
+      type: String,
+      required: true
+    },
+    table: {
+      type: String,
+      required: true
     }
   },
 
@@ -86,7 +94,6 @@ export default {
       item: null,
       label: null,
       showItem: false,
-      tableid: null,
       claimsOrdered: [],
       externalIdClaims: [],
       hasRelatedTable: false,
@@ -119,11 +126,10 @@ export default {
         await this.$wikibase
           .getEntity(this.id, this.$i18n.locale)
           .then(async (entity) => {
-            this.tableid = this.$wikibase.getRelatedTable(entity)
             this.item = entity
             this.label = await this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
             this.description = await this.$wikibase.getValueByLang(this.item.descriptions, this.$i18n.locale)
-            this.setBreadCrumb(this.tableid, entity)
+            this.setBreadCrumb(this.database, this.table, entity)
             this.showItem = true
             this.handleClaims(entity)
           })
@@ -132,7 +138,7 @@ export default {
       }
     },
     async handleClaims (entity) {
-      const allClaims = await this.$wikibase.getOrderedClaims(this.tableid, entity.claims)
+      const allClaims = await this.$wikibase.getOrderedClaims(this.table, entity.claims)
       for (const claim of allClaims) {
         const entityProperty = await this.$wikibase.getEntity(claim.property, this.$i18n.locale)
         if (entityProperty.datatype === 'external-id') {
@@ -142,11 +148,13 @@ export default {
         }
       }
     },
-    setBreadCrumb (table, entity) {
-      this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(table, entity))
+    setBreadCrumb (database, table, entity) {
+      this.$store.commit('breadcrumb/setItems', this.getBreadcrumbItems(database, table, entity))
       this.$store.commit('breadcrumb/setClass', 'large-font-breadcrumb')
+      this.$store.commit('breadcrumb/setDatabase', database)
+      this.$store.commit('breadcrumb/setTable', table)
     },
-    getBreadcrumbItems (table, entity) {
+    getBreadcrumbItems (database, table, entity) {
       return [
         {
           text: this.$i18n.t('menu.item.search.label'),
@@ -158,7 +166,7 @@ export default {
           to: this.localePath('/search/' + table + '/query')
         },
         {
-          text: this.$wikibase.getPBID(entity),
+          text: this.$wikibase.getPBID(entity, database, table),
           disabled: true
         }
       ]

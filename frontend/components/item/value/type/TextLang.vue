@@ -82,6 +82,10 @@ export default {
         {
           title: 'Galego',
           value: 'gl'
+        },
+        {
+          title: '-',
+          value: 'und'
         }
       ]
     }

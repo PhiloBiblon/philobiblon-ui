@@ -3,6 +3,7 @@
     ref="autocomplete"
     v-model="currentText"
     :items="options"
+    item-value="id"
     item-text="label"
     return-object
     required
