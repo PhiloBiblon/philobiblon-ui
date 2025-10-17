@@ -22,6 +22,7 @@
         :options="options"
         :delete="deleteValue"
         :mode="mode"
+        :filter="acceptAll"
         @update-options="options = $event"
         @input="oninput($event)"
         @on-blur="$emit('on-blur', $event)"
@@ -135,6 +136,10 @@ export default {
         }]
         this.selectedOption = this.valueToView.item
       }
+    },
+    acceptAll (item, queryText, itemText) {
+      // We accept all the items because they are already filtered
+      return true
     }
   }
 }

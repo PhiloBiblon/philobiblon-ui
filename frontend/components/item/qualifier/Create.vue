@@ -19,6 +19,7 @@
           item-text="label"
           item-value="id"
           variant="outlined"
+          :filter="acceptAll"
           @change="onChangeProperty($event, key)"
           @update:search-input="onInput($event, 'property', key)"
         />
@@ -186,6 +187,10 @@ export default {
     },
     updateQualifiers (qualifiers) {
       this.$emit('create-qualifier', qualifiers)
+    },
+    acceptAll (item, queryText, itemText) {
+      // We accept all the items because they are already filtered
+      return true
     }
   }
 }

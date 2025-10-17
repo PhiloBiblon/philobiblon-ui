@@ -24,6 +24,7 @@
               :save="editUnit"
               :options="unitOptions"
               :mode="mode"
+              :filter="acceptAll"
               style="width: 200px"
               @update-options="unitOptions = $event"
               @input="oninput($event)"
@@ -156,6 +157,10 @@ export default {
     },
     deleteValue () {
       return this.delete()
+    },
+    acceptAll (item, queryText, itemText) {
+      // We accept all the items because they are already filtered
+      return true
     }
   }
 }

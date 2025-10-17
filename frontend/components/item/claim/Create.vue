@@ -18,6 +18,7 @@
             return-object
             :label="$t('common.property')"
             variant="outlined"
+            :filter="acceptAll"
             @change="onChangeProperty($event, claim)"
             @update:search-input="onInput($event, 'property', key)"
           />
@@ -239,6 +240,10 @@ export default {
         qualifiersOrder: res.claim['qualifiers-order'] ?? false
       }
       this.$emit('update-claims', data)
+    },
+    acceptAll (item, queryText, itemText) {
+      // We accept all the items because they are already filtered
+      return true
     }
   }
 }
