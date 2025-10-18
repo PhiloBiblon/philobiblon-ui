@@ -14,6 +14,14 @@ export class WikibaseService {
 
   static ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
   static ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM = 'Ui_SortedProperties_NewItem'
+  static NEEDS_TO_CHANGE_PROPS_TYPE_FROM_STRING_TO_ITEM = [
+    'P1134',
+    'P1136',
+    'P1137',
+    'P1139',
+    'P1140',
+    'P1141'
+  ]
 
   constructor (app, store) {
     const WBK = require('wikibase-sdk')
@@ -205,14 +213,21 @@ export class WikibaseService {
       })
   }
 
-  getEntities (ids, lang) {
+  getEntities (ids, lang, changeProperties = false) {
     const url = this.wbk.getEntities({
       ids,
       language: [lang, 'en']
     })
     return this.wbFetcher(url)
       .then((data) => {
-        return data.entities
+        if (changeProperties && data.success && data.entities && Object.keys(data.entities).length) {
+          Object.values(data.entities).forEach((e) => {
+            if (this.constructor.NEEDS_TO_CHANGE_PROPS_TYPE_FROM_STRING_TO_ITEM.includes(e.id) && e.datatype === 'string') {
+              e.datatype = 'wikibase-item'
+            }
+          })
+        }
+        return data.entities ?? []
       })
   }
 

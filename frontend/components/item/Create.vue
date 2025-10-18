@@ -106,13 +106,11 @@ export default {
     }
   },
   created () {
-    this.$nextTick(() => {
-      if (!this.isUserLogged || !this.database) {
-        return this.$router.push(this.localePath('/'))
-      } else {
-        this.loadInitialClaims()
-      }
-    })
+    if (!this.isUserLogged || this.database === 'All') {
+      return this.$router.push(this.localePath('/'))
+    } else {
+      this.loadInitialClaims()
+    }
   },
   methods: {
     getCreateDisabledReason () {
@@ -133,9 +131,7 @@ export default {
 
         if (
           initialClaim?.property?.id === 'P2' ||
-          initialClaim?.property?.id === 'P476' ||
-          (this.table === 'cnum' && initialClaim?.property?.id === 'P590') ||
-          (this.table === 'copid' && initialClaim?.property?.id === 'P839')
+          initialClaim?.property?.id === 'P476'
         ) {
           for (const item of claimArray) {
             if (item?.value == null || item?.value === '') {
@@ -185,13 +181,12 @@ export default {
         )
       }
     },
-    buildClaim (entity, qualifiers = [], value = null, removable = true) {
+    buildClaim (entity, qualifiers = [], value = null) {
       const label =
         this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
           ?.value || entity.id
       return {
         default: true,
-        removable,
         property: {
           label,
           id: entity.id,
@@ -229,11 +224,13 @@ export default {
       const qualifiersProperties = [...new Set(Object.values(res).flat())]
       const entities = await this.$wikibase.getEntities(
         propertyIds,
-        this.$i18n.locale
+        this.$i18n.locale,
+        this.table === 'bibid'
       )
       const qualifiersArr = await this.$wikibase.getEntities(
         qualifiersProperties,
-        this.$i18n.locale
+        this.$i18n.locale,
+        this.table === 'bibid'
       )
 
       Object.values(entities).forEach((entity) => {
@@ -251,7 +248,7 @@ export default {
           let claim = this.buildClaim(entity, qualifiers, null)
 
           if (entity.id === 'P476') {
-            claim = this.buildClaim(entity, [], this.generatePbId(itemNumber), false)
+            claim = this.buildClaim(entity, [], this.generatePbId(itemNumber))
           } else if (entity.id === 'P131') {
             const qualifiers = [
               {
@@ -267,10 +264,6 @@ export default {
             ]
 
             claim = this.buildClaim(entity, qualifiers, { id: 'Q4' })
-          } else if (this.table === 'cnum' && entity.id === 'P590') {
-            claim = this.buildClaim(entity, qualifiers, null, false)
-          } else if (this.table === 'copid' && entity.id === 'P839') {
-            claim = this.buildClaim(entity, qualifiers, null, false)
           }
 
           this.initialClaims.push(claim)
@@ -286,7 +279,6 @@ export default {
     updateClaims (data) {
       this.initialClaims = data
       this.claims = this.generateClaimsData(data)
-      this.generateLabelFromClaims()
     },
     generateClaimsData (data) {
       const claims = {}
@@ -308,9 +300,7 @@ export default {
           )
 
           claims[claimKey].push(createClaim(claim.value, qualifiers));
-
-          const values = Object.values(claim.claimsValues || {}) || []
-          values.forEach((v) => {
+          (Object.values(claim.claimsValues || {}) || []).forEach((v) => {
             claims[claimKey].push(createClaim(v))
           })
         }
@@ -395,118 +385,13 @@ export default {
           )
         }
       } else {
-        this.$notification.error(this.$t('messages.error.creation.pbid_already_exists', {
+        this.$notification.error(
+          this.$t('messages.error.creation.pbid_already_exists', {
             pbid: this.pbid,
             item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
           })
         )
       }
-    },
-    formatTime (raw) {
-      const cleaned = raw.replace(/^\+/, '')
-      const date = new Date(cleaned)
-      return new Intl.DateTimeFormat('en', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }).format(date)
-    },
-    getClaimValue (pbid) {
-      const claim = this.initialClaims.find(cl => cl.property?.id === pbid)
-      const val = claim?.value?.datavalue?.value
-
-      if (!val) {
-        return null
-      }
-      return typeof val === 'object'
-        ? val.label || val.text || this.formatTime(val.time) || val.id
-        : val
-    },
-    generateLabelFromClaims () {
-      let label = ''
-      switch (this.table) {
-        case 'texid': {
-          const author = this.getClaimValue('P21')
-          const title = this.getClaimValue('P11')
-          if (author && title) {
-            label = `${author}. ${title}`
-          }
-          break
-        }
-        case 'cnum': {
-          const work = this.getClaimValue('P590')
-          const partOf = this.getClaimValue('P8')
-          if (work && partOf) {
-            label = `Witness of ${work}, part of ${partOf}`
-          }
-          break
-        }
-        case 'bibid': {
-          const creator =
-            this.getClaimValue('P1134') || this.getClaimValue('P21')
-          const title = this.getClaimValue('P11')
-          if (creator && title) {
-            label = `${creator}. ${title}`
-          }
-          break
-        }
-        case 'bioid': {
-          const fallbackProps = ['P34', 'P77', 'P173', 'P291', 'P165', 'P746']
-          for (const pbid of fallbackProps) {
-            const val = this.getClaimValue(pbid)
-            if (val) {
-              label = val
-              break
-            }
-          }
-          break
-        }
-        case 'manid': {
-          const holding = this.getClaimValue('P329')
-          const position = this.getClaimValue('P10')
-          if (holding && position) {
-            label = `${holding}, ${position}`
-          }
-          break
-        }
-        case 'copid': {
-          const holding = this.getClaimValue('P329')
-          const position = this.getClaimValue('P10')
-          const edition = this.getClaimValue('P839')
-          if (holding && position && edition) {
-            label = `${holding}, ${position} (${edition})`
-          }
-          break
-        }
-        case 'geoid':
-        case 'insid': {
-          const name = this.getClaimValue('P34')
-          const region = this.getClaimValue('P297')
-          if (name && region) {
-            label = `${name}, ${region}`
-          }
-          break
-        }
-        case 'libid': {
-          const name = this.getClaimValue('P34')
-          const location = this.getClaimValue('P47')
-          if (name && location) {
-            label = `${name}, ${location}`
-          }
-          break
-        }
-        case 'subid': {
-          const name = this.getClaimValue('P34')
-          if (name) {
-            label = name
-          }
-          break
-        }
-        default:
-          break
-      }
-
-      this.label = label || ''
     }
   }
 }
