@@ -1,6 +1,7 @@
 package io.github.philobiblon.backend.controller.impl;
 
 import io.github.philobiblon.backend.controller.SparqlController;
+import io.github.philobiblon.backend.representation.CacheInfo;
 import io.github.philobiblon.backend.service.SparqlService;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
@@ -20,9 +21,15 @@ public class SparqlControllerImpl implements SparqlController {
         this.sparqlService = sparqlService;
     }
 
+    @Override
     public ResponseEntity<String> runSparql(String format, String query) throws IOException {
         ResultSet resultSet = sparqlService.getSparqlQueryResult(query);
         return ResponseEntity.ok(ResultSetFormatter.asText(resultSet));
+    }
+
+    @Override
+    public ResponseEntity<CacheInfo> cacheInfo() {
+        return ResponseEntity.ok(sparqlService.getCacheInfo());
     }
 }
 

@@ -1298,7 +1298,7 @@ export class QueryService {
             ?item wdt:P476 ?pbid .
             ${$.filters}
           }
-          GROUP BY ?item ?label
+          GROUP BY ?item
         }
         ${this.generateLangFilters(lang)}
         ${this.generateDescLangFilters('item', lang)}
