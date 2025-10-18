@@ -8,9 +8,11 @@
       @on-search="countAndSearch"
       @back-search="clearResults"
       @clear-search="clearResults"
+      @database-change="onDatabaseChange"
     />
     <search-results
       ref="qr"
+      :table="table"
       :sparql-query="sparqlQuery"
       :results="results"
       :total-results="totalResults"
@@ -19,6 +21,7 @@
       @on-sort-by-id="search"
       @on-sort-descending="search"
       @on-pagination="search"
+      @go-to-item="goToItem"
     />
     <div v-if="waitingResults" class="text-center">
       <v-progress-circular
@@ -51,6 +54,7 @@ export default {
 
   data () {
     return {
+      database: null,
       form: null,
       showResults: false,
       waitingCount: false,
@@ -139,6 +143,22 @@ export default {
       this.$store.commit('queryStatus/setPage', 1)
       this.$store.commit('queryStatus/setSortBy', 'name')
       this.$store.commit('queryStatus/setSortDescending', false)
+    },
+
+    onDatabaseChange (newDatabase) {
+      this.database = newDatabase
+    },
+
+    goToItem (id) {
+      this.$router.push(
+        this.localePath({
+          path: '/item/' + id,
+          query: {
+            database: this.database,
+            table: this.table
+          }
+        })
+      )
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!loading">
     <template v-if="!isUserLogged">
       <item-util-view-text-lang :value="valueToView" :tooltip="valueToView.item" />
     </template>
@@ -43,10 +43,6 @@ export default {
       type: Object,
       default: null
     },
-    type: {
-      type: String,
-      required: true
-    },
     save: {
       type: Function,
       default: null
@@ -65,11 +61,8 @@ export default {
       selectedOption: null,
       options: [],
       valueToView_: { ...this.valueToView },
-      property_autocomplete: {
-        P799: {
-          sparqlQuery: `SELECT ?item ?itemLabel WHERE { VALUES ?item { wd:Q5 wd:Q14 wd:Q15 } SERVICE wikibase:label { bd:serviceParam wikibase:language "${this.$i18n.locale},en,es". } }`
-        }
-      }
+      property_autocomplete: {},
+      loading: true
     }
   },
   computed: {
@@ -77,14 +70,18 @@ export default {
       return this.$store.state.auth.isLogged
     },
     isItemWithCustomOptions () {
-      return this.valueToView.property in this.property_autocomplete
+      return this.property_autocomplete && this.valueToView.property in this.property_autocomplete
     },
     isEditable () {
       return this.mode === 'edit'
     }
   },
-  created () {
-    this.setOptionsAutocomplete()
+  async created () {
+    if (this.isUserLogged) {
+      this.property_autocomplete = await this.$wikibase.getControlledVocabularyConfig(this.$store.state.breadcrumb.table, this.$store.state.breadcrumb.database)
+      this.setOptionsAutocomplete()
+    }
+    this.loading = false
   },
   methods: {
     editValue (newValue, oldValue) {
@@ -113,11 +110,35 @@ export default {
         if (search && search.length) { this.options = search }
       }
     },
+    buildFullQuery (sparqlQuery) {
+      return this.$wikibase.$query.addPrefixes(`
+        SELECT ?item ?itemLabel ?itemDescription 
+          (CONCAT(?itemLabel, IF(BOUND(?pbid), CONCAT(" [", ?pbid, "]"), ""), " (", ?qid, ")") AS ?extendedLabel) 
+        WHERE {
+          {
+            ${sparqlQuery}
+          }
+          OPTIONAL { ?item wdt:P476 ?pbid }
+          BIND(STRAFTER(STR(?item), "${this.$config.wikibaseBaseUrl}/entity/") AS ?qid)
+          SERVICE wikibase:label { bd:serviceParam wikibase:language "${this.$i18n.locale},en". }
+        }
+      `)
+    },
+    getDefaultValue (currentValue, defaultValue) {
+      if (currentValue) {
+        return currentValue
+      } else if (defaultValue) {
+        this.$emit('new-value', defaultValue)
+        return defaultValue
+      } else {
+        return null
+      }
+    },
     setOptionsAutocomplete () {
       if (this.isItemWithCustomOptions) {
         const autocomplete = this.property_autocomplete[this.valueToView.property]
-        const sparqlQuery = this.$wikibase.$query.addPrefixes(autocomplete.sparqlQuery)
-        this.$wikibase.runSparqlQuery(sparqlQuery, true)
+        const fullSparqlQuery = this.buildFullQuery(autocomplete.query)
+        this.$wikibase.runSparqlQuery(fullSparqlQuery, true)
           .then((results) => {
             Object.entries(results).forEach(
               ([_, result]) => {
@@ -126,14 +147,14 @@ export default {
                   label: result.item.label
                 })
               })
-            this.selectedOption = this.valueToView.value
+            this.selectedOption = this.getDefaultValue(this.valueToView.item, autocomplete.default)
           })
       } else {
         this.options = [{
           id: this.valueToView.item,
           label: this.valueToView.value
         }]
-        this.selectedOption = this.valueToView.item
+        this.selectedOption = this.getDefaultValue(this.valueToView.item, null)
       }
     }
   }

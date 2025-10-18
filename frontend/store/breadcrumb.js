@@ -1,6 +1,8 @@
 export const state = () => ({
   items: [],
-  class: ''
+  class: '',
+  database: '',
+  table: ''
 })
 
 export const mutations = {
@@ -13,7 +15,15 @@ export const mutations = {
   setClass (state, style) {
     state.class = style
   },
+  setDatabase (state, database) {
+    state.database = database
+  },
+  setTable (state, table) {
+    state.table = table
+  },
   resetItems (state) {
     state.items = []
+    state.database = ''
+    state.table = ''
   }
 }

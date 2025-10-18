@@ -343,6 +343,7 @@ export default {
         this.isBitagapSelected = false
         this.bitagap_group.value = 'ALL'
       }
+      this.$emit('database-change', newDatabase)
     }
   }
 }

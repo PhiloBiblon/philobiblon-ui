@@ -8,21 +8,7 @@
     >
       <v-col class="p-0 pr-3 pt-3">
         <div class="d-flex">
-          <v-autocomplete
-            v-if="claim.datatype === 'wikibase-item'"
-            class="ma-0 pa-0"
-            :label="$t('item.label')"
-            required
-            return-object
-            :items="items[key]"
-            item-text="label"
-            item-value="id"
-            variant="outlined"
-            @change="updateClaimValue($event, key,true)"
-            @update:search-input="onInput($event, 'item', key)"
-          />
           <item-value-base
-            v-else
             :key="`${claim.value}-${key}`"
             class="full-width"
             :label="$t('common.value')"
@@ -115,16 +101,8 @@ export default {
         this.$emit('update-claims-values', this.claims)
       }
     },
-    async onInput (value, type, key) {
-      if (value && typeof value === 'string') {
-        const searchResults = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale, type)
-        if (searchResults && searchResults.length) {
-          this.$set(this.items, key, searchResults)
-        }
-      }
-    },
-    updateClaimValue (value, key, isObject = false) {
-      this.claims[key].datavalue.value = isObject ? value?.id ?? null : value
+    updateClaimValue (value, key) {
+      this.claims[key].datavalue.value = value && typeof value === 'object' ? value.id ?? null : value
 
       if (this.forCreate) {
         this.$emit('update-claims-values', this.claims)

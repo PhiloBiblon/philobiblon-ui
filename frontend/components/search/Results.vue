@@ -187,7 +187,7 @@ export default {
     },
 
     goToItem (id) {
-      this.$router.push(this.localePath('/item/' + id))
+      this.$emit('go-to-item', id)
     }
   }
 }
