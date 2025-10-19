@@ -148,7 +148,7 @@ export default {
                   label: result.item.label
                 })
               })
-            this.selectedOption = this.getDefaultValue(this.valueToView.item, autocomplete.default)
+            this.selectedOption = this.getDefaultValue(this.valueToView.item, autocomplete.default_value)
           })
       } else {
         this.options = [{
