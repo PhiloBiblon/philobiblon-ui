@@ -19,8 +19,6 @@ export default {
     add_value: 'afegir valor',
     add_qualifier: 'afegir qualificador',
     add_claim: 'afegir declaració',
-    save: 'desa',
-    remove: 'elimina',
     cancel: 'cancel·lar',
     create: 'Crear',
     items: 'elements'
@@ -132,7 +130,7 @@ export default {
         bitagap_group: {
           label: 'Subgrup',
           options: {
-            all: 'Omnia',
+            all: 'Tot',
             original: 'Original',
             cartas: 'Cartes'
           }
@@ -417,7 +415,7 @@ export default {
         }
       },
       subid: {
-        subject: {
+        headings: {
           label: 'Matèria',
           hint: ''
         }
@@ -465,8 +463,8 @@ export default {
         text: 'Text'
       },
       texid: {
-        uniform_title: 'Testimonis textuals',
-        related_uniform_titles: 'Testimonis textuals relacionats'
+        uniform_title: 'Obres',
+        related_uniform_titles: 'Obres relacionats'
       },
       bibid: {
         related_bibliography: 'Bibliografia relacionada'
