@@ -3,6 +3,7 @@
     <item-qualifier-value
       v-for="(qualifier, index) in values"
       :key="index + '-' + values.length"
+      :database="database"
       :claim="claim"
       :value="qualifier"
       @delete-qualifier="deleteQualifier($event)"
@@ -13,6 +14,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       default: null

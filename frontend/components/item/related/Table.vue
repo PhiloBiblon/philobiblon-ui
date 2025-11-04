@@ -6,6 +6,7 @@
     <item-related-ritem
       v-for="(value, index) in items"
       :key="`related-item-${index}-${value.item}`"
+      :database="database"
       :table="table"
       :index="index + ((currentPage -1) * resultsPerPage)"
       :value="value"
@@ -31,9 +32,13 @@ export default {
       type: String,
       default: null
     },
+    database: {
+      type: String,
+      default: null
+    },
     table: {
       type: String,
-      required: true
+      default: null
     },
     references: {
       type: Object,

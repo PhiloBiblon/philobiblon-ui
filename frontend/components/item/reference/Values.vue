@@ -3,6 +3,7 @@
     <item-reference-value
       v-for="(value, index) in values"
       :key="index + '-' + values.length"
+      :database="database"
       :claim="claim"
       :value="value"
       :reference="reference"
@@ -15,6 +16,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       required: true

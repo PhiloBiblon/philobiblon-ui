@@ -9,14 +9,11 @@ export class WikibaseService {
     'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
 
   static PBID_PATTERN = /(?<group>.*) (?<tableid>.*) (?<num>\d+)/
-  static QITEM_PATTERN = /^Q\d+$/
-  static PITEM_PATTERN = /^P\d+$/
+  static QITEM_PATTERN = /^Q\d+/
+  static PITEM_PATTERN = /^P\d+/
 
-  static CONFIG_ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
-  static CONFIG_ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM = 'Ui_SortedProperties_NewItem'
-  static CONFIG_PROPERTY_AUTOCOMPLETE_PAGE = 'Ui_ControlledVocabulary'
-
-  static BIBLIOGRAPHIES = new Set(['BETA', 'BITECA', 'BITAGAP'])
+  static ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
+  static ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM = 'Ui_SortedProperties_NewItem'
 
   constructor (app, store) {
     const WBK = require('wikibase-sdk')
@@ -61,7 +58,7 @@ export class WikibaseService {
   }
 
   // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
-  parseSortedPropertiesConfig (inputText) {
+  transformSortedPropertiesWikiText (inputText) {
     const result = {}
 
     try {
@@ -120,24 +117,26 @@ export class WikibaseService {
 
     if (process.env.debug) {
       // eslint-disable-next-line no-console
-      console.log('sorted properties', result)
+      console.log(result)
     }
 
     return result
   }
 
   async getClaimsOrderForNewItem (table) {
-    return await this.getClaimsOrder(table, this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM)
+    return await this.getClaimsOrder(table, true)
   }
 
-  async getClaimsOrder (table, pageName = this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE) {
-    const data = await this.getWikibasePage(pageName)
+  async getClaimsOrder (table, newItem = false) {
+    const pageName = newItem ? this.constructor.ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM : this.constructor.ORDER_PROPS_WIKI_PAGE
+    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${pageName}&prop=wikitext&formatversion=2&format=json&origin=*`
+    const data = await this.wbFetcher(url)
     if (data.error) {
       // eslint-disable-next-line no-console
       console.error(`Error fetching ui sorted page: ${data.error}`)
       return null
     } else {
-      const fullOrder = this.parseSortedPropertiesConfig(data.parse.wikitext)
+      const fullOrder = this.transformSortedPropertiesWikiText(data.parse.wikitext)
       if (table in fullOrder) {
         return fullOrder[table]
       } else {
@@ -193,88 +192,6 @@ export class WikibaseService {
       hasQualifiers: claims[key].some(value => value.qualifiers && Object.keys(value.qualifiers).length),
       qualifiersOrder: order[key]
     }))
-  }
-
-  parseControlledVocabularySections (text) {
-    const sectionRegex = /====\s*([\w]+)\s*\(.*?\)\s*====([\s\S]*?)(?=(====|$))/g
-    const rowRegex = /\|\s*(.*?)\s*\|\|\s*(.*?)\s*\|\|\s*(.*?)\s*\|\|([\s\S]*?)(?=\|-|\|\})/g
-
-    const result = {}
-
-    let sectionMatch
-    while ((sectionMatch = sectionRegex.exec(text)) !== null) {
-      const sectionName = sectionMatch[1].trim()
-      const sectionBody = sectionMatch[2]
-
-      result[sectionName] = result[sectionName] || {}
-
-      let rowMatch
-      while ((rowMatch = rowRegex.exec(sectionBody)) !== null) {
-        const property = rowMatch[1].trim()
-        if (this.getPItemPattern().test(property)) {
-          const bibliographies = rowMatch[2].split(',').map(b => b.trim()).filter(Boolean)
-          if (bibliographies.every(b => this.constructor.BIBLIOGRAPHIES.has(b))) {
-            const defaultValue = rowMatch[3].trim()
-            if (this.getQItemPattern().test(defaultValue)) {
-              const queryMatch = rowMatch[4].match(/<pre>\s*([\s\S]*?)\s*<\/pre>/)
-              const query = queryMatch ? queryMatch[1].trim() : rowMatch[4].trim()
-              for (const biblio of bibliographies) {
-                if (!result[sectionName][biblio]) {
-                  result[sectionName][biblio] = {}
-                }
-                result[sectionName][biblio][property] = {
-                  default_value: defaultValue,
-                  query
-                }
-              }
-            } else {
-              // eslint-disable-next-line no-console
-              console.error(`Invalid default value ${defaultValue} in section ${sectionName}: ${rowMatch}`)
-            }
-          } else {
-            // eslint-disable-next-line no-console
-            console.error(`Invalid bibliography ${bibliographies} in section ${sectionName}: ${rowMatch}`)
-          }
-        } else {
-          // eslint-disable-next-line no-console
-          console.error(`Invalid property ${property} in section ${sectionName}: ${rowMatch}`)
-        }
-      }
-    }
-    if (process.env.debug) {
-      // eslint-disable-next-line no-console
-      console.log('autocomplete:', result)
-    }
-    return result
-  }
-
-  async getControlledVocabularyConfig (table, bibliography) {
-    let sections
-    if (this.controlledVocabularyConfig) {
-      sections = this.controlledVocabularyConfig
-    } else {
-      const data = await this.getWikibasePage(this.constructor.CONFIG_PROPERTY_AUTOCOMPLETE_PAGE)
-      if (data.error) {
-        // eslint-disable-next-line no-console
-        console.error(`Error fetching property autocomplete config page: ${data.error.info}`)
-        return null
-      }
-      sections = this.parseControlledVocabularySections(data.parse.wikitext)
-      this.controlledVocabularyConfig = sections
-    }
-    if (table in sections) {
-      if (bibliography in sections[table]) {
-        return sections[table][bibliography]
-      } else {
-        // eslint-disable-next-line no-console
-        console.error(`Bibliography ${bibliography} not found for table ${table} in property autocomplete config page.`)
-        return null
-      }
-    } else {
-      // eslint-disable-next-line no-console
-      console.error(`Table ${table} not found in property autocomplete config page.`)
-      return null
-    }
   }
 
   getEntity (id, lang) {
@@ -340,11 +257,6 @@ export class WikibaseService {
         }
       }
     }
-  }
-
-  getWikibasePage (pageName) {
-    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${pageName}&prop=wikitext&formatversion=2&format=json&origin=*`
-    return this.wbFetcher(url)
   }
 
   wbFetcher (url) {
@@ -494,22 +406,12 @@ export class WikibaseService {
     return false
   }
 
-  getPBID (entity, database = null, table = null) {
+  getPBID (entity) {
     if (entity.claims.P476) {
-      if (table) {
-        for (const claimValue of entity.claims.P476) {
-          const pbid = claimValue.mainsnak.datavalue.value
-          const parsedPBID = this.parsePBID(pbid)
-          if ((database === null || database === parsedPBID.group) &&
-            (table === null || table === parsedPBID.tableid)) {
-            return pbid
-          }
-        }
-      } else {
-        return entity.claims.P476[0].mainsnak.datavalue.value
-      }
+      return entity.claims.P476[0].mainsnak.datavalue.value
+    } else {
+      return null
     }
-    return null
   }
 
   getValueByLang (obj, lang) {
@@ -694,11 +596,20 @@ export class WikibaseService {
     return baseUrl + path
   }
 
-  parsePBID (pbid) {
+  getRelatedTable (entity) {
+    const pbid = this.getPBID(entity)
     const {
-      groups: { group, tableid, num }
+      groups: { tableid }
     } = this.getPBIDPattern().exec(pbid)
-    return { group, tableid, num }
+    return tableid
+  }
+
+  getRelatedDatabase (entity) {
+    const pbid = this.getPBID(entity)
+    const {
+      groups: { group }
+    } = this.getPBIDPattern().exec(pbid)
+    return group
   }
 
   async getCsrfToken () {
@@ -726,7 +637,10 @@ export class WikibaseService {
   }
 
   async getDiscussionPage (itemId) {
-    const data = await this.getWikibasePage(`Item_talk:${itemId}`)
+    const notesApiUrl =
+      `${this.$config.apiBaseUrl}/w/api.php?action=parse&page=Item_talk:${itemId}&prop=wikitext&formatversion=2&format=json&origin=*`
+    const response = await fetch(notesApiUrl)
+    const data = await response.json()
     return { title: data.parse?.title, value: data.parse?.wikitext }
   }
 

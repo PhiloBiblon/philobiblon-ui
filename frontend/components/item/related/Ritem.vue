@@ -14,7 +14,7 @@
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <div>
-          <item-claims :item="item" :claims="claims" />
+          <item-claims :database="database" :table="tableid" :claims="claims" />
         </div>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -25,9 +25,13 @@
 export default {
   inheritAttrs: false,
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     table: {
       type: String,
-      required: true
+      default: null
     },
     value: {
       type: Object,
@@ -43,6 +47,7 @@ export default {
     return {
       label: null,
       item: null,
+      tableid: null,
       claims: null
     }
   },
@@ -68,8 +73,9 @@ export default {
         await this.$wikibase
           .getEntity(this.value.item, this.$i18n.locale)
           .then(async (entity) => {
+            this.tableid = this.$wikibase.getRelatedTable(entity)
             this.item = entity
-            this.claims = await this.$wikibase.getOrderedClaims(this.table, entity.claims)
+            this.claims = await this.$wikibase.getOrderedClaims(this.tableid, entity.claims)
             this.label = this.$wikibase.getValueByLang(this.item.labels, this.$i18n.locale)
           })
       } catch (err) {

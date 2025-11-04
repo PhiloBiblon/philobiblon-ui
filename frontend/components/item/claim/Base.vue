@@ -6,10 +6,11 @@
       </v-subheader>
     </v-row>
     <v-container class="claim-values">
-      <item-claim-values :claim="claim" @delete-claim="$emit('delete-claim', $event)" />
+      <item-claim-values :database="database" :claim="claim" @delete-claim="$emit('delete-claim', $event)" />
       <item-claim-add-value
         v-if="isUserLogged && isAllowedAddValue"
         :key="claim.values.length"
+        :database="database"
         :item="item"
         :value="claim?.values[0]?.mainsnak"
         @create-claim="$emit('create-claim', $event)"
@@ -21,6 +22,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     item: {
       type: Object,
       default: null

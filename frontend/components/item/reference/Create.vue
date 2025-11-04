@@ -18,7 +18,6 @@
           item-text="label"
           item-value="id"
           variant="outlined"
-          :filter="acceptAll"
           @change="onChangeProperty($event, key)"
           @update:search-input="onInput($event, 'property', key)"
         />
@@ -27,6 +26,7 @@
         <div v-if="reference.property">
           <item-value-base
             :key="`${key}-${reference.property}`"
+            :database="database"
             :label="$t('common.value')"
             :claim="claim"
             :value="reference"
@@ -83,6 +83,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       required: true
@@ -190,10 +194,6 @@ export default {
     },
     updateReferences (reference) {
       this.$emit('create-reference', reference)
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered
-      return true
     }
   }
 }

@@ -18,6 +18,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       default: null
@@ -54,14 +58,41 @@ export default {
     }
   },
   async mounted () {
-    this.valueToView = await this.$wikibase.getWbValue(
-      this.value.property,
-      this.value.datatype,
-      this.value.datavalue?.value,
-      this.$i18n.locale
-    )
+    const value = this.getInitialValue()
+    this.valueToView = await this.getViewableValue(value)
   },
   methods: {
+    getInitialValue () {
+      let value = this.value.datavalue?.value
+
+      if (this.value.property === 'P131' && !value && this.database) {
+        value = { id: this.getDefaultIdForDatabase() }
+        this.$emit('new-value', value)
+      }
+
+      return value
+    },
+    getDefaultIdForDatabase () {
+      if (this.$config.apiBaseDb !== 'FG') {
+        return 'Q4'
+      }
+
+      const defaultIds = {
+        BETA: 'Q254471',
+        BITAGAP: 'Q256809',
+        DEFAULT: 'Q256810'
+      }
+
+      return defaultIds[this.database] || defaultIds.DEFAULT
+    },
+    getViewableValue (value) {
+      return this.$wikibase.getWbValue(
+        this.value.property,
+        this.value.datatype,
+        value,
+        this.$i18n.locale
+      )
+    },
     editValue (editableData) {
       if (!editableData.validation.valid ||
         (JSON.stringify(editableData.values.newValue) === JSON.stringify(editableData.values.oldValue))) {

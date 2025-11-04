@@ -1,6 +1,7 @@
 <template>
   <div class="reference-value">
     <item-value-base
+      :database="database"
       :claim="claim"
       :value="value"
       type="reference"
@@ -14,6 +15,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       required: true

@@ -13,6 +13,7 @@
         <td v-for="(header, key) in formattedHeaders" :key="header.value" class="table-cell">
           <item-value-base
             v-if="!key"
+            :database="database"
             :claim="item"
             :value="item.mainsnak"
             type="claim"
@@ -23,6 +24,7 @@
           <item-qualifier-list
             v-if="item.qualifiers?.[header.value]"
             :key="item.qualifiers[header.value].length"
+            :database="database"
             :claim="item"
             :qualifiers="item.qualifiers[header.value]"
             @delete-qualifier="deleteQualifier($event, index)"
@@ -33,13 +35,14 @@
         <td :colspan="formattedHeaders.length" class="table-cell-btn-edit">
           <item-qualifier-create
             :claim="item"
+            :database="database"
             @create-qualifier="createQualifier($event, index)"
           />
         </td>
       </tr>
       <tr v-if="isUserLogged || item.references" class="table-row-edit">
         <td :colspan="formattedHeaders.length">
-          <item-reference-base :claim="item" />
+          <item-reference-base :database="database" :claim="item" />
         </td>
       </tr>
     </template>
@@ -49,6 +52,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       default: () => ({ values: [] })
