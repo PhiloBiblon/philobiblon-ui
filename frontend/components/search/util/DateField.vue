@@ -20,7 +20,7 @@
           />
         </template>
         <v-date-picker
-          v-model="beginValue"
+          v-model="beginValueForPicker"
           :max="today"
           min="0001-01-01"
           @input="onBeginDateSelect"
@@ -46,7 +46,7 @@
           />
         </template>
         <v-date-picker
-          v-model="endValue"
+          v-model="endValueForPicker"
           :max="today"
           min="0001-01-01"
           @input="onEndDateSelect"
@@ -98,7 +98,9 @@ export default {
       activeBegin: false,
       beginValue: null,
       endValue: null,
-      isHintVisible: false
+      isHintVisible: false,
+      beginValueForPicker: null,
+      endValueForPicker: null
     }
   },
   computed: {
@@ -116,6 +118,12 @@ export default {
     value (newVal, _) {
       this.beginValue = newVal?.begin || null
       this.endValue = newVal?.end || null
+    },
+    beginValue (val) {
+      this.beginValueForPicker = /^\d{4}-\d{2}-\d{2}$/.test(val) ? val : null
+    },
+    endValue (val) {
+      this.endValueForPicker = /^\d{4}-\d{2}-\d{2}$/.test(val) ? val : null
     }
   },
 
@@ -126,29 +134,72 @@ export default {
 
   methods: {
     validateBeginDate (date) {
-      this.beginValue = this.validateDate(date)
-      this.$emit('update-begin-date', this.beginValue)
+      const validated = this.validateDate(date)
+      this.beginValue = validated
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(validated)) {
+        this.$set(this, 'beginValue', validated)
+      } else {
+        this.$set(this, 'beginValue', validated)
+      }
+
+      this.$emit('update-begin-date', validated)
     },
     validateEndDate (date) {
-      this.endValue = this.validateDate(date)
-      this.$emit('update-end-date', this.endValue)
+      const validated = this.validateDate(date)
+      this.endValue = validated
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(validated)) {
+        this.$set(this, 'endValue', validated)
+      } else {
+        this.$set(this, 'endValue', validated)
+      }
+
+      this.$emit('update-end-date', validated)
     },
     validateDate (date) {
-      const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
       if (!date) {
         return null
-      } else if (!DATE_REGEX.test(date)) {
+      }
+
+      const DATE_REGEX = /^(\d{1,4}(-\d{1,2}){0,2}|\d{1,2}-\d{1,2})$/
+
+      if (!DATE_REGEX.test(date)) {
         this.$notification.error(this.$t('search.form.common.date.error.invalid_date'))
         return null
-      } else {
-        const parsed = new Date(`${date}T00:00:00Z`)
-        const year = parseInt(date.substring(0, 4), 10)
-        if (isNaN(parsed.getTime()) || year > 2125) {
+      }
+
+      const parts = date.split('-').map(Number)
+      const currentYear = new Date().getFullYear()
+
+      for (let i = 0; i < parts.length; i++) {
+        const num = parts[i]
+        if (num < 1) {
+          this.$notification.error(this.$t('search.form.common.date.error.invalid_day'))
+          return null
+        }
+
+        if (i === 0 && parts.length === 1) {
+          if (num > currentYear && num > 31) {
+            this.$notification.error(this.$t('search.form.common.date.error.invalid_year'))
+            return null
+          }
+        }
+
+        if (i === 1 || i === 2) {
+          if (num > 31) {
+            this.$notification.error(this.$t('search.form.common.date.error.invalid_day'))
+            return null
+          }
+        }
+
+        if (i === 0 && parts.length === 3 && num > currentYear) {
           this.$notification.error(this.$t('search.form.common.date.error.invalid_year'))
           return null
         }
-        return date
       }
+
+      return date
     },
     onBeginDateSelect () {
       this.activeBegin = false

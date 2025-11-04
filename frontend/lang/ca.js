@@ -161,8 +161,10 @@ export default {
           label: 'Data',
           hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.',
           error: {
-            invalid_date: 'Data no vàlida. Utilitzeu el format AAAA-MM-DD',
-            invalid_year: 'L\'any ha d\'estar entre 0 i 2125'
+            invalid_date: 'Format de data no vàlid. Si us plau, utilitzeu AAAA, AAAA-MM, AAAA-MM-DD, MM-DD o DD-MM.',
+            invalid_year: "Any no vàlid. Si us plau, introduïu un any fins a l'any actual.",
+            invalid_month: 'Mes no vàlid. El mes ha de ser entre 1 i 12.',
+            invalid_day: 'Dia no vàlid. El dia ha de ser vàlid per al mes indicat.'
           }
         },
         personal_name: {
