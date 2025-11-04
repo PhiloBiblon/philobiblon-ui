@@ -226,6 +226,10 @@ export default {
           label: 'Biblioteca',
           hint: 'Pesquise por qualquer um dos nomes formais ou comummente utilizados da biblioteca (por exemplo, no BETA, pesquise por Real Biblioteca, Biblioteca de Palacio ou simplesmente Palacio).'
         },
+        collection: {
+          label: 'Coleção',
+          hint: ''
+        },
         call_number: {
           label: 'Posição de stock',
           hint: ''
