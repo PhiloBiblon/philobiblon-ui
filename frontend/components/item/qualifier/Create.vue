@@ -19,7 +19,6 @@
           item-text="label"
           item-value="id"
           variant="outlined"
-          :filter="acceptAll"
           @change="onChangeProperty($event, key)"
           @update:search-input="onInput($event, 'property', key)"
         />
@@ -28,6 +27,7 @@
         <div v-if="claim?.mainsnak?.property || qualifier.default">
           <item-value-base
             :key="`${qualifier.property}-${key}`"
+            :database="database"
             :label="$t('common.value')"
             :claim="claim"
             :value="qualifier"
@@ -80,6 +80,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       default: null
@@ -187,10 +191,6 @@ export default {
     },
     updateQualifiers (qualifiers) {
       this.$emit('create-qualifier', qualifiers)
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered
-      return true
     }
   }
 }

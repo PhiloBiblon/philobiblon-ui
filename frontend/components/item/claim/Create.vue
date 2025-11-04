@@ -2,7 +2,7 @@
   <div class="claim">
     <v-row
       v-for="(claim, key) in claims"
-      :key="claim?.property?.id"
+      :key="`${claim?.property?.id}-${key}`"
       class="even-row text-center pt-5"
       no-gutters
       dense
@@ -18,7 +18,6 @@
             return-object
             :label="$t('common.property')"
             variant="outlined"
-            :filter="acceptAll"
             @change="onChangeProperty($event, claim)"
             @update:search-input="onInput($event, 'property', key)"
           />
@@ -52,12 +51,14 @@
             :key="`${claim.property?.id}-${key}`"
             :claim="claim"
             :value="claim.value"
+            :database="database"
             type="claim"
             mode="creation"
             @new-value="onNewValue($event, claim)"
           />
           <item-qualifier-create
             :key="claim?.property?.id"
+            :database="database"
             :claim="claim"
             :for-create="forCreate"
             :initial-qualifiers="claim.qualifiers"
@@ -69,6 +70,7 @@
         v-if="forCreate"
         :key="key"
         class="add-claim-value mb-2"
+        :database="database"
         :item="item"
         :value="claim.value"
         :for-create="forCreate"
@@ -91,6 +93,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     item: {
       type: Object,
       default: null
@@ -240,10 +246,6 @@ export default {
         qualifiersOrder: res.claim['qualifiers-order'] ?? false
       }
       this.$emit('update-claims', data)
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered
-      return true
     }
   }
 }

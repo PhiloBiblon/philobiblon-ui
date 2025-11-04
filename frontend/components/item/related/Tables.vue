@@ -4,6 +4,7 @@
       v-for="(refs, index) in relatedTables[table]"
       :key="index"
       :item-id="itemId"
+      :database="database"
       :table="table"
       :references="refs"
       @has-related-table="emitHasRelatedTable"
@@ -14,13 +15,17 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     itemId: {
       type: String,
       default: null
     },
     table: {
       type: String,
-      required: true
+      default: null
     }
   },
   data () {

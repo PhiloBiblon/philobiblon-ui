@@ -37,6 +37,7 @@
         </v-alert>
         <item-claim-create
           v-if="initialClaimsLoaded"
+          :database="database"
           :for-create="true"
           :initial-claims="initialClaims"
           @update-claims="updateClaims"
@@ -180,8 +181,6 @@ export default {
           this.initialClaimsLoaded = true
         }
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error)
         this.$notification.error(
           error?.body?.error?.info || this.$t('messages.error.something_went_wrong')
         )
@@ -254,21 +253,6 @@ export default {
 
           if (entity.id === 'P476') {
             claim = this.buildClaim(entity, [], this.generatePbId(itemNumber), false)
-          } else if (entity.id === 'P131') {
-            const qualifiers = [
-              {
-                default: true,
-                property: 'P700',
-                datatype: 'wikibase-item',
-                datavalue: {
-                  value: {
-                    id: 'Q6'
-                  }
-                }
-              }
-            ]
-
-            claim = this.buildClaim(entity, qualifiers, { id: 'Q4' })
           } else if (this.table === 'cnum' && entity.id === 'P590') {
             claim = this.buildClaim(entity, qualifiers, null, false)
           } else if (this.table === 'copid' && entity.id === 'P839') {
@@ -309,7 +293,7 @@ export default {
             (claim.qualifiers || []).map(q => [q.property, extractValue(q)])
           )
 
-          claims[claimKey].push(createClaim(claim.value, qualifiers))
+          claims[claimKey].push(createClaim(claim.value, qualifiers));
 
           const values = Object.values(claim.claimsValues || {}) || []
           values.forEach((v) => {
@@ -398,9 +382,9 @@ export default {
         }
       } else {
         this.$notification.error(this.$t('messages.error.creation.pbid_already_exists', {
-          pbid: this.pbid,
-          item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
-        })
+            pbid: this.pbid,
+            item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${this.$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
+          })
         )
       }
     },

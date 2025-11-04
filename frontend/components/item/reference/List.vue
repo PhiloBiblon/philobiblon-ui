@@ -17,6 +17,7 @@
           <item-reference-values
             v-if="item.property"
             :key="`${valueToView.hash}-${index}`"
+            :database="database"
             :claim="claim"
             :values="item.data"
             :reference="valueToView"
@@ -32,6 +33,7 @@
         <td :colspan="2" class="full-width">
           <item-reference-create
             :key="valueToView.hash"
+            :database="database"
             class="mt-5"
             :claim="claim"
             :value="valueToView"
@@ -46,6 +48,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       required: true

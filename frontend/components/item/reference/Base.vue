@@ -10,6 +10,7 @@
         <item-reference-list
           v-for="reference in references"
           :key="`${reference.hash}-${references.length}`"
+          :database="database"
           :claim="claim"
           :value="reference"
           @delete-reference="deleteReference($event)"
@@ -17,6 +18,7 @@
         <item-reference-create
           v-if="isUserLogged"
           class="mt-5"
+          :database="database"
           :claim="claim"
           @create-reference="createReference($event)"
         />
@@ -28,6 +30,10 @@
 <script>
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     claim: {
       type: Object,
       required: true

@@ -3,11 +3,12 @@
     <item-claim-base
       v-for="(claim, index) in claims"
       :key="`c-${claim.property}-${index}-${claim.values.length}`"
+      :database="database"
       :item="item"
       :claim="claim"
       @delete-claim="deleteClaim"
     />
-    <item-claim-create v-if="isUserLogged" :item="item" @update-claims="updateClaims" />
+    <item-claim-create v-if="isUserLogged" :database="database" :item="item" @update-claims="updateClaims" />
   </div>
 </template>
 
@@ -15,6 +16,10 @@
 
 export default {
   props: {
+    database: {
+      type: String,
+      default: null
+    },
     item: {
       type: Object,
       default: null
