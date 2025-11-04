@@ -19,7 +19,6 @@
           item-text="label"
           item-value="id"
           variant="outlined"
-          :filter="acceptAll"
           @change="onChangeProperty($event, key)"
           @update:search-input="onInput($event, 'property', key)"
         />
@@ -62,7 +61,7 @@
     </v-row>
     <v-row
       v-if="isAllowedAddQualifier"
-      class="add-qualifier pr-5"
+      class="add-qualifier pr-5 mt-2"
       justify="end"
     >
       <a role="button" class="link" @click="addQualifier">
@@ -187,10 +186,6 @@ export default {
     },
     updateQualifiers (qualifiers) {
       this.$emit('create-qualifier', qualifiers)
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered
-      return true
     }
   }
 }
