@@ -88,45 +88,6 @@ export default {
             visible: true,
             disabled: false
           },
-          city: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.manid.city.label',
-            hint: 'search.form.manid.city.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?target_item ?label ?desc WHERE {
-                {
-                  SELECT DISTINCT ?target_item WHERE {
-                    {
-                      ?item wdt:P476 ?pbid .
-                      FILTER regex(?pbid, '{{database}} {{table}} ') .
-                      {{bitagapGroupFilter}}
-                      ?item wdt:P329 ?lib_item .
-                    }
-                    UNION
-                    {
-                      ?copid_item wdt:P476 ?copid_pbid .
-                      FILTER CONTAINS(STR(?copid_pbid), "copid") .
-                      ?copid_item wdt:P839 ?item .
-                      ?item wdt:P476 ?pbid .
-                      FILTER regex(?pbid, '{{database}} {{table}} ') .
-                      {{bitagapGroupFilter}}
-                      ?copid_item wdt:P329 ?lib_item .
-                    }
-                    ?lib_item wdt:P47 ?target_item .
-                  }
-                }
-                {{targetItemLangGroupPattern}}
-              }
-              `
-            }
-          },
           library: {
             active: true,
             section: 'primary',
@@ -162,6 +123,43 @@ export default {
                 }
                 {{targetItemLangGroupPattern}}
               }
+              `
+            }
+          },
+          collection: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.collection.label',
+            hint: 'search.form.manid.collection.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+                `
+                SELECT DISTINCT ?label WHERE {
+                  {
+                    SELECT ?label WHERE {
+                      {
+                        ?item wdt:P476 ?pbid .
+                        FILTER regex(?pbid, '{{database}} {{table}} ') .
+                        {{bitagapGroupFilter}}
+                        ?item wdt:P1054 ?label .
+                      }
+                      UNION
+                      {
+                        ?copid_item wdt:P476 ?copid_pbid .
+                        FILTER regex(?copid_pbid, '(.*) copid ') .
+                        ?copid_item wdt:P839 ?item .
+                        ?item wdt:P476 ?pbid .
+                        FILTER regex(?pbid, '{{database}} {{table}} ') .
+                        {{bitagapGroupFilter}}
+                        ?copid_item wdt:P1054 ?label .
+                      }
+                    }
+                  }
+                }
               `
             }
           },
@@ -206,6 +204,45 @@ export default {
                   FILTER regex(?cnum_pbid, '(.*) cnum ') .
                   ?cnum_item wdt:P8 ?item .
                 }
+              }
+              `
+            }
+          },
+          city: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.city.label',
+            hint: 'search.form.manid.city.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+                `
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    {
+                      ?item wdt:P476 ?pbid .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
+                      {{bitagapGroupFilter}}
+                      ?item wdt:P329 ?lib_item .
+                    }
+                    UNION
+                    {
+                      ?copid_item wdt:P476 ?copid_pbid .
+                      FILTER CONTAINS(STR(?copid_pbid), "copid") .
+                      ?copid_item wdt:P839 ?item .
+                      ?item wdt:P476 ?pbid .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
+                      {{bitagapGroupFilter}}
+                      ?copid_item wdt:P329 ?lib_item .
+                    }
+                    ?lib_item wdt:P47 ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
               }
               `
             }

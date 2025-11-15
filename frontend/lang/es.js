@@ -325,6 +325,10 @@ export default {
           label: 'Biblioteca',
           hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
         },
+        collection: {
+          label: 'Recopilación',
+          hint: ''
+        },
         date_of_artifact: {
           label: 'Fecha del objeto',
           hint: ''
