@@ -309,7 +309,7 @@ export default {
           hint: 'Pesquisar por série (por exemplo, em BITAGAP, “Subsídios para a historia da arte”).'
         },
         locations: {
-          label: 'Locais',
+          label: 'localização de exemplares',
           hint: ''
         },
         international_standard_number: {
