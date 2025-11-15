@@ -14,7 +14,7 @@
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <div>
-          <item-claims :item="item" :claims="claims" />
+          <item-claims :table="table" :item="item" :claims="claims" />
         </div>
       </v-expansion-panel-content>
     </v-expansion-panel>

@@ -21,6 +21,10 @@
 <script>
 export default {
   props: {
+    table: {
+      type: String,
+      required: true
+    },
     item: {
       type: Object,
       default: null
@@ -47,7 +51,7 @@ export default {
   },
 
   async mounted () {
-    this.propertyLabel = await this.$wikibase.getEntityLabel(this.claim.property, this.$i18n.locale)
+    this.propertyLabel = await this.$wikibase.getEntityLabel(this.table, this.claim.property, this.$i18n.locale)
   }
 }
 </script>

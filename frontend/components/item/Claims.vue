@@ -3,6 +3,7 @@
     <item-claim-base
       v-for="(claim, index) in claims"
       :key="`c-${claim.property}-${index}-${claim.values.length}`"
+      :table="table"
       :item="item"
       :claim="claim"
       @delete-claim="deleteClaim"
@@ -15,6 +16,10 @@
 
 export default {
   props: {
+    table: {
+      type: String,
+      required: true
+    },
     item: {
       type: Object,
       default: null
