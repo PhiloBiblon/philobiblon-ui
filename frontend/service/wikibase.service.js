@@ -5,6 +5,7 @@ export class WikibaseService {
   static PROPERTY_PBID = 'P476'
   static PROPERTY_FORMATTER_URL = 'P236'
   static PROPERTY_NOTES = 'P817'
+  static ITEM_PHILOBIBLON_PROPERTIES = 'Q394229'
   static COMMONS_WIKIMEDIA_URL_ENDPOINT =
     'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
 
@@ -299,14 +300,14 @@ export class WikibaseService {
       })
   }
 
-  getEntityLabel (id, lang) {
+  getEntityLabel (table, id, lang) {
     const cachedValue = this.$store.state.itemCache.cache[this.getLabelCacheKey(id, lang)]
     if (cachedValue) {
       return cachedValue
     } else {
       return this.getEntity(id, lang)
         .then((entity) => {
-          let propertyLabel = this.getLabelFromP34(entity, id, lang)
+          let propertyLabel = this.getAlternativeLabel(table, entity, lang)
           if (!propertyLabel) {
             propertyLabel = this.getValueByLang(
               entity.labels,
@@ -326,17 +327,28 @@ export class WikibaseService {
     return id + '_' + lang
   }
 
-  getLabelFromP34 (entity, id, lang) {
-    if (entity.claims?.P34) {
-      const customLabel = entity.claims.P34
-        .map(claim => claim.mainsnak?.datavalue)
-        .find(datavalue => datavalue?.value?.language === lang)
-        ?.value?.text
-      if (customLabel) {
-        return {
-          item: id,
-          value: customLabel,
-          language: lang
+  getAlternativeLabel (table, entity, lang) {
+    if (entity.claims?.P8) {
+      const philobiblonPropertyStatement = entity.claims.P8
+        .find(claim => claim.mainsnak.datavalue?.value?.id === this.constructor.ITEM_PHILOBIBLON_PROPERTIES
+        )
+      if (philobiblonPropertyStatement) {
+        const customLabel =
+          philobiblonPropertyStatement.qualifiers?.P34
+            ?.map(q => q.datavalue)
+            ?.filter(dv => dv?.value?.language === lang)
+            ?.map((dv) => {
+              const text = dv.value.text
+              const match = text.match(/^(.*)\s*\[(.+)\]$/)
+              return match ? { label: match[1], labelTable: match[2] } : null
+            })
+            ?.find(obj => obj && obj.labelTable === table)
+            ?.label
+        if (customLabel) {
+          return {
+            value: customLabel,
+            language: lang
+          }
         }
       }
     }

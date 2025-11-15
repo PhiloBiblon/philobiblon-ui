@@ -53,7 +53,7 @@
           </v-col>
         </span>
       </v-row>
-      <item-claims :claims="claimsOrdered" :item="item" />
+      <item-claims :table="table" :item="item" :claims="claimsOrdered" />
       <div v-if="hasRelatedTable" class="text-h6 mt-6">
         {{ $t('item.related_items') }}
       </div>
@@ -65,7 +65,7 @@
       <div class="text-h6 mt-6">
         {{ $t('item.identifiers') }}
       </div>
-      <item-claims :claims="externalIdClaims" :item="item" />
+      <item-claims :table="table" :item="item" :claims="externalIdClaims" />
     </v-container>
   </div>
 </template>
