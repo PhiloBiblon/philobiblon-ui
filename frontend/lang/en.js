@@ -161,8 +161,10 @@ export default {
           label: 'Date',
           hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.',
           error: {
-            invalid_date: 'Invalid date. Use YYYY-MM-DD format',
-            invalid_year: 'Year must be between 0 and 2125'
+            invalid_date: 'Invalid date format. Please use YYYY, YYYY-MM, YYYY-MM-DD, MM-DD, or DD-MM.',
+            invalid_year: 'Invalid year. Please enter a year up to the current year.',
+            invalid_month: 'Invalid month. Month must be between 1 and 12.',
+            invalid_day: 'Invalid day. Day must be valid for the given month.'
           }
         },
         personal_name: {
