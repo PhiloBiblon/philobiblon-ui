@@ -1,10 +1,13 @@
 <template>
-  <v-text-field
+  <v-textarea
     ref="myTextField"
     v-model="currentText"
-    :type="type"
     v-bind="{ ...$attrs, ...commonAttrs }"
     v-on="$listeners"
+    auto-grow
+    rows="1"
+    dense
+    hide-details
     @blur="blur"
     @focus="focus"
     @input="handleInput"
@@ -62,7 +65,7 @@
         </v-tooltip>
       </v-btn>
     </template>
-  </v-text-field>
+  </v-textarea>
 </template>
 
 <script>
@@ -72,10 +75,6 @@ export default {
     value: {
       type: String,
       default: null
-    },
-    type: {
-      type: String,
-      default: 'text'
     },
     save: {
       type: Function,
@@ -122,10 +121,21 @@ export default {
 
     focus () {
       this.focussed = true
+      this.resizeTextarea()
     },
 
     handleInput (value) {
       this.$emit('new-value', this.currentText)
+      this.resizeTextarea()
+    },
+    resizeTextarea () {
+      this.$nextTick(() => {
+        const textarea = this.$refs.myTextField?.$el?.querySelector('textarea')
+        if (textarea) {
+          textarea.style.height = 'auto'
+          textarea.style.height = textarea.scrollHeight + 'px'
+        }
+      })
     },
 
     async edit () {
@@ -160,6 +170,7 @@ export default {
     restore () {
       this.currentText = this.consolidatedText
       this.$emit('new-value', this.currentText)
+      this.$nextTick(() => this.resizeTextarea())
     },
 
     async deleteValue () {
