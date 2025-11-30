@@ -43,6 +43,16 @@
         />
         <v-row class="mt-2" dense>
           <v-spacer />
+          <v-btn
+            class="mt-4 mr-2"
+            color="grey"
+            small
+            elevation="2"
+            outlined
+            @click="$router.go(-1)"
+          >
+            {{ $t('common.cancel') }}
+          </v-btn>
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
               <div v-bind="attrs" v-on="on">
