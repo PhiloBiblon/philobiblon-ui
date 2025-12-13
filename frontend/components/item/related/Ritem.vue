@@ -56,6 +56,18 @@ export default {
     }
   },
 
+  watch: {
+    // Re-fetch entity when value prop changes (e.g., during pagination)
+    'value.item': {
+      immediate: false,
+      async handler (newItem, oldItem) {
+        if (newItem && newItem !== oldItem) {
+          await this.getEntity()
+        }
+      }
+    }
+  },
+
   async mounted () {
     if (this.value.item) {
       await this.getEntity()
