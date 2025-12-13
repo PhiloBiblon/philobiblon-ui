@@ -1286,7 +1286,20 @@ export class QueryService {
   }
 
   getSortClause () {
-    const sortBy = this.$store.state.queryStatus.sortBy === 'id' ? 'xsd:integer(?pbidn)' : this.replaceDiacritics('xsd:string(?label)')
+    let sortBy
+    const sortOption = this.$store.state.queryStatus.sortBy
+    switch (sortOption) {
+      case 'id':
+        sortBy = 'xsd:integer(?pbidn)'
+        break
+      case 'date':
+        // Sort by date if available, fallback to ID
+        sortBy = 'xsd:dateTime(?date)'
+        break
+      case 'name':
+      default:
+        sortBy = this.replaceDiacritics('xsd:string(?label)')
+    }
     return this.$store.state.queryStatus.isSortDescending ? `DESC(${sortBy})` : sortBy
   }
 

@@ -437,7 +437,8 @@ export default {
       sort_by: 'Ordenar por:',
       sort_option: {
         name: 'Nome',
-        id: 'ID'
+        id: 'ID',
+        date: 'Data'
       },
       not_found: 'Non se atoparon resultados.'
     }

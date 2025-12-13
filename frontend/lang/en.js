@@ -439,7 +439,8 @@ export default {
       sort_by: 'Sort by:',
       sort_option: {
         name: 'Name',
-        id: 'ID'
+        id: 'ID',
+        date: 'Date'
       },
       not_found: 'No results found.'
     }
