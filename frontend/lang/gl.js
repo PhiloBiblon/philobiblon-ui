@@ -518,7 +518,9 @@ export default {
         milestones: 'Fitos',
         owner: 'Propietario',
         printed_by: 'Impreso por',
+        related_individuals: 'Individuos relacionados',
         related_institutions: 'Institucións relacionadas',
+        work_context: 'Contexto da obra',
         subject_references: 'Referencias temáticas'
       },
       libid: {

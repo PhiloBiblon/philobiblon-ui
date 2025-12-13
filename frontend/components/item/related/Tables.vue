@@ -342,24 +342,28 @@ export default {
             ]
           },
           {
+            label: 'item.related.insid.related_individuals',
+            refTables: [
+              { refTable: 'bioid', property: 'P703' }
+            ]
+          },
+          {
             label: 'item.related.insid.related_institutions',
             refTables: [
-              { refTable: 'bioid', property: 'P232' },
               { refTable: 'insid', property: 'P232' },
               { refTable: 'libid', property: 'P232' }
             ]
           },
           {
+            label: 'item.related.insid.work_context',
+            refTables: [
+              { refTable: 'texid', property: 'P590' }
+            ]
+          },
+          {
             label: 'item.related.insid.subject_references',
             refTables: [
-              { refTable: 'bibid', property: 'P243' },
-              { refTable: 'bioid', property: 'P243' },
-              { refTable: 'copid', property: 'P243' },
-              { refTable: 'geoid', property: 'P243' },
-              { refTable: 'insid', property: 'P243' },
-              { refTable: 'libid', property: 'P243' },
-              { refTable: 'manid', property: 'P243' },
-              { refTable: 'texid', property: 'P243' }
+              { refTable: 'subid', property: 'P243' }
             ]
           }
         ],
