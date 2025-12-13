@@ -128,14 +128,16 @@ export default {
   },
   methods: {
     allowCreateQualifier (qualifier) {
-      return this.claim && !this.forCreate && qualifier.property && qualifier.datavalue?.value
+      const propertyId = qualifier.property?.id || qualifier.property
+      return this.claim && !this.forCreate && propertyId && qualifier.datavalue?.value
     },
     onNewValue (event, qualifier) {
       qualifier.datavalue.value = event
     },
     onChangeProperty (event, index) {
       const qualifier = this.qualifiers[index]
-      qualifier.property = event?.id
+      // Keep the full property object for display, but track ID separately
+      qualifier.property = event ? { id: event.id, label: event.label, datatype: event.datatype } : null
       qualifier.datatype = event?.datatype
       qualifier.datavalue = {
         value: null
@@ -169,10 +171,12 @@ export default {
     },
     async createQualifier (index) {
       const qualifier = this.qualifiers[index]
+      // Extract property ID - handle both object and string formats
+      const propertyId = qualifier.property?.id || qualifier.property
       await this.$wikibase.getWbEdit().qualifier.add({
         guid: this.claim.id,
         value: qualifier.datavalue.value.id ?? qualifier.datavalue.value,
-        property: qualifier.property
+        property: propertyId
       }, this.$store.getters['auth/getRequestConfig']).then((res) => {
         if (res.success) {
           this.updateQualifiers(res.claim.qualifiers[qualifier.property])
