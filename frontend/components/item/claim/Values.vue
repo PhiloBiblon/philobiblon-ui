@@ -164,6 +164,9 @@ export default {
 .table-cell {
   border-bottom: none !important;
   padding-top: 8px !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .table-cell-btn-edit {
