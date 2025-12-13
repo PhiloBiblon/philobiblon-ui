@@ -2,7 +2,7 @@
   <v-expansion-panels class="ma-2 pa-2 bg-gray none-z-index">
     <v-expansion-panel class="bg-gray">
       <v-expansion-panel-header class="bg-gray header">
-        <p class="text-subtitle-2 mb-0">
+        <p class="text-subtitle-2 mb-0 reference-header">
           {{ header }}
         </p>
       </v-expansion-panel-header>
@@ -80,6 +80,10 @@ export default {
 .header {
   padding: 0;
   align-items: center;
+}
+
+.reference-header {
+  font-weight: normal !important;
 }
 
 ::v-deep .v-expansion-panel-content__wrap {

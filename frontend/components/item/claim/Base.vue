@@ -1,7 +1,7 @@
 <template>
   <v-container class="claim">
     <v-row dense>
-      <v-subheader class="claim-header grey--text">
+      <v-subheader class="claim-header section-header">
         <item-util-view-text-lang :value="propertyLabel" :tooltip="claim.property" />
       </v-subheader>
     </v-row>
@@ -62,6 +62,10 @@ export default {
 }
 .claim-header {
   font-size: 16px;
+}
+.section-header {
+  color: #616161 !important;
+  font-weight: bold !important;
 }
 .claim-values {
   padding: 0;
