@@ -7,6 +7,7 @@
       :item="item"
       :claim="claim"
       @delete-claim="deleteClaim"
+      @create-claim="addValueToClaim"
     />
     <item-claim-create v-if="isUserLogged" :item="item" @update-claims="updateClaims" />
   </div>
@@ -57,9 +58,26 @@ export default {
       const existingClaim = claims.find(claim => claim.property === data.property)
 
       if (existingClaim) {
-        existingClaim.values.push(...data.values)
+        // Filter out duplicates before adding
+        const newValues = data.values.filter(newVal =>
+          !existingClaim.values.some(existingVal => existingVal.id === newVal.id)
+        )
+        if (newValues.length > 0) {
+          existingClaim.values.push(...newValues)
+        }
       } else {
         claims.push(data)
+      }
+    },
+    addValueToClaim (data) {
+      // Handle adding a new value to an existing claim
+      const existingClaim = this.claims.find(claim => claim.property === data.property)
+      if (existingClaim) {
+        // Check if this claim already exists to prevent duplicates
+        const claimExists = existingClaim.values.some(v => v.id === data.claim.id)
+        if (!claimExists) {
+          existingClaim.values.push(data.claim)
+        }
       }
     }
   }
