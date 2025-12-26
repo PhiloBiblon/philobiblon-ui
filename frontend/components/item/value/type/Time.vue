@@ -105,18 +105,58 @@ export default {
       }
     },
     getTimeNewValue (value) {
+      const { time, precision } = this.formatDate(value)
       return {
-        time: this.formatDate(value),
+        time,
+        precision,
         calendar: this.valueToView_.calendar.toLowerCase()
       }
     },
     formatDate (dateString) {
-      const date = new Date(dateString)
-      const isoYear = date.getUTCFullYear()
-      const isoMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2)
-      const isoDay = ('0' + date.getUTCDate()).slice(-2)
+      if (!dateString) {
+        return { time: null, precision: 11 }
+      }
 
-      return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`
+      const trimmed = dateString.trim()
+
+      // Year only: YYYY -> precision 9
+      if (/^\d{4}$/.test(trimmed)) {
+        const year = trimmed.padStart(4, '0')
+        return {
+          time: `+${year}-01-01T00:00:00Z`,
+          precision: 9
+        }
+      }
+
+      // Year-Month: YYYY-MM -> precision 10
+      if (/^\d{4}-\d{2}$/.test(trimmed)) {
+        return {
+          time: `+${trimmed}-01T00:00:00Z`,
+          precision: 10
+        }
+      }
+
+      // Full date: YYYY-MM-DD -> precision 11
+      if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+        return {
+          time: `+${trimmed}T00:00:00Z`,
+          precision: 11
+        }
+      }
+
+      // Fallback: try to parse as date
+      const date = new Date(dateString)
+      if (!isNaN(date.getTime())) {
+        const isoYear = String(date.getUTCFullYear()).padStart(4, '0')
+        const isoMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2)
+        const isoDay = ('0' + date.getUTCDate()).slice(-2)
+        return {
+          time: `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`,
+          precision: 11
+        }
+      }
+
+      return { time: null, precision: 11 }
     }
   }
 }
