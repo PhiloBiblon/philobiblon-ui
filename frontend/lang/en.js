@@ -520,7 +520,9 @@ export default {
         milestones: 'Milestones',
         owner: 'Owner',
         printed_by: 'Printed by',
+        related_individuals: 'Related individuals',
         related_institutions: 'Related institutions',
+        work_context: 'Work context',
         subject_references: 'Subject references'
       },
       libid: {

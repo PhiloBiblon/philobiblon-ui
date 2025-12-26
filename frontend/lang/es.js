@@ -518,7 +518,9 @@ export default {
         milestones: 'Hitos',
         owner: 'Propietario',
         printed_by: 'Impreso por',
+        related_individuals: 'Individuos relacionados',
         related_institutions: 'Instituciones relacionadas',
+        work_context: 'Contexto de la obra',
         subject_references: 'Referencias del tema'
       },
       libid: {

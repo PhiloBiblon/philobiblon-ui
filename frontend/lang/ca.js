@@ -518,7 +518,9 @@ export default {
         milestones: 'Fites',
         owner: 'Propietat',
         printed_by: 'Imprès per',
+        related_individuals: 'Individus relacionats',
         related_institutions: 'Institucions relacionades',
+        work_context: 'Context de l\'obra',
         subject_references: 'Referències temàtiques'
       },
       libid: {

@@ -518,7 +518,9 @@ export default {
         milestones: 'Conquistas',
         owner: 'Proprietário',
         printed_by: 'Impresso por',
+        related_individuals: 'Indivíduos relacionados',
         related_institutions: 'Instituições relacionadas',
+        work_context: 'Contexto da obra',
         subject_references: 'Referências de assunto'
       },
       libid: {
