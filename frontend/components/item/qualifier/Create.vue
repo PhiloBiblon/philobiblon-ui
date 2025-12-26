@@ -201,6 +201,9 @@ export default {
 }
 .create-qualifier {
   padding: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 .max-w-100 {
   max-width: 100px !important;

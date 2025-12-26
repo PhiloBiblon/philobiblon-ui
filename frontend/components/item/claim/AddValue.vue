@@ -135,6 +135,9 @@ export default {
 <style scoped>
 .full-width {
   width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 .add-value {
   background-color: white;

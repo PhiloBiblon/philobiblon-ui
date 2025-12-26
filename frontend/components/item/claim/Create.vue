@@ -259,6 +259,9 @@ export default {
 }
 .claim-values {
   background-color: rgb(247, 245, 245);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 ::v-deep .add-claim-value {
