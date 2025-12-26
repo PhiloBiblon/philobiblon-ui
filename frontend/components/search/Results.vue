@@ -56,20 +56,22 @@
                     />
                   </v-col>
                   <v-col cols="auto">
+                    <!-- Alphabetical sort icons (name) -->
                     <v-icon
-                      v-if="!isSortByID && !isSortDescending"
+                      v-if="isSortByName && !isSortDescending"
                       dense
                       @click="changeSortDescending"
                     >
                       mdi-sort-alphabetical-ascending
                     </v-icon>
                     <v-icon
-                      v-if="!isSortByID && isSortDescending"
+                      v-if="isSortByName && isSortDescending"
                       dense
                       @click="changeSortDescending"
                     >
                       mdi-sort-alphabetical-descending
                     </v-icon>
+                    <!-- Numeric sort icons (id) -->
                     <v-icon
                       v-if="isSortByID && !isSortDescending"
                       dense
@@ -83,6 +85,21 @@
                       @click="changeSortDescending"
                     >
                       mdi-sort-numeric-descending
+                    </v-icon>
+                    <!-- Date sort icons -->
+                    <v-icon
+                      v-if="isSortByDate && !isSortDescending"
+                      dense
+                      @click="changeSortDescending"
+                    >
+                      mdi-sort-calendar-ascending
+                    </v-icon>
+                    <v-icon
+                      v-if="isSortByDate && isSortDescending"
+                      dense
+                      @click="changeSortDescending"
+                    >
+                      mdi-sort-calendar-descending
                     </v-icon>
                   </v-col>
                 </v-row>
@@ -148,6 +165,10 @@ export default {
         {
           text: this.$i18n.t('search.results.sort_option.name'),
           value: 'name'
+        },
+        {
+          text: this.$i18n.t('search.results.sort_option.date'),
+          value: 'date'
         }
       ],
       sortBy: null,
@@ -162,6 +183,14 @@ export default {
 
     isSortByID () {
       return this.sortBy === 'id'
+    },
+
+    isSortByName () {
+      return this.sortBy === 'name'
+    },
+
+    isSortByDate () {
+      return this.sortBy === 'date'
     }
   },
 
