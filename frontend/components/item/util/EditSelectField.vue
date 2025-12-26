@@ -14,6 +14,14 @@
     @change="onchange"
     @update:search-input="$emit('input', $event)"
   >
+    <template #item="data">
+      <v-list-item-content>
+        <v-list-item-title>{{ data.item.label }}</v-list-item-title>
+        <v-list-item-subtitle v-if="data.item.description" class="item-description">
+          {{ data.item.description }}
+        </v-list-item-subtitle>
+      </v-list-item-content>
+    </template>
     <template #append>
       <v-btn
         v-if="isEditable && focussed"
@@ -196,3 +204,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.item-description {
+  font-weight: normal;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 2px;
+}
+</style>
