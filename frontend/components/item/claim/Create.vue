@@ -222,8 +222,10 @@ export default {
     updateQualifiers (data, key) {
       this.claims[key].qualifiers = data.map((qualifier) => {
         if (!this.forCreate) {
+          // Extract property ID - handle both object and string formats
+          const propertyId = qualifier?.property?.id || qualifier?.property
           return {
-            property: qualifier?.property,
+            property: propertyId,
             value: qualifier?.datavalue?.value?.id ?? qualifier.datavalue?.value
           }
         } else {

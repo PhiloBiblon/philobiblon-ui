@@ -225,9 +225,15 @@ export default {
       }
     },
     buildQualifier (claim, qualifier) {
+      // Build property object with label for autocomplete display
+      const label = this.$wikibase.getValueByLang(qualifier.labels, this.$i18n.locale)?.value || qualifier.id
       return {
         default: true,
-        property: qualifier.id,
+        property: {
+          id: qualifier.id,
+          label,
+          datatype: qualifier.datatype
+        },
         datatype: qualifier.datatype,
         datavalue: {
           value: null
