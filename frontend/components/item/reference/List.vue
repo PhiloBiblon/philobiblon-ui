@@ -115,6 +115,9 @@ export default {
 .w-100
 .table-cell {
   border: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .table-cell-value-edit {
