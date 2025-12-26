@@ -198,6 +198,8 @@ export default {
     if (showResults) {
       this.showResults = showResults
     }
+    // Load saved default bibliography from localStorage
+    this.loadDefaultBibliography()
   },
 
   mounted () {
@@ -343,7 +345,25 @@ export default {
         this.isBitagapSelected = false
         this.bitagap_group.value = 'ALL'
       }
+      // Save selected bibliography to localStorage for next session
+      this.saveDefaultBibliography(newDatabase)
       this.$emit('database-change', newDatabase)
+    },
+    loadDefaultBibliography () {
+      // Only load default if no specific bibliography is already set
+      if (this.search_group.value === 'ALL' && typeof localStorage !== 'undefined') {
+        const savedBibliography = localStorage.getItem('philobiblon_default_bibliography')
+        if (savedBibliography && ['BETA', 'BITAGAP', 'BITECA'].includes(savedBibliography)) {
+          this.search_group.value = savedBibliography
+          // Trigger the change handler to update related state
+          this.onGroupChange(savedBibliography)
+        }
+      }
+    },
+    saveDefaultBibliography (bibliography) {
+      if (typeof localStorage !== 'undefined' && ['BETA', 'BITAGAP', 'BITECA'].includes(bibliography)) {
+        localStorage.setItem('philobiblon_default_bibliography', bibliography)
+      }
     }
   }
 }
