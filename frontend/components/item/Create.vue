@@ -265,6 +265,16 @@ export default {
           if (entity.id === 'P476') {
             claim = this.buildClaim(entity, [], this.generatePbId(itemNumber), false)
           } else if (entity.id === 'P131') {
+            // Set default bibliography based on database
+            // BETA: Q254471, BITECA: Q256810, BITAGAP: Q256809
+            const bibliographyMap = {
+              BETA: 'Q254471',
+              BITECA: 'Q256810',
+              BITAGAP: 'Q256809'
+            }
+            const bibliographyId = bibliographyMap[this.database] || null
+
+            // P700 (statement refers to) qualifier = Q447226 (PhiloBiblon object)
             const qualifiers = [
               {
                 default: true,
@@ -272,13 +282,13 @@ export default {
                 datatype: 'wikibase-item',
                 datavalue: {
                   value: {
-                    id: 'Q6'
+                    id: 'Q447226'
                   }
                 }
               }
             ]
 
-            claim = this.buildClaim(entity, qualifiers, { id: 'Q4' })
+            claim = this.buildClaim(entity, qualifiers, bibliographyId ? { id: bibliographyId } : null)
           } else if (this.table === 'cnum' && entity.id === 'P590') {
             claim = this.buildClaim(entity, qualifiers, null, false)
           } else if (this.table === 'copid' && entity.id === 'P839') {
