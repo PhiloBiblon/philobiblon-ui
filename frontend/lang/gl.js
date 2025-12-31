@@ -65,7 +65,7 @@ export default {
           }
         }
       },
-      crete: {
+      create: {
         label: 'Crear',
         item: {
           texid: {
@@ -162,7 +162,7 @@ export default {
           hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.',
           error: {
             invalid_date: 'Data non válida. Usar o formato AAAA-MM-DD',
-            invalid_year: 'O ano debe estar entre 0 e 2125'
+            invalid_year: 'O ano debe estar entre 0 e 2126'
           }
         },
         personal_name: {
