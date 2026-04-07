@@ -433,7 +433,8 @@ export default {
     button: {
       search: 'Search',
       back: 'Back',
-      clear: 'Clear'
+      clear: 'Clear',
+      create_item: 'Create new Item'
     },
     results: {
       results: 'Results',

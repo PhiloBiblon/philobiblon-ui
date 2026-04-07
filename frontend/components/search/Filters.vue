@@ -112,6 +112,15 @@
           >
             {{ t('search.button.clear') }}
           </v-btn>
+          <v-btn
+            color="primary"
+            class="mr-4"
+            size="small"
+            elevation="2"
+            @click="goToCreate"
+          >
+            {{ t('search.button.create_item') }}
+          </v-btn>
         </v-col>
         <v-col cols="4" class="search-type">
           <v-switch
@@ -138,6 +147,7 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQueryStatusStore } from '~/stores/queryStatus'
+import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps({
   table: { type: String, required: true },
@@ -149,7 +159,11 @@ const emit = defineEmits(['on-search', 'back-search', 'clear-search', 'database-
 
 const { t, locale } = useI18n()
 const router = useRouter()
+const route = useRoute()
+const { $wikibase } = useNuxtApp()
 const queryStatusStore = useQueryStatusStore()
+const authStore = useAuthStore()
+const previousPathCookie = useCookie('previous-path', { path: '/', maxAge: 5 * 60 })
 
 const searchGroup = reactive(props.form.input.group)
 const searchType = reactive(props.form.input.search_type)
@@ -299,6 +313,15 @@ function clear () {
   calculateSectionsToDisplay()
   queryStatusStore.setForm(null)
   emit('clear-search')
+}
+
+function goToCreate () {
+  if (!authStore.isLogged) {
+    previousPathCookie.value = route.path
+    $wikibase.$oauth.step1()
+    return
+  }
+  router.push(`/item/${props.table}/create`)
 }
 
 function goToHelp () {
