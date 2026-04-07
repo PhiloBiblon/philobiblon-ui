@@ -52,7 +52,7 @@ export default {
             label: 'MsEd'
           },
           geoid: {
-            label: 'Geogràfia'
+            label: 'Geografia'
           },
           subid: {
             label: 'Assumpte'
@@ -87,7 +87,7 @@ export default {
             label: 'MsEd'
           },
           geoid: {
-            label: 'Geogràfia'
+            label: 'Geografia'
           },
           subid: {
             label: 'Assumpte'
