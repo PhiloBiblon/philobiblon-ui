@@ -470,11 +470,17 @@ export default {
           break
         }
         case 'bibid': {
-          const creator =
-            this.getClaimValue('P1134') || this.getClaimValue('P21')
+          const surname = this.getClaimValue('P247')
+          const author = this.getClaimValue('P21')
+          const creator = this.getClaimValue('P1134')
           const title = this.getClaimValue('P11')
-          if (creator && title) {
-            label = `${creator}. ${title}`
+          const date = this.getClaimValue('P222')
+
+          const name = surname || author || creator
+
+          if (name && title) {
+            const datePart = date ? ` (${date})` : ''
+            label = `${name}${datePart}, ${title}`
           }
           break
         }
