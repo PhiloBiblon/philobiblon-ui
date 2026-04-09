@@ -126,6 +126,15 @@ export default {
   },
   methods: {
     getCreateDisabledReason () {
+      if (this.table === 'bioid') {
+        const name = this.getClaimValue('P34')
+
+        if (!name) {
+          return 'The name (P34) is mandatory'
+        }
+
+        return null
+      }
       if (!this.label) {
         return this.$t('messages.error.inputs.label')
       }
@@ -241,7 +250,7 @@ export default {
       }
     },
     async getDefaultClaims (itemNumber) {
-      const def = ['P476', 'P131']
+      const def = ['P476', 'P131', 'P799']
       const res = await this.$wikibase.getClaimsOrderForNewItem(this.table)
       const propertyIds = [...new Set([...def, ...Object.keys(res)])]
       const qualifiersProperties = [...new Set(Object.values(res).flat())]
@@ -295,6 +304,25 @@ export default {
             ]
 
             claim = this.buildClaim(entity, qualifiers, bibliographyId ? { id: bibliographyId } : null)
+          } else if (entity.id === 'P799' && this.table === 'bioid') {
+            const today = new Date()
+            const formattedDate = `+${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}T00:00:00Z`
+
+            const qualifiers = [
+              {
+                default: true,
+                property: 'P106',
+                datatype: 'time',
+                datavalue: {
+                  value: {
+                    time: formattedDate,
+                    precision: 11
+                  }
+                }
+              }
+            ]
+
+            claim = this.buildClaim(entity, qualifiers, { id: 'Q447227' })
           } else if (this.table === 'cnum' && entity.id === 'P590') {
             claim = this.buildClaim(entity, qualifiers, null, false)
           } else if (this.table === 'copid' && entity.id === 'P839') {
@@ -391,12 +419,19 @@ export default {
         try {
           const claims = this.cleanClaims(this.claims)
 
+          const alias = `${this.database} ${this.table} ${this.pbid.split(' ').pop()}`
+
           const data = {
             labels: {
               [this.$i18n.locale]: this.label
             },
             descriptions: {
               [this.$i18n.locale]: this.description || ' '
+            },
+            aliases: {
+              [this.$i18n.locale]: [
+                { value: alias }
+              ]
             },
             claims: {
               ...claims
