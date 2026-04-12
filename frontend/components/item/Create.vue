@@ -439,6 +439,21 @@ export default {
         day: 'numeric'
       }).format(date)
     },
+    safeFormatTime (timeString) {
+      if (!timeString || typeof timeString !== 'string' || !timeString.trim()) {
+        return undefined
+      }
+      // Check if it matches expected date pattern (e.g., +YYYY-MM-DD or YYYY-MM-DD)
+      const datePattern = /^[+-]?\d{4}-\d{2}-\d{2}/
+      if (!datePattern.test(timeString)) {
+        return undefined
+      }
+      try {
+        return this.formatTime(timeString)
+      } catch (error) {
+        return undefined
+      }
+    },
     getClaimValue (pbid) {
       const claim = this.initialClaims.find(cl => cl.property?.id === pbid)
       const val = claim?.value?.datavalue?.value
@@ -446,9 +461,15 @@ export default {
       if (!val) {
         return null
       }
-      return typeof val === 'object'
-        ? val.label || val.text || this.formatTime(val.time) || val.id
-        : val
+      if (typeof val === 'object') {
+        // For date values (val.time), use safe formatting
+        if (val.time !== undefined) {
+          const formatted = this.safeFormatTime(val.time)
+          return val.label || val.text || formatted || val.id
+        }
+        return val.label || val.text || val.id
+      }
+      return val
     },
     generateLabelFromClaims () {
       let label = ''
