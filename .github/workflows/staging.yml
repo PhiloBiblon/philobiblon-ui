@@ -42,6 +42,11 @@ jobs:
         id: meta
         run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
 
+      - name: Update frontend version
+        run: |
+          BASE_VERSION=$(grep "version:" frontend/nuxt.config.js | sed "s/.*version: '\([^']*\)'.*/\1/")
+          sed -i "s/version: '[^']*'/version: '${BASE_VERSION}-${{ steps.meta.outputs.short_sha }}'/" frontend/nuxt.config.js
+
       - name: Build & push backend
         uses: docker/build-push-action@v7.1.0
         with:
