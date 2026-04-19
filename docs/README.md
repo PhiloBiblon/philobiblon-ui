@@ -49,6 +49,9 @@ PhiloBiblon UI is a modern web application for querying and editing items in a W
 - [Security & OAuth](backend/security.md) - Authentication and authorization
 - [Caching](backend/caching.md) - SPARQL query caching
 
+### Operations
+- [CI/CD](cicd.md) - GitHub Actions workflows, GHCR image registry, and deploy secrets
+
 ## Quick Start
 
 ### Running with Docker
