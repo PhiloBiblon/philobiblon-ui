@@ -6,28 +6,28 @@
 
 1. Builds `philobiblon-ui-backend` and `philobiblon-ui-frontend` images (with layer cache via GitHub Actions cache).
 2. Pushes to GHCR with two tags each: `main-{7-char SHA}` and `main-latest`.
-3. Deploys to the staging server via SSH using `docker-compose.ui-dev.yaml`.
+3. Deploys to the staging server via SSH using `docker-compose.ui-dev.yml`.
 4. Deletes old image versions, keeping the 5 most recent. Tags matching `^v` (production releases) are never deleted.
 
 ### `production.yml` — triggers: push of a `v*` tag (e.g. `v1.2.3`), manual
 
 1. Builds both images and pushes with tags `v1.2.3` and `latest`.
-2. Deploys to the production server via SSH using `docker-compose.ui-fact.yaml`.
+2. Deploys to the production server via SSH using `docker-compose.ui-fact.yml`.
 
 ## Deploy sequence
 
 Both environments follow the same sequence on the server:
 
 ```bash
-docker compose -f docker-compose.ui-<env>.yaml pull
-docker compose -f docker-compose.ui-<env>.yaml up -d
+docker compose -f docker-compose.ui-<env>.yml pull
+docker compose -f docker-compose.ui-<env>.yml up -d
 docker image prune -f
 ```
 
 | Environment | Compose file |
 |---|---|
-| Staging | `docker-compose.ui-dev.yaml` |
-| Production | `docker-compose.ui-fact.yaml` |
+| Staging | `docker-compose.ui-dev.yml` |
+| Production | `docker-compose.ui-fact.yml` |
 
 The compose files on the server must reference the GHCR images directly:
 - Staging: `ghcr.io/philobiblon/philobiblon-ui-{backend,frontend}:main-latest`
@@ -67,7 +67,7 @@ Both workflows support `workflow_dispatch`, which allows triggering them manuall
 ## Server prerequisites
 
 The deploy path on each server must contain:
-- `docker-compose.ui-dev.yaml` (staging) or `docker-compose.ui-fact.yaml` (production)
+- `docker-compose.ui-dev.yml` (staging) or `docker-compose.ui-fact.yml` (production)
 - `.env` with the runtime environment variables
 
 The server user must be in the `docker` group (or have equivalent permission to run `docker compose`).

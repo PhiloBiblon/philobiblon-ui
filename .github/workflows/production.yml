@@ -90,8 +90,9 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          script_stop: true
           script: |
             cd ${{ vars.DEPLOY_PATH }}
-            docker compose -f docker-compose.ui-fact.yaml pull
-            docker compose -f docker-compose.ui-fact.yaml up -d
+            docker compose -f docker-compose.ui-fact.yml pull
+            docker compose -f docker-compose.ui-fact.yml up -d
             docker image prune -f
