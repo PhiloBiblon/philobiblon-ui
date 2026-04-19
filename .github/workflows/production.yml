@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g. v1.2.3)'
+        required: true
 
 env:
   REGISTRY: ghcr.io
@@ -35,7 +39,15 @@ jobs:
 
       - name: Extract version tag
         id: tag
-        run: echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            echo "version=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+          elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ERROR: no version tag available (not a tag push and no version input)" >&2
+            exit 1
+          fi
 
       - name: Build & push backend
         uses: docker/build-push-action@v7.1.0
