@@ -68,6 +68,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-backend:${{ steps.tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-backend:latest
+          labels: org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -82,6 +83,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-frontend:${{ steps.tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-frontend:latest
+          labels: org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -100,7 +102,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script_stop: true
           script: |
+            set -e
             cd ${{ vars.DEPLOY_PATH }}
             docker compose -f docker-compose.ui-fact.yml pull
             docker compose -f docker-compose.ui-fact.yml up -d
-            docker image prune -f
+            docker images --filter "dangling=true" --filter "label=org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui" -q | xargs -r docker rmi -f

@@ -58,6 +58,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-backend:main-${{ steps.meta.outputs.short_sha }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-backend:main-latest
+          labels: org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -72,6 +73,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-frontend:main-${{ steps.meta.outputs.short_sha }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-frontend:main-latest
+          labels: org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -90,10 +92,11 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script_stop: true
           script: |
+            set -e
             cd ${{ vars.DEPLOY_PATH }}
             docker compose -f docker-compose.ui-dev.yml pull
             docker compose -f docker-compose.ui-dev.yml up -d
-            docker image prune -f
+            docker images --filter "dangling=true" --filter "label=org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui" -q | xargs -r docker rmi -f
 
   cleanup:
     name: Clean up old staging images
