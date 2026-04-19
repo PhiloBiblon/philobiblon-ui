@@ -15,39 +15,27 @@ OAuth 1.0a is a three-legged authentication protocol. The backend acts as a **co
 
 ### Flow Diagram
 
-```
-┌─────────┐           ┌─────────┐           ┌──────────┐
-│ Frontend│           │ Backend │           │ Wikibase │
-└────┬────┘           └────┬────┘           └────┬─────┘
-     │                     │                     │
-     │ 1. GET /request-token                    │
-     │────────────────────>│                     │
-     │                     │ 2. getRequestToken()│
-     │                     │────────────────────>│
-     │                     │<────────────────────│
-     │                     │   {token, secret}   │
-     │<────────────────────│                     │
-     │  {token, authUrl}   │                     │
-     │                     │                     │
-     │ 3. Redirect user to authUrl               │
-     │──────────────────────────────────────────>│
-     │                     │                     │
-     │                     │  4. User approves   │
-     │                     │                     │
-     │<──────────────────────────────────────────│
-     │  Redirect with oauth_verifier             │
-     │                     │                     │
-     │ 5. GET /access-token                      │
-     │    + oauth_verifier │                     │
-     │────────────────────>│                     │
-     │                     │ 6. getAccessToken() │
-     │                     │────────────────────>│
-     │                     │<────────────────────│
-     │<────────────────────│   {token, secret}   │
-     │  {token, secret}    │                     │
-     │                     │                     │
-     │ 7. Store in Vuex    │                     │
-     │                     │                     │
+```mermaid
+sequenceDiagram
+    participant F as Frontend
+    participant B as Backend
+    participant W as Wikibase
+
+    F->>B: 1. GET /request-token
+    B->>W: 2. getRequestToken()
+    W-->>B: {token, secret}
+    B-->>F: {token, authUrl}
+
+    F->>W: 3. Redirect user to authUrl
+    Note over W: 4. User approves
+    W-->>F: Redirect with oauth_verifier
+
+    F->>B: 5. GET /access-token + oauth_verifier
+    B->>W: 6. getAccessToken()
+    W-->>B: {token, secret}
+    B-->>F: {token, secret}
+
+    Note over F: 7. Store in Pinia
 ```
 
 ## Implementation Details
