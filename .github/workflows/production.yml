@@ -52,6 +52,11 @@ jobs:
             exit 1
           fi
 
+      - name: Update frontend version
+        run: |
+          VERSION="${{ steps.tag.outputs.version }}"
+          sed -i "s/version: '[^']*'/version: '${VERSION#v}'/" frontend/nuxt.config.js
+
       - name: Build & push backend
         uses: docker/build-push-action@v7.1.0
         with:
