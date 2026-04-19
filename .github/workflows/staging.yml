@@ -42,6 +42,14 @@ jobs:
         id: meta
         run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
 
+      - name: Update frontend version
+        run: |
+          BASE_VERSION="$(sed -n "s/^[[:space:]]*version: '\([^']*\)'.*/\1/p" frontend/nuxt.config.js | head -n1)"
+          [ -n "$BASE_VERSION" ] || { echo "ERROR: version key not found in frontend/nuxt.config.js" >&2; exit 1; }
+          NEW_VERSION="${BASE_VERSION}-${{ steps.meta.outputs.short_sha }}"
+          sed -i "s/version: '[^']*'/version: '${NEW_VERSION}'/" frontend/nuxt.config.js
+          grep -q "version: '${NEW_VERSION}'" frontend/nuxt.config.js || { echo "ERROR: frontend version update failed" >&2; exit 1; }
+
       - name: Build & push backend
         uses: docker/build-push-action@v7.1.0
         with:
