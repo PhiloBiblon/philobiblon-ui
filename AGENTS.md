@@ -39,12 +39,12 @@ docker compose down -v   # Remove everything including volumes
 Two modules behind an nginx reverse proxy:
 
 - **Frontend** (`frontend/`) — Nuxt 2 SPA (SSR disabled). Talks to Wikibase API directly for reads, and to the backend for writes (proxied through OAuth) and cached SPARQL queries.
-- **Backend** (`backend/`) — Spring Boot 3 middleware. Handles OAuth 1.0a with Wikibase, proxies edit requests, and caches SPARQL queries with Caffeine (10-min TTL, up to 1000 entries).
+- **Backend** (`backend/`) — Spring Boot 3 middleware. Handles OAuth 1.0a with Wikibase, proxies edit requests, and caches SPARQL queries with Caffeine LoadingCache (24h refresh, 36h expiry).
 
 ### Two-level SPARQL caching
 
 - **Frontend** (`store/queryCache.js`): Vuex in-memory cache, 2-min TTL, 100 entries max, keyed by query hash.
-- **Backend** (`SparqlServiceImpl`): Caffeine cache via `@Cacheable`, 10-min TTL, 1000 entries. Inspect via `GET /api/sparql/cacheinfo`.
+- **Backend** (`SparqlServiceImpl`): Caffeine LoadingCache, 24h refresh, 36h expiry, no max-size limit. Inspect via `GET /api/sparql/cacheinfo`.
 
 `wikibase-edit` on the frontend is configured to point to the **backend** (`apiBaseUrl`), not Wikibase directly — this ensures all writes go through the OAuth proxy.
 
