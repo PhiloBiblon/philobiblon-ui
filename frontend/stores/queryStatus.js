@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 export const useQueryStatusStore = defineStore('queryStatus', () => {
   const currentTable = ref(null)
-  const showResults = ref(null)
+  const showResults = ref(false)
   const currentPage = ref(1)
   const sortBy = ref('name')
   const isSortDescending = ref(false)

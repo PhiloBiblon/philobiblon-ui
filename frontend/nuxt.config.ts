@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     public: {
       version: '0.9.15',
       debug: process.env.DEBUG === 'true',
-      apiBaseUrl: process.env.API_BASE_URL || '/.',
+      apiBaseUrl: process.env.API_BASE_URL || '/',
       wikibaseBaseUrl: process.env.WIKIBASE_BASE_URL,
       sparqlBaseUrl: process.env.SPARQL_BASE_URL,
       wikibaseApiUrl: process.env.WIKIBASE_API_URL,

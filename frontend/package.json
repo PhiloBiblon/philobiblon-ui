@@ -25,7 +25,7 @@
     "vue": "^3.5.0",
     "vue-i18n": "^9.14.0",
     "vue-router": "^4.4.0",
-    "vuetify": "^3.6.0",
+    "vuetify": "^3.7.0",
     "vuetify-nuxt-module": "^0.18.3",
     "wikibase-edit": "^7.1.2",
     "wikibase-sdk": "^10.1.1"
