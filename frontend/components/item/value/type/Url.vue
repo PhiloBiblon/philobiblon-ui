@@ -84,11 +84,8 @@ export default {
   },
   methods: {
     newValue (value) {
-      const valid = this.isURL(value)
-      if (!valid) {
-        this.$notification.error(this.$i18n.t('item.messages.invalid_url'))
-        value = ''
-      }
+      // Don't validate on each keystroke - only emit the value
+      // Validation happens on save in getUrlValue
       this.$emit('new-value', value)
     },
     editValue (newValue, oldValue) {
@@ -112,8 +109,10 @@ export default {
       }
     },
     isURL (str) {
+      // Accept http, https, ftp URLs and mailto: for email addresses
       const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
-      return urlRegex.test(str)
+      const emailRegex = /^mailto:[^\s]+@[^\s]+\.[^\s]+$/i
+      return urlRegex.test(str) || emailRegex.test(str)
     },
     isImageUrl (url) {
       return new Promise((resolve) => {
