@@ -135,7 +135,7 @@ function setOptionsAutocomplete () {
     const fullSparqlQuery = buildFullQuery(autocomplete.query)
     $wikibase.runSparqlQuery(fullSparqlQuery, true)
       .then((results) => {
-        Object.entries(results).forEach(([_, result]) => {
+        Object.values(results).forEach((result) => {
           options.value.push({
             id: result.item.value,
             label: result.item.label

@@ -564,20 +564,12 @@ export default {
     },
     embedContent: {
       title: 'Contingut incrustat d\'altres llocs web',
-      desc: 'Els articles del lloc web poden incloure contingut incrustat (per exemple, vídeos, gràfics, etc.). El contingut incrustat d\'altres llocs web es comporta exactament de la mateixa manera que si el visitant hagués visitat l\'altre lloc web. <br/> <br/>\n' +
-        'Aquests llocs web poden recopilar dades sobre vostè, utilitzar galetes, incrustar un seguiment addicional de tercers i supervisar la seva interacció amb aquest contingut incrustat, inclòs el seguiment de la seva interacció amb el contingut incrustat si teniu un compte i heu iniciat sessió en aquest lloc web.'
+      desc: 'Els articles del lloc web poden incloure contingut incrustat (per exemple, vídeos, gràfics, etc.). El contingut incrustat d\'altres llocs web es comporta exactament de la mateixa manera que si el visitant hagués visitat l\'altre lloc web. <br/> <br/>\nAquests llocs web poden recopilar dades sobre vostè, utilitzar galetes, incrustar un seguiment addicional de tercers i supervisar la seva interacció amb aquest contingut incrustat, inclòs el seguiment de la seva interacció amb el contingut incrustat si teniu un compte i heu iniciat sessió en aquest lloc web.'
     },
     rights: {
       title: 'Els teus drets sobre les teves dades',
-      desc: 'Si heu deixat comentaris al lloc web, podeu sol·licitar rebre un fitxer exportat de les dades personals que tenim sobre vosaltres, incloses les dades que ens hàgiu proporcionat. També podeu sol·licitar que rectifiquem o esborrem qualsevol dada personal que tinguem sobre vostè. Envieu la vostra sol·licitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
-      data: '• Dret a retirar el consentiment <br/>\n' +
-        '• El dret d\'accés<br/>\n' +
-        '• Dret a supressió<br/>\n' +
-        '• Dret de rectificació<br/>\n' +
-        '• Dret a la portabilitat de les dades<br/>\n' +
-        '• Dret d\'oposició<br/>\n' +
-        '• Notificació de violacions de dades<br/>\n' +
-        '• Dret a presentar una reclamació davant una autoritat de control'
+      desc: 'Si heu deixat comentaris al lloc web, podeu sol·licitar rebre un fitxer exportat de les dades personals que tenim sobre vosaltres, incloses les dades que ens hàgiu proporcionat. També podeu sol·licitar que rectifiquem o esborrem qualsevol dada personal que tinguem sobre vostè. Envieu la vostra sol·licitud a <a href="mailto:legal{\'@\'}gdpr.eu">legal{\'@\'}gdpr.eu</a>',
+      data: '• Dret a retirar el consentiment <br/>\n• El dret d\'accés<br/>\n• Dret a supressió<br/>\n• Dret de rectificació<br/>\n• Dret a la portabilitat de les dades<br/>\n• Dret d\'oposició<br/>\n• Notificació de violacions de dades<br/>\n• Dret a presentar una reclamació davant una autoritat de control'
     }
   },
   messages: {

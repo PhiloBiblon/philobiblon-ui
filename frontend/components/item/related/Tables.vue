@@ -14,7 +14,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const props = defineProps({
+defineProps({
   itemId: { type: String, default: null },
   table: { type: String, required: true }
 })

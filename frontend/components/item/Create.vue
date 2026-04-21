@@ -168,7 +168,7 @@ async function loadInitialClaims () {
       initialClaimsLoaded.value = true
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error(error)
     $notification.error(
       error?.body?.error?.info || t('messages.error.something_went_wrong')
@@ -413,7 +413,7 @@ function safeFormatTime (timeString) {
   }
   try {
     return formatTime(timeString)
-  } catch (error) {
+  } catch {
     return undefined
   }
 }

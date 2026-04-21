@@ -21,7 +21,7 @@ export class NotificationService {
         }
       }
     }
-    // eslint-disable-next-line no-console
+     
     console.error(error)
     this.$notify({ title: String(error), type: 'error', duration: DURATION })
   }

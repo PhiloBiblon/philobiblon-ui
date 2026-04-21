@@ -100,7 +100,6 @@ const properties = reactive([])
 const qualifiers = reactive([])
 const propertyValues = reactive([])
 
-const pbid = computed(() => WikibaseService.PROPERTY_PBID)
 const isAllowedAddQualifier = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
 
 if (props.initialQualifiers) {

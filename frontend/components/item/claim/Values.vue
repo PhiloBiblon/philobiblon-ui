@@ -109,21 +109,23 @@ async function getHeaders () {
 }
 
 async function createQualifier (qualifiers, index) {
-  if (!props.claim.values[index].qualifiers) {
-    props.claim.values[index].qualifiers = []
+  const value = props.claim.values[index]
+  if (!value.qualifiers) {
+    value.qualifiers = []
   }
-  props.claim.values[index].qualifiers[qualifiers[0].property] = qualifiers
+  value.qualifiers[qualifiers[0].property] = qualifiers
   await getHeaders()
 }
 
 async function deleteQualifier (qualifier, index) {
-  const qualifiers = props.claim.values[index].qualifiers[qualifier.property]
+  const value = props.claim.values[index]
+  const qualifiers = value.qualifiers[qualifier.property]
   const findIndex = qualifiers.findIndex(item => item.hash === qualifier.hash)
   if (findIndex !== -1) {
     qualifiers.splice(findIndex, 1)
   }
   if (!qualifiers.length) {
-    delete props.claim.values[index].qualifiers[qualifier.property]
+    delete value.qualifiers[qualifier.property]
   }
   await getHeaders()
 }

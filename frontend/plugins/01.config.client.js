@@ -11,13 +11,13 @@ export default defineNuxtPlugin(async () => {
         publicConfig[key] = value.replace('host.docker.internal', 'localhost')
       })
     } catch (err) {
-      // eslint-disable-next-line no-console
+       
       console.error(`Server error ${err}`)
     }
   } else {
-    // eslint-disable-next-line no-console
+     
     console.error('No API url server configured.')
-    // eslint-disable-next-line no-console
+     
     console.error(publicConfig)
   }
 })

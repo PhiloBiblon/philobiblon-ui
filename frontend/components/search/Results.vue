@@ -126,7 +126,7 @@ import { computed, onBeforeUpdate, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQueryStatusStore } from '~/stores/queryStatus'
 
-const props = defineProps({
+defineProps({
   sparqlQuery: { type: String, default: null },
   results: { type: Array, default: null },
   totalResults: { type: Number, default: 0 },

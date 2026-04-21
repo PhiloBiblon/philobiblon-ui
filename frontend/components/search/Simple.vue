@@ -1,6 +1,7 @@
 <template>
   <div class="search-container" :class="{'welcome-container': isWelcome}">
     <v-autocomplete
+      v-model:search="search"
       rounded
       :items="items"
       item-value="id"
@@ -9,7 +10,6 @@
       :class="{welcome: isWelcome}"
       style="max-width: 450px;"
       :loading="loading"
-      v-model:search="search"
       prepend-inner-icon="mdi-magnify"
       :placeholder="t('wiki.search.placeholder')"
       append-inner-icon="mdi-microphone"
@@ -53,7 +53,7 @@ async function searchItems (query) {
     const res = await $wikibase.runSparqlQuery(sparqlQuery)
     items.value = customizeSearchData(res)
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error('Error fetching items:', error)
   } finally {
     loading.value = false

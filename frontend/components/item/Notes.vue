@@ -57,7 +57,7 @@ async function editValue (value) {
       $notification.error(`HTTP error editing notes: ${response.status}`)
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error('Error editing notes:', error)
     $notification.error(`Error editing notes: ${error}`)
   }
@@ -108,7 +108,7 @@ function convertHtmlLinksToWiki (str) {
         return `[[${internalTarget}|${cleanText}]]`
       }
     } else {
-      /* eslint-disable-next-line no-lonely-if */
+       
       if (cleanHref === cleanText) {
         return `[${cleanHref}]`
       } else {

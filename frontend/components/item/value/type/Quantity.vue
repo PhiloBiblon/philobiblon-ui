@@ -66,7 +66,6 @@ const selectedUnit = ref('')
 const unitOptions = ref([])
 
 const isUserLogged = computed(() => authStore.isLogged)
-const isEditable = computed(() => props.mode === 'edit')
 
 onMounted(async () => {
   if (valueToView_?.value?.unit) {

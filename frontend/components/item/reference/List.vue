@@ -26,7 +26,7 @@
         </td>
       </tr>
     </template>
-    <template v-if="isUserLogged" #body.append>
+    <template v-if="isUserLogged" #[`body.append`]>
       <tr>
         <td :colspan="2" class="full-width">
           <item-reference-create

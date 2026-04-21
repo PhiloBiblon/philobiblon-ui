@@ -11,7 +11,7 @@ export const useQueryCacheStore = defineStore('queryCache', () => {
     if (Object.keys(cache).length >= CACHE_MAX_ENTRIES) {
       const oldestKey = Object.entries(cache).sort((a, b) => a[1].time - b[1].time)[0][0]
       delete cache[oldestKey]
-      // eslint-disable-next-line no-console
+       
       console.log(`old ${oldestKey}'s cache deleted`)
     }
     cache[key] = { time: new Date(), value }
@@ -24,7 +24,7 @@ export const useQueryCacheStore = defineStore('queryCache', () => {
         const millis = currentTime - cache[key].time
         if (millis > CACHE_EXPIRATION_MILLIS) {
           delete cache[key]
-          // eslint-disable-next-line no-console
+           
           console.log(`${key}'s cache deleted`)
         }
       })

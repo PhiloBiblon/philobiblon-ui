@@ -32,7 +32,7 @@ export class QueryService {
     }
   }
 
-  generateSearchLangFiltersWithoutBind (lang) {
+  generateSearchLangFiltersWithoutBind () {
     return "FILTER (lang(?labelObj) IN ('ca', 'es', 'en', 'gl', 'pt')) ."
   }
 

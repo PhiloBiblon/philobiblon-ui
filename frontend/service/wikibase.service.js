@@ -89,7 +89,7 @@ export class WikibaseService {
                   properties[currentProperty] = []
                 }
               } else {
-                // eslint-disable-next-line no-console
+                 
                 console.error(`Invalid property ${currentProperty} in section ${sectionName}: ${line}`)
                 currentProperty = null
               }
@@ -101,15 +101,15 @@ export class WikibaseService {
                   properties[currentProperty].push(qualifier)
                 }
               } else {
-                // eslint-disable-next-line no-console
+                 
                 console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}: ${line}`)
               }
             } else {
-              // eslint-disable-next-line no-console
+               
               console.warn(`Ignored line: ${line}`)
             }
           } catch (error) {
-            // eslint-disable-next-line no-console
+             
             console.error(`Error in line '${line}': ${error}`)
           }
         }
@@ -117,12 +117,12 @@ export class WikibaseService {
         result[sectionName] = properties
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.log(error)
     }
 
     if (process.env.debug) {
-      // eslint-disable-next-line no-console
+       
       console.log('sorted properties', result)
     }
 
@@ -136,7 +136,7 @@ export class WikibaseService {
   async getClaimsOrder (table, pageName = this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE) {
     const data = await this.getWikibasePage(pageName)
     if (data.error) {
-      // eslint-disable-next-line no-console
+       
       console.error(`Error fetching ui sorted page: ${data.error}`)
       return null
     } else {
@@ -144,7 +144,7 @@ export class WikibaseService {
       if (table in fullOrder) {
         return fullOrder[table]
       } else {
-        // eslint-disable-next-line no-console
+         
         console.error(`Table ${table} not found in ui sorted page.`)
         return null
       }
@@ -231,21 +231,21 @@ export class WikibaseService {
                 }
               }
             } else {
-              // eslint-disable-next-line no-console
+               
               console.error(`Invalid default value ${defaultValue} in section ${sectionName}: ${rowMatch}`)
             }
           } else {
-            // eslint-disable-next-line no-console
+             
             console.error(`Invalid bibliography ${bibliographies} in section ${sectionName}: ${rowMatch}`)
           }
         } else {
-          // eslint-disable-next-line no-console
+           
           console.error(`Invalid property ${property} in section ${sectionName}: ${rowMatch}`)
         }
       }
     }
     if (process.env.debug) {
-      // eslint-disable-next-line no-console
+       
       console.log('autocomplete:', result)
     }
     return result
@@ -258,7 +258,7 @@ export class WikibaseService {
     } else {
       const data = await this.getWikibasePage(this.constructor.CONFIG_PROPERTY_AUTOCOMPLETE_PAGE)
       if (data.error) {
-        // eslint-disable-next-line no-console
+         
         console.error(`Error fetching property autocomplete config page: ${data.error.info}`)
         return null
       }
@@ -269,12 +269,12 @@ export class WikibaseService {
       if (bibliography in sections[table]) {
         return sections[table][bibliography]
       } else {
-        // eslint-disable-next-line no-console
+         
         console.error(`Bibliography ${bibliography} not found for table ${table} in property autocomplete config page.`)
         return null
       }
     } else {
-      // eslint-disable-next-line no-console
+       
       console.error(`Table ${table} not found in property autocomplete config page.`)
       return null
     }
@@ -366,9 +366,7 @@ export class WikibaseService {
     const urlHash = this.hashCode(url)
     const entry = this.getResultsFromCache(urlHash)
     if (entry) {
-      return new Promise((resolve, reject) => {
-        return resolve(entry.value)
-      })
+      return Promise.resolve(entry.value)
     }
 
     return fetch(url)
@@ -563,7 +561,7 @@ export class WikibaseService {
     }
 
     if (process.env.debug) {
-      // eslint-disable-next-line no-console
+       
       console.log(`run sparlql query:\n${query}\ninternal cache: ${useInternalCache}\nbackend cache: ${useBackendCache}`)
     }
 
@@ -572,9 +570,7 @@ export class WikibaseService {
       queryHash = this.hashCode(query)
       const entry = this.getResultsFromCache(queryHash)
       if (entry) {
-        return new Promise((resolve, reject) => {
-          return resolve(entry.value)
-        })
+        return Promise.resolve(entry.value)
       }
     }
 
@@ -626,7 +622,7 @@ export class WikibaseService {
     const entry = useQueryCacheStore().cache[hash]
     if (entry) {
       if (process.env.debug) {
-        // eslint-disable-next-line no-console
+         
         console.log('cache hit')
       }
       return entry
@@ -666,7 +662,7 @@ export class WikibaseService {
 
       return result.search
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('Error during search:', error)
     }
   }
@@ -734,7 +730,7 @@ export class WikibaseService {
 
       return csrfToken
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('Failed to fetch CSRF token', error)
       return error
     }
@@ -768,7 +764,7 @@ export class WikibaseService {
 
       return await response
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('Error updating discussion page:', error)
     }
   }

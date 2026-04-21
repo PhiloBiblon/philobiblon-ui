@@ -62,7 +62,7 @@ export class OAuthService {
       const accessToken = decoded.accessToken
       useAuthStore().login({ username, accessToken })
     } catch (err) {
-      // eslint-disable-next-line no-console
+       
       console.error(err)
     }
   }

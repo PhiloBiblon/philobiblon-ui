@@ -564,20 +564,12 @@ export default {
     },
     embedContent: {
       title: 'Contenido incrustado de otros sitios web',
-      desc: 'Los artículos del sitio web pueden incluir contenido incrustado (por ejemplo, videos, gráficos, etc.). El contenido incrustado de otros sitios web se comporta exactamente de la misma manera que si el visitante hubiera visitado el otro sitio web. <br/> <br/>\n' +
-        'Estos sitios web pueden recopilar datos sobre usted, utilizar cookies, incorporar un seguimiento adicional de terceros y supervisar su interacción con ese contenido incrustado, incluido el seguimiento de su interacción con el contenido incrustado si tiene una cuenta y ha iniciado sesión en ese sitio web.'
+      desc: 'Los artículos del sitio web pueden incluir contenido incrustado (por ejemplo, videos, gráficos, etc.). El contenido incrustado de otros sitios web se comporta exactamente de la misma manera que si el visitante hubiera visitado el otro sitio web. <br/> <br/>\nEstos sitios web pueden recopilar datos sobre usted, utilizar cookies, incorporar un seguimiento adicional de terceros y supervisar su interacción con ese contenido incrustado, incluido el seguimiento de su interacción con el contenido incrustado si tiene una cuenta y ha iniciado sesión en ese sitio web.'
     },
     rights: {
       title: 'Sus derechos en relación con sus datos',
-      desc: 'Si ha dejado comentarios en el sitio web, puede solicitar recibir un archivo exportado de los datos personales que tenemos sobre usted, incluidos los datos que nos haya proporcionado. También puede solicitar que rectifiquemos o borremos los datos personales que tengamos sobre usted. Envíe su solicitud a <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
-      data: '• El derecho a retirar el consentimiento<br/>\n' +
-        '• El derecho de acceso<br/>\n' +
-        '• El derecho de supresión<br/>\n' +
-        '• El derecho de rectificación<br/>\n' +
-        '• El derecho a la portabilidad de los datos<br/>\n' +
-        '• El derecho a oponerse<br/>\n' +
-        '• Notificación de violaciones de datos<br/>\n' +
-        '• El derecho a presentar una reclamación ante una autoridad de control'
+      desc: 'Si ha dejado comentarios en el sitio web, puede solicitar recibir un archivo exportado de los datos personales que tenemos sobre usted, incluidos los datos que nos haya proporcionado. También puede solicitar que rectifiquemos o borremos los datos personales que tengamos sobre usted. Envíe su solicitud a <a href="mailto:legal{\'@\'}gdpr.eu">legal{\'@\'}gdpr.eu</a>',
+      data: '• El derecho a retirar el consentimiento<br/>\n• El derecho de acceso<br/>\n• El derecho de supresión<br/>\n• El derecho de rectificación<br/>\n• El derecho a la portabilidad de los datos<br/>\n• El derecho a oponerse<br/>\n• Notificación de violaciones de datos<br/>\n• El derecho a presentar una reclamación ante una autoridad de control'
     }
   },
   messages: {
