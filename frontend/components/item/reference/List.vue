@@ -21,12 +21,11 @@
             :values="item.data"
             :reference="valueToView"
             @create-reference="updateReference($event)"
-            @delete-reference="$emit('delete-reference', $event)"
+            @delete-reference="emit('delete-reference', $event)"
           />
         </td>
       </tr>
     </template>
-    <!-- eslint-disable-next-line vue/valid-v-slot -->
     <template v-if="isUserLogged" #body.append>
       <tr>
         <td :colspan="2" class="full-width">
@@ -43,64 +42,63 @@
   </v-data-table>
 </template>
 
-<script>
-export default {
-  props: {
-    claim: {
-      type: Object,
-      required: true
-    },
-    value: {
-      type: Object,
-      required: true
-    }
-  },
-  data () {
-    return {
-      properties: [],
-      valueToView: null
-    }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    },
-    snaks () {
-      return Object.entries(this.valueToView.snaks).map(([key, value]) => ({
-        property: key,
-        propertyLabel: this.properties.find(item => item.property === key)?.label || key,
-        data: value.map(item => ({
-          ...item,
-          reference_hash: this.valueToView.hash
-        }))
-      }))
-    }
-  },
-  async mounted () {
-    this.valueToView = this.value
-    await this.getProperties()
-  },
-  methods: {
-    async getProperties () {
-      const referenceKeys = Object.keys(this.valueToView.snaks ?? {})
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
 
-      const referenceKeysOrdered = Array.from(referenceKeys).sort((a, b) => {
-        return this.valueToView['snaks-order'] ? this.valueToView['snaks-order'].indexOf(a) - this.valueToView['snaks-order'].indexOf(b) : -1
-      })
-      const headerPromises = Array.from(referenceKeysOrdered).map(async (property) => {
-        const entity = await this.$wikibase.getEntity(property, this.$i18n.locale)
-        return {
-          property,
-          label: this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
-        }
-      })
-      this.properties = await Promise.all(headerPromises)
-    },
-    async updateReference (data) {
-      this.valueToView = data.reference ?? data
-      await this.getProperties()
+const props = defineProps({
+  claim: { type: Object, required: true },
+  value: { type: Object, required: true }
+})
+
+const emit = defineEmits(['delete-reference'])
+
+const { $wikibase } = useNuxtApp()
+const { locale } = useI18n()
+const authStore = useAuthStore()
+
+const properties = ref([])
+const valueToView = ref(null)
+
+const isUserLogged = computed(() => authStore.isLogged)
+
+const snaks = computed(() => {
+  if (!valueToView.value) { return [] }
+  return Object.entries(valueToView.value.snaks).map(([key, value]) => ({
+    property: key,
+    propertyLabel: properties.value.find(item => item.property === key)?.label || key,
+    data: value.map(item => ({
+      ...item,
+      reference_hash: valueToView.value.hash
+    }))
+  }))
+})
+
+onMounted(async () => {
+  valueToView.value = props.value
+  await getProperties()
+})
+
+async function getProperties () {
+  const referenceKeys = Object.keys(valueToView.value.snaks ?? {})
+
+  const referenceKeysOrdered = Array.from(referenceKeys).sort((a, b) => {
+    return valueToView.value['snaks-order'] ? valueToView.value['snaks-order'].indexOf(a) - valueToView.value['snaks-order'].indexOf(b) : -1
+  })
+  const headerPromises = referenceKeysOrdered.map(async (property) => {
+    const entity = await $wikibase.getEntity(property, locale.value)
+    return {
+      property,
+      label: $wikibase.getValueByLang(entity.labels, locale.value)
     }
-  }
+  })
+  properties.value = await Promise.all(headerPromises)
+}
+
+async function updateReference (data) {
+  valueToView.value = data.reference ?? data
+  await getProperties()
 }
 </script>
 
@@ -112,7 +110,6 @@ export default {
 .table-row {
   background-color: rgb(247, 245, 245);
 }
-.w-100
 .table-cell {
   border: none;
   word-wrap: break-word;

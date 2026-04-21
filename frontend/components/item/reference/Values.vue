@@ -6,27 +6,18 @@
       :claim="claim"
       :value="value"
       :reference="reference"
-      @create-reference="$emit('create-reference', $event)"
-      @delete-reference="$emit('delete-reference', $event)"
+      @create-reference="emit('create-reference', $event)"
+      @delete-reference="emit('delete-reference', $event)"
     />
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    claim: {
-      type: Object,
-      required: true
-    },
-    reference: {
-      type: Object,
-      required: true
-    },
-    values: {
-      type: Array,
-      required: true
-    }
-  }
-}
+<script setup>
+defineProps({
+  claim: { type: Object, required: true },
+  reference: { type: Object, required: true },
+  values: { type: Array, required: true }
+})
+
+const emit = defineEmits(['create-reference', 'delete-reference'])
 </script>
