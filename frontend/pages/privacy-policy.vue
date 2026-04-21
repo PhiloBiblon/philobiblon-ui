@@ -4,20 +4,12 @@
   />
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      breadcrumbItems: [
-        {
-          text: this.$i18n.t('privacyPolicy.label'),
-          disabled: true
-        }
-      ]
-    }
-  },
-  mounted () {
-    this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
-  }
-}
+<script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const breadcrumbItems = [
+  { text: t('privacyPolicy.label'), disabled: true }
+]
 </script>

@@ -4,56 +4,56 @@
   </div>
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      database: null,
-      table: null,
-      itemId: null
-    }
-  },
-  async created () {
-    const paramId = this.$route.params.id
-    if (this.$wikibase.getQItemPattern().test(paramId.toUpperCase())) {
-      await this.setParametersFromQItem(paramId)
-    } else if (this.$wikibase.getPBIDPattern().test(paramId)) {
-      await this.setParametersFromPBID(paramId)
-    } else {
-      this.$notification.error(this.$i18n.t('item.messages.invalid_id'))
-    }
-  },
-  methods: {
-    async setParametersFromQItem (qItem) {
-      this.database = this.$route.query.database
-      this.table = this.$route.query.table
+<script setup>
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-      const entity = await this.$wikibase.getEntity(qItem, this.$i18n.locale)
-      const pbid = this.$wikibase.getPBID(entity, this.database, this.table)
-      if (!pbid) {
-        this.$notification.error(this.$i18n.t('item.messages.not_found'))
-      } else {
-        const parsedPBID = this.$wikibase.parsePBID(pbid)
-        if (!this.database || this.database === 'ALL') {
-          this.database = parsedPBID.group
-        }
-        if (!this.table) {
-          this.table = parsedPBID.tableid
-        }
-        this.itemId = qItem.toUpperCase()
-      }
-    },
-    async setParametersFromPBID (pbid) {
-      const qItem = await this.$wikibase.getEntityFromPBID(pbid)
-      if (qItem === null) {
-        this.$notification.error(this.$i18n.t('item.messages.not_found'))
-      } else {
-        const parsedPBID = this.$wikibase.parsePBID(pbid)
-        this.database = parsedPBID.group
-        this.table = parsedPBID.tableid
-        this.itemId = qItem
-      }
+const { $notification, $wikibase } = useNuxtApp()
+const { t, locale } = useI18n()
+const route = useRoute()
+
+const database = ref(null)
+const table = ref(null)
+const itemId = ref(null)
+
+const paramId = route.params.id
+if ($wikibase.getQItemPattern().test(paramId.toUpperCase())) {
+  await setParametersFromQItem(paramId)
+} else if ($wikibase.getPBIDPattern().test(paramId)) {
+  await setParametersFromPBID(paramId)
+} else {
+  $notification.error(t('item.messages.invalid_id'))
+}
+
+async function setParametersFromQItem (qItem) {
+  database.value = route.query.database
+  table.value = route.query.table
+
+  const entity = await $wikibase.getEntity(qItem, locale.value)
+  const pbid = $wikibase.getPBID(entity, database.value, table.value)
+  if (!pbid) {
+    $notification.error(t('item.messages.not_found'))
+  } else {
+    const parsedPBID = $wikibase.parsePBID(pbid)
+    if (!database.value || database.value === 'ALL') {
+      database.value = parsedPBID.group
     }
+    if (!table.value) {
+      table.value = parsedPBID.tableid
+    }
+    itemId.value = qItem.toUpperCase()
+  }
+}
+
+async function setParametersFromPBID (pbid) {
+  const qItem = await $wikibase.getEntityFromPBID(pbid)
+  if (qItem === null) {
+    $notification.error(t('item.messages.not_found'))
+  } else {
+    const parsedPBID = $wikibase.parsePBID(pbid)
+    database.value = parsedPBID.group
+    table.value = parsedPBID.tableid
+    itemId.value = qItem
   }
 }
 </script>

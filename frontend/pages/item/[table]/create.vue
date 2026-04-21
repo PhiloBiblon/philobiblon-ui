@@ -1,39 +1,20 @@
 <template>
   <create-base
     :table="table"
-    :breadcrumb-items="breadcrumb_items"
+    :breadcrumb-items="breadcrumbItems"
   />
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      table: '',
-      breadcrumb_items: []
-    }
-  },
-  created () {
-    this.table = this.$route.params.table
-    this.breadcrumb_items = this.getBreadcrumbItems(this.table)
-  },
-  methods: {
-    getBreadcrumbItems (table) {
-      return [
-        {
-          text: this.$i18n.t('common.create'),
-          disabled: true
-        },
-        {
-          text: this.$i18n.t('menu.item.search.item.' + table + '.label'),
-          disabled: true
-        },
-        {
-          text: this.$i18n.t('item.label'),
-          disabled: true
-        }
-      ]
-    }
-  }
-}
+<script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+const route = useRoute()
+
+const table = route.params.table
+const breadcrumbItems = [
+  { text: t('common.create'), disabled: true },
+  { text: t('menu.item.search.item.' + table + '.label'), disabled: true },
+  { text: t('item.label'), disabled: true }
+]
 </script>
