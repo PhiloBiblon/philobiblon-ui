@@ -6,14 +6,14 @@
           <v-col cols="7">
             <v-radio-group
               v-model="database"
-              row
+              inline
             >
               <template #label>
-                {{ $t('search.form.common.group.label') }}
+                {{ t('search.form.common.group.label') }}
               </template>
               <v-radio
                 v-for="group in groups"
-                :key="'g-'+group"
+                :key="'g-' + group"
                 class="group-option"
                 :label="group"
                 :value="group"
@@ -31,53 +31,41 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    table: {
-      type: String,
-      default: null
-    },
-    breadcrumbItems: {
-      type: Array,
-      default: null
-    }
-  },
-  data () {
-    return {
-      database: 'BETA',
-      showGroups: false,
-      groups: [
-        'BETA',
-        'BITAGAP',
-        'BITECA'
-      ]
-    }
-  },
-  watch: {
-    '$route.query.database': {
-      immediate: true,
-      handler (val) {
-        if (this.groups.includes(val)) {
-          this.database = val
-          this.showGroups = false
-        } else {
-          this.showGroups = true
-        }
-      }
-    }
-  },
-  created () {
-    this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
-    this.$store.commit('breadcrumb/setClass', 'large-font-breadcrumb')
-    this.$store.commit('breadcrumb/setDatabase', this.database)
-    this.$store.commit('breadcrumb/setTable', this.table)
-  },
+<script setup>
+import { onBeforeUnmount, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBreadcrumbStore } from '~/stores/breadcrumb'
 
-  destroyed () {
-    this.$store.commit('breadcrumb/setClass', '')
+const props = defineProps({
+  table: { type: String, default: null },
+  breadcrumbItems: { type: Array, default: null }
+})
+
+const { t } = useI18n()
+const route = useRoute()
+const breadcrumbStore = useBreadcrumbStore()
+
+const database = ref('BETA')
+const showGroups = ref(false)
+const groups = ['BETA', 'BITAGAP', 'BITECA']
+
+watch(() => route.query.database, (val) => {
+  if (groups.includes(val)) {
+    database.value = val
+    showGroups.value = false
+  } else {
+    showGroups.value = true
   }
-}
+}, { immediate: true })
+
+breadcrumbStore.setItems(props.breadcrumbItems)
+breadcrumbStore.setClass('large-font-breadcrumb')
+breadcrumbStore.setDatabase(database.value)
+breadcrumbStore.setTable(props.table)
+
+onBeforeUnmount(() => {
+  breadcrumbStore.setClass('')
+})
 </script>
 
 <style scoped>

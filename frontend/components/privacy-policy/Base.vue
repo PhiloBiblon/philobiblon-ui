@@ -1,51 +1,54 @@
 <template>
   <div class="container">
-    <h2>{{ $i18n.t('privacyPolicy.label') }}</h2>
-    <h3>{{ $i18n.t('privacyPolicy.consent.title') }}</h3>
+    <h2>{{ t('privacyPolicy.label') }}</h2>
+    <h3>{{ t('privacyPolicy.consent.title') }}</h3>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$i18n.t('privacyPolicy.consent.desc')" />
-    <h3>{{ $i18n.t('privacyPolicy.comments.title') }}</h3>
+    <p v-html="t('privacyPolicy.consent.desc')" />
+    <h3>{{ t('privacyPolicy.comments.title') }}</h3>
     <p>
-      <strong>{{ $i18n.t('privacyPolicy.comments.subtitle') }}:</strong>
-      {{ $i18n.t('privacyPolicy.comments.subtitleDesc') }}
+      <strong>{{ t('privacyPolicy.comments.subtitle') }}:</strong>
+      {{ t('privacyPolicy.comments.subtitleDesc') }}
     </p>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$i18n.t('privacyPolicy.comments.desc')" />
+    <p v-html="t('privacyPolicy.comments.desc')" />
     <p>
-      <strong>{{ $i18n.t('privacyPolicy.userAgent.subtitle') }}:</strong>
-      {{ $i18n.t('privacyPolicy.userAgent.subtitleDesc') }}
+      <strong>{{ t('privacyPolicy.userAgent.subtitle') }}:</strong>
+      {{ t('privacyPolicy.userAgent.subtitleDesc') }}
     </p>
     <p>
-      <strong>{{ $i18n.t('privacyPolicy.retentionPeriod.subtitle') }}:</strong>
-      {{ $i18n.t('privacyPolicy.retentionPeriod.subtitleDesc') }}
+      <strong>{{ t('privacyPolicy.retentionPeriod.subtitle') }}:</strong>
+      {{ t('privacyPolicy.retentionPeriod.subtitleDesc') }}
     </p>
-    <h3>{{ $i18n.t('privacyPolicy.legitimateInterest.title') }}</h3>
+    <h3>{{ t('privacyPolicy.legitimateInterest.title') }}</h3>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$i18n.t('privacyPolicy.legitimateInterest.desc')" />
-    <h3>{{ $i18n.t('privacyPolicy.statistics.title') }}</h3>
+    <p v-html="t('privacyPolicy.legitimateInterest.desc')" />
+    <h3>{{ t('privacyPolicy.statistics.title') }}</h3>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$i18n.t('privacyPolicy.statistics.desc')" />
-    <h3>{{ $i18n.t('privacyPolicy.embedContent.title') }}</h3>
+    <p v-html="t('privacyPolicy.statistics.desc')" />
+    <h3>{{ t('privacyPolicy.embedContent.title') }}</h3>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$i18n.t('privacyPolicy.embedContent.desc')" />
-    <h3>{{ $i18n.t('privacyPolicy.rights.title') }}</h3>
+    <p v-html="t('privacyPolicy.embedContent.desc')" />
+    <h3>{{ t('privacyPolicy.rights.title') }}</h3>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$i18n.t('privacyPolicy.rights.desc')" />
+    <p v-html="t('privacyPolicy.rights.desc')" />
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$i18n.t('privacyPolicy.rights.data')" />
+    <p v-html="t('privacyPolicy.rights.data')" />
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    breadcrumbItems: {
-      type: Array,
-      default: null
-    }
-  },
-  mounted () {
-    this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
-  }
-}
+<script setup>
+import { onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBreadcrumbStore } from '~/stores/breadcrumb'
+
+const props = defineProps({
+  breadcrumbItems: { type: Array, default: null }
+})
+
+const { t } = useI18n()
+const breadcrumbStore = useBreadcrumbStore()
+
+onMounted(() => {
+  breadcrumbStore.setItems(props.breadcrumbItems)
+})
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="white" class="over-menu mt-10" padless>
+  <v-footer color="white" class="over-menu mt-10">
     <v-row dense>
       <v-col cols="12" sm="3" class="text-center" align-self="center">
         <span class="text-black text-h4">Philo</span>
@@ -8,25 +8,21 @@
         </a>
       </v-col>
       <v-col cols="12" sm="3">
-        <v-list dense>
-          <v-list-item-group>
-            <v-list-item v-for="(item, index) in links_col_1" :key="index" link @click="goTo(item.link)">
-              <v-list-item-title class="text-subtitle-2">
-                {{ item.label }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-item-group>
+        <v-list density="compact">
+          <v-list-item v-for="(item, index) in links_col_1" :key="index" link @click="goTo(item.link)">
+            <v-list-item-title class="text-subtitle-2">
+              {{ item.label }}
+            </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-col>
       <v-col cols="12" sm="3">
-        <v-list dense>
-          <v-list-item-group>
-            <v-list-item v-for="(item, index) in links_col_2" :key="index" link @click="goTo(item.link)">
-              <v-list-item-title class="text-subtitle-2">
-                {{ item.label }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-item-group>
+        <v-list density="compact">
+          <v-list-item v-for="(item, index) in links_col_2" :key="index" link @click="goTo(item.link)">
+            <v-list-item-title class="text-subtitle-2">
+              {{ item.label }}
+            </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-col>
       <v-col cols="12" sm="3">
@@ -82,18 +78,18 @@
       <v-col class="text-center text-caption">
         &copy; {{ new Date().getFullYear() }}
         <span class="version">
-          v.{{ $config.version }}
+          v.{{ config.version }}
         </span>
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <span v-bind="attrs" v-on="on">
+        <v-tooltip location="top">
+          <template #activator="{ props: tooltipProps }">
+            <span v-bind="tooltipProps">
               <a class="version" @click="goTo('/privacy-policy')">
-                {{ $i18n.t('privacyPolicy.label') }}
+                {{ t('privacyPolicy.label') }}
               </a>
             </span>
           </template>
           <p class="tooltip">
-            {{ $i18n.t('privacyPolicy.tooltip') }}
+            {{ t('privacyPolicy.tooltip') }}
           </p>
         </v-tooltip>
       </v-col>
@@ -101,29 +97,29 @@
   </v-footer>
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      links_col_1: [
-        { label: 'ABOUT PhiloBiblon', link: '/wiki/About' },
-        { label: 'HELP', link: '/wiki/Help' },
-        { label: 'RESOURCES', link: '/wiki/Resources' },
-        { label: 'COLLABORATE', link: '/wiki/Collaborate' }
-      ],
-      links_col_2: [
-        { label: 'BETA', link: '/wiki/Beta' },
-        { label: 'BIPA', link: '/wiki/Bipa' },
-        { label: 'BITAGAP', link: '/wiki/Bitagap' },
-        { label: 'BITECA', link: '/wiki/Biteca' }
-      ]
-    }
-  },
-  methods: {
-    goTo (path) {
-      this.$router.push(this.localePath(path))
-    }
-  }
+<script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+const config = useRuntimeConfig().public
+const router = useRouter()
+const localePath = useLocalePath()
+
+const links_col_1 = [
+  { label: 'ABOUT PhiloBiblon', link: '/wiki/About' },
+  { label: 'HELP', link: '/wiki/Help' },
+  { label: 'RESOURCES', link: '/wiki/Resources' },
+  { label: 'COLLABORATE', link: '/wiki/Collaborate' }
+]
+const links_col_2 = [
+  { label: 'BETA', link: '/wiki/Beta' },
+  { label: 'BIPA', link: '/wiki/Bipa' },
+  { label: 'BITAGAP', link: '/wiki/Bitagap' },
+  { label: 'BITECA', link: '/wiki/Biteca' }
+]
+
+function goTo (path) {
+  router.push(localePath(path))
 }
 </script>
 
