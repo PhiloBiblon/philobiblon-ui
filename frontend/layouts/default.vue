@@ -116,7 +116,7 @@
     <v-main class="min-height-full-display">
       <v-container fluid ma-50>
         <v-breadcrumbs :items="$store.state.breadcrumb.items" :class="$store.state.breadcrumb.class" />
-        <nuxt />
+        <slot />
       </v-container>
     </v-main>
     <philo-footer />
@@ -164,7 +164,7 @@ export default {
     this.$wikibase.$oauth.autoLoginByCookie()
     window.addEventListener('keydown', this.keyDownHandler)
   },
-  destroyed () {
+  unmounted () {
     window.removeEventListener('keydown', this.keyDownHandler)
   },
   methods: {
