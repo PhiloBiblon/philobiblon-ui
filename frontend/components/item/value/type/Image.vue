@@ -12,73 +12,57 @@
       :save="editValue"
       :delete="deleteValue"
       :mode="mode"
-      @on-blur="$emit('on-blur', $event)"
-      @new-value="$emit('new-value', $event)"
+      @on-blur="emit('on-blur', $event)"
+      @new-value="emit('new-value', $event)"
     />
   </div>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    valueToView: {
-      type: Object,
-      default: null
-    },
-    save: {
-      type: Function,
-      default: null
-    },
-    delete: {
-      type: Function,
-      default: null
-    },
-    mode: {
-      type: String,
-      default: 'edit'
-    }
-  },
-  data () {
-    return {
-      consolidatedUrl: null
-    }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    }
-  },
-  mounted () {
-    this.consolidatedUrl = this.getFileNameFromURL(this.valueToView.url)
-  },
-  methods: {
-    editValue (newValue, oldValue) {
-      return this.save(this.getWikiBaseImageValue(newValue, oldValue))
-        .then((result) => {
-          return result
-        })
-        .catch((error) => {
-          this.$notification.error(error)
-        })
-    },
-    getWikiBaseImageValue (newValue, oldValue) {
-      return {
-        validation: {
-          valid: true
-        },
-        values: {
-          newValue,
-          oldValue
-        }
-      }
-    },
-    getFileNameFromURL (url) {
-      return url.substring(url.lastIndexOf('/') + 1)
-    },
-    deleteValue () {
-      return this.delete()
-    }
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useAuthStore } from '~/stores/auth'
+
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps({
+  valueToView: { type: Object, default: null },
+  save: { type: Function, default: null },
+  delete: { type: Function, default: null },
+  mode: { type: String, default: 'edit' }
+})
+
+const emit = defineEmits(['on-blur', 'new-value'])
+
+const { $notification } = useNuxtApp()
+const authStore = useAuthStore()
+
+const consolidatedUrl = ref(null)
+const isUserLogged = computed(() => authStore.isLogged)
+
+onMounted(() => {
+  consolidatedUrl.value = getFileNameFromURL(props.valueToView.url)
+})
+
+function editValue (newValue, oldValue) {
+  return props.save(getWikiBaseImageValue(newValue, oldValue))
+    .then(result => result)
+    .catch((error) => {
+      $notification.error(error)
+    })
+}
+
+function getWikiBaseImageValue (newValue, oldValue) {
+  return {
+    validation: { valid: true },
+    values: { newValue, oldValue }
   }
+}
+
+function getFileNameFromURL (url) {
+  return url.substring(url.lastIndexOf('/') + 1)
+}
+
+function deleteValue () {
+  return props.delete()
 }
 </script>

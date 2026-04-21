@@ -1,35 +1,36 @@
 <template>
   <v-autocomplete
-    v-bind="{ ...$attrs, ...commonAttrs }"
     v-model="internalValue"
+    v-model:search="search"
+    density="compact"
+    v-bind="$attrs"
     :loading="loadingItems"
     :disabled="isDisabled"
     :no-data-text="checkNoDataText"
     :items="items"
-    :search-input.sync="search"
     :filter="acceptAll"
     hide-select
-    v-on="$listeners"
   >
-    <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
-      <slot :name="scopedSlotName" v-bind="slotData" />
+    <template v-for="(_, slotName) in $slots" #[slotName]="slotData">
+      <slot :name="slotName" v-bind="slotData || {}" />
     </template>
-    <template v-for="(_, slotName) in $slots" #[slotName]>
-      <slot :name="slotName" />
-    </template>
-    <template #item="data">
-      <v-list-item-content>
-        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
-        <v-list-item-title v-html="data.item.text" />
-        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
-        <v-list-item-subtitle class="my-item-subtitle" v-html="data.item.value.desc" />
-      </v-list-item-content>
+    <template #item="{ props: itemProps, item }">
+      <v-list-item v-bind="itemProps">
+        <template #title>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <span v-html="item.raw.text" />
+        </template>
+        <template #subtitle>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <span class="my-item-subtitle" v-html="item.raw.value.desc" />
+        </template>
+      </v-list-item>
     </template>
     <template #message="{ message }">
-      <v-tooltip max-width="40%" bottom open-delay="200">
-        <template #activator="{ on }">
+      <v-tooltip max-width="40%" location="bottom" open-delay="200">
+        <template #activator="{ props: tooltipProps }">
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <span v-on="on" v-html="message && message.length &lt; hintMaxWidth ? $sanitize(message) : $sanitize(message).substring(0, hintMaxWidth) + '...'" />
+          <span v-bind="tooltipProps" v-html="message && message.length < hintMaxWidth ? $sanitize(message) : $sanitize(message).substring(0, hintMaxWidth) + '...'" />
         </template>
         <!-- eslint-disable-next-line vue/no-v-html -->
         <span v-html="$sanitize(message)" />
@@ -38,148 +39,122 @@
   </v-autocomplete>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    value: {
-      type: [String, Object],
-      default: null
-    },
-    table: {
-      type: String,
-      required: true
-    },
-    database: {
-      type: String,
-      required: true
-    },
-    bitagapGroup: {
-      type: String,
-      required: true
-    },
-    autocomplete: {
-      type: Object,
-      default: null
-    },
-    hintMaxWidth: {
-      type: Number,
-      default: 50
-    },
-    disabled: {
-      type: Boolean
-    }
-  },
-  data () {
-    return {
-      internalValue: null,
-      items: [],
-      loadingItems: false,
-      search: null,
-      searchTimeout: null,
-      allowFreeText: false
-    }
-  },
-  computed: {
-    commonAttrs () {
-      return {
-        dense: true
+<script setup>
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps({
+  value: { type: [String, Object], default: null },
+  table: { type: String, required: true },
+  database: { type: String, required: true },
+  bitagapGroup: { type: String, required: true },
+  autocomplete: { type: Object, default: null },
+  hintMaxWidth: { type: Number, default: 50 },
+  disabled: { type: Boolean, default: false }
+})
+
+const emit = defineEmits(['reset-value'])
+
+const { $notification, $sanitize, $wikibase } = useNuxtApp()
+const { t, locale } = useI18n()
+const config = useRuntimeConfig().public
+
+const internalValue = ref(null)
+const items = ref([])
+const loadingItems = ref(false)
+const search = ref(null)
+const allowFreeText = ref(false)
+let searchTimeout = null
+
+const checkNoDataText = computed(() => loadingItems.value ? t('common.loading') : t('common.no_data'))
+const isDisabled = computed(() => props.disabled)
+
+if (props.value instanceof Object && Object.keys(props.value).length !== 0) {
+  internalValue.value = props.value
+  items.value = [{ text: props.value.label, value: props.value }]
+}
+allowFreeText.value = props.autocomplete?.allowFreeText
+
+watch(() => props.value, (val) => {
+  if (allowFreeText.value) {
+    const regex = new RegExp(`${t('search.form.common.find_text')} "(.*?)"`)
+    const match = val?.label?.match(regex)
+    if (match && match[1]) {
+      val.label = match[1]
+      if (items.value[0]) {
+        items.value[0].text = val.label
       }
-    },
-    checkNoDataText () {
-      return this.loadingItems ? this.$t('common.loading') : this.$t('common.no_data')
-    },
-    isDisabled () {
-      return this.disabled
-    }
-  },
-  watch: {
-    value (val) {
-      if (this.allowFreeText) {
-        const regex = new RegExp(`${this.$t('search.form.common.find_text')} "(.*?)"`)
-        const match = val?.label?.match(regex)
-        if (match && match[1]) {
-          val.label = match[1]
-          this.items[0].text = val.label
-        }
-      }
-      this.internalValue = val
-      this.search = val ? val?.label : ''
-    },
-    internalValue (val) {
-      this.$emit('reset-value', val)
-    },
-    search (val) {
-      if (!val) {
-        this.items = []
-        return
-      }
-      if (this.value && val === this.value.label) {
-        return
-      }
-      this.loadingItems = true
-      clearTimeout(this.searchTimeout)
-      // Delay to avoid continuous requests when user is writing
-      this.searchTimeout = setTimeout(() => {
-        this.fetchItems(val)
-      }, 500)
-    },
-    database (val) {
-      this.items = []
-    }
-  },
-  created () {
-    if (this.value instanceof Object && Object.keys(this.value).length !== 0) {
-      this.internalValue = this.value
-      this.items = [{ text: this.value.label, value: this.value }]
-    }
-    this.allowFreeText = this.autocomplete.allowFreeText
-  },
-  methods: {
-    fetchItems (query) {
-      const sparqlQuery = this.$wikibase.$query.filterQuery(this.autocomplete.query, this.database, this.bitagapGroup, this.table, this.$i18n.locale)
-      if (process.env.debug) {
-        // eslint-disable-next-line no-console
-        console.log(`run sparlql query:\n${sparqlQuery}`)
-      }
-      const body = `q=${encodeURIComponent(query)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
-      const options = {
-        method: 'POST',
-        body,
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }
-      fetch(`${this.$config.apiBaseUrl}/api/search`, options)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Error from the cache server')
-          }
-          return response.json()
-        })
-        .then((data) => {
-          if (this.allowFreeText) {
-            const findTextLabel = `${this.$t('search.form.common.find_text')} "${query}"`
-            data.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
-          }
-          this.items = data
-          this.loadingItems = false
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error('Error loading items:', error)
-          this.$notification.error(error)
-          this.loadingItems = false
-        })
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered in the backend
-      return true
     }
   }
+  internalValue.value = val
+  search.value = val ? val?.label : ''
+})
+
+watch(internalValue, (val) => {
+  emit('reset-value', val)
+})
+
+watch(search, (val) => {
+  if (!val) {
+    items.value = []
+    return
+  }
+  if (props.value && val === props.value.label) {
+    return
+  }
+  loadingItems.value = true
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    fetchItems(val)
+  }, 500)
+})
+
+watch(() => props.database, () => {
+  items.value = []
+})
+
+function fetchItems (query) {
+  const sparqlQuery = $wikibase.$query.filterQuery(props.autocomplete.query, props.database, props.bitagapGroup, props.table, locale.value)
+  if (process.env.debug) {
+    console.log(`run sparlql query:\n${sparqlQuery}`)
+  }
+  const body = `q=${encodeURIComponent(query)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
+  const options = {
+    method: 'POST',
+    body,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  }
+  fetch(`${config.apiBaseUrl}/api/search`, options)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error from the cache server')
+      }
+      return response.json()
+    })
+    .then((data) => {
+      if (allowFreeText.value) {
+        const findTextLabel = `${t('search.form.common.find_text')} "${query}"`
+        data.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
+      }
+      items.value = data
+      loadingItems.value = false
+    })
+    .catch((error) => {
+      console.error('Error loading items:', error)
+      $notification.error(error)
+      loadingItems.value = false
+    })
+}
+
+function acceptAll () {
+  return true
 }
 </script>
 
 <style scoped>
-.v-list--dense .v-list-item .v-list-item__subtitle.my-item-subtitle {
+.my-item-subtitle {
   font-weight: normal;
   font-size: 0.8rem;
   color: #666;

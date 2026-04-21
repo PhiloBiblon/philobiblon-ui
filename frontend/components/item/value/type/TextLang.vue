@@ -14,17 +14,17 @@
               :delete="deleteValue"
               :mode="mode"
               @new-value="newTextValue"
-              @on-blur="$emit('on-blur', $event)"
+              @on-blur="emit('on-blur', $event)"
             />
             <v-select
               v-model="valueToView_.language"
-              item-text="title"
+              item-title="title"
               item-value="value"
               :items="languages"
-              :label="$t('common.language')"
+              :label="t('common.language')"
               class="ma-0 pa-0"
               style="width: 100px"
-              @change="onChangeLanguage"
+              @update:model-value="onChangeLanguage"
             />
           </v-col>
         </v-row>
@@ -33,128 +33,97 @@
   </div>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    label: {
-      type: String,
-      default: null
-    },
-    valueToView: {
-      type: Object,
-      default: null
-    },
-    save: {
-      type: Function,
-      default: null
-    },
-    delete: {
-      type: Function,
-      default: null
-    },
-    mode: {
-      type: String,
-      default: 'edit'
-    }
-  },
-  data () {
-    return {
-      valueToView_: { ...this.valueToView },
-      consolidatedLanguage: this.valueToView.language,
-      languages: [
-        {
-          title: 'English',
-          value: 'en'
-        },
-        {
-          title: 'Español',
-          value: 'es'
-        },
-        {
-          title: 'Português',
-          value: 'pt'
-        },
-        {
-          title: 'Català',
-          value: 'ca'
-        },
-        {
-          title: 'Galego',
-          value: 'gl'
-        },
-        {
-          title: '-',
-          value: 'und'
+<script setup>
+import { computed, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
+
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps({
+  label: { type: String, default: null },
+  valueToView: { type: Object, default: null },
+  save: { type: Function, default: null },
+  delete: { type: Function, default: null },
+  mode: { type: String, default: 'edit' }
+})
+
+const emit = defineEmits(['on-blur', 'new-value'])
+
+const { $notification } = useNuxtApp()
+const { t } = useI18n()
+const authStore = useAuthStore()
+
+const valueToView_ = reactive({ ...props.valueToView })
+const consolidatedLanguage = ref(props.valueToView.language)
+const languages = [
+  { title: 'English', value: 'en' },
+  { title: 'Español', value: 'es' },
+  { title: 'Português', value: 'pt' },
+  { title: 'Català', value: 'ca' },
+  { title: 'Galego', value: 'gl' },
+  { title: '-', value: 'und' }
+]
+
+const isUserLogged = computed(() => authStore.isLogged)
+const isEditable = computed(() => props.mode === 'edit')
+
+function newTextValue (value) {
+  valueToView_.value = value
+  emit('new-value', getMonolingualTextNewValue(valueToView_.value))
+}
+
+function onChangeLanguage () {
+  if (isEditable.value) {
+    props.save(getMonolingualTextValue(valueToView_.value, valueToView_.value))
+      .then((response) => {
+        if (response) {
+          if (!response.success) {
+            throw new Error(response.info)
+          }
+          consolidatedLanguage.value = valueToView_.language
+          $notification.success(t('messages.success.updated'))
         }
-      ]
-    }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    },
-    isEditable () {
-      return this.mode === 'edit'
-    }
-  },
-  methods: {
-    newTextValue (value) {
-      this.valueToView_.value = value
-      this.$emit('new-value', this.getMonolingualTextNewValue(this.valueToView_.value))
-    },
-    onChangeLanguage (_newLanguage) {
-      if (this.isEditable) {
-        // We are only changing the language, so the old and new values (text) are the same.
-        this.save(this.getMonolingualTextValue(this.valueToView_.value, this.valueToView_.value))
-          .then((response) => {
-            if (response) {
-              if (!response.success) {
-                throw new Error(response.info)
-              }
-              this.consolidatedLanguage = this.valueToView_.language
-              this.$notification.success(this.$i18n.t('messages.success.updated'))
-            }
-          })
-      }
-      this.$emit('new-value', this.getMonolingualTextNewValue(this.valueToView_.value))
-    },
-    editValue (newValue, oldValue) {
-      this.valueToView_.value = newValue
-      return this.save(this.getMonolingualTextValue(newValue, oldValue))
-    },
-    getMonolingualTextValue (newValue, oldValue) {
-      return {
-        validation: {
-          valid: true
-        },
-        values: {
-          oldValue: {
-            text: oldValue,
-            language: this.consolidatedLanguage
-          },
-          newValue: this.getMonolingualTextNewValue(newValue)
-        }
-      }
-    },
-    getMonolingualTextNewValue (value) {
-      return {
-        text: value,
-        language: this.valueToView_.language
-      }
-    },
-    deleteValue () {
-      return this.delete()
+      })
+  }
+  emit('new-value', getMonolingualTextNewValue(valueToView_.value))
+}
+
+function editValue (newValue, oldValue) {
+  valueToView_.value = newValue
+  return props.save(getMonolingualTextValue(newValue, oldValue))
+}
+
+function getMonolingualTextValue (newValue, oldValue) {
+  return {
+    validation: { valid: true },
+    values: {
+      oldValue: {
+        text: oldValue,
+        language: consolidatedLanguage.value
+      },
+      newValue: getMonolingualTextNewValue(newValue)
     }
   }
+}
+
+function getMonolingualTextNewValue (value) {
+  return {
+    text: value,
+    language: valueToView_.language
+  }
+}
+
+function deleteValue () {
+  return props.delete()
 }
 </script>
 
 <style scoped>
-::v-deep .v-list-item__title {
+:deep(.v-list-item__title) {
   font-size: 12px;
 }
-::v-deep .v-select__selection {
+:deep(.v-select__selection) {
   font-size: 12px;
 }
 </style>

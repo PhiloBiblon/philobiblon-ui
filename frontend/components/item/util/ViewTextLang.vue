@@ -20,35 +20,32 @@
       <!-- eslint-disable-next-line vue/no-v-html -->
       <span :title="tooltip" v-html="contentView" />
     </template>
-    <sup v-if="value.showLanguage || (value.language && value.language != $i18n.locale)">{{ value.language }}</sup>
+    <sup v-if="value.showLanguage || (value.language && value.language != locale)">{{ value.language }}</sup>
   </span>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    value: {
-      type: Object,
-      default: null
-    },
-    tooltip: {
-      type: String,
-      default: null
-    }
-  },
-  computed: {
-    contentView () {
-      return this.$sanitize(this.value.value)
-    }
-  },
-  methods: {
-    getUrlFromPBID (item) {
-      return this.localePath('/item/' + item)
-    },
-    getUrlForWikibase (item) {
-      return this.$wikibase.getQItemUrl(item)
-    }
-  }
+<script setup>
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps({
+  value: { type: Object, default: null },
+  tooltip: { type: String, default: null }
+})
+
+const { $sanitize, $wikibase } = useNuxtApp()
+const { locale } = useI18n()
+const localePath = useLocalePath()
+
+const contentView = computed(() => $sanitize(props.value.value))
+
+function getUrlFromPBID (item) {
+  return localePath('/item/' + item)
+}
+
+function getUrlForWikibase (item) {
+  return $wikibase.getQItemUrl(item)
 }
 </script>

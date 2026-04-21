@@ -3,182 +3,159 @@
     ref="myTextField"
     v-model="currentText"
     :type="type"
-    v-bind="{ ...$attrs, ...commonAttrs }"
-    v-on="$listeners"
+    density="compact"
+    v-bind="$attrs"
     @blur="blur"
     @focus="focus"
-    @input="handleInput"
+    @update:model-value="handleInput"
   >
-    <template v-for="(_, scopedSlotName) in $scopedSlots" #[scopedSlotName]="slotData">
-      <slot :name="scopedSlotName" v-bind="slotData" />
-    </template>
-    <template v-for="(_, slotName) in $slots" #[slotName]>
-      <slot :name="slotName" />
+    <template v-for="(_, slotName) in $slots" #[slotName]="slotData">
+      <slot :name="slotName" v-bind="slotData || {}" />
     </template>
     <template #append>
       <v-btn
         v-if="focussed && isEditable"
-        text
+        variant="text"
         icon
         @click.stop="edit"
       >
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-icon v-bind="attrs" v-on="on">
+        <v-tooltip location="top">
+          <template #activator="{ props: btnProps }">
+            <v-icon v-bind="btnProps">
               mdi-check
             </v-icon>
           </template>
-          <span>{{ $t("common.save") }}</span>
+          <span>{{ t("common.save") }}</span>
         </v-tooltip>
       </v-btn>
       <v-btn
         v-if="focussed"
-        text
+        variant="text"
         icon
         @click.stop="restore"
       >
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-icon v-bind="attrs" v-on="on">
+        <v-tooltip location="top">
+          <template #activator="{ props: btnProps }">
+            <v-icon v-bind="btnProps">
               mdi-close
             </v-icon>
           </template>
-          <span>{{ $t("common.cancel") }}</span>
+          <span>{{ t("common.cancel") }}</span>
         </v-tooltip>
       </v-btn>
       <v-btn
         v-if="focussed && isEditable"
-        text
+        variant="text"
         icon
         @click.stop="deleteValue"
       >
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-icon v-bind="attrs" v-on="on">
+        <v-tooltip location="top">
+          <template #activator="{ props: btnProps }">
+            <v-icon v-bind="btnProps">
               mdi-trash-can
             </v-icon>
           </template>
-          <span>{{ $t("common.remove") }}</span>
+          <span>{{ t("common.remove") }}</span>
         </v-tooltip>
       </v-btn>
     </template>
   </v-text-field>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    value: {
-      type: String,
-      default: null
-    },
-    type: {
-      type: String,
-      default: 'text'
-    },
-    save: {
-      type: Function,
-      default: null
-    },
-    delete: {
-      type: Function,
-      default: null
-    },
-    mode: {
-      type: String,
-      default: 'edit'
-    }
-  },
-  data () {
-    return {
-      currentText: null,
-      consolidatedText: null,
-      focussed: false
-    }
-  },
-  computed: {
-    commonAttrs () {
-      return {
-        dense: true
-      }
-    },
-    isEditable () {
-      return this.mode === 'edit'
-    }
-  },
-  mounted () {
-    this.currentText = this.value
-    this.consolidatedText = this.value
-  },
-  methods: {
-    blur () {
-      this.focussed = false
-      if (this.isEditable) {
-        this.restore()
-      }
-      this.$emit('on-blur', this.currentText)
-    },
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-    focus () {
-      this.focussed = true
-    },
+defineOptions({ inheritAttrs: false })
 
-    handleInput (value) {
-      this.$emit('new-value', this.currentText)
-    },
+const props = defineProps({
+  value: { type: String, default: null },
+  type: { type: String, default: 'text' },
+  save: { type: Function, default: null },
+  delete: { type: Function, default: null },
+  mode: { type: String, default: 'edit' }
+})
 
-    async edit () {
-      if (this.isEditable) {
-        await this.save(this.currentText, this.consolidatedText)
-          .then((response) => {
-            if (response) {
-              if (!response.success) {
-                throw new Error(response.info)
-              }
-              this.consolidatedText = this.currentText
-              this.$notification.success(this.$i18n.t('messages.success.updated'))
-            }
-          })
-          .catch((error) => {
-            // workaround to avoid weird error if the session is expired
-            // the first time that we want edit the wikibase
-            if (error.message === 'query is undefined') {
-              error = this.$i18n.t('messages.error.session.expired')
-            }
+const emit = defineEmits(['on-blur', 'new-value'])
 
-            if (error.message.includes('modification-failed')) {
-              error = this.$i18n.t('messages.error.modification.failed')
-            }
+const { $notification } = useNuxtApp()
+const { t } = useI18n()
 
-            this.$notification.error(error)
-          })
-      }
-      this.$refs.myTextField?.blur()
-    },
+const myTextField = ref(null)
+const currentText = ref(null)
+const consolidatedText = ref(null)
+const focussed = ref(false)
 
-    restore () {
-      this.currentText = this.consolidatedText
-      this.$emit('new-value', this.currentText)
-    },
+const isEditable = computed(() => props.mode === 'edit')
 
-    async deleteValue () {
-      await this.delete()
-        .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
-            }
-            this.$notification.success('Successfully deleted')
-          }
-        })
-        .catch((error) => {
-          if (error.message === 'query is undefined') {
-            error = 'Error: Session expired.'
-          }
-          this.$notification.error(error)
-        })
-    }
+onMounted(() => {
+  currentText.value = props.value
+  consolidatedText.value = props.value
+})
+
+function blur () {
+  focussed.value = false
+  if (isEditable.value) {
+    restore()
   }
+  emit('on-blur', currentText.value)
+}
+
+function focus () {
+  focussed.value = true
+}
+
+function handleInput () {
+  emit('new-value', currentText.value)
+}
+
+async function edit () {
+  if (isEditable.value) {
+    await props.save(currentText.value, consolidatedText.value)
+      .then((response) => {
+        if (response) {
+          if (!response.success) {
+            throw new Error(response.info)
+          }
+          consolidatedText.value = currentText.value
+          $notification.success(t('messages.success.updated'))
+        }
+      })
+      .catch((error) => {
+        if (error.message === 'query is undefined') {
+          error = t('messages.error.session.expired')
+        }
+
+        if (error.message.includes('modification-failed')) {
+          error = t('messages.error.modification.failed')
+        }
+
+        $notification.error(error)
+      })
+  }
+  myTextField.value?.blur?.()
+}
+
+function restore () {
+  currentText.value = consolidatedText.value
+  emit('new-value', currentText.value)
+}
+
+async function deleteValue () {
+  await props.delete()
+    .then((response) => {
+      if (response) {
+        if (!response.success) {
+          throw new Error(response.info)
+        }
+        $notification.success('Successfully deleted')
+      }
+    })
+    .catch((error) => {
+      if (error.message === 'query is undefined') {
+        error = 'Error: Session expired.'
+      }
+      $notification.error(error)
+    })
 }
 </script>

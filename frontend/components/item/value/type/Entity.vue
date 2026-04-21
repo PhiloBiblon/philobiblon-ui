@@ -12,8 +12,8 @@
         :options="options"
         :delete="deleteValue"
         :mode="mode"
-        @on-blur="$emit('on-blur', $event)"
-        @new-value="$emit('new-value', $event)"
+        @on-blur="emit('on-blur', $event)"
+        @new-value="emit('new-value', $event)"
       />
       <item-util-edit-select-field
         v-else
@@ -25,143 +25,134 @@
         :filter="acceptAll"
         @update-options="options = $event"
         @input="oninput($event)"
-        @on-blur="$emit('on-blur', $event)"
-        @new-value="$emit('new-value', $event)"
+        @on-blur="emit('on-blur', $event)"
+        @new-value="emit('new-value', $event)"
       />
     </template>
   </div>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    label: {
-      type: String,
-      default: null
-    },
-    valueToView: {
-      type: Object,
-      default: null
-    },
-    save: {
-      type: Function,
-      default: null
-    },
-    delete: {
-      type: Function,
-      default: null
-    },
-    mode: {
-      type: String,
-      default: 'edit'
-    }
-  },
-  data () {
-    return {
-      selectedOption: null,
-      options: [],
-      valueToView_: { ...this.valueToView },
-      property_autocomplete: {},
-      loading: true
-    }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    },
-    isItemWithCustomOptions () {
-      return this.property_autocomplete && this.valueToView.property in this.property_autocomplete
-    },
-    isEditable () {
-      return this.mode === 'edit'
-    }
-  },
-  async created () {
-    if (this.isUserLogged) {
-      this.property_autocomplete = await this.$wikibase.getControlledVocabularyConfig(this.$store.state.breadcrumb.table, this.$store.state.breadcrumb.database)
-      this.setOptionsAutocomplete()
-    }
-    this.loading = false
-  },
-  methods: {
-    editValue (newValue, oldValue) {
-      return this.save(this.getWikiBaseEntityIdValue(newValue, oldValue))
-    },
-    deleteValue () {
-      return this.delete()
-    },
-    getWikiBaseEntityIdValue (newValue, oldValue) {
-      return {
-        validation: {
-          valid: true
-        },
-        values: {
-          newValue: newValue.id,
-          oldValue: oldValue.id
-        }
-      }
-    },
-    oninput (e) {
-      if (e) { this.handleSearchChange(e) }
-    },
-    async handleSearchChange (value) {
-      if (value) {
-        const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale)
-        if (search && search.length) { this.options = search }
-      }
-    },
-    buildFullQuery (sparqlQuery) {
-      return this.$wikibase.$query.addPrefixes(`
-        SELECT ?item ?itemLabel ?itemDescription 
-          (CONCAT(?itemLabel, IF(BOUND(?pbid), CONCAT(" [", ?pbid, "]"), ""), " (", ?qid, ")") AS ?extendedLabel) 
-        WHERE {
-          {
-            ${sparqlQuery}
-          }
-          OPTIONAL { ?item wdt:P476 ?pbid }
-          BIND(STRAFTER(STR(?item), "${this.$config.wikibaseBaseUrl}/entity/") AS ?qid)
-          SERVICE wikibase:label { bd:serviceParam wikibase:language "${this.$i18n.locale},en". }
-        }
-      `)
-    },
-    getDefaultValue (currentValue, defaultValue) {
-      if (currentValue) {
-        return currentValue
-      } else if (defaultValue) {
-        this.$emit('new-value', defaultValue)
-        return defaultValue
-      } else {
-        return null
-      }
-    },
-    setOptionsAutocomplete () {
-      if (this.isItemWithCustomOptions) {
-        const autocomplete = this.property_autocomplete[this.valueToView.property]
-        const fullSparqlQuery = this.buildFullQuery(autocomplete.query)
-        this.$wikibase.runSparqlQuery(fullSparqlQuery, true)
-          .then((results) => {
-            Object.entries(results).forEach(
-              ([_, result]) => {
-                this.options.push({
-                  id: result.item.value,
-                  label: result.item.label
-                })
-              })
-            this.selectedOption = this.getDefaultValue(this.valueToView.item, autocomplete.default_value)
-          })
-      } else {
-        this.options = [{
-          id: this.valueToView.item,
-          label: this.valueToView.value
-        }]
-        this.selectedOption = this.getDefaultValue(this.valueToView.item, null)
-      }
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered
-      return true
-    }
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
+import { useBreadcrumbStore } from '~/stores/breadcrumb'
+
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps({
+  label: { type: String, default: null },
+  valueToView: { type: Object, default: null },
+  save: { type: Function, default: null },
+  delete: { type: Function, default: null },
+  mode: { type: String, default: 'edit' }
+})
+
+const emit = defineEmits(['on-blur', 'new-value'])
+
+const { $wikibase } = useNuxtApp()
+const { locale } = useI18n()
+const config = useRuntimeConfig().public
+const authStore = useAuthStore()
+const breadcrumbStore = useBreadcrumbStore()
+
+const selectedOption = ref(null)
+const options = ref([])
+const propertyAutocomplete = ref({})
+const loading = ref(true)
+
+const isUserLogged = computed(() => authStore.isLogged)
+const isItemWithCustomOptions = computed(
+  () => propertyAutocomplete.value && props.valueToView.property in propertyAutocomplete.value
+)
+
+onMounted(async () => {
+  if (isUserLogged.value) {
+    propertyAutocomplete.value = await $wikibase.getControlledVocabularyConfig(
+      breadcrumbStore.table,
+      breadcrumbStore.database
+    )
+    setOptionsAutocomplete()
   }
+  loading.value = false
+})
+
+function editValue (newValue, oldValue) {
+  return props.save(getWikiBaseEntityIdValue(newValue, oldValue))
+}
+
+function deleteValue () {
+  return props.delete()
+}
+
+function getWikiBaseEntityIdValue (newValue, oldValue) {
+  return {
+    validation: { valid: true },
+    values: { newValue: newValue.id, oldValue: oldValue.id }
+  }
+}
+
+function oninput (e) {
+  if (e) { handleSearchChange(e) }
+}
+
+async function handleSearchChange (value) {
+  if (value) {
+    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
+    if (search && search.length) { options.value = search }
+  }
+}
+
+function buildFullQuery (sparqlQuery) {
+  return $wikibase.$query.addPrefixes(`
+    SELECT ?item ?itemLabel ?itemDescription
+      (CONCAT(?itemLabel, IF(BOUND(?pbid), CONCAT(" [", ?pbid, "]"), ""), " (", ?qid, ")") AS ?extendedLabel)
+    WHERE {
+      {
+        ${sparqlQuery}
+      }
+      OPTIONAL { ?item wdt:P476 ?pbid }
+      BIND(STRAFTER(STR(?item), "${config.wikibaseBaseUrl}/entity/") AS ?qid)
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "${locale.value},en". }
+    }
+  `)
+}
+
+function getDefaultValue (currentValue, defaultValue) {
+  if (currentValue) {
+    return currentValue
+  } else if (defaultValue) {
+    emit('new-value', defaultValue)
+    return defaultValue
+  } else {
+    return null
+  }
+}
+
+function setOptionsAutocomplete () {
+  if (isItemWithCustomOptions.value) {
+    const autocomplete = propertyAutocomplete.value[props.valueToView.property]
+    const fullSparqlQuery = buildFullQuery(autocomplete.query)
+    $wikibase.runSparqlQuery(fullSparqlQuery, true)
+      .then((results) => {
+        Object.entries(results).forEach(([_, result]) => {
+          options.value.push({
+            id: result.item.value,
+            label: result.item.label
+          })
+        })
+        selectedOption.value = getDefaultValue(props.valueToView.item, autocomplete.default_value)
+      })
+  } else {
+    options.value = [{
+      id: props.valueToView.item,
+      label: props.valueToView.value
+    }]
+    selectedOption.value = getDefaultValue(props.valueToView.item, null)
+  }
+}
+
+function acceptAll () {
+  return true
 }
 </script>

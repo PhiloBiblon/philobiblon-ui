@@ -13,9 +13,3 @@
     </g>
   </svg>
 </template>
-
-<script>
-export default {
-  name: "FbIcon"
-}
-</script>

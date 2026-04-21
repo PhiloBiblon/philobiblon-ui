@@ -1,16 +1,15 @@
 <template>
   <v-tooltip
-    right
+    location="right"
     open-delay="200"
   >
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props: btnProps }">
       <v-btn
         icon
-        x-small
-        v-bind="attrs"
-        v-on="on"
+        size="x-small"
+        v-bind="btnProps"
       >
-        <v-icon x-small>
+        <v-icon size="x-small">
           mdi-help-circle-outline
         </v-icon>
       </v-btn>
@@ -19,21 +18,10 @@
   </v-tooltip>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    text: {
-      type: String,
-      default: 'TODO'
-    }
-  },
-  computed: {
-    commonAttrs () {
-      return {
-        dense: true
-      }
-    }
-  }
-}
+<script setup>
+defineOptions({ inheritAttrs: false })
+
+defineProps({
+  text: { type: String, default: 'TODO' }
+})
 </script>

@@ -18,11 +18,11 @@
             />
             <v-select
               v-model="valueToView_.calendar"
-              :label="$t('common.calendar')"
+              :label="t('common.calendar')"
               :items="['Gregorian', 'Julian']"
               class="ma-0 pa-0"
               style="width: 100px"
-              @change="onChangeCalendarType"
+              @update:model-value="onChangeCalendarType"
             />
           </v-col>
         </v-row>
@@ -31,102 +31,93 @@
   </div>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    valueToView: {
-      type: Object,
-      default: null
-    },
-    save: {
-      type: Function,
-      default: null
-    },
-    delete: {
-      type: Function,
-      default: null
-    },
-    mode: {
-      type: String,
-      default: 'edit'
-    }
-  },
-  data () {
-    return {
-      valueToView_: { ...this.valueToView }
-    }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    },
-    isEditable () {
-      return this.mode === 'edit'
-    }
-  },
-  methods: {
-    newDateValue (value) {
-      this.valueToView_.value = value
-      this.$emit('new-value', this.getTimeNewValue(this.valueToView_.value))
-      this.$emit('on-blur', this.getTimeNewValue(this.valueToView_.value))
-    },
-    onChangeCalendarType (newCalendar) {
-      this.valueToView_.calendar = newCalendar
-      if (this.isEditable) {
-        this.save(this.getTimeValue(this.valueToView_.value, this.valueToView_.value))
-          .then((response) => {
-            if (response) {
-              if (!response.success) {
-                throw new Error(response.info)
-              }
-              this.$notification.success(this.$i18n.t('messages.success.updated'))
-            }
-          })
-      }
-      this.$emit('new-value', this.getTimeNewValue(this.valueToView_.value))
-    },
-    editValue (newValue, oldValue) {
-      this.valueToView_.value = newValue
-      return this.save(this.getTimeValue(newValue, oldValue))
-    },
-    deleteValue () {
-      return this.delete()
-    },
-    getTimeValue (newValue, oldValue) {
-      return {
-        validation: {
-          valid: true
-        },
-        values: {
-          oldValue,
-          newValue: this.getTimeNewValue(newValue)
-        }
-      }
-    },
-    getTimeNewValue (value) {
-      return {
-        time: this.formatDate(value),
-        calendar: this.valueToView_.calendar.toLowerCase()
-      }
-    },
-    formatDate (dateString) {
-      const date = new Date(dateString)
-      const isoYear = date.getUTCFullYear()
-      const isoMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2)
-      const isoDay = ('0' + date.getUTCDate()).slice(-2)
+<script setup>
+import { computed, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
 
-      return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps({
+  valueToView: { type: Object, default: null },
+  save: { type: Function, default: null },
+  delete: { type: Function, default: null },
+  mode: { type: String, default: 'edit' }
+})
+
+const emit = defineEmits(['on-blur', 'new-value'])
+
+const { $notification } = useNuxtApp()
+const { t } = useI18n()
+const authStore = useAuthStore()
+
+const valueToView_ = reactive({ ...props.valueToView })
+const isUserLogged = computed(() => authStore.isLogged)
+const isEditable = computed(() => props.mode === 'edit')
+
+function newDateValue (value) {
+  valueToView_.value = value
+  emit('new-value', getTimeNewValue(valueToView_.value))
+  emit('on-blur', getTimeNewValue(valueToView_.value))
+}
+
+function onChangeCalendarType (newCalendar) {
+  valueToView_.calendar = newCalendar
+  if (isEditable.value) {
+    props.save(getTimeValue(valueToView_.value, valueToView_.value))
+      .then((response) => {
+        if (response) {
+          if (!response.success) {
+            throw new Error(response.info)
+          }
+          $notification.success(t('messages.success.updated'))
+        }
+      })
+  }
+  emit('new-value', getTimeNewValue(valueToView_.value))
+}
+
+function editValue (newValue, oldValue) {
+  valueToView_.value = newValue
+  return props.save(getTimeValue(newValue, oldValue))
+}
+
+function deleteValue () {
+  return props.delete()
+}
+
+function getTimeValue (newValue, oldValue) {
+  return {
+    validation: { valid: true },
+    values: {
+      oldValue,
+      newValue: getTimeNewValue(newValue)
     }
   }
+}
+
+function getTimeNewValue (value) {
+  return {
+    time: formatDate(value),
+    calendar: valueToView_.calendar.toLowerCase()
+  }
+}
+
+function formatDate (dateString) {
+  const date = new Date(dateString)
+  const isoYear = date.getUTCFullYear()
+  const isoMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2)
+  const isoDay = ('0' + date.getUTCDate()).slice(-2)
+
+  return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`
 }
 </script>
 
 <style scoped>
-::v-deep .v-list-item__title {
+:deep(.v-list-item__title) {
   font-size: 12px;
 }
-::v-deep .v-select__selection {
+:deep(.v-select__selection) {
   font-size: 12px;
 }
 </style>

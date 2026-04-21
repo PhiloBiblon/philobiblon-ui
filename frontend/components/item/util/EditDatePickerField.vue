@@ -1,64 +1,62 @@
 <template>
   <v-menu
     v-model="isDatePickerActive"
-    offset-y
     :close-on-content-click="false"
   >
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props: activatorProps }">
       <v-text-field
         v-model="currentText"
-        :label="$t('common.date')"
+        :label="t('common.date')"
         class="date-input"
         readonly
-        v-bind="attrs"
-        v-on="on"
+        v-bind="activatorProps"
         @focus="focus"
         @blur="blur"
       >
         <template #append>
           <v-btn
             v-if="isEditable && currentText !== consolidatedText"
-            text
+            variant="text"
             icon
             @click="edit"
           >
-            <v-tooltip top>
-              <template #activator="{ btnOn, btnAttrs }">
-                <v-icon v-bind="btnAttrs" v-on="btnOn">
+            <v-tooltip location="top">
+              <template #activator="{ props: btnProps }">
+                <v-icon v-bind="btnProps">
                   mdi-check
                 </v-icon>
               </template>
-              <span>{{ $t("common.save") }}</span>
+              <span>{{ t("common.save") }}</span>
             </v-tooltip>
           </v-btn>
           <v-btn
             v-if="isEditable && currentText !== consolidatedText"
-            text
+            variant="text"
             icon
             @click="restore"
           >
-            <v-tooltip top>
-              <template #activator="{ btnOn, btnAttrs }">
-                <v-icon v-bind="btnAttrs" v-on="btnOn">
+            <v-tooltip location="top">
+              <template #activator="{ props: btnProps }">
+                <v-icon v-bind="btnProps">
                   mdi-close
                 </v-icon>
               </template>
-              <span>{{ $t("common.cancel") }}</span>
+              <span>{{ t("common.cancel") }}</span>
             </v-tooltip>
           </v-btn>
           <v-btn
             v-if="isEditable && focussed"
-            text
+            variant="text"
             icon
             @click.stop="deleteValue"
           >
-            <v-tooltip top>
-              <template #activator="{ btnOn, btnAttrs }">
-                <v-icon v-bind="btnAttrs" v-on="btnOn">
+            <v-tooltip location="top">
+              <template #activator="{ props: btnProps }">
+                <v-icon v-bind="btnProps">
                   mdi-trash-can
                 </v-icon>
               </template>
-              <span>{{ $t("common.remove") }}</span>
+              <span>{{ t("common.remove") }}</span>
             </v-tooltip>
           </v-btn>
         </template>
@@ -68,110 +66,101 @@
     <v-date-picker
       v-model="currentText"
       min="1000-01-01"
-      @input="onDateSelect"
+      @update:model-value="onDateSelect"
     />
   </v-menu>
 </template>
 
-<script>
-export default {
-  props: {
-    value: {
-      type: String,
-      default: null
-    },
-    save: {
-      type: Function,
-      default: null
-    },
-    delete: {
-      type: Function,
-      default: null
-    },
-    mode: {
-      type: String,
-      default: 'edit'
-    }
-  },
-  data () {
-    return {
-      currentText: null,
-      consolidatedText: null,
-      focussed: false,
-      isDatePickerActive: false
-    }
-  },
-  computed: {
-    isEditable () {
-      return this.mode === 'edit'
-    }
-  },
-  watch: {
-    currentText (newVal, oldVal) {
-      if (oldVal != null && newVal !== oldVal) {
-        this.focussed = true
-      }
-    }
-  },
-  mounted () {
-    this.currentText = this.value
-    this.consolidatedText = this.value
-  },
-  methods: {
-    focus () {
-      this.focussed = true
-    },
-    blur () {
-      this.focussed = false
-      this.$emit('on-blur', this.currentText)
-    },
-    onDateSelect () {
-      this.isDatePickerActive = false
-      this.focussed = false
-      this.$emit('new-value', this.currentText)
-    },
-    async edit () {
-      try {
-        this.focussed = false
-        const response = await this.save(this.currentText, this.consolidatedText)
-        if (response && response.success) {
-          this.consolidatedText = this.currentText
-          this.$notification.success(this.$i18n.t('messages.success.updated'))
-        } else {
-          throw new Error(response.info || 'Update failed')
-        }
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error)
-        const errorMessage = error.message.includes('modification-failed')
-          ? this.$i18n.t('messages.error.modification.failed')
-          : this.$i18n.t('messages.error.session.expired')
-        this.$notification.error(errorMessage)
-      }
-    },
-    restore () {
-      this.currentText = this.consolidatedText
-      this.focussed = false
-      this.$emit('new-value', this.currentText)
-    },
-    async deleteValue () {
-      await this.delete()
-        .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
-            }
-            this.$notification.success('Successfully deleted')
-          }
-        })
-        .catch((error) => {
-          if (error.message === 'query is undefined') {
-            error = 'Error: Session expired.'
-          }
-          this.$notification.error(error)
-        })
-    }
+<script setup>
+import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const props = defineProps({
+  value: { type: String, default: null },
+  save: { type: Function, default: null },
+  delete: { type: Function, default: null },
+  mode: { type: String, default: 'edit' }
+})
+
+const emit = defineEmits(['on-blur', 'new-value'])
+
+const { $notification } = useNuxtApp()
+const { t } = useI18n()
+
+const currentText = ref(null)
+const consolidatedText = ref(null)
+const focussed = ref(false)
+const isDatePickerActive = ref(false)
+
+const isEditable = computed(() => props.mode === 'edit')
+
+watch(currentText, (newVal, oldVal) => {
+  if (oldVal != null && newVal !== oldVal) {
+    focussed.value = true
   }
+})
+
+onMounted(() => {
+  currentText.value = props.value
+  consolidatedText.value = props.value
+})
+
+function focus () {
+  focussed.value = true
+}
+
+function blur () {
+  focussed.value = false
+  emit('on-blur', currentText.value)
+}
+
+function onDateSelect () {
+  isDatePickerActive.value = false
+  focussed.value = false
+  emit('new-value', currentText.value)
+}
+
+async function edit () {
+  try {
+    focussed.value = false
+    const response = await props.save(currentText.value, consolidatedText.value)
+    if (response && response.success) {
+      consolidatedText.value = currentText.value
+      $notification.success(t('messages.success.updated'))
+    } else {
+      throw new Error(response.info || 'Update failed')
+    }
+  } catch (error) {
+    console.error(error)
+    const errorMessage = error.message.includes('modification-failed')
+      ? t('messages.error.modification.failed')
+      : t('messages.error.session.expired')
+    $notification.error(errorMessage)
+  }
+}
+
+function restore () {
+  currentText.value = consolidatedText.value
+  focussed.value = false
+  emit('new-value', currentText.value)
+}
+
+async function deleteValue () {
+  await props.delete()
+    .then((response) => {
+      if (response) {
+        if (!response.success) {
+          throw new Error(response.info)
+        }
+        $notification.success('Successfully deleted')
+      }
+    })
+    .catch((error) => {
+      if (error.message === 'query is undefined') {
+        error = 'Error: Session expired.'
+      }
+      $notification.error(error)
+    })
 }
 </script>
 

@@ -8,7 +8,7 @@
         <v-row dense class="justify-start">
           <v-col dense class="flex-shrink-1">
             <item-util-edit-text-field
-              :label="$t('common.amount')"
+              :label="t('common.amount')"
               :value="valueToView_.value.amount"
               :save="editAmount"
               :delete="deleteValue"
@@ -16,10 +16,10 @@
               style="width: 200px"
               class="ma-0 pa-0"
               @new-value="newDateValue"
-              @on-blur="$emit('on-blur', $event)"
+              @on-blur="emit('on-blur', $event)"
             />
             <item-util-edit-select-field
-              :label="$t('common.unit')"
+              :label="t('common.unit')"
               :value="selectedUnit"
               :save="editUnit"
               :options="unitOptions"
@@ -29,7 +29,7 @@
               @update-options="unitOptions = $event"
               @input="oninput($event)"
               @new-value="newUnitValue"
-              @on-blur="$emit('on-blur', $event)"
+              @on-blur="emit('on-blur', $event)"
             />
           </v-col>
         </v-row>
@@ -38,130 +38,111 @@
   </div>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    valueToView: {
-      type: Object,
-      default: null
-    },
-    save: {
-      type: Function,
-      default: null
-    },
-    delete: {
-      type: Function,
-      default: null
-    },
-    mode: {
-      type: String,
-      default: 'edit'
-    }
-  },
-  data () {
-    return {
-      valueToView_: this.getInitialValue(),
-      newValue_: {
-        amount: null,
-        unit: null
-      },
-      unitItemId: null,
-      unitLabel: null,
-      selectedUnit: '',
-      unitOptions: []
-    }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    },
-    isEditable () {
-      return this.mode === 'edit'
-    }
-  },
-  async mounted () {
-    if (this.valueToView_?.value?.unit) {
-      this.unitItemId = this.extractItemNumber(this.valueToView_.value.unit)
-      // it seems that 1 is the default value for undefined unit
-      if (this.unitItemId !== '1') {
-        await this.$wikibase
-          .getEntity(this.unitItemId, this.$i18n.locale)
-          .then((entity) => {
-            this.unitLabel = this.$wikibase.getValueByLang(
-              entity.labels,
-              this.$i18n.locale
-            )
-            this.setUnitOptions()
-          })
-      }
-    }
-  },
-  methods: {
-    getInitialValue () {
-      const initialValue = this.valueToView
-      if (!initialValue.value) {
-        initialValue.value = {
-          amount: '',
-          unit: ''
-        }
-      }
-      return initialValue
-    },
-    newDateValue (value) {
-      this.newValue_.amount = value
-      this.$emit('new-value', this.newValue_)
-    },
-    newUnitValue (value) {
-      this.newValue_.unit = value.concepturi
-      this.$emit('new-value', this.newValue_)
-    },
-    extractItemNumber (url) {
-      return url.substring(url.lastIndexOf('/') + 1)
-    },
-    editUnit (newUnit) {
-      const oldUnit = this.valueToView_.value.unit
-      this.valueToView_.value.unit = newUnit.concepturi
-      return this.save(this.getQuantityValue(this.valueToView_.value, { amount: this.valueToView_.value.amount, unit: oldUnit }))
-    },
-    editAmount (newAmount, oldValue) {
-      this.valueToView_.value.amount = newAmount
-      return this.save(this.getQuantityValue(this.valueToView_.value, oldValue))
-    },
-    getQuantityValue (newValue, oldValue) {
-      return {
-        validation: {
-          valid: true
-        },
-        values: {
-          oldValue,
-          newValue
-        }
-      }
-    },
-    oninput (e) {
-      if (e) { this.handleSearchChange(e) }
-    },
-    async handleSearchChange (value) {
-      if (value) {
-        const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale)
-        if (search && search.length) { this.unitOptions = search }
-      }
-    },
-    setUnitOptions () {
-      this.unitOptions = [{
-        id: this.unitItemId,
-        label: this.unitLabel.value
-      }]
-      this.selectedUnit = this.unitItemId
-    },
-    deleteValue () {
-      return this.delete()
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered
-      return true
+<script setup>
+import { computed, onMounted, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
+
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps({
+  valueToView: { type: Object, default: null },
+  save: { type: Function, default: null },
+  delete: { type: Function, default: null },
+  mode: { type: String, default: 'edit' }
+})
+
+const emit = defineEmits(['on-blur', 'new-value'])
+
+const { $wikibase } = useNuxtApp()
+const { t, locale } = useI18n()
+const authStore = useAuthStore()
+
+const valueToView_ = reactive(getInitialValue())
+const newValue_ = reactive({ amount: null, unit: null })
+const unitItemId = ref(null)
+const unitLabel = ref(null)
+const selectedUnit = ref('')
+const unitOptions = ref([])
+
+const isUserLogged = computed(() => authStore.isLogged)
+const isEditable = computed(() => props.mode === 'edit')
+
+onMounted(async () => {
+  if (valueToView_?.value?.unit) {
+    unitItemId.value = extractItemNumber(valueToView_.value.unit)
+    if (unitItemId.value !== '1') {
+      const entity = await $wikibase.getEntity(unitItemId.value, locale.value)
+      unitLabel.value = $wikibase.getValueByLang(entity.labels, locale.value)
+      setUnitOptions()
     }
   }
+})
+
+function getInitialValue () {
+  const initialValue = { ...props.valueToView }
+  if (!initialValue.value) {
+    initialValue.value = { amount: '', unit: '' }
+  }
+  return initialValue
+}
+
+function newDateValue (value) {
+  newValue_.amount = value
+  emit('new-value', newValue_)
+}
+
+function newUnitValue (value) {
+  newValue_.unit = value.concepturi
+  emit('new-value', newValue_)
+}
+
+function extractItemNumber (url) {
+  return url.substring(url.lastIndexOf('/') + 1)
+}
+
+function editUnit (newUnit) {
+  const oldUnit = valueToView_.value.unit
+  valueToView_.value.unit = newUnit.concepturi
+  return props.save(getQuantityValue(valueToView_.value, { amount: valueToView_.value.amount, unit: oldUnit }))
+}
+
+function editAmount (newAmount, oldValue) {
+  valueToView_.value.amount = newAmount
+  return props.save(getQuantityValue(valueToView_.value, oldValue))
+}
+
+function getQuantityValue (newValue, oldValue) {
+  return {
+    validation: { valid: true },
+    values: { oldValue, newValue }
+  }
+}
+
+function oninput (e) {
+  if (e) { handleSearchChange(e) }
+}
+
+async function handleSearchChange (value) {
+  if (value) {
+    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
+    if (search && search.length) { unitOptions.value = search }
+  }
+}
+
+function setUnitOptions () {
+  unitOptions.value = [{
+    id: unitItemId.value,
+    label: unitLabel.value.value
+  }]
+  selectedUnit.value = unitItemId.value
+}
+
+function deleteValue () {
+  return props.delete()
+}
+
+function acceptAll () {
+  return true
 }
 </script>
