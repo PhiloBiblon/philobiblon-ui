@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
+import { useAuthStore } from '~/stores/auth'
 
 export class OAuthService {
-  constructor (store, app) {
-    this.$store = store
-    this.$config = app.$config
-    this.$cookies = app.$cookies
+  constructor ({ config }) {
+    this.$config = config
+    this.oauthCookie = useCookie('oauth', { path: '/', maxAge: 60 * 60 })
   }
 
   step1 () {
@@ -43,29 +43,26 @@ export class OAuthService {
     if (response.status === 0) {
       const accessToken = response.accessToken
       const username = await this.getUsername(accessToken)
-      this.$store.commit('auth/login', { username, accessToken })
+      useAuthStore().login({ username, accessToken })
       const oauth = {
         username,
         accessToken
       }
       const signer = 'password'
-      const token = jwt.sign(oauth, signer)
-      this.$cookies.set('oauth', token, {
-        path: '/',
-        maxAge: 60 * 60
-      })
+      this.oauthCookie.value = jwt.sign(oauth, signer)
     }
     return response
   }
 
   autoLoginByCookie () {
-    const token = this.$cookies.get('oauth')
+    const token = this.oauthCookie.value
     try {
       const decoded = jwt.verify(token, 'password')
       const username = decoded.username
       const accessToken = decoded.accessToken
-      this.$store.commit('auth/login', { username, accessToken })
+      useAuthStore().login({ username, accessToken })
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err)
     }
   }

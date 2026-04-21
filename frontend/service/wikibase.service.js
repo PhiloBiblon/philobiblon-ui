@@ -1,5 +1,10 @@
+import WBK from 'wikibase-sdk'
+import wbEdit from 'wikibase-edit'
 import { QueryService } from '~/service/query.service'
 import { OAuthService } from '~/service/oauth.service'
+import { useAuthStore } from '~/stores/auth'
+import { useItemCacheStore } from '~/stores/itemCache'
+import { useQueryCacheStore } from '~/stores/queryCache'
 
 export class WikibaseService {
   static PROPERTY_PBID = 'P476'
@@ -19,22 +24,19 @@ export class WikibaseService {
 
   static BIBLIOGRAPHIES = new Set(['BETA', 'BITECA', 'BITAGAP'])
 
-  constructor (app, store) {
-    const WBK = require('wikibase-sdk')
-    this.$config = app.$config
+  constructor ({ config, $notification }) {
+    this.$config = config
     this.wbk = WBK({
-      instance: this.$config.wikibaseApiUrl,
-      sparqlEndpoint: this.$config.sparqlEndpoint
+      instance: config.wikibaseApiUrl,
+      sparqlEndpoint: config.sparqlEndpoint
     })
-    this.wbEdit = require('wikibase-edit')({
-      instance: this.$config.apiBaseUrl
+    this.wbEdit = wbEdit({
+      instance: config.apiBaseUrl
     })
-    this.$store = store
-    this.$query = new QueryService(store, this.$config)
-    this.$oauth = new OAuthService(store, app)
-    this.$notification = app.$notification
-    this.$i18n = app.i18n
-    this.sparqlBackendEndpoint = this.joinUrl(this.$config.apiBaseUrl, 'api/sparql/query')
+    this.$query = new QueryService({ config })
+    this.$oauth = new OAuthService({ config })
+    this.$notification = $notification
+    this.sparqlBackendEndpoint = this.joinUrl(config.apiBaseUrl, 'api/sparql/query')
   }
 
   getWbk () {
@@ -301,7 +303,8 @@ export class WikibaseService {
   }
 
   getEntityLabel (table, id, lang) {
-    const cachedValue = this.$store.state.itemCache.cache[this.getLabelCacheKey(id, lang)]
+    const itemCache = useItemCacheStore()
+    const cachedValue = itemCache.cache[this.getLabelCacheKey(id, lang)]
     if (cachedValue) {
       return cachedValue
     } else {
@@ -314,7 +317,7 @@ export class WikibaseService {
               lang
             )
           }
-          this.$store.commit('itemCache/addEntry', {
+          itemCache.addEntry({
             key: this.getLabelCacheKey(),
             value: propertyLabel
           })
@@ -377,7 +380,7 @@ export class WikibaseService {
         }
       })
       .then((data) => {
-        this.$store.commit('queryCache/addEntry', {
+        useQueryCacheStore().addEntry({
           key: urlHash,
           value: data
         })
@@ -600,7 +603,7 @@ export class WikibaseService {
       .then(results => this.wbk.simplify.sparqlResults(results, { minimize }))
       .then((simplifiedResults) => {
         if (useInternalCache) {
-          this.$store.commit('queryCache/addEntry', {
+          useQueryCacheStore().addEntry({
             key: queryHash,
             value: simplifiedResults
           })
@@ -620,7 +623,7 @@ export class WikibaseService {
   }
 
   getResultsFromCache (hash) {
-    const entry = this.$store.state.queryCache.cache[hash]
+    const entry = useQueryCacheStore().cache[hash]
     if (entry) {
       if (process.env.debug) {
         // eslint-disable-next-line no-console
@@ -719,7 +722,7 @@ export class WikibaseService {
         `${this.$config.apiBaseUrl}/w/api.php?action=query&meta=tokens&type=csrf&format=json`,
         {
           method: 'GET',
-          headers: this.$store.getters['auth/getAuthHeaders']
+          headers: useAuthStore().authHeaders
         }
       )
       const csrfData = await csrfResponse.json()
@@ -752,7 +755,7 @@ export class WikibaseService {
         {
           method: 'POST',
           headers: {
-            ...this.$store.getters['auth/getAuthHeaders'],
+            ...useAuthStore().authHeaders,
             'Content-Type': 'application/x-www-form-urlencoded'
           },
           body: new URLSearchParams({

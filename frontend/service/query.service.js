@@ -1,10 +1,11 @@
+import { useQueryStatusStore } from '~/stores/queryStatus'
+
 const BITAGAP_DB = 'BITAGAP'
 const CARTAS_TEXT = '[Cartas de]'
 const BITAGAP_GROUP_CARTAS = 'CARTAS'
 const BITAGAP_GROUP_ORIGINAL = 'ORIG'
 export class QueryService {
-  constructor (store, config) {
-    this.$store = store
+  constructor ({ config }) {
     this.$config = config
   }
 
@@ -1286,9 +1287,9 @@ export class QueryService {
   }
 
   getSortClause () {
+    const queryStatus = useQueryStatusStore()
     let sortBy
-    const sortOption = this.$store.state.queryStatus.sortBy
-    switch (sortOption) {
+    switch (queryStatus.sortBy) {
       case 'id':
         sortBy = 'xsd:integer(?pbidn)'
         break
@@ -1300,7 +1301,7 @@ export class QueryService {
       default:
         sortBy = this.replaceDiacritics('xsd:string(?label)')
     }
-    return this.$store.state.queryStatus.isSortDescending ? `DESC(${sortBy})` : sortBy
+    return queryStatus.isSortDescending ? `DESC(${sortBy})` : sortBy
   }
 
   itemsQuery (table, form, lang, resultsPerPage) {
@@ -1317,7 +1318,7 @@ export class QueryService {
         ${this.generateDescLangFilters('item', lang)}
       }
       ORDER BY ${this.getSortClause()}
-      OFFSET ${(this.$store.state.queryStatus.currentPage - 1) * resultsPerPage}
+      OFFSET ${(useQueryStatusStore().currentPage - 1) * resultsPerPage}
       LIMIT ${resultsPerPage}`
     return this.generateQuery(table, SEARCH_QUERY, form, lang)
   }

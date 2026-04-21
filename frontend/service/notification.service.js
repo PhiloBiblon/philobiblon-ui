@@ -1,22 +1,16 @@
 const DURATION = 5000
-const TOAST_COMMON_PARAMS = {
-  duration: DURATION,
-  keepOnHover: true,
-  className: 'toasted-font'
-}
 
 export class NotificationService {
-  constructor (toast) {
-    this.$toast = toast
+  constructor (notifyFn) {
+    this.$notify = notifyFn
   }
 
   success (message) {
-    this.$toast.success(message, { ...TOAST_COMMON_PARAMS, icon: 'check_circle' })
+    this.$notify({ title: message, type: 'success', duration: DURATION })
   }
 
   error (error) {
     if (error.response) {
-      // handling error response from server
       if (error.response.status === 401) {
         error = 'Authentication error'
       } else if (error.response.data) {
@@ -29,14 +23,14 @@ export class NotificationService {
     }
     // eslint-disable-next-line no-console
     console.error(error)
-    this.$toast.error(error, { ...TOAST_COMMON_PARAMS, icon: 'error' })
+    this.$notify({ title: String(error), type: 'error', duration: DURATION })
   }
 
   info (message) {
-    this.$toast.info(message, { ...TOAST_COMMON_PARAMS, icon: 'info' })
+    this.$notify({ title: message, type: 'info', duration: DURATION })
   }
 
   notify (message) {
-    this.$toast.show(message, TOAST_COMMON_PARAMS)
+    this.$notify({ title: message, duration: DURATION })
   }
 }
