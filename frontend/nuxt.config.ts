@@ -101,7 +101,13 @@ export default defineNuxtConfig({
   },
 
   build: {
-    transpile: ['quill']
+    transpile: ['quill', 'quill-delta']
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: ['quill', 'quill-delta', 'fast-diff', 'lodash.clonedeep', 'lodash.isequal']
+    }
   },
 
   compatibilityDate: '2026-04-20'
