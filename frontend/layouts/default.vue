@@ -100,7 +100,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
 import { useAuthStore } from '~/stores/auth'
@@ -121,6 +121,8 @@ const oauthCookie = useCookie('oauth')
 const title_1 = 'Philo'
 const title_2 = 'Biblon'
 const drawer = ref(false)
+// In Vuetify 3, v-model overrides permanent; open drawer automatically on desktop
+watch(mdAndDown, (isMobile) => { if (!isMobile) drawer.value = true }, { immediate: true })
 
 const searchItems = [
   { path: '/search/texid/query', label: 'menu.item.search.item.texid.label' },
