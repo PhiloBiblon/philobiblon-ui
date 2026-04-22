@@ -1,5 +1,14 @@
-import jwt from 'jsonwebtoken'
 import { useAuthStore } from '~/stores/auth'
+
+const b64url = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+const b64urlDecode = s => decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/'))))
+const signToken = payload => `${b64url('{}')}.${b64url(JSON.stringify(payload))}.`
+const decodeToken = (token) => {
+  if (!token) return null
+  const [, b] = token.split('.')
+  if (!b) return null
+  return JSON.parse(b64urlDecode(b))
+}
 
 export class OAuthService {
   constructor ({ config }) {
@@ -48,18 +57,18 @@ export class OAuthService {
         username,
         accessToken
       }
-      const signer = 'password'
-      this.oauthCookie.value = jwt.sign(oauth, signer)
+      this.oauthCookie.value = signToken(oauth)
     }
     return response
   }
 
   autoLoginByCookie () {
     const token = this.oauthCookie.value
+    if (!token) return
     try {
-      const decoded = jwt.verify(token, 'password')
-      const username = decoded.username
-      const accessToken = decoded.accessToken
+      const decoded = decodeToken(token)
+      if (!decoded?.username || !decoded?.accessToken) return
+      const { username, accessToken } = decoded
       useAuthStore().login({ username, accessToken })
     } catch (err) {
        

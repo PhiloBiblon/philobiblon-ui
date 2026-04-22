@@ -4,9 +4,7 @@
       <v-btn
         v-bind="activatorProps"
         variant="text"
-        class="d-flex align-center pa-0"
-        height="0"
-        min-width="0"
+        class="d-flex align-center pa-1"
       >
         <v-img
           :src="localeFlag"
@@ -42,11 +40,11 @@ import { useI18n } from 'vue-i18n'
 const { locale, setLocale } = useI18n()
 
 const languages = [
-  { locale: 'ca', name: 'Català', image: 'img/flags/flag_catalonia.gif' },
-  { locale: 'es', name: 'Español', image: 'img/flags/flag_spain.gif' },
-  { locale: 'en', name: 'English', image: 'img/flags/flag_unitedstates.gif' },
-  { locale: 'gl', name: 'Galego', image: 'img/flags/flag_galicia.gif' },
-  { locale: 'pt', name: 'Português', image: 'img/flags/flag_portugal.gif' }
+  { locale: 'ca', name: 'Català', image: '/img/flags/flag_catalonia.gif' },
+  { locale: 'es', name: 'Español', image: '/img/flags/flag_spain.gif' },
+  { locale: 'en', name: 'English', image: '/img/flags/flag_unitedstates.gif' },
+  { locale: 'gl', name: 'Galego', image: '/img/flags/flag_galicia.gif' },
+  { locale: 'pt', name: 'Português', image: '/img/flags/flag_portugal.gif' }
 ]
 
 const localeFlag = computed(() => languages.find(lang => lang.locale === locale.value)?.image ?? '')

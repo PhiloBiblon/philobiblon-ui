@@ -60,13 +60,8 @@
     </v-navigation-drawer>
     <v-app-bar
       theme="dark"
+      style="background: linear-gradient(to top right, rgba(33,33,33,.7), rgba(250,250,250,.7))"
     >
-      <template #image="{ props: imgProps }">
-        <v-img
-          v-bind="imgProps"
-          gradient="to top right, rgba(33, 33, 33,.7), rgba(250, 250, 250,.7)"
-        />
-      </template>
       <v-app-bar-nav-icon class="d-lg-none" @click.stop="drawer = !drawer" />
       <v-toolbar-title
         class="text-h4"
@@ -80,8 +75,6 @@
       <v-btn
         v-if="authStore.isLogged"
         variant="text"
-        height="0"
-        min-width="0"
         class="lowercase"
         @click="logout"
       >
@@ -90,8 +83,6 @@
       <v-btn
         v-else
         variant="text"
-        height="0"
-        min-width="0"
         class="lowercase"
         @click="login"
       >
