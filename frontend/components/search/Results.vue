@@ -140,7 +140,7 @@ const { t } = useI18n()
 const config = useRuntimeConfig().public
 const queryStatusStore = useQueryStatusStore()
 
-const currentTab = ref(null)
+const currentTab = ref('results')
 const selectedItem = ref([])
 const sortItems = [
   { text: t('search.results.sort_option.id'), value: 'id' },
