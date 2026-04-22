@@ -98,7 +98,8 @@ function count () {
   waitingCount.value = true
   $wikibase.runSparqlQuery($wikibase.$query.countQuery(props.table, form.value, locale.value), true)
     .then((res) => {
-      totalResults.value = res[0]
+      const raw = res[0]
+      totalResults.value = typeof raw === 'object' ? parseInt(raw?.count ?? 0, 10) : parseInt(raw, 10)
       waitingCount.value = false
     })
     .catch((err) => {
