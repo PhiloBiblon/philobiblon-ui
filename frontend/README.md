@@ -1,69 +1,78 @@
 # frontend
 
-## Build Setup
+Nuxt 3 SPA (SSR disabled) — Vue 3 + Vuetify 3 + Pinia + vue-i18n 10.
+
+## Setup
 
 ```bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn dev -o
-
-# build for production and launch server
-$ yarn run build
-$ yarn run start
-
-# generate static project
-$ yarn run generate
+yarn install
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+Requires Node 22+ and Yarn 4 with `nodeLinker: node-modules` (already configured in `.yarnrc.yml`).
 
-## Special Directories
+## Development
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+```bash
+# Dev server (uses staging backend at philobiblon.cog.berkeley.edu/ui-dev/)
+yarn dev
 
-### `assets`
+# Lint
+yarn lint
+```
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+The dev script sets `API_BASE_URL` to the staging backend automatically.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+## Production build
 
-### `components`
+```bash
+# Generate static output → .output/public/
+yarn generate
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
+# Preview the static output locally
+yarn preview
+```
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
+Output goes to `.output/public/` (served by nginx in the Docker image).
 
-### `layouts`
+## Docker
 
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
+```bash
+# Build image (pass BASE_URL and API_BASE_URL as build args)
+docker build \
+  --build-arg BASE_URL=/ \
+  --build-arg API_BASE_URL=https://your-backend/ \
+  -t philobiblon-frontend .
+```
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+Both `BASE_URL` and `API_BASE_URL` are baked into the SPA at build time — setting them at runtime has no effect.
 
+## Directory structure
 
-### `pages`
+| Directory | Purpose |
+|---|---|
+| `assets/` | SCSS variables, global CSS |
+| `components/` | Vue 3 components (auto-imported) |
+| `layouts/` | App shell (`default.vue`) and error page |
+| `pages/` | File-based routing — `[param]` syntax for dynamic segments |
+| `plugins/` | Nuxt plugins (client-only, run before app mount) |
+| `public/` | Static assets served at `/` (flags, logos, favicons) |
+| `service/` | Plain JS service classes injected via plugins |
+| `stores/` | Pinia stores (auth, breadcrumb, itemCache, queryCache, queryStatus) |
+| `lang/` | i18n locale files (en, ca, es, gl, pt) |
 
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
+## Environment variables
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
+Set at Docker build time via `ARG`:
 
-### `plugins`
+| Variable | Description |
+|---|---|
+| `BASE_URL` | Router base path (e.g. `/ui-fg/`) |
+| `API_BASE_URL` | Backend base URL |
 
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
+Runtime config (read from the backend's `/api/config` endpoint):
+`wikibaseBaseUrl`, `wikibaseApiUrl`, `sparqlEndpoint`, `sparqlQueryPrefix`.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+## i18n
 
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+Five locales: `en`, `ca`, `es`, `gl`, `pt`. Strategy `prefix` — URLs are `/en/…`, `/ca/…`, etc.
+Active locale stored in a `language` cookie. All user-facing strings must appear in all five `lang/*.js` files.
