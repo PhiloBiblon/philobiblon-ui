@@ -11,6 +11,7 @@ RUN yarn run generate
 # production stage
 FROM nginx:stable-alpine AS production-stage
 COPY --from=build-stage /app/.output/public /usr/share/nginx/html
+RUN touch /etc/nginx/conf.d/default.conf.template
 EXPOSE 80 443
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
