@@ -9,9 +9,8 @@
         <v-img
           :src="localeFlag"
           alt="flag"
-          contain
-          max-width="24"
-          max-height="16"
+          :width="27"
+          :height="15"
         />
       </v-btn>
     </template>
@@ -24,7 +23,7 @@
       >
         <template #prepend>
           <v-avatar>
-            <v-img :src="item.image" alt="flag" />
+            <v-img :src="item.image" alt="flag" :width="27" :height="15" />
           </v-avatar>
         </template>
         <v-list-item-title>{{ item.name }}</v-list-item-title>

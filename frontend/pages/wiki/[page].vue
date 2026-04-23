@@ -23,7 +23,7 @@ const contentToView = ref(null)
 
 onMounted(async () => {
   breadcrumbStore.setItems([
-    { text: t(removeLocalePrefix(pageName)), disabled: true }
+    { title: t(removeLocalePrefix(pageName)), disabled: true }
   ])
   const html = await $wikibase.getWikibasePage(wikiPage).then(contentPage)
   contentToView.value = prepareContent(html)
@@ -34,6 +34,10 @@ function prepareContent (html) {
     .replaceAll('<a href="#', '<a href="' + window.location.pathname + '#')
     .replaceAll('<a id=', '<a style="padding-top: 50px;" id=')
     .replaceAll('<blockquote>', '<blockquote style="padding-left: 50px;">')
+    .replace(/href="(?!https?:|\/|#|mailto:)([^"]+)"/g, (_, path) => {
+      const hasLocale = ['en', 'ca', 'es', 'gl', 'pt'].some(l => path.startsWith(l + '/'))
+      return hasLocale ? `href="/${path}"` : `href="/${locale.value}/${path}"`
+    })
 }
 
 function getWikiPage (page) {
@@ -78,11 +82,13 @@ function parseLinks (content) {
 function parseLink (match, g1, g2) {
   let link = g1
   const text = g2 !== undefined ? g2 : g1
-  if (link.startsWith('/') || link.startsWith('http')) {
+  if (link.startsWith('http')) {
     return `<a href='${link}'>${text}</a>`
   } else {
-    link = `/wiki/${link}`
-    return `<a href='.${localePath(link)}'>${text}</a>`
+    if (!link.startsWith('/')) {
+      link = `/wiki/${link}`
+    }
+    return `<a href='${localePath(link)}'>${text}</a>`
   }
 }
 </script>

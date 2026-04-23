@@ -12,8 +12,8 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const breadcrumb_items = [
-  { text: t('menu.item.search.label'), disabled: true },
-  { text: t('menu.item.search.item.bibid.label'), disabled: true }
+  { title: t('menu.item.search.label'), disabled: true },
+  { title: t('menu.item.search.item.bibid.label'), disabled: true }
 ]
 
 const form = {

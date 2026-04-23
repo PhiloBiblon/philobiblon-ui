@@ -145,16 +145,16 @@ function setBreadCrumb (database, table, entity) {
 function getBreadcrumbItems (database, table, entity) {
   return [
     {
-      text: t('menu.item.search.label'),
+      title: t('menu.item.search.label'),
       disabled: true
     },
     {
-      text: t('menu.item.search.item.' + table + '.label'),
+      title: t('menu.item.search.item.' + table + '.label'),
       disabled: false,
       to: localePath('/search/' + table + '/query')
     },
     {
-      text: $wikibase.getPBID(entity, database, table),
+      title: $wikibase.getPBID(entity, database, table),
       disabled: true
     }
   ]

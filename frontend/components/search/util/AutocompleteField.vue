@@ -9,6 +9,8 @@
     :no-data-text="checkNoDataText"
     :items="items"
     :filter="acceptAll"
+    item-title="text"
+    item-value="value"
     hide-select
   >
     <template v-for="(_, slotName) in $slots" #[slotName]="slotData">

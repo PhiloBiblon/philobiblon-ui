@@ -13,8 +13,8 @@ const route = useRoute()
 
 const table = route.params.table
 const breadcrumbItems = [
-  { text: t('common.create'), disabled: true },
-  { text: t('menu.item.search.item.' + table + '.label'), disabled: true },
-  { text: t('item.label'), disabled: true }
+  { title: t('common.create'), disabled: true },
+  { title: t('menu.item.search.item.' + table + '.label'), disabled: true },
+  { title: t('item.label'), disabled: true }
 ]
 </script>

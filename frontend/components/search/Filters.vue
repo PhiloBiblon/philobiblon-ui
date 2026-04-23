@@ -55,7 +55,7 @@
               <search-util-autocomplete-field
                 v-if="item.type === 'autocomplete'"
                 :id="'auto-' + name"
-                v-model="item.value"
+                :value="item.value"
                 :label="t(item.label)"
                 :hint="t(item.hint)"
                 :disabled="item.disabled"

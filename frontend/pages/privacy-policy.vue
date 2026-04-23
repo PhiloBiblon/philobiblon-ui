@@ -10,6 +10,6 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const breadcrumbItems = [
-  { text: t('privacyPolicy.label'), disabled: true }
+  { title: t('privacyPolicy.label'), disabled: true }
 ]
 </script>

@@ -12,7 +12,7 @@
             placeholder="YYYY-MM-DD"
             v-bind="activatorProps"
             append-inner-icon="mdi-calendar"
-            @click:append-inner="activeBegin = true"
+            @click:append-inner.stop="activeBegin = true"
             @focus="showHint"
             @blur="hideHint"
             @change="validateBeginDate($event.target.value)"
@@ -36,7 +36,7 @@
             placeholder="YYYY-MM-DD"
             v-bind="activatorProps"
             append-inner-icon="mdi-calendar"
-            @click:append-inner="activeEnd = true"
+            @click:append-inner.stop="activeEnd = true"
             @focus="showHint"
             @blur="hideHint"
             @change="validateEndDate($event.target.value)"
@@ -128,13 +128,26 @@ function validateDate (date) {
   }
 }
 
+function dateToIso (date) {
+  if (!date) return null
+  if (date instanceof Date) {
+    const y = date.getFullYear()
+    const m = String(date.getMonth() + 1).padStart(2, '0')
+    const d = String(date.getDate()).padStart(2, '0')
+    return `${y}-${m}-${d}`
+  }
+  return date
+}
+
 function onBeginDateSelect () {
   activeBegin.value = false
+  beginValue.value = dateToIso(beginValue.value)
   validateBeginDate(beginValue.value)
 }
 
 function onEndDateSelect () {
   activeEnd.value = false
+  endValue.value = dateToIso(endValue.value)
   validateEndDate(endValue.value)
 }
 

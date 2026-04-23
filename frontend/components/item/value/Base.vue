@@ -1,7 +1,7 @@
 <template>
   <div v-if="valueToView">
     <component
-      :is="`item-value-type-${valueToView.type}`"
+      :is="typeComponentMap[valueToView.type]"
       v-if="valueToView.type"
       :label="label"
       :type="type"
@@ -19,6 +19,25 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
+import TypeText from '~/components/item/value/type/Text.vue'
+import TypeEntity from '~/components/item/value/type/Entity.vue'
+import TypeExternalId from '~/components/item/value/type/ExternalId.vue'
+import TypeImage from '~/components/item/value/type/Image.vue'
+import TypeQuantity from '~/components/item/value/type/Quantity.vue'
+import TypeTextLang from '~/components/item/value/type/TextLang.vue'
+import TypeTime from '~/components/item/value/type/Time.vue'
+import TypeUrl from '~/components/item/value/type/Url.vue'
+
+const typeComponentMap = {
+  'text': TypeText,
+  'entity': TypeEntity,
+  'external-id': TypeExternalId,
+  'image': TypeImage,
+  'quantity': TypeQuantity,
+  'text-lang': TypeTextLang,
+  'time': TypeTime,
+  'url': TypeUrl
+}
 
 const props = defineProps({
   claim: { type: Object, default: null },
