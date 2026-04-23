@@ -7,7 +7,6 @@
       "nodeGypDependencies": false
     }
   },
-  "appPort": [3000, 8080],
   "forwardPorts": [3000, 8080],
   "portsAttributes": {
     "3000": {
