@@ -101,15 +101,6 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    resolve: {
-      alias: {
-        // Use quill's self-contained UMD dist instead of the ESM source.
-        // quill's ESM source imports quill-delta (CJS) as a default import,
-        // which Vite cannot serve without pre-bundling the whole dependency tree.
-        // The UMD dist has quill-delta bundled inside, avoiding the issue entirely.
-        quill: 'quill/dist/quill.js'
-      }
-    },
     optimizeDeps: {
       include: ['quill/dist/quill.js']
     }

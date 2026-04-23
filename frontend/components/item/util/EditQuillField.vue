@@ -7,7 +7,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Quill from 'quill'
+import Quill from 'quill/dist/quill.js'
 import 'quill/dist/quill.snow.css'
 
 const props = defineProps({
