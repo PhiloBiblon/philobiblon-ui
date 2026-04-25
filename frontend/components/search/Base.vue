@@ -153,3 +153,9 @@ function goToItem (id) {
   )
 }
 </script>
+
+<style scoped>
+.content {
+  min-height: 820px;
+}
+</style>

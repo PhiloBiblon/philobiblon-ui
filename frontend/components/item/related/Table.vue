@@ -16,7 +16,8 @@
         v-if="totalResults > resultsPerPage"
         v-model="currentPage"
         :length="Math.ceil(totalResults / resultsPerPage)"
-        :total-visible="5"
+        :total-visible="3"
+        density="compact"
         @update:model-value="changePage"
       />
     </div>
@@ -53,7 +54,10 @@ onMounted(async () => {
 
 function count () {
   $wikibase.runSparqlQuery($wikibase.$query.getRelatedItemsCount(props.itemId, props.references.refTables), true)
-    .then((results) => { totalResults.value = results[0] })
+    .then((res) => {
+      const raw = res[0]
+      totalResults.value = typeof raw === 'object' ? parseInt(raw?.total ?? 0, 10) : parseInt(raw, 10)
+    })
 }
 
 async function changePage () {

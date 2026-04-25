@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useBreadcrumbStore } from '~/stores/breadcrumb'
 
@@ -58,10 +58,12 @@ watch(() => route.query.database, (val) => {
   }
 }, { immediate: true })
 
-breadcrumbStore.setItems(props.breadcrumbItems)
-breadcrumbStore.setClass('large-font-breadcrumb')
-breadcrumbStore.setDatabase(database.value)
-breadcrumbStore.setTable(props.table)
+onMounted(() => {
+  breadcrumbStore.setItems(props.breadcrumbItems)
+  breadcrumbStore.setClass('large-font-breadcrumb')
+  breadcrumbStore.setDatabase(database.value)
+  breadcrumbStore.setTable(props.table)
+})
 
 onBeforeUnmount(() => {
   breadcrumbStore.setClass('')

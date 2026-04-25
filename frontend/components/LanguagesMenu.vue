@@ -1,5 +1,5 @@
 <template>
-  <v-menu>
+  <v-menu content-class="lang-menu">
     <template #activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
@@ -14,7 +14,7 @@
         />
       </v-btn>
     </template>
-    <v-list>
+    <v-list theme="light">
       <v-list-item
         v-for="(item, index) in languages"
         :key="index"
@@ -22,9 +22,7 @@
         @click="changeLocale(index)"
       >
         <template #prepend>
-          <v-avatar>
-            <v-img :src="item.image" alt="flag" :width="27" :height="15" />
-          </v-avatar>
+          <v-img :src="item.image" alt="flag" :width="27" :height="15" class="mr-3" />
         </template>
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item>
@@ -37,13 +35,15 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale, setLocale } = useI18n()
+const config = useRuntimeConfig()
+const baseURL = config.app.baseURL
 
 const languages = [
-  { locale: 'ca', name: 'Català', image: '/img/flags/flag_catalonia.gif' },
-  { locale: 'es', name: 'Español', image: '/img/flags/flag_spain.gif' },
-  { locale: 'en', name: 'English', image: '/img/flags/flag_unitedstates.gif' },
-  { locale: 'gl', name: 'Galego', image: '/img/flags/flag_galicia.gif' },
-  { locale: 'pt', name: 'Português', image: '/img/flags/flag_portugal.gif' }
+  { locale: 'ca', name: 'Català', image: `${baseURL}img/flags/flag_catalonia.gif`.replace('//', '/') },
+  { locale: 'es', name: 'Español', image: `${baseURL}img/flags/flag_spain.gif`.replace('//', '/') },
+  { locale: 'en', name: 'English', image: `${baseURL}img/flags/flag_unitedstates.gif`.replace('//', '/') },
+  { locale: 'gl', name: 'Galego', image: `${baseURL}img/flags/flag_galicia.gif`.replace('//', '/') },
+  { locale: 'pt', name: 'Português', image: `${baseURL}img/flags/flag_portugal.gif`.replace('//', '/') }
 ]
 
 const localeFlag = computed(() => languages.find(lang => lang.locale === locale.value)?.image ?? '')

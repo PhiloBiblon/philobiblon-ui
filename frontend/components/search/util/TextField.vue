@@ -4,7 +4,7 @@
       <slot :name="slotName" v-bind="slotData || {}" />
     </template>
     <template #message="{ message }">
-      <v-tooltip max-width="40%" location="bottom" open-delay="200">
+      <v-tooltip content-class="hint-tooltip" location="bottom" open-delay="200">
         <template #activator="{ props: tooltipProps }">
           <!-- eslint-disable-next-line vue/no-v-html -->
           <span v-bind="tooltipProps" v-html="message && message.length < hintMaxWidth ? $sanitize(message) : $sanitize(message).substring(0, hintMaxWidth) + '...'" />

@@ -5,7 +5,7 @@
         <a class="link" @click="router.go(-1)">
           <v-tooltip location="right">
             <template #activator="{ props: tooltipProps }">
-              <v-icon color="primary" v-bind="tooltipProps">
+              <v-icon color="primary" size="large" v-bind="tooltipProps">
                 mdi-reply
               </v-icon>
             </template>
@@ -44,11 +44,9 @@
         <v-row class="mt-2" dense>
           <v-spacer />
           <v-btn
-            class="mt-4 mr-2"
-            color="grey"
+            class="mt-4 mr-4"
             size="small"
             elevation="2"
-            variant="outlined"
             @click="router.go(-1)"
           >
             {{ t('common.cancel') }}
@@ -58,7 +56,6 @@
               <div v-bind="tooltipProps">
                 <v-btn
                   class="mt-4"
-                  color="primary"
                   size="small"
                   elevation="2"
                   :disabled="isCreateDisabled"
@@ -202,7 +199,7 @@ function buildClaim (entity, qualifiers = [], value = null, removable = true) {
   }
 }
 
-function buildQualifier (claim, qualifier) {
+function buildQualifier (_claim, qualifier) {
   const lbl = $wikibase.getValueByLang(qualifier.labels, locale.value)?.value || qualifier.id
   return {
     default: true,
@@ -222,7 +219,7 @@ async function getDefaultClaims (itemNumber) {
   const def = ['P476', 'P131']
   const res = await $wikibase.getClaimsOrderForNewItem(props.table)
   const propertyIds = [...new Set([...def, ...Object.keys(res)])]
-  const qualifiersProperties = [...new Set(Object.values(res).flat())]
+  const qualifiersProperties = [...new Set(['P700', ...Object.values(res).flat()])]
   const entities = await $wikibase.getEntities(propertyIds, locale.value)
   const qualifiersArr = await $wikibase.getEntities(qualifiersProperties, locale.value)
 
@@ -249,17 +246,9 @@ async function getDefaultClaims (itemNumber) {
         const bibliographyId = bibliographyMap[props.database] || null
 
         const bibliographyQualifiers = [
-          {
-            default: true,
-            property: 'P700',
-            datatype: 'wikibase-item',
-            datavalue: {
-              value: {
-                id: 'Q447226'
-              }
-            }
-          }
+          buildQualifier(entity, qualifiersArr['P700'])
         ]
+        bibliographyQualifiers[0].datavalue.value = { id: 'Q447226' }
 
         claim = buildClaim(entity, bibliographyQualifiers, bibliographyId ? { id: bibliographyId } : null)
       } else if (props.table === 'cnum' && entity.id === 'P590') {
@@ -302,7 +291,7 @@ function generateClaimsData (data) {
       })
 
       const qualifiers = Object.fromEntries(
-        (claim.qualifiers || []).map(q => [q.property, extractValue(q)])
+        (claim.qualifiers || []).map(q => [q.property?.id ?? q.property, extractValue(q)])
       )
 
       result[claimKey].push(createClaim(claim.value, qualifiers))
@@ -535,9 +524,10 @@ function generateLabelFromClaims () {
 }
 .link {
   text-decoration: none;
+  cursor: pointer;
 }
 .back {
   font-size: 12px;
-  height: 25px;
+  height: 36px;
 }
 </style>

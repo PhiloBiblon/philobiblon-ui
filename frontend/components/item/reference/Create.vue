@@ -17,14 +17,14 @@
           :items="properties[key]"
           item-title="label"
           item-value="id"
-          variant="outlined"
+          variant="underlined"
           density="compact"
           :filter="acceptAll"
           @update:model-value="onChangeProperty($event, key)"
           @update:search="onInput($event, 'property', key)"
         />
       </v-col>
-      <v-col class="p-0 pr-3 pt-3">
+      <v-col class="p-0 pr-3">
         <div v-if="reference.property">
           <item-value-base
             :key="`${key}-${reference.property}`"
@@ -37,26 +37,35 @@
           />
         </div>
       </v-col>
-      <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
+      <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
         <v-btn
           variant="text"
           icon
+          density="compact"
+          class="action-btn"
           :disabled="!reference.property || !reference?.datavalue?.value"
           @click.stop="createReference(key)"
         >
           <v-tooltip location="top">
             <template #activator="{ props: btnProps }">
-              <v-icon v-bind="btnProps">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-check
               </v-icon>
             </template>
             <span>{{ t("common.save") }}</span>
           </v-tooltip>
         </v-btn>
-        <v-btn v-if="claim" variant="text" icon @click.stop="removeReference(key)">
+        <v-btn
+          v-if="claim"
+          variant="text"
+          icon
+          density="compact"
+          class="action-btn"
+          @click.stop="removeReference(key)"
+        >
           <v-tooltip location="top">
             <template #activator="{ props: btnProps }">
-              <v-icon v-bind="btnProps">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-trash-can
               </v-icon>
             </template>
@@ -206,7 +215,18 @@ function acceptAll () {
 .max-w-100 {
   max-width: 100px !important;
 }
+.action-btn {
+  width: 28px !important;
+  height: 28px !important;
+}
 :deep(.v-text-field__details) {
   display: none;
+}
+:deep(.v-input__details) {
+  display: none;
+}
+:deep(.v-autocomplete .v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
 }
 </style>

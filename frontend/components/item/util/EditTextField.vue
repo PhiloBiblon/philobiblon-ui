@@ -12,16 +12,18 @@
     <template v-for="(_, slotName) in $slots" #[slotName]="slotData">
       <slot :name="slotName" v-bind="slotData || {}" />
     </template>
-    <template #append>
+    <template #append-inner>
       <v-btn
         v-if="focussed && isEditable"
         variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="edit"
       >
         <v-tooltip location="top">
           <template #activator="{ props: btnProps }">
-            <v-icon v-bind="btnProps">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-check
             </v-icon>
           </template>
@@ -32,11 +34,13 @@
         v-if="focussed"
         variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="restore"
       >
         <v-tooltip location="top">
           <template #activator="{ props: btnProps }">
-            <v-icon v-bind="btnProps">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-close
             </v-icon>
           </template>
@@ -47,11 +51,13 @@
         v-if="focussed && isEditable"
         variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="deleteValue"
       >
         <v-tooltip location="top">
           <template #activator="{ props: btnProps }">
-            <v-icon v-bind="btnProps">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-trash-can
             </v-icon>
           </template>
@@ -159,3 +165,19 @@ async function deleteValue () {
     })
 }
 </script>
+
+<style scoped>
+.action-btn {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+:deep(.v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
+}
+
+:deep(.v-input__details) {
+  display: none;
+}
+</style>

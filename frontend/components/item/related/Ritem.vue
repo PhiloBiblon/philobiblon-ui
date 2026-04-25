@@ -63,7 +63,11 @@ async function getEntity () {
 </script>
 
 <style scoped>
-.cnum {
+.v-expansion-panel-title.cnum {
   background-color: rgb(247, 245, 245);
+}
+:deep(.v-expansion-panel-text__wrapper),
+:deep(.claim-values) {
+  background-color: white !important;
 }
 </style>

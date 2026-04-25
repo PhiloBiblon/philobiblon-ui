@@ -7,7 +7,7 @@
     item-title="label"
     return-object
     required
-    variant="outlined"
+    variant="underlined"
     density="compact"
     v-bind="$attrs"
     @blur="blur"
@@ -22,16 +22,18 @@
         </template>
       </v-list-item>
     </template>
-    <template #append>
+    <template #append-inner>
       <v-btn
         v-if="isEditable && focussed"
         variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="edit"
       >
         <v-tooltip location="top">
           <template #activator="{ props: btnProps }">
-            <v-icon v-bind="btnProps">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-check
             </v-icon>
           </template>
@@ -42,11 +44,13 @@
         v-if="focussed"
         variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="restore"
       >
         <v-tooltip location="top">
           <template #activator="{ props: btnProps }">
-            <v-icon v-bind="btnProps">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-close
             </v-icon>
           </template>
@@ -57,11 +61,13 @@
         v-if="isRemovable && focussed"
         variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="deleteValue"
       >
         <v-tooltip location="top">
           <template #activator="{ props: btnProps }">
-            <v-icon v-bind="btnProps">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-trash-can
             </v-icon>
           </template>
@@ -190,5 +196,19 @@ async function deleteValue () {
   font-size: 0.8rem;
   color: #666;
   margin-top: 2px;
+}
+
+:deep(.v-input__details) {
+  display: none;
+}
+
+:deep(.v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
+}
+
+.action-btn {
+  width: 28px !important;
+  height: 28px !important;
 }
 </style>

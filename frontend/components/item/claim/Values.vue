@@ -132,11 +132,14 @@ async function deleteQualifier (qualifier, index) {
 </script>
 
 <style scoped>
-:deep(.v-data-table-header th) {
+:deep(.v-data-table thead th) {
   background-color: #e0e0e0;
-  color: black;
-  font-weight: bold;
-  border: none;
+  color: #424242 !important;
+  font-weight: bold !important;
+  border: none !important;
+  font-size: 11px !important;
+  height: 28px !important;
+  text-align: right !important;
 }
 
 :deep(.v-data-table-header th:last-child) {

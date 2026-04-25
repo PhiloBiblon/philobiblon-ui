@@ -17,21 +17,35 @@
             mode="creation"
             @on-blur="updateClaimValue($event, key)"
           />
-          <div class="d-flex ml-3 mt-1">
-            <v-btn v-if="!forCreate" :disabled="!claim?.datavalue?.value" variant="text" icon @click.stop="createClaim(key)">
+          <div class="d-flex ml-3 mt-1 align-center">
+            <v-btn
+              v-if="!forCreate"
+              :disabled="!claim?.datavalue?.value"
+              variant="text"
+              icon
+              density="compact"
+              class="action-btn"
+              @click.stop="createClaim(key)"
+            >
               <v-tooltip location="top">
                 <template #activator="{ props: btnProps }">
-                  <v-icon v-bind="btnProps">
+                  <v-icon v-bind="btnProps" color="#616161" size="22">
                     mdi-check
                   </v-icon>
                 </template>
                 <span>{{ t("common.save") }}</span>
               </v-tooltip>
             </v-btn>
-            <v-btn variant="text" icon @click.stop="removeClaim(key)">
+            <v-btn
+              variant="text"
+              icon
+              density="compact"
+              class="action-btn"
+              @click.stop="removeClaim(key)"
+            >
               <v-tooltip location="top">
                 <template #activator="{ props: btnProps }">
-                  <v-icon v-bind="btnProps">
+                  <v-icon v-bind="btnProps" color="#616161" size="22">
                     mdi-trash-can
                   </v-icon>
                 </template>
@@ -148,5 +162,9 @@ function updateClaims (res) {
   padding: 3px;
   margin: 5px;
   border-radius: 5px;
+}
+.action-btn {
+  width: 28px !important;
+  height: 28px !important;
 }
 </style>

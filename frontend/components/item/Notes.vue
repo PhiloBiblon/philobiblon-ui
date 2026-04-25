@@ -1,5 +1,5 @@
 <template>
-  <div class="notes">
+  <div :class="['notes', { 'notes--editing': isUserLogged }]">
     <div v-if="loadingContent">
       {{ t('common.loading') }}
     </div>
@@ -122,11 +122,13 @@ function convertHtmlLinksToWiki (str) {
 <style scoped>
 .notes {
   background-color: rgb(247, 245, 245);
-}
-
-.notes {
   overflow: visible;
   padding-left: 1.5em;
+}
+
+.notes--editing {
+  background-color: #ffffff;
+  padding-left: 0;
 }
 
 .notes ul,

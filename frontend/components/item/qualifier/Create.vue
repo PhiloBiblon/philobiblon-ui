@@ -4,7 +4,7 @@
       v-for="(qualifier, key) in qualifiers"
       :key="key"
       align="center"
-      class="even-row"
+      class="even-row pt-3"
       no-gutters
       dense
     >
@@ -18,17 +18,17 @@
           :items="properties[key]"
           item-title="label"
           item-value="id"
-          variant="outlined"
+          variant="underlined"
           density="compact"
           :filter="acceptAll"
           @update:model-value="onChangeProperty($event, key)"
           @update:search="onInput($event, 'property', key)"
         />
       </v-col>
-      <v-col class="p-0 pr-3 pt-3">
+      <v-col class="p-0 pr-3">
         <div v-if="claim?.mainsnak?.property || qualifier.default">
           <item-value-base
-            :key="`${qualifier.property}-${key}`"
+            :key="`${qualifier.property?.id ?? qualifier.property}-${key}`"
             :label="t('common.value')"
             :claim="claim"
             :value="qualifier"
@@ -38,21 +38,35 @@
           />
         </div>
       </v-col>
-      <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
-        <v-btn v-if="allowCreateQualifier(qualifier)" variant="text" icon @click.stop="createQualifier(key)">
+      <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
+        <v-btn
+          v-if="allowCreateQualifier(qualifier)"
+          variant="text"
+          icon
+          density="compact"
+          class="action-btn"
+          @click.stop="createQualifier(key)"
+        >
           <v-tooltip location="top">
             <template #activator="{ props: btnProps }">
-              <v-icon v-bind="btnProps">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-check
               </v-icon>
             </template>
             <span>{{ t("common.save") }}</span>
           </v-tooltip>
         </v-btn>
-        <v-btn v-if="claim" variant="text" icon @click.stop="removeQualifier(key)">
+        <v-btn
+          v-if="claim"
+          variant="text"
+          icon
+          density="compact"
+          class="action-btn"
+          @click.stop="removeQualifier(key)"
+        >
           <v-tooltip location="top">
             <template #activator="{ props: btnProps }">
-              <v-icon v-bind="btnProps">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-trash-can
               </v-icon>
             </template>
@@ -189,6 +203,7 @@ function acceptAll () {
 
 <style scoped>
 .add-qualifier {
+  margin-top: 12px;
   margin-bottom: 5px;
 }
 .create-qualifier {
@@ -200,7 +215,18 @@ function acceptAll () {
 .max-w-100 {
   max-width: 100px !important;
 }
+.action-btn {
+  width: 28px !important;
+  height: 28px !important;
+}
 :deep(.v-text-field__details) {
   display: none;
+}
+:deep(.v-input__details) {
+  display: none;
+}
+:deep(.v-autocomplete .v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
 }
 </style>

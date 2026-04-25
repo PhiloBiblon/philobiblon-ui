@@ -8,21 +8,24 @@
         v-model="currentText"
         :label="t('common.date')"
         class="date-input"
+        density="compact"
         readonly
         v-bind="activatorProps"
         @focus="focus"
         @blur="blur"
       >
-        <template #append>
+        <template #append-inner>
           <v-btn
             v-if="isEditable && currentText !== consolidatedText"
             variant="text"
             icon
+            density="compact"
+            class="action-btn"
             @click="edit"
           >
             <v-tooltip location="top">
               <template #activator="{ props: btnProps }">
-                <v-icon v-bind="btnProps">
+                <v-icon v-bind="btnProps" color="#616161" size="22">
                   mdi-check
                 </v-icon>
               </template>
@@ -33,11 +36,13 @@
             v-if="isEditable && currentText !== consolidatedText"
             variant="text"
             icon
+            density="compact"
+            class="action-btn"
             @click="restore"
           >
             <v-tooltip location="top">
               <template #activator="{ props: btnProps }">
-                <v-icon v-bind="btnProps">
+                <v-icon v-bind="btnProps" color="#616161" size="22">
                   mdi-close
                 </v-icon>
               </template>
@@ -48,11 +53,13 @@
             v-if="isEditable && focussed"
             variant="text"
             icon
+            density="compact"
+            class="action-btn"
             @click.stop="deleteValue"
           >
             <v-tooltip location="top">
               <template #activator="{ props: btnProps }">
-                <v-icon v-bind="btnProps">
+                <v-icon v-bind="btnProps" color="#616161" size="22">
                   mdi-trash-can
                 </v-icon>
               </template>
@@ -64,8 +71,11 @@
     </template>
 
     <v-date-picker
-      v-model="currentText"
-      min="1000-01-01"
+      v-model="pickerDate"
+      :max="today"
+      min="0001-01-01"
+      hide-header
+      show-adjacent-months
       @update:model-value="onDateSelect"
     />
   </v-menu>
@@ -89,20 +99,24 @@ const { t } = useI18n()
 
 const currentText = ref(null)
 const consolidatedText = ref(null)
+const pickerDate = ref(null)
 const focussed = ref(false)
 const isDatePickerActive = ref(false)
 
 const isEditable = computed(() => props.mode === 'edit')
+const today = computed(() => new Date().toISOString().slice(0, 10))
 
 watch(currentText, (newVal, oldVal) => {
   if (oldVal != null && newVal !== oldVal) {
     focussed.value = true
   }
+  pickerDate.value = parseDate(newVal)
 })
 
 onMounted(() => {
   currentText.value = props.value
   consolidatedText.value = props.value
+  pickerDate.value = parseDate(props.value)
 })
 
 function focus () {
@@ -114,10 +128,27 @@ function blur () {
   emit('on-blur', currentText.value)
 }
 
-function onDateSelect () {
+function onDateSelect (newDate) {
+  currentText.value = formatDate(newDate)
   isDatePickerActive.value = false
   focussed.value = false
   emit('new-value', currentText.value)
+}
+
+function formatDate (date) {
+  if (!date) return null
+  const d = date instanceof Date ? date : new Date(date)
+  if (Number.isNaN(d.getTime())) return null
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+function parseDate (text) {
+  if (!text) return null
+  const d = new Date(text)
+  return Number.isNaN(d.getTime()) ? null : d
 }
 
 async function edit () {
@@ -171,6 +202,20 @@ async function deleteValue () {
 }
 
 .date-input {
-  width: 165px;
+  width: 200px;
+}
+
+.action-btn {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+:deep(.v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
+}
+
+:deep(.v-input__details) {
+  display: none;
 }
 </style>

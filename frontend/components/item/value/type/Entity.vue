@@ -72,7 +72,7 @@ onMounted(async () => {
       breadcrumbStore.table,
       breadcrumbStore.database
     )
-    setOptionsAutocomplete()
+    await setOptionsAutocomplete()
   }
   loading.value = false
 })
@@ -137,19 +137,27 @@ function setOptionsAutocomplete () {
       .then((results) => {
         Object.values(results).forEach((result) => {
           options.value.push({
-            id: result.item.value,
+            id: extractQid(result.item.value),
             label: result.item.label
           })
         })
-        selectedOption.value = getDefaultValue(props.valueToView.item, autocomplete.default_value)
+        const defaultValue = props.valueToView.useDefault === false ? null : autocomplete.default_value
+        const currentId = getDefaultValue(props.valueToView.item, defaultValue)
+        selectedOption.value = options.value.find(o => o.id === currentId) || currentId
       })
   } else {
     options.value = [{
       id: props.valueToView.item,
       label: props.valueToView.value
     }]
-    selectedOption.value = getDefaultValue(props.valueToView.item, null)
+    const currentId = getDefaultValue(props.valueToView.item, null)
+    selectedOption.value = options.value.find(o => o.id === currentId) || currentId
   }
+}
+
+function extractQid (uri) {
+  if (!uri) return uri
+  return uri.substring(uri.lastIndexOf('/') + 1)
 }
 
 function acceptAll () {

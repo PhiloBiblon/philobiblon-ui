@@ -138,4 +138,14 @@ function restore () {
   line-height: 1;
   vertical-align: middle;
 }
+
+:deep(.ql-toolbar) {
+  background-color: rgb(247, 245, 245);
+}
+
+:deep(.ql-container),
+:deep(.ql-editor) {
+  background-color: #ffffff;
+  font-size: 16px;
+}
 </style>

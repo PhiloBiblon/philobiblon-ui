@@ -5,7 +5,7 @@
       v-model="currentTab"
       height="20"
     >
-      <v-tab value="results">
+      <v-tab value="results" class="results-tab">
         {{ t('search.results.results') }} ({{ totalResults }})
       </v-tab>
     </v-tabs>
@@ -48,7 +48,7 @@
                       :items="sortItems"
                       item-title="text"
                       item-value="value"
-                      class="text-body-2"
+                      class="sort-select"
                       density="compact"
                       @update:model-value="changeSortByID"
                     />
@@ -56,6 +56,7 @@
                   <v-col cols="auto">
                     <v-icon
                       v-if="isSortByName && !isSortDescending"
+                      class="sort-icon"
                       density="compact"
                       @click="changeSortDescending"
                     >
@@ -63,6 +64,7 @@
                     </v-icon>
                     <v-icon
                       v-if="isSortByName && isSortDescending"
+                      class="sort-icon"
                       density="compact"
                       @click="changeSortDescending"
                     >
@@ -70,6 +72,7 @@
                     </v-icon>
                     <v-icon
                       v-if="isSortByID && !isSortDescending"
+                      class="sort-icon"
                       density="compact"
                       @click="changeSortDescending"
                     >
@@ -77,6 +80,7 @@
                     </v-icon>
                     <v-icon
                       v-if="isSortByID && isSortDescending"
+                      class="sort-icon"
                       density="compact"
                       @click="changeSortDescending"
                     >
@@ -84,6 +88,7 @@
                     </v-icon>
                     <v-icon
                       v-if="isSortByDate && !isSortDescending"
+                      class="sort-icon"
                       density="compact"
                       @click="changeSortDescending"
                     >
@@ -91,6 +96,7 @@
                     </v-icon>
                     <v-icon
                       v-if="isSortByDate && isSortDescending"
+                      class="sort-icon"
                       density="compact"
                       @click="changeSortDescending"
                     >
@@ -187,6 +193,18 @@ function goToItem (id) {
 }
 .sort-select-field {
   padding: 4px 0 0 0;
-  width: 75px;
+  width: 90px;
+}
+:deep(.results-tab) {
+  color: #b71c1c !important;
+  font-weight: bold;
+}
+:deep(.sort-select .v-field__input),
+:deep(.sort-select .v-label) {
+  font-size: 12px !important;
+}
+.sort-icon {
+  color: #757575;
+  font-size: 18px;
 }
 </style>

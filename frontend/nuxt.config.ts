@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { en as vuetifyEn, ca as vuetifyCa, es as vuetifyEs, pt as vuetifyPt } from 'vuetify/locale'
+
 export default defineNuxtConfig({
   ssr: false,
 
@@ -17,7 +19,10 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap' }
       ]
     }
   },
@@ -54,10 +59,44 @@ export default defineNuxtConfig({
       styles: { configFile: 'assets/variables.scss' }
     },
     vuetifyOptions: {
+      defaults: {
+        VTextField: { variant: 'underlined', color: 'primary' },
+        VAutocomplete: { variant: 'underlined', color: 'primary' },
+        VSelect: { variant: 'underlined', color: 'primary' },
+        VCombobox: { variant: 'underlined', color: 'primary' },
+        VTextarea: { variant: 'underlined', color: 'primary' },
+        VRadio: { color: 'primary' },
+        VRadioGroup: { color: 'primary' },
+        VSwitch: { color: 'primary' },
+        VCheckbox: { color: 'primary' },
+        VDatePicker: { color: 'primary' }
+      },
+      locale: {
+        locale: 'en',
+        fallback: 'en',
+        messages: {
+          en: vuetifyEn,
+          ca: vuetifyCa,
+          es: vuetifyEs,
+          gl: vuetifyEs,
+          pt: vuetifyPt
+        }
+      },
       theme: {
         defaultTheme: 'light',
         themes: {
           light: {
+            colors: {
+              primary: '#b71c1c',
+              secondary: '#e57373',
+              accent: '#ff8a80',
+              info: '#26a69a',
+              warning: '#ffc107',
+              error: '#dd2c00',
+              success: '#69f0ae'
+            }
+          },
+          dark: {
             colors: {
               primary: '#b71c1c',
               secondary: '#e57373',

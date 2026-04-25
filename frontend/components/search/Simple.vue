@@ -3,16 +3,19 @@
     <v-autocomplete
       v-model:search="search"
       rounded
+      variant="solo"
+      density="compact"
       :items="items"
       item-value="id"
       item-title="title"
       class="search-bar"
       :class="{welcome: isWelcome}"
-      style="max-width: 450px;"
+      style="max-width: 350px;"
       :loading="loading"
+      color="primary"
       prepend-inner-icon="mdi-magnify"
       :placeholder="t('wiki.search.placeholder')"
-      append-inner-icon="mdi-microphone"
+      hide-no-data
       @update:model-value="onItemSelected"
     />
   </div>
@@ -90,55 +93,30 @@ function onItemSelected (id) {
   justify-content: center;
 }
 
-:deep(.search-bar .v-text-field__details) {
+.search-bar {
+  width: 100%;
+}
+
+:deep(.search-bar .v-input__details) {
   display: none;
 }
 
-:deep(.search-bar:not(.welcome) .v-input__slot) {
-  padding-top: unset!important;
-  margin: unset;
-}
-
-.search-bar {
-  width: 100%;
-  padding-top: unset;
-}
-
-:deep(.v-application .v-autocomplete__content.v-menu__content) {
-  width: 598px!important;
-}
-
-:deep(.v-autocomplete .v-input__control) {
-  background-color: white !important;
-  border: 1px solid #dcdcdc !important;
-  border-radius: 24px !important;
+:deep(.search-bar .v-field) {
+  border: 1px solid #dcdcdc;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-:deep(.v-autocomplete .v-input__append-inner),
-:deep(.v-autocomplete .v-input__prepend-inner) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+:deep(.search-bar .v-field:hover),
+:deep(.search-bar .v-field--focused) {
+  border-color: #b71c1c;
+  box-shadow: 0 1px 6px rgba(183, 28, 28, 0.28);
 }
 
-:deep(.v-autocomplete .v-input__append-inner .v-icon),
-:deep(.v-autocomplete .v-input__prepend-inner .v-icon) {
-  color: rgba(0, 0, 0, 0.54);
+:deep(.search-bar .v-field--focused .v-icon) {
+  color: #b71c1c;
 }
 
-:deep(.v-autocomplete .v-input__control .v-input__slot) {
-  padding-top: 10px;
-  border-radius: 24px;
-}
-
-:deep(.v-autocomplete .v-input__control:hover),
-:deep(.v-autocomplete .v-input__control:focus-within) {
-  border-color: #4285f4 !important;
-  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28) !important;
-}
-
-:deep(.v-autocomplete .v-list-item__title) {
-  color: black;
+:deep(.search-bar .v-field__overlay) {
+  display: none;
 }
 </style>

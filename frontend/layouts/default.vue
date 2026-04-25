@@ -8,12 +8,7 @@
       theme="dark"
     >
       <template #prepend>
-        <v-list-item v-if="username" lines="two">
-          <template #prepend>
-            <v-avatar>
-              <v-icon>mdi-account</v-icon>
-            </v-avatar>
-          </template>
+        <v-list-item v-if="username" lines="two" prepend-icon="mdi-account">
           <v-list-item-title>{{ username }}</v-list-item-title>
         </v-list-item>
       </template>
@@ -60,8 +55,14 @@
     </v-navigation-drawer>
     <v-app-bar
       theme="dark"
-      style="background: linear-gradient(to top right, rgba(33,33,33,.7), rgba(250,250,250,.7))"
     >
+      <template #image>
+        <v-img
+          src="/img/header_page-opacity15_2.gif"
+          gradient="to top right, rgba(33,33,33,.7), rgba(250,250,250,.7)"
+          cover
+        />
+      </template>
       <v-app-bar-nav-icon class="d-lg-none" @click.stop="drawer = !drawer" />
       <v-toolbar-title
         class="text-h4"
@@ -90,12 +91,12 @@
       </v-btn>
     </v-app-bar>
     <v-main class="min-height-full-display">
-      <v-container fluid>
+      <v-container fluid class="content-container">
         <v-breadcrumbs :items="breadcrumbStore.items" :class="breadcrumbStore.class" />
         <slot />
       </v-container>
+      <philo-footer />
     </v-main>
-    <philo-footer />
   </v-app>
 </template>
 
@@ -187,11 +188,10 @@ function logout () {
 .mainmenu :deep(.v-list-item--active) {
   color: white;
 }
-.subitem {
-  padding-left: 35%;
+.subitem :deep(.v-list-item-title) {
+  padding-left: 10px;
 }
 .min-height-full-display {
-  min-height: 100vh;
 }
 
 :deep(.large-font-breadcrumb) li {

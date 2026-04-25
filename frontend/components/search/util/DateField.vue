@@ -22,6 +22,8 @@
           v-model="beginValue"
           :max="today"
           min="0001-01-01"
+          hide-header
+          show-adjacent-months
           @update:model-value="onBeginDateSelect"
         />
       </v-menu>
@@ -46,6 +48,8 @@
           v-model="endValue"
           :max="today"
           min="0001-01-01"
+          hide-header
+          show-adjacent-months
           @update:model-value="onEndDateSelect"
         />
       </v-menu>

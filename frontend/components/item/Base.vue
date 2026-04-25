@@ -5,7 +5,7 @@
         <a class="link" @click="goTo(`/search/${table}/query`)">
           <v-tooltip location="right">
             <template #activator="{ props: tooltipProps }">
-              <v-icon color="primary" v-bind="tooltipProps">
+              <v-icon color="primary" size="large" v-bind="tooltipProps">
                 mdi-reply
               </v-icon>
             </template>
@@ -181,10 +181,11 @@ function editDescription (descriptionValue) {
 }
 .link {
   text-decoration: none;
+  cursor: pointer;
 }
 .back {
   font-size: 12px;
-  height: 25px;
+  height: 36px;
 }
 .full-width {
   width: 100%;

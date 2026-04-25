@@ -17,10 +17,10 @@
       <slot :name="slotName" v-bind="slotData || {}" />
     </template>
     <template #item="{ props: itemProps, item }">
-      <v-list-item v-bind="itemProps">
+      <v-list-item v-bind="itemProps" density="compact" :lines="item.raw.value.desc ? 'two' : 'one'">
         <template #title>
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <span v-html="item.raw.text" />
+          <span class="ac-item-title" v-html="item.raw.text" />
         </template>
         <template #subtitle>
           <!-- eslint-disable-next-line vue/no-v-html -->
@@ -29,7 +29,7 @@
       </v-list-item>
     </template>
     <template #message="{ message }">
-      <v-tooltip max-width="40%" location="bottom" open-delay="200">
+      <v-tooltip content-class="hint-tooltip" location="bottom" open-delay="200">
         <template #activator="{ props: tooltipProps }">
           <!-- eslint-disable-next-line vue/no-v-html -->
           <span v-bind="tooltipProps" v-html="message && message.length < hintMaxWidth ? $sanitize(message) : $sanitize(message).substring(0, hintMaxWidth) + '...'" />

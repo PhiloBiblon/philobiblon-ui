@@ -4,7 +4,7 @@
       {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
     </template>
     <template v-else>
-      <v-container>
+      <v-container class="pa-0">
         <v-row dense class="justify-start">
           <v-col dense class="flex-shrink-1">
             <item-util-edit-date-picker-field
@@ -20,7 +20,8 @@
               v-model="valueToView_.calendar"
               :label="t('common.calendar')"
               :items="['Gregorian', 'Julian']"
-              class="ma-0 pa-0"
+              class="ma-0 pa-0 mt-2"
+              density="compact"
               style="width: 100px"
               @update:model-value="onChangeCalendarType"
             />
@@ -119,5 +120,12 @@ function formatDate (dateString) {
 }
 :deep(.v-select__selection) {
   font-size: 12px;
+}
+:deep(.v-input__details) {
+  display: none;
+}
+:deep(.v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
 }
 </style>

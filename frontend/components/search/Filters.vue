@@ -2,11 +2,13 @@
   <v-form ref="search_form">
     <v-container>
       <v-row dense>
-        <v-col cols="7">
+        <v-col cols="12" md="10">
           <v-radio-group
             v-model="searchGroup.value"
             :disabled="searchGroup.disabled"
             inline
+            hide-details
+            density="compact"
             @update:model-value="onGroupChange"
           >
             <template #label>
@@ -21,7 +23,7 @@
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="1">
+        <v-col cols="2">
           <v-select
             v-if="isBitagapSelected"
             v-model="bitagapGroup.value"
@@ -350,8 +352,13 @@ defineExpose({ back })
   margin-top: 0;
   padding-top: 0;
 }
-.group-option {
-  padding-right: 30px;
+:deep(.v-radio-group .v-selection-control-group) {
+  margin-top: 0;
+  padding-top: 0;
+}
+:deep(.v-radio.v-selection-control) {
+  margin-right: 16px;
+  min-height: 32px;
 }
 .section-search {
   cursor: pointer;

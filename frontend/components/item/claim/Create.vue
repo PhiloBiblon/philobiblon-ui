@@ -8,7 +8,7 @@
       dense
     >
       <v-col class="p-0 pr-3 mt-3">
-        <div class="claim-header text-grey">
+        <div class="claim-header">
           <v-autocomplete
             v-model="claim.property"
             required
@@ -17,7 +17,7 @@
             item-title="label"
             return-object
             :label="t('common.property')"
-            variant="outlined"
+            variant="underlined"
             density="compact"
             :filter="acceptAll"
             @update:model-value="onChangeProperty($event, claim)"
@@ -25,21 +25,36 @@
           />
         </div>
       </v-col>
-      <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
-        <v-btn v-if="!forCreate" :disabled="!canCreate(key)" variant="text" icon @click.stop="addClaim(key)">
+      <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
+        <v-btn
+          v-if="!forCreate"
+          :disabled="!canCreate(key)"
+          variant="text"
+          icon
+          density="compact"
+          class="action-btn"
+          @click.stop="addClaim(key)"
+        >
           <v-tooltip location="top">
             <template #activator="{ props: btnProps }">
-              <v-icon v-bind="btnProps">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-check
               </v-icon>
             </template>
             <span>{{ t("common.save") }}</span>
           </v-tooltip>
         </v-btn>
-        <v-btn v-if="claim?.property?.id !== pbid" variant="text" icon @click.stop="removeClaim(key)">
+        <v-btn
+          v-if="claim?.property?.id !== pbid"
+          variant="text"
+          icon
+          density="compact"
+          class="action-btn"
+          @click.stop="removeClaim(key)"
+        >
           <v-tooltip location="top">
             <template #activator="{ props: btnProps }">
-              <v-icon v-bind="btnProps">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-trash-can
               </v-icon>
             </template>
@@ -47,24 +62,22 @@
           </v-tooltip>
         </v-btn>
       </v-col>
-      <v-container class="claim-values elevation-1">
-        <div v-if="claim?.property?.id || claim.default">
-          <item-value-base
-            :key="`${claim.property?.id}-${key}`"
-            :claim="claim"
-            :value="claim.value"
-            type="claim"
-            mode="creation"
-            @new-value="onNewValue($event, claim)"
-          />
-          <item-qualifier-create
-            :key="claim?.property?.id"
-            :claim="claim"
-            :for-create="forCreate"
-            :initial-qualifiers="claim.qualifiers"
-            @update-qualifiers="updateQualifiers($event, key)"
-          />
-        </div>
+      <v-container v-if="claim?.property?.id || claim.default" class="claim-values elevation-1">
+        <item-value-base
+          :key="`${claim.property?.id}-${key}`"
+          :claim="claim"
+          :value="claim.value"
+          type="claim"
+          mode="creation"
+          @new-value="onNewValue($event, claim)"
+        />
+        <item-qualifier-create
+          :key="claim?.property?.id"
+          :claim="claim"
+          :for-create="forCreate"
+          :initial-qualifiers="claim.qualifiers"
+          @update-qualifiers="updateQualifiers($event, key)"
+        />
       </v-container>
       <item-claim-add-value
         v-if="forCreate"
@@ -269,5 +282,9 @@ function acceptAll () {
     margin: 1px 0 0 0;
   }
   margin-top: 0;
+}
+.action-btn {
+  width: 28px !important;
+  height: 28px !important;
 }
 </style>

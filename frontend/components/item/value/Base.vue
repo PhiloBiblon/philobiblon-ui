@@ -58,12 +58,16 @@ const valueToView = ref(null)
 const isEditable = computed(() => props.mode === 'edit')
 
 onMounted(async () => {
-  valueToView.value = await $wikibase.getWbValue(
+  const result = await $wikibase.getWbValue(
     props.value.property,
     props.value.datatype,
     props.value.datavalue?.value,
     locale.value
   )
+  if (result) {
+    result.useDefault = props.value.datavalue?.default !== false
+  }
+  valueToView.value = result
 })
 
 function editValue (editableData) {
