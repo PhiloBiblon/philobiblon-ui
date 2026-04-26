@@ -143,7 +143,12 @@ function setOptionsAutocomplete () {
         })
         const defaultValue = props.valueToView.useDefault === false ? null : autocomplete.default_value
         const currentId = getDefaultValue(props.valueToView.item, defaultValue)
-        selectedOption.value = options.value.find(o => o.id === currentId) || currentId
+        let foundOption = options.value.find(o => o.id === currentId)
+        if (!foundOption && currentId && props.valueToView.item) {
+          foundOption = { id: props.valueToView.item, label: props.valueToView.value }
+          options.value.push(foundOption)
+        }
+        selectedOption.value = foundOption || null
       })
   } else {
     options.value = [{

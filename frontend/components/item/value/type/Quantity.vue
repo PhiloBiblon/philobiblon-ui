@@ -26,6 +26,7 @@
               :mode="mode"
               :filter="acceptAll"
               style="width: 200px"
+              class="ma-0 pa-0 mt-2"
               @update-options="unitOptions = $event"
               @input="oninput($event)"
               @new-value="newUnitValue"
@@ -62,7 +63,7 @@ const valueToView_ = reactive(getInitialValue())
 const newValue_ = reactive({ amount: null, unit: null })
 const unitItemId = ref(null)
 const unitLabel = ref(null)
-const selectedUnit = ref('')
+const selectedUnit = ref(null)
 const unitOptions = ref([])
 
 const isUserLogged = computed(() => authStore.isLogged)
@@ -130,11 +131,12 @@ async function handleSearchChange (value) {
 }
 
 function setUnitOptions () {
-  unitOptions.value = [{
+  const option = {
     id: unitItemId.value,
     label: unitLabel.value.value
-  }]
-  selectedUnit.value = unitItemId.value
+  }
+  unitOptions.value = [option]
+  selectedUnit.value = option
 }
 
 function deleteValue () {

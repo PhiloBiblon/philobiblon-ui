@@ -133,6 +133,10 @@ async function deleteQualifier (qualifier, index) {
 </script>
 
 <style scoped>
+:deep(table) {
+  table-layout: fixed;
+}
+
 :deep(.v-data-table thead th) {
   background-color: #e0e0e0;
   color: #424242 !important;

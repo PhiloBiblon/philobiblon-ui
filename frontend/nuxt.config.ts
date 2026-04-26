@@ -19,10 +19,7 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
       ]
     }
   },
@@ -42,6 +39,12 @@ export default defineNuxtConfig({
 
   css: [
     '@mdi/font/css/materialdesignicons.css',
+    '@fontsource/roboto/100.css',
+    '@fontsource/roboto/300.css',
+    '@fontsource/roboto/400.css',
+    '@fontsource/roboto/500.css',
+    '@fontsource/roboto/700.css',
+    '@fontsource/roboto/900.css',
     '@/assets/css/main.css'
   ],
 
@@ -136,6 +139,9 @@ export default defineNuxtConfig({
     compilation: {
       strictMessage: false,
       jit: true
+    },
+    bundle: {
+      optimizeTranslationDirective: false
     }
   },
 
