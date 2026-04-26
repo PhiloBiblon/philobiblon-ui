@@ -6,7 +6,7 @@ ARG BASE_URL
 ARG API_BASE_URL
 ENV BASE_URL=$BASE_URL
 ENV API_BASE_URL=$API_BASE_URL
-RUN yarn install
+RUN corepack enable && yarn install
 COPY . .
 RUN yarn run generate
 
