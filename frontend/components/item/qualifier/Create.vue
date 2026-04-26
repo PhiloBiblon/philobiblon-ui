@@ -181,7 +181,7 @@ async function createQualifier (index) {
     property: propertyId
   }, authStore.requestConfig).then((res) => {
     if (res.success) {
-      updateQualifiers(res.claim.qualifiers[qualifier.property])
+      updateQualifiers(res.claim.qualifiers[propertyId])
       removeQualifier(index)
       $notification.success(t('messages.success.updated'))
     } else {

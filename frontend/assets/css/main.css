@@ -164,7 +164,7 @@
   opacity: 1;
 }
 
-.v-menu__content {
+.v-overlay__content.v-menu {
   max-width: 450px !important;
   width: 80% !important;
 }
@@ -213,7 +213,6 @@
 
 .full-width {
   width: 100%;
-  word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
 }

@@ -101,7 +101,7 @@ const isUserLogged = computed(() => authStore.isLogged)
 const isCreateDisabled = computed(() => !!getCreateDisabledReason())
 const pbid = computed(() => initialClaims.value.find(
   item => item.property.id === $wikibase.constructor.PROPERTY_PBID
-).value)
+)?.value)
 
 onMounted(() => {
   nextTick(() => {
@@ -371,7 +371,7 @@ async function create () {
       }
     } catch (error) {
       $notification.error(
-        error.body.error.info ?? t('messages.error.something_went_wrong')
+        error?.body?.error?.info ?? t('messages.error.something_went_wrong')
       )
     }
   } else {

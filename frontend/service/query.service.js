@@ -331,7 +331,7 @@ export class QueryService {
             `
       }
     }
-    if (endOptional && completeRange) {
+    if (completeRange) {
       filters += `
         FILTER(BOUND(?${beginVar}) || BOUND(?${endVar}))
         `

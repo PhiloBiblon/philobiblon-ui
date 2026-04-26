@@ -1,7 +1,8 @@
 # build stage
 FROM node:22-alpine AS build-stage
 WORKDIR /app
-COPY package.json ./
+COPY package.json .yarnrc.yml ./
+COPY .yarn .yarn
 ARG BASE_URL
 ARG API_BASE_URL
 ENV BASE_URL=$BASE_URL
@@ -24,7 +25,7 @@ RUN echo 'server {\n\
         try_files ${DOLLAR}uri ${DOLLAR}uri/ /index.html;\n\
     }\n\
 \n\
-    location ~ /(api|w|./w)/ {\n\
+    location ~ ^/(api|w|\\./w)(/|${DOLLAR}) {\n\
         proxy_pass http://backend:8080;\n\
         proxy_set_header Host ${DOLLAR}host;\n\
         proxy_set_header X-Real-IP ${DOLLAR}remote_addr;\n\

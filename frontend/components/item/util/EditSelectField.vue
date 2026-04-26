@@ -116,10 +116,12 @@ watch(() => props.value, (newValue, oldValue) => {
 onMounted(() => {
   if (props.value) {
     currentText.value = props.value
-  } else {
+  } else if (props.options && props.options.length > 0) {
     currentText.value = { ...props.options[0] }
+  } else {
+    currentText.value = null
   }
-  consolidatedText.value = { ...currentText.value }
+  consolidatedText.value = currentText.value ? { ...currentText.value } : null
   consolidatedOptions.value = JSON.parse(JSON.stringify(props.options))
 })
 
@@ -178,12 +180,12 @@ async function deleteValue () {
         if (!response.success) {
           throw new Error(response.info)
         }
-        $notification.success('Successfully deleted')
+        $notification.success(t('messages.success.deleted'))
       }
     })
     .catch((error) => {
       if (error.message === 'query is undefined') {
-        error = 'Error: Session expired.'
+        error = t('messages.error.session.expired')
       }
       $notification.error(error)
     })

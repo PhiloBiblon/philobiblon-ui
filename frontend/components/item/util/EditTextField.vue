@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 defineOptions({ inheritAttrs: false })
@@ -94,6 +94,11 @@ const focussed = ref(false)
 
 const isEditable = computed(() => props.mode === 'edit')
 
+watch(() => props.value, (newValue) => {
+  currentText.value = newValue
+  consolidatedText.value = newValue
+})
+
 onMounted(() => {
   currentText.value = props.value
   consolidatedText.value = props.value
@@ -116,7 +121,7 @@ function handleInput () {
 }
 
 async function edit () {
-  if (isEditable.value) {
+  if (isEditable.value && props.save) {
     await props.save(currentText.value, consolidatedText.value)
       .then((response) => {
         if (response) {
@@ -148,18 +153,21 @@ function restore () {
 }
 
 async function deleteValue () {
+  if (!props.delete) {
+    return
+  }
   await props.delete()
     .then((response) => {
       if (response) {
         if (!response.success) {
           throw new Error(response.info)
         }
-        $notification.success('Successfully deleted')
+        $notification.success(t('messages.success.deleted'))
       }
     })
     .catch((error) => {
       if (error.message === 'query is undefined') {
-        error = 'Error: Session expired.'
+        error = t('messages.error.session.expired')
       }
       $notification.error(error)
     })

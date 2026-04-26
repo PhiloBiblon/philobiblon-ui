@@ -122,8 +122,8 @@ function onNewValue (event, reference) {
 
 function onChangeProperty (event, index) {
   const reference = references[index]
-  reference.property = event.id
-  reference.datatype = event.datatype
+  reference.property = event
+  reference.datatype = event?.datatype
   reference.datavalue = { value: null }
 }
 

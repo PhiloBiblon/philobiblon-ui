@@ -32,7 +32,6 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 const { locale, setLocale } = useI18n()
 const config = useRuntimeConfig()

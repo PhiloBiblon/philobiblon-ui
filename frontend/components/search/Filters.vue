@@ -179,6 +179,9 @@ watch(showResults, (newValue) => {
 if (queryStatusStore.showResults) {
   showResults.value = queryStatusStore.showResults
 }
+if (searchGroup.value === 'BITAGAP' && props.table !== 'libid') {
+  isBitagapSelected.value = true
+}
 loadDefaultBibliography()
 
 onMounted(() => {

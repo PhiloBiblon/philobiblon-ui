@@ -104,7 +104,9 @@ function addClaim () {
 }
 
 function removeClaim (key) {
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   delete claims[key]
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   delete items[key]
 
   if (props.forCreate) {
@@ -122,7 +124,7 @@ function updateClaimValue (value, key) {
 
 async function createClaim (index) {
   const value = claims[index]?.datavalue?.value
-  if (!value) {
+  if (value == null) {
     return
   }
   const res = await $wikibase.getWbEdit().claim.add({
@@ -132,10 +134,10 @@ async function createClaim (index) {
   }, authStore.requestConfig)
   if (res.success) {
     $notification.success(t('messages.success.updated'))
+    updateClaims(res)
   } else {
     $notification.error(t('messages.error.modification.failed'))
   }
-  updateClaims(res)
   return res
 }
 

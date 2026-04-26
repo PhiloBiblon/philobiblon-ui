@@ -125,6 +125,7 @@ async function deleteQualifier (qualifier, index) {
     qualifiers.splice(findIndex, 1)
   }
   if (!qualifiers.length) {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete value.qualifiers[qualifier.property]
   }
   await getHeaders()

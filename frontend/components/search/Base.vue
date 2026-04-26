@@ -53,7 +53,6 @@ const localePath = useLocalePath()
 const breadcrumbStore = useBreadcrumbStore()
 const queryStatusStore = useQueryStatusStore()
 
-const database = ref(null)
 const form = ref(null)
 const showResults = ref(false)
 const waitingCount = ref(false)
@@ -65,6 +64,7 @@ const totalResults = ref(0)
 const qs = ref(null)
 
 const waitingResults = computed(() => waitingItems.value || waitingCount.value)
+const activeDatabase = computed(() => form.value?.input?.group?.value || 'ALL')
 
 if (queryStatusStore.currentTable !== props.table) {
   queryStatusStore.resetStatus(props.table)
@@ -138,8 +138,8 @@ function clearResults () {
   queryStatusStore.setSortDescending(false)
 }
 
-function onDatabaseChange (newDatabase) {
-  database.value = newDatabase
+function onDatabaseChange (_newDatabase) {
+  // Database is now tracked in form.input.group.value
 }
 
 function goToItem (id) {
@@ -147,7 +147,7 @@ function goToItem (id) {
     localePath({
       path: '/item/' + id,
       query: {
-        database: database.value,
+        database: activeDatabase.value,
         table: props.table
       }
     })
