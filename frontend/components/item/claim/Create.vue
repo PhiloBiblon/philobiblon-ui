@@ -89,7 +89,7 @@
         @update-claims-values="updateClaimValues($event, key)"
       />
     </v-row>
-    <v-row class="back pr-5 mb-2 mt-2" justify="end">
+    <v-row class="back pr-5 mb-2 mt-2 add-statement" justify="end">
       <a role="button" class="link" @click="addNewClaim">
         <div class="align-center">
           <v-icon color="primary">
@@ -282,6 +282,9 @@ function acceptAll () {
     margin: 1px 0 0 0;
   }
   margin-top: 0;
+}
+.add-statement {
+  font-size: 16px;
 }
 .action-btn {
   width: 28px !important;

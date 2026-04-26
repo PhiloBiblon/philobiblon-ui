@@ -149,6 +149,7 @@ function updateClaims (res) {
 <style scoped>
 .add-value {
   background-color: white;
+  font-size: 14px;
 }
 .claim {
   padding: 0;

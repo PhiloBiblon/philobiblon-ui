@@ -210,6 +210,7 @@ function acceptAll () {
 .add-qualifier {
   margin-top: 12px;
   margin-bottom: 5px;
+  font-size: 12px;
 }
 .create-qualifier {
   padding: 0;

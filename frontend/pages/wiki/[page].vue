@@ -16,6 +16,7 @@ const { t, locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 const breadcrumbStore = useBreadcrumbStore()
+const baseURL = useRuntimeConfig().app.baseURL.replace(/\/$/, '')
 
 const pageName = route.params.page
 const wikiPage = getWikiPage(pageName)
@@ -36,7 +37,7 @@ function prepareContent (html) {
     .replaceAll('<blockquote>', '<blockquote style="padding-left: 50px;">')
     .replace(/href="(?!https?:|\/|#|mailto:)([^"]+)"/g, (_, path) => {
       const hasLocale = ['en', 'ca', 'es', 'gl', 'pt'].some(l => path.startsWith(l + '/'))
-      return hasLocale ? `href="/${path}"` : `href="/${locale.value}/${path}"`
+      return hasLocale ? `href="${baseURL}/${path}"` : `href="${baseURL}/${locale.value}/${path}"`
     })
 }
 
@@ -88,7 +89,7 @@ function parseLink (match, g1, g2) {
     if (!link.startsWith('/')) {
       link = `/wiki/${link}`
     }
-    return `<a href='${localePath(link)}'>${text}</a>`
+    return `<a href='${baseURL}${localePath(link)}'>${text}</a>`
   }
 }
 </script>
