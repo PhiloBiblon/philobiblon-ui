@@ -115,7 +115,7 @@ function removeClaim (key) {
 }
 
 function updateClaimValue (value, key) {
-  claims[key].datavalue.value = value && typeof value === 'object' ? value.id ?? null : value
+  claims[key].datavalue.value = value && typeof value === 'object' && 'id' in value ? value.id ?? null : value
 
   if (props.forCreate) {
     emit('update-claims-values', claims)

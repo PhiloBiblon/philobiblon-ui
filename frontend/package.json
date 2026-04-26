@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "yarn@4.1.0",
   "scripts": {
     "dev": "API_BASE_URL=https://philobiblon.cog.berkeley.edu/ui-local/ nuxt dev",
     "build": "nuxt build",

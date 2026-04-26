@@ -48,6 +48,9 @@ const languages = [
 const localeFlag = computed(() => languages.find(lang => lang.locale === locale.value)?.image ?? '')
 
 function changeLocale (index) {
+  if (!Number.isFinite(index) || !Number.isInteger(index) || index < 0 || index >= languages.length) {
+    return
+  }
   setLocale(languages[index].locale)
 }
 </script>

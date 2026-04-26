@@ -133,15 +133,16 @@ async function edit () {
         }
       })
       .catch((error) => {
-        if (error.message === 'query is undefined') {
-          error = t('messages.error.session.expired')
+        const originalMessage = error?.message || String(error)
+        let finalNotificationMsg = error
+
+        if (originalMessage === 'query is undefined') {
+          finalNotificationMsg = t('messages.error.session.expired')
+        } else if (originalMessage.includes('modification-failed')) {
+          finalNotificationMsg = t('messages.error.modification.failed')
         }
 
-        if (error.message.includes('modification-failed')) {
-          error = t('messages.error.modification.failed')
-        }
-
-        $notification.error(error)
+        $notification.error(finalNotificationMsg)
       })
   }
   myTextField.value?.blur?.()

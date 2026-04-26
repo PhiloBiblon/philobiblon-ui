@@ -108,9 +108,7 @@ const isRemovable = computed(() => isEditable.value && !!props.delete)
 
 watch(() => props.value, (newValue, oldValue) => {
   currentText.value = newValue
-  if (!oldValue) {
-    consolidatedText.value = currentText.value
-  }
+  consolidatedText.value = currentText.value ? { ...currentText.value } : null
 })
 
 onMounted(() => {
@@ -143,7 +141,7 @@ function blur () {
 }
 
 async function edit () {
-  if (currentText.value && currentText.value.id !== consolidatedText.value.id) {
+  if (currentText.value && (!consolidatedText.value || currentText.value.id !== consolidatedText.value.id)) {
     await props.save(currentText.value, consolidatedText.value)
       .then((response) => {
         if (response) {

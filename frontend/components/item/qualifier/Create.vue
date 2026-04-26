@@ -131,7 +131,7 @@ watch(qualifiers, (val) => {
 
 function allowCreateQualifier (qualifier) {
   const propertyId = qualifier.property?.id || qualifier.property
-  return props.claim && !props.forCreate && propertyId && qualifier.datavalue?.value
+  return props.claim && !props.forCreate && propertyId && qualifier.datavalue?.value !== undefined && qualifier.datavalue?.value !== null
 }
 
 function onNewValue (event, qualifier) {
