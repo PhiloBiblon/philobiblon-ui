@@ -206,9 +206,4 @@ async function deleteValue () {
   min-height: 28px !important;
   padding-bottom: 0 !important;
 }
-
-.action-btn {
-  width: 28px !important;
-  height: 28px !important;
-}
 </style>

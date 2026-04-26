@@ -141,188 +141,91 @@ export class QueryService {
     }
   }
 
-  generateBitagapGroupInstitutionFilters (bitagapGroup) {
-    let filters = ''
-    if (bitagapGroup && bitagapGroup !== 'ALL') {
-      filters +=
+  _bitagapGroupFilter (bitagapGroup, labelVar) {
+    if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
+      return `
+          FILTER(!CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"))
+          `
+    } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
+      return `
+          FILTER(CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"))
+          `
+    }
+    return ''
+  }
+
+  _generateBitagapGroupSubjectTopicFilters (bitagapGroup) {
+    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
+    return `
+        ?item wdt:P243 ?related_topic_item .
+        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+        ?related_topic_item rdfs:label ?related_topic_item_label .
+        ${this._bitagapGroupFilter(bitagapGroup, 'related_topic_item_label')}
         `
+  }
+
+  generateBitagapGroupInstitutionFilters (bitagapGroup) {
+    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
+    return `
         ?related_work_item wdt:P476 ?related_work_item_pbid .
         FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
         ?related_work_item wdt:P243 ?topic_item .
         ?topic_item rdfs:label ?topic_item_label .
         ?related_work_item wdt:P243 ?item .
+        ${this._bitagapGroupFilter(bitagapGroup, 'topic_item_label')}
         `
-      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
-    return filters
   }
 
   generateBitagapGroupWorkFilters (bitagapGroup) {
-    let filters = ''
-    if (bitagapGroup && bitagapGroup !== 'ALL') {
-      filters +=
-        `
+    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
+    return `
         ?item wdt:P243 ?subjectItem .
         ?subjectItem rdfs:label ?labelSubjectItem .
+        ${this._bitagapGroupFilter(bitagapGroup, 'labelSubjectItem')}
         `
-      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?labelSubjectItem), "${CARTAS_TEXT}"))
-          `
-      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?labelSubjectItem), "${CARTAS_TEXT}"))
-          `
-      }
-    }
-    return filters
   }
 
   generateBitagapGroupPersonFilters (bitagapGroup) {
-    let filters = ''
-    if (bitagapGroup && bitagapGroup !== 'ALL') {
-      filters +=
-        `
+    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
+    return `
         ?related_work_item wdt:P476 ?related_work_item_pbid .
         FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
         ?related_work_item wdt:P243 ?topic_item .
         ?topic_item rdfs:label ?topic_item_label .
         ?related_work_item wdt:P703 ?item .
+        ${this._bitagapGroupFilter(bitagapGroup, 'topic_item_label')}
         `
-      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
-    return filters
   }
 
   generateBitagapGroupReferenceFilters (bitagapGroup) {
-    let filters = ''
-    if (bitagapGroup && bitagapGroup !== 'ALL') {
-      filters +=
-        `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        `
-      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
-    return filters
+    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
   }
 
   generateBitagapGroupGeographyFilters (bitagapGroup) {
-    let filters = ''
-    if (bitagapGroup && bitagapGroup !== 'ALL') {
-      filters +=
-        `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        `
-      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
-    return filters
+    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
   }
 
   generateBitagapGroupSubjectFilters (bitagapGroup) {
-    let filters = ''
-    if (bitagapGroup && bitagapGroup !== 'ALL') {
-      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-          FILTER(!CONTAINS(STR(?label), "${CARTAS_TEXT}"))
-          `
-      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-          FILTER(CONTAINS(STR(?label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
-    return filters
+    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
+    return this._bitagapGroupFilter(bitagapGroup, 'label')
   }
 
   generateBitagapGroupManuscriptFilters (bitagapGroup) {
-    let filters = ''
-    if (bitagapGroup && bitagapGroup !== 'ALL') {
-      filters +=
-        `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        `
-      if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-        filters +=
-          `
-            FILTER(!CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-        filters +=
-          `
-            FILTER(CONTAINS(STR(?related_topic_item_label), "${CARTAS_TEXT}"))
-          `
-      }
-    }
-    return filters
+    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
   }
 
   generateBitagapGroupFiltersForSubject (bitagapGroup) {
-    let filters = ''
     if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-      filters +=
-        `
+      return `
           FILTER(!CONTAINS(?label, "${CARTAS_TEXT}"))
         `
     } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-      filters +=
-        `
+      return `
           FILTER(CONTAINS(?label, "${CARTAS_TEXT}"))
         `
     }
-    return filters
+    return ''
   }
 
   generateBitagapGroupFilters (database, bitagapGroup, table) {
@@ -393,6 +296,47 @@ export class QueryService {
       FILTER regex(?analytic_item_pbid, '(.*) cnum ') .
       ?analytic_item wdt:P590 ?item .
       `
+  }
+
+  _dateRangeFilters (fieldValue, { statementPattern = '', beginOptional = '', endOptional = '', beginVar = 'begin_date', endVar = 'end_date' } = {}) {
+    if (!fieldValue || (!fieldValue.begin && !fieldValue.end)) { return '' }
+    const { begin, end } = fieldValue
+    const completeRange = !!(begin && end)
+    let filters = statementPattern ? `
+        ${statementPattern}
+        ` : ''
+    if (begin) {
+      filters += beginOptional
+      if (completeRange) {
+        filters += `
+            FILTER(!BOUND(?${beginVar}) || ?${beginVar} >= '${begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?${beginVar}) || ?${beginVar} <= '${end}T00:00:00Z'^^xsd:dateTime )
+            `
+      } else {
+        filters += `
+            FILTER(?${beginVar} >= '${begin}T00:00:00Z'^^xsd:dateTime)
+            `
+      }
+    }
+    if (endOptional && end) {
+      filters += endOptional
+      if (completeRange) {
+        filters += `
+            FILTER(!BOUND(?${endVar}) || ?${endVar} <= '${end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?${endVar}) || ?${endVar} >= '${begin}T00:00:00Z'^^xsd:dateTime )
+            `
+      } else {
+        filters += `
+            FILTER(?${endVar} <= '${end}T00:00:00Z'^^xsd:dateTime)
+            `
+      }
+    }
+    if (endOptional && completeRange) {
+      filters += `
+        FILTER(BOUND(?${beginVar}) || BOUND(?${endVar}))
+        `
+    }
+    return filters
   }
 
   addWorkFilters (form) {
@@ -519,59 +463,15 @@ export class QueryService {
         ?item wdt:P243 wd:${form.input.subject.value.target_item} .
         `
     }
-    if (form.input.date_composition.value &&
-      (form.input.date_composition.value.begin || form.input.date_composition.value.end)) {
-      let completeRange = false
-      if (form.input.date_composition.value.begin && form.input.date_composition.value.end) {
-        completeRange = true
-      }
-      filters +=
-        `
-        ?item p:P412 ?date_of_creation .
-        `
-      if (form.input.date_composition.value.begin) {
-        filters +=
-          `
+    filters += this._dateRangeFilters(form.input.date_composition.value, {
+      statementPattern: '?item p:P412 ?date_of_creation .',
+      beginOptional: `
           OPTIONAL { ?item wdt:P412 ?begin_date }
-          `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.input.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.input.date_composition.value.end}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?begin_date >= '${form.input.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (form.input.date_composition.value.end) {
-        filters +=
-          `
+          `,
+      endOptional: `
           OPTIONAL { ?date_of_creation pq:P291 ?end_date }
           `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?end_date) || ?end_date <= '${form.input.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date) || ?end_date >= '${form.input.date_composition.value.begin}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?end_date <= '${form.input.date_composition.value.end}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (completeRange) {
-        filters +=
-        `
-        FILTER(BOUND(?begin_date) || BOUND(?end_date))
-        `
-      }
-    }
+    })
     return filters
   }
 
@@ -590,59 +490,15 @@ export class QueryService {
         ?item ?prop_title wd:${form.input.title.value.target_item} .
         `
     }
-    if (form.input.date.value &&
-      (form.input.date.value.begin || form.input.date.value.end)) {
-      let completeRange = false
-      if (form.input.date.value.begin && form.input.date.value.end) {
-        completeRange = true
-      }
-      filters +=
-        `
-        ?item p:P137 ?history .
-        `
-      if (form.input.date.value.begin) {
-        filters +=
-          `
+    filters += this._dateRangeFilters(form.input.date.value, {
+      statementPattern: '?item p:P137 ?history .',
+      beginOptional: `
           OPTIONAL { ?history pq:P49 ?begin_date }
-          `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (form.input.date.value.end) {
-        filters +=
-          `
+          `,
+      endOptional: `
           OPTIONAL { ?history pq:P50 ?end_date }
           `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?end_date) || ?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date) || ?end_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?end_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (completeRange) {
-        filters +=
-        `
-        FILTER(BOUND(?begin_date) || BOUND(?end_date))
-        `
-      }
-    }
+    })
     if (form.input.associated_place && form.input.associated_place.value) {
       filters +=
         `
@@ -717,7 +573,7 @@ export class QueryService {
       { ?library pq:P10 ?value_call_number }
       UNION
       { ?library pq:P30 ?value_call_number }
-      FILTER(?value_call_number = "${this.sanitizeSparqlString(form.input.call_number.value.label)}") . 
+      FILTER(?value_call_number = "${this.sanitizeSparqlString(form.input.call_number.value.label)}") .
       `
     }
     if (form.input.subject && form.input.subject.value) {
@@ -736,67 +592,47 @@ export class QueryService {
         `
         VALUES ?prop_author { wdt:P1134 wdt:P1136 }
         ?item ?prop_author ?value_author .
-        FILTER(?value_author = "${this.sanitizeSparqlString(form.input.author.value.label)}") . 
+        FILTER(?value_author = "${this.sanitizeSparqlString(form.input.author.value.label)}") .
         `
     }
     if (form.input.title && form.input.title.value) {
       filters +=
         `
         ?item wdt:P11 ?value_title .
-        FILTER(?value_title = "${this.sanitizeSparqlString(form.input.title.value.label)}") . 
+        FILTER(?value_title = "${this.sanitizeSparqlString(form.input.title.value.label)}") .
         `
     }
-    if (form.input.date.value &&
-      (form.input.date.value.begin || form.input.date.value.end)) {
-      let completeRange = false
-      if (form.input.date.value.begin && form.input.date.value.end) {
-        completeRange = true
-      }
-      if (form.input.date.value.begin) {
-        filters +=
-          `
+    filters += this._dateRangeFilters(form.input.date.value, {
+      beginOptional: `
           OPTIONAL { ?item wdt:P49 ?begin_date }
           `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?begin_date) || ?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date) || ?begin_date <= '${form.input.date.value.end}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?begin_date >= '${form.input.date.value.begin}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-    }
+    })
     if (form.input.volume && form.input.volume.value) {
       filters +=
         `
         ?item wdt:P1137 ?value_volume .
-        FILTER(?value_volume = "${this.sanitizeSparqlString(form.input.volume.value.label)}") . 
+        FILTER(?value_volume = "${this.sanitizeSparqlString(form.input.volume.value.label)}") .
         `
     }
     if (form.input.place_publication && form.input.place_publication.value) {
       filters +=
         `
         ?item wdt:P1141 ?value_place_publication .
-        FILTER(?value_place_publication = "${this.sanitizeSparqlString(form.input.place_publication.value.label)}") . 
+        FILTER(?value_place_publication = "${this.sanitizeSparqlString(form.input.place_publication.value.label)}") .
         `
     }
     if (form.input.publisher && form.input.publisher.value) {
       filters +=
         `
         ?item wdt:P1140 ?value_publisher .
-        FILTER(?value_publisher = "${this.sanitizeSparqlString(form.input.publisher.value.label)}") . 
+        FILTER(?value_publisher = "${this.sanitizeSparqlString(form.input.publisher.value.label)}") .
         `
     }
     if (form.input.series && form.input.series.value) {
       filters +=
         `
         ?item wdt:P1139 ?value_series .
-        FILTER(?value_series = "${this.sanitizeSparqlString(form.input.series.value.label)}") . 
+        FILTER(?value_series = "${this.sanitizeSparqlString(form.input.series.value.label)}") .
         `
     }
     if (form.input.locations && form.input.locations.value) {
@@ -940,112 +776,28 @@ export class QueryService {
         FILTER (?call_number_label = "${this.sanitizeSparqlString(form.input.call_number.value.label)}")
         `
     }
-    if (form.input.date_of_artifact.value &&
-      (form.input.date_of_artifact.value.begin || form.input.date_of_artifact.value.end)) {
-      let completeRange = false
-      if (form.input.date_of_artifact.value.begin && form.input.date_of_artifact.value.end) {
-        completeRange = true
-      }
-      filters +=
-        `
-        ?item p:P536 ?date_of_artifact .
-        `
-      if (form.input.date_of_artifact.value.begin) {
-        filters +=
-          `
+    filters += this._dateRangeFilters(form.input.date_of_artifact.value, {
+      statementPattern: '?item p:P536 ?date_of_artifact .',
+      beginOptional: `
           OPTIONAL { ?item wdt:P536 ?begin_date_artifact }
-          `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?begin_date_artifact) || ?begin_date_artifact >= '${form.input.date_of_artifact.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date_artifact) || ?begin_date_artifact <= '${form.input.date_of_artifact.value.end}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?begin_date_artifact >= '${form.input.date_of_artifact.value.begin}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (form.input.date_of_artifact.value.end) {
-        filters +=
-          `
+          `,
+      endOptional: `
           OPTIONAL { ?date_of_artifact pq:P291 ?end_date_artifact }
-          `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?end_date_artifact) || ?end_date_artifact <= '${form.input.date_of_artifact.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date_artifact) || ?end_date_artifact >= '${form.input.date_of_artifact.value.begin}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?end_date_artifact <= '${form.input.date_of_artifact.value.end}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (completeRange) {
-        filters +=
-        `
-        FILTER(BOUND(?begin_date_artifact) || BOUND(?end_date_artifact))
-        `
-      }
-    }
-    if (form.input.date_of_publication.value &&
-      (form.input.date_of_publication.value.begin || form.input.date_of_publication.value.end)) {
-      let completeRange = false
-      if (form.input.date_of_publication.value.begin && form.input.date_of_publication.value.end) {
-        completeRange = true
-      }
-      filters +=
-        `
-        ?item p:P222 ?date_of_publication .
-        `
-      if (form.input.date_of_publication.value.begin) {
-        filters +=
-          `
+          `,
+      beginVar: 'begin_date_artifact',
+      endVar: 'end_date_artifact'
+    })
+    filters += this._dateRangeFilters(form.input.date_of_publication.value, {
+      statementPattern: '?item p:P222 ?date_of_publication .',
+      beginOptional: `
           OPTIONAL { ?item wdt:P222 ?begin_date_publication }
-          `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?begin_date_publication) || ?begin_date_publication >= '${form.input.date_of_publication.value.begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?begin_date_publication) || ?begin_date_publication <= '${form.input.date_of_publication.value.end}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?begin_date_publication >= '${form.input.date_of_publication.value.begin}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (form.input.date_of_publication.value.end) {
-        filters +=
-          `
+          `,
+      endOptional: `
           OPTIONAL { ?date_of_publication pq:P291 ?end_date_publication }
-          `
-        if (completeRange) {
-          filters +=
-            `
-            FILTER(!BOUND(?end_date_publication) || ?end_date_publication <= '${form.input.date_of_publication.value.end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?end_date_publication) || ?end_date_publication >= '${form.input.date_of_publication.value.begin}T00:00:00Z'^^xsd:dateTime )
-            `
-        } else {
-          filters +=
-            `
-            FILTER(?end_date_publication <= '${form.input.date_of_publication.value.end}T00:00:00Z'^^xsd:dateTime)
-            `
-        }
-      }
-      if (completeRange) {
-        filters +=
-        `
-        FILTER(BOUND(?begin_date_publication) || BOUND(?end_date_publication))
-        `
-      }
-    }
+          `,
+      beginVar: 'begin_date_publication',
+      endVar: 'end_date_publication'
+    })
     if (form.input.place_production && form.input.place_production.value) {
       filters +=
         `

@@ -124,7 +124,4 @@ async function updateReference (data) {
 .table-cell:last-child {
   border-right: none;
 }
-.full-width {
-  width: 100% !important;
-}
 </style>

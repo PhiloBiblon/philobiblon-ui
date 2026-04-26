@@ -175,19 +175,3 @@ function editDescription (descriptionValue) {
 }
 </script>
 
-<style scoped>
-.all-width {
-  max-width: 100% !important;
-}
-.link {
-  text-decoration: none;
-  cursor: pointer;
-}
-.back {
-  font-size: 12px;
-  height: 36px;
-}
-.full-width {
-  width: 100%;
-}
-</style>

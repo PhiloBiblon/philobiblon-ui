@@ -212,13 +212,6 @@ function acceptAll () {
   overflow-wrap: break-word;
   white-space: normal;
 }
-.max-w-100 {
-  max-width: 100px !important;
-}
-.action-btn {
-  width: 28px !important;
-  height: 28px !important;
-}
 :deep(.v-text-field__details) {
   display: none;
 }

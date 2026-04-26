@@ -167,11 +167,6 @@ async function deleteValue () {
 </script>
 
 <style scoped>
-.action-btn {
-  width: 28px !important;
-  height: 28px !important;
-}
-
 :deep(.v-field__input) {
   min-height: 28px !important;
   padding-bottom: 0 !important;

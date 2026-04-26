@@ -145,26 +145,10 @@ function updateClaims (res) {
 </script>
 
 <style scoped>
-.full-width {
-  width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
 .add-value {
   background-color: white;
 }
 .claim {
   padding: 0;
-}
-.even-row {
-  background-color: rgb(247, 245, 245);
-  padding: 3px;
-  margin: 5px;
-  border-radius: 5px;
-}
-.action-btn {
-  width: 28px !important;
-  height: 28px !important;
 }
 </style>

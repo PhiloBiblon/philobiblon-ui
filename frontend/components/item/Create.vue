@@ -165,7 +165,7 @@ async function loadInitialClaims () {
       initialClaimsLoaded.value = true
     }
   } catch (error) {
-     
+
     console.error(error)
     $notification.error(
       error?.body?.error?.info || t('messages.error.something_went_wrong')
@@ -518,16 +518,3 @@ function generateLabelFromClaims () {
 }
 </script>
 
-<style scoped>
-.all-width {
-  max-width: 100% !important;
-}
-.link {
-  text-decoration: none;
-  cursor: pointer;
-}
-.back {
-  font-size: 12px;
-  height: 36px;
-}
-</style>

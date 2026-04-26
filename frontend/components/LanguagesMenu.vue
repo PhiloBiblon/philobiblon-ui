@@ -36,14 +36,14 @@ import { useI18n } from 'vue-i18n'
 
 const { locale, setLocale } = useI18n()
 const config = useRuntimeConfig()
-const baseURL = config.app.baseURL
+const baseURL = config.app.baseURL.replace(/\/$/, '')
 
 const languages = [
-  { locale: 'ca', name: 'Català', image: new URL('img/flags/flag_catalonia.gif', baseURL).toString() },
-  { locale: 'es', name: 'Español', image: new URL('img/flags/flag_spain.gif', baseURL).toString() },
-  { locale: 'en', name: 'English', image: new URL('img/flags/flag_unitedstates.gif', baseURL).toString() },
-  { locale: 'gl', name: 'Galego', image: new URL('img/flags/flag_galicia.gif', baseURL).toString() },
-  { locale: 'pt', name: 'Português', image: new URL('img/flags/flag_portugal.gif', baseURL).toString() }
+  { locale: 'ca', name: 'Català', image: `${baseURL}/img/flags/flag_catalonia.gif` },
+  { locale: 'es', name: 'Español', image: `${baseURL}/img/flags/flag_spain.gif` },
+  { locale: 'en', name: 'English', image: `${baseURL}/img/flags/flag_unitedstates.gif` },
+  { locale: 'gl', name: 'Galego', image: `${baseURL}/img/flags/flag_galicia.gif` },
+  { locale: 'pt', name: 'Português', image: `${baseURL}/img/flags/flag_portugal.gif` }
 ]
 
 const localeFlag = computed(() => languages.find(lang => lang.locale === locale.value)?.image ?? '')

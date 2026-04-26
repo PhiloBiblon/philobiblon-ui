@@ -137,7 +137,6 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAuthStore } from '~/stores/auth'
 import { useQueryStatusStore } from '~/stores/queryStatus'
 
 const props = defineProps({
@@ -150,7 +149,6 @@ const emit = defineEmits(['on-search', 'back-search', 'clear-search', 'database-
 
 const { t, locale } = useI18n()
 const router = useRouter()
-const authStore = useAuthStore()
 const queryStatusStore = useQueryStatusStore()
 
 const searchGroup = reactive(props.form.input.group)
@@ -160,9 +158,6 @@ const filtersBySection = reactive(groupFiltersBySection(props.form))
 const showResults = ref(false)
 const isBitagapSelected = ref(false)
 const searchBtn = ref(null)
-
-// eslint-disable-next-line no-unused-vars
-const isUserLogged = computed(() => authStore.isLogged)
 
 const groups = computed(() => [
   'BETA',

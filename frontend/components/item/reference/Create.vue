@@ -212,13 +212,6 @@ function acceptAll () {
 .create-reference {
   padding: 0;
 }
-.max-w-100 {
-  max-width: 100px !important;
-}
-.action-btn {
-  width: 28px !important;
-  height: 28px !important;
-}
 :deep(.v-text-field__details) {
   display: none;
 }

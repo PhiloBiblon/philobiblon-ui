@@ -204,3 +204,41 @@
   text-align: right !important;
   border-bottom: none !important;
 }
+
+/* Shared utility classes used across item/search components */
+.action-btn {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.full-width {
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.all-width {
+  max-width: 100% !important;
+}
+
+.back {
+  font-size: 12px;
+  height: 36px;
+}
+
+.max-w-100 {
+  max-width: 100px !important;
+}
+
+.even-row {
+  background-color: rgb(247, 245, 245);
+  padding: 3px;
+  margin: 5px;
+  border-radius: 5px;
+}
