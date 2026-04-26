@@ -147,6 +147,16 @@ function formatDate (date) {
 
 function parseDate (text) {
   if (!text) return null
+  // Detect ISO date-only strings (YYYY-MM-DD) and parse as local date
+  const isoDatePattern = /^(\d{4})-(\d{2})-(\d{2})$/
+  const match = text.match(isoDatePattern)
+  if (match) {
+    const year = parseInt(match[1], 10)
+    const month = parseInt(match[2], 10) - 1 // months are 0-indexed
+    const day = parseInt(match[3], 10)
+    const d = new Date(year, month, day)
+    return Number.isNaN(d.getTime()) ? null : d
+  }
   const d = new Date(text)
   return Number.isNaN(d.getTime()) ? null : d
 }

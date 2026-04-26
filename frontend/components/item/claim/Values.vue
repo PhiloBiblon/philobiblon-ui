@@ -111,7 +111,7 @@ async function getHeaders () {
 async function createQualifier (qualifiers, index) {
   const value = props.claim.values[index]
   if (!value.qualifiers) {
-    value.qualifiers = []
+    value.qualifiers = {}
   }
   value.qualifiers[qualifiers[0].property] = qualifiers
   await getHeaders()

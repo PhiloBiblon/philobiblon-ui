@@ -133,7 +133,7 @@ function setOptionsAutocomplete () {
   if (isItemWithCustomOptions.value) {
     const autocomplete = propertyAutocomplete.value[props.valueToView.property]
     const fullSparqlQuery = buildFullQuery(autocomplete.query)
-    $wikibase.runSparqlQuery(fullSparqlQuery, true)
+    return $wikibase.runSparqlQuery(fullSparqlQuery, true)
       .then((results) => {
         Object.values(results).forEach((result) => {
           options.value.push({
@@ -152,6 +152,7 @@ function setOptionsAutocomplete () {
     }]
     const currentId = getDefaultValue(props.valueToView.item, null)
     selectedOption.value = options.value.find(o => o.id === currentId) || currentId
+    return Promise.resolve()
   }
 }
 

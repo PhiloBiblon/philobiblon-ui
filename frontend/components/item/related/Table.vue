@@ -55,8 +55,9 @@ onMounted(async () => {
 function count () {
   $wikibase.runSparqlQuery($wikibase.$query.getRelatedItemsCount(props.itemId, props.references.refTables), true)
     .then((res) => {
-      const raw = res[0]
-      totalResults.value = typeof raw === 'object' ? parseInt(raw?.total ?? 0, 10) : parseInt(raw, 10)
+      const raw = res.length === 0 ? null : res[0]
+      const parsed = typeof raw === 'object' ? parseInt(raw?.total ?? '', 10) : parseInt(raw ?? '', 10)
+      totalResults.value = Number.isNaN(parsed) ? 0 : parsed
     })
 }
 
