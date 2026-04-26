@@ -57,8 +57,8 @@ jobs:
           VERSION="${{ steps.tag.outputs.version }}"
           VERSION_CLEAN="${VERSION#v}"
           VERSION_ESCAPED="$(printf '%s' "$VERSION_CLEAN" | sed 's/[\/&]/\\&/g')"
-          sed -i "s/version: '[^']*'/version: '${VERSION_ESCAPED}'/" frontend/nuxt.config.js
-          grep -q "version: '${VERSION_CLEAN}'" frontend/nuxt.config.js || { echo "ERROR: frontend version update failed" >&2; exit 1; }
+          sed -i "s/version: '[^']*'/version: '${VERSION_ESCAPED}'/" frontend/nuxt.config.ts
+          grep -q "version: '${VERSION_CLEAN}'" frontend/nuxt.config.ts || { echo "ERROR: frontend version update failed" >&2; exit 1; }
 
       - name: Build & push backend
         uses: docker/build-push-action@v7.1.0

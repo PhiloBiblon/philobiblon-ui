@@ -102,3 +102,6 @@ sw.*
 # others
 TODO
 dependencies.txt
+.output
+.yarn/install-state.gz
+.yarn/unplugged

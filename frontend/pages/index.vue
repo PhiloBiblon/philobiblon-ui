@@ -1,9 +1,5 @@
-<script>
-export default {
-  middleware: [
-    function ({ redirect, app }) {
-      redirect(app.localePath('/wiki/Welcome'))
-    }
-  ]
-}
+<script setup>
+definePageMeta({
+  middleware: () => navigateTo(useLocalePath()('/wiki/Welcome'))
+})
 </script>

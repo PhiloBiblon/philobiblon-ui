@@ -8,6 +8,7 @@ export default {
     no_data: 'No data available',
     loading: 'Loading..',
     language: 'Language',
+    language_selector: 'Select language',
     amount: 'Amount',
     unit: 'Unit',
     date: 'Date',
@@ -566,20 +567,12 @@ export default {
     },
     embedContent: {
       title: 'Embedded content from other websites',
-      desc: 'Articles on the Website may include embedded content (e.g. videos, charts, etc.). Embedded content from other websites behaves in the exact same way as if the visitor had visited the other website. <br/> <br/>\n' +
-        'These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracing your interaction with the embedded content if you have an account and are logged in to that website.'
+      desc: 'Articles on the Website may include embedded content (e.g. videos, charts, etc.). Embedded content from other websites behaves in the exact same way as if the visitor had visited the other website. <br/> <br/>\nThese websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracing your interaction with the embedded content if you have an account and are logged in to that website.'
     },
     rights: {
       title: 'Your rights pertaining your data',
-      desc: 'If you have left comments on the Website, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we rectify or erase any personal data we hold about you. Please send your request to <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
-      data: '• The right to withdraw consent <br/>\n' +
-        '• The right of access<br/>\n' +
-        '• The right to erasure<br/>\n' +
-        '• The right to rectification<br/>\n' +
-        '• The right to data portability<br/>\n' +
-        '• The right to object<br/>\n' +
-        '• Notification of data breaches<br/>\n' +
-        '• The right to lodge a complaint with a supervisory authority'
+      desc: 'If you have left comments on the Website, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we rectify or erase any personal data we hold about you. Please send your request to <a href="mailto:legal{\'@\'}gdpr.eu">legal{\'@\'}gdpr.eu</a>',
+      data: '• The right to withdraw consent <br/>\n• The right of access<br/>\n• The right to erasure<br/>\n• The right to rectification<br/>\n• The right to data portability<br/>\n• The right to object<br/>\n• Notification of data breaches<br/>\n• The right to lodge a complaint with a supervisory authority'
     }
   },
   messages: {
@@ -605,7 +598,8 @@ export default {
       }
     },
     success: {
-      updated: 'Successfully updated'
+      updated: 'Successfully updated',
+      deleted: 'Successfully deleted'
     }
   },
   wiki: {

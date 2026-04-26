@@ -1,5 +1,10 @@
+import WBK from 'wikibase-sdk'
+import wbEdit from 'wikibase-edit'
 import { QueryService } from '~/service/query.service'
 import { OAuthService } from '~/service/oauth.service'
+import { useAuthStore } from '~/stores/auth'
+import { useItemCacheStore } from '~/stores/itemCache'
+import { useQueryCacheStore } from '~/stores/queryCache'
 
 export class WikibaseService {
   static PROPERTY_PBID = 'P476'
@@ -19,22 +24,19 @@ export class WikibaseService {
 
   static BIBLIOGRAPHIES = new Set(['BETA', 'BITECA', 'BITAGAP'])
 
-  constructor (app, store) {
-    const WBK = require('wikibase-sdk')
-    this.$config = app.$config
+  constructor ({ config, $notification }) {
+    this.$config = config
     this.wbk = WBK({
-      instance: this.$config.wikibaseApiUrl,
-      sparqlEndpoint: this.$config.sparqlEndpoint
+      instance: config.wikibaseApiUrl,
+      sparqlEndpoint: config.sparqlEndpoint
     })
-    this.wbEdit = require('wikibase-edit')({
-      instance: this.$config.apiBaseUrl
+    this.wbEdit = wbEdit({
+      instance: config.apiBaseUrl
     })
-    this.$store = store
-    this.$query = new QueryService(store, this.$config)
-    this.$oauth = new OAuthService(store, app)
-    this.$notification = app.$notification
-    this.$i18n = app.i18n
-    this.sparqlBackendEndpoint = this.joinUrl(this.$config.apiBaseUrl, 'api/sparql/query')
+    this.$query = new QueryService({ config })
+    this.$oauth = new OAuthService({ config })
+    this.$notification = $notification
+    this.sparqlBackendEndpoint = this.joinUrl(config.apiBaseUrl, 'api/sparql/query')
   }
 
   getWbk () {
@@ -87,7 +89,7 @@ export class WikibaseService {
                   properties[currentProperty] = []
                 }
               } else {
-                // eslint-disable-next-line no-console
+                 
                 console.error(`Invalid property ${currentProperty} in section ${sectionName}: ${line}`)
                 currentProperty = null
               }
@@ -99,15 +101,15 @@ export class WikibaseService {
                   properties[currentProperty].push(qualifier)
                 }
               } else {
-                // eslint-disable-next-line no-console
+                 
                 console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}: ${line}`)
               }
             } else {
-              // eslint-disable-next-line no-console
+               
               console.warn(`Ignored line: ${line}`)
             }
           } catch (error) {
-            // eslint-disable-next-line no-console
+             
             console.error(`Error in line '${line}': ${error}`)
           }
         }
@@ -115,12 +117,12 @@ export class WikibaseService {
         result[sectionName] = properties
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.log(error)
     }
 
     if (process.env.debug) {
-      // eslint-disable-next-line no-console
+       
       console.log('sorted properties', result)
     }
 
@@ -134,7 +136,7 @@ export class WikibaseService {
   async getClaimsOrder (table, pageName = this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE) {
     const data = await this.getWikibasePage(pageName)
     if (data.error) {
-      // eslint-disable-next-line no-console
+       
       console.error(`Error fetching ui sorted page: ${data.error}`)
       return null
     } else {
@@ -142,7 +144,7 @@ export class WikibaseService {
       if (table in fullOrder) {
         return fullOrder[table]
       } else {
-        // eslint-disable-next-line no-console
+         
         console.error(`Table ${table} not found in ui sorted page.`)
         return null
       }
@@ -229,21 +231,21 @@ export class WikibaseService {
                 }
               }
             } else {
-              // eslint-disable-next-line no-console
+               
               console.error(`Invalid default value ${defaultValue} in section ${sectionName}: ${rowMatch}`)
             }
           } else {
-            // eslint-disable-next-line no-console
+             
             console.error(`Invalid bibliography ${bibliographies} in section ${sectionName}: ${rowMatch}`)
           }
         } else {
-          // eslint-disable-next-line no-console
+           
           console.error(`Invalid property ${property} in section ${sectionName}: ${rowMatch}`)
         }
       }
     }
     if (process.env.debug) {
-      // eslint-disable-next-line no-console
+       
       console.log('autocomplete:', result)
     }
     return result
@@ -256,7 +258,7 @@ export class WikibaseService {
     } else {
       const data = await this.getWikibasePage(this.constructor.CONFIG_PROPERTY_AUTOCOMPLETE_PAGE)
       if (data.error) {
-        // eslint-disable-next-line no-console
+         
         console.error(`Error fetching property autocomplete config page: ${data.error.info}`)
         return null
       }
@@ -267,12 +269,12 @@ export class WikibaseService {
       if (bibliography in sections[table]) {
         return sections[table][bibliography]
       } else {
-        // eslint-disable-next-line no-console
+         
         console.error(`Bibliography ${bibliography} not found for table ${table} in property autocomplete config page.`)
         return null
       }
     } else {
-      // eslint-disable-next-line no-console
+       
       console.error(`Table ${table} not found in property autocomplete config page.`)
       return null
     }
@@ -301,7 +303,8 @@ export class WikibaseService {
   }
 
   getEntityLabel (table, id, lang) {
-    const cachedValue = this.$store.state.itemCache.cache[this.getLabelCacheKey(id, lang)]
+    const itemCache = useItemCacheStore()
+    const cachedValue = itemCache.cache[this.getLabelCacheKey(id, lang)]
     if (cachedValue) {
       return cachedValue
     } else {
@@ -314,7 +317,7 @@ export class WikibaseService {
               lang
             )
           }
-          this.$store.commit('itemCache/addEntry', {
+          itemCache.addEntry({
             key: this.getLabelCacheKey(),
             value: propertyLabel
           })
@@ -363,9 +366,7 @@ export class WikibaseService {
     const urlHash = this.hashCode(url)
     const entry = this.getResultsFromCache(urlHash)
     if (entry) {
-      return new Promise((resolve, reject) => {
-        return resolve(entry.value)
-      })
+      return Promise.resolve(entry.value)
     }
 
     return fetch(url)
@@ -377,7 +378,7 @@ export class WikibaseService {
         }
       })
       .then((data) => {
-        this.$store.commit('queryCache/addEntry', {
+        useQueryCacheStore().addEntry({
           key: urlHash,
           value: data
         })
@@ -560,7 +561,7 @@ export class WikibaseService {
     }
 
     if (process.env.debug) {
-      // eslint-disable-next-line no-console
+       
       console.log(`run sparlql query:\n${query}\ninternal cache: ${useInternalCache}\nbackend cache: ${useBackendCache}`)
     }
 
@@ -569,9 +570,7 @@ export class WikibaseService {
       queryHash = this.hashCode(query)
       const entry = this.getResultsFromCache(queryHash)
       if (entry) {
-        return new Promise((resolve, reject) => {
-          return resolve(entry.value)
-        })
+        return Promise.resolve(entry.value)
       }
     }
 
@@ -600,7 +599,7 @@ export class WikibaseService {
       .then(results => this.wbk.simplify.sparqlResults(results, { minimize }))
       .then((simplifiedResults) => {
         if (useInternalCache) {
-          this.$store.commit('queryCache/addEntry', {
+          useQueryCacheStore().addEntry({
             key: queryHash,
             value: simplifiedResults
           })
@@ -620,10 +619,10 @@ export class WikibaseService {
   }
 
   getResultsFromCache (hash) {
-    const entry = this.$store.state.queryCache.cache[hash]
+    const entry = useQueryCacheStore().cache[hash]
     if (entry) {
       if (process.env.debug) {
-        // eslint-disable-next-line no-console
+         
         console.log('cache hit')
       }
       return entry
@@ -663,7 +662,7 @@ export class WikibaseService {
 
       return result.search
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('Error during search:', error)
     }
   }
@@ -719,7 +718,7 @@ export class WikibaseService {
         `${this.$config.apiBaseUrl}/w/api.php?action=query&meta=tokens&type=csrf&format=json`,
         {
           method: 'GET',
-          headers: this.$store.getters['auth/getAuthHeaders']
+          headers: useAuthStore().authHeaders
         }
       )
       const csrfData = await csrfResponse.json()
@@ -731,7 +730,7 @@ export class WikibaseService {
 
       return csrfToken
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('Failed to fetch CSRF token', error)
       return error
     }
@@ -752,7 +751,7 @@ export class WikibaseService {
         {
           method: 'POST',
           headers: {
-            ...this.$store.getters['auth/getAuthHeaders'],
+            ...useAuthStore().authHeaders,
             'Content-Type': 'application/x-www-form-urlencoded'
           },
           body: new URLSearchParams({
@@ -765,7 +764,7 @@ export class WikibaseService {
 
       return await response
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('Error updating discussion page:', error)
     }
   }

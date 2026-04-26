@@ -8,6 +8,7 @@ export default {
     no_data: 'Nenhum dado disponível',
     loading: 'Carregando..',
     language: 'Linguagem',
+    language_selector: 'Selecionar idioma',
     amount: 'Montante',
     unit: 'Unidade',
     date: 'Data',
@@ -564,20 +565,12 @@ export default {
     },
     embedContent: {
       title: 'Conteúdo incorporado de outros sites',
-      desc: 'Os artigos no Site podem incluir conteúdo incorporado (por exemplo, vídeos, gráficos, etc.). O conteúdo incorporado de outros sites comporta-se exatamente da mesma forma como se o visitante tivesse visitado o outro site. <br/> <br/>\n' +
-        'Estes sites podem recolher dados sobre si, utilizar cookies, incorporar um rastreio adicional de terceiros e monitorizar a sua interação com esse conteúdo incorporado, incluindo rastrear a sua interação com o conteúdo incorporado se tiver uma conta e estiver ligado a esse site.'
+      desc: 'Os artigos no Site podem incluir conteúdo incorporado (por exemplo, vídeos, gráficos, etc.). O conteúdo incorporado de outros sites comporta-se exatamente da mesma forma como se o visitante tivesse visitado o outro site. <br/> <br/>\nEstes sites podem recolher dados sobre si, utilizar cookies, incorporar um rastreio adicional de terceiros e monitorizar a sua interação com esse conteúdo incorporado, incluindo rastrear a sua interação com o conteúdo incorporado se tiver uma conta e estiver ligado a esse site.'
     },
     rights: {
       title: 'Os seus direitos relativos aos seus dados',
-      desc: 'Se deixou comentários no Site, pode solicitar a receção de um ficheiro exportado dos dados pessoais que mantemos sobre si, incluindo quaisquer dados que nos tenha fornecido. Pode também solicitar que retifiquemos ou apaguemos quaisquer dados pessoais que tenhamos sobre si. Por favor envie o seu pedido para <a href="mailto:legal@gdpr.eu">legal@gdpr.eu</a>',
-      data: '• O direito de retirar o consentimento <br/>\n' +
-        '• O direito de acesso<br/>\n' +
-        '• O direito ao apagamento<br/>\n' +
-        '• O direito à retificação<br/>\n' +
-        '• O direito à portabilidade dos dados<br/>\n' +
-        '• O direito de oposição<br/>\n' +
-        '• Notificação de violações de dados<br/>\n' +
-        '• O direito de apresentar uma queixa a uma autoridade de supervisão'
+      desc: 'Se deixou comentários no Site, pode solicitar a receção de um ficheiro exportado dos dados pessoais que mantemos sobre si, incluindo quaisquer dados que nos tenha fornecido. Pode também solicitar que retifiquemos ou apaguemos quaisquer dados pessoais que tenhamos sobre si. Por favor envie o seu pedido para <a href="mailto:legal{\'@\'}gdpr.eu">legal{\'@\'}gdpr.eu</a>',
+      data: '• O direito de retirar o consentimento <br/>\n• O direito de acesso<br/>\n• O direito ao apagamento<br/>\n• O direito à retificação<br/>\n• O direito à portabilidade dos dados<br/>\n• O direito de oposição<br/>\n• Notificação de violações de dados<br/>\n• O direito de apresentar uma queixa a uma autoridade de supervisão'
     }
   },
   messages: {
@@ -603,7 +596,8 @@ export default {
       }
     },
     success: {
-      updated: 'Atualizado com sucesso'
+      updated: 'Atualizado com sucesso',
+      deleted: 'Eliminado com sucesso'
     }
   },
   wiki: {

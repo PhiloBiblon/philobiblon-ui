@@ -6,21 +6,17 @@
   />
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      breadcrumb_items: [
-        {
-          text: this.$i18n.t('menu.item.search.label'),
-          disabled: true
-        },
-        {
-          text: this.$i18n.t('menu.item.search.item.manid.label'),
-          disabled: true
-        }
-      ],
-      form: {
+<script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const breadcrumb_items = [
+  { title: t('menu.item.search.label'), disabled: true },
+  { title: t('menu.item.search.item.manid.label'), disabled: true }
+]
+
+const form = {
         section: [
           'primary',
           'external_description',
@@ -839,7 +835,4 @@ export default {
           }
         }
       }
-    }
-  }
-}
 </script>

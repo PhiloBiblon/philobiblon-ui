@@ -4,31 +4,32 @@
       v-for="(qualifier, key) in qualifiers"
       :key="key"
       align="center"
-      class="even-row"
+      class="even-row pt-3"
       no-gutters
       dense
     >
       <v-col class="p-0 pr-3">
         <v-autocomplete
           v-model="qualifier.property"
-          :label="$t('common.property')"
+          :label="t('common.property')"
           required
           return-object
           :readonly="qualifier?.default"
           :items="properties[key]"
-          item-text="label"
+          item-title="label"
           item-value="id"
-          variant="outlined"
+          variant="underlined"
+          density="compact"
           :filter="acceptAll"
-          @change="onChangeProperty($event, key)"
-          @update:search-input="onInput($event, 'property', key)"
+          @update:model-value="onChangeProperty($event, key)"
+          @update:search="onInput($event, 'property', key)"
         />
       </v-col>
-      <v-col class="p-0 pr-3 pt-3">
+      <v-col class="p-0 pr-3">
         <div v-if="claim?.mainsnak?.property || qualifier.default">
           <item-value-base
-            :key="`${qualifier.property}-${key}`"
-            :label="$t('common.value')"
+            :key="`${qualifier.property?.id ?? qualifier.property}-${key}`"
+            :label="t('common.value')"
             :claim="claim"
             :value="qualifier"
             type="qualifier"
@@ -37,25 +38,39 @@
           />
         </div>
       </v-col>
-      <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
-        <v-btn v-if="allowCreateQualifier(qualifier)" text icon @click.stop="createQualifier(key)">
-          <v-tooltip top>
-            <template #activator="{ on, attrs }">
-              <v-icon v-bind="attrs" v-on="on">
+      <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
+        <v-btn
+          v-if="allowCreateQualifier(qualifier)"
+          variant="text"
+          icon
+          density="compact"
+          class="action-btn"
+          @click.stop="createQualifier(key)"
+        >
+          <v-tooltip location="top">
+            <template #activator="{ props: btnProps }">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-check
               </v-icon>
             </template>
-            <span>{{ $t("common.save") }}</span>
+            <span>{{ t("common.save") }}</span>
           </v-tooltip>
         </v-btn>
-        <v-btn v-if="claim" text icon @click.stop="removeQualifier(key)">
-          <v-tooltip top>
-            <template #activator="{ on, attrs }">
-              <v-icon v-bind="attrs" v-on="on">
+        <v-btn
+          v-if="claim"
+          variant="text"
+          icon
+          density="compact"
+          class="action-btn"
+          @click.stop="removeQualifier(key)"
+        >
+          <v-tooltip location="top">
+            <template #activator="{ props: btnProps }">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-trash-can
               </v-icon>
             </template>
-            <span>{{ $t("common.remove") }}</span>
+            <span>{{ t("common.remove") }}</span>
           </v-tooltip>
         </v-btn>
       </v-col>
@@ -70,138 +85,132 @@
           <v-icon color="primary">
             mdi-plus
           </v-icon>
-          <span>{{ $t("common.add_qualifier") }}</span>
+          <span>{{ t("common.add_qualifier") }}</span>
         </div>
       </a>
     </v-row>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    claim: {
-      type: Object,
-      default: null
-    },
-    initialQualifiers: {
-      type: Array,
-      default: null
-    },
-    forCreate: {
-      type: Boolean,
-      default: false
+<script setup>
+import { computed, reactive, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
+import { WikibaseService } from '~/service/wikibase.service'
+
+const props = defineProps({
+  claim: { type: Object, default: null },
+  initialQualifiers: { type: Array, default: null },
+  forCreate: { type: Boolean, default: false }
+})
+
+const emit = defineEmits(['update-qualifiers', 'create-qualifier'])
+
+const { $notification, $wikibase } = useNuxtApp()
+const { t, locale } = useI18n()
+const authStore = useAuthStore()
+
+const properties = reactive([])
+const qualifiers = reactive([])
+const propertyValues = reactive([])
+
+const isAllowedAddQualifier = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
+
+if (props.initialQualifiers) {
+  props.initialQualifiers.forEach((qualifier, index) => {
+    properties[index] = [qualifier.property]
+    // Clone qualifier and its nested datavalue to prevent prop mutations
+    const clonedQualifier = { ...qualifier }
+    if (qualifier.datavalue) {
+      clonedQualifier.datavalue = { ...qualifier.datavalue }
     }
-  },
-  data () {
-    return {
-      properties: [],
-      qualifiers: [],
-      propertyValues: []
-    }
-  },
-  computed: {
-    pbid () {
-      return this.$wikibase.constructor.PROPERTY_PBID
-    },
-    isAllowedAddQualifier () {
-      return this.claim && this.claim.mainsnak.property !== this.$wikibase.constructor.PROPERTY_NOTES
-    }
-  },
-  watch: {
-    qualifiers: {
-      handler (val) {
-        if (!this.claim || this.forCreate) {
-          this.$emit('update-qualifiers', val)
-        }
-      },
-      deep: true
-    }
-  },
-  created () {
-    if (this.initialQualifiers) {
-      this.initialQualifiers.forEach((qualifier, index) => {
-        this.$set(this.properties, index, [qualifier.property])
-        this.qualifiers.push(qualifier)
-      })
-    }
-  },
-  methods: {
-    allowCreateQualifier (qualifier) {
-      const propertyId = qualifier.property?.id || qualifier.property
-      return this.claim && !this.forCreate && propertyId && qualifier.datavalue?.value
-    },
-    onNewValue (event, qualifier) {
-      qualifier.datavalue.value = event
-    },
-    onChangeProperty (event, index) {
-      const qualifier = this.qualifiers[index]
-      // Keep the full property object for display, but track ID separately
-      qualifier.property = event ? { id: event.id, label: event.label, datatype: event.datatype } : null
-      qualifier.datatype = event?.datatype
-      qualifier.datavalue = {
-        value: null
+    qualifiers.push(clonedQualifier)
+  })
+}
+
+watch(qualifiers, (val) => {
+  if (!props.claim || props.forCreate) {
+    emit('update-qualifiers', val)
+  }
+}, { deep: true })
+
+function allowCreateQualifier (qualifier) {
+  const propertyId = qualifier.property?.id || qualifier.property
+  return props.claim && !props.forCreate && propertyId && qualifier.datavalue?.value !== undefined && qualifier.datavalue?.value !== null
+}
+
+function onNewValue (event, qualifier) {
+  qualifier.datavalue.value = event
+}
+
+function onChangeProperty (event, index) {
+  const qualifier = qualifiers[index]
+  qualifier.property = event ? { id: event.id, label: event.label, datatype: event.datatype } : null
+  qualifier.datatype = event?.datatype
+  qualifier.datavalue = { value: null }
+}
+
+function addQualifier () {
+  qualifiers.push({
+    property: null,
+    datatype: null,
+    datavalue: { value: null }
+  })
+}
+
+function removeQualifier (index) {
+  qualifiers.splice(index, 1)
+  properties.splice(index, 1)
+  propertyValues.splice(index, 1)
+}
+
+async function onInput (value, type, index) {
+  if (value && typeof value === 'string') {
+    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value, type)
+    if (search && search.length) {
+      if (type === 'property') {
+        properties[index] = search
+      } else {
+        propertyValues[index] = search
       }
-    },
-    addQualifier () {
-      this.qualifiers.push({
-        property: null,
-        datatype: null,
-        datavalue: {
-          value: null
-        }
-      })
-    },
-    removeQualifier (index) {
-      this.qualifiers.splice(index, 1)
-      this.properties.splice(index, 1)
-      this.propertyValues.splice(index, 1)
-    },
-    async onInput (value, type, index) {
-      if (value && typeof value === 'string') {
-        const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale, type)
-        if (search && search.length) {
-          if (type === 'property') {
-            this.$set(this.properties, index, search)
-          } else {
-            this.$set(this.propertyValues, index, search)
-          }
-        }
-      }
-    },
-    async createQualifier (index) {
-      const qualifier = this.qualifiers[index]
-      // Extract property ID - handle both object and string formats
-      const propertyId = qualifier.property?.id || qualifier.property
-      await this.$wikibase.getWbEdit().qualifier.add({
-        guid: this.claim.id,
-        value: qualifier.datavalue.value.id ?? qualifier.datavalue.value,
-        property: propertyId
-      }, this.$store.getters['auth/getRequestConfig']).then((res) => {
-        if (res.success) {
-          this.updateQualifiers(res.claim.qualifiers[qualifier.property])
-          this.removeQualifier(index)
-          this.$notification.success(this.$t('messages.success.updated'))
-        } else {
-          this.$notification.success(this.$t('messages.error.something_went_wrong'))
-        }
-      }).catch((error) => {
-        this.$notification.error(error)
-      })
-    },
-    updateQualifiers (qualifiers) {
-      this.$emit('create-qualifier', qualifiers)
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered
-      return true
     }
   }
 }
+
+async function createQualifier (index) {
+  const qualifier = qualifiers[index]
+  const propertyId = qualifier.property?.id || qualifier.property
+  await $wikibase.getWbEdit().qualifier.add({
+    guid: props.claim.id,
+    value: qualifier.datavalue.value.id ?? qualifier.datavalue.value,
+    property: propertyId
+  }, authStore.requestConfig).then((res) => {
+    if (res.success) {
+      updateQualifiers(res.claim.qualifiers[propertyId])
+      removeQualifier(index)
+      $notification.success(t('messages.success.updated'))
+    } else {
+      $notification.error(t('messages.error.something_went_wrong'))
+    }
+  }).catch((error) => {
+    $notification.error(error)
+  })
+}
+
+function updateQualifiers (qs) {
+  emit('create-qualifier', qs)
+}
+
+function acceptAll () {
+  return true
+}
 </script>
+
 <style scoped>
 .add-qualifier {
+  margin-top: 12px;
   margin-bottom: 5px;
+  font-size: 12px;
 }
 .create-qualifier {
   padding: 0;
@@ -209,10 +218,14 @@ export default {
   overflow-wrap: break-word;
   white-space: normal;
 }
-.max-w-100 {
-  max-width: 100px !important;
-}
-::v-deep .v-text-field__details {
+:deep(.v-text-field__details) {
   display: none;
+}
+:deep(.v-input__details) {
+  display: none;
+}
+:deep(.v-autocomplete .v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
 }
 </style>

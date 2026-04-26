@@ -1,23 +1,16 @@
 <template>
   <div class="qualifier-value">
-    <item-value-base :claim="claim" :value="value" type="qualifier" @delete-qualifier="$emit('delete-qualifier', $event)" />
+    <item-value-base :claim="claim" :value="value" type="qualifier" @delete-qualifier="emit('delete-qualifier', $event)" />
   </div>
 </template>
 
-<script>
-export default {
+<script setup>
+defineProps({
+  value: { type: Object, default: null },
+  claim: { type: Object, default: null }
+})
 
-  props: {
-    value: {
-      type: Object,
-      default: null
-    },
-    claim: {
-      type: Object,
-      default: null
-    }
-  }
-}
+const emit = defineEmits(['delete-qualifier'])
 </script>
 
 <style scoped>

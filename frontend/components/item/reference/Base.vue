@@ -1,12 +1,12 @@
 <template>
   <v-expansion-panels class="ma-2 pa-2 bg-gray none-z-index">
     <v-expansion-panel class="bg-gray">
-      <v-expansion-panel-header class="bg-gray header">
+      <v-expansion-panel-title class="bg-gray header">
         <p class="text-subtitle-2 mb-0 reference-header">
           {{ header }}
         </p>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content class="bg-gray">
+      </v-expansion-panel-title>
+      <v-expansion-panel-text class="bg-gray">
         <item-reference-list
           v-for="reference in references"
           :key="`${reference.hash}-${references.length}`"
@@ -20,50 +20,39 @@
           :claim="claim"
           @create-reference="createReference($event)"
         />
-      </v-expansion-panel-content>
+      </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
 </template>
 
-<script>
-export default {
-  props: {
-    claim: {
-      type: Object,
-      required: true
-    }
-  },
-  data () {
-    return {
-      headers: [],
-      references: []
-    }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    },
-    header () {
-      return `${this.referenceCount} reference${this.referenceCount === 1 ? '' : 's'}`
-    },
-    referenceCount () {
-      return Object.keys(this.references || {}).length
-    }
-  },
-  mounted () {
-    this.references = this.claim.references ?? []
-  },
-  methods: {
-    createReference (reference) {
-      this.references.push(reference)
-    },
-    deleteReference (data) {
-      const findIndex = this.references.findIndex(item => item.hash === data.hash)
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useAuthStore } from '~/stores/auth'
 
-      if (findIndex !== -1) {
-        this.references.splice(findIndex, 1)
-      }
-    }
+const props = defineProps({
+  claim: { type: Object, required: true }
+})
+
+const authStore = useAuthStore()
+
+const references = ref([])
+
+const isUserLogged = computed(() => authStore.isLogged)
+const referenceCount = computed(() => Object.keys(references.value || {}).length)
+const header = computed(() => `${referenceCount.value} reference${referenceCount.value === 1 ? '' : 's'}`)
+
+onMounted(() => {
+  references.value = props.claim.references ?? []
+})
+
+function createReference (reference) {
+  references.value.push(reference)
+}
+
+function deleteReference (data) {
+  const findIndex = references.value.findIndex(item => item.hash === data.hash)
+  if (findIndex !== -1) {
+    references.value.splice(findIndex, 1)
   }
 }
 </script>
@@ -86,7 +75,7 @@ export default {
   font-weight: normal !important;
 }
 
-::v-deep .v-expansion-panel-content__wrap {
+:deep(.v-expansion-panel-text__wrapper) {
   padding: 0 8px 0 8px;
 }
 </style>

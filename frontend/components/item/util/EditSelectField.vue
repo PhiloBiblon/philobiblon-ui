@@ -4,204 +4,200 @@
     v-model="currentText"
     :items="options"
     item-value="id"
-    item-text="label"
+    item-title="label"
     return-object
     required
-    variant="outlined"
-    v-bind="{ ...$attrs, ...commonAttrs }"
+    variant="underlined"
+    density="compact"
+    v-bind="$attrs"
     @blur="blur"
     @focus="focus"
-    @change="onchange"
-    @update:search-input="$emit('input', $event)"
+    @update:model-value="onchange"
+    @update:search="emit('input', $event)"
   >
-    <template #item="data">
-      <v-list-item-content>
-        <v-list-item-title>{{ data.item.label }}</v-list-item-title>
-        <v-list-item-subtitle v-if="data.item.description" class="item-description">
-          {{ data.item.description }}
-        </v-list-item-subtitle>
-      </v-list-item-content>
+    <template #item="{ props: itemProps, item }">
+      <v-list-item v-bind="itemProps" :title="item.raw.label">
+        <template v-if="item.raw.description" #subtitle>
+          <span class="item-description">{{ item.raw.description }}</span>
+        </template>
+      </v-list-item>
     </template>
-    <template #append>
+    <template #append-inner>
       <v-btn
-        v-if="isEditable && focussed"
-        text
+        v-if="isEditable && focussed && props.save"
+        variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="edit"
       >
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-icon v-bind="attrs" v-on="on">
+        <v-tooltip location="top">
+          <template #activator="{ props: btnProps }">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-check
             </v-icon>
           </template>
-          <span>{{ $t("common.save") }}</span>
+          <span>{{ t("common.save") }}</span>
         </v-tooltip>
       </v-btn>
       <v-btn
         v-if="focussed"
-        text
+        variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="restore"
       >
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-icon v-bind="attrs" v-on="on">
+        <v-tooltip location="top">
+          <template #activator="{ props: btnProps }">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-close
             </v-icon>
           </template>
-          <span>{{ $t("common.cancel") }}</span>
+          <span>{{ t("common.cancel") }}</span>
         </v-tooltip>
       </v-btn>
       <v-btn
         v-if="isRemovable && focussed"
-        text
+        variant="text"
         icon
+        density="compact"
+        class="action-btn"
         @click.stop="deleteValue"
       >
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-icon v-bind="attrs" v-on="on">
+        <v-tooltip location="top">
+          <template #activator="{ props: btnProps }">
+            <v-icon v-bind="btnProps" color="#616161" size="22">
               mdi-trash-can
             </v-icon>
           </template>
-          <span>{{ $t("common.remove") }}</span>
+          <span>{{ t("common.remove") }}</span>
         </v-tooltip>
       </v-btn>
     </template>
   </v-autocomplete>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    value: {
-      type: String,
-      default: null
-    },
-    options: {
-      type: Array,
-      default: () => []
-    },
-    save: {
-      type: Function,
-      default: null
-    },
-    delete: {
-      type: Function,
-      default: null
-    },
-    mode: {
-      type: String,
-      default: 'edit'
-    }
-  },
-  data () {
-    return {
-      currentText: null,
-      consolidatedText: null,
-      consolidatedOptions: [],
-      focussed: false
-    }
-  },
-  computed: {
-    commonAttrs () {
-      return {
-        dense: true
-      }
-    },
-    isEditable () {
-      return this.mode === 'edit'
-    },
-    isRemovable () {
-      return this.isEditable && this.delete
-    }
-  },
-  watch: {
-    value (newValue, oldValue) {
-      this.currentText = newValue
-      if (!oldValue) {
-        this.consolidatedText = this.currentText
-      }
-    }
-  },
-  mounted () {
-    if (this.value) {
-      this.currentText = this.value
-    } else {
-      this.currentText = { ...this.options[0] }
-    }
-    this.consolidatedText = { ...this.currentText }
-    this.consolidatedOptions = JSON.parse(JSON.stringify(this.options))
-  },
-  methods: {
-    onchange () {
-      this.focussed = true
-      this.$emit('new-value', this.currentText)
-    },
-    focus () {
-      this.focussed = true
-    },
-    blur () {
-      this.focussed = false
-      if (this.isEditable) {
-        this.restore()
-      }
-      this.$emit('on-blur', this.currentText)
-    },
-    async edit () {
-      this.$refs.autocomplete.isMenuActive = false
-      if (this.currentText && this.currentText.id !== this.consolidatedText.id) {
-        await this.save(this.currentText, this.consolidatedText)
-          .then((response) => {
-            if (response) {
-              if (!response.success) {
-                throw new Error(response.info)
-              }
-              this.consolidatedText = this.currentText
-              this.$notification.success(this.$i18n.t('messages.success.updated'))
-              this.$refs.autocomplete?.blur()
-            }
-          })
-          .catch((error) => {
-            // workaround to avoid weird error if the session is expired
-            // the first time that we want edit the wikibase
-            if (error.message === 'query is undefined') {
-              error = this.$i18n.t('messages.error.session.expired')
-            }
-            this.$notification.error(error)
-          })
-      } else if (!this.currentText) {
-        this.$notification.error(this.$i18n.t('messages.error.inputs.fill'))
-      }
-    },
+<script setup>
+import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-    restore () {
-      this.currentText = this.consolidatedText
-      this.consolidatedOptions = [this.currentText]
-      this.$emit('update-options', this.consolidatedOptions)
-      this.$refs.autocomplete.blur()
-    },
+defineOptions({ inheritAttrs: false })
 
-    async deleteValue () {
-      await this.delete()
-        .then((response) => {
-          if (response) {
-            if (!response.success) {
-              throw new Error(response.info)
-            }
-            this.$notification.success('Successfully deleted')
-          }
-        })
-        .catch((error) => {
-          if (error.message === 'query is undefined') {
-            error = 'Error: Session expired.'
-          }
-          this.$notification.error(error)
-        })
-    }
+const props = defineProps({
+  value: { type: Object, default: null },
+  options: { type: Array, default: () => [] },
+  save: { type: Function, default: null },
+  delete: { type: Function, default: null },
+  mode: { type: String, default: 'edit' }
+})
+
+const emit = defineEmits(['on-blur', 'new-value', 'input', 'update-options'])
+
+const { $notification } = useNuxtApp()
+const { t } = useI18n()
+
+const autocomplete = ref(null)
+const currentText = ref(null)
+const consolidatedText = ref(null)
+const consolidatedOptions = ref([])
+const focussed = ref(false)
+
+const isEditable = computed(() => props.mode === 'edit')
+const isRemovable = computed(() => isEditable.value && !!props.delete)
+
+watch(() => props.value, (newValue, _oldValue) => {
+  currentText.value = newValue
+  consolidatedText.value = currentText.value ? { ...currentText.value } : null
+})
+
+onMounted(() => {
+  if (props.value) {
+    currentText.value = props.value
+  } else if (props.options && props.options.length > 0) {
+    currentText.value = { ...props.options[0] }
+  } else {
+    currentText.value = null
   }
+  consolidatedText.value = currentText.value ? { ...currentText.value } : null
+  consolidatedOptions.value = JSON.parse(JSON.stringify(props.options))
+})
+
+function onchange () {
+  focussed.value = true
+  emit('new-value', currentText.value)
+}
+
+function focus () {
+  focussed.value = true
+}
+
+function blur () {
+  focussed.value = false
+  if (isEditable.value) {
+    restore()
+  }
+  emit('on-blur', currentText.value)
+}
+
+async function edit () {
+  if (!props.save) {
+    return
+  }
+  if (currentText.value && (!consolidatedText.value || currentText.value.id !== consolidatedText.value.id)) {
+    await props.save(currentText.value, consolidatedText.value)
+      .then((response) => {
+        if (response) {
+          if (!response.success) {
+            throw new Error(response.info)
+          }
+          consolidatedText.value = currentText.value
+          $notification.success(t('messages.success.updated'))
+          autocomplete.value?.blur?.()
+        }
+      })
+      .catch((error) => {
+        if (error.message === 'query is undefined') {
+          error = t('messages.error.session.expired')
+        }
+        $notification.error(error)
+      })
+  } else if (!currentText.value) {
+    $notification.error(t('messages.error.inputs.fill'))
+  }
+}
+
+function restore () {
+  currentText.value = consolidatedText.value
+  // Only set and emit non-empty option array
+  if (currentText.value && (typeof currentText.value === 'string' ? currentText.value.trim() : true)) {
+    consolidatedOptions.value = [currentText.value]
+  } else {
+    consolidatedOptions.value = []
+  }
+  emit('update-options', consolidatedOptions.value)
+  autocomplete.value?.blur?.()
+}
+
+async function deleteValue () {
+  if (!props.delete) {
+    return
+  }
+  await props.delete()
+    .then((response) => {
+      if (response) {
+        if (!response.success) {
+          throw new Error(response.info)
+        }
+        $notification.success(t('messages.success.deleted'))
+      }
+    })
+    .catch((error) => {
+      if (error.message === 'query is undefined') {
+        error = t('messages.error.session.expired')
+      }
+      $notification.error(error)
+    })
 }
 </script>
 
@@ -211,5 +207,14 @@ export default {
   font-size: 0.8rem;
   color: #666;
   margin-top: 2px;
+}
+
+:deep(.v-input__details) {
+  display: none;
+}
+
+:deep(.v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
 }
 </style>

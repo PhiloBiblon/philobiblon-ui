@@ -11,23 +11,24 @@
       <v-col class="p-0 pr-3">
         <v-autocomplete
           v-model="reference.property"
-          :label="$t('common.property')"
+          :label="t('common.property')"
           required
           return-object
           :items="properties[key]"
-          item-text="label"
+          item-title="label"
           item-value="id"
-          variant="outlined"
+          variant="underlined"
+          density="compact"
           :filter="acceptAll"
-          @change="onChangeProperty($event, key)"
-          @update:search-input="onInput($event, 'property', key)"
+          @update:model-value="onChangeProperty($event, key)"
+          @update:search="onInput($event, 'property', key)"
         />
       </v-col>
-      <v-col class="p-0 pr-3 pt-3">
+      <v-col class="p-0 pr-3">
         <div v-if="reference.property">
           <item-value-base
             :key="`${key}-${reference.property}`"
-            :label="$t('common.value')"
+            :label="t('common.value')"
             :claim="claim"
             :value="reference"
             type="reference"
@@ -36,30 +37,39 @@
           />
         </div>
       </v-col>
-      <v-col class="p-0 pr-3 d-flex justify-end max-w-100">
+      <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
         <v-btn
-          text
+          variant="text"
           icon
+          density="compact"
+          class="action-btn"
           :disabled="!reference.property || !reference?.datavalue?.value"
           @click.stop="createReference(key)"
         >
-          <v-tooltip top>
-            <template #activator="{ on, attrs }">
-              <v-icon v-bind="attrs" v-on="on">
+          <v-tooltip location="top">
+            <template #activator="{ props: btnProps }">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-check
               </v-icon>
             </template>
-            <span>{{ $t("common.save") }}</span>
+            <span>{{ t("common.save") }}</span>
           </v-tooltip>
         </v-btn>
-        <v-btn v-if="claim" text icon @click.stop="removeReference(key)">
-          <v-tooltip top>
-            <template #activator="{ on, attrs }">
-              <v-icon v-bind="attrs" v-on="on">
+        <v-btn
+          v-if="claim"
+          variant="text"
+          icon
+          density="compact"
+          class="action-btn"
+          @click.stop="removeReference(key)"
+        >
+          <v-tooltip location="top">
+            <template #activator="{ props: btnProps }">
+              <v-icon v-bind="btnProps" color="#616161" size="22">
                 mdi-trash-can
               </v-icon>
             </template>
-            <span>{{ $t("common.remove") }}</span>
+            <span>{{ t("common.remove") }}</span>
           </v-tooltip>
         </v-btn>
       </v-col>
@@ -73,131 +83,128 @@
           <v-icon color="primary">
             mdi-plus
           </v-icon>
-          <span>{{ !value ? $t("common.add_reference") : $t("common.add") }}</span>
+          <span>{{ !value ? t("common.add_reference") : t("common.add") }}</span>
         </div>
       </a>
     </v-row>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    claim: {
-      type: Object,
-      required: true
-    },
-    value: {
-      type: Object,
-      default: null
-    }
-  },
-  data () {
-    return {
-      properties: [],
-      references: [],
-      propertyValues: []
-    }
-  },
-  watch: {
-    references: {
-      handler (val) {
-        if (!this.claim) {
-          this.$emit('update-references', val)
-        }
-      },
-      deep: true
-    }
-  },
-  methods: {
-    onNewValue (event, reference) {
-      reference.datavalue.value = event
-    },
-    onChangeProperty (event, index) {
-      const reference = this.references[index]
-      reference.property = event.id
-      reference.datatype = event.datatype
-      reference.datavalue = {
-        value: null
-      }
-    },
-    addReference () {
-      this.references.push({
-        property: null,
-        type: null,
-        datavalue: {
-          value: null
-        }
-      })
-    },
-    removeReference (index) {
-      this.references.splice(index, 1)
-      this.properties.splice(index, 1)
-      this.propertyValues.splice(index, 1)
-    },
-    async onInput (value, type, index) {
-      if (value && typeof value === 'string') {
-        const search = await this.$wikibase.searchEntityByName(value, this.$i18n.locale, this.$i18n.locale, type)
-        if (search && search.length) {
-          if (type === 'property') {
-            this.$set(this.properties, index, search)
-          } else {
-            this.$set(this.propertyValues, index, search)
-          }
-        }
-      }
-    },
-    async createReference (index) {
-      let data
-      const reference = this.references[index]
+<script setup>
+import { reactive, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
 
-      if (!this.value) {
-        data = {
-          guid: this.claim.id,
-          value: reference.datavalue.value.id ?? reference.datavalue.value,
-          property: reference.property
-        }
+const props = defineProps({
+  claim: { type: Object, required: true },
+  value: { type: Object, default: null }
+})
+
+const emit = defineEmits(['update-references', 'create-reference'])
+
+const { $notification, $wikibase } = useNuxtApp()
+const { t, locale } = useI18n()
+const authStore = useAuthStore()
+
+const properties = reactive([])
+const references = reactive([])
+const propertyValues = reactive([])
+
+watch(references, (val) => {
+  if (!props.claim) {
+    emit('update-references', val)
+  }
+}, { deep: true })
+
+function onNewValue (event, reference) {
+  reference.datavalue.value = event
+}
+
+function onChangeProperty (event, index) {
+  const reference = references[index]
+  reference.property = event
+  reference.datatype = event?.datatype
+  reference.datavalue = { value: null }
+}
+
+function addReference () {
+  references.push({
+    property: null,
+    type: null,
+    datavalue: { value: null }
+  })
+}
+
+function removeReference (index) {
+  references.splice(index, 1)
+  properties.splice(index, 1)
+  propertyValues.splice(index, 1)
+}
+
+async function onInput (value, type, index) {
+  if (value && typeof value === 'string') {
+    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value, type)
+    if (search && search.length) {
+      if (type === 'property') {
+        properties[index] = search
       } else {
-        const values = {
-          ...this.value.snaks,
-          [reference.property]: [...(this.value.snaks[reference.property] || []), reference]
-        }
-
-        const formattedSnaks = Object.entries(values).reduce((acc, [key, values]) => {
-          acc[key] = values.map(v => v.datavalue.value.id ?? v.datavalue.value)
-          return acc
-        }, {})
-        data = {
-          guid: this.claim.id,
-          snaks: formattedSnaks,
-          hash: this.value.hash,
-          property: this.value.property
-        }
+        propertyValues[index] = search
       }
-
-      await this.$wikibase.getWbEdit().reference.add(data, this.$store.getters['auth/getRequestConfig'])
-        .then((res) => {
-          if (res.success) {
-            this.updateReferences(res.reference)
-            this.removeReference(index)
-            this.$notification.success(this.$t('messages.success.updated'))
-          } else {
-            this.$notification.success(this.$t('messages.error.something_went_wrong'))
-          }
-        }).catch((error) => {
-          this.$notification.error(error)
-        })
-    },
-    updateReferences (reference) {
-      this.$emit('create-reference', reference)
-    },
-    acceptAll (item, queryText, itemText) {
-      // We accept all the items because they are already filtered
-      return true
     }
   }
 }
+
+async function createReference (index) {
+  let data
+  const reference = references[index]
+
+  if (!props.value) {
+    data = {
+      guid: props.claim.id,
+      value: reference.datavalue.value.id ?? reference.datavalue.value,
+      property: reference.property
+    }
+  } else {
+    const values = {
+      ...props.value.snaks,
+      [reference.property]: [...(props.value.snaks[reference.property] || []), reference]
+    }
+
+    const formattedSnaks = Object.entries(values).reduce((acc, [key, vs]) => {
+      acc[key] = vs.map(v => v.datavalue.value.id ?? v.datavalue.value)
+      return acc
+    }, {})
+    data = {
+      guid: props.claim.id,
+      snaks: formattedSnaks,
+      hash: props.value.hash,
+      property: props.value.property
+    }
+  }
+
+  await $wikibase.getWbEdit().reference.add(data, authStore.requestConfig)
+    .then((res) => {
+      if (res.success) {
+        updateReferences(res.reference)
+        removeReference(index)
+        $notification.success(t('messages.success.updated'))
+      } else {
+        $notification.error(t('messages.error.something_went_wrong'))
+      }
+    }).catch((error) => {
+      $notification.error(error)
+    })
+}
+
+function updateReferences (reference) {
+  emit('create-reference', reference)
+}
+
+function acceptAll () {
+  return true
+}
 </script>
+
 <style scoped>
 .add-reference {
   margin-bottom: 5px;
@@ -205,10 +212,14 @@ export default {
 .create-reference {
   padding: 0;
 }
-.max-w-100 {
-  max-width: 100px !important;
-}
-::v-deep .v-text-field__details {
+:deep(.v-text-field__details) {
   display: none;
+}
+:deep(.v-input__details) {
+  display: none;
+}
+:deep(.v-autocomplete .v-field__input) {
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
 }
 </style>

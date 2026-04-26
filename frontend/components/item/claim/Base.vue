@@ -1,59 +1,49 @@
 <template>
   <v-container class="claim">
     <v-row dense>
-      <v-subheader class="claim-header section-header">
+      <div class="claim-header section-header">
         <item-util-view-text-lang :value="propertyLabel" :tooltip="claim.property" />
-      </v-subheader>
+      </div>
     </v-row>
     <v-container class="claim-values">
-      <item-claim-values :claim="claim" @delete-claim="$emit('delete-claim', $event)" />
+      <item-claim-values :claim="claim" @delete-claim="emit('delete-claim', $event)" />
       <item-claim-add-value
         v-if="isUserLogged && isAllowedAddValue"
         :key="claim.values.length"
         :item="item"
         :value="claim?.values[0]?.mainsnak"
-        @create-claim="$emit('create-claim', $event)"
+        @create-claim="emit('create-claim', $event)"
       />
     </v-container>
   </v-container>
 </template>
 
-<script>
-export default {
-  props: {
-    table: {
-      type: String,
-      required: true
-    },
-    item: {
-      type: Object,
-      default: null
-    },
-    claim: {
-      type: Object,
-      default: null
-    }
-  },
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
+import { WikibaseService } from '~/service/wikibase.service'
 
-  data () {
-    return {
-      propertyLabel: null
-    }
-  },
+const props = defineProps({
+  table: { type: String, required: true },
+  item: { type: Object, default: null },
+  claim: { type: Object, default: null }
+})
 
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    },
-    isAllowedAddValue () {
-      return this.claim.property !== this.$wikibase.constructor.PROPERTY_NOTES
-    }
-  },
+const emit = defineEmits(['delete-claim', 'create-claim'])
 
-  async mounted () {
-    this.propertyLabel = await this.$wikibase.getEntityLabel(this.table, this.claim.property, this.$i18n.locale)
-  }
-}
+const { $wikibase } = useNuxtApp()
+const { locale } = useI18n()
+const authStore = useAuthStore()
+
+const propertyLabel = ref(null)
+
+const isUserLogged = computed(() => authStore.isLogged)
+const isAllowedAddValue = computed(() => props.claim.property !== WikibaseService.PROPERTY_NOTES)
+
+onMounted(async () => {
+  propertyLabel.value = await $wikibase.getEntityLabel(props.table, props.claim.property, locale.value)
+})
 </script>
 
 <style scoped>
@@ -62,6 +52,12 @@ export default {
 }
 .claim-header {
   font-size: 16px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  color: #616161 !important;
+  font-weight: bold !important;
 }
 .section-header {
   color: #616161 !important;

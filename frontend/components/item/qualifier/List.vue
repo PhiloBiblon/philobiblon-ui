@@ -10,36 +10,27 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    claim: {
-      type: Object,
-      default: null
-    },
-    qualifiers: {
-      type: Array,
-      default: null
-    }
-  },
-  data () {
-    return {
-      values: []
-    }
-  },
-  mounted () {
-    this.values = [...this.qualifiers]
-  },
-  methods: {
-    deleteQualifier (data) {
-      const findIndex = this.values.findIndex(item => item.hash === data.hash)
+<script setup>
+import { onMounted, ref } from 'vue'
 
-      if (findIndex !== -1) {
-        this.values.splice(findIndex, 1)
-      }
+const props = defineProps({
+  claim: { type: Object, default: null },
+  qualifiers: { type: Array, default: null }
+})
 
-      this.$emit('delete-qualifier', data)
-    }
+const emit = defineEmits(['delete-qualifier'])
+
+const values = ref([])
+
+onMounted(() => {
+  values.value = [...props.qualifiers]
+})
+
+function deleteQualifier (data) {
+  const findIndex = values.value.findIndex(item => item.hash === data.hash)
+  if (findIndex !== -1) {
+    values.value.splice(findIndex, 1)
   }
+  emit('delete-qualifier', data)
 }
 </script>

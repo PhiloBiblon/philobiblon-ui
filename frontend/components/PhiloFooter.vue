@@ -1,32 +1,28 @@
 <template>
-  <v-footer color="white" class="over-menu mt-10" padless>
+  <v-footer color="white" class="over-menu mt-10">
     <v-row dense>
       <v-col cols="12" sm="3" class="text-center" align-self="center">
         <span class="text-black text-h4">Philo</span>
-        <a class="footer_a" target="_blank" href="https://update.lib.berkeley.edu/Topics/philobiblon/">
+        <a class="footer_a blog-link" target="_blank" href="https://update.lib.berkeley.edu/Topics/philobiblon/">
           <span class="font-weight-light text-h4">BLOG</span>
         </a>
       </v-col>
       <v-col cols="12" sm="3">
-        <v-list dense>
-          <v-list-item-group>
-            <v-list-item v-for="(item, index) in links_col_1" :key="index" link @click="goTo(item.link)">
-              <v-list-item-title class="text-subtitle-2">
-                {{ item.label }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-item-group>
+        <v-list density="compact">
+          <v-list-item v-for="(item, index) in links_col_1" :key="index" link @click="goTo(item.link)">
+            <v-list-item-title class="footer-nav-link">
+              {{ item.label }}
+            </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-col>
       <v-col cols="12" sm="3">
-        <v-list dense>
-          <v-list-item-group>
-            <v-list-item v-for="(item, index) in links_col_2" :key="index" link @click="goTo(item.link)">
-              <v-list-item-title class="text-subtitle-2">
-                {{ item.label }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-item-group>
+        <v-list density="compact">
+          <v-list-item v-for="(item, index) in links_col_2" :key="index" link @click="goTo(item.link)">
+            <v-list-item-title class="footer-nav-link">
+              {{ item.label }}
+            </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-col>
       <v-col cols="12" sm="3">
@@ -49,7 +45,7 @@
           </v-row>
           <v-row dense>
             <v-col>
-              <a role="button" class="footer_a text-body-2" @click="goTo('/wiki/Citation')">
+              <a role="button" class="footer_a text-body-2 cite-link" @click="goTo('/wiki/Citation')">
                 How to cite PhiloBiblon
               </a>
             </v-col>
@@ -65,16 +61,16 @@
         <v-container fluid>
           <v-row dense>
             <v-col>
-              <img src="img/footer/universitat_barcelona.png">
+              <img src="/img/footer/universitat_barcelona.png">
             </v-col>
             <v-col>
-              <img src="img/footer/upf.png">
+              <img src="/img/footer/upf.png">
             </v-col>
             <v-col>
-              <img src="img/footer/the_bancroft.png">
+              <img src="/img/footer/the_bancroft.png">
             </v-col>
             <v-col>
-              <img src="img/footer/ilf.png">
+              <img src="/img/footer/ilf.png">
             </v-col>
           </v-row>
         </v-container>
@@ -82,18 +78,18 @@
       <v-col class="text-center text-caption">
         &copy; {{ new Date().getFullYear() }}
         <span class="version">
-          v.{{ $config.version }}
+          v.{{ config.version }}
         </span>
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <span v-bind="attrs" v-on="on">
-              <a class="version" @click="goTo('/privacy-policy')">
-                {{ $i18n.t('privacyPolicy.label') }}
+        <v-tooltip location="top" content-class="privacy-tooltip">
+          <template #activator="{ props: tooltipProps }">
+            <span v-bind="tooltipProps">
+              <a class="version footer_a" @click="goTo('/privacy-policy')">
+                {{ t('privacyPolicy.label') }}
               </a>
             </span>
           </template>
           <p class="tooltip">
-            {{ $i18n.t('privacyPolicy.tooltip') }}
+            {{ t('privacyPolicy.tooltip') }}
           </p>
         </v-tooltip>
       </v-col>
@@ -101,29 +97,29 @@
   </v-footer>
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      links_col_1: [
-        { label: 'ABOUT PhiloBiblon', link: '/wiki/About' },
-        { label: 'HELP', link: '/wiki/Help' },
-        { label: 'RESOURCES', link: '/wiki/Resources' },
-        { label: 'COLLABORATE', link: '/wiki/Collaborate' }
-      ],
-      links_col_2: [
-        { label: 'BETA', link: '/wiki/Beta' },
-        { label: 'BIPA', link: '/wiki/Bipa' },
-        { label: 'BITAGAP', link: '/wiki/Bitagap' },
-        { label: 'BITECA', link: '/wiki/Biteca' }
-      ]
-    }
-  },
-  methods: {
-    goTo (path) {
-      this.$router.push(this.localePath(path))
-    }
-  }
+<script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+const config = useRuntimeConfig().public
+const router = useRouter()
+const localePath = useLocalePath()
+
+const links_col_1 = [
+  { label: 'ABOUT PhiloBiblon', link: '/wiki/About' },
+  { label: 'HELP', link: '/wiki/Help' },
+  { label: 'RESOURCES', link: '/wiki/Resources' },
+  { label: 'COLLABORATE', link: '/wiki/Collaborate' }
+]
+const links_col_2 = [
+  { label: 'BETA', link: '/wiki/Beta' },
+  { label: 'BIPA', link: '/wiki/Bipa' },
+  { label: 'BITAGAP', link: '/wiki/Bitagap' },
+  { label: 'BITECA', link: '/wiki/Biteca' }
+]
+
+function goTo (path) {
+  router.push(localePath(path))
 }
 </script>
 
@@ -131,19 +127,21 @@ export default {
 .over-menu {
   z-index: 7;
 }
+:deep(.footer-nav-link) {
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: normal;
+}
 .footer_a {
   text-decoration: none;
+  color: #b71c1c;
+  cursor: pointer;
 }
 .footer_a:hover {
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #b71c1c;
 }
 .version {
   float: right;
   margin-right: 20px;
-}
-.v-tooltip__content {
-  width: 500px!important;
-  left: unset!important;
-  right: 0!important;
 }
 </style>

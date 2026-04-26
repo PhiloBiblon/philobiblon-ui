@@ -34,132 +34,129 @@
   </div>
 </template>
 
-<script>
-export default {
+<script setup>
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBreadcrumbStore } from '~/stores/breadcrumb'
+import { useQueryStatusStore } from '~/stores/queryStatus'
 
-  props: {
-    table: {
-      type: String,
-      default: null
-    },
-    formDefinition: {
-      type: Object,
-      default: null
-    },
-    breadcrumbItems: {
-      type: Array,
-      default: null
-    }
-  },
+const props = defineProps({
+  table: { type: String, default: null },
+  formDefinition: { type: Object, default: null },
+  breadcrumbItems: { type: Array, default: null }
+})
 
-  data () {
-    return {
-      database: null,
-      form: null,
-      showResults: false,
-      waitingCount: false,
-      waitingItems: false,
-      sparqlQuery: null,
-      resultsPerPage: 50,
-      results: [],
-      totalResults: 0
-    }
-  },
+const { $notification, $wikibase } = useNuxtApp()
+const { locale } = useI18n()
+const router = useRouter()
+const localePath = useLocalePath()
+const breadcrumbStore = useBreadcrumbStore()
+const queryStatusStore = useQueryStatusStore()
 
-  computed: {
-    waitingResults () {
-      return this.waitingItems || this.waitingCount
-    }
-  },
+const form = ref(null)
+const showResults = ref(false)
+const waitingCount = ref(false)
+const waitingItems = ref(false)
+const sparqlQuery = ref(null)
+const resultsPerPage = 50
+const results = ref([])
+const totalResults = ref(0)
+const qs = ref(null)
 
-  created () {
-    if (this.$store.state.queryStatus.currentTable !== this.table) {
-      this.$store.commit('queryStatus/resetStatus', this.table)
-    }
-    const form = this.$store.state.queryStatus.form
-    if (form) {
-      this.form = form
-    } else {
-      this.form = this.formDefinition
-    }
-    if (this.$store.state.queryStatus.showResults === true) {
-      this.countAndSearch()
-    }
-  },
+const waitingResults = computed(() => waitingItems.value || waitingCount.value)
+const activeDatabase = computed(() => form.value?.input?.group?.value || 'ALL')
 
-  mounted () {
-    this.$store.commit('breadcrumb/setItems', this.breadcrumbItems)
-    this.$store.commit('breadcrumb/setClass', 'large-font-breadcrumb')
-  },
+if (queryStatusStore.currentTable !== props.table) {
+  queryStatusStore.resetStatus(props.table)
+}
+const storedForm = queryStatusStore.form
+if (storedForm) {
+  form.value = storedForm
+} else {
+  form.value = props.formDefinition
+}
+if (queryStatusStore.showResults === true) {
+  countAndSearch()
+}
 
-  destroyed () {
-    this.$store.commit('breadcrumb/setClass', '')
-  },
+onMounted(() => {
+  breadcrumbStore.setItems(props.breadcrumbItems)
+  breadcrumbStore.setClass('large-font-breadcrumb')
+})
 
-  methods: {
-    countAndSearch () {
-      this.$store.commit('queryStatus/setForm', JSON.parse(JSON.stringify(this.form)))
-      this.count()
-      this.search()
-    },
+onBeforeUnmount(() => {
+  breadcrumbStore.setClass('')
+})
 
-    count () {
-      this.waitingCount = true
-      this.$wikibase.runSparqlQuery(this.$wikibase.$query.countQuery(this.table, this.form, this.$i18n.locale), true)
-        .then((results) => {
-          this.totalResults = results[0]
-          this.waitingCount = false
-        })
-        .catch((err) => {
-          this.waitingCount = false
-          this.$notification.error(err)
-        })
-    },
+function countAndSearch () {
+  queryStatusStore.setForm(JSON.parse(JSON.stringify(form.value)))
+  count()
+  search()
+}
 
-    search () {
-      this.waitingItems = true
-      this.sparqlQuery = this.$wikibase.$query.itemsQuery(this.table, this.form, this.$i18n.locale, this.resultsPerPage)
-      this.results = []
-      this.$wikibase.runSparqlQuery(this.sparqlQuery)
-        .then((results) => {
-          Object.entries(results).forEach(
-            ([key, result]) => this.results.push(result)
-          )
-          this.waitingItems = false
-          this.showResults = true
-        })
-        .catch((err) => {
-          this.waitingItems = false
-          this.$refs.qs.back()
-          this.$notification.error(err)
-        })
-    },
+function count () {
+  waitingCount.value = true
+  $wikibase.runSparqlQuery($wikibase.$query.countQuery(props.table, form.value, locale.value), true)
+    .then((res) => {
+      const raw = res[0]
+      const parsed = typeof raw === 'object' ? parseInt(raw?.count ?? '', 10) : parseInt(raw ?? '', 10)
+      totalResults.value = Number.isNaN(parsed) ? 0 : parsed
+      waitingCount.value = false
+    })
+    .catch((err) => {
+      waitingCount.value = false
+      $notification.error(err)
+    })
+}
 
-    clearResults () {
-      this.showResults = false
-      this.waitingCount = false
-      this.waitingItems = false
-      this.$store.commit('queryStatus/setShowResults', this.showResults)
-      this.$store.commit('queryStatus/setPage', 1)
-      this.$store.commit('queryStatus/setSortBy', 'name')
-      this.$store.commit('queryStatus/setSortDescending', false)
-    },
-
-    onDatabaseChange (newDatabase) {
-      this.database = newDatabase
-    },
-
-    goToItem (id) {
-      this.$router.push(
-        this.localePath({
-          path: '/item/' + id,
-          query: {
-            database: this.database,
-            table: this.table
-          }
-        })
+function search () {
+  waitingItems.value = true
+  sparqlQuery.value = $wikibase.$query.itemsQuery(props.table, form.value, locale.value, resultsPerPage)
+  results.value = []
+  $wikibase.runSparqlQuery(sparqlQuery.value)
+    .then((res) => {
+      Object.entries(res).forEach(
+        ([, result]) => results.value.push(result)
       )
-    }
-  }
+      waitingItems.value = false
+      showResults.value = true
+    })
+    .catch((err) => {
+      waitingItems.value = false
+      qs.value?.back()
+      $notification.error(err)
+    })
+}
+
+function clearResults () {
+  showResults.value = false
+  waitingCount.value = false
+  waitingItems.value = false
+  queryStatusStore.setShowResults(showResults.value)
+  queryStatusStore.setPage(1)
+  queryStatusStore.setSortBy('name')
+  queryStatusStore.setSortDescending(false)
+}
+
+function onDatabaseChange (_newDatabase) {
+  // Database is now tracked in form.input.group.value
+}
+
+function goToItem (id) {
+  router.push(
+    localePath({
+      path: '/item/' + id,
+      query: {
+        database: activeDatabase.value,
+        table: props.table
+      }
+    })
+  )
 }
 </script>
+
+<style scoped>
+.content {
+  min-height: 820px;
+}
+</style>

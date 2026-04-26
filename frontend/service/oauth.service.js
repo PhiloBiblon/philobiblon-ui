@@ -1,10 +1,19 @@
-const jwt = require('jsonwebtoken')
+import { useAuthStore } from '~/stores/auth'
+
+const b64url = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+const b64urlDecode = s => decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/'))))
+const signToken = payload => `${b64url('{}')}.${b64url(JSON.stringify(payload))}.`
+const decodeToken = (token) => {
+  if (!token) return null
+  const [, b] = token.split('.')
+  if (!b) return null
+  return JSON.parse(b64urlDecode(b))
+}
 
 export class OAuthService {
-  constructor (store, app) {
-    this.$store = store
-    this.$config = app.$config
-    this.$cookies = app.$cookies
+  constructor ({ config }) {
+    this.$config = config
+    this.oauthCookie = useCookie('oauth', { path: '/', maxAge: 60 * 60 })
   }
 
   step1 () {
@@ -43,29 +52,26 @@ export class OAuthService {
     if (response.status === 0) {
       const accessToken = response.accessToken
       const username = await this.getUsername(accessToken)
-      this.$store.commit('auth/login', { username, accessToken })
+      useAuthStore().login({ username, accessToken })
       const oauth = {
         username,
         accessToken
       }
-      const signer = 'password'
-      const token = jwt.sign(oauth, signer)
-      this.$cookies.set('oauth', token, {
-        path: '/',
-        maxAge: 60 * 60
-      })
+      this.oauthCookie.value = signToken(oauth)
     }
     return response
   }
 
   autoLoginByCookie () {
-    const token = this.$cookies.get('oauth')
+    const token = this.oauthCookie.value
+    if (!token) return
     try {
-      const decoded = jwt.verify(token, 'password')
-      const username = decoded.username
-      const accessToken = decoded.accessToken
-      this.$store.commit('auth/login', { username, accessToken })
+      const decoded = decodeToken(token)
+      if (!decoded?.username || !decoded?.accessToken) return
+      const { username, accessToken } = decoded
+      useAuthStore().login({ username, accessToken })
     } catch (err) {
+       
       console.error(err)
     }
   }

@@ -5,98 +5,99 @@
       v-model="currentTab"
       height="20"
     >
-      <v-tab key="results">
-        {{ $t('search.results.results') }} ({{ totalResults }})
+      <v-tab value="results" class="results-tab">
+        {{ t('search.results.results') }} ({{ totalResults }})
       </v-tab>
     </v-tabs>
-    <v-tabs-items
+    <v-window
       v-if="showResults"
       v-model="currentTab"
     >
-      <v-tab-item key="results">
+      <v-window-item value="results">
         <v-container v-if="totalResults == 0">
-          <span>{{ $t('search.results.not_found') }}</span>
+          <span>{{ t('search.results.not_found') }}</span>
         </v-container>
         <v-container v-if="totalResults > 0" class="container-max">
           <v-row dense>
             <v-col class="order-last order-sm-first" cols="10">
-              <v-list>
-                <v-list-item-group
-                  v-model="selectedItem"
-                  color="primary"
+              <v-list v-model:selected="selectedItem" color="primary">
+                <v-list-item
+                  v-for="(result, index) in results"
+                  :key="'r-' + index"
+                  :value="result.item"
+                  @click="goToItem(result.item)"
                 >
-                  <v-list-item v-for="(result, index) in results" :key="'r-'+index" @click="goToItem(result.item)">
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ result.label }}&nbsp;&nbsp;&nbsp;<span class="text-caption">{{ result.pbids }}</span>
-                      </v-list-item-title>
-                      <v-list-item-subtitle class="my-item-subtitle">
-                        {{ result.desc }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
+                  <v-list-item-title>
+                    {{ result.label }}&nbsp;&nbsp;&nbsp;<span class="text-caption">{{ result.pbids }}</span>
+                  </v-list-item-title>
+                  <v-list-item-subtitle class="my-item-subtitle">
+                    {{ result.desc }}
+                  </v-list-item-subtitle>
+                </v-list-item>
               </v-list>
             </v-col>
             <v-col>
               <v-container class="container-max">
                 <v-row justify="end" dense>
                   <v-col class="text-right text-caption">
-                    <span>{{ $t('search.results.sort_by') }}</span>
+                    <span>{{ t('search.results.sort_by') }}</span>
                   </v-col>
                   <v-col cols="auto" class="sort-select-field">
                     <v-select
                       v-model="sortBy"
                       :items="sortItems"
-                      items-text="text"
-                      items-value="value"
-                      class="text-body-2"
-                      dense
-                      @change="changeSortByID"
+                      item-title="text"
+                      item-value="value"
+                      class="sort-select"
+                      density="compact"
+                      @update:model-value="changeSortByID"
                     />
                   </v-col>
                   <v-col cols="auto">
-                    <!-- Alphabetical sort icons (name) -->
                     <v-icon
                       v-if="isSortByName && !isSortDescending"
-                      dense
+                      class="sort-icon"
+                      density="compact"
                       @click="changeSortDescending"
                     >
                       mdi-sort-alphabetical-ascending
                     </v-icon>
                     <v-icon
                       v-if="isSortByName && isSortDescending"
-                      dense
+                      class="sort-icon"
+                      density="compact"
                       @click="changeSortDescending"
                     >
                       mdi-sort-alphabetical-descending
                     </v-icon>
-                    <!-- Numeric sort icons (id) -->
                     <v-icon
                       v-if="isSortByID && !isSortDescending"
-                      dense
+                      class="sort-icon"
+                      density="compact"
                       @click="changeSortDescending"
                     >
                       mdi-sort-numeric-ascending
                     </v-icon>
                     <v-icon
                       v-if="isSortByID && isSortDescending"
-                      dense
+                      class="sort-icon"
+                      density="compact"
                       @click="changeSortDescending"
                     >
                       mdi-sort-numeric-descending
                     </v-icon>
-                    <!-- Date sort icons -->
                     <v-icon
                       v-if="isSortByDate && !isSortDescending"
-                      dense
+                      class="sort-icon"
+                      density="compact"
                       @click="changeSortDescending"
                     >
                       mdi-sort-calendar-ascending
                     </v-icon>
                     <v-icon
                       v-if="isSortByDate && isSortDescending"
-                      dense
+                      class="sort-icon"
+                      density="compact"
                       @click="changeSortDescending"
                     >
                       mdi-sort-calendar-descending
@@ -105,7 +106,7 @@
                 </v-row>
                 <v-row justify="end" dense>
                   <v-col class="text-right text-caption">
-                    <a :href="$config.sparqlBaseUrl+'/#'+encodeURI(sparqlQuery)" target="_blank">SPARQL</a>
+                    <a :href="config.sparqlBaseUrl + '/#' + encodeURI(sparqlQuery)" target="_blank">SPARQL</a>
                   </v-col>
                 </v-row>
               </v-container>
@@ -118,107 +119,70 @@
             v-model="currentPage"
             :length="Math.ceil(totalResults / resultsPerPage)"
             :total-visible="5"
-            circle
-            @input="changePage"
+            @update:model-value="changePage"
           />
         </div>
-      </v-tab-item>
-    </v-tabs-items>
+      </v-window-item>
+    </v-window>
   </div>
 </template>
 
-<script>
-export default {
+<script setup>
+import { computed, onBeforeUpdate, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQueryStatusStore } from '~/stores/queryStatus'
 
-  props: {
-    sparqlQuery: {
-      type: String,
-      default: null
-    },
-    results: {
-      type: Array,
-      default: null
-    },
-    totalResults: {
-      type: Number,
-      default: 0
-    },
-    resultsPerPage: {
-      type: Number,
-      default: 0
-    },
-    showResults: {
-      type: Boolean,
-      default: false
-    }
-  },
+defineProps({
+  sparqlQuery: { type: String, default: null },
+  results: { type: Array, default: null },
+  totalResults: { type: Number, default: 0 },
+  resultsPerPage: { type: Number, default: 0 },
+  showResults: { type: Boolean, default: false }
+})
 
-  data () {
-    return {
-      currentTab: null,
-      selectedItem: '',
-      sortItems: [
-        {
-          text: this.$i18n.t('search.results.sort_option.id'),
-          value: 'id'
-        },
-        {
-          text: this.$i18n.t('search.results.sort_option.name'),
-          value: 'name'
-        },
-        {
-          text: this.$i18n.t('search.results.sort_option.date'),
-          value: 'date'
-        }
-      ],
-      sortBy: null,
-      currentPage: null
-    }
-  },
+const emit = defineEmits(['on-sort-by-id', 'on-sort-descending', 'on-pagination', 'go-to-item'])
 
-  computed: {
-    isSortDescending () {
-      return this.$store.state.queryStatus.isSortDescending
-    },
+const { t } = useI18n()
+const config = useRuntimeConfig().public
+const queryStatusStore = useQueryStatusStore()
 
-    isSortByID () {
-      return this.sortBy === 'id'
-    },
+const currentTab = ref('results')
+const selectedItem = ref([])
+const sortItems = [
+  { text: t('search.results.sort_option.id'), value: 'id' },
+  { text: t('search.results.sort_option.name'), value: 'name' },
+  { text: t('search.results.sort_option.date'), value: 'date' }
+]
+const sortBy = ref(null)
+const currentPage = ref(null)
 
-    isSortByName () {
-      return this.sortBy === 'name'
-    },
+const isSortDescending = computed(() => queryStatusStore.isSortDescending)
+const isSortByID = computed(() => sortBy.value === 'id')
+const isSortByName = computed(() => sortBy.value === 'name')
+const isSortByDate = computed(() => sortBy.value === 'date')
 
-    isSortByDate () {
-      return this.sortBy === 'date'
-    }
-  },
+onBeforeUpdate(() => {
+  sortBy.value = queryStatusStore.sortBy
+  currentPage.value = queryStatusStore.currentPage
+})
 
-  beforeUpdate () {
-    this.sortBy = this.$store.state.queryStatus.sortBy
-    this.currentPage = this.$store.state.queryStatus.currentPage
-  },
+function changePage (val) {
+  queryStatusStore.setPage(val)
+  emit('on-pagination', val)
+}
 
-  methods: {
-    changePage (val) {
-      this.$store.commit('queryStatus/setPage', val)
-      this.$emit('on-pagination', val)
-    },
+function changeSortByID () {
+  queryStatusStore.setSortBy(sortBy.value)
+  emit('on-sort-by-id', isSortByID.value)
+}
 
-    changeSortByID () {
-      this.$store.commit('queryStatus/setSortBy', this.sortBy)
-      this.$emit('on-sort-by-id', this.isSortByID)
-    },
+function changeSortDescending () {
+  queryStatusStore.setSortDescending(!isSortDescending.value)
+  emit('on-sort-descending', !isSortDescending.value)
+}
 
-    changeSortDescending () {
-      this.$store.commit('queryStatus/setSortDescending', !this.isSortDescending)
-      this.$emit('on-sort-descending', !this.isSortDescending)
-    },
-
-    goToItem (id) {
-      this.$emit('go-to-item', id)
-    }
-  }
+function goToItem (id) {
+  emit('go-to-item', id)
 }
 </script>
 
@@ -229,6 +193,18 @@ export default {
 }
 .sort-select-field {
   padding: 4px 0 0 0;
-  width: 75px;
+  width: 90px;
+}
+:deep(.results-tab) {
+  color: #b71c1c !important;
+  font-weight: bold;
+}
+:deep(.sort-select .v-field__input),
+:deep(.sort-select .v-label) {
+  font-size: 12px !important;
+}
+.sort-icon {
+  color: #757575;
+  font-size: 18px;
 }
 </style>

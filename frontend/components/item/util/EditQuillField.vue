@@ -4,126 +4,124 @@
   </div>
 </template>
 
-<script>
-import Quill from 'quill'
+<script setup>
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import Quill from 'quill/dist/quill.js'
 import 'quill/dist/quill.snow.css'
 
-export default {
-  props: {
-    value: {
-      type: String,
-      default: null
-    },
-    save: {
-      type: Function,
-      required: true
+const props = defineProps({
+  value: { type: String, default: null },
+  save: { type: Function, required: true }
+})
+
+const { $notification } = useNuxtApp()
+const { t } = useI18n()
+
+const editorContainer = ref(null)
+let quill = null
+
+onMounted(() => {
+  initQuill()
+})
+
+function initQuill () {
+  quill = new Quill(editorContainer.value, {
+    theme: 'snow',
+    placeholder: 'Start typing...',
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ header: 1 }, { header: 2 }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'image'],
+        [{ align: [] }]
+      ]
     }
-  },
-  data () {
-    return {
-      quill: null,
-      content: ''
-    }
-  },
-  async mounted () {
-    await this.initQuill()
-  },
-  methods: {
-    initQuill () {
-      this.quill = new Quill(this.$refs.editorContainer, {
-        theme: 'snow',
-        placeholder: 'Start typing...',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ header: 1 }, { header: 2 }],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            ['link', 'image'],
-            [{ align: [] }]
-          ]
-        }
-      })
+  })
 
-      this.quill.root.innerHTML = this.value
-      this.insertCustomButtons()
-    },
-    insertCustomButtons () {
-      const toolbarModule = this.quill.getModule('toolbar')
-      const toolbar = toolbarModule.container
+  quill.root.innerHTML = props.value
+  insertCustomButtons()
+}
 
-      if (toolbar) {
-        const customButtonsContainer = document.createElement('div')
-        customButtonsContainer.classList.add('custom-buttons-container')
-        toolbar.appendChild(customButtonsContainer)
+function insertCustomButtons () {
+  const toolbarModule = quill.getModule('toolbar')
+  const toolbar = toolbarModule.container
 
-        const checkButton = this.createButton('edit', 'mdi mdi-check')
-        checkButton.title = this.$t('common.save')
+  if (toolbar) {
+    const customButtonsContainer = document.createElement('div')
+    customButtonsContainer.classList.add('custom-buttons-container')
+    toolbar.appendChild(customButtonsContainer)
 
-        const closeButton = this.createButton('restore', 'mdi mdi-close')
-        closeButton.title = this.$t('common.cancel')
+    const checkButton = createButton('edit', 'mdi mdi-check')
+    checkButton.title = t('common.save')
 
-        customButtonsContainer.appendChild(checkButton)
-        customButtonsContainer.appendChild(closeButton)
-      }
-    },
-    createButton (type, icon) {
-      const button = document.createElement('button')
-      button.classList.add('ql-custom-button')
-      button.setAttribute('type', 'button')
-      button.innerHTML = `<i class="${icon}"></i>`
+    const closeButton = createButton('restore', 'mdi mdi-close')
+    closeButton.title = t('common.cancel')
 
-      button.addEventListener('click', () => {
-        this[type]()
-      })
-      return button
-    },
-    async edit () {
-      if (this.quill.root.innerHTML === this.value) {
-        return
-      }
-
-      await this.save(this.quill.root.innerHTML, this.value)
-        .then((response) => {
-          if (response) {
-            if (response.error && response.error.info) {
-              throw new Error(response.error.info)
-            }
-            this.$notification.success(this.$i18n.t('messages.success.updated'))
-          }
-        })
-        .catch((error) => {
-          if (error.message === 'query is undefined') {
-            error = this.$i18n.t('messages.error.session.expired')
-          }
-
-          if (error.message.includes('modification-failed')) {
-            error = this.$i18n.t('messages.error.modification.failed')
-          }
-
-          this.$notification.error(error)
-        })
-    },
-    restore () {
-      this.quill.root.innerHTML = this.value
-    }
+    customButtonsContainer.appendChild(checkButton)
+    customButtonsContainer.appendChild(closeButton)
   }
+}
+
+function createButton (type, icon) {
+  const button = document.createElement('button')
+  button.classList.add('ql-custom-button')
+  button.setAttribute('type', 'button')
+  button.innerHTML = `<i class="${icon}"></i>`
+
+  button.addEventListener('click', () => {
+    if (type === 'edit') { edit() } else { restore() }
+  })
+  return button
+}
+
+async function edit () {
+  if (quill.root.innerHTML === props.value) {
+    return
+  }
+
+  await props.save(quill.root.innerHTML, props.value)
+    .then((response) => {
+      if (response) {
+        if (response.error && response.error.info) {
+          throw new Error(response.error.info)
+        }
+        $notification.success(t('messages.success.updated'))
+      }
+    })
+    .catch((error) => {
+      if (error.message === 'query is undefined') {
+        error = t('messages.error.session.expired')
+      }
+
+      if (error.message.includes('modification-failed')) {
+        error = t('messages.error.modification.failed')
+      }
+
+      $notification.error(error)
+    })
+}
+
+function restore () {
+  quill.root.innerHTML = props.value
 }
 </script>
 
 <style scoped>
-::v-deep .ql-toolbar {
+:deep(.ql-toolbar) {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-::v-deep .custom-buttons-container {
+:deep(.custom-buttons-container) {
   display: flex;
   margin-left: auto;
   margin-right: 0;
 }
 
-::v-deep .ql-custom-button {
+:deep(.ql-custom-button) {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -135,9 +133,19 @@ export default {
   height: 36px;
 }
 
-::v-deep .ql-custom-button .mdi {
+:deep(.ql-custom-button .mdi) {
   font-size: 20px;
   line-height: 1;
   vertical-align: middle;
+}
+
+:deep(.ql-toolbar) {
+  background-color: rgb(247, 245, 245);
+}
+
+:deep(.ql-container),
+:deep(.ql-editor) {
+  background-color: #ffffff;
+  font-size: 16px;
 }
 </style>

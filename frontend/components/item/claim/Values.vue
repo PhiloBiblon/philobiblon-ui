@@ -2,15 +2,16 @@
   <v-data-table
     v-if="claim"
     :headers="formattedHeaders"
-    :hide-default-header="!Object.values(headers).length"
+    :hide-default-header="!headers.length"
     :items="claim.values"
-    :footer-props="footerProps"
+    :items-per-page-options="perPageOptions"
+    :items-per-page-text="`${t('common.properties')} ${t('common.per_page')}`"
     :hide-default-footer="shouldHideFooter"
     class="elevation-1"
   >
     <template #item="{ item, index }">
       <tr class="table-row">
-        <td v-for="(header, key) in formattedHeaders" :key="header.value" class="table-cell">
+        <td v-for="(header, key) in formattedHeaders" :key="header.key" class="table-cell">
           <item-value-base
             v-if="!key"
             :claim="item"
@@ -18,13 +19,13 @@
             type="claim"
             :in-table="true"
             :column-width="header.width"
-            @delete-claim="$emit('delete-claim', $event)"
+            @delete-claim="emit('delete-claim', $event)"
           />
           <item-qualifier-list
-            v-if="item.qualifiers?.[header.value]"
-            :key="item.qualifiers[header.value].length"
+            v-if="item.qualifiers?.[header.key]"
+            :key="item.qualifiers[header.key].length"
             :claim="item"
-            :qualifiers="item.qualifiers[header.value]"
+            :qualifiers="item.qualifiers[header.key]"
             @delete-qualifier="deleteQualifier($event, index)"
           />
         </td>
@@ -46,108 +47,103 @@
   </v-data-table>
 </template>
 
-<script>
-export default {
-  props: {
-    claim: {
-      type: Object,
-      default: () => ({ values: [] })
-    }
-  },
-  data () {
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
+
+const props = defineProps({
+  claim: { type: Object, default: () => ({ values: [] }) }
+})
+
+const emit = defineEmits(['delete-claim'])
+
+const { $wikibase } = useNuxtApp()
+const { t, locale } = useI18n()
+const authStore = useAuthStore()
+
+const headers = ref([])
+
+const perPageOptions = [
+  { title: '20', value: 20 },
+  { title: '40', value: 40 },
+  { title: '60', value: 60 },
+  { title: '80', value: 80 },
+  { title: '100', value: 100 },
+  { title: t('search.form.common.group_all.label'), value: -1 }
+]
+
+const isUserLogged = computed(() => authStore.isLogged)
+
+const formattedHeaders = computed(() => [
+  { title: '', key: '_value', sortable: false },
+  ...headers.value.map(header => ({
+    title: header.label.value,
+    key: header.property,
+    sortable: false
+  }))
+])
+
+const shouldHideFooter = computed(() => props.claim?.values?.length <= perPageOptions[0].value)
+
+onMounted(async () => {
+  await getHeaders()
+})
+
+async function getHeaders () {
+  const qualifierKeys = new Set()
+  props.claim.values.forEach((item) => {
+    Object.keys(item.qualifiers ?? {}).forEach(key => qualifierKeys.add(key))
+  })
+  const qualifiersKeysOrdered = Array.from(qualifierKeys).sort((a, b) => {
+    return props.claim.qualifiersOrder ? props.claim.qualifiersOrder.indexOf(a) - props.claim.qualifiersOrder.indexOf(b) : -1
+  })
+  const headerPromises = qualifiersKeysOrdered.map(async (property) => {
+    const entity = await $wikibase.getEntity(property, locale.value)
     return {
-      headers: [],
-      perPageOptions: [
-        { text: '20', value: 20 },
-        { text: '40', value: 40 },
-        { text: '60', value: 60 },
-        { text: '80', value: 80 },
-        { text: '100', value: 100 },
-        { text: this.$i18n.t('search.form.common.group_all.label'), value: -1 }
-      ]
+      property,
+      label: $wikibase.getValueByLang(entity.labels, locale.value)
     }
-  },
-  computed: {
-    isUserLogged () {
-      return this.$store.state.auth.isLogged
-    },
-    formattedHeaders () {
-      return [
-        { text: '', value: '', sortable: false },
-        ...this.headers.map(header => ({
-          text: header.label.value,
-          value: header.property,
-          sortable: false
-        }))
-      ]
-    },
-    shouldHideFooter () {
-      return this.claim?.values?.length <= this.perPageOptions[0].value
-    },
-    footerProps () {
-      return {
-        showCurrentPage: true,
-        showFirstLastPage: true,
-        itemsPerPageOptions: this.perPageOptions,
-        itemsPerPageText: `${this.$i18n.t('common.properties')} ${this.$i18n.t('common.per_page')}`
-      }
-    }
-  },
-  async mounted () {
-    await this.getHeaders()
-  },
-  methods: {
-    async getHeaders () {
-      const qualifierKeys = new Set()
-      this.claim.values.forEach((item) => {
-        Object.keys(item.qualifiers ?? {}).forEach(key => qualifierKeys.add(key))
-      })
-      const qualifiersKeysOrdered = Array.from(qualifierKeys).sort((a, b) => {
-        return this.claim.qualifiersOrder ? this.claim.qualifiersOrder.indexOf(a) - this.claim.qualifiersOrder.indexOf(b) : -1
-      })
-      const headerPromises = Array.from(qualifiersKeysOrdered).map(async (property) => {
-        const entity = await this.$wikibase.getEntity(property, this.$i18n.locale)
-        return {
-          property,
-          label: this.$wikibase.getValueByLang(entity.labels, this.$i18n.locale)
-        }
-      })
-      this.headers = await Promise.all(headerPromises)
-    },
-    async createQualifier (qualifiers, index) {
-      if (!this.claim.values[index].qualifiers) {
-        // eslint-disable-next-line vue/no-mutating-props
-        this.claim.values[index].qualifiers = []
-      }
-      // eslint-disable-next-line vue/no-mutating-props
-      this.claim.values[index].qualifiers[qualifiers[0].property] = qualifiers
-      await this.getHeaders()
-    },
-    async deleteQualifier (qualifier, index) {
-      const qualifiers = this.claim.values[index].qualifiers[qualifier.property]
-      const findIndex = qualifiers.findIndex(item => item.hash === qualifier.hash)
-      if (findIndex !== -1) {
-        qualifiers.splice(findIndex, 1)
-      }
-      if (!qualifiers.length) {
-        // eslint-disable-next-line vue/no-mutating-props
-        delete this.claim.values[index].qualifiers[qualifier.property]
-      }
-      await this.getHeaders()
-    }
+  })
+  headers.value = await Promise.all(headerPromises)
+}
+
+async function createQualifier (qualifiers, index) {
+  const value = props.claim.values[index]
+  if (!value.qualifiers) {
+    value.qualifiers = {}
   }
+  value.qualifiers[qualifiers[0].property] = qualifiers
+  await getHeaders()
+}
+
+async function deleteQualifier (qualifier, index) {
+  const value = props.claim.values[index]
+  const qualifiers = value.qualifiers[qualifier.property]
+  const findIndex = qualifiers.findIndex(item => item.hash === qualifier.hash)
+  if (findIndex !== -1) {
+    qualifiers.splice(findIndex, 1)
+  }
+  if (!qualifiers.length) {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+    delete value.qualifiers[qualifier.property]
+  }
+  await getHeaders()
 }
 </script>
 
 <style scoped>
-::v-deep .v-data-table-header th {
+:deep(.v-data-table thead th) {
   background-color: #e0e0e0;
-  color: black;
-  font-weight: bold;
-  border: none;
+  color: #424242 !important;
+  font-weight: bold !important;
+  border: none !important;
+  font-size: 11px !important;
+  height: 28px !important;
+  text-align: right !important;
 }
 
-::v-deep .v-data-table-header th:last-child {
+:deep(.v-data-table-header th:last-child) {
   border-right: none;
 }
 
@@ -187,14 +183,10 @@ export default {
   background-color: rgb(247, 245, 245) !important;
 }
 
-::v-deep .v-data-footer {
+:deep(.v-data-table-footer) {
   background-color: rgb(247, 245, 245);
   border-top: none;
   width: 100%;
   padding: 8px 16px;
-}
-
-::v-deep .v-data-footer__pagination {
-  justify-content: flex-end;
 }
 </style>
