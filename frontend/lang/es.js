@@ -8,6 +8,7 @@ export default {
     no_data: 'No hay datos disponibles',
     loading: 'Cargando..',
     language: 'Idioma',
+    language_selector: 'Seleccionar idioma',
     amount: 'Cantidad',
     unit: 'Unidad',
     date: 'Fecha',
@@ -595,7 +596,8 @@ export default {
       }
     },
     success: {
-      updated: 'Actualizada con éxito'
+      updated: 'Actualizada con éxito',
+      deleted: 'Eliminada con éxito'
     }
   },
   wiki: {

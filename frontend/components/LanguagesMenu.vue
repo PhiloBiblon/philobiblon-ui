@@ -5,10 +5,12 @@
         v-bind="activatorProps"
         variant="text"
         class="d-flex align-center pa-1"
+        :aria-label="t('common.language_selector')"
       >
         <v-img
           :src="localeFlag"
-          alt="flag"
+          alt=""
+          aria-hidden="true"
           :width="27"
           :height="15"
         />
@@ -22,7 +24,7 @@
         @click="changeLocale(index)"
       >
         <template #prepend>
-          <v-img :src="item.image" alt="flag" :width="27" :height="15" class="mr-3" />
+          <v-img :src="item.image" alt="" aria-hidden="true" :width="27" :height="15" class="mr-3" />
         </template>
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item>
@@ -33,7 +35,7 @@
 <script setup>
 import { computed } from 'vue'
 
-const { locale, setLocale } = useI18n()
+const { locale, setLocale, t } = useI18n()
 const config = useRuntimeConfig()
 const baseURL = config.app.baseURL.replace(/\/$/, '')
 

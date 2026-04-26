@@ -119,7 +119,12 @@ const isAllowedAddQualifier = computed(() => props.claim && props.claim.mainsnak
 if (props.initialQualifiers) {
   props.initialQualifiers.forEach((qualifier, index) => {
     properties[index] = [qualifier.property]
-    qualifiers.push(qualifier)
+    // Clone qualifier and its nested datavalue to prevent prop mutations
+    const clonedQualifier = { ...qualifier }
+    if (qualifier.datavalue) {
+      clonedQualifier.datavalue = { ...qualifier.datavalue }
+    }
+    qualifiers.push(clonedQualifier)
   })
 }
 

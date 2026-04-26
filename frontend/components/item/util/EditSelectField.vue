@@ -24,7 +24,7 @@
     </template>
     <template #append-inner>
       <v-btn
-        v-if="isEditable && focussed"
+        v-if="isEditable && focussed && props.save"
         variant="text"
         icon
         density="compact"
@@ -85,7 +85,7 @@ import { useI18n } from 'vue-i18n'
 defineOptions({ inheritAttrs: false })
 
 const props = defineProps({
-  value: { type: String, default: null },
+  value: { type: Object, default: null },
   options: { type: Array, default: () => [] },
   save: { type: Function, default: null },
   delete: { type: Function, default: null },
@@ -106,7 +106,7 @@ const focussed = ref(false)
 const isEditable = computed(() => props.mode === 'edit')
 const isRemovable = computed(() => isEditable.value && !!props.delete)
 
-watch(() => props.value, (newValue, oldValue) => {
+watch(() => props.value, (newValue, _oldValue) => {
   currentText.value = newValue
   consolidatedText.value = currentText.value ? { ...currentText.value } : null
 })
@@ -141,6 +141,9 @@ function blur () {
 }
 
 async function edit () {
+  if (!props.save) {
+    return
+  }
   if (currentText.value && (!consolidatedText.value || currentText.value.id !== consolidatedText.value.id)) {
     await props.save(currentText.value, consolidatedText.value)
       .then((response) => {
@@ -166,12 +169,20 @@ async function edit () {
 
 function restore () {
   currentText.value = consolidatedText.value
-  consolidatedOptions.value = [currentText.value]
+  // Only set and emit non-empty option array
+  if (currentText.value && (typeof currentText.value === 'string' ? currentText.value.trim() : true)) {
+    consolidatedOptions.value = [currentText.value]
+  } else {
+    consolidatedOptions.value = []
+  }
   emit('update-options', consolidatedOptions.value)
   autocomplete.value?.blur?.()
 }
 
 async function deleteValue () {
+  if (!props.delete) {
+    return
+  }
   await props.delete()
     .then((response) => {
       if (response) {
