@@ -94,8 +94,8 @@ jobs:
           script: |
             set -e
             cd ${{ vars.DEPLOY_PATH }}
-            docker compose -f docker-compose.ui-dev.yml pull
-            docker compose -f docker-compose.ui-dev.yml up -d
+            docker compose -f docker-compose.ui-local.yml -f docker-compose.ui-dev.yml pull
+            docker compose -f docker-compose.ui-local.yml -f docker-compose.ui-dev.yml up -d
             docker images --filter "dangling=true" --filter "label=org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui" -q | xargs -r docker rmi -f
 
   cleanup:

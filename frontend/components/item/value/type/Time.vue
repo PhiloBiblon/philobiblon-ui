@@ -4,30 +4,25 @@
       {{ valueToView.value }} <sup>{{ valueToView.calendar }}</sup>
     </template>
     <template v-else>
-      <v-container class="pa-0">
-        <v-row dense class="justify-start">
-          <v-col dense class="flex-shrink-1">
-            <item-util-edit-date-picker-field
-              :value="valueToView_.value"
-              :mode="mode"
-              style="width: 200px"
-              class="ma-0 pa-0"
-              :save="editValue"
-              :delete="deleteValue"
-              @new-value="newDateValue"
-            />
-            <v-select
-              v-model="valueToView_.calendar"
-              :label="t('common.calendar')"
-              :items="['Gregorian', 'Julian']"
-              class="ma-0 pa-0 mt-2"
-              density="compact"
-              style="width: 100px"
-              @update:model-value="onChangeCalendarType"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <div style="display: inline-flex; flex-direction: column; align-items: flex-start;">
+        <item-util-edit-date-picker-field
+          :value="valueToView_.value"
+          :mode="mode"
+          class="ma-0 pa-0"
+          :save="editValue"
+          :delete="deleteValue"
+          @new-value="newDateValue"
+        />
+        <v-select
+          v-model="valueToView_.calendar"
+          :label="t('common.calendar')"
+          :items="['Gregorian', 'Julian']"
+          class="ma-0 pa-0 mt-2"
+          density="compact"
+          style="width: 90px"
+          @update:model-value="onChangeCalendarType"
+        />
+      </div>
     </template>
   </div>
 </template>

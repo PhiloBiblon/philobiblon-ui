@@ -212,7 +212,7 @@ async function deleteValue () {
 }
 
 .date-input {
-  width: 200px;
+  width: 140px;
 }
 
 :deep(.v-field__input) {
