@@ -2,7 +2,6 @@
 FROM node:22-alpine AS build-stage
 WORKDIR /app
 COPY package.json .yarnrc.yml ./
-COPY .yarn .yarn
 ARG BASE_URL
 ARG API_BASE_URL
 ENV BASE_URL=$BASE_URL
