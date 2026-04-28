@@ -11,28 +11,73 @@ PhiloBiblon UI is a modern web application for querying and editing items in a W
 
 ## Architecture Diagram
 
-```
-                                                 ┌─────────────────────┐
-                               ┌────────────────▶│    Wikibase API     │◀────┐
-                               │                 └─────────────────────┘     │
-                               │                                             │
-                               │ (read)                               (write)│
-                               │                                             │
-┌─────────────┐         ┌──────────────┐         ┌─────────────┐             │
-│   Browser   │────────▶│   Frontend   │────────▶│   Backend   │─────────────┘
-│             │◀────────│   (Nuxt.js)  │◀────────│(Spring Boot)│─────────────┐
-└─────────────┘         └──────────────┘         └─────────────┘             │
-                               │                                             │
-                               │ (direct)                            (cached)│
-                               │                                             │
-                               │                 ┌─────────────────────┐     │
-                               └────────────────▶│   SPARQL Endpoint   │◀────┘
-                                                 └─────────────────────┘
+![Architecture diagram](architecture.png)
+
+> The source for this diagram is [`architecture.mmd`](architecture.mmd) (Mermaid format).
+
+```mermaid
+graph TB
+    User["Browser / User"]
+
+    subgraph Docker["Docker Compose"]
+        Nginx["nginx\n(reverse proxy)"]
+
+        subgraph FE["Frontend — Nuxt 2 / Vue 2 / Vuetify"]
+            Pages["Pages\nindex · search/* · item/* · create/* · wiki/*\noauth_callback"]
+            Store["Vuex Store\nauth · breadcrumb\nitemCache · queryCache · queryStatus"]
+            Services["Services\nquery.service · wikibase.service\noauth.service · notification.service"]
+            Pages <--> Store
+            Pages <--> Services
+        end
+
+        subgraph BE["Backend — Spring Boot"]
+            ConfigCtrl["ConfigController\n/api/config"]
+            OAuthCtrl["OAuthController\n/api/oauth/*"]
+            SparqlCtrl["SparqlController\n/api/sparql"]
+            SearchCtrl["SearchController\n/api/search"]
+            ProxyCtrl["ProxyController\n/api/proxy"]
+
+            SparqlSvc["SparqlService"]
+            SearchSvc["SearchService"]
+            OAuthSvc["WikibaseOAuthService"]
+
+            Cache["Cache\nTimedMap + StringCompressor"]
+
+            SparqlCtrl --> SparqlSvc
+            SearchCtrl --> SearchSvc
+            OAuthCtrl --> OAuthSvc
+            SparqlSvc <--> Cache
+            SearchSvc --> SparqlSvc
+        end
+    end
+
+    subgraph External["External Systems"]
+        Wikibase["Wikibase\n(API + OAuth)"]
+        SPARQL["SPARQL Endpoint"]
+    end
+
+    User <--> Nginx
+    Nginx --> FE
+    Nginx --> BE
+
+    Services -- "SPARQL queries" --> SparqlCtrl
+    Services -- "item read/edit" --> ProxyCtrl
+    Services -- "search" --> SearchCtrl
+    Services -- "OAuth flow" --> OAuthCtrl
+    Services -- "config" --> ConfigCtrl
+
+    SparqlSvc --> SPARQL
+    SearchSvc --> SPARQL
+    ProxyCtrl --> Wikibase
+    OAuthSvc --> Wikibase
 ```
 
 **Architecture Summary**:
-- **Wikibase API**: Frontend reads directly, Backend writes with OAuth
-- **SPARQL Endpoint**: Frontend queries directly, Backend queries with caching
+- **nginx**: reverse proxy that routes `/` to the frontend and `/api/` to the backend
+- **Frontend (Nuxt 2)**: SPA served as static files; reads Wikibase directly, routes writes and SPARQL through the backend
+- **Backend (Spring Boot)**: OAuth 1.0a proxy for writes, cached SPARQL endpoint, search API
+- **Wikibase API**: item reads go directly from the frontend; writes are proxied through the backend with OAuth
+- **SPARQL Endpoint**: queried by both the frontend (via backend proxy, 10-min cache) and indirectly through the search service
 
 ## Documentation Structure
 
