@@ -1,6 +1,7 @@
 {
   "name": "PhiloBiblon UI",
   "image": "mcr.microsoft.com/devcontainers/java:17",
+  "initializeCommand": "touch ${localEnv:HOME}/.gitconfig",
   "mounts": [
     "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,readonly"
   ],

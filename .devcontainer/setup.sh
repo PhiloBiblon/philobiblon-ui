@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # Install GitHub CLI
 sudo mkdir -p -m 755 /etc/apt/keyrings
