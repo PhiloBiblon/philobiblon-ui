@@ -41,3 +41,6 @@ build/
 
 ### Docker compose internal data ###
 /data/certbot/
+
+### Claude ###
+**/settings.local.json

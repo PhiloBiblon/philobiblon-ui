@@ -1,6 +1,9 @@
 {
   "name": "PhiloBiblon UI",
   "image": "mcr.microsoft.com/devcontainers/java:17",
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,readonly"
+  ],
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts",
@@ -21,7 +24,7 @@
   "remoteEnv": {
     "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0"
   },
-  "postCreateCommand": "npm install -g @anthropic-ai/claude-code && cd frontend && yarn install",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
   "customizations": {
     "vscode": {
       "extensions": [
