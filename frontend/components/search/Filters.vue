@@ -113,6 +113,7 @@
             {{ t('search.button.clear') }}
           </v-btn>
           <v-btn
+            v-if="authStore.isLogged"
             color="primary"
             class="mr-4"
             size="small"
