@@ -431,7 +431,8 @@ export default {
     button: {
       search: 'Buscar',
       back: 'Atrás',
-      clear: 'Reinicia'
+      clear: 'Reinicia',
+      create_item: 'Crear novo elemento'
     },
     results: {
       results: 'Resultados',
