@@ -2,25 +2,31 @@ package io.github.philobiblon.backend.error;
 
 public class WikibaseError {
 
-    private String code;
-    private String info;
-    private int success;
+    public static class ErrorDetail {
+        private final String code;
+        private final String info;
+
+        public ErrorDetail(String code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+    }
+
+    private final ErrorDetail error;
 
     public WikibaseError(String code, String info) {
-        this.code = code;
-        this.info = info;
-        this.success = 0;
+        this.error = new ErrorDetail(code, info);
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public int getSuccess() {
-        return success;
+    public ErrorDetail getError() {
+        return error;
     }
 }

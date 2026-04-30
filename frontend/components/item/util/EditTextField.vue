@@ -86,6 +86,7 @@ const emit = defineEmits(['on-blur', 'new-value'])
 
 const { $notification } = useNuxtApp()
 const { t } = useI18n()
+const { notifyError } = useNotifyError()
 
 const myTextField = ref(null)
 const currentText = ref(null)
@@ -133,16 +134,7 @@ async function edit () {
         }
       })
       .catch((error) => {
-        const originalMessage = error?.message || String(error)
-        let finalNotificationMsg = error
-
-        if (originalMessage === 'query is undefined') {
-          finalNotificationMsg = t('messages.error.session.expired')
-        } else if (originalMessage.includes('modification-failed')) {
-          finalNotificationMsg = t('messages.error.modification.failed')
-        }
-
-        $notification.error(finalNotificationMsg)
+        notifyError(error)
       })
   }
   myTextField.value?.blur?.()
@@ -167,10 +159,7 @@ async function deleteValue () {
       }
     })
     .catch((error) => {
-      if (error.message === 'query is undefined') {
-        error = t('messages.error.session.expired')
-      }
-      $notification.error(error)
+      notifyError(error)
     })
 }
 </script>

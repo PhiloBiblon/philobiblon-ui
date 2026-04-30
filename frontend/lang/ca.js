@@ -577,6 +577,8 @@ export default {
   messages: {
     error: {
       something_went_wrong: 'Alguna cosa va fallar!',
+      wikibase_slow: 'Wikibase està sobrecarregat. Torna-ho a provar en uns moments.',
+      wikibase_unreachable: 'No s\'ha pogut connectar amb Wikibase. Torna-ho a provar.',
       session: {
         expired: 'Sessió expirada'
       },

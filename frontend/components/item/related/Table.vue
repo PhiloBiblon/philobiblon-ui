@@ -59,6 +59,7 @@ function count () {
       const parsed = typeof raw === 'object' ? parseInt(raw?.total ?? '', 10) : parseInt(raw ?? '', 10)
       totalResults.value = Number.isNaN(parsed) ? 0 : parsed
     })
+    .catch((error) => { console.error('Error loading related items count:', error) })
 }
 
 async function changePage () {

@@ -23,7 +23,7 @@
       @on-pagination="search"
       @go-to-item="goToItem"
     />
-    <div v-if="waitingResults" class="text-center">
+    <div v-if="waitingResults" class="spinner-container">
       <v-progress-circular
         size="50"
         width="5"
@@ -46,8 +46,9 @@ const props = defineProps({
   breadcrumbItems: { type: Array, default: null }
 })
 
-const { $notification, $wikibase } = useNuxtApp()
-const { locale } = useI18n()
+const { $wikibase } = useNuxtApp()
+const { t, locale } = useI18n()
+const { notifyError } = useNotifyError()
 const router = useRouter()
 const localePath = useLocalePath()
 const breadcrumbStore = useBreadcrumbStore()
@@ -62,6 +63,7 @@ const resultsPerPage = 50
 const results = ref([])
 const totalResults = ref(0)
 const qs = ref(null)
+let searchErrorShown = false
 
 const waitingResults = computed(() => waitingItems.value || waitingCount.value)
 const activeDatabase = computed(() => form.value?.input?.group?.value || 'ALL')
@@ -89,6 +91,7 @@ onBeforeUnmount(() => {
 })
 
 function countAndSearch () {
+  searchErrorShown = false
   queryStatusStore.setForm(JSON.parse(JSON.stringify(form.value)))
   count()
   search()
@@ -105,7 +108,12 @@ function count () {
     })
     .catch((err) => {
       waitingCount.value = false
-      $notification.error(err)
+      if (!searchErrorShown) {
+        searchErrorShown = true
+        notifyError(err)
+      } else {
+        console.error(err)
+      }
     })
 }
 
@@ -124,7 +132,12 @@ function search () {
     .catch((err) => {
       waitingItems.value = false
       qs.value?.back()
-      $notification.error(err)
+      if (!searchErrorShown) {
+        searchErrorShown = true
+        notifyError(err)
+      } else {
+        console.error(err)
+      }
     })
 }
 
@@ -158,5 +171,11 @@ function goToItem (id) {
 <style scoped>
 .content {
   min-height: 820px;
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
 }
 </style>

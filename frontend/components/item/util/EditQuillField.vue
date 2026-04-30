@@ -17,6 +17,7 @@ const props = defineProps({
 
 const { $notification } = useNuxtApp()
 const { t } = useI18n()
+const { notifyError } = useNotifyError()
 
 const editorContainer = ref(null)
 let quill = null
@@ -91,15 +92,7 @@ async function edit () {
       }
     })
     .catch((error) => {
-      if (error.message === 'query is undefined') {
-        error = t('messages.error.session.expired')
-      }
-
-      if (error.message.includes('modification-failed')) {
-        error = t('messages.error.modification.failed')
-      }
-
-      $notification.error(error)
+      notifyError(error)
     })
 }
 

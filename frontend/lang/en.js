@@ -579,6 +579,8 @@ export default {
   messages: {
     error: {
       something_went_wrong: 'Something went wrong!',
+      wikibase_slow: 'Wikibase is under heavy load. Please try again in a few moments.',
+      wikibase_unreachable: 'Could not connect to Wikibase. Please try again.',
       session: {
         expired: 'Session expired'
       },

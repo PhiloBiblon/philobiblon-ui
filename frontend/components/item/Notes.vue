@@ -22,6 +22,7 @@ const emit = defineEmits(['has-notes'])
 
 const { $notification, $wikibase, $sanitize } = useNuxtApp()
 const { t } = useI18n()
+const { notifyError } = useNotifyError()
 const config = useRuntimeConfig().public
 const authStore = useAuthStore()
 
@@ -51,15 +52,15 @@ async function editValue (value) {
         content.value.value = value
         $notification.success(t('messages.success.updated'))
       } else {
-        $notification.error(`Error editing notes page: ${data.error?.info}`)
+        console.error('Error editing notes page:', data.error)
+        $notification.error(data.error?.info ?? t('messages.error.something_went_wrong'))
       }
     } else {
-      $notification.error(`HTTP error editing notes: ${response.status}`)
+      console.error('HTTP error editing notes:', response.status)
+      $notification.error(t('messages.error.something_went_wrong'))
     }
   } catch (error) {
-     
-    console.error('Error editing notes:', error)
-    $notification.error(`Error editing notes: ${error}`)
+    notifyError(error)
   }
 }
 

@@ -77,8 +77,9 @@ const props = defineProps({
   table: { type: String, required: true }
 })
 
-const { $notification, $wikibase } = useNuxtApp()
+const { $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
+const { notifyError } = useNotifyError()
 const router = useRouter()
 const localePath = useLocalePath()
 const authStore = useAuthStore()
@@ -119,7 +120,7 @@ async function getEntity () {
     showItem.value = true
     handleClaims(entity)
   } catch (err) {
-    $notification.error(err)
+    notifyError(err)
   }
 }
 

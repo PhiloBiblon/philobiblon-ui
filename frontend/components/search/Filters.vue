@@ -300,6 +300,8 @@ function clear () {
     const item = props.form.input[key]
     if (item.type === 'date') {
       item.value = {}
+    } else if (item.type === 'autocomplete') {
+      item.value = null
     } else {
       item.value = ''
     }

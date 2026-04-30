@@ -27,6 +27,7 @@ import { useI18n } from 'vue-i18n'
 
 const { $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
+const { notifyError } = useNotifyError()
 const router = useRouter()
 const route = useRoute()
 const localePath = useLocalePath()
@@ -56,8 +57,7 @@ async function searchItems (query) {
     const res = await $wikibase.runSparqlQuery(sparqlQuery)
     items.value = customizeSearchData(res)
   } catch (error) {
-     
-    console.error('Error fetching items:', error)
+    notifyError(error)
   } finally {
     loading.value = false
   }
