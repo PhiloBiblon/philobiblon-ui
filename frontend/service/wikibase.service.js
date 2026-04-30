@@ -513,7 +513,7 @@ export class WikibaseService {
         for (const claimValue of entity.claims.P476) {
           const pbid = claimValue.mainsnak.datavalue.value
           const parsedPBID = this.parsePBID(pbid)
-          if ((database === null || database === parsedPBID.group) &&
+          if ((database === null || database === 'ALL' || database === parsedPBID.group) &&
             (table === null || table === parsedPBID.tableid)) {
             return pbid
           }
@@ -607,13 +607,6 @@ export class WikibaseService {
         return simplifiedResults
       })
       .catch((error) => {
-        let errorMessage
-        if (error.status) {
-          errorMessage = `Error from Query Service: ${error.body} (${error.status})`
-        } else {
-          errorMessage = `Network issue or timeout with Query Service: ${error}`
-        }
-        this.$notification.error(errorMessage)
         throw error
       })
   }

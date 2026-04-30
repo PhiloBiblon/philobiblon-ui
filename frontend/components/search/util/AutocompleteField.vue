@@ -8,7 +8,7 @@
     :disabled="isDisabled"
     :no-data-text="checkNoDataText"
     :items="items"
-    :filter="acceptAll"
+    no-filter
     item-title="text"
     item-value="value"
     hide-select
@@ -23,8 +23,7 @@
           <span class="ac-item-title" v-html="item.raw.text" />
         </template>
         <template #subtitle>
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <span class="my-item-subtitle" v-html="item.raw.value.desc" />
+          <span class="my-item-subtitle">{{ truncateDesc(item.raw.value.desc) }}</span>
         </template>
       </v-list-item>
     </template>
@@ -59,7 +58,8 @@ const props = defineProps({
 
 const emit = defineEmits(['reset-value'])
 
-const { $notification, $sanitize, $wikibase } = useNuxtApp()
+const { $sanitize, $wikibase } = useNuxtApp()
+const { notifyError } = useNotifyError()
 const { t, locale } = useI18n()
 const config = useRuntimeConfig().public
 
@@ -100,7 +100,8 @@ watch(internalValue, (val) => {
 
 watch(search, (val) => {
   if (!val) {
-    items.value = []
+    const selected = internalValue.value
+    items.value = selected ? [{ text: selected.label, value: selected }] : []
     return
   }
   if (props.value && val === props.value.label) {
@@ -144,14 +145,14 @@ function fetchItems (query) {
       loadingItems.value = false
     })
     .catch((error) => {
-      console.error('Error loading items:', error)
-      $notification.error(error)
+      notifyError(error)
       loadingItems.value = false
     })
 }
 
-function acceptAll () {
-  return true
+function truncateDesc (desc) {
+  if (!desc || desc.length <= 100) return desc
+  return desc.substring(0, 100) + '...'
 }
 </script>
 

@@ -160,11 +160,15 @@ public class WikibaseOAuthServiceImpl implements WikibaseOAuthService {
             Matcher matcher = PATTERN_OAUTH_TOKEN.matcher(authHeader);
             if (matcher.find()) {
                 String token = matcher.group(1);
-                return accessTokens.get(token);
+                OAuth1AccessToken accessToken = accessTokens.get(token);
+                if (accessToken == null) {
+                    throw new WikibaseException("session-expired", "Session expired.");
+                }
+                return accessToken;
             }
         } else if (getVerbFromRequest(request) == Verb.GET) {
             return null;
         }
-        throw new WikibaseException("Session expired.");
+        throw new WikibaseException("session-expired", "Session expired.");
     }
 }

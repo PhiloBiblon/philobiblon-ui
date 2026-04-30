@@ -96,6 +96,7 @@ const emit = defineEmits(['on-blur', 'new-value', 'input', 'update-options'])
 
 const { $notification } = useNuxtApp()
 const { t } = useI18n()
+const { notifyError } = useNotifyError()
 
 const autocomplete = ref(null)
 const currentText = ref(null)
@@ -157,10 +158,7 @@ async function edit () {
         }
       })
       .catch((error) => {
-        if (error.message === 'query is undefined') {
-          error = t('messages.error.session.expired')
-        }
-        $notification.error(error)
+        notifyError(error)
       })
   } else if (!currentText.value) {
     $notification.error(t('messages.error.inputs.fill'))
@@ -193,10 +191,7 @@ async function deleteValue () {
       }
     })
     .catch((error) => {
-      if (error.message === 'query is undefined') {
-        error = t('messages.error.session.expired')
-      }
-      $notification.error(error)
+      notifyError(error)
     })
 }
 </script>

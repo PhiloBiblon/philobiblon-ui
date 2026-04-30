@@ -33,8 +33,9 @@ const props = defineProps({
   index: { type: Number, default: null }
 })
 
-const { $notification, $wikibase } = useNuxtApp()
-const { locale } = useI18n()
+const { $wikibase } = useNuxtApp()
+const { t, locale } = useI18n()
+const { notifyError } = useNotifyError()
 const localePath = useLocalePath()
 
 const label = ref(null)
@@ -57,7 +58,7 @@ async function getEntity () {
     claims.value = await $wikibase.getOrderedClaims(props.table, entity.claims)
     label.value = $wikibase.getValueByLang(entity.labels, locale.value)
   } catch (err) {
-    $notification.error(err)
+    notifyError(err)
   }
 }
 </script>

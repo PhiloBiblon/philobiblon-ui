@@ -118,6 +118,7 @@ const emit = defineEmits(['update-claims'])
 
 const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
+const { notifyError } = useNotifyError()
 const authStore = useAuthStore()
 
 const claims = reactive([])
@@ -206,7 +207,7 @@ async function addClaim (index) {
         $notification.error(t('messages.error.something_went_wrong'))
       }
     }).catch((error) => {
-      $notification.error(error.message)
+      notifyError(error)
     })
   }
 }

@@ -96,6 +96,7 @@ const emit = defineEmits(['on-blur', 'new-value'])
 
 const { $notification } = useNuxtApp()
 const { t } = useI18n()
+const { notifyError } = useNotifyError()
 
 const currentText = ref(null)
 const consolidatedText = ref(null)
@@ -172,11 +173,7 @@ async function edit () {
       throw new Error(response.info || 'Update failed')
     }
   } catch (error) {
-    console.error(error)
-    const errorMessage = error.message.includes('modification-failed')
-      ? t('messages.error.modification.failed')
-      : t('messages.error.session.expired')
-    $notification.error(errorMessage)
+    notifyError(error)
   }
 }
 
@@ -197,10 +194,7 @@ async function deleteValue () {
       }
     })
     .catch((error) => {
-      if (error.message === 'query is undefined') {
-        error = 'Error: Session expired.'
-      }
-      $notification.error(error)
+      notifyError(error)
     })
 }
 </script>

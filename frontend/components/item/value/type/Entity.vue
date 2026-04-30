@@ -52,6 +52,7 @@ const emit = defineEmits(['on-blur', 'new-value'])
 
 const { $wikibase } = useNuxtApp()
 const { locale } = useI18n()
+const { notifyError } = useNotifyError()
 const config = useRuntimeConfig().public
 const authStore = useAuthStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -134,6 +135,7 @@ function setOptionsAutocomplete () {
     const autocomplete = propertyAutocomplete.value[props.valueToView.property]
     const fullSparqlQuery = buildFullQuery(autocomplete.query)
     return $wikibase.runSparqlQuery(fullSparqlQuery, true)
+      .catch((error) => { notifyError(error); return [] })
       .then((results) => {
         Object.values(results).forEach((result) => {
           options.value.push({

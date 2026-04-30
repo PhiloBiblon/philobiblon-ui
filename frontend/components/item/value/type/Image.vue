@@ -33,7 +33,7 @@ const props = defineProps({
 
 const emit = defineEmits(['on-blur', 'new-value'])
 
-const { $notification } = useNuxtApp()
+const { notifyError } = useNotifyError()
 const authStore = useAuthStore()
 
 const consolidatedUrl = ref(null)
@@ -47,7 +47,7 @@ function editValue (newValue, oldValue) {
   return props.save(getWikiBaseImageValue(newValue, oldValue))
     .then(result => result)
     .catch((error) => {
-      $notification.error(error)
+      notifyError(error)
     })
 }
 

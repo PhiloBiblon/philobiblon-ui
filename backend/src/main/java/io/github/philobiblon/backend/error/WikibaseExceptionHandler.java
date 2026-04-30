@@ -11,7 +11,7 @@ public class WikibaseExceptionHandler {
 
     @ExceptionHandler({WikibaseException.class})
     public ResponseEntity<Object> handleAll(WikibaseException ex, WebRequest request) {
-        WikibaseError wikibaseError = new WikibaseError("Error", ex.getMessage());
+        WikibaseError wikibaseError = new WikibaseError(ex.getCode(), ex.getMessage());
         return new ResponseEntity<>(wikibaseError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

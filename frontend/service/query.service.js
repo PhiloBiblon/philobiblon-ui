@@ -1018,7 +1018,7 @@ export class QueryService {
         filters += this.addManuscriptFilters(form)
         break
     }
-    if (filters.includes('STR(?label)')) {
+    if (filters.includes('STR(?label)') || filters.includes('lcase(?label)')) {
       filters += `?item rdfs:label ?labelObj ${this.generateSearchLangFilters(lang)}`
     }
     return this.addPrefixes(baseQueryFunction({ filters }))

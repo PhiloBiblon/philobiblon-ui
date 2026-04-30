@@ -90,6 +90,7 @@ const { t, locale } = useI18n()
 const router = useRouter()
 const localePath = useLocalePath()
 const authStore = useAuthStore()
+const { notifyError } = useNotifyError()
 
 const label = ref('')
 const initialClaimsLoaded = ref(false)
@@ -165,11 +166,7 @@ async function loadInitialClaims () {
       initialClaimsLoaded.value = true
     }
   } catch (error) {
-
-    console.error(error)
-    $notification.error(
-      error?.body?.error?.info || t('messages.error.something_went_wrong')
-    )
+    notifyError(error)
   }
 }
 
@@ -370,9 +367,8 @@ async function create () {
         $notification.error(t('messages.error.something_went_wrong'))
       }
     } catch (error) {
-      $notification.error(
-        error?.body?.error?.info ?? t('messages.error.something_went_wrong')
-      )
+      console.error(error)
+      notifyError(error)
     }
   } else {
     $notification.error(t('messages.error.creation.pbid_already_exists', {
