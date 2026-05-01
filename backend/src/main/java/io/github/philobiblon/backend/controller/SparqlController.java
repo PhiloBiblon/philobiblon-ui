@@ -8,7 +8,6 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/sparql")
-@CrossOrigin(origins = "${allowed.origins}")
 public interface SparqlController {
 
     @PostMapping(value = "/query", consumes = "application/x-www-form-urlencoded")

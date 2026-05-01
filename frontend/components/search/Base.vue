@@ -47,7 +47,7 @@ const props = defineProps({
 })
 
 const { $wikibase } = useNuxtApp()
-const { t, locale } = useI18n()
+const { locale } = useI18n()
 const { notifyError } = useNotifyError()
 const router = useRouter()
 const localePath = useLocalePath()
