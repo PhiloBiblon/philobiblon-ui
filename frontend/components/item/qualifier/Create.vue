@@ -181,7 +181,7 @@ async function onInput (value, type, index) {
 async function createQualifier (index) {
   const qualifier = qualifiers[index]
   const propertyId = qualifier.property?.id || qualifier.property
-  await $wikibase.getWbEdit().qualifier.add({
+  await $wikibase.getWbEdit().qualifier.set({
     guid: props.claim.id,
     value: qualifier.datavalue.value.id ?? qualifier.datavalue.value,
     property: propertyId

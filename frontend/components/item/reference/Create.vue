@@ -158,17 +158,18 @@ async function onInput (value, type, index) {
 async function createReference (index) {
   let data
   const reference = references[index]
+  const propertyId = reference.property?.id ?? reference.property
 
   if (!props.value) {
     data = {
       guid: props.claim.id,
       value: reference.datavalue.value.id ?? reference.datavalue.value,
-      property: reference.property
+      property: propertyId
     }
   } else {
     const values = {
       ...props.value.snaks,
-      [reference.property]: [...(props.value.snaks[reference.property] || []), reference]
+      [propertyId]: [...(props.value.snaks[propertyId] || []), reference]
     }
 
     const formattedSnaks = Object.entries(values).reduce((acc, [key, vs]) => {
@@ -183,7 +184,7 @@ async function createReference (index) {
     }
   }
 
-  await $wikibase.getWbEdit().reference.add(data, authStore.requestConfig)
+  await $wikibase.getWbEdit().reference.set(data, authStore.requestConfig)
     .then((res) => {
       if (res.success) {
         updateReferences(res.reference)

@@ -127,7 +127,7 @@ async function createClaim (index) {
   if (value == null) {
     return
   }
-  const res = await $wikibase.getWbEdit().claim.add({
+  const res = await $wikibase.getWbEdit().claim.create({
     value,
     id: props.item.id,
     property: props.value.property

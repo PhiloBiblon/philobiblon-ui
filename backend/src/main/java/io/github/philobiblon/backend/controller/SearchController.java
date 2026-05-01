@@ -8,7 +8,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/search")
-@CrossOrigin(origins = "${allowed.origins}")
 public interface SearchController {
 
     @PostMapping(consumes = "application/x-www-form-urlencoded")
