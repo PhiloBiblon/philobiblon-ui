@@ -111,7 +111,7 @@
             {{ t('search.button.clear') }}
           </v-btn>
           <v-btn
-            v-if="authStore.isLogged"
+            v-if="authStore.isLogged && !showResults"
             color="primary"
             class="mr-4"
             elevation="2"

@@ -5,7 +5,7 @@
       v-model="currentTab"
       height="32"
     >
-      <v-tab value="results" class="results-tab">
+      <v-tab value="results" class="results-tab" tabindex="-1" aria-disabled="true">
         {{ t('search.results.results') }} ({{ totalResults }})
       </v-tab>
     </v-tabs>

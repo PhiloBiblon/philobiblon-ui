@@ -22,7 +22,7 @@
       <v-list-item v-bind="itemProps" density="compact" :lines="item.value?.desc ? 'two' : 'one'">
         <template #title>
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <span class="ac-item-title" v-html="item.text" />
+          <span class="ac-item-title" v-html="$sanitize(item.text)" />
         </template>
         <template #subtitle>
           <span class="my-item-subtitle">{{ truncateDesc(item.value?.desc) }}</span>
@@ -72,17 +72,17 @@ const loadingItems = ref(false)
 const search = ref(null)
 const allowFreeText = ref(false)
 let searchTimeout = null
-let inputWidth = 0
+const inputWidth = ref(0)
 
 const menuProps = computed(() => ({
   contentClass: 'search-ac-dropdown',
-  ...(inputWidth ? { maxWidth: inputWidth, minWidth: inputWidth } : {})
+  ...(inputWidth.value ? { maxWidth: inputWidth.value, minWidth: inputWidth.value } : {})
 }))
 
 onMounted(() => {
   const el = autocompleteRef.value?.$el
   if (el) {
-    inputWidth = el.getBoundingClientRect().width || 0
+    inputWidth.value = el.getBoundingClientRect().width || 0
   }
 })
 

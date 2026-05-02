@@ -6,7 +6,7 @@
     <div v-else>
       <v-container class="pa-0">
         <v-row density="comfortable" class="justify-start">
-          <v-col density="comfortable" class="flex-shrink-1">
+          <v-col class="flex-shrink-1">
             <item-util-edit-text-field
               :label="t('common.amount')"
               :value="valueToView_.value.amount"
