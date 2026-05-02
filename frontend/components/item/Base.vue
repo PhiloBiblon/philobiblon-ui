@@ -17,7 +17,7 @@
         <v-col>
           <span v-if="isUserLogged">
             <item-util-edit-text-field :label="t('item.title')" :save="editLabel" :value="label.value" class="text-h4">
-              <template #append-outer>
+              <template #append>
                 &nbsp;
                 <a
                   class="text-subtitle-2 link"

@@ -41,11 +41,10 @@
           :initial-claims="initialClaims"
           @update-claims="updateClaims"
         />
-        <v-row class="mt-2" dense>
+        <v-row class="mt-2" density="comfortable">
           <v-spacer />
           <v-btn
             class="mt-4 mr-4"
-            size="small"
             elevation="2"
             @click="router.go(-1)"
           >
@@ -56,7 +55,6 @@
               <div v-bind="tooltipProps">
                 <v-btn
                   class="mt-4"
-                  size="small"
                   elevation="2"
                   :disabled="isCreateDisabled"
                   @click="create"

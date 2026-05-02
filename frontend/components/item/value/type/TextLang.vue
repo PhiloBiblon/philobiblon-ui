@@ -5,8 +5,8 @@
     </template>
     <template v-else>
       <v-container>
-        <v-row dense class="justify-start">
-          <v-col dense class="flex-shrink-1">
+        <v-row density="comfortable" class="justify-start">
+          <v-col class="flex-shrink-1">
             <item-util-edit-text-field
               :label="label"
               :value="valueToView_.value"

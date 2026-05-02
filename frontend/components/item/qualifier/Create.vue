@@ -6,7 +6,7 @@
       align="center"
       class="even-row pt-3"
       no-gutters
-      dense
+      density="comfortable"
     >
       <v-col class="p-0 pr-3">
         <v-autocomplete

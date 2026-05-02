@@ -1,6 +1,6 @@
 <template>
   <v-container class="claim">
-    <v-row dense>
+    <v-row density="comfortable">
       <div class="claim-header section-header">
         <item-util-view-text-lang :value="propertyLabel" :tooltip="claim.property" />
       </div>

@@ -2,7 +2,7 @@
   <div>
     <v-form v-if="showGroups" ref="search_form">
       <v-container>
-        <v-row dense>
+        <v-row density="comfortable">
           <v-col cols="7">
             <v-radio-group
               v-model="database"

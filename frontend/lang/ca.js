@@ -22,7 +22,7 @@ export default {
     add_claim: 'afegir declaració',
     save: 'desa',
     remove: 'elimina',
-    cancel: 'cancel·lar',
+    cancel: 'Cancel·lar',
     create: 'Crear',
     items: 'elements'
   },

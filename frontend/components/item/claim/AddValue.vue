@@ -4,7 +4,7 @@
       v-for="(claim, key) in claims"
       :key="key"
       class="even-row"
-      dense
+      density="comfortable"
     >
       <v-col class="p-0 pr-3 pt-3">
         <div class="d-flex">
@@ -148,7 +148,6 @@ function updateClaims (res) {
 
 <style scoped>
 .add-value {
-  background-color: white;
   font-size: 14px;
 }
 .claim {

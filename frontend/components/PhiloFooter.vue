@@ -1,6 +1,6 @@
 <template>
   <v-footer color="white" class="over-menu mt-10">
-    <v-row dense>
+    <v-row density="comfortable">
       <v-col cols="12" sm="3" class="text-center" align-self="center">
         <span class="text-black text-h4">Philo</span>
         <a class="footer_a blog-link" target="_blank" href="https://update.lib.berkeley.edu/Topics/philobiblon/">
@@ -27,7 +27,7 @@
       </v-col>
       <v-col cols="12" sm="3">
         <v-container>
-          <v-row dense>
+          <v-row density="comfortable">
             <v-col>
               <a href="https://bsky.app/profile/philobiblon.bsky.social" class="me-3">
                 <icons-social-bluesky-icon />
@@ -43,14 +43,14 @@
               </a>
             </v-col>
           </v-row>
-          <v-row dense>
+          <v-row density="comfortable">
             <v-col>
               <a role="button" class="footer_a text-body-2 cite-link" @click="goTo('/wiki/Citation')">
                 How to cite PhiloBiblon
               </a>
             </v-col>
           </v-row>
-          <v-row dense>
+          <v-row density="comfortable">
             <v-col class="text-caption">
               Volume 2024, Number 3 (March) ISSN 1096-6609
             </v-col>
@@ -59,7 +59,7 @@
       </v-col>
       <v-col cols="12" class="text-center">
         <v-container fluid>
-          <v-row dense>
+          <v-row density="comfortable">
             <v-col>
               <img src="/img/footer/universitat_barcelona.png">
             </v-col>
