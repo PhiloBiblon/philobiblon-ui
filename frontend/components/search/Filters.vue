@@ -1,7 +1,7 @@
 <template>
   <v-form ref="search_form">
     <v-container>
-      <v-row dense>
+      <v-row density="comfortable">
         <v-col cols="12" md="10">
           <v-radio-group
             v-model="searchGroup.value"
@@ -36,16 +36,17 @@
         </v-col>
       </v-row>
       <template v-for="(section) in form.section" :key="`section-${section}`">
-        <v-row v-if="!isPrimarySection(section) && existsSectionFilters(section) && !showResults" dense>
+        <v-row v-if="!isPrimarySection(section) && existsSectionFilters(section) && !showResults" density="comfortable">
           <span class="section-search text-caption mb-2 text-primary" @click="toggleSectionDisplay(section)">
             {{ t(`search.form.common.section.${section}`) }} <v-icon class="text-primary">{{ isSectionDisplayed(section) ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
           </span>
         </v-row>
-        <v-row v-if="isSectionDisplayed(section)" dense>
+        <v-row v-if="isSectionDisplayed(section)" density="comfortable" no-gutters>
           <template v-for="(item, name) in getInputsBySection(section)" :key="'i-' + name">
             <v-col
               v-if="(item.active && !item.permanent && item.visible)"
               cols="4"
+              class="px-2"
             >
               <search-util-text-field
                 v-if="item.type === 'text'"
@@ -81,13 +82,12 @@
           </template>
         </v-row>
       </template>
-      <v-row dense>
+      <v-row density="comfortable">
         <v-col cols="7">
           <v-btn
             v-if="!showResults"
             ref="searchBtn"
             class="mr-4"
-            size="small"
             elevation="2"
             @click="search"
           >
@@ -97,7 +97,6 @@
             v-if="showResults"
             elevation="2"
             class="mr-4"
-            size="small"
             :disabled="waitingResults"
             @click="back"
           >
@@ -106,7 +105,6 @@
           <v-btn
             elevation="2"
             class="mr-4"
-            size="small"
             :disabled="waitingResults"
             @click="clear"
           >
@@ -116,7 +114,6 @@
             v-if="authStore.isLogged"
             color="primary"
             class="mr-4"
-            size="small"
             elevation="2"
             @click="goToCreate"
           >

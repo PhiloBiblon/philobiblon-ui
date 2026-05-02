@@ -3,9 +3,9 @@
     <v-row
       v-for="(claim, key) in claims"
       :key="claim?.property?.id"
-      class="even-row text-center pt-5"
+      class="even-row pt-5"
       no-gutters
-      dense
+      density="comfortable"
     >
       <v-col class="p-0 pr-3 mt-3">
         <div class="claim-header">
@@ -62,7 +62,7 @@
           </v-tooltip>
         </v-btn>
       </v-col>
-      <v-container v-if="claim?.property?.id || claim.default" class="claim-values elevation-1">
+      <v-container v-if="claim?.property?.id || claim.default" class="claim-values">
         <item-value-base
           :key="`${claim.property?.id}-${key}`"
           :claim="claim"

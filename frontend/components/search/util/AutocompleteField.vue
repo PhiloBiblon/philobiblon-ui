@@ -1,5 +1,6 @@
 <template>
   <v-autocomplete
+    ref="autocompleteRef"
     v-model="internalValue"
     v-model:search="search"
     density="compact"
@@ -12,18 +13,19 @@
     item-title="text"
     item-value="value"
     hide-select
+    :menu-props="menuProps"
   >
     <template v-for="(_, slotName) in $slots" #[slotName]="slotData">
       <slot :name="slotName" v-bind="slotData || {}" />
     </template>
     <template #item="{ props: itemProps, item }">
-      <v-list-item v-bind="itemProps" density="compact" :lines="item.raw.value.desc ? 'two' : 'one'">
+      <v-list-item v-bind="itemProps" density="compact" :lines="item.value?.desc ? 'two' : 'one'">
         <template #title>
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <span class="ac-item-title" v-html="item.raw.text" />
+          <span class="ac-item-title" v-html="item.text" />
         </template>
         <template #subtitle>
-          <span class="my-item-subtitle">{{ truncateDesc(item.raw.value.desc) }}</span>
+          <span class="my-item-subtitle">{{ truncateDesc(item.value?.desc) }}</span>
         </template>
       </v-list-item>
     </template>
@@ -41,7 +43,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 defineOptions({ inheritAttrs: false })
@@ -63,12 +65,26 @@ const { notifyError } = useNotifyError()
 const { t, locale } = useI18n()
 const config = useRuntimeConfig().public
 
+const autocompleteRef = ref(null)
 const internalValue = ref(null)
 const items = ref([])
 const loadingItems = ref(false)
 const search = ref(null)
 const allowFreeText = ref(false)
 let searchTimeout = null
+let inputWidth = 0
+
+const menuProps = computed(() => ({
+  contentClass: 'search-ac-dropdown',
+  ...(inputWidth ? { maxWidth: inputWidth, minWidth: inputWidth } : {})
+}))
+
+onMounted(() => {
+  const el = autocompleteRef.value?.$el
+  if (el) {
+    inputWidth = el.getBoundingClientRect().width || 0
+  }
+})
 
 const checkNoDataText = computed(() => loadingItems.value ? t('common.loading') : t('common.no_data'))
 const isDisabled = computed(() => props.disabled)

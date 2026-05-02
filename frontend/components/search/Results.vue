@@ -3,7 +3,7 @@
     <v-tabs
       v-if="showResults"
       v-model="currentTab"
-      height="20"
+      height="32"
     >
       <v-tab value="results" class="results-tab">
         {{ t('search.results.results') }} ({{ totalResults }})
@@ -18,7 +18,7 @@
           <span>{{ t('search.results.not_found') }}</span>
         </v-container>
         <v-container v-if="totalResults > 0" class="container-max">
-          <v-row dense>
+          <v-row density="comfortable">
             <v-col class="order-last order-sm-first" cols="10">
               <v-list v-model:selected="selectedItem" color="primary">
                 <v-list-item
@@ -38,7 +38,7 @@
             </v-col>
             <v-col>
               <v-container class="container-max">
-                <v-row justify="end" dense>
+                <v-row justify="end" density="comfortable">
                   <v-col class="text-right text-caption">
                     <span>{{ t('search.results.sort_by') }}</span>
                   </v-col>
@@ -104,7 +104,7 @@
                     </v-icon>
                   </v-col>
                 </v-row>
-                <v-row justify="end" dense>
+                <v-row justify="end" density="comfortable">
                   <v-col class="text-right text-caption">
                     <a :href="config.sparqlBaseUrl + '/#' + encodeURI(sparqlQuery)" target="_blank">SPARQL</a>
                   </v-col>
@@ -198,6 +198,11 @@ function goToItem (id) {
 :deep(.results-tab) {
   color: #b71c1c !important;
   font-weight: bold;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  cursor: default !important;
+  pointer-events: none;
 }
 :deep(.sort-select .v-field__input),
 :deep(.sort-select .v-label) {

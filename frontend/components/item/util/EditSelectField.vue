@@ -16,9 +16,9 @@
     @update:search="emit('input', $event)"
   >
     <template #item="{ props: itemProps, item }">
-      <v-list-item v-bind="itemProps" :title="item.raw.label">
-        <template v-if="item.raw.description" #subtitle>
-          <span class="item-description">{{ item.raw.description }}</span>
+      <v-list-item v-bind="itemProps" :title="item.label">
+        <template v-if="item.description" #subtitle>
+          <span class="item-description">{{ item.description }}</span>
         </template>
       </v-list-item>
     </template>
