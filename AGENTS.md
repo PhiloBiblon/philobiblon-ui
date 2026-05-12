@@ -4,17 +4,19 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## Commands
 
-### Frontend (Nuxt 2 / Vue 2)
+### Frontend (Nuxt 3 / Vue 3 / Vuetify 4)
 
 ```bash
 cd frontend
 yarn install
 yarn dev        # Dev server (sets API_BASE_URL to the staging backend)
 yarn build      # Production build
+yarn preview    # Preview production build locally
 yarn lint       # ESLint
 ```
 
-The dev script hardcodes `API_BASE_URL=https://philobiblon.cog.berkeley.edu/ui-dev/` as the backend.
+The dev script hardcodes `API_BASE_URL=https://philobiblon.cog.berkeley.edu/ui-local/` as the backend.
+Yarn 4 (Berry) is required — enable it with `corepack enable`.
 
 ### Backend (Spring Boot / Java 17)
 
@@ -38,12 +40,12 @@ docker compose down -v   # Remove everything including volumes
 
 Two modules behind an nginx reverse proxy:
 
-- **Frontend** (`frontend/`) — Nuxt 2 SPA (SSR disabled). Talks to Wikibase API directly for reads, and to the backend for writes (proxied through OAuth) and cached SPARQL queries.
+- **Frontend** (`frontend/`) — Nuxt 3 SPA (SSR disabled), Vue 3 + Vuetify 4 + Pinia. Talks to Wikibase API directly for reads, and to the backend for writes (proxied through OAuth) and cached SPARQL queries.
 - **Backend** (`backend/`) — Spring Boot 3 middleware. Handles OAuth 1.0a with Wikibase, proxies edit requests, and caches SPARQL queries with Caffeine LoadingCache (24h refresh, 36h expiry).
 
 ### Two-level SPARQL caching
 
-- **Frontend** (`store/queryCache.js`): Vuex in-memory cache, 2-min TTL, 100 entries max, keyed by query hash.
+- **Frontend** (`stores/queryCache.js`): Pinia in-memory cache, 2-min TTL, 100 entries max, keyed by query hash.
 - **Backend** (`SparqlServiceImpl`): Caffeine LoadingCache, 24h refresh, 36h expiry, no max-size limit. Inspect via `GET /api/sparql/cacheinfo`.
 
 `wikibase-edit` on the frontend is configured to point to the **backend** (`apiBaseUrl`), not Wikibase directly — this ensures all writes go through the OAuth proxy.
@@ -57,11 +59,12 @@ The frontend reads special Wikibase wiki pages to drive UI behaviour:
 
 ### Item types
 
-The app handles 8 PhiloBiblon record types, each with a dedicated search page (`pages/search/<type>/`) and item-view page (`pages/item/<type>/`): `bibid`, `bioid`, `geoid`, `insid`, `libid`, `manid`, `subid`, `texid`.
+The app handles 8 PhiloBiblon record types, each with a dedicated search page (`pages/search/<type>/query.vue`) and item-view page (`pages/item/[id].vue`): `bibid`, `bioid`, `geoid`, `insid`, `libid`, `manid`, `subid`, `texid`. Item creation uses `pages/item/[table]/create.vue`.
 
 ### Frontend service injection
 
-Services are injected as Nuxt plugins and available as `this.$wikibase`, `this.$query`, `this.$oauth`, `this.$notification` in all components and pages. Never call Axios directly; use the services.
+Services are injected as Nuxt plugins and accessed in `<script setup>` via `useNuxtApp()`:
+`const { $wikibase, $notification, $sanitize } = useNuxtApp()`. Never call `fetch` directly in components; use the services.
 
 ### Backend design
 
@@ -95,8 +98,8 @@ ghcr.io/philobiblon/philobiblon-ui-frontend
 
 GitHub Environments (`staging` / `production`) hold the secrets and variables — see `docs/cicd.md` for the full list.
 
-The frontend version (`publicRuntimeConfig.version` in `nuxt.config.js`) is automatically updated at build time: staging gets `{version}-{sha}`, production gets the tag version without the `v` prefix.
+The frontend version (`runtimeConfig.public.version` in `nuxt.config.ts`) is automatically updated at build time: staging gets `{version}-{sha}`, production gets the tag version without the `v` prefix.
 
 ## i18n
 
-Translations live in `frontend/lang/` (`en`, `ca`, `es`, `gl`, `pt`). The active locale is stored in a cookie (`language`). All user-facing strings must be added to all five locale files.
+Translations live in `frontend/lang/` (`en`, `ca`, `es`, `gl`, `pt`). The active locale is stored in a cookie (`language`) and all routes are prefixed with the locale code (e.g. `/ca/search/manid/query`). All user-facing strings must be added to all five locale files. Use `const { t } = useI18n()` in `<script setup>` components.

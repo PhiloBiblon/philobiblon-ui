@@ -1,6 +1,6 @@
 # Services Layer
 
-The services layer encapsulates business logic and API communication, keeping components clean and focused on presentation.
+The services layer encapsulates business logic and API communication, keeping components clean and focused on presentation. Services live in `service/` and are injected as Nuxt plugins.
 
 ## Overview
 
@@ -18,404 +18,190 @@ The primary service for all Wikibase-related operations.
 ### Initialization
 
 ```javascript
-constructor(app, store) {
-  // Initialize wikibase-sdk
-  this.wbk = require('wikibase-sdk')({
-    instance: app.$config.wikibaseApiUrl,
-    sparqlEndpoint: app.$config.sparqlEndpoint
-  })
-  
-  // Initialize wikibase-edit (points to backend proxy)
-  this.wbEdit = require('wikibase-edit')({
-    instance: app.$config.apiBaseUrl
-  })
+export class WikibaseService {
+  constructor({ config, $notification }) {
+    this.$config = config
+    this.wbk = WBK({
+      instance: config.wikibaseApiUrl,
+      sparqlEndpoint: config.sparqlEndpoint
+    })
+    this.wbEdit = wbEdit({
+      instance: config.apiBaseUrl   // writes go through the backend OAuth proxy
+    })
+    this.$query = new QueryService({ config })
+    this.$oauth = new OAuthService({ config })
+    this.$notification = $notification
+    this.sparqlBackendEndpoint = this.joinUrl(config.apiBaseUrl, 'api/sparql/query')
+  }
 }
 ```
 
-**Key Point**: `wikibase-edit` is configured to use the **backend** (`apiBaseUrl`), not Wikibase directly. This ensures all edits go through the OAuth proxy.
+**Key point**: `wikibase-edit` is configured with `config.apiBaseUrl` (the backend), not the Wikibase instance directly. All writes go through the backend OAuth proxy.
 
 ### Core Methods
 
 #### `getEntity(id, lang)`
-Fetches a single Wikibase entity by ID.
+Fetches a single Wikibase entity.
 
 ```javascript
-const entity = await this.$wikibase.getEntity('Q123', 'ca')
-// Returns: { id: 'Q123', labels: {...}, claims: {...}, ... }
+const entity = await $wikibase.getEntity('Q123', 'ca')
 ```
 
 #### `getEntities(ids, lang)`
 Fetches multiple entities in one request.
 
 ```javascript
-const entities = await this.$wikibase.getEntities(['Q123', 'Q456'], 'ca')
-// Returns: { Q123: {...}, Q456: {...} }
+const entities = await $wikibase.getEntities(['Q123', 'Q456'], 'ca')
 ```
 
 #### `runSparqlQuery(query, minimize, useBackendCache, useInternalCache)`
-Executes a SPARQL query with caching options.
+Executes a SPARQL query with optional caching.
 
-**Parameters**:
-- `query`: SPARQL query string
-- `minimize`: Simplify results (remove verbose RDF structure)
-- `useBackendCache`: Use backend Caffeine cache
-- `useInternalCache`: Use frontend Vuex cache
+- `minimize` — simplify RDF result structure
+- `useBackendCache` — use backend Caffeine cache (24h TTL)
+- `useInternalCache` — use frontend Pinia queryCache (2-min TTL)
 
 ```javascript
-const results = await this.$wikibase.runSparqlQuery(
-  'SELECT ?item WHERE { ?item wdt:P31 wd:Q5 }',
-  true,  // minimize
-  true,  // backend cache
-  false  // internal cache (disabled when backend cache is on)
-)
+const results = await $wikibase.runSparqlQuery(query, true, true, false)
 ```
-
-**Caching Strategy**:
-1. If `useInternalCache` is true, check Vuex `queryCache`
-2. If miss, execute query
-3. Store result in cache with hash key
-4. Return results
 
 #### `getOrderedClaims(table, claims)`
-Sorts claims according to UI configuration from Wikibase wiki pages.
-
-```javascript
-const orderedClaims = await this.$wikibase.getOrderedClaims('manid', entity.claims)
-// Returns: [
-//   { property: 'P476', values: [...], hasQualifiers: true },
-//   { property: 'P11', values: [...], hasQualifiers: false },
-//   ...
-// ]
-```
-
-This reads from the `Ui_SortedProperties` wiki page which defines the display order for each table type.
+Sorts claims according to the `Ui_SortedProperties` wiki page configuration.
 
 #### `getControlledVocabularyConfig(table, bibliography)`
-Fetches autocomplete configuration for controlled vocabulary fields.
-
-```javascript
-const config = await this.$wikibase.getControlledVocabularyConfig('manid', 'BETA')
-// Returns: {
-//   P297: {  // City property
-//     default_value: 'Q456',
-//     query: 'SELECT ?item WHERE { ... }'
-//   }
-// }
-```
-
-Used by autocomplete components to:
-1. Set default values
-2. Generate SPARQL queries for dropdown options
+Fetches autocomplete configuration from `Ui_ControlledVocabulary` wiki page.
 
 ### Value Formatting
 
-#### `getWbValue(property, datatype, datavalue, lang)`
-Converts raw Wikibase datavalues into display-ready objects.
-
-**Handles multiple datatypes**:
+`getWbValue(property, datatype, datavalue, lang)` converts raw Wikibase datavalues to display objects:
 
 ```javascript
-// Wikibase item
-{ 
-  value: 'Barcelona',
-  type: 'entity',
-  item: 'Q1492',
-  pbid: 'BETA geoid 1234'  // if PhiloBiblon entity
-}
-
-// External ID
-{
-  value: 'VIAF123456',
-  url: 'https://viaf.org/viaf/123456',
-  type: 'external-id'
-}
-
-// Time
-{
-  value: '1450-01-15',
-  calendar: 'Julian',
-  type: 'time'
-}
-
-// Monolingual text
-{
-  value: 'Text in Catalan',
-  language: 'ca',
-  type: 'text-lang'
-}
+// wikibase-item   → { value, type: 'entity', item, pbid }
+// external-id     → { value, url, type: 'external-id' }
+// time            → { value, calendar, type: 'time' }
+// monolingualtext → { value, language, type: 'text-lang' }
 ```
 
 ### PhiloBiblon-Specific Logic
 
-#### `isEntityFromPB(entity)`
-Checks if an entity is a PhiloBiblon entity (has a PBID).
-
 ```javascript
-if (this.$wikibase.isEntityFromPB(entity)) {
-  // Show link to item page
-}
+$wikibase.isEntityFromPB(entity)           // has a PBID?
+$wikibase.getPBID(entity, 'BETA', 'manid') // → 'BETA manid 1234'
+$wikibase.parsePBID('BETA manid 1234')     // → { group, tableid, num }
 ```
-
-#### `getPBID(entity, database, table)`
-Extracts the PhiloBiblon ID from an entity.
-
-```javascript
-const pbid = this.$wikibase.getPBID(entity, 'BETA', 'manid')
-// Returns: 'BETA manid 1234'
-```
-
-#### `parsePBID(pbid)`
-Parses a PBID string into components.
-
-```javascript
-const { group, tableid, num } = this.$wikibase.parsePBID('BETA manid 1234')
-// group: 'BETA'
-// tableid: 'manid'
-// num: '1234'
-```
-
-### Configuration Management
-
-The service reads UI configuration from special Wikibase wiki pages:
-
-- **`Ui_SortedProperties`**: Defines claim display order
-- **`Ui_SortedProperties_NewItem`**: Defines claim order for new items
-- **`Ui_ControlledVocabulary`**: Defines autocomplete behavior
-
-These are parsed and cached for performance.
 
 ## QueryService
 
-Generates complex SPARQL queries for the search interface.
-
-### Initialization
-
-```javascript
-constructor(store, config) {
-  this.$store = store
-  this.$config = config
-}
-```
+Generates SPARQL queries for the search interface. Accessed via `$wikibase.$query`.
 
 ### Key Methods
 
-#### `addPrefixes(query)`
-Prepends SPARQL prefixes from backend configuration.
-
-```javascript
-const fullQuery = this.$query.addPrefixes(`
-  SELECT ?item WHERE { ?item wdt:P31 wd:Q5 }
-`)
-```
-
-#### Table-Specific Filter Generators
-
-Each table type has a dedicated filter method:
-
-- `addInstitutionFilters(form)` - For `insid` (institutions)
-- `addWorkFilters(form)` - For `texid` (works)
-- `addPersonFilters(form)` - For `bioid` (people)
-- `addLibraryFilters(form)` - For `libid` (libraries)
-- `addReferenceFilters(form)` - For `bibid` (references)
-
-**Example**:
-
-```javascript
-const filters = this.$query.addWorkFilters({
-  input: {
-    author: { value: { target_item: 'Q789' } },
-    language: { value: { target_item: 'Q150' } },
-    date_composition: { value: { begin: '1400', end: '1500' } }
-  }
-})
-```
-
-Generates:
-
-```sparql
-?item wdt:P21 wd:Q789 .
-?item wdt:P18 wd:Q150 .
-?item p:P412 ?date_of_creation .
-OPTIONAL { ?item wdt:P412 ?begin_date }
-FILTER(?begin_date >= '1400-01-01T00:00:00Z'^^xsd:dateTime)
-...
-```
-
-#### `generateFilterByWords(form, filterField, filterValues)`
-Creates full-text search filters with diacritic normalization.
-
-```javascript
-const filter = this.$query.generateFilterByWords(
-  form,
-  'label',
-  ['barcelona', 'catalunya']
-)
-// Returns: (contains(replace(..., 'barcelona')) && contains(replace(..., 'catalunya')))
-```
-
-#### `normalize(str)`
-Removes diacritics for search matching.
-
-```javascript
-this.$query.normalize('Català')  // Returns: 'catala'
-```
-
-### BITAGAP Group Filters
-
-Special logic for BITAGAP database to filter by "Cartas" vs "Original" groups:
-
-```javascript
-generateBitagapGroupWorkFilters(bitagapGroup) {
-  if (bitagapGroup === 'CARTAS') {
-    return 'FILTER(CONTAINS(STR(?labelSubjectItem), "[Cartas de]"))'
-  } else if (bitagapGroup === 'ORIG') {
-    return 'FILTER(!CONTAINS(STR(?labelSubjectItem), "[Cartas de]"))'
-  }
-}
-```
+- `addPrefixes(query)` — prepends SPARQL prefixes from backend config
+- Table-specific filter generators: `addInstitutionFilters`, `addWorkFilters`, `addPersonFilters`, `addLibraryFilters`, `addReferenceFilters`
+- `generateFilterByWords(form, field, values)` — full-text filter with diacritic normalization
+- `normalize(str)` — strips diacritics for search matching
 
 ## OAuthService
 
-Handles the OAuth 1.0a authentication flow with the backend.
+Handles the OAuth 1.0a authentication flow. Accessed via `$wikibase.$oauth`.
 
 ### Methods
 
-#### `initiateLogin()`
-Starts the OAuth flow.
+#### `step1()`
+Starts the OAuth flow (redirects to Wikibase authorization page).
 
-```javascript
-async initiateLogin() {
-  const { token, authorizationUrl } = await this.$axios.$get('/api/oauth/request-token')
-  window.location.href = authorizationUrl
-}
-```
+#### `step2(oauthToken, oauthVerifier)`
+Completes the flow after user approval and stores the access token.
 
-#### `completeLogin(oauthToken, oauthVerifier)`
-Completes the OAuth flow after user approval.
-
-```javascript
-async completeLogin(oauthToken, oauthVerifier) {
-  const accessToken = await this.$axios.$get('/api/oauth/access-token', {
-    params: { oauth_token: oauthToken, oauth_verifier: oauthVerifier }
-  })
-  
-  const username = await this.$axios.$get('/api/oauth/username', {
-    params: {
-      oauth_token: accessToken.token,
-      oauth_tokensecret: accessToken.tokenSecret
-    }
-  })
-  
-  this.$store.commit('auth/login', { username, accessToken })
-}
-```
+#### `autoLoginByCookie()`
+Attempts to restore a session from the `oauth` cookie on page load (called from `default.vue` layout `onMounted`).
 
 ## NotificationService
 
-Provides a consistent interface for user notifications.
+Wraps `@kyvg/vue3-notification` for consistent toast messages.
 
 ### Methods
 
-#### `success(message)`
-Shows a success toast.
-
 ```javascript
-this.$notification.success('Item saved successfully!')
+$notification.success('Item saved!')
+$notification.error(error)   // smart error formatting
+$notification.info('Loading...')
 ```
 
-#### `error(error)`
-Shows an error toast with smart error parsing.
+The `error` method handles common cases:
+- `session-expired` error code → triggers logout (via `useNotifyError` composable)
+- `maxlag` → "Wikibase is slow, try again"
+- Network/timeout errors → "Wikibase unreachable"
+- Generic errors → extracts `error.body.error.info`
+
+For richer error handling (i18n messages, automatic logout), use the `useNotifyError` composable instead of `$notification.error` directly:
 
 ```javascript
+const { notifyError } = useNotifyError()
 try {
-  await this.$wikibase.saveClaim(claim)
+  await $wikibase.saveClaim(claim)
 } catch (error) {
-  this.$notification.error(error)
-  // Automatically handles:
-  // - 401 errors -> "Authentication error"
-  // - Server error responses -> extracts error.response.data.message
-  // - Network errors -> displays error message
-}
-```
-
-#### `info(message)`
-Shows an informational toast.
-
-```javascript
-this.$notification.info('Loading data...')
-```
-
-### Error Handling Logic
-
-```javascript
-error(error) {
-  if (error.response) {
-    if (error.response.status === 401) {
-      error = 'Authentication error'
-    } else if (error.response.data?.message) {
-      error = error.response.data.message
-    }
-  }
-  console.error(error)
-  this.$toast.error(error, { duration: 5000, icon: 'error' })
+  notifyError(error)
 }
 ```
 
 ## Service Injection Pattern
 
-Services are injected globally via Nuxt plugins:
+Services are injected via Nuxt plugins and accessed with `useNuxtApp()`:
 
 ```javascript
-// plugins/wikibase.js
-export default ({ $axios, store }, inject) => {
-  inject('wikibase', new WikibaseService($axios, store))
-}
+// plugins/03.wikibase.client.js
+export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig().public
+  return {
+    provide: {
+      wikibase: new WikibaseService({ config, $notification: nuxtApp.$notification })
+    }
+  }
+})
 ```
 
-Usage in components:
+Usage in components (`<script setup>`):
 
 ```javascript
-export default {
-  async mounted() {
-    const entity = await this.$wikibase.getEntity('Q123', 'ca')
-  }
-}
+const { $wikibase, $notification, $sanitize } = useNuxtApp()
 ```
 
 ## Best Practices
 
-### 1. Always Use Services, Not Direct Axios
+### Always Use Services, Not Direct Fetch
 
 ```javascript
 // ❌ Bad
-const response = await this.$axios.get('/api/wikibase/entities?ids=Q123')
+const response = await fetch(`${config.apiBaseUrl}/api/wikibase/entities?ids=Q123`)
 
 // ✅ Good
-const entity = await this.$wikibase.getEntity('Q123', 'ca')
+const entity = await $wikibase.getEntity('Q123', 'ca')
 ```
 
-### 2. Leverage Caching
+### Use useNotifyError for User-Visible Errors
 
 ```javascript
-// For frequently accessed data, use backend cache
-const results = await this.$wikibase.runSparqlQuery(query, true, true)
-
-// For one-time queries, skip caching
-const results = await this.$wikibase.runSparqlQuery(query, true, false, false)
-```
-
-### 3. Handle Errors Consistently
-
-```javascript
+const { notifyError } = useNotifyError()
 try {
-  await this.$wikibase.saveClaim(claim)
-  this.$notification.success('Saved!')
+  await $wikibase.saveClaim(claim)
+  $notification.success(t('messages.saved'))
 } catch (error) {
-  this.$notification.error(error)  // Let the service handle formatting
+  notifyError(error)
 }
+```
+
+### Leverage Caching
+
+```javascript
+// Backend cache for shared/slow queries
+const results = await $wikibase.runSparqlQuery(query, true, true, false)
+
+// Skip all caching for one-off queries
+const results = await $wikibase.runSparqlQuery(query, true, false, false)
 ```
 
 ## Next Steps
 
-- [Components](components.md) - See how components use these services
-- [State Management](state-management.md) - Understand how services interact with Vuex
+- [Components](components.md) — How components use these services
+- [State Management](state-management.md) — How services interact with Pinia stores

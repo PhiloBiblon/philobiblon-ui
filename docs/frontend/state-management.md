@@ -1,213 +1,127 @@
-# State Management (Vuex)
+# State Management (Pinia)
 
-The frontend uses Vuex for centralized state management. Each store module handles a specific domain of the application state.
+The frontend uses **Pinia** for centralized state management, replacing Vuex from the Nuxt 2 version. All stores live in `stores/` and use the Composition API style (`defineStore` with a setup function).
 
 ## Store Modules Overview
 
-| Module | Purpose | Key State |
-|--------|---------|-----------|
-| `auth` | User authentication | `isLogged`, `username`, `accessToken` |
-| `queryStatus` | Search form state | `currentTable`, `form`, `currentPage` |
-| `breadcrumb` | Navigation breadcrumbs | `items`, `database`, `table` |
-| `itemCache` | Entity caching | `cache` (key-value map) |
-| `queryCache` | SPARQL result caching | `cache` (with TTL) |
+| Module | File | Purpose | Key State |
+|--------|------|---------|-----------|
+| `useAuthStore` | `auth.js` | User authentication | `isLogged`, `username`, `accessToken` |
+| `useQueryStatusStore` | `queryStatus.js` | Search form state | `currentTable`, `form`, `currentPage` |
+| `useBreadcrumbStore` | `breadcrumb.js` | Navigation breadcrumbs | `items`, `database`, `table` |
+| `useItemCacheStore` | `itemCache.js` | Entity caching | `cache` (key-value map) |
+| `useQueryCacheStore` | `queryCache.js` | SPARQL result caching | `cache` (with TTL) |
 
-## auth.js - Authentication State
+## auth.js — Authentication State
 
 ### Purpose
-Manages user session state including login status and OAuth tokens.
+Manages user session including login status and OAuth tokens.
 
 ### State
 
 ```javascript
-{
-  isLogged: false,      // Boolean: is user authenticated?
-  username: null,       // String: logged-in username
-  accessToken: null     // Object: { token, tokenSecret }
-}
+const isLogged = ref(false)
+const username = ref(null)
+const accessToken = ref(null)  // { token, tokenSecret }
 ```
 
-### Mutations
-
-#### `login(state, { username, accessToken })`
-Sets the user as logged in with credentials.
+### Actions
 
 ```javascript
-this.$store.commit('auth/login', {
-  username: 'john.doe',
-  accessToken: {
-    token: 'abc123...',
-    tokenSecret: 'xyz789...'
-  }
-})
+authStore.login({ username: 'john.doe', accessToken: { token: '...', tokenSecret: '...' } })
+authStore.logout()
 ```
 
-#### `logout(state)`
-Clears all authentication data.
+### Computed Properties
 
 ```javascript
-this.$store.commit('auth/logout')
-```
-
-### Getters
-
-#### `getAuthHeaders(state)`
-Generates the OAuth 1.0 Authorization header for API requests.
-
-```javascript
-const headers = this.$store.getters['auth/getAuthHeaders']
-// Returns: { Authorization: 'OAuth oauth_token="...", oauth_token_secret="..."' }
-```
-
-This is used by the backend proxy to sign requests to Wikibase.
-
-#### `getRequestConfig(state)`
-Returns configuration for `wikibase-edit` library.
-
-```javascript
-const config = this.$store.getters['auth/getRequestConfig']
-// Used when calling wikibase-edit functions
+authStore.requestConfig   // { credentials: { oauth: { token: '...' } } }
+authStore.authHeaders     // { Authorization: 'OAuth oauth_token="...", ...' }
 ```
 
 ### Usage Example
 
 ```javascript
-// Login flow (in OAuth callback page)
-export default {
-  async mounted() {
-    const { oauth_token, oauth_verifier } = this.$route.query
-    
-    const accessToken = await this.$axios.$get('/api/oauth/access-token', {
-      params: { oauth_token, oauth_verifier }
-    })
-    
-    const username = await this.$axios.$get('/api/oauth/username', {
-      params: {
-        oauth_token: accessToken.token,
-        oauth_tokensecret: accessToken.tokenSecret
-      }
-    })
-    
-    this.$store.commit('auth/login', { username, accessToken })
-    this.$router.push('/')
-  }
-}
+import { useAuthStore } from '~/stores/auth'
+
+const authStore = useAuthStore()
+
+// Check login status
+if (authStore.isLogged) { ... }
+
+// Get username in template
+const username = computed(() => authStore.username || '')
+
+// Logout
+authStore.logout()
 ```
 
-## queryStatus.js - Search State
+## queryStatus.js — Search State
 
 ### Purpose
-Persists the state of the search interface so users can navigate away and return without losing their filters or results.
+Persists search form state so users can navigate away and return without losing filters or results.
 
 ### State
 
 ```javascript
-{
-  currentTable: null,     // String: e.g., 'manid', 'texid'
-  showResults: null,      // Boolean: are results visible?
-  currentPage: 1,         // Number: pagination
-  sortBy: 'name',         // String: sort field
-  isSortDescending: false,// Boolean: sort direction
-  form: null              // Object: the search form values
-}
+const currentTable = ref(null)     // e.g. 'manid', 'texid'
+const showResults = ref(false)
+const currentPage = ref(1)
+const sortBy = ref('name')
+const isSortDescending = ref(false)
+const form = ref(null)             // the search form values
 ```
 
-### Mutations
-
-#### `setShowResults(state, showResults)`
-Toggles result visibility.
-
-#### `setPage(state, page)`
-Updates current page for pagination.
-
-#### `setSortBy(state, sortBy)`
-Changes the sort field.
-
-#### `setSortDescending(state, isSortDescending)`
-Changes sort direction.
-
-#### `setForm(state, form)`
-Stores the entire search form state.
+### Actions
 
 ```javascript
-this.$store.commit('queryStatus/setForm', {
-  input: {
-    simple_search: { value: { textString: 'manuscript' } },
-    city: { value: { target_item: 'Q456' } }
-  }
-})
-```
-
-#### `resetStatus(state, table)`
-Resets all search state for a new table.
-
-```javascript
-this.$store.commit('queryStatus/resetStatus', 'manid')
+queryStatusStore.setShowResults(true)
+queryStatusStore.setPage(2)
+queryStatusStore.setSortBy('date')
+queryStatusStore.setSortDescending(true)
+queryStatusStore.setForm({ input: { simple_search: { value: { textString: 'manuscript' } } } })
+queryStatusStore.resetStatus('manid')  // clears all state for a new table
 ```
 
 ### Usage Example
 
 ```javascript
-// In search component
-export default {
-  computed: {
-    searchForm() {
-      return this.$store.state.queryStatus.form
-    }
-  },
-  methods: {
-    async performSearch() {
-      // Save form state
-      this.$store.commit('queryStatus/setForm', this.form)
-      this.$store.commit('queryStatus/setShowResults', true)
-      
-      // Execute search...
-    }
-  }
+import { useQueryStatusStore } from '~/stores/queryStatus'
+
+const queryStatusStore = useQueryStatusStore()
+
+async function performSearch() {
+  queryStatusStore.setForm(form.value)
+  queryStatusStore.setShowResults(true)
+  // execute search...
 }
 ```
 
-## breadcrumb.js - Navigation State
+## breadcrumb.js — Navigation State
 
 ### Purpose
-Manages the breadcrumb trail for navigation context.
+Manages the breadcrumb trail shown in the main layout.
 
 ### State
 
 ```javascript
-{
-  items: [],        // Array: breadcrumb items
-  class: '',        // String: CSS class for styling
-  database: '',     // String: current database (BETA, BITECA, BITAGAP)
-  table: ''         // String: current table (manid, texid, etc.)
-}
+const items = ref([])    // breadcrumb entries [{ title, to }]
+const cssClass = ref('')
+const database = ref('')
+const table = ref('')
 ```
 
-### Mutations
-
-#### `addItem(state, item)`
-Adds a breadcrumb item.
+### Actions
 
 ```javascript
-this.$store.commit('breadcrumb/addItem', {
-  text: 'Manuscripts',
-  to: '/search?table=manid'
-})
+breadcrumbStore.addItem({ title: 'Manuscripts', to: '/search/manid/query' })
+breadcrumbStore.setItems([...])
+breadcrumbStore.setDatabase('BETA')
+breadcrumbStore.setTable('manid')
+breadcrumbStore.resetItems()
 ```
 
-#### `setItems(state, items)`
-Replaces all breadcrumbs.
-
-#### `setDatabase(state, database)`
-Sets the current database context.
-
-#### `setTable(state, table)`
-Sets the current table context.
-
-#### `resetItems(state)`
-Clears all breadcrumbs.
-
-## itemCache.js - Entity Caching
+## itemCache.js — Entity Caching
 
 ### Purpose
 Client-side cache for Wikibase entities to avoid redundant API calls.
@@ -215,164 +129,97 @@ Client-side cache for Wikibase entities to avoid redundant API calls.
 ### State
 
 ```javascript
-{
-  cache: {}  // Object: { 'Q123': { id: 'Q123', labels: {...}, ... } }
-}
+const cache = reactive({})  // { 'Q123': { id, labels, claims, ... } }
 ```
 
-### Mutations
-
-#### `addEntry(state, { key, value })`
-Caches an entity.
+### Actions
 
 ```javascript
-this.$store.commit('itemCache/addEntry', {
-  key: 'Q123',
-  value: entityData
-})
+itemCacheStore.addEntry({ key: 'Q123', value: entityData })
 ```
 
 ### Usage Pattern
 
 ```javascript
-// Check cache before fetching
-let entity = this.$store.state.itemCache.cache['Q123']
+import { useItemCacheStore } from '~/stores/itemCache'
 
+const itemCacheStore = useItemCacheStore()
+
+let entity = itemCacheStore.cache['Q123']
 if (!entity) {
-  entity = await this.$wikibase.getEntities(['Q123'])
-  this.$store.commit('itemCache/addEntry', {
-    key: 'Q123',
-    value: entity
-  })
+  entity = await $wikibase.getEntities(['Q123'])
+  itemCacheStore.addEntry({ key: 'Q123', value: entity })
 }
 ```
 
-## queryCache.js - SPARQL Result Caching
+## queryCache.js — SPARQL Result Caching
 
 ### Purpose
-Caches SPARQL query results with automatic expiration to improve performance.
+Caches SPARQL query results with automatic expiration (2-minute TTL, 100-entry max).
 
 ### Configuration
 
 ```javascript
-const CACHE_MAX_ENTRIES = 100          // Max cached queries
-const CACHE_EXPIRATION_MILLIS = 120000 // 2 minutes TTL
+const CACHE_MAX_ENTRIES = 100
+const CACHE_EXPIRATION_MILLIS = 120000  // 2 minutes
 ```
 
 ### State
 
 ```javascript
-{
-  cache: {
-    // key: query hash
-    // value: { time: Date, value: results }
-  }
-}
-```
-
-### Mutations
-
-#### `addEntry(state, { key, value })`
-Caches query results with timestamp. Automatically evicts oldest entry if cache is full.
-
-```javascript
-this.$store.commit('queryCache/addEntry', {
-  key: hashOfQuery,
-  value: sparqlResults
-})
+const cache = reactive({})
+// key: hash of the SPARQL query
+// value: { time: Date, value: results }
 ```
 
 ### Actions
 
-#### `clearCache({ state })`
-Removes expired entries (older than 2 minutes).
-
 ```javascript
-this.$store.dispatch('queryCache/clearCache')
+queryCacheStore.addEntry({ key: queryHash, value: sparqlResults })
+queryCacheStore.clearCache()  // removes entries older than 2 minutes
 ```
 
-This is called periodically to prevent memory bloat.
+`clearCache()` is called automatically every 3 seconds by the `03.wikibase.client.js` plugin.
 
-### Cache Eviction Strategy
+## Accessing Stores in Components
 
-1. **Size-based**: When cache reaches 100 entries, oldest entry is removed
-2. **Time-based**: Entries older than 2 minutes are removed by `clearCache` action
-
-### Usage Example
+Stores are imported directly — no `this.$store` needed:
 
 ```javascript
-// In query service
-const cacheKey = this.hashQuery(sparqlQuery)
-let results = this.$store.state.queryCache.cache[cacheKey]?.value
+import { useAuthStore } from '~/stores/auth'
+import { useBreadcrumbStore } from '~/stores/breadcrumb'
 
-if (!results) {
-  results = await this.$axios.$post('/api/sparql/query', { query: sparqlQuery })
-  this.$store.commit('queryCache/addEntry', { key: cacheKey, value: results })
-}
+const authStore = useAuthStore()
+const breadcrumbStore = useBreadcrumbStore()
+
+// Read reactive state
+console.log(authStore.isLogged)
+
+// Call actions
+authStore.login({ username, accessToken })
 ```
 
-## Best Practices
+State is reactive: using store properties directly in templates or `computed()` will trigger re-renders on change.
 
-### 1. Use Mutations for State Changes
+## Migrating from Vuex
 
-Never mutate state directly:
+If you're coming from the Nuxt 2 / Vuex version:
 
-```javascript
-// ❌ Bad
-this.$store.state.auth.isLogged = true
-
-// ✅ Good
-this.$store.commit('auth/login', { username, accessToken })
-```
-
-### 2. Use Getters for Computed State
-
-For derived data, use getters instead of computing in components:
-
-```javascript
-// In store
-getters: {
-  isAuthenticated(state) {
-    return state.isLogged && state.accessToken !== null
-  }
-}
-
-// In component
-computed: {
-  canEdit() {
-    return this.$store.getters['auth/isAuthenticated']
-  }
-}
-```
-
-### 3. Namespace Your Commits
-
-Always use the module namespace:
-
-```javascript
-this.$store.commit('auth/login', data)  // ✅
-this.$store.commit('login', data)       // ❌ Won't work
-```
+| Vuex pattern | Pinia equivalent |
+|---|---|
+| `this.$store.state.auth.isLogged` | `authStore.isLogged` |
+| `this.$store.commit('auth/login', data)` | `authStore.login(data)` |
+| `this.$store.getters['auth/requestConfig']` | `authStore.requestConfig` |
+| `this.$store.dispatch('queryCache/clearCache')` | `queryCacheStore.clearCache()` |
 
 ## Debugging State
 
-### Vue DevTools
-
-Use the Vue DevTools browser extension to:
-- Inspect current state
-- View mutation history
-- Time-travel debug (replay mutations)
-
-### Console Access
-
-In development, access store from console:
-
-```javascript
-$nuxt.$store.state.auth
-$nuxt.$store.commit('auth/logout')
-```
+Use the **Vue DevTools** browser extension (Pinia tab) to:
+- Inspect current store state
+- View action history
+- Patch state directly for testing
 
 ## Next Steps
 
-- [Services](services.md) - Learn how services interact with stores
-- [Components](components.md) - See how components use Vuex
+- [Services](services.md) — How services interact with stores
+- [Components](components.md) — How components consume stores

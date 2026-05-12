@@ -4,248 +4,255 @@ This document explains the architecture and structure of the PhiloBiblon UI fron
 
 ## Technology Stack
 
-- **Nuxt.js 2.18.1**: Vue.js framework with SPA mode
-- **Vue 2**: Progressive JavaScript framework
-- **Vuetify**: Material Design component framework
-- **Axios**: HTTP client for API requests
-- **Vuex**: State management pattern + library
+- **Nuxt 3**: Vue.js framework with SPA mode (SSR disabled)
+- **Vue 3**: Progressive JavaScript framework (Composition API)
+- **Vuetify 4**: Material Design component framework (`vuetify-nuxt-module`)
+- **Pinia**: State management library (replaces Vuex)
+- **Vue I18n 11 / @nuxtjs/i18n 10**: Internationalization
+- **@kyvg/vue3-notification**: Toast notifications (replaces vue-toastification)
+- **Yarn 4 (Berry)**: Package manager
+- **Vite**: Build tool (replaces Webpack)
+- **TypeScript**: Used in config files (`nuxt.config.ts`, `i18n.config.ts`)
 
 ## Application Mode
 
-The frontend runs in **SPA (Single Page Application)** mode with **client-side rendering (CSR)**. This means:
+The frontend runs in **SPA (Single Page Application)** mode with **client-side rendering (CSR)**:
 
-- All rendering happens in the browser
-- Initial page load downloads the full JavaScript bundle
-- Navigation is handled client-side (no page reloads)
-- SEO is not a primary concern (internal tool)
+```typescript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  ssr: false,
+  ...
+})
+```
 
 ## Directory Structure
 
 ```
 frontend/
-├── components/         # Vue components
-│   ├── common/         # Shared UI components
-│   ├── item/           # Wikibase item components
-│   │   ├── claim/      # Claim/statement components
-│   │   ├── qualifier/  # Qualifier components
-│   │   ├── reference/  # Reference components
-│   │   ├── util/       # Utility components (editable fields)
-│   │   └── value/      # Value type components (URL, Date, etc.)
-│   └── search/         # Search interface components
-├── lang/               # i18n translation files
-├── layouts/            # Nuxt layout components
-├── pages/              # Route pages (auto-routing)
-├── plugins/            # Nuxt plugins
-├── service/            # Business logic and API services
-├── static/             # Static assets
-└── store/              # Vuex store modules
+├── app.vue              # Root component (mounts NuxtLayout + NuxtPage)
+├── assets/              # Processed assets (CSS, SCSS variables)
+│   ├── css/main.css
+│   └── variables.scss   # Vuetify SCSS overrides
+├── components/          # Vue components (auto-imported by Nuxt)
+│   ├── common/          # Shared UI components
+│   ├── create/          # Item creation components
+│   ├── item/            # Wikibase item display/edit components
+│   │   ├── claim/       # Claim/statement components
+│   │   ├── qualifier/   # Qualifier components
+│   │   ├── reference/   # Reference components
+│   │   ├── related/     # Related items components
+│   │   ├── util/        # Utility components (editable fields)
+│   │   └── value/       # Value type components (URL, Date, Entity, etc.)
+│   ├── search/          # Search interface components
+│   ├── LanguagesMenu.vue
+│   └── PhiloFooter.vue
+├── composables/         # Auto-imported Vue composables
+│   └── useNotifyError.js
+├── i18n.config.ts       # Vue I18n configuration
+├── lang/                # Translation files (en, ca, es, gl, pt)
+├── layouts/             # Nuxt layout components
+│   └── default.vue      # Main layout with navigation drawer + app bar
+├── nuxt.config.ts       # Main Nuxt configuration
+├── pages/               # File-based routing (auto-routing)
+│   ├── index.vue
+│   ├── item/
+│   │   ├── [id].vue           # View/edit item
+│   │   └── [table]/create.vue # Create new item
+│   ├── oauth_callback.vue
+│   ├── privacy-policy.vue
+│   ├── search/<type>/query.vue # Per-type search pages
+│   └── wiki/[page].vue         # Wiki page viewer
+├── plugins/             # Nuxt plugins (client-side only, numbered for order)
+│   ├── 00.vuetify-i18n.client.js
+│   ├── 01.config.client.js
+│   ├── 02.notification.client.js
+│   ├── 03.wikibase.client.js
+│   ├── dompurify.client.js
+│   └── version-check.client.js
+├── public/              # Static assets served as-is (was `static/` in Nuxt 2)
+├── service/             # Business logic and API services
+└── stores/              # Pinia store modules (was `store/` in Nuxt 2)
 ```
 
 ## Plugin System
 
-Nuxt plugins are used to inject functionality globally. Located in `plugins/`:
+Plugins use Nuxt 3's `defineNuxtPlugin` API and the `.client.js` suffix to run client-side only. They are loaded in filename order (numbered prefix).
 
-### `config.js`
-Fetches backend configuration and makes it available as `$config`:
-
-```javascript
-export default async ({ $axios }, inject) => {
-  const config = await $axios.$get('/api/config')
-  inject('config', config)
-}
-```
-
-Usage in components: `this.$config.wikibaseBaseUrl`
-
-### `wikibase.js`
-Injects the Wikibase service:
+### `01.config.client.js`
+Fetches backend configuration and merges it into `useRuntimeConfig().public`:
 
 ```javascript
-import WikibaseService from '~/service/wikibase.service'
-
-export default ({ $axios, store }, inject) => {
-  inject('wikibase', new WikibaseService($axios, store))
-}
-```
-
-Usage: `this.$wikibase.getEntities(['Q123'])`
-
-### `notification.js`
-Injects the notification service:
-
-```javascript
-import { NotificationService } from '~/service/notification.service'
-
-export default ({ $toast }, inject) => {
-  inject('notification', new NotificationService($toast))
-}
-```
-
-Usage: `this.$notification.success('Item saved!')`
-
-### `dompurify.js`
-Sanitizes HTML to prevent XSS attacks when rendering user content.
-
-### `language.js`
-Sets up i18n (internationalization) with Catalan as the default language.
-
-### `version-check.js`
-Checks if the frontend version matches the backend version to prompt users to refresh.
-
-## Routing
-
-Nuxt automatically generates routes from the `pages/` directory:
-
-| File | Route | Purpose |
-|------|-------|---------|
-| `pages/index.vue` | `/` | Home page |
-| `pages/item/_id.vue` | `/item/:id` | View/edit item (e.g., `/item/Q123`) |
-| `pages/search/index.vue` | `/search` | Advanced search interface |
-| `pages/login.vue` | `/login` | OAuth login page |
-
-### Dynamic Routes
-
-The `_id.vue` syntax creates a dynamic route. Access the parameter via:
-
-```javascript
-this.$route.params.id  // e.g., "Q123"
-```
-
-## Component Communication
-
-### Props Down, Events Up
-
-Standard Vue pattern:
-
-```vue
-<!-- Parent -->
-<EditTextField 
-  :value="currentValue"
-  @new-value="handleNewValue"
-/>
-
-<!-- Child emits -->
-this.$emit('new-value', newValue)
-```
-
-### Vuex for Global State
-
-For data needed across multiple components:
-
-```javascript
-// Set state
-this.$store.commit('auth/login', { username, accessToken })
-
-// Read state
-this.$store.state.auth.isLogged
-```
-
-## API Communication
-
-All API calls go through Axios, configured in `nuxt.config.js`:
-
-```javascript
-axios: {
-  baseURL: process.env.API_BASE_URL || 'http://localhost:8080'
-}
-```
-
-### Service Layer Pattern
-
-Instead of calling `$axios` directly in components, use service classes:
-
-```javascript
-// In component
-const entities = await this.$wikibase.getEntities(['Q123'])
-
-// In service (wikibase.service.js)
-async getEntities(ids) {
-  const response = await this.$axios.get('/api/wikibase/entities', {
-    params: { ids: ids.join('|') }
+export default defineNuxtPlugin(async () => {
+  const config = useRuntimeConfig()
+  const response = await fetch(`${config.public.apiBaseUrl}/api/config`)
+  const data = await response.json()
+  Object.entries(data).forEach(([key, value]) => {
+    config.public[key] = value
   })
-  return response.data
-}
-```
-
-This provides:
-- Centralized API logic
-- Easier testing
-- Consistent error handling
-
-## Error Handling
-
-### Global Error Handler
-
-Axios interceptors catch errors:
-
-```javascript
-this.$axios.onError((error) => {
-  if (error.response?.status === 401) {
-    this.$notification.error('Session expired')
-    this.$router.push('/login')
-  }
 })
 ```
 
-### Component-Level
+Config values are accessible anywhere via `useRuntimeConfig().public`.
+
+### `02.notification.client.js`
+Registers `@kyvg/vue3-notification` and injects the `$notification` service:
 
 ```javascript
+import Notifications, { useNotification } from '@kyvg/vue3-notification'
+import { NotificationService } from '~/service/notification.service'
+
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.vueApp.use(Notifications)
+  const { notify } = useNotification()
+  return { provide: { notification: new NotificationService(notify) } }
+})
+```
+
+Usage in components: `const { $notification } = useNuxtApp()`
+
+### `03.wikibase.client.js`
+Injects the `$wikibase` service and starts the query cache cleanup interval:
+
+```javascript
+export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig().public
+  const wikibaseService = new WikibaseService({ config, $notification: nuxtApp.$notification })
+  setInterval(() => useQueryCacheStore().clearCache(), 3000)
+  return { provide: { wikibase: wikibaseService } }
+})
+```
+
+Usage: `const { $wikibase } = useNuxtApp()`
+
+### `00.vuetify-i18n.client.js`
+Merges Vuetify's own locale messages into Vue I18n so Vuetify components render translated strings.
+
+### `dompurify.client.js`
+Provides `$sanitize` to safely render HTML content.
+
+### `version-check.client.js`
+Forces a page reload when the deployed version changes (detected via `localStorage`).
+
+## Routing
+
+Nuxt 3 uses bracket syntax for dynamic routes:
+
+| File | Route | Purpose |
+|------|-------|---------|
+| `pages/index.vue` | `/` (redirects to locale prefix) | Home |
+| `pages/item/[id].vue` | `/item/:id` | View/edit item |
+| `pages/item/[table]/create.vue` | `/item/:table/create` | Create new item |
+| `pages/search/<type>/query.vue` | `/search/<type>/query` | Search by type |
+| `pages/wiki/[page].vue` | `/wiki/:page` | Wiki page viewer |
+| `pages/oauth_callback.vue` | `/oauth_callback` | OAuth callback |
+
+All routes are prefixed with the active locale (e.g. `/en/item/Q123`, `/ca/search/manid/query`) via the `'prefix'` i18n strategy.
+
+Access route parameters in components:
+
+```javascript
+const route = useRoute()
+const id = route.params.id       // e.g. "Q123"
+const table = route.params.table // e.g. "manid"
+```
+
+## Component Style — Composition API
+
+All components use `<script setup>` (Composition API). There is no `this` context.
+
+```vue
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
+
+const { t } = useI18n()
+const { $wikibase } = useNuxtApp()
+const authStore = useAuthStore()
+const route = useRoute()
+
+const entity = ref(null)
+
+onMounted(async () => {
+  entity.value = await $wikibase.getEntity(route.params.id, 'ca')
+})
+</script>
+```
+
+## Composables
+
+Reusable logic is extracted into composables in `composables/` (auto-imported by Nuxt):
+
+### `useNotifyError`
+Centralised error handling with friendly i18n messages and automatic logout on session expiry:
+
+```javascript
+const { notifyError } = useNotifyError()
 try {
-  await this.$wikibase.saveClaim(claim)
-  this.$notification.success('Saved!')
+  await $wikibase.saveClaim(claim)
 } catch (error) {
-  this.$notification.error(error)
+  notifyError(error)
 }
 ```
+
+## State Management
+
+Vuex has been replaced by **Pinia**. Stores are in `stores/` and use the Composition API style. See [State Management](state-management.md) for details.
+
+## API Communication
+
+Direct Axios usage has been replaced by native `fetch` in plugins. In service classes, fetch is used directly:
+
+```javascript
+const response = await fetch(`${config.apiBaseUrl}/api/config`)
+const data = await response.json()
+```
+
+Runtime configuration (instead of `process.env` in components):
+
+```javascript
+const config = useRuntimeConfig().public
+config.wikibaseBaseUrl
+config.apiBaseUrl
+```
+
+## i18n
+
+Configured via `@nuxtjs/i18n` module with `'prefix'` strategy. All routes get a locale prefix. Locale detection uses a `language` cookie.
+
+```javascript
+// In components
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
+
+// Navigate to localized route
+router.push(localePath('/search/manid/query'))
+```
+
+Configuration is split between `nuxt.config.ts` (module config) and `i18n.config.ts` (Vue I18n options, `legacy: false` for Composition API).
 
 ## Build Process
 
-### Development Build
+The build tool is **Vite** (Nuxt 3 default), replacing Webpack.
+
+### Development
 
 ```bash
 yarn dev
+# Starts Vite dev server with HMR at http://localhost:3000
+# API_BASE_URL is hardcoded to https://philobiblon.cog.berkeley.edu/ui-local/
 ```
 
-- Webpack dev server with HMR
-- Source maps enabled
-- No minification
-- Fast rebuild times
-
-### Production Build
+### Production
 
 ```bash
-yarn build
-```
-
-- Code minification
-- Tree shaking (removes unused code)
-- CSS extraction
-- Optimized chunks
-- Gzip compression
-
-## Performance Considerations
-
-### Code Splitting
-
-Nuxt automatically splits code by route. Each page is a separate chunk loaded on demand.
-
-### Client-Side Caching
-
-- **Vuex stores**: `itemCache` and `queryCache` reduce API calls
-- **Browser cache**: Static assets cached via HTTP headers
-
-### Lazy Loading
-
-Components can be lazy-loaded:
-
-```javascript
-components: {
-  HeavyComponent: () => import('~/components/HeavyComponent.vue')
-}
+yarn build    # Produces .output/ directory
+yarn preview  # Preview the production build locally
 ```
 
 ## Next Steps
 
-- [State Management](state-management.md) - Deep dive into Vuex stores
+- [State Management](state-management.md) - Deep dive into Pinia stores
 - [Services](services.md) - API and business logic layer
 - [Components](components.md) - Component architecture patterns
