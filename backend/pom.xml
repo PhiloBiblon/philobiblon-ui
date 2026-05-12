@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
@@ -16,13 +16,13 @@
     <version>1.0.4</version>
 
     <properties>
-        <maven.release.compiler>17</maven.release.compiler>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <scribejava.version>8.3.3</scribejava.version>
-        <parsson.version>1.1.1</parsson.version>
-        <jena.version>4.9.0</jena.version>
-        <caffeine.version>3.1.6</caffeine.version>
+        <parsson.version>1.1.6</parsson.version>
+        <jena.version>6.0.0</jena.version>
+        <caffeine.version>3.2.4</caffeine.version>
     </properties>
 
     <dependencies>
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-arq</artifactId>
-            <version>5.4.0</version>
+            <version>${jena.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -78,7 +78,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
