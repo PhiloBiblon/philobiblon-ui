@@ -18,7 +18,7 @@ yarn lint       # ESLint
 The dev script hardcodes `API_BASE_URL=https://philobiblon.cog.berkeley.edu/ui-local/` as the backend.
 Yarn 4 (Berry) is required — enable it with `corepack enable`.
 
-### Backend (Spring Boot / Java 17)
+### Backend (Spring Boot / Java 21)
 
 ```bash
 cd backend
@@ -41,7 +41,7 @@ docker compose down -v   # Remove everything including volumes
 Two modules behind an nginx reverse proxy:
 
 - **Frontend** (`frontend/`) — Nuxt 3 SPA (SSR disabled), Vue 3 + Vuetify 4 + Pinia. Talks to Wikibase API directly for reads, and to the backend for writes (proxied through OAuth) and cached SPARQL queries.
-- **Backend** (`backend/`) — Spring Boot 3 middleware. Handles OAuth 1.0a with Wikibase, proxies edit requests, and caches SPARQL queries with Caffeine LoadingCache (24h refresh, 36h expiry).
+- **Backend** (`backend/`) — Spring Boot 4 middleware. Handles OAuth 1.0a with Wikibase, proxies edit requests, and caches SPARQL queries with Caffeine LoadingCache (24h refresh, 36h expiry).
 
 ### Two-level SPARQL caching
 
