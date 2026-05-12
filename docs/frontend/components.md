@@ -7,385 +7,124 @@ This document explains the component structure and patterns used in the PhiloBib
 ```
 components/
 ├── common/              # Reusable UI components
-│   ├── Loader.vue      # Loading spinner
-│   └── ErrorMessage.vue # Error display
-├── item/               # Wikibase item components
-│   ├── Base.vue        # Read-only item view
-│   ├── Create.vue      # Item creation form
-│   ├── claim/          # Claim/statement components
-│   │   ├── Base.vue    # Claim display
-│   │   ├── Create.vue  # Claim creation
-│   │   ├── AddValue.vue # Add value to existing claim
-│   │   └── Values.vue  # Display claim values
-│   ├── qualifier/      # Qualifier components
-│   │   └── Create.vue  # Qualifier creation
-│   ├── reference/      # Reference components
-│   │   ├── Base.vue    # Reference display
-│   │   └── List.vue    # Reference list
-│   ├── util/           # Utility components
-│   │   ├── EditTextField.vue    # Editable text field
-│   │   ├── EditSelectField.vue  # Editable dropdown
-│   │   └── EditDateField.vue    # Editable date picker
-│   └── value/          # Value type components
-│       └── type/
-│           ├── Url.vue         # URL value
-│           ├── Date.vue        # Date value
-│           ├── Entity.vue      # Wikibase item value
-│           └── Text.vue        # String value
-└── search/             # Search interface
-    └── Filters.vue     # Dynamic search form
+├── create/              # Item creation form components
+├── item/                # Wikibase item display/edit components
+│   ├── Base.vue         # Read-only item view
+│   ├── Claims.vue       # Claims list
+│   ├── Create.vue       # Item creation form (wrapper)
+│   ├── Notes.vue        # Notes section
+│   ├── claim/           # Claim/statement components
+│   ├── qualifier/       # Qualifier components
+│   ├── reference/       # Reference components
+│   ├── related/         # Related items components
+│   ├── util/            # Utility components (editable fields)
+│   └── value/           # Value type components (URL, Date, Entity, etc.)
+├── search/              # Search interface
+│   ├── Base.vue
+│   ├── Filters.vue      # Dynamic search form
+│   ├── Results.vue      # Results table
+│   └── Simple.vue       # Simple search input
+├── LanguagesMenu.vue    # Language switcher
+└── PhiloFooter.vue      # Footer
+```
+
+All components are **auto-imported** by Nuxt — no explicit `import` needed in `<script setup>`.
+
+## Component Style — Script Setup
+
+All components use `<script setup>` (Composition API). There is no `this` context. Vue lifecycle hooks, reactivity, and utilities are imported from `vue` or used via Nuxt auto-imports.
+
+```vue
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/stores/auth'
+
+const props = defineProps({ value: String, table: String })
+const emit = defineEmits(['update'])
+
+const { t } = useI18n()
+const { $wikibase } = useNuxtApp()
+const authStore = useAuthStore()
+const localValue = ref(props.value)
+
+onMounted(async () => { ... })
+</script>
 ```
 
 ## Key Components
 
-### item/Create.vue - Item Creation
+### item/Base.vue — Item Display
 
-The most complex component in the application. Handles creating new Wikibase items with automatic PBID generation and claim initialization.
-
-#### Key Features
-
-1. **Automatic PBID Generation**
-   - Queries for the last item in the table
-   - Increments the number
-   - Pre-fills P476 (PBID) claim
-
-```javascript
-async mounted() {
-  const lastItem = await this.$wikibase.getTableLastItem(this.database, this.table)
-  const { num } = this.$wikibase.parsePBID(lastItem.pbid)
-  const newNum = parseInt(num) + 1
-  const newPBID = `${this.database} ${this.table} ${newNum}`
-  
-  // Create initial claims with PBID
-  this.initialClaims = await this.generateInitialClaims(newPBID)
-}
-```
-
-2. **Smart Default Values**
-   - P131 (bibliography) automatically set based on database
-   - P700 qualifier set to Q447226 (PhiloBiblon object)
-
-```javascript
-if (entity.id === 'P131') {
-  const bibliographyMap = {
-    BETA: 'Q254471',
-    BITECA: 'Q256810',
-    BITAGAP: 'Q256809'
-  }
-  const bibliographyId = bibliographyMap[this.database]
-  
-  const qualifiers = [{
-    property: 'P700',
-    datavalue: { value: { id: 'Q447226' } }
-  }]
-  
-  claim = this.buildClaim(entity, qualifiers, { id: bibliographyId })
-}
-```
-
-3. **Validation**
-   - Label required
-   - At least one claim required
-   - PBID must be unique
-
-```javascript
-getCreateDisabledReason() {
-  if (!this.label) {
-    return this.$t('item.create.button.disabled.no_label')
-  }
-  if (this.claims.length === 0) {
-    return this.$t('item.create.button.disabled.no_claims')
-  }
-  return null
-}
-```
-
-4. **Creation Flow**
-
-```javascript
-async create() {
-  const newItem = {
-    labels: { ca: this.label },
-    descriptions: { ca: this.description },
-    claims: this.formatClaimsForWikibase(this.claims)
-  }
-  
-  const result = await this.wbEdit.entity.create({
-    type: 'item',
-    ...newItem,
-    ...this.$store.getters['auth/getRequestConfig']
-  })
-  
-  this.$notification.success('Item created!')
-  this.$router.push(`/item/${result.entity.id}`)
-}
-```
-
-### item/Base.vue - Item Display
-
-Displays a Wikibase item in read-only mode.
-
-#### Structure
-
-```vue
-<template>
-  <div>
-    <h1>{{ label }}</h1>
-    <p>{{ description }}</p>
-    
-    <!-- Claims -->
-    <item-claim-base
-      v-for="claim in orderedClaims"
-      :key="claim.property"
-      :claim="claim"
-      :table="table"
-    />
-    
-    <!-- References -->
-    <item-reference-list :references="references" />
-  </div>
-</template>
-```
+Displays a Wikibase item in read-only (or edit) mode.
 
 #### Data Loading
 
 ```javascript
-async mounted() {
-  const entity = await this.$wikibase.getEntity(this.$route.params.id, 'ca')
-  this.label = entity.labels.ca?.value
-  this.description = entity.descriptions.ca?.value
-  
-  // Order claims according to UI config
-  this.orderedClaims = await this.$wikibase.getOrderedClaims(
-    this.table,
-    entity.claims
-  )
-}
+const route = useRoute()
+const entity = ref(null)
+
+onMounted(async () => {
+  entity.value = await $wikibase.getEntity(route.params.id, 'ca')
+  orderedClaims.value = await $wikibase.getOrderedClaims(table, entity.value.claims)
+})
 ```
 
-### item/claim/Create.vue - Claim Creation
+### item/Create.vue — Item Creation
 
-Allows adding new claims to an item.
+Handles creating new Wikibase items with automatic PBID generation and claim initialization.
 
-#### Property Selection
+#### Key Features
+
+1. **Automatic PBID Generation** — queries for the last item in the table, increments, pre-fills P476
+2. **Smart Default Values** — P131 (bibliography) auto-set based on database; P700 qualifier defaults to Q447226
+3. **Validation** — label required, at least one claim required
+4. **Creation Flow** — calls `wbEdit.entity.create` with OAuth credentials from `useAuthStore().requestConfig`
+
+### item/claim/Create.vue — Claim Creation
+
+Allows adding new claims to an item. Property selection is filtered by table type and existing claims.
+
+The value input component is selected dynamically based on property datatype:
+
+```javascript
+const valueComponent = computed(() => {
+  switch (selectedProperty.value?.datatype) {
+    case 'wikibase-item': return 'ItemValueTypeEntity'
+    case 'string':        return 'ItemValueTypeText'
+    case 'time':          return 'ItemValueTypeDate'
+    case 'url':           return 'ItemValueTypeUrl'
+    default:              return 'ItemValueTypeText'
+  }
+})
+```
+
+### item/util/EditTextField.vue — Inline Editing
+
+A reusable component for inline editing of text values. Switches between display and edit mode.
+
+Props: `value`, `save` (async function), `delete` (function), `mode`
 
 ```vue
-<v-autocomplete
-  v-model="selectedProperty"
-  :items="availableProperties"
-  item-text="label"
-  item-value="id"
-  label="Select property"
+<ItemUtilEditTextField
+  :value="currentValue"
+  :save="async (newVal) => { await $wikibase.saveLabel(newVal) }"
+  :delete="() => { ... }"
+  mode="edit"
 />
 ```
 
-Properties are filtered based on:
-1. Table type (from UI config)
-2. Already existing claims (to avoid duplicates for single-value properties)
+### search/Filters.vue — Dynamic Search Form
 
-#### Value Input
+Generates search forms dynamically from per-table JSON config. Persists form state in `useQueryStatusStore`.
 
-The value input component changes based on property datatype:
+### search/Results.vue — Search Results
 
-```vue
-<component
-  :is="valueComponent"
-  v-model="value"
-  :property="selectedProperty"
-/>
-```
+Displays SPARQL query results in a paginated table. Pagination and sort state are persisted in `useQueryStatusStore`.
 
-```javascript
-computed: {
-  valueComponent() {
-    switch (this.selectedProperty.datatype) {
-      case 'wikibase-item':
-        return 'value-type-entity'
-      case 'string':
-        return 'value-type-text'
-      case 'time':
-        return 'value-type-date'
-      case 'url':
-        return 'value-type-url'
-      default:
-        return 'value-type-text'
-    }
-  }
-}
-```
+### LanguagesMenu.vue — Language Switcher
 
-### item/util/EditTextField.vue - Editable Field
-
-A reusable component for inline editing of text values.
-
-#### States
-
-1. **Display Mode**: Shows value as plain text
-2. **Edit Mode**: Shows input field with save/cancel/delete buttons
-
-```vue
-<template>
-  <v-text-field
-    v-if="focussed"
-    v-model="currentText"
-    @blur="blur"
-    @focus="focus"
-  >
-    <template #append>
-      <v-btn icon @click.stop="edit">
-        <v-icon>mdi-check</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="restore">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      <v-btn v-if="isRemovable" icon @click.stop="deleteValue">
-        <v-icon>mdi-trash-can</v-icon>
-      </v-btn>
-    </template>
-  </v-text-field>
-  <span v-else @click="focus">{{ currentText }}</span>
-</template>
-```
-
-#### Props
-
-- `value`: Current value
-- `save`: Function to call on save
-- `delete`: Function to call on delete
-- `mode`: 'edit' or 'view'
-
-#### Event Handling
-
-```javascript
-methods: {
-  async edit() {
-    if (this.currentText !== this.consolidatedText) {
-      await this.save(this.currentText, this.consolidatedText)
-      this.consolidatedText = this.currentText
-      this.$notification.success('Saved!')
-    }
-  },
-  
-  restore() {
-    this.currentText = this.consolidatedText
-    this.focussed = false
-  },
-  
-  blur() {
-    this.focussed = false
-    this.restore()  // Revert changes if not saved
-  }
-}
-```
-
-### item/value/type/Url.vue - URL Value
-
-Handles URL values with special validation for email addresses.
-
-#### Email Detection
-
-```javascript
-methods: {
-  isURL(str) {
-    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
-    const emailRegex = /^mailto:[^\s]+@[^\s]+\.[^\s]+$/i
-    return urlRegex.test(str) || emailRegex.test(str)
-  },
-  
-  getUrlValue(newValue, oldValue) {
-    const valid = this.isURL(newValue)
-    const message = valid ? '' : this.$i18n.t('item.messages.invalid_url')
-    
-    return {
-      validation: { valid, message },
-      values: { newValue, oldValue }
-    }
-  }
-}
-```
-
-### search/Filters.vue - Dynamic Search Form
-
-Generates search forms dynamically based on table type and database.
-
-#### Form Generation
-
-```javascript
-async mounted() {
-  const formConfig = await import(`~/static/search/${this.table}.json`)
-  this.formFields = formConfig.fields
-  
-  // Load saved form state
-  const savedForm = this.$store.state.queryStatus.form
-  if (savedForm) {
-    this.form = savedForm
-  }
-}
-```
-
-#### Field Types
-
-Different input types based on field configuration:
-
-```vue
-<template v-for="field in formFields">
-  <!-- Text input -->
-  <v-text-field
-    v-if="field.type === 'text'"
-    v-model="form[field.name]"
-    :label="field.label"
-  />
-  
-  <!-- Autocomplete (entity search) -->
-  <v-autocomplete
-    v-else-if="field.type === 'entity'"
-    v-model="form[field.name]"
-    :items="getAutocompleteOptions(field)"
-    :search-input.sync="search[field.name]"
-    @update:search-input="searchEntity(field, $event)"
-  />
-  
-  <!-- Date range -->
-  <v-row v-else-if="field.type === 'daterange'">
-    <v-col>
-      <v-text-field
-        v-model="form[field.name].begin"
-        type="number"
-        label="From"
-      />
-    </v-col>
-    <v-col>
-      <v-text-field
-        v-model="form[field.name].end"
-        type="number"
-        label="To"
-      />
-    </v-col>
-  </v-row>
-</template>
-```
-
-#### Search Execution
-
-```javascript
-async performSearch() {
-  // Save form state
-  this.$store.commit('queryStatus/setForm', this.form)
-  
-  // Generate SPARQL query
-  const query = this.$wikibase.$query.generateSearchQuery(
-    this.table,
-    this.database,
-    this.form
-  )
-  
-  // Execute query
-  const results = await this.$wikibase.runSparqlQuery(query, true, true)
-  
-  this.$emit('results', results)
-  this.$store.commit('queryStatus/setShowResults', true)
-}
-```
+Switches the active i18n locale and persists the choice in the `language` cookie.
 
 ## Component Communication Patterns
 
@@ -393,105 +132,96 @@ async performSearch() {
 
 ```vue
 <!-- Parent -->
-<child-component
-  :value="parentValue"
-  @update="handleUpdate"
+<ItemClaimBase
+  :claim="claim"
+  :table="table"
+  @claim-updated="handleUpdate"
 />
 
-<!-- Child -->
-<script>
-export default {
-  props: ['value'],
-  methods: {
-    onChange(newValue) {
-      this.$emit('update', newValue)
-    }
-  }
+<!-- Child (script setup) -->
+const props = defineProps({ claim: Object, table: String })
+const emit = defineEmits(['claim-updated'])
+
+function onSave(newValue) {
+  emit('claim-updated', newValue)
 }
-</script>
 ```
 
 ### 2. Provide/Inject for Deep Hierarchies
 
 ```javascript
-// Parent (item/Create.vue)
-provide() {
-  return {
-    table: this.table,
-    database: this.database
-  }
-}
+// Ancestor component
+provide('table', table)
+provide('database', database)
 
-// Deep child
-inject: ['table', 'database']
+// Deep descendant
+const table = inject('table')
+const database = inject('database')
 ```
 
-### 3. Vuex for Global State
+### 3. Pinia for Global State
 
 ```javascript
-// Any component
-computed: {
-  isLogged() {
-    return this.$store.state.auth.isLogged
+import { useAuthStore } from '~/stores/auth'
+const authStore = useAuthStore()
+
+// Reactive in template automatically
+if (authStore.isLogged) { ... }
+```
+
+## Vuetify 4 Patterns
+
+### Key API changes from Vuetify 2/3
+
+- `v-model:search-input` (v2) → `v-model:search` (v4) on autocomplete
+- `:item-text` / `:item-value` props (v2) → `:item-title` / `:item-value` (v4)
+- `append` slot slot → `append-inner` for inside the input, `append` for outside
+- `useDisplay()` composable for breakpoints:
+
+```javascript
+import { useDisplay } from 'vuetify'
+const { mdAndDown } = useDisplay()
+```
+
+### Global Defaults
+
+Component variant defaults are configured centrally in `nuxt.config.ts`:
+
+```typescript
+vuetify: {
+  vuetifyOptions: {
+    defaults: {
+      VTextField: { variant: 'underlined', color: 'primary' },
+      VAutocomplete: { variant: 'underlined', color: 'primary' },
+      ...
+    }
   }
 }
 ```
 
-## Styling Patterns
+This means individual `<v-text-field>` components don't need `:variant` or `:color` unless overriding the default.
 
-### Scoped Styles
+### Styling
 
 ```vue
 <style scoped>
-.component-specific-class {
-  /* Only applies to this component */
-}
+/* Component-local styles */
+.my-class { ... }
+
+/* Reach into child component styles */
+:deep(.v-list-item--active) { color: white; }
 </style>
 ```
 
-### Vuetify Utility Classes
+Vuetify utility classes work as before:
 
 ```vue
 <v-row class="mt-4 mb-2">
-  <v-col cols="12" md="6">
-    <!-- Responsive grid -->
-  </v-col>
+  <v-col cols="12" md="6">...</v-col>
 </v-row>
-```
-
-### Dynamic Classes
-
-```vue
-<div :class="{ 'error-state': hasError, 'success-state': isValid }">
-```
-
-## Testing Considerations
-
-### Component Testing
-
-```javascript
-import { mount } from '@vue/test-utils'
-import EditTextField from '~/components/item/util/EditTextField.vue'
-
-describe('EditTextField', () => {
-  it('calls save function on edit', async () => {
-    const saveMock = jest.fn()
-    const wrapper = mount(EditTextField, {
-      propsData: {
-        value: 'initial',
-        save: saveMock
-      }
-    })
-    
-    await wrapper.find('input').setValue('new value')
-    await wrapper.find('[data-test="save-btn"]').trigger('click')
-    
-    expect(saveMock).toHaveBeenCalledWith('new value', 'initial')
-  })
-})
 ```
 
 ## Next Steps
 
-- [Services](services.md) - Learn how components interact with services
-- [State Management](state-management.md) - Understand Vuex integration
+- [Services](services.md) — How components use services
+- [State Management](state-management.md) — How components use Pinia stores
