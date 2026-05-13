@@ -23,13 +23,10 @@ Caching provides:
 1. **Frontend (Vuex)**: Client-side cache in browser
 2. **Backend (Caffeine)**: Server-side cache shared across users
 
-```
-┌──────────┐         ┌─────────┐         ┌────────────┐
-│ Frontend │────────>│ Backend │────────>│   SPARQL   │
-│  Cache   │<────────│  Cache  │<────────│  Endpoint  │
-└──────────┘         └─────────┘         └────────────┘
-   2 min TTL          Caffeine            No cache
-   100 entries        Configurable
+```mermaid
+flowchart LR
+    FC["Frontend Cache\n2 min TTL · 100 entries"] <--> BC["Backend Cache\nCaffeine · Configurable"]
+    BC <--> SE["SPARQL Endpoint\nNo cache"]
 ```
 
 ### Cache Key Generation
@@ -151,38 +148,33 @@ public class SparqlServiceImpl implements SparqlService {
 
 ### Cache Hit
 
-```
-Frontend                Backend                 SPARQL
-   |                       |                        |
-   |--POST /sparql/query-->|                        |
-   |  query: "SELECT..."   |                        |
-   |                       |--hash(query)---------->|
-   |                       |  key: 123456789        |
-   |                       |                        |
-   |                       |--cache.get(key)------->|
-   |                       |<--cached result--------|
-   |<--result (instant)----|                        |
+```mermaid
+sequenceDiagram
+    participant F as Frontend
+    participant B as Backend
+    participant S as SPARQL
+
+    F->>B: POST /sparql/query ("SELECT...")
+    B->>B: hash(query) → key: 123456789
+    B->>B: cache.get(key) → cached result
+    B->>F: result (instant)
 ```
 
 ### Cache Miss
 
-```
-Frontend                Backend                 SPARQL
-   |                       |                        |
-   |--POST /sparql/query-->|                        |
-   |  query: "SELECT..."   |                        |
-   |                       |--hash(query)---------->|
-   |                       |  key: 987654321        |
-   |                       |                        |
-   |                       |--cache.get(key)------->|
-   |                       |<--null (miss)----------|
-   |                       |                        |
-   |                       |--execute query-------->|
-   |                       |                        |
-   |                       |<--result (slow)--------|
-   |                       |                        |
-   |                       |--cache.put(key, result)|
-   |<--result (slow)-------|                        |
+```mermaid
+sequenceDiagram
+    participant F as Frontend
+    participant B as Backend
+    participant S as SPARQL
+
+    F->>B: POST /sparql/query ("SELECT...")
+    B->>B: hash(query) → key: 987654321
+    B->>B: cache.get(key) → null (miss)
+    B->>S: execute query
+    S->>B: result (slow)
+    B->>B: cache.put(key, result)
+    B->>F: result (slow)
 ```
 
 ## Cache Statistics
