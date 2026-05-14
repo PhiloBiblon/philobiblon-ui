@@ -15,11 +15,26 @@ npm install -g @anthropic-ai/claude-code
 
 # Install coderabbit CLI
 curl -fsSL https://cli.coderabbit.ai/install.sh | sh
+## Note: to finalize coderabbit installation:
+##  1. coderabbit auth login
+##  2. claude
+##  3. > /plugin install coderabbit
+##  4. > /reload-plugins
 
 # Install Playwright and Chrome with all required system dependencies
 npm install -g @playwright/test
 (cd /tmp && npx --yes playwright install --with-deps chrome)
 claude mcp add playwright npx @playwright/mcp@latest
+
+# Configure Claude Code permissions (user-level, devcontainer only)
+mkdir -p ~/.claude
+cat > ~/.claude/settings.json <<'EOF'
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  }
+}
+EOF
 
 # Prepare frontend
 cd frontend && yarn install
