@@ -132,6 +132,7 @@ const form = {
             visible: true,
             disabled: false,
             autocomplete: {
+              allowFreeText: true,
               query:
                 `
                 SELECT DISTINCT ?label WHERE {

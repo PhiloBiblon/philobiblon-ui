@@ -1,7 +1,7 @@
 <template>
   <v-form ref="search_form">
     <v-container>
-      <v-row density="comfortable">
+      <v-row density="comfortable" :class="{ 'mb-3': showResults }">
         <v-col cols="12" md="10">
           <v-radio-group
             v-model="searchGroup.value"
