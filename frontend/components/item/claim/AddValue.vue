@@ -136,7 +136,7 @@ async function createClaim (index) {
     $notification.success(t('messages.success.updated'))
     updateClaims(res)
   } else {
-    $notification.error(t('messages.error.modification.failed'))
+    $notification.error(t('messages.error.something_went_wrong'))
   }
   return res
 }

@@ -27,9 +27,6 @@ function getFriendlyMessage (error, t) {
   if (isNetworkOrTimeout(error)) {
     return t('messages.error.wikibase_unreachable')
   }
-  if (error?.message?.includes('modification-failed') || error?.body?.error?.code?.includes?.('modification-failed')) {
-    return t('messages.error.modification.failed')
-  }
   return error?.body?.error?.info ?? t('messages.error.something_went_wrong')
 }
 

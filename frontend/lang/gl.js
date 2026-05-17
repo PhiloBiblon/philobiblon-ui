@@ -591,9 +591,6 @@ export default {
         qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
         qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
       },
-      modification: {
-        failed: 'A etiqueta e a descrición do código de idioma gl non poden ter o mesmo valor.'
-      },
       creation: {
         pbid_already_exists: 'O PhiloBiblon ID "{pbid}" xa existe en {item}.'
       }

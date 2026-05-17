@@ -576,7 +576,7 @@ export default {
   },
   messages: {
     error: {
-      something_went_wrong: 'Alguna cosa va fallar!',
+      something_went_wrong: 'Alguna cosa ha fallat!',
       wikibase_slow: 'Wikibase està sobrecarregat. Torna-ho a provar en uns moments.',
       wikibase_unreachable: 'No s\'ha pogut connectar amb Wikibase. Torna-ho a provar.',
       session: {
@@ -590,9 +590,6 @@ export default {
         claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
         qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
         qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
-      },
-      modification: {
-        failed: 'L\'etiqueta i la descripció del codi d\'idioma en no poden tenir el mateix valor.'
       },
       creation: {
         pbid_already_exists: 'El PhiloBiblon ID "{pbid}" ja existeix en {item}.'
