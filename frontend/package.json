@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
+    "@types/node": "^25.8.0",
     "eslint": "^10.2.1",
     "eslint-plugin-vue": "^10.9.0",
     "sass-embedded": "^1.99.0"
