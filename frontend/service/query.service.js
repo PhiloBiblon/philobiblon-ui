@@ -734,6 +734,26 @@ export class QueryService {
         FILTER (?item_lib = wd:${form.input.library.value.target_item})
         `
     }
+    if (form.input.collection && form.input.collection.value) {
+      const collectionValue = form.input.collection.value
+      const collectionFilter = collectionValue.textString
+        ? `FILTER(CONTAINS(LCASE(STR(?item_collection)), LCASE("${this.sanitizeSparqlString(collectionValue.textString)}")))`
+        : `FILTER (?item_collection = "${this.sanitizeSparqlString(collectionValue.label)}")`
+      filters +=
+        `
+        {
+          ?item wdt:P1054 ?item_collection .
+        }
+        UNION
+        {
+          ?copid_item wdt:P476 ?copid_pbid .
+          FILTER regex(?copid_pbid, '(.*) copid ') .
+          ?copid_item wdt:P839 ?item .
+          ?copid_item wdt:P1054 ?item_collection .
+        }
+        ${collectionFilter}
+        `
+    }
     if (form.input.title && form.input.title.value) {
       filters +=
         `

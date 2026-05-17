@@ -173,6 +173,9 @@ function truncateDesc (desc) {
 </script>
 
 <style scoped>
+:deep(.v-field--disabled .v-field__append-inner) {
+  display: none;
+}
 .my-item-subtitle {
   font-weight: normal;
   font-size: 0.8rem;
