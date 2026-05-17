@@ -31,7 +31,7 @@
         :delete="deleteValue"
         :mode="mode"
         @new-value="newValue"
-        @on-blur="emit('on-blur', $event)"
+        @on-blur="emit('on-blur', normalizeUrlValue($event))"
       />
     </template>
   </div>
@@ -54,7 +54,6 @@ const props = defineProps({
 
 const emit = defineEmits(['on-blur', 'new-value'])
 
-const { $notification } = useNuxtApp()
 const { t } = useI18n()
 const authStore = useAuthStore()
 
@@ -73,16 +72,11 @@ onMounted(() => {
 })
 
 function newValue (value) {
-  const valid = isURL(value)
-  if (!valid) {
-    $notification.error(t('item.messages.invalid_url'))
-    value = ''
-  }
-  emit('new-value', value)
+  emit('new-value', normalizeUrlValue(value))
 }
 
 function editValue (nv, ov) {
-  return props.save(getUrlValue(nv, ov))
+  return props.save(getUrlValue(normalizeUrlValue(nv), ov))
 }
 
 function deleteValue () {
@@ -98,9 +92,29 @@ function getUrlValue (nv, ov) {
   }
 }
 
+function normalizeUrlValue (str) {
+  if (!str || /^(https?|ftp):\/\//i.test(str) || /^mailto:/i.test(str)) {
+    return str
+  }
+  if (isEmailAddress(str)) {
+    return `mailto:${str}`
+  }
+  if (/^[a-zA-Z0-9][a-zA-Z0-9._-]*\.[a-zA-Z]{2,}/.test(str) && !/\s/.test(str)) {
+    return `https://${str}`
+  }
+  return str
+}
+
 function isURL (str) {
+  if (!str) { return false }
   const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
-  return urlRegex.test(str)
+  const mailtoRegex = /^mailto:[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/i
+  return urlRegex.test(str) || mailtoRegex.test(str)
+}
+
+function isEmailAddress (str) {
+  const emailRegex = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/i
+  return emailRegex.test(str)
 }
 
 function isImageUrl (url) {

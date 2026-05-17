@@ -593,9 +593,6 @@ export default {
         qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
         qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
       },
-      modification: {
-        failed: 'Label and description for language code en can not have the same value.'
-      },
       creation: {
         pbid_already_exists: 'PhiloBiblon ID "{pbid}" already exists in {item}.'
       }
