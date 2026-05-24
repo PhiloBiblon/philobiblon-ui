@@ -604,5 +604,8 @@ export default {
     search: {
       placeholder: 'Busca en PhiloBiblon'
     }
+  },
+  footer: {
+    citation: 'Volume 2025, Número 1 (Xaneiro) ISSN 1096-6609'
   }
 }

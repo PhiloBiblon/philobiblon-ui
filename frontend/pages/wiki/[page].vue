@@ -33,7 +33,6 @@ onMounted(async () => {
 function prepareContent (html) {
   return $sanitize(html)
     .replaceAll('<a href="#', '<a href="' + window.location.pathname + '#')
-    .replaceAll('<a id=', '<a style="padding-top: 50px;" id=')
     .replaceAll('<blockquote>', '<blockquote style="padding-left: 50px;">')
     .replace(/href="(?!https?:|\/|#|mailto:)([^"]+)"/g, (_, path) => {
       const hasLocale = ['en', 'ca', 'es', 'gl', 'pt'].some(l => path.startsWith(l + '/'))
@@ -76,20 +75,24 @@ function contentPage (data) {
 }
 
 function parseLinks (content) {
-  const LINK_RE = /\[\[([^\]|]*)\|([^\]]*)\]\]/g
-  return content.replace(LINK_RE, (match, g1, g2) => parseLink(match, g1, g2))
+  const EXTERNAL_LINK_RE = /\[(https?:\/\/[^\s\]]+)(?:\s([^\]]*))?\]/g
+  const INTERNAL_LINK_RE = /\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g
+  return content
+    .replace(EXTERNAL_LINK_RE, (match, url, text) => `<a href='${url}' target='_blank' rel='noopener noreferrer'>${text || url}</a>`)
+    .replace(INTERNAL_LINK_RE, (match, g1, g2) => parseInternalLink(g1, g2))
 }
 
-function parseLink (match, g1, g2) {
-  let link = g1
-  const text = g2 !== undefined ? g2 : g1
-  if (link.startsWith('http')) {
-    return `<a href='${link}'>${text}</a>`
-  } else {
-    if (!link.startsWith('/')) {
-      link = `/wiki/${link}`
-    }
-    return `<a href='${baseURL}${localePath(link)}'>${text}</a>`
+function parseInternalLink (link, text) {
+  const originalLink = link
+  if (!link.startsWith('/')) {
+    link = `/wiki/${link}`
   }
+  return `<a href='${baseURL}${localePath(link)}'>${text || originalLink}</a>`
 }
 </script>
+
+<style scoped>
+:deep([id]) {
+  scroll-margin-top: 64px;
+}
+</style>

@@ -52,7 +52,7 @@
           </v-row>
           <v-row density="comfortable">
             <v-col class="text-caption">
-              Volume 2024, Number 3 (March) ISSN 1096-6609
+              {{ t('footer.citation') }}
             </v-col>
           </v-row>
         </v-container>
@@ -61,16 +61,24 @@
         <v-container fluid>
           <v-row density="comfortable">
             <v-col>
-              <img src="/img/footer/universitat_barcelona.png">
+              <a href="https://www.ub.edu" target="_blank" rel="noopener noreferrer">
+                <img src="/img/footer/universitat_barcelona.png" alt="Universitat de Barcelona">
+              </a>
             </v-col>
             <v-col>
-              <img src="/img/footer/upf.png">
+              <a href="https://www.upf.edu" target="_blank" rel="noopener noreferrer">
+                <img src="/img/footer/upf.png" alt="Universitat Pompeu Fabra">
+              </a>
             </v-col>
             <v-col>
-              <img src="/img/footer/the_bancroft.png">
+              <a href="https://bancroft.berkeley.edu" target="_blank" rel="noopener noreferrer">
+                <img src="/img/footer/the_bancroft.png" alt="The Bancroft Library">
+              </a>
             </v-col>
             <v-col>
-              <img src="/img/footer/ilf.png">
+              <a href="https://larramendi.es/fundacion/" target="_blank" rel="noopener noreferrer">
+                <img src="/img/footer/ilf.png" alt="Fundación Ignacio Larramendi">
+              </a>
             </v-col>
           </v-row>
         </v-container>
