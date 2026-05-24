@@ -52,7 +52,7 @@
           </v-row>
           <v-row density="comfortable">
             <v-col class="text-caption">
-              Volume 2024, Number 3 (March) ISSN 1096-6609
+              Volume 2025, Number 1 (January) ISSN 1096-6609
             </v-col>
           </v-row>
         </v-container>
@@ -61,16 +61,24 @@
         <v-container fluid>
           <v-row density="comfortable">
             <v-col>
-              <img src="/img/footer/universitat_barcelona.png">
+              <a href="https://www.ub.edu" target="_blank">
+                <img src="/img/footer/universitat_barcelona.png">
+              </a>
             </v-col>
             <v-col>
-              <img src="/img/footer/upf.png">
+              <a href="https://www.upf.edu" target="_blank">
+                <img src="/img/footer/upf.png">
+              </a>
             </v-col>
             <v-col>
-              <img src="/img/footer/the_bancroft.png">
+              <a href="https://bancroft.berkeley.edu" target="_blank">
+                <img src="/img/footer/the_bancroft.png">
+              </a>
             </v-col>
             <v-col>
-              <img src="/img/footer/ilf.png">
+              <a href="https://larramendi.es/fundacion/" target="_blank">
+                <img src="/img/footer/ilf.png">
+              </a>
             </v-col>
           </v-row>
         </v-container>
