@@ -76,17 +76,18 @@ function contentPage (data) {
 
 function parseLinks (content) {
   const EXTERNAL_LINK_RE = /\[(https?:\/\/[^\s\]]+)(?:\s([^\]]*))?\]/g
-  const INTERNAL_LINK_RE = /\[\[([^\]|]*)\|([^\]]*)\]\]/g
+  const INTERNAL_LINK_RE = /\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g
   return content
     .replace(EXTERNAL_LINK_RE, (match, url, text) => `<a href='${url}' target='_blank' rel='noopener noreferrer'>${text || url}</a>`)
     .replace(INTERNAL_LINK_RE, (match, g1, g2) => parseInternalLink(g1, g2))
 }
 
 function parseInternalLink (link, text) {
+  const originalLink = link
   if (!link.startsWith('/')) {
     link = `/wiki/${link}`
   }
-  return `<a href='${baseURL}${localePath(link)}'>${text || link}</a>`
+  return `<a href='${baseURL}${localePath(link)}'>${text || originalLink}</a>`
 }
 </script>
 
