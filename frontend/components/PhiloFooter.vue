@@ -52,7 +52,7 @@
           </v-row>
           <v-row density="comfortable">
             <v-col class="text-caption">
-              Volume 2025, Number 1 (January) ISSN 1096-6609
+              {{ t('footer.citation') }}
             </v-col>
           </v-row>
         </v-container>

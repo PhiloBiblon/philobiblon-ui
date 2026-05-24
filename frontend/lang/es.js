@@ -604,5 +604,8 @@ export default {
     search: {
       placeholder: 'Buscar en PhiloBiblon'
     }
+  },
+  footer: {
+    citation: 'Volumen 2025, Número 1 (Enero) ISSN 1096-6609'
   }
 }
