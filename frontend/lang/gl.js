@@ -273,6 +273,10 @@ export default {
         religion: {
           label: 'Relixión',
           hint: ''
+        },
+        related_institution: {
+          label: 'Institución relacionada',
+          hint: 'Busca persoas asociadas a unha institución específica.'
         }
       },
       bibid: {
