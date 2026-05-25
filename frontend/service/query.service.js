@@ -531,6 +531,12 @@ export class QueryService {
         ?item wdt:P165 wd:${form.input.profession.value.target_item} .
         `
     }
+    if (form.input.related_institution && form.input.related_institution.value && form.input.related_institution.value.target_item) {
+      filters +=
+        `
+        ?item wdt:P232 wd:${form.input.related_institution.value.target_item} .
+        `
+    }
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `

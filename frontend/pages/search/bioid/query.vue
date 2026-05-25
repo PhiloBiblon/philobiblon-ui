@@ -266,6 +266,34 @@ const form = {
               `
             }
           },
+          related_institution: {
+            active: true,
+            section: 'advanced',
+            label: 'search.form.bioid.related_institution.label',
+            hint: 'search.form.bioid.related_institution.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
+                    ?item wdt:P232 ?target_item .
+                    ?target_item wdt:P476 ?target_pbid .
+                    FILTER regex(?target_pbid, "(.*) insid ") .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
           subject: {
             active: true,
             section: 'advanced',
