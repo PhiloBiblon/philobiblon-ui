@@ -142,7 +142,8 @@ const form = {
                         ?item wdt:P476 ?pbid .
                         FILTER regex(?pbid, '{{database}} {{table}} ') .
                         {{bitagapGroupFilter}}
-                        ?item wdt:P1054 ?label .
+                        ?item p:P329 ?library_stmt .
+                        ?library_stmt pq:P1054 ?label .
                       }
                       UNION
                       {
@@ -152,7 +153,8 @@ const form = {
                         ?item wdt:P476 ?pbid .
                         FILTER regex(?pbid, '{{database}} {{table}} ') .
                         {{bitagapGroupFilter}}
-                        ?copid_item wdt:P1054 ?label .
+                        ?copid_item p:P329 ?library_stmt .
+                        ?library_stmt pq:P1054 ?label .
                       }
                     }
                   }
