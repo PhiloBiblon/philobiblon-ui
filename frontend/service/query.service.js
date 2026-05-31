@@ -748,14 +748,16 @@ export class QueryService {
       filters +=
         `
         {
-          ?item wdt:P1054 ?item_collection .
+          ?item p:P329 ?library_stmt .
+          ?library_stmt pq:P1054 ?item_collection .
         }
         UNION
         {
           ?copid_item wdt:P476 ?copid_pbid .
           FILTER regex(?copid_pbid, '(.*) copid ') .
           ?copid_item wdt:P839 ?item .
-          ?copid_item wdt:P1054 ?item_collection .
+          ?copid_item p:P329 ?library_stmt .
+          ?library_stmt pq:P1054 ?item_collection .
         }
         ${collectionFilter}
         `
