@@ -44,7 +44,8 @@ const languages = [
   { locale: 'es', name: 'Español', image: `${baseURL}/img/flags/flag_spain.gif` },
   { locale: 'en', name: 'English', image: `${baseURL}/img/flags/flag_unitedstates.gif` },
   { locale: 'gl', name: 'Galego', image: `${baseURL}/img/flags/flag_galicia.gif` },
-  { locale: 'pt', name: 'Português', image: `${baseURL}/img/flags/flag_portugal.gif` }
+  { locale: 'pt', name: 'Português', image: `${baseURL}/img/flags/flag_portugal.gif` },
+  { locale: 'fr', name: 'Français', image: `${baseURL}/img/flags/flag_france.gif` }
 ]
 
 const localeFlag = computed(() => languages.find(lang => lang.locale === locale.value)?.image ?? '')

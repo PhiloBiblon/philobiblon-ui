@@ -1,4 +1,4 @@
-import { en as vuetifyEn, ca as vuetifyCa, es as vuetifyEs, pt as vuetifyPt } from 'vuetify/locale'
+import { en as vuetifyEn, ca as vuetifyCa, es as vuetifyEs, pt as vuetifyPt, fr as vuetifyFr } from 'vuetify/locale'
 
 // Merge Vuetify's $vuetify translations into Vue I18n messages so that
 // Vuetify components (v-date-picker, v-data-table, etc.) show translated text
@@ -8,7 +8,8 @@ const vuetifyByLocale = {
   ca: vuetifyCa,
   es: vuetifyEs,
   gl: vuetifyEs,
-  pt: vuetifyPt
+  pt: vuetifyPt,
+  fr: vuetifyFr
 }
 
 export default defineNuxtPlugin((nuxtApp) => {

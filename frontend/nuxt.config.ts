@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { en as vuetifyEn, ca as vuetifyCa, es as vuetifyEs, pt as vuetifyPt } from 'vuetify/locale'
+import { en as vuetifyEn, ca as vuetifyCa, es as vuetifyEs, pt as vuetifyPt, fr as vuetifyFr } from 'vuetify/locale'
 
 export default defineNuxtConfig({
   ssr: false,
@@ -89,7 +89,8 @@ export default defineNuxtConfig({
           ca: vuetifyCa,
           es: vuetifyEs,
           gl: vuetifyEs,
-          pt: vuetifyPt
+          pt: vuetifyPt,
+          fr: vuetifyFr
         }
       },
       theme: {
@@ -133,7 +134,8 @@ export default defineNuxtConfig({
       { code: 'ca', file: 'ca.js' },
       { code: 'es', file: 'es.js' },
       { code: 'gl', file: 'gl.js' },
-      { code: 'pt', file: 'pt.js' }
+      { code: 'pt', file: 'pt.js' },
+      { code: 'fr', file: 'fr.js' }
     ],
     langDir: 'lang',
     strategy: 'prefix',
