@@ -2,6 +2,7 @@
   <v-menu
     v-model="isDatePickerActive"
     :close-on-content-click="false"
+    :disabled="!useCalendar"
   >
     <template #activator="{ props: activatorProps }">
       <v-text-field
@@ -9,8 +10,10 @@
         :label="t('common.date')"
         class="date-input"
         density="compact"
-        readonly
-        v-bind="activatorProps"
+        :readonly="useCalendar"
+        :placeholder="useCalendar ? '' : t('common.date_placeholder')"
+        :error-messages="validationError ? [validationError] : []"
+        v-bind="useCalendar ? activatorProps : {}"
         @focus="focus"
         @blur="blur"
       >
@@ -71,6 +74,7 @@
     </template>
 
     <v-date-picker
+      v-if="useCalendar"
       v-model="pickerDate"
       :max="today"
       min="0001-01-01"
@@ -89,7 +93,8 @@ const props = defineProps({
   value: { type: String, default: null },
   save: { type: Function, default: null },
   delete: { type: Function, default: null },
-  mode: { type: String, default: 'edit' }
+  mode: { type: String, default: 'edit' },
+  useCalendar: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['on-blur', 'new-value'])
@@ -103,21 +108,39 @@ const consolidatedText = ref(null)
 const pickerDate = ref(null)
 const focussed = ref(false)
 const isDatePickerActive = ref(false)
+const validationError = ref(null)
 
 const isEditable = computed(() => props.mode === 'edit')
 const today = computed(() => new Date().toISOString().slice(0, 10))
+
+// Accepted partial date patterns
+const PARTIAL_DATE_REGEXES = [
+  /^\d{4}$/,               // YYYY
+  /^\d{4}-\d{2}$/,         // YYYY-MM or YYYY-DD
+  /^\d{4}-\d{2}-\d{2}$/,   // YYYY-MM-DD
+  /^\d{2}-\d{2}$/,         // MM-DD
+  /^\d{2}$/                // DD
+]
 
 watch(currentText, (newVal, oldVal) => {
   if (oldVal != null && newVal !== oldVal) {
     focussed.value = true
   }
-  pickerDate.value = parseDate(newVal)
+  if (props.useCalendar) {
+    pickerDate.value = parseDate(newVal)
+  }
+  // Clear stale error while user is typing
+  if (!props.useCalendar && validationError.value) {
+    validationError.value = null
+  }
 })
 
 onMounted(() => {
   currentText.value = props.value
   consolidatedText.value = props.value
-  pickerDate.value = parseDate(props.value)
+  if (props.useCalendar) {
+    pickerDate.value = parseDate(props.value)
+  }
 })
 
 function focus () {
@@ -126,7 +149,31 @@ function focus () {
 
 function blur () {
   focussed.value = false
+  if (!props.useCalendar) {
+    const error = validatePartialDate(currentText.value)
+    if (error) {
+      validationError.value = error
+      return
+    }
+    validationError.value = null
+  }
   emit('on-blur', currentText.value)
+}
+
+function validatePartialDate (text) {
+  if (!text) return null
+  if (!PARTIAL_DATE_REGEXES.some(r => r.test(text))) {
+    return t('common.date_format_error')
+  }
+  // For patterns that start with a 4-digit year, validate the year range
+  const yearMatch = text.match(/^(\d{4})/)
+  if (yearMatch) {
+    const year = parseInt(yearMatch[1], 10)
+    if (year > 2125) {
+      return t('search.form.common.date.error.invalid_year')
+    }
+  }
+  return null
 }
 
 function onDateSelect (newDate) {
@@ -148,12 +195,11 @@ function formatDate (date) {
 
 function parseDate (text) {
   if (!text) return null
-  // Detect ISO date-only strings (YYYY-MM-DD) and parse as local date
   const isoDatePattern = /^(\d{4})-(\d{2})-(\d{2})$/
   const match = text.match(isoDatePattern)
   if (match) {
     const year = parseInt(match[1], 10)
-    const month = parseInt(match[2], 10) - 1 // months are 0-indexed
+    const month = parseInt(match[2], 10) - 1
     const day = parseInt(match[3], 10)
     const d = new Date(year, month, day)
     return Number.isNaN(d.getTime()) ? null : d
@@ -165,6 +211,14 @@ function parseDate (text) {
 async function edit () {
   try {
     focussed.value = false
+    // Validate before saving in text mode
+    if (!props.useCalendar) {
+      const error = validatePartialDate(currentText.value)
+      if (error) {
+        validationError.value = error
+        return
+      }
+    }
     const response = await props.save(currentText.value, consolidatedText.value)
     if (response && response.success) {
       consolidatedText.value = currentText.value
@@ -179,6 +233,7 @@ async function edit () {
 
 function restore () {
   currentText.value = consolidatedText.value
+  validationError.value = null
   focussed.value = false
   emit('new-value', currentText.value)
 }
@@ -216,5 +271,9 @@ async function deleteValue () {
 
 :deep(.v-input__details) {
   display: none;
+}
+
+:deep(.v-input--error .v-input__details) {
+  display: block;
 }
 </style>

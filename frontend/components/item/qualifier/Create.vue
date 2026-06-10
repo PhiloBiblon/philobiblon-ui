@@ -34,6 +34,7 @@
             :value="qualifier"
             type="qualifier"
             mode="creation"
+            :parent-property-id="claim?.mainsnak?.property ?? null"
             @on-blur="onNewValue($event, qualifier)"
           />
         </div>

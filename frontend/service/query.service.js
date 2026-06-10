@@ -298,9 +298,33 @@ export class QueryService {
       `
   }
 
+  _normalizePartialDate (date, isEnd = false) {
+    if (!date) return null
+    if (/^\d{4}$/.test(date)) {
+      return isEnd ? `${date}-12-31` : `${date}-01-01`
+    }
+    if (/^\d{4}-\d{2}$/.test(date)) {
+      if (isEnd) {
+        const [y, m] = date.split('-').map(Number)
+        const lastDay = new Date(y, m, 0).getDate()
+        return `${date}-${String(lastDay).padStart(2, '0')}`
+      }
+      return `${date}-01`
+    }
+    if (/^\d{2}-\d{2}$/.test(date)) {
+      return `0000-${date}`
+    }
+    if (/^\d{2}$/.test(date)) {
+      return `0000-01-${date}`
+    }
+    return date
+  }
+
   _dateRangeFilters (fieldValue, { statementPattern = '', beginOptional = '', endOptional = '', beginVar = 'begin_date', endVar = 'end_date' } = {}) {
     if (!fieldValue || (!fieldValue.begin && !fieldValue.end)) { return '' }
     const { begin, end } = fieldValue
+    const beginNorm = this._normalizePartialDate(begin, false)
+    const endNorm = this._normalizePartialDate(end, true)
     const completeRange = !!(begin && end)
     let filters = statementPattern ? `
         ${statementPattern}
@@ -309,12 +333,12 @@ export class QueryService {
       filters += beginOptional
       if (completeRange) {
         filters += `
-            FILTER(!BOUND(?${beginVar}) || ?${beginVar} >= '${begin}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?${beginVar}) || ?${beginVar} <= '${end}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?${beginVar}) || ?${beginVar} >= '${beginNorm}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?${beginVar}) || ?${beginVar} <= '${endNorm}T00:00:00Z'^^xsd:dateTime )
             `
       } else {
         filters += `
-            FILTER(?${beginVar} >= '${begin}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?${beginVar} >= '${beginNorm}T00:00:00Z'^^xsd:dateTime)
             `
       }
     }
@@ -322,12 +346,12 @@ export class QueryService {
       filters += endOptional
       if (completeRange) {
         filters += `
-            FILTER(!BOUND(?${endVar}) || ?${endVar} <= '${end}T00:00:00Z'^^xsd:dateTime)
-            FILTER(!BOUND(?${endVar}) || ?${endVar} >= '${begin}T00:00:00Z'^^xsd:dateTime )
+            FILTER(!BOUND(?${endVar}) || ?${endVar} <= '${endNorm}T00:00:00Z'^^xsd:dateTime)
+            FILTER(!BOUND(?${endVar}) || ?${endVar} >= '${beginNorm}T00:00:00Z'^^xsd:dateTime )
             `
       } else {
         filters += `
-            FILTER(?${endVar} <= '${end}T00:00:00Z'^^xsd:dateTime)
+            FILTER(?${endVar} <= '${endNorm}T00:00:00Z'^^xsd:dateTime)
             `
       }
     }

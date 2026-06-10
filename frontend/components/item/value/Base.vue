@@ -9,6 +9,7 @@
       :delete="isEditable ? deleteValue : null"
       :mode="mode"
       :value-to-view="valueToView"
+      :parent-property-id="valueToView.type === 'time' ? parentPropertyId : undefined"
       @on-blur="emit('on-blur', $event)"
       @new-value="emit('new-value', $event)"
     />
@@ -45,7 +46,8 @@ const props = defineProps({
   label: { type: String, default: null },
   value: { type: Object, default: null },
   type: { type: String, default: null },
-  mode: { type: String, default: 'edit' }
+  mode: { type: String, default: 'edit' },
+  parentPropertyId: { type: String, default: null }
 })
 
 const emit = defineEmits(['on-blur', 'new-value', 'delete-claim', 'delete-qualifier', 'create-reference', 'delete-reference'])
@@ -66,6 +68,7 @@ onMounted(async () => {
   )
   if (result) {
     result.useDefault = props.value.datavalue?.default !== false
+    result.property = props.value.property
   }
   valueToView.value = result
 })
