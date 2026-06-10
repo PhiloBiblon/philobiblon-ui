@@ -113,7 +113,7 @@ function getTimeNewValue (value) {
  * Supported input formats: YYYY, YYYY-MM, YYYY-MM-DD, YYYY-DD (day>12), MM-DD, DD
  */
 function toWikibaseTime (input) {
-  if (!input) return { time: null, precision: 11 }
+  if (!input) return { time: null, precision: null }
 
   // YYYY-MM-DD — full date, precision day (11)
   const fullMatch = input.match(/^(\d{4})-(\d{2})-(\d{2})$/)
@@ -151,7 +151,8 @@ function toWikibaseTime (input) {
     }
   }
 
-  // MM-DD — month and day without year, precision day (11), year defaults to 0000
+  // MM-DD — month and day without year, precision day (11).
+  // Year defaults to +0000 which is valid ISO 8601 (= 1 BCE in proleptic Gregorian).
   const monthDayMatch = input.match(/^(\d{2})-(\d{2})$/)
   if (monthDayMatch) {
     return {
@@ -160,7 +161,7 @@ function toWikibaseTime (input) {
     }
   }
 
-  // DD — day only, precision day (11), year and month default to 0000/01
+  // DD — day only, precision day (11), year and month default to +0000/01.
   const dayMatch = input.match(/^(\d{2})$/)
   if (dayMatch) {
     return {
@@ -169,8 +170,8 @@ function toWikibaseTime (input) {
     }
   }
 
-  // Fallback: treat as YYYY-MM-DD with precision day (11)
-  return { time: `+${input}T00:00:00Z`, precision: 11 }
+  // Unrecognized format — return null rather than producing a malformed Wikibase time string.
+  return { time: null, precision: null }
 }
 </script>
 
