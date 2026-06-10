@@ -170,7 +170,6 @@ function toWikibaseTime (input) {
     }
   }
 
-<<<<<<< HEAD
   // Unrecognized format — return null rather than producing a malformed Wikibase time string.
   return { time: null, precision: null }
 }
