@@ -8,6 +8,7 @@
         <item-util-edit-date-picker-field
           :value="valueToView_.value"
           :mode="mode"
+          :use-calendar="useCalendar"
           class="ma-0 pa-0"
           :save="editValue"
           :delete="deleteValue"
@@ -38,7 +39,8 @@ const props = defineProps({
   valueToView: { type: Object, default: null },
   save: { type: Function, default: null },
   delete: { type: Function, default: null },
-  mode: { type: String, default: 'edit' }
+  mode: { type: String, default: 'edit' },
+  parentPropertyId: { type: String, default: null }
 })
 
 const emit = defineEmits(['on-blur', 'new-value'])
@@ -50,6 +52,11 @@ const authStore = useAuthStore()
 const valueToView_ = reactive({ ...props.valueToView })
 const isUserLogged = computed(() => authStore.isLogged)
 const isEditable = computed(() => props.mode === 'edit')
+
+// Calendar popup only for P106 (Date) when qualifier of P799 (Dataset status)
+const useCalendar = computed(() =>
+  props.valueToView?.property === 'P106' && props.parentPropertyId === 'P799'
+)
 
 function newDateValue (value) {
   valueToView_.value = value
@@ -93,19 +100,78 @@ function getTimeValue (newValue, oldValue) {
 }
 
 function getTimeNewValue (value) {
+  const { time, precision } = toWikibaseTime(value)
   return {
-    time: formatDate(value),
+    time,
+    precision,
     calendar: valueToView_.calendar.toLowerCase()
   }
 }
 
-function formatDate (dateString) {
-  const date = new Date(dateString)
-  const isoYear = date.getUTCFullYear()
-  const isoMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2)
-  const isoDay = ('0' + date.getUTCDate()).slice(-2)
+/**
+ * Converts a partial date string to Wikibase time format with the correct precision.
+ * Supported input formats: YYYY, YYYY-MM, YYYY-MM-DD, YYYY-DD (day>12), MM-DD, DD
+ */
+function toWikibaseTime (input) {
+  if (!input) return { time: null, precision: null }
 
-  return `+${isoYear}-${isoMonth}-${isoDay}T00:00:00Z`
+  // YYYY-MM-DD — full date, precision day (11)
+  const fullMatch = input.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+  if (fullMatch) {
+    return {
+      time: `+${fullMatch[1]}-${fullMatch[2]}-${fullMatch[3]}T00:00:00Z`,
+      precision: 11
+    }
+  }
+
+  // YYYY-MM or YYYY-DD (disambiguate: if second part > 12 it must be a day)
+  const yearTwoMatch = input.match(/^(\d{4})-(\d{2})$/)
+  if (yearTwoMatch) {
+    const n = parseInt(yearTwoMatch[2], 10)
+    if (n > 12) {
+      // YYYY-DD: day without month, precision day (11), month defaults to 01
+      return {
+        time: `+${yearTwoMatch[1]}-01-${yearTwoMatch[2]}T00:00:00Z`,
+        precision: 11
+      }
+    }
+    // YYYY-MM: precision month (10)
+    return {
+      time: `+${yearTwoMatch[1]}-${yearTwoMatch[2]}-01T00:00:00Z`,
+      precision: 10
+    }
+  }
+
+  // YYYY — year only, precision year (9)
+  const yearMatch = input.match(/^(\d{4})$/)
+  if (yearMatch) {
+    return {
+      time: `+${yearMatch[1]}-01-01T00:00:00Z`,
+      precision: 9
+    }
+  }
+
+  // MM-DD — month and day without year, precision day (11).
+  // Year defaults to +0000 which is valid ISO 8601 (= 1 BCE in proleptic Gregorian).
+  const monthDayMatch = input.match(/^(\d{2})-(\d{2})$/)
+  if (monthDayMatch) {
+    return {
+      time: `+0000-${monthDayMatch[1]}-${monthDayMatch[2]}T00:00:00Z`,
+      precision: 11
+    }
+  }
+
+  // DD — day only, precision day (11), year and month default to +0000/01.
+  const dayMatch = input.match(/^(\d{2})$/)
+  if (dayMatch) {
+    return {
+      time: `+0000-01-${dayMatch[1]}T00:00:00Z`,
+      precision: 11
+    }
+  }
+
+  // Unrecognized format — return null rather than producing a malformed Wikibase time string.
+  return { time: null, precision: null }
 }
 </script>
 

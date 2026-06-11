@@ -12,6 +12,8 @@ export default {
     amount: 'Cantidad',
     unit: 'Unidad',
     date: 'Fecha',
+    date_placeholder: 'AAAA, AAAA-MM, AAAA-MM-DD, MM-DD o DD',
+    date_format_error: 'Fecha no válida. Usar: AAAA, AAAA-MM, AAAA-MM-DD, MM-DD o DD',
     calendar: 'Calendario',
     from: 'De',
     to: 'a',
@@ -162,7 +164,7 @@ export default {
           label: 'Fecha',
           hint: 'In fields that include dates, search by any combination of year (yyyy) and/or month (mm) and/or day (dd). A search returns dates as yyyy-mm-dd (1379-01-31 is January 31, 1379). Search using this format or more simply, the year: “1379” returns all texts written in 1379; “1379 01” or “01 1379” returns all texts written on the first of each month of 1379 and on any day of January of 1379. Note: Year dates frequently form part of titles in WORK and can be used to search for the same.',
           error: {
-            invalid_date: 'Fecha no válida. Use el formato AAAA-MM-DD',
+            invalid_date: 'Fecha no válida. Usar: AAAA, AAAA-MM, AAAA-MM-DD, MM-DD o DD',
             invalid_year: 'El año debe estar entre 0 y 2125'
           }
         },

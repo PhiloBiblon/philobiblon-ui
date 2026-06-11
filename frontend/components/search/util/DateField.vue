@@ -4,22 +4,23 @@
       <v-menu v-model="activeBegin" :close-on-content-click="false">
         <template #activator="{ props: activatorProps }">
           <v-text-field
-            :model-value="beginValue"
+            v-model="beginValue"
             class="date-input"
             :disabled="disabled"
             :label="label + '. ' + t('common.from')"
             density="compact"
-            placeholder="YYYY-MM-DD"
-            v-bind="activatorProps"
-            append-inner-icon="mdi-calendar"
-            @click:append-inner.stop="activeBegin = true"
+            :placeholder="t('common.date_placeholder')"
             @focus="showHint"
             @blur="hideHint"
-            @change="validateBeginDate($event.target.value)"
-          />
+            @change="validateBeginDate(beginValue)"
+          >
+            <template #append-inner>
+              <v-icon v-bind="activatorProps" size="20" @click.stop>mdi-calendar</v-icon>
+            </template>
+          </v-text-field>
         </template>
         <v-date-picker
-          v-model="beginValue"
+          v-model="beginPickerDate"
           :max="today"
           min="0001-01-01"
           hide-header
@@ -30,22 +31,23 @@
       <v-menu v-model="activeEnd" :close-on-content-click="false">
         <template #activator="{ props: activatorProps }">
           <v-text-field
-            :model-value="endValue"
+            v-model="endValue"
             class="date-input"
             :disabled="disabled"
             :label="t('common.to')"
             density="compact"
-            placeholder="YYYY-MM-DD"
-            v-bind="activatorProps"
-            append-inner-icon="mdi-calendar"
-            @click:append-inner.stop="activeEnd = true"
+            :placeholder="t('common.date_placeholder')"
             @focus="showHint"
             @blur="hideHint"
-            @change="validateEndDate($event.target.value)"
-          />
+            @change="validateEndDate(endValue)"
+          >
+            <template #append-inner>
+              <v-icon v-bind="activatorProps" size="20" @click.stop>mdi-calendar</v-icon>
+            </template>
+          </v-text-field>
         </template>
         <v-date-picker
-          v-model="endValue"
+          v-model="endPickerDate"
           :max="today"
           min="0001-01-01"
           hide-header
@@ -90,9 +92,19 @@ const activeEnd = ref(false)
 const activeBegin = ref(false)
 const beginValue = ref(null)
 const endValue = ref(null)
+const beginPickerDate = ref(null)
+const endPickerDate = ref(null)
 const isHintVisible = ref(false)
 
 const today = computed(() => new Date().toISOString().slice(0, 10))
+
+const PARTIAL_DATE_REGEXES = [
+  /^\d{4}$/,
+  /^\d{4}-\d{2}$/,
+  /^\d{4}-\d{2}-\d{2}$/,
+  /^\d{2}-\d{2}$/,
+  /^\d{2}$/
+]
 
 watch(() => props.value, (newVal) => {
   beginValue.value = newVal?.begin || null
@@ -115,21 +127,20 @@ function validateEndDate (date) {
 }
 
 function validateDate (date) {
-  const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
-  if (!date) {
-    return null
-  } else if (!DATE_REGEX.test(date)) {
+  if (!date) return null
+  if (!PARTIAL_DATE_REGEXES.some(r => r.test(date))) {
     $notification.error(t('search.form.common.date.error.invalid_date'))
     return null
-  } else {
-    const parsed = new Date(`${date}T00:00:00Z`)
-    const year = parseInt(date.substring(0, 4), 10)
-    if (isNaN(parsed.getTime()) || year > 2125) {
+  }
+  const yearMatch = date.match(/^(\d{4})/)
+  if (yearMatch) {
+    const year = parseInt(yearMatch[1], 10)
+    if (year > 2125) {
       $notification.error(t('search.form.common.date.error.invalid_year'))
       return null
     }
-    return date
   }
+  return date
 }
 
 function dateToIso (date) {
@@ -145,13 +156,13 @@ function dateToIso (date) {
 
 function onBeginDateSelect () {
   activeBegin.value = false
-  beginValue.value = dateToIso(beginValue.value)
+  beginValue.value = dateToIso(beginPickerDate.value)
   validateBeginDate(beginValue.value)
 }
 
 function onEndDateSelect () {
   activeEnd.value = false
-  endValue.value = dateToIso(endValue.value)
+  endValue.value = dateToIso(endPickerDate.value)
   validateEndDate(endValue.value)
 }
 
