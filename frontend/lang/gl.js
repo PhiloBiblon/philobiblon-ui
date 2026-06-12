@@ -583,17 +583,26 @@ export default {
       something_went_wrong: 'Algo salió mal!',
       wikibase_slow: 'Wikibase está sobrecargado. Por favor, tenta de novo nuns momentos.',
       wikibase_unreachable: 'Non se puido conectar con Wikibase. Por favor, téntao de novo.',
+      wikibase_malformed_input: 'Entrada malformada. Por favor, comproba os valores e téntao de novo.',
+      wikibase_save_failed: 'Erro ao gardar. Por favor, téntao de novo.',
+      wikibase_edit_conflict: 'Detectouse un conflito de edición. Por favor, recarga e téntao de novo.',
+      wikibase_readonly: 'Wikibase está en modo de só lectura. Por favor, téntao máis tarde.',
+      wikibase_ratelimited: 'Demasiadas solicitudes. Por favor, agarda e téntao de novo.',
+      wikibase_blocked: 'A túa conta foi bloqueada.',
+      auth: {
+        login_failed: 'Erro ao iniciar sesión. Por favor, téntao de novo.'
+      },
       session: {
         expired: 'A sesión caducou'
       },
       inputs: {
-        label: 'Please fill label',
+        label: 'Por favor, enche a etiqueta',
         fill: 'Por favor, enche as entradas',
-        description: 'Please fill description',
-        initial_claims: 'Claims are still loading',
-        claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
-        qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
-        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
+        description: 'Por favor, enche a descrición',
+        initial_claims: 'Os enunciados aínda se están cargando',
+        claim_value_missing: 'Por favor, enche o valor do enunciado para "{propertyLabel}"',
+        qualifier_key_missing: 'Falta unha propiedade cualificadora no enunciado "{claimLabel}" para "{propertyLabel}"',
+        qualifier_value_missing: 'Falta o valor dalgún cualificador no enunciado "{claimLabel}" para "{propertyLabel}"'
       },
       creation: {
         pbid_already_exists: 'O PhiloBiblon ID "{pbid}" xa existe en {item}.'

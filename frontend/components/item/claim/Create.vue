@@ -204,7 +204,7 @@ async function addClaim (index) {
         removeClaim(index)
         $notification.success(t('messages.success.updated'))
       } else {
-        $notification.error(t('messages.error.something_went_wrong'))
+        throw res
       }
     }).catch((error) => {
       notifyError(error)

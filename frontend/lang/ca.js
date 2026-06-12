@@ -583,17 +583,26 @@ export default {
       something_went_wrong: 'Alguna cosa ha fallat!',
       wikibase_slow: 'Wikibase està sobrecarregat. Torna-ho a provar en uns moments.',
       wikibase_unreachable: 'No s\'ha pogut connectar amb Wikibase. Torna-ho a provar.',
+      wikibase_malformed_input: 'Entrada malformada. Comproveu els valors i torneu-ho a intentar.',
+      wikibase_save_failed: 'El desament ha fallat. Torneu-ho a intentar.',
+      wikibase_edit_conflict: 'S\'ha detectat un conflicte d\'edició. Recarregueu la pàgina i torneu-ho a intentar.',
+      wikibase_readonly: 'Wikibase és de només lectura en aquest moment. Torneu-ho a intentar més tard.',
+      wikibase_ratelimited: 'Massa sol·licituds. Espereu i torneu-ho a intentar.',
+      wikibase_blocked: 'El vostre compte ha estat bloquejat.',
+      auth: {
+        login_failed: 'L\'inici de sessió ha fallat. Torneu-ho a intentar.'
+      },
       session: {
         expired: 'Sessió expirada'
       },
       inputs: {
-        label: 'Please fill label',
+        label: 'Si us plau, ompliu l\'etiqueta',
         fill: 'Si us plau, ompliu les entrades',
-        description: 'Please fill description',
-        initial_claims: 'Claims are still loading',
-        claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
-        qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
-        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
+        description: 'Si us plau, ompliu la descripció',
+        initial_claims: 'Les afirmacions s\'estan carregant',
+        claim_value_missing: 'Si us plau, ompliu el valor de l\'afirmació per a "{propertyLabel}"',
+        qualifier_key_missing: 'Falta una propietat de qualificador a l\'afirmació "{claimLabel}" per a "{propertyLabel}"',
+        qualifier_value_missing: 'Falta el valor d\'algun qualificador a l\'afirmació "{claimLabel}" per a "{propertyLabel}"'
       },
       creation: {
         pbid_already_exists: 'El PhiloBiblon ID "{pbid}" ja existeix en {item}.'

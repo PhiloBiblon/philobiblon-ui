@@ -585,6 +585,15 @@ export default {
       something_went_wrong: 'Something went wrong!',
       wikibase_slow: 'Wikibase is under heavy load. Please try again in a few moments.',
       wikibase_unreachable: 'Could not connect to Wikibase. Please try again.',
+      wikibase_malformed_input: 'Malformed input. Please check the values and try again.',
+      wikibase_save_failed: 'Save failed. Please try again.',
+      wikibase_edit_conflict: 'Edit conflict detected. Please reload and try again.',
+      wikibase_readonly: 'Wikibase is currently read-only. Please try again later.',
+      wikibase_ratelimited: 'Too many requests. Please wait and try again.',
+      wikibase_blocked: 'Your account has been blocked.',
+      auth: {
+        login_failed: 'Login failed. Please try again.'
+      },
       session: {
         expired: 'Session expired'
       },

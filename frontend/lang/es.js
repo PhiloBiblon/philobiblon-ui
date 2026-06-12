@@ -583,17 +583,26 @@ export default {
       something_went_wrong: 'Algo salió mal!',
       wikibase_slow: 'Wikibase está sobrecargado. Por favor, inténtalo de nuevo en unos momentos.',
       wikibase_unreachable: 'No se ha podido conectar con Wikibase. Por favor, inténtalo de nuevo.',
+      wikibase_malformed_input: 'Entrada malformada. Por favor, comprueba los valores e inténtalo de nuevo.',
+      wikibase_save_failed: 'Error al guardar. Por favor, inténtalo de nuevo.',
+      wikibase_edit_conflict: 'Se ha detectado un conflicto de edición. Por favor, recarga y vuelve a intentarlo.',
+      wikibase_readonly: 'Wikibase está en modo de solo lectura. Por favor, inténtalo más tarde.',
+      wikibase_ratelimited: 'Demasiadas solicitudes. Por favor, espera e inténtalo de nuevo.',
+      wikibase_blocked: 'Tu cuenta ha sido bloqueada.',
+      auth: {
+        login_failed: 'Error al iniciar sesión. Por favor, inténtalo de nuevo.'
+      },
       session: {
         expired: 'Sesión expirada'
       },
       inputs: {
-        label: 'Please fill label',
+        label: 'Por favor, rellena la etiqueta',
         fill: 'Por favor, rellene los campos',
-        description: 'Please fill description',
-        initial_claims: 'Claims are still loading',
-        claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
-        qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
-        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
+        description: 'Por favor, rellena la descripción',
+        initial_claims: 'Los enunciados todavía se están cargando',
+        claim_value_missing: 'Por favor, rellena el valor del enunciado para "{propertyLabel}"',
+        qualifier_key_missing: 'Falta una propiedad calificadora en el enunciado "{claimLabel}" para "{propertyLabel}"',
+        qualifier_value_missing: 'Falta el valor de algún calificador en el enunciado "{claimLabel}" para "{propertyLabel}"'
       },
       creation: {
         pbid_already_exists: 'El PhiloBiblon ID "{pbid}" ya existe en {item}.'
