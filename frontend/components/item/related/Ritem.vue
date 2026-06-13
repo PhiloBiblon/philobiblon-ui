@@ -2,14 +2,22 @@
   <v-expansion-panels class="mb-2">
     <v-expansion-panel class="cnum">
       <v-expansion-panel-title class="cnum">
-        <div>
-          <span class="mb-0 ml-3">#{{ index + 1 }}</span>
-          <NuxtLink class="ml-1 text-black" :to="url">
-            <span>{{ pbid }}</span>
-          </NuxtLink>
-          <span class="ml-1">
-            <item-util-view-text-lang :value="label" />
-          </span>
+        <div class="ritem-header">
+          <div>
+            <span class="mb-0 ml-3">#{{ index + 1 }}</span>
+            <NuxtLink class="ml-1 text-black" :to="url">
+              <span>{{ pbid }}</span>
+            </NuxtLink>
+            <span class="ml-1">
+              <item-util-view-text-lang :value="label" />
+            </span>
+          </div>
+          <div v-if="linkingQualifiers.length" class="ritem-qualifiers text-caption text-grey mt-1">
+            <span v-for="(q, i) in linkingQualifiers" :key="q.property">
+              <span class="font-weight-medium">{{ q.propLabel }}</span>:
+              {{ q.valueDisplay }}<span v-if="i < linkingQualifiers.length - 1"> · </span>
+            </span>
+          </div>
         </div>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
@@ -30,7 +38,8 @@ defineOptions({ inheritAttrs: false })
 const props = defineProps({
   table: { type: String, required: true },
   value: { type: Object, default: null },
-  index: { type: Number, default: null }
+  index: { type: Number, default: null },
+  itemId: { type: String, default: null }
 })
 
 const { $wikibase } = useNuxtApp()
@@ -41,6 +50,7 @@ const localePath = useLocalePath()
 const label = ref(null)
 const item = ref(null)
 const claims = ref(null)
+const linkingQualifiers = ref([])
 
 const pbid = computed(() => props.value.item_pbid)
 const url = computed(() => localePath(`/item/${props.value.item}`))
@@ -57,8 +67,38 @@ async function getEntity () {
     item.value = entity
     claims.value = await $wikibase.getOrderedClaims(props.table, entity.claims)
     label.value = $wikibase.getValueByLang(entity.labels, locale.value)
+    if (props.itemId) {
+      await extractLinkingQualifiers(entity.claims)
+    }
   } catch (err) {
     notifyError(err)
+  }
+}
+
+async function extractLinkingQualifiers (entityClaims) {
+  for (const statements of Object.values(entityClaims || {})) {
+    for (const stmt of statements) {
+      if (stmt.mainsnak?.datavalue?.value?.id === props.itemId && stmt.qualifiers) {
+        const order = stmt['qualifiers-order'] || Object.keys(stmt.qualifiers)
+        const resolved = await Promise.all(
+          order
+            .filter(prop => stmt.qualifiers[prop]?.length)
+            .map(async (prop) => {
+              const propLabel = await $wikibase.getEntityLabel(props.table, prop, locale.value)
+              const values = await Promise.all(
+                stmt.qualifiers[prop].map(snak => $wikibase.formatQualifierSnak(snak, locale.value))
+              )
+              return {
+                property: prop,
+                propLabel: propLabel?.value || prop,
+                valueDisplay: values.filter(Boolean).join(', ')
+              }
+            })
+        )
+        linkingQualifiers.value = resolved.filter(q => q.valueDisplay)
+        return
+      }
+    }
   }
 }
 </script>
@@ -70,5 +110,12 @@ async function getEntity () {
 :deep(.v-expansion-panel-text__wrapper),
 :deep(.claim-values) {
   background-color: white !important;
+}
+.ritem-header {
+  display: flex;
+  flex-direction: column;
+}
+.ritem-qualifiers {
+  padding-left: 12px;
 }
 </style>

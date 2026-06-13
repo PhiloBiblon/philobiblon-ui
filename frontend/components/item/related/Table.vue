@@ -7,6 +7,7 @@
       v-for="(value, index) in items"
       :key="`related-item-${index}-${value.item}`"
       :table="table"
+      :item-id="itemId"
       :index="index + ((currentPage - 1) * resultsPerPage)"
       :value="value"
       class="mt-2"
