@@ -42,6 +42,7 @@ const loading = ref(false)
 const indexLoading = ref(false)
 const debouncing = ref(false)
 let debounceTimer = null
+let lastRequestId = 0
 
 const LABEL_MAX_DISPLAY = 80
 const DESC_MAX_DISPLAY = 100
@@ -77,16 +78,18 @@ async function searchItems (query) {
     return
   }
 
+  const requestId = ++lastRequestId
   loading.value = true
 
   try {
     const res = await $wikibase.quickSearch(query, locale.value)
+    if (requestId !== lastRequestId) return
     indexLoading.value = res.indexLoading
     items.value = res.indexLoading ? [] : customizeSearchData(res.results)
   } catch (error) {
-    notifyError(error)
+    if (requestId === lastRequestId) notifyError(error)
   } finally {
-    loading.value = false
+    if (requestId === lastRequestId) loading.value = false
   }
 }
 

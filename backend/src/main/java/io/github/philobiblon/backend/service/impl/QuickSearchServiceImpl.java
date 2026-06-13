@@ -26,6 +26,7 @@ import org.springframework.util.StreamUtils;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -33,6 +34,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -61,6 +63,7 @@ public class QuickSearchServiceImpl implements QuickSearchService {
     private String loadQueryTemplate;
     private final HttpClient http1Client = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
+            .connectTimeout(Duration.ofSeconds(30))
             .build();
 
     public QuickSearchServiceImpl(SearchItemRepository repository) {
@@ -92,7 +95,7 @@ public class QuickSearchServiceImpl implements QuickSearchService {
         List<String> queryWords = Arrays.asList(term.split("\\s+"));
 
         List<QuickResult> results = candidates.stream()
-                .filter(item -> SearchServiceImpl.rank(item.getLabel(), queryWords) < Integer.MAX_VALUE)
+                .filter(item -> SearchServiceImpl.rank(item.getSearchText(), queryWords) < Integer.MAX_VALUE)
                 .limit(resultLimit)
                 .map(item -> new QuickResult(item.getPbid(), item.getLabel(), item.getDescription()))
                 .toList();
@@ -151,6 +154,7 @@ public class QuickSearchServiceImpl implements QuickSearchService {
         try (QueryExecution qexec = QueryExecution.service(sparqlEndpoint)
                 .query(query)
                 .httpClient(http1Client)
+                .timeout(15, TimeUnit.MINUTES)
                 .build()) {
             ResultSet resultSet = qexec.execSelect();
             while (resultSet.hasNext()) {
