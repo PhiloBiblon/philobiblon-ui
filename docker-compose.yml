@@ -23,7 +23,10 @@ services:
         restart: unless-stopped
         extra_hosts:
             - "host.docker.internal:host-gateway"
+        volumes:
+            - backend-data:/app/data
         environment:
+            - SEARCH_DB_PATH=/app/data/searchcache
             - WIKIBASE_BASE_URL=${WIKIBASE_BASE_URL}
             - WIKIBASE_API_URL=${WIKIBASE_API_URL}
             - WIKIBASE_INDEX_URL=${WIKIBASE_INDEX_URL}
@@ -35,3 +38,6 @@ services:
             - OAUTH_CONSUMER_SECRET=${OAUTH_CONSUMER_SECRET}
             - OAUTH_CALLBACK_URL=${OAUTH_CALLBACK_URL}
             - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+
+volumes:
+    backend-data:

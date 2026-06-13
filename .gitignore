@@ -39,5 +39,11 @@ build/
 ### Docker compose internal data ###
 /data/certbot/
 
+### Local H2 search index ###
+backend/data/
+
+### Local dev secrets (OAuth keys) — copy backend/secrets-local.properties.template ###
+backend/secrets-local.properties
+
 ### Claude ###
 **/settings.local.json

@@ -608,7 +608,9 @@ export default {
   },
   wiki: {
     search: {
-      placeholder: 'Cercar en PhiloBiblon'
+      placeholder: 'Cercar en PhiloBiblon',
+      index_loading: 'L\'índex de cerca s\'està carregant, torneu-ho a provar d\'aquí a uns minuts.',
+      no_results: 'No s\'han trobat resultats.'
     }
   },
   footer: {

@@ -7,6 +7,8 @@ FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 RUN useradd --create-home --shell /usr/sbin/nologin appuser \
-    && chown appuser:appuser /app/app.jar
+    && chown appuser:appuser /app/app.jar \
+    && mkdir -p /app/data \
+    && chown appuser:appuser /app/data
 USER appuser
 ENTRYPOINT ["java", "-jar", "app.jar"]

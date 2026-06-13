@@ -37,6 +37,16 @@ export class WikibaseService {
     this.$oauth = new OAuthService({ config })
     this.$notification = $notification
     this.sparqlBackendEndpoint = this.joinUrl(config.apiBaseUrl, 'api/sparql/query')
+    this.quickSearchEndpoint = this.joinUrl(config.apiBaseUrl, 'api/search/quick')
+  }
+
+  async quickSearch (text, lang) {
+    const url = `${this.quickSearchEndpoint}?q=${encodeURIComponent(text)}&lang=${encodeURIComponent(lang)}`
+    const response = await fetch(url)
+    if (response.status < 200 || response.status > 299) {
+      throw new Error(response.statusText)
+    }
+    return response.json()
   }
 
   getWbk () {
@@ -89,7 +99,6 @@ export class WikibaseService {
                   properties[currentProperty] = []
                 }
               } else {
-                 
                 console.error(`Invalid property ${currentProperty} in section ${sectionName}: ${line}`)
                 currentProperty = null
               }
@@ -101,15 +110,12 @@ export class WikibaseService {
                   properties[currentProperty].push(qualifier)
                 }
               } else {
-                 
                 console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}: ${line}`)
               }
             } else {
-               
               console.warn(`Ignored line: ${line}`)
             }
           } catch (error) {
-             
             console.error(`Error in line '${line}': ${error}`)
           }
         }
@@ -117,12 +123,10 @@ export class WikibaseService {
         result[sectionName] = properties
       }
     } catch (error) {
-       
       console.log(error)
     }
 
     if (process.env.debug) {
-       
       console.log('sorted properties', result)
     }
 
@@ -392,7 +396,8 @@ export class WikibaseService {
       true
     ).then((results) => {
       if (results && results.length > 0) {
-        return results[0]
+        const first = results[0]
+        return typeof first === 'string' ? first : (first.item ?? null)
       } else {
         return null
       }
@@ -723,7 +728,6 @@ export class WikibaseService {
 
       return csrfToken
     } catch (error) {
-       
       console.error('Failed to fetch CSRF token', error)
       return error
     }
@@ -757,7 +761,6 @@ export class WikibaseService {
 
       return await response
     } catch (error) {
-       
       console.error('Error updating discussion page:', error)
     }
   }

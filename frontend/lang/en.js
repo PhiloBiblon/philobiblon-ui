@@ -610,7 +610,9 @@ export default {
   },
   wiki: {
     search: {
-      placeholder: 'Search in PhiloBiblon'
+      placeholder: 'Search in PhiloBiblon',
+      index_loading: 'The search index is still loading, please try again in a few minutes.',
+      no_results: 'No results found.'
     }
   },
   footer: {
