@@ -13,7 +13,7 @@ public interface SearchItemRepository extends JpaRepository<SearchItem, Long> {
 
     @Query("SELECT s FROM SearchItem s " +
             "WHERE s.lang = :lang AND s.generation = :generation " +
-            "AND s.searchText LIKE CONCAT('%', :term, '%') ESCAPE '\\\\' " +
+            "AND s.searchText LIKE CONCAT('%', :term, '%') ESCAPE '\\' " +
             "ORDER BY LOCATE(:term, s.searchText), LENGTH(s.label), s.label")
     List<SearchItem> search(@Param("lang") String lang,
                             @Param("generation") long generation,
