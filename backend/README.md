@@ -10,7 +10,7 @@ This module is a Spring Boot application that acts as a middleware for the Philo
 
 ## Prerequisites
 
-- Java 17 or higher
+- Java 21 or higher
 - Maven (wrapper included)
 
 ## Configuration
@@ -33,17 +33,17 @@ The application is configured using environment variables. You can set these in 
 
 ## Running Locally
 
-To run the application locally using the Maven wrapper:
+Create `backend/secrets-local.properties` (gitignored) with your OAuth credentials:
 
-```bash
-./mvnw spring-boot:run
+```properties
+OAUTH_CONSUMER_KEY=<your key>
+OAUTH_CONSUMER_SECRET=<your secret>
 ```
 
-make sure to set the environment variables properly before running the command, e.g.:
+Then run from the `backend/` directory:
 
 ```bash
-export ALLOWED_ORIGINS=http://localhost:3000
-./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 ## Build
