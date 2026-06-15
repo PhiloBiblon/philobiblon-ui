@@ -13,6 +13,7 @@
           :save="editValue"
           :delete="deleteValue"
           @new-value="newDateValue"
+          @on-blur="onDateTextBlur"
         />
         <v-select
           v-model="valueToView_.calendar"
@@ -62,6 +63,14 @@ function newDateValue (value) {
   valueToView_.value = value
   emit('new-value', getTimeNewValue(valueToView_.value))
   emit('on-blur', getTimeNewValue(valueToView_.value))
+}
+
+function onDateTextBlur (value) {
+  if (!value) return
+  valueToView_.value = value
+  const timeNewValue = getTimeNewValue(value)
+  emit('on-blur', timeNewValue)
+  emit('new-value', timeNewValue)
 }
 
 function onChangeCalendarType (newCalendar) {

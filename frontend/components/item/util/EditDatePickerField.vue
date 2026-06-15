@@ -113,13 +113,13 @@ const validationError = ref(null)
 const isEditable = computed(() => props.mode === 'edit')
 const today = computed(() => new Date().toISOString().slice(0, 10))
 
-// Accepted partial date patterns
+// Accepted partial date patterns (MM: 01-12, DD: 01-31)
 const PARTIAL_DATE_REGEXES = [
-  /^\d{4}$/,               // YYYY
-  /^\d{4}-\d{2}$/,         // YYYY-MM or YYYY-DD
-  /^\d{4}-\d{2}-\d{2}$/,   // YYYY-MM-DD
-  /^\d{2}-\d{2}$/,         // MM-DD
-  /^\d{2}$/                // DD
+  /^\d{4}$/,
+  /^\d{4}-(0[1-9]|1[0-2])$/,
+  /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+  /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+  /^(0[1-9]|[12]\d|3[01])$/
 ]
 
 watch(currentText, (newVal, oldVal) => {
@@ -136,10 +136,15 @@ watch(currentText, (newVal, oldVal) => {
 })
 
 onMounted(() => {
-  currentText.value = props.value
-  consolidatedText.value = props.value
+  const isCreatingWithNoValue = props.mode === 'creation' && props.value === null
+  const initialValue = isCreatingWithNoValue ? today.value : props.value
+  currentText.value = initialValue
+  consolidatedText.value = initialValue
   if (props.useCalendar) {
-    pickerDate.value = parseDate(props.value)
+    pickerDate.value = parseDate(initialValue)
+  }
+  if (isCreatingWithNoValue) {
+    emit('new-value', initialValue)
   }
 })
 
@@ -153,6 +158,7 @@ function blur () {
     const error = validatePartialDate(currentText.value)
     if (error) {
       validationError.value = error
+      $notification.error(error)
       return
     }
     validationError.value = null
@@ -216,6 +222,7 @@ async function edit () {
       const error = validatePartialDate(currentText.value)
       if (error) {
         validationError.value = error
+        $notification.error(error)
         return
       }
     }

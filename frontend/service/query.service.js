@@ -303,7 +303,7 @@ export class QueryService {
     if (/^\d{4}$/.test(date)) {
       return isEnd ? `${date}-12-31` : `${date}-01-01`
     }
-    if (/^\d{4}-\d{2}$/.test(date)) {
+    if (/^\d{4}-(0[1-9]|1[0-2])$/.test(date)) {
       if (isEnd) {
         const [y, m] = date.split('-').map(Number)
         const lastDay = new Date(y, m, 0).getDate()
@@ -311,10 +311,10 @@ export class QueryService {
       }
       return `${date}-01`
     }
-    if (/^\d{2}-\d{2}$/.test(date)) {
+    if (/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(date)) {
       return `0000-${date}`
     }
-    if (/^\d{2}$/.test(date)) {
+    if (/^(0[1-9]|[12]\d|3[01])$/.test(date)) {
       return `0000-01-${date}`
     }
     return date
