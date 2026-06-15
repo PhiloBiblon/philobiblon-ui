@@ -311,13 +311,11 @@ export class QueryService {
       }
       return `${date}-01`
     }
-    if (/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(date)) {
-      return `0000-${date}`
+    // Full YYYY-MM-DD passes through as-is
+    if (/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(date)) {
+      return date
     }
-    if (/^(0[1-9]|[12]\d|3[01])$/.test(date)) {
-      return `0000-01-${date}`
-    }
-    return date
+    return null
   }
 
   _dateRangeFilters (fieldValue, { statementPattern = '', beginOptional = '', endOptional = '', beginVar = 'begin_date', endVar = 'end_date' } = {}) {
@@ -325,6 +323,8 @@ export class QueryService {
     const { begin, end } = fieldValue
     const beginNorm = this._normalizePartialDate(begin, false)
     const endNorm = this._normalizePartialDate(end, true)
+    if (begin && !beginNorm) return ''
+    if (end && !endNorm) return ''
     const completeRange = !!(begin && end)
     let filters = statementPattern ? `
         ${statementPattern}
