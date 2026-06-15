@@ -66,7 +66,6 @@ function newDateValue (value) {
 }
 
 function onDateTextBlur (value) {
-  if (!value) return
   valueToView_.value = value
   const timeNewValue = getTimeNewValue(value)
   emit('on-blur', timeNewValue)
@@ -171,7 +170,6 @@ function toWikibaseTime (input) {
     }
   }
 
-  // Unrecognized format — return null rather than producing a malformed Wikibase time string.
   return { time: null, precision: null }
 }
 </script>
