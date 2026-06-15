@@ -66,6 +66,7 @@ function newDateValue (value) {
 }
 
 function onDateTextBlur (value) {
+  if (!value) return
   valueToView_.value = value
   const timeNewValue = getTimeNewValue(value)
   emit('on-blur', timeNewValue)
