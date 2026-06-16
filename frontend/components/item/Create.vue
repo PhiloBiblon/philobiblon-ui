@@ -107,7 +107,7 @@ const isUserLogged = computed(() => authStore.isLogged)
 const isCreateDisabled = computed(() => !!getCreateDisabledReason())
 const pbid = computed(() => initialClaims.value.find(
   item => item.property.id === $wikibase.constructor.PROPERTY_PBID
-)?.value)
+)?.value?.datavalue?.value)
 
 watch(pbid, (newPbid) => {
   if (newPbid && !alias.value) {
@@ -164,8 +164,11 @@ function getCreateDisabledReason () {
 
     if (propertyId === 'P799') {
       for (const item of claimArray) {
+        if (item?.value == null || item?.value === '') {
+          continue
+        }
         const dateQualifier = item?.qualifiers?.P106
-        if (dateQualifier != null && !isCompleteDate(dateQualifier)) {
+        if (dateQualifier == null || !isCompleteDate(dateQualifier)) {
           return t('messages.error.inputs.incomplete_date', { propertyLabel })
         }
       }
@@ -413,11 +416,14 @@ async function create () {
         descriptions: {
           [locale.value]: description.value || ' '
         },
-        aliases: {
-          [locale.value]: alias.value ? [alias.value] : []
-        },
         claims: {
           ...cleanedClaims
+        }
+      }
+
+      if (alias.value) {
+        data.aliases = {
+          [locale.value]: [alias.value]
         }
       }
 
