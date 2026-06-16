@@ -455,6 +455,7 @@ export default {
     label: 'Artigo',
     title: 'Título',
     description: 'Descrição',
+    alias: 'Alias',
     back: 'Volte',
     identifiers: 'Identificadores',
     related_items: 'Itens relacionados',
@@ -604,7 +605,8 @@ export default {
         initial_claims: 'Os enunciados ainda estão a carregar',
         claim_value_missing: 'Por favor, preencha o valor do enunciado para "{propertyLabel}"',
         qualifier_key_missing: 'Falta uma propriedade qualificadora no enunciado "{claimLabel}" para "{propertyLabel}"',
-        qualifier_value_missing: 'Falta o valor de algum qualificador no enunciado "{claimLabel}" para "{propertyLabel}"'
+        qualifier_value_missing: 'Falta o valor de algum qualificador no enunciado "{claimLabel}" para "{propertyLabel}"',
+        incomplete_date: 'Por favor, preencha uma data completa (ano, mês e dia) para o qualificador "{propertyLabel}"'
       },
       creation: {
         pbid_already_exists: 'O PhiloBiblon ID "{pbid}" já existe em {item}.'

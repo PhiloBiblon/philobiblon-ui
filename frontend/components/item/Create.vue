@@ -29,6 +29,12 @@
                 class="text-subtitle-1"
                 :label="t('item.description')"
               />
+              <v-text-field
+                v-model="alias"
+                type="text"
+                class="text-subtitle-1"
+                :label="t('item.alias')"
+              />
             </v-form>
           </v-col>
         </v-row>
@@ -74,7 +80,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 
@@ -95,12 +101,19 @@ const initialClaimsLoaded = ref(false)
 const initialClaims = ref([])
 const claims = ref([])
 const description = ref('')
+const alias = ref('')
 
 const isUserLogged = computed(() => authStore.isLogged)
 const isCreateDisabled = computed(() => !!getCreateDisabledReason())
 const pbid = computed(() => initialClaims.value.find(
   item => item.property.id === $wikibase.constructor.PROPERTY_PBID
 )?.value)
+
+watch(pbid, (newPbid) => {
+  if (newPbid && !alias.value) {
+    alias.value = newPbid
+  }
+})
 
 onMounted(() => {
   nextTick(() => {
@@ -121,18 +134,15 @@ function getCreateDisabledReason () {
     return t('messages.error.inputs.initial_claims')
   }
 
-  const claimsEntries = Object.entries(claims.value)
-
-  for (let propIndex = 0; propIndex < claimsEntries.length; propIndex++) {
-    const [, claimArray] = claimsEntries[propIndex]
-    const initialClaim = initialClaims.value[propIndex]
+  for (const [propertyId, claimArray] of Object.entries(claims.value)) {
+    const initialClaim = initialClaims.value.find(ic => ic.property?.id === propertyId)
     const propertyLabel = initialClaim?.property?.label
 
     if (
-      initialClaim?.property?.id === 'P2' ||
-      initialClaim?.property?.id === 'P476' ||
-      (props.table === 'cnum' && initialClaim?.property?.id === 'P590') ||
-      (props.table === 'copid' && initialClaim?.property?.id === 'P839')
+      propertyId === 'P2' ||
+      propertyId === 'P476' ||
+      (props.table === 'cnum' && propertyId === 'P590') ||
+      (props.table === 'copid' && propertyId === 'P839')
     ) {
       for (const item of claimArray) {
         if (item?.value == null || item?.value === '') {
@@ -151,9 +161,28 @@ function getCreateDisabledReason () {
         }
       }
     }
+
+    if (propertyId === 'P799') {
+      for (const item of claimArray) {
+        const dateQualifier = item?.qualifiers?.P106
+        if (dateQualifier != null && !isCompleteDate(dateQualifier)) {
+          return t('messages.error.inputs.incomplete_date', { propertyLabel })
+        }
+      }
+    }
   }
 
   return null
+}
+
+function isCompleteDate (value) {
+  if (typeof value === 'object' && value !== null) {
+    return value.precision === 11
+  }
+  if (typeof value === 'string') {
+    return /^[+-]?\d{4}-\d{2}-\d{2}/.test(value)
+  }
+  return false
 }
 
 async function loadInitialClaims () {
@@ -161,10 +190,25 @@ async function loadInitialClaims () {
     const res = await $wikibase.getTableLastItem(props.database, props.table)
     if (res?.length && res[0]) {
       await getDefaultClaims(res[0].item_number)
+      setDefaultDescription()
       initialClaimsLoaded.value = true
     }
   } catch (error) {
     notifyError(error)
+  }
+}
+
+const cnumDefaultDescriptions = {
+  en: 'textual witness',
+  es: 'testimonio textual',
+  ca: 'testimoni textual',
+  pt: 'testemunho textual',
+  gl: 'testemuño textual'
+}
+
+function setDefaultDescription () {
+  if (props.table === 'cnum' && !description.value) {
+    description.value = cnumDefaultDescriptions[locale.value] || ''
   }
 }
 
@@ -369,6 +413,9 @@ async function create () {
         descriptions: {
           [locale.value]: description.value || ' '
         },
+        aliases: {
+          [locale.value]: alias.value ? [alias.value] : []
+        },
         claims: {
           ...cleanedClaims
         }
@@ -449,7 +496,8 @@ function generateLabelFromClaims () {
       const work = getClaimValue('P590')
       const partOf = getClaimValue('P8')
       if (work && partOf) {
-        generatedLabel = `Witness of ${work}, part of ${partOf}`
+        const workTerminated = /[.!?]\s*$/.test(work) ? work.trimEnd() : `${work}.`
+        generatedLabel = `${workTerminated} ${partOf}`
       }
       break
     }
