@@ -21,7 +21,8 @@ onMounted(async () => {
   if (response.status === 0) {
     $notification.success(t('auth.login.success', { name: authStore.username }))
   } else {
-    $notification.error(response.error)
+    console.error('OAuth login failed:', response.error)
+    $notification.error(t('messages.error.auth.login_failed'))
   }
   router.push(localePath(previousPathCookie.value || '/'))
 })

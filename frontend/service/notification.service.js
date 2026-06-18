@@ -1,4 +1,5 @@
 const DURATION = 5000
+const ERROR_DURATION = 8000
 
 export class NotificationService {
   constructor (notifyFn) {
@@ -9,21 +10,8 @@ export class NotificationService {
     this.$notify({ title: message, type: 'success', duration: DURATION })
   }
 
-  error (error) {
-    if (error.response) {
-      if (error.response.status === 401) {
-        error = 'Authentication error'
-      } else if (error.response.data) {
-        if (error.response.data.message) {
-          error = error.response.data.message
-        } else if (error.response.data.error) {
-          error = error.response.data.error
-        }
-      }
-    }
-     
-    console.error(error)
-    this.$notify({ title: String(error), type: 'error', duration: DURATION })
+  error (message) {
+    this.$notify({ title: message, type: 'error', duration: ERROR_DURATION })
   }
 
   info (message) {

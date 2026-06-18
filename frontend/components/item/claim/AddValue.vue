@@ -84,6 +84,7 @@ const emit = defineEmits(['update-claims-values', 'create-claim'])
 
 const { $notification, $wikibase } = useNuxtApp()
 const { t } = useI18n()
+const { notifyError } = useNotifyError()
 const authStore = useAuthStore()
 
 const items = reactive({})
@@ -127,18 +128,22 @@ async function createClaim (index) {
   if (value == null) {
     return
   }
-  const res = await $wikibase.getWbEdit().claim.create({
-    value,
-    id: props.item.id,
-    property: props.value.property
-  }, authStore.requestConfig)
-  if (res.success) {
-    $notification.success(t('messages.success.updated'))
-    updateClaims(res)
-  } else {
-    $notification.error(t('messages.error.something_went_wrong'))
+  try {
+    const res = await $wikibase.getWbEdit().claim.create({
+      value,
+      id: props.item.id,
+      property: props.value.property
+    }, authStore.requestConfig)
+    if (res.success) {
+      $notification.success(t('messages.success.updated'))
+      updateClaims(res)
+    } else {
+      throw res
+    }
+    return res
+  } catch (error) {
+    notifyError(error)
   }
-  return res
 }
 
 function updateClaims (res) {

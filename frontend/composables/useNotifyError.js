@@ -1,5 +1,16 @@
 import { useAuthStore } from '~/stores/auth'
 
+const WIKIBASE_ERROR_KEYS = {
+  maxlag: 'messages.error.wikibase_slow',
+  'invalid-json': 'messages.error.wikibase_malformed_input',
+  badvalue: 'messages.error.wikibase_malformed_input',
+  'failed-save': 'messages.error.wikibase_save_failed',
+  editconflict: 'messages.error.wikibase_edit_conflict',
+  readonly: 'messages.error.wikibase_readonly',
+  ratelimited: 'messages.error.wikibase_ratelimited',
+  blocked: 'messages.error.wikibase_blocked',
+}
+
 export function useNotifyError () {
   const { $notification } = useNuxtApp()
   const { t } = useI18n()
@@ -8,7 +19,8 @@ export function useNotifyError () {
   function notifyError (error) {
     console.error(error)
 
-    if (error?.body?.error?.code === 'session-expired' || error?.message === 'query is undefined') {
+    const code = error?.body?.error?.code ?? error?.error?.code
+    if (code === 'session-expired' || error?.message === 'query is undefined') {
       authStore.logout()
       $notification.error(t('messages.error.session.expired'))
       return
@@ -21,18 +33,20 @@ export function useNotifyError () {
 }
 
 function getFriendlyMessage (error, t) {
-  if (error?.name === 'maxlag' || error?.body?.error?.code === 'maxlag') {
-    return t('messages.error.wikibase_slow')
+  const code = error?.body?.error?.code ?? error?.error?.code ?? error?.name
+  if (code && WIKIBASE_ERROR_KEYS[code]) {
+    return t(WIKIBASE_ERROR_KEYS[code])
   }
   if (isNetworkOrTimeout(error)) {
     return t('messages.error.wikibase_unreachable')
   }
-  return error?.body?.error?.info ?? t('messages.error.something_went_wrong')
+  return error?.body?.error?.info ?? error?.error?.info ?? t('messages.error.something_went_wrong')
 }
 
 function getHint (error) {
-  const hint = error?.body?.error?.code ?? error?.name
-  return (hint && hint !== 'Error') ? hint : null
+  const code = error?.body?.error?.code ?? error?.error?.code ?? error?.name
+  if (!code || code === 'Error' || WIKIBASE_ERROR_KEYS[code]) return null
+  return code
 }
 
 function buildMessage (error, t) {

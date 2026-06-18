@@ -52,12 +52,10 @@ async function editValue (value) {
         content.value.value = value
         $notification.success(t('messages.success.updated'))
       } else {
-        console.error('Error editing notes page:', data.error)
-        $notification.error(data.error?.info ?? t('messages.error.something_went_wrong'))
+        throw data
       }
     } else {
-      console.error('HTTP error editing notes:', response.status)
-      $notification.error(t('messages.error.something_went_wrong'))
+      throw new Error(`HTTP ${response.status}`)
     }
   } catch (error) {
     notifyError(error)

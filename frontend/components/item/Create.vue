@@ -362,10 +362,9 @@ async function create () {
       if (response.success) {
         await router.push(localePath('/item/' + response.entity.id))
       } else {
-        $notification.error(t('messages.error.something_went_wrong'))
+        throw response
       }
     } catch (error) {
-      console.error(error)
       notifyError(error)
     }
   } else {
