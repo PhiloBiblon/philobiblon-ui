@@ -136,14 +136,18 @@ function getCreateDisabledReason () {
   }
 
   const requiredPropertyIds = new Set(['P2', 'P476'])
+  if (props.table === 'manid') requiredPropertyIds.add('P329')
   if (props.table === 'cnum') requiredPropertyIds.add('P590')
   if (props.table === 'copid') requiredPropertyIds.add('P839')
 
-  for (const [propKey, claimArray] of Object.entries(claims.value)) {
-    if (!requiredPropertyIds.has(propKey)) continue
-
+  for (const propKey of requiredPropertyIds) {
+    const claimArray = claims.value[propKey]
     const initialClaim = initialClaims.value.find(c => c.property?.id === propKey)
-    const propertyLabel = initialClaim?.property?.label
+    const propertyLabel = initialClaim?.property?.label || propKey
+
+    if (!Array.isArray(claimArray) || claimArray.length === 0) {
+      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+    }
 
     for (const item of claimArray) {
       if (item?.value == null || item?.value === '') {
