@@ -178,11 +178,32 @@ async function onInput (value, type, index) {
     const search = await $wikibase.searchEntityByName(value, locale.value, locale.value, type)
     if (search && search.length) {
       if (type === 'property') {
+        if (props.table) {
+          await applyAlternativeLabels(search)
+        }
         properties[index] = search
       } else {
         propertyValues[index] = search
       }
     }
+  }
+}
+
+async function applyAlternativeLabels (searchResults) {
+  const ids = searchResults.map(r => r.id)
+  try {
+    const entities = await $wikibase.getEntities(ids, locale.value)
+    for (const result of searchResults) {
+      const entity = entities[result.id]
+      if (entity) {
+        const alt = $wikibase.getAlternativeLabel(props.table, entity, locale.value)
+        if (alt?.value) {
+          result.label = alt.value
+        }
+      }
+    }
+  } catch {
+    // fall back to original labels
   }
 }
 

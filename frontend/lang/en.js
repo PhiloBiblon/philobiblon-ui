@@ -229,7 +229,7 @@ export default {
           hint: 'Search by any of the library\'s formal or commonly used names (e.g. in BETA, search for Real Biblioteca, Biblioteca de Palacio, or simply Palacio).'
         },
         call_number: {
-          label: 'Inventory position',
+          label: 'Shelfmark',
           hint: ''
         }
       },
@@ -367,7 +367,7 @@ export default {
           hint: ' Search using any form of the name. A search returns the name of a binder, illuminator, annotator, etc.'
         },
         call_number: {
-          label: 'Inventory position',
+          label: 'Shelfmark',
           hint: ''
         },
         title: {
@@ -457,6 +457,7 @@ export default {
     label: 'Item',
     title: 'Title',
     description: 'Description',
+    alias: 'Alias',
     back: 'Go back',
     identifiers: 'Identifiers',
     related_items: 'Related items',
