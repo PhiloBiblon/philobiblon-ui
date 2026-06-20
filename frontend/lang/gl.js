@@ -617,7 +617,9 @@ export default {
   },
   wiki: {
     search: {
-      placeholder: 'Busca en PhiloBiblon'
+      placeholder: 'Busca en PhiloBiblon',
+      index_loading: 'O índice de busca está a cargarse, téntao de novo en uns minutos.',
+      no_results: 'Non se atoparon resultados.'
     }
   },
   footer: {

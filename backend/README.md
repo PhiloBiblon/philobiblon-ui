@@ -10,7 +10,7 @@ This module is a Spring Boot application that acts as a middleware for the Philo
 
 ## Prerequisites
 
-- Java 17 or higher
+- Java 21 or higher
 - Maven (wrapper included)
 
 ## Configuration
@@ -33,17 +33,32 @@ The application is configured using environment variables. You can set these in 
 
 ## Running Locally
 
-To run the application locally using the Maven wrapper:
+Create `backend/secrets-local.properties` (gitignored) with your OAuth credentials:
 
-```bash
-./mvnw spring-boot:run
+```properties
+OAUTH_CONSUMER_KEY=<your key>
+OAUTH_CONSUMER_SECRET=<your secret>
 ```
 
-make sure to set the environment variables properly before running the command, e.g.:
+Then run from the `backend/` directory:
 
 ```bash
-export ALLOWED_ORIGINS=http://localhost:3000
-./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+The `dev` profile pre-fills `WIKIBASE_*`/`SPARQL_*` with FactGrid defaults and sets `ALLOWED_ORIGINS=*`, so the backend listens on `localhost:8080` ready to use. To point the frontend at it, run `yarn dev:local` instead of `yarn dev` from `frontend/` (see `frontend/README.md`).
+
+To run it detached and keep the logs in a file (`dev.log` is gitignored):
+
+```bash
+nohup ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev > dev.log 2>&1 &
+disown
+```
+
+Then follow the logs with:
+
+```bash
+tail -f dev.log
 ```
 
 ## Build

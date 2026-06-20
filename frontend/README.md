@@ -16,11 +16,15 @@ Requires Node 22+ and Yarn 4 with `nodeLinker: node-modules` (already configured
 # Dev server (uses staging backend at philobiblon.cog.berkeley.edu/ui-dev/)
 yarn dev
 
+# Dev server pointing to a backend running locally at localhost:8080
+# (see backend/README.md "Running Locally")
+yarn dev:local
+
 # Lint
 yarn lint
 ```
 
-The dev script sets `API_BASE_URL` to the staging backend automatically.
+The dev script sets `API_BASE_URL` to the staging backend automatically; `dev:local` overrides it to `http://localhost:8080/`.
 
 ## Production build
 

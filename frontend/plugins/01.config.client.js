@@ -4,7 +4,8 @@ export default defineNuxtPlugin(async () => {
 
   if (publicConfig.apiBaseUrl) {
     try {
-      const response = await fetch(`${publicConfig.apiBaseUrl}/api/config`)
+      const baseUrl = publicConfig.apiBaseUrl.replace(/\/$/, '')
+      const response = await fetch(`${baseUrl}/api/config`)
       const data = await response.json()
       Object.entries(data).forEach(([key, value]) => {
         // replace internal host, only for local development
