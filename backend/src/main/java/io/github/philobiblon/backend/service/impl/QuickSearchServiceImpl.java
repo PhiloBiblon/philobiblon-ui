@@ -130,16 +130,23 @@ public class QuickSearchServiceImpl implements QuickSearchService {
         long newGeneration = System.currentTimeMillis();
         logger.info("Refreshing QuickSearch index (generation {})...", newGeneration);
 
+        List<String> succeeded = new ArrayList<>();
+        List<String> failed = new ArrayList<>();
+        List<String> emptyResult = new ArrayList<>();
+        int totalItems = 0;
+
         try {
             for (String rawLang : languages) {
                 String lang = rawLang.trim();
                 List<SearchItem> items = loadLanguageWithRetry(lang, newGeneration);
                 if (items == null) {
+                    failed.add(lang);
                     continue;
                 }
                 if (items.isEmpty()) {
                     logger.warn("QuickSearch index refresh produced no items for language '{}'; keeping previous generation {}",
                             lang, generationByLang.getOrDefault(lang, 0L));
+                    emptyResult.add(lang);
                     continue;
                 }
 
@@ -148,6 +155,16 @@ public class QuickSearchServiceImpl implements QuickSearchService {
                 long removed = repository.deleteByLangAndGenerationNot(lang, newGeneration);
                 logger.info("QuickSearch index refreshed for language '{}': {} items, generation {}, {} stale rows removed",
                         lang, items.size(), newGeneration, removed);
+                succeeded.add(lang);
+                totalItems += items.size();
+            }
+
+            long elapsedMs = System.currentTimeMillis() - newGeneration;
+            String summary = "QuickSearch index refresh finished in {} ms: {} succeeded {} ({} items), {} failed {}, {} empty {}";
+            if (failed.isEmpty()) {
+                logger.info(summary, elapsedMs, succeeded.size(), succeeded, totalItems, failed.size(), failed, emptyResult.size(), emptyResult);
+            } else {
+                logger.warn(summary, elapsedMs, succeeded.size(), succeeded, totalItems, failed.size(), failed, emptyResult.size(), emptyResult);
             }
         } finally {
             refreshing.set(false);
