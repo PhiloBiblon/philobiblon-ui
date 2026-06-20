@@ -45,5 +45,8 @@ backend/data/
 ### Local dev secrets (OAuth keys) — copy backend/secrets-local.properties.template ###
 backend/secrets-local.properties
 
+### Local dev run log ###
+backend/dev.log
+
 ### Claude ###
 **/settings.local.json

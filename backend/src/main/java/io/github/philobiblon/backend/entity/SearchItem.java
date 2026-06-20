@@ -38,7 +38,7 @@ public class SearchItem {
     @Column(length = 1000)
     private String label;
 
-    /** Normalized (lowercased, accent-stripped) label + aliases, used for LIKE matching. */
+    /** Normalized (lowercased, accent-stripped) label + aliases + qid + pbid, used for LIKE matching. */
     @Column(length = 10000)
     private String searchText;
 

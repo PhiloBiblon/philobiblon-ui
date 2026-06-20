@@ -1,6 +1,6 @@
 {
   "name": "PhiloBiblon UI",
-  "image": "mcr.microsoft.com/devcontainers/java:17",
+  "image": "mcr.microsoft.com/devcontainers/java:21",
   "mounts": [
     "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,readonly"
   ],

@@ -46,6 +46,21 @@ Then run from the `backend/` directory:
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
+The `dev` profile pre-fills `WIKIBASE_*`/`SPARQL_*` with FactGrid defaults and sets `ALLOWED_ORIGINS=*`, so the backend listens on `localhost:8080` ready to use. To point the frontend at it, run `yarn dev:local` instead of `yarn dev` from `frontend/` (see `frontend/README.md`).
+
+To run it detached and keep the logs in a file (`dev.log` is gitignored):
+
+```bash
+nohup ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev > dev.log 2>&1 &
+disown
+```
+
+Then follow the logs with:
+
+```bash
+tail -f dev.log
+```
+
 ## Build
 
 To build the executable JAR:

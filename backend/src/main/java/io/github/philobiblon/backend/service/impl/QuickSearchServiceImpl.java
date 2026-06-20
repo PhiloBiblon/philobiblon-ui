@@ -165,6 +165,7 @@ public class QuickSearchServiceImpl implements QuickSearchService {
                     continue;
                 }
                 Accumulator acc = byItem.computeIfAbsent(qid, k -> new Accumulator(pbid));
+                acc.pbids.add(pbid);
                 String label = literal(solution, "label");
                 if (label != null) {
                     acc.label = label;
@@ -183,6 +184,10 @@ public class QuickSearchServiceImpl implements QuickSearchService {
             StringBuilder searchSource = new StringBuilder(label);
             for (String extra : acc.aliases) {
                 searchSource.append(' ').append(extra);
+            }
+            searchSource.append(' ').append(entry.getKey());
+            for (String pbid : acc.pbids) {
+                searchSource.append(' ').append(pbid);
             }
             String searchText = SearchServiceImpl.normalize(searchSource.toString());
             items.add(new SearchItem(
@@ -235,13 +240,17 @@ public class QuickSearchServiceImpl implements QuickSearchService {
     }
 
     private static final class Accumulator {
+        /** Canonical pbid (first one encountered), used for the item's stored/navigable id. */
         private final String pbid;
         private String label;
         private String description;
         private final Set<String> aliases = new LinkedHashSet<>();
+        /** All P476 values seen for this item (an item can have several, e.g. one per linked database). */
+        private final Set<String> pbids = new LinkedHashSet<>();
 
         private Accumulator(String pbid) {
             this.pbid = pbid;
+            this.pbids.add(pbid);
         }
     }
 }
