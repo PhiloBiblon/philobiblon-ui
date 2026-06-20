@@ -20,9 +20,9 @@ public interface SearchItemRepository extends JpaRepository<SearchItem, Long> {
                             @Param("term") String term,
                             Limit limit);
 
-    @Query("SELECT MAX(s.generation) FROM SearchItem s")
-    Long findMaxGeneration();
+    @Query("SELECT MAX(s.generation) FROM SearchItem s WHERE s.lang = :lang")
+    Long findMaxGenerationByLang(@Param("lang") String lang);
 
     @Transactional
-    long deleteByGenerationNot(long generation);
+    long deleteByLangAndGenerationNot(String lang, long generation);
 }
