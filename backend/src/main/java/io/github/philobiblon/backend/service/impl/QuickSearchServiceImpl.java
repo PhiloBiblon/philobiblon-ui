@@ -34,6 +34,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -55,10 +56,16 @@ public class QuickSearchServiceImpl implements QuickSearchService {
     private int candidateLimit;
     @Value("${search.index.resultLimit:20}")
     private int resultLimit;
+    @Value("${search.index.retry.maxAttempts:3}")
+    int retryMaxAttempts;
+    @Value("${search.index.retry.initialBackoffMs:5000}")
+    long retryInitialBackoffMs;
+    @Value("${search.index.retry.backoffMultiplier:3}")
+    double retryBackoffMultiplier;
 
     private final SearchItemRepository repository;
 
-    private volatile long currentGeneration;
+    private final Map<String, Long> generationByLang = new ConcurrentHashMap<>();
     private final AtomicBoolean refreshing = new AtomicBoolean(false);
     private String loadQueryTemplate;
     private final HttpClient http1Client = HttpClient.newBuilder()
@@ -75,14 +82,17 @@ public class QuickSearchServiceImpl implements QuickSearchService {
         try (var in = new ClassPathResource("sparql/load-search-items.rq").getInputStream()) {
             loadQueryTemplate = StreamUtils.copyToString(in, StandardCharsets.UTF_8);
         }
-        Long maxGeneration = repository.findMaxGeneration();
-        currentGeneration = maxGeneration != null ? maxGeneration : 0L;
-        logger.info("QuickSearch index initialized at generation {}", currentGeneration);
+        for (String lang : languages) {
+            Long maxGeneration = repository.findMaxGenerationByLang(lang.trim());
+            generationByLang.put(lang.trim(), maxGeneration != null ? maxGeneration : 0L);
+        }
+        logger.info("QuickSearch index initialized at generations {}", generationByLang);
     }
 
     @Override
     public QuickSearchResponse search(String q, String lang) {
-        if (currentGeneration == 0L) {
+        long generation = generationByLang.getOrDefault(lang, 0L);
+        if (generation == 0L) {
             return new QuickSearchResponse(true, List.of());
         }
         String term = SearchServiceImpl.normalize(q);
@@ -91,7 +101,7 @@ public class QuickSearchServiceImpl implements QuickSearchService {
         }
 
         String escapedTerm = term.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
-        List<SearchItem> candidates = repository.search(lang, currentGeneration, escapedTerm, Limit.of(candidateLimit));
+        List<SearchItem> candidates = repository.search(lang, generation, escapedTerm, Limit.of(candidateLimit));
         List<String> queryWords = Arrays.asList(term.split("\\s+"));
 
         List<QuickResult> results = candidates.stream()
@@ -121,32 +131,60 @@ public class QuickSearchServiceImpl implements QuickSearchService {
         logger.info("Refreshing QuickSearch index (generation {})...", newGeneration);
 
         try {
-            List<SearchItem> items = new ArrayList<>();
-            try {
-                for (String lang : languages) {
-                    items.addAll(loadLanguage(lang.trim(), newGeneration));
+            for (String rawLang : languages) {
+                String lang = rawLang.trim();
+                List<SearchItem> items = loadLanguageWithRetry(lang, newGeneration);
+                if (items == null) {
+                    continue;
                 }
-            } catch (Exception e) {
-                logger.error("QuickSearch index refresh failed; keeping previous generation {}", currentGeneration, e);
-                return;
-            }
+                if (items.isEmpty()) {
+                    logger.warn("QuickSearch index refresh produced no items for language '{}'; keeping previous generation {}",
+                            lang, generationByLang.getOrDefault(lang, 0L));
+                    continue;
+                }
 
-            if (items.isEmpty()) {
-                logger.warn("QuickSearch index refresh produced no items; keeping previous generation {}", currentGeneration);
-                return;
+                repository.saveAll(items);
+                generationByLang.put(lang, newGeneration);
+                long removed = repository.deleteByLangAndGenerationNot(lang, newGeneration);
+                logger.info("QuickSearch index refreshed for language '{}': {} items, generation {}, {} stale rows removed",
+                        lang, items.size(), newGeneration, removed);
             }
-
-            repository.saveAll(items);
-            currentGeneration = newGeneration;
-            long removed = repository.deleteByGenerationNot(newGeneration);
-            logger.info("QuickSearch index refreshed: {} items, generation {}, {} stale rows removed",
-                    items.size(), newGeneration, removed);
         } finally {
             refreshing.set(false);
         }
     }
 
-    private List<SearchItem> loadLanguage(String lang, long generation) {
+    /** Loads a language's items, retrying with exponential backoff. Returns null if all attempts fail. */
+    List<SearchItem> loadLanguageWithRetry(String lang, long generation) {
+        int attempt = 1;
+        long backoffMs = retryInitialBackoffMs;
+        while (true) {
+            try {
+                return loadLanguage(lang, generation);
+            } catch (Exception e) {
+                if (attempt >= retryMaxAttempts) {
+                    logger.error("QuickSearch: giving up loading language '{}' after {} attempts; keeping previous generation {}",
+                            lang, attempt, generationByLang.getOrDefault(lang, 0L), e);
+                    return null;
+                }
+                logger.warn("QuickSearch: attempt {}/{} failed for language '{}', retrying in {} ms",
+                        attempt, retryMaxAttempts, lang, backoffMs, e);
+                sleep(backoffMs);
+                backoffMs = (long) (backoffMs * retryBackoffMultiplier);
+                attempt++;
+            }
+        }
+    }
+
+    private static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    List<SearchItem> loadLanguage(String lang, long generation) {
         String sparqlQuery = addPrefixes(loadQueryTemplate.replace("${lang}", lang));
         Query query = QueryFactory.create(sparqlQuery);
 
