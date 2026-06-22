@@ -246,6 +246,21 @@ async function getDefaultClaims (itemNumber) {
         bibliographyQualifiers[0].datavalue.value = { id: 'Q447226' }
 
         claim = buildClaim(entity, bibliographyQualifiers, bibliographyId ? { id: bibliographyId } : null)
+      } else if (entity.id === 'P799') {
+        const today = new Date()
+        const yyyy = String(today.getFullYear()).padStart(4, '0')
+        const mm = String(today.getMonth() + 1).padStart(2, '0')
+        const dd = String(today.getDate()).padStart(2, '0')
+        const dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
+        if (dateQualifier) {
+          dateQualifier.datavalue.value = {
+            time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
+            precision: 11,
+            calendar: 'gregorian'
+          }
+          dateQualifier.hidden = true
+        }
+        claim = buildClaim(entity, qualifiers, null)
       } else if (props.table === 'cnum' && entity.id === 'P590') {
         claim = buildClaim(entity, qualifiers, null, false)
       } else if (props.table === 'copid' && entity.id === 'P839') {
