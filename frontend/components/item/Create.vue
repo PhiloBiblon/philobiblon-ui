@@ -263,7 +263,7 @@ async function getDefaultClaims (itemNumber) {
         bibliographyQualifiers[0].datavalue.value = { id: 'Q447226' }
 
         claim = buildClaim(entity, bibliographyQualifiers, bibliographyId ? { id: bibliographyId } : null)
-      } else if (props.table === 'manid' && entity.id === 'P799') {
+      } else if (entity.id === 'P799') {
         const today = new Date()
         const yyyy = String(today.getFullYear()).padStart(4, '0')
         const mm = String(today.getMonth() + 1).padStart(2, '0')
