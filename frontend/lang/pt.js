@@ -457,6 +457,7 @@ export default {
     description: 'Descrição',
     alias: 'Pseudónimo',
     cnum_description: 'testemunho textual',
+    alias: 'Alias',
     back: 'Volte',
     identifiers: 'Identificadores',
     related_items: 'Itens relacionados',
