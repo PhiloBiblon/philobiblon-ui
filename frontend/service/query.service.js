@@ -315,6 +315,17 @@ export class QueryService {
     if (/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(date)) {
       return date
     }
+    // MM-DD — default year to 0001 (begin) or 9999 (end) for open-ended range
+    const mmddMatch = date.match(/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/)
+    if (mmddMatch) {
+      const year = isEnd ? '9999' : '0001'
+      return `${year}-${mmddMatch[1]}-${mmddMatch[2]}`
+    }
+    // DD — default year and month for open-ended range
+    const ddMatch = date.match(/^(0[1-9]|[12]\d|3[01])$/)
+    if (ddMatch) {
+      return isEnd ? `9999-12-${ddMatch[1]}` : `0001-01-${ddMatch[1]}`
+    }
     return null
   }
 

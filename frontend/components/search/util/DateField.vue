@@ -60,12 +60,12 @@ const beginValue = ref(null)
 const endValue = ref(null)
 const isHintVisible = ref(false)
 
-// Yearless formats (MM-DD, DD) are excluded from search because year=0000 produces
-// meaningless xsd:dateTime range comparisons in SPARQL.
 const PARTIAL_DATE_REGEXES = [
   /^\d{4}$/,
   /^\d{4}-(0[1-9]|1[0-2])$/,
-  /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/
+  /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+  /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+  /^(0[1-9]|[12]\d|3[01])$/
 ]
 
 watch(() => props.value, (newVal) => {
