@@ -29,6 +29,12 @@
                 class="text-subtitle-1"
                 :label="t('item.description')"
               />
+              <v-text-field
+                v-model="alias"
+                type="text"
+                class="text-subtitle-1"
+                :label="t('item.alias')"
+              />
             </v-form>
           </v-col>
         </v-row>
@@ -95,6 +101,7 @@ const initialClaimsLoaded = ref(false)
 const initialClaims = ref([])
 const claims = ref([])
 const description = ref('')
+const alias = ref('')
 
 const isUserLogged = computed(() => authStore.isLogged)
 const isCreateDisabled = computed(() => !!getCreateDisabledReason())
@@ -123,9 +130,8 @@ function getCreateDisabledReason () {
 
   const claimsEntries = Object.entries(claims.value)
 
-  for (let propIndex = 0; propIndex < claimsEntries.length; propIndex++) {
-    const [, claimArray] = claimsEntries[propIndex]
-    const initialClaim = initialClaims.value[propIndex]
+  for (const [propId, claimArray] of claimsEntries) {
+    const initialClaim = initialClaims.value.find(c => c.property?.id === propId)
     const propertyLabel = initialClaim?.property?.label
 
     if (
@@ -212,9 +218,10 @@ function buildQualifier (_claim, qualifier) {
 
 async function getDefaultClaims (itemNumber) {
   const def = ['P476', 'P131']
+  if (props.table === 'manid' || props.table === 'texid') { def.push('P799') }
   const res = await $wikibase.getClaimsOrderForNewItem(props.table)
   const propertyIds = [...new Set([...def, ...Object.keys(res)])]
-  const qualifiersProperties = [...new Set(['P700', ...Object.values(res).flat()])]
+  const qualifiersProperties = [...new Set(['P700', 'P106', ...Object.values(res).flat()])]
   const entities = await $wikibase.getEntities(propertyIds, locale.value)
   const qualifiersArr = await $wikibase.getEntities(qualifiersProperties, locale.value)
 
@@ -246,6 +253,21 @@ async function getDefaultClaims (itemNumber) {
         bibliographyQualifiers[0].datavalue.value = { id: 'Q447226' }
 
         claim = buildClaim(entity, bibliographyQualifiers, bibliographyId ? { id: bibliographyId } : null)
+      } else if (['manid', 'texid'].includes(props.table) && entity.id === 'P799') {
+        const todayQualifiers = [buildQualifier(entity, qualifiersArr['P106'])]
+        const now = new Date()
+        const y = now.getFullYear()
+        const m = String(now.getMonth() + 1).padStart(2, '0')
+        const d = String(now.getDate()).padStart(2, '0')
+        todayQualifiers[0].datavalue.value = {
+          time: `+${y}-${m}-${d}T00:00:00Z`,
+          timezone: 0,
+          before: 0,
+          after: 0,
+          precision: 11,
+          calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+        }
+        claim = buildClaim(entity, todayQualifiers, null)
       } else if (props.table === 'cnum' && entity.id === 'P590') {
         claim = buildClaim(entity, qualifiers, null, false)
       } else if (props.table === 'copid' && entity.id === 'P839') {
@@ -269,6 +291,10 @@ function updateClaims (data) {
   initialClaims.value = data
   claims.value = generateClaimsData(data)
   generateLabelFromClaims()
+  const pbidValue = getClaimValue('P476')
+  if (pbidValue && !alias.value) {
+    alias.value = pbidValue
+  }
 }
 
 function generateClaimsData (data) {
@@ -352,6 +378,7 @@ async function create () {
         descriptions: {
           [locale.value]: description.value || ' '
         },
+        ...(alias.value && { aliases: { en: [alias.value] } }),
         claims: {
           ...cleanedClaims
         }
@@ -400,6 +427,13 @@ function safeFormatTime (timeString) {
   }
 }
 
+function getClaimEntityId (propertyId) {
+  const claim = initialClaims.value.find(cl => cl.property?.id === propertyId)
+  const val = claim?.value?.datavalue?.value
+  if (typeof val === 'object' && val?.id) { return val.id }
+  return null
+}
+
 function getClaimValue (claimPbid) {
   const claim = initialClaims.value.find(cl => cl.property?.id === claimPbid)
   const val = claim?.value?.datavalue?.value
@@ -424,7 +458,7 @@ function generateLabelFromClaims () {
       const author = getClaimValue('P21')
       const title = getClaimValue('P11')
       if (author && title) {
-        generatedLabel = `${author}. ${title}`
+        generatedLabel = `${author}, ${title}`
       }
       break
     }
@@ -465,8 +499,10 @@ function generateLabelFromClaims () {
     case 'manid': {
       const holding = getClaimValue('P329')
       const position = getClaimValue('P10')
-      if (holding && position) {
-        generatedLabel = `${holding}, ${position}`
+      const instanceOfId = getClaimEntityId('P2')
+      if (holding) {
+        const prefix = instanceOfId === 'Q15' ? 'MS: ' : instanceOfId === 'Q20' ? 'Ed.: ' : ''
+        generatedLabel = position ? `${prefix}${holding}, ${position}` : `${prefix}${holding}`
       }
       break
     }
