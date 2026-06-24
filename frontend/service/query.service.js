@@ -1115,21 +1115,26 @@ export class QueryService {
     return this.generateQuery(table, COUNT_QUERY, form)
   }
 
-  getSortClause () {
+  getSortClause (hasDateBinding) {
     const queryStatus = useQueryStatusStore()
-    let sortBy
+    const nameSort = this.replaceDiacritics('xsd:string(?label)')
     switch (queryStatus.sortBy) {
-      case 'id':
-        sortBy = 'xsd:integer(?pbidn)'
-        break
-      case 'date':
-        sortBy = 'xsd:dateTime(?date)'
-        break
+      case 'id': {
+        const idExpr = 'xsd:integer(?pbidn)'
+        return queryStatus.isSortDescending ? `DESC(${idExpr})` : idExpr
+      }
+      case 'date': {
+        if (!hasDateBinding) {
+          return queryStatus.isSortDescending ? `DESC(${nameSort})` : nameSort
+        }
+        const dateExpr = 'xsd:dateTime(?date)'
+        const primary = queryStatus.isSortDescending ? `DESC(${dateExpr})` : dateExpr
+        return `${primary} ${nameSort}`
+      }
       case 'name':
       default:
-        sortBy = this.replaceDiacritics('xsd:string(?label)')
+        return queryStatus.isSortDescending ? `DESC(${nameSort})` : nameSort
     }
-    return queryStatus.isSortDescending ? `DESC(${sortBy})` : sortBy
   }
 
   getDateSortPattern (table) {
@@ -1169,7 +1174,7 @@ export class QueryService {
         ${this.generateLangFilters(lang)}
         ${this.generateDescLangFilters('item', lang)}
       }
-      ORDER BY ${this.getSortClause()}
+      ORDER BY ${this.getSortClause(!!dateSortPattern)}
       OFFSET ${(useQueryStatusStore().currentPage - 1) * resultsPerPage}
       LIMIT ${resultsPerPage}`
     return this.generateQuery(table, SEARCH_QUERY, form, lang)
