@@ -8,6 +8,14 @@ server {
         try_files ${DOLLAR}uri ${DOLLAR}uri/ /index.html;
     }
 
+    # QuickSearch filter registration is deploy-time-only (see CI workflows, called via
+    # `docker compose exec backend`); it must never be reachable from the public internet,
+    # since each registration creates persistent, recurring backend work. An exact match
+    # always wins over the regex proxy location below, regardless of declaration order.
+    location = /api/search/quick/register {
+        return 403;
+    }
+
     location ~ /(api|w|./w)/ {
         proxy_pass http://backend:8080;
         proxy_set_header Host ${DOLLAR}host;

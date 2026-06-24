@@ -39,5 +39,21 @@ services:
             - OAUTH_CALLBACK_URL=${OAUTH_CALLBACK_URL}
             - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
 
+    # On-demand only: excluded from the default `docker compose up`/`up -d` set because of the
+    # "manual" profile. Run explicitly with `docker compose run --rm quicksearch-registrar`
+    # whenever a filter is added/changed in frontend/service/quickSearchFilters.js.
+    quicksearch-registrar:
+        build:
+            context: frontend
+            dockerfile: Dockerfile
+            target: quicksearch-registrar
+        profiles:
+            - manual
+        restart: "no"
+        depends_on:
+            - backend
+        environment:
+            - BACKEND_URL=http://backend:8080
+
 volumes:
     backend-data:

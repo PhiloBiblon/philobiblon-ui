@@ -9,19 +9,23 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 /**
- * Materialized, searchable copy of a PhiloBiblon item label (per language).
- * Populated periodically from Wikibase so the general search can be served
+ * Materialized, searchable copy of an indexed item label (per filter and language).
+ * Populated periodically from Wikibase so a given filter's search can be served
  * locally without hitting the (slow) SPARQL endpoint on every keystroke.
  */
 @Entity
 @Table(name = "search_item", indexes = {
-        @Index(name = "idx_search_item_lang_generation", columnList = "lang,generation")
+        @Index(name = "idx_search_item_filter_lang_generation", columnList = "filterId,lang,generation")
 })
 public class SearchItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /** Identifies which registered filter this row belongs to (see SearchFilter). */
+    @Column(length = 150)
+    private String filterId;
 
     /** Wikibase Q id (extracted from the ?item URI). */
     @Column(length = 32)
@@ -52,7 +56,8 @@ public class SearchItem {
     public SearchItem() {
     }
 
-    public SearchItem(String qid, String pbid, String lang, String label, String searchText, String description, long generation) {
+    public SearchItem(String filterId, String qid, String pbid, String lang, String label, String searchText, String description, long generation) {
+        this.filterId = filterId;
         this.qid = qid;
         this.pbid = pbid;
         this.lang = lang;
@@ -64,6 +69,10 @@ public class SearchItem {
 
     public Long getId() {
         return id;
+    }
+
+    public String getFilterId() {
+        return filterId;
     }
 
     public String getQid() {

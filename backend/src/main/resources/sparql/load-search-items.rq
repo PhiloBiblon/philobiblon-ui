@@ -1,9 +1,0 @@
-SELECT ?item ?pbid ?label ?alias ?desc WHERE {
-  ?item wdt:P476 ?pbid .
-  FILTER (REGEX(?pbid, '(.*) bibid ') || REGEX(?pbid, '(.*) bioid ') || REGEX(?pbid, '(.*) geoid ')
-    || REGEX(?pbid, '(.*) insid ') || REGEX(?pbid, '(.*) libid ') || REGEX(?pbid, '(.*) manid ')
-    || REGEX(?pbid, '(.*) subid ') || REGEX(?pbid, '(.*) texid ')) .
-  OPTIONAL { ?item rdfs:label ?label FILTER langMatches(lang(?label), '${lang}') }
-  OPTIONAL { ?item skos:altLabel ?alias FILTER langMatches(lang(?alias), '${lang}') }
-  OPTIONAL { ?item schema:description ?desc FILTER langMatches(lang(?desc), '${lang}') }
-}

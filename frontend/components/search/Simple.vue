@@ -82,7 +82,7 @@ async function searchItems (query) {
   loading.value = true
 
   try {
-    const res = await $wikibase.quickSearch(query, locale.value)
+    const res = await $wikibase.quickSearch('global', query, locale.value)
     if (requestId !== lastRequestId) return
     indexLoading.value = res.indexLoading
     items.value = res.indexLoading ? [] : customizeSearchData(res.results)
