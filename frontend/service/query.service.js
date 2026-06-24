@@ -1090,38 +1090,66 @@ export class QueryService {
     return this.generateQuery(table, COUNT_QUERY, form)
   }
 
-  getSortClause () {
+  getSortClause (hasDateBinding) {
     const queryStatus = useQueryStatusStore()
-    let sortBy
+    const nameSort = this.replaceDiacritics('xsd:string(?label)')
     switch (queryStatus.sortBy) {
-      case 'id':
-        sortBy = 'xsd:integer(?pbidn)'
-        break
-      case 'date':
-        // Sort by date if available, fallback to ID
-        sortBy = 'xsd:dateTime(?date)'
-        break
+      case 'id': {
+        const idExpr = 'xsd:integer(?pbidn)'
+        return queryStatus.isSortDescending ? `DESC(${idExpr})` : idExpr
+      }
+      case 'date': {
+        if (!hasDateBinding) {
+          return queryStatus.isSortDescending ? `DESC(${nameSort})` : nameSort
+        }
+        const dateExpr = 'xsd:dateTime(?date)'
+        const primary = queryStatus.isSortDescending ? `DESC(${dateExpr})` : dateExpr
+        return `${primary} ${nameSort}`
+      }
       case 'name':
       default:
-        sortBy = this.replaceDiacritics('xsd:string(?label)')
+        return queryStatus.isSortDescending ? `DESC(${nameSort})` : nameSort
     }
-    return queryStatus.isSortDescending ? `DESC(${sortBy})` : sortBy
+  }
+
+  getDateSortPattern (table) {
+    const queryStatus = useQueryStatusStore()
+    if (queryStatus.sortBy !== 'date') { return '' }
+    switch (table) {
+      case 'bibid':
+        return 'OPTIONAL { ?item wdt:P49 ?date_raw }'
+      case 'texid':
+        return 'OPTIONAL { ?item wdt:P412 ?date_raw }'
+      case 'manid':
+        return 'OPTIONAL { ?item wdt:P536 ?date_raw }'
+      case 'bioid':
+        return `OPTIONAL {
+          ?item p:P137 ?history_sort .
+          ?history_sort pq:P49 ?date_raw .
+        }`
+      default:
+        return ''
+    }
   }
 
   itemsQuery (table, form, lang, resultsPerPage) {
+    const dateSortPattern = this.getDateSortPattern(table)
+    const dateSelect = dateSortPattern ? '(MIN(?date_raw) AS ?date)' : ''
+    const dateOuterSelect = dateSortPattern ? '?date' : ''
     const SEARCH_QUERY = $ =>
-      `SELECT DISTINCT ?item ?label ?desc ?pbids WHERE {
+      `SELECT DISTINCT ?item ?label ?desc ?pbids ${dateOuterSelect} WHERE {
         {
-          SELECT DISTINCT ?item (GROUP_CONCAT(DISTINCT ?pbid; separator=", ") AS ?pbids) {
+          SELECT DISTINCT ?item (GROUP_CONCAT(DISTINCT ?pbid; separator=", ") AS ?pbids) ${dateSelect} {
             ?item wdt:P476 ?pbid .
             ${$.filters}
+            ${dateSortPattern}
           }
           GROUP BY ?item
         }
         ${this.generateLangFilters(lang)}
         ${this.generateDescLangFilters('item', lang)}
       }
-      ORDER BY ${this.getSortClause()}
+      ORDER BY ${this.getSortClause(!!dateSortPattern)}
       OFFSET ${(useQueryStatusStore().currentPage - 1) * resultsPerPage}
       LIMIT ${resultsPerPage}`
     return this.generateQuery(table, SEARCH_QUERY, form, lang)
