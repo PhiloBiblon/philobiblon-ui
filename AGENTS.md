@@ -103,3 +103,17 @@ The frontend version (`runtimeConfig.public.version` in `nuxt.config.ts`) is aut
 ## i18n
 
 Translations live in `frontend/lang/` (`en`, `ca`, `es`, `gl`, `pt`). The active locale is stored in a cookie (`language`) and all routes are prefixed with the locale code (e.g. `/ca/search/manid/query`). All user-facing strings must be added to all five locale files. Use `const { t } = useI18n()` in `<script setup>` components.
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked as GitHub Issues on `PhiloBiblon/philobiblon-ui`, via the `gh` CLI. External PRs are not pulled into the triage queue. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Uses the default canonical label vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout: one `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
