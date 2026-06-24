@@ -2,6 +2,7 @@
   <div class="create-qualifier">
     <v-row
       v-for="(qualifier, key) in qualifiers"
+      v-show="!qualifier.hidden"
       :key="key"
       align="center"
       class="even-row pt-3"

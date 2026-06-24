@@ -1,60 +1,28 @@
 <template>
   <div>
     <div class="flex-container">
-      <v-menu v-model="activeBegin" :close-on-content-click="false">
-        <template #activator="{ props: activatorProps }">
-          <v-text-field
-            v-model="beginValue"
-            class="date-input"
-            :disabled="disabled"
-            :label="label + '. ' + t('common.from')"
-            density="compact"
-            :placeholder="t('common.date_placeholder')"
-            @focus="showHint"
-            @blur="hideHint"
-            @change="validateBeginDate(beginValue)"
-          >
-            <template #append-inner>
-              <v-icon v-bind="activatorProps" size="20" @click.stop>mdi-calendar</v-icon>
-            </template>
-          </v-text-field>
-        </template>
-        <v-date-picker
-          v-model="beginPickerDate"
-          :max="today"
-          min="0001-01-01"
-          hide-header
-          show-adjacent-months
-          @update:model-value="onBeginDateSelect"
-        />
-      </v-menu>
-      <v-menu v-model="activeEnd" :close-on-content-click="false">
-        <template #activator="{ props: activatorProps }">
-          <v-text-field
-            v-model="endValue"
-            class="date-input"
-            :disabled="disabled"
-            :label="t('common.to')"
-            density="compact"
-            :placeholder="t('common.date_placeholder')"
-            @focus="showHint"
-            @blur="hideHint"
-            @change="validateEndDate(endValue)"
-          >
-            <template #append-inner>
-              <v-icon v-bind="activatorProps" size="20" @click.stop>mdi-calendar</v-icon>
-            </template>
-          </v-text-field>
-        </template>
-        <v-date-picker
-          v-model="endPickerDate"
-          :max="today"
-          min="0001-01-01"
-          hide-header
-          show-adjacent-months
-          @update:model-value="onEndDateSelect"
-        />
-      </v-menu>
+      <v-text-field
+        v-model="beginValue"
+        class="date-input"
+        :disabled="disabled"
+        :label="label + '. ' + t('common.from')"
+        density="compact"
+        :placeholder="t('common.date_placeholder')"
+        @focus="showHint"
+        @blur="hideHint"
+        @change="validateBeginDate(beginValue)"
+      />
+      <v-text-field
+        v-model="endValue"
+        class="date-input"
+        :disabled="disabled"
+        :label="t('common.to')"
+        density="compact"
+        :placeholder="t('common.date_placeholder')"
+        @focus="showHint"
+        @blur="hideHint"
+        @change="validateEndDate(endValue)"
+      />
     </div>
     <div v-if="isHintVisible" class="message-container">
       <v-tooltip max-width="40%" location="bottom" open-delay="200">
@@ -70,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 defineOptions({ inheritAttrs: false })
@@ -88,22 +56,16 @@ const emit = defineEmits(['update-begin-date', 'update-end-date'])
 const { $notification, $sanitize } = useNuxtApp()
 const { t } = useI18n()
 
-const activeEnd = ref(false)
-const activeBegin = ref(false)
 const beginValue = ref(null)
 const endValue = ref(null)
-const beginPickerDate = ref(null)
-const endPickerDate = ref(null)
 const isHintVisible = ref(false)
-
-const today = computed(() => new Date().toISOString().slice(0, 10))
 
 const PARTIAL_DATE_REGEXES = [
   /^\d{4}$/,
-  /^\d{4}-\d{2}$/,
-  /^\d{4}-\d{2}-\d{2}$/,
-  /^\d{2}-\d{2}$/,
-  /^\d{2}$/
+  /^\d{4}-(0[1-9]|1[0-2])$/,
+  /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+  /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+  /^(0[1-9]|[12]\d|3[01])$/
 ]
 
 watch(() => props.value, (newVal) => {
@@ -143,29 +105,6 @@ function validateDate (date) {
   return date
 }
 
-function dateToIso (date) {
-  if (!date) return null
-  if (date instanceof Date) {
-    const y = date.getFullYear()
-    const m = String(date.getMonth() + 1).padStart(2, '0')
-    const d = String(date.getDate()).padStart(2, '0')
-    return `${y}-${m}-${d}`
-  }
-  return date
-}
-
-function onBeginDateSelect () {
-  activeBegin.value = false
-  beginValue.value = dateToIso(beginPickerDate.value)
-  validateBeginDate(beginValue.value)
-}
-
-function onEndDateSelect () {
-  activeEnd.value = false
-  endValue.value = dateToIso(endPickerDate.value)
-  validateEndDate(endValue.value)
-}
-
 function showHint () {
   isHintVisible.value = true
 }
@@ -194,11 +133,6 @@ function hideHint () {
 
 .hint {
   color: rgba(0, 0, 0, 0.6);
-}
-
-.v-menu__content {
-  min-width: 0 !important;
-  width: 290px !important;
 }
 
 .date-input {

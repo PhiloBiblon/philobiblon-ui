@@ -13,6 +13,7 @@
           :save="editValue"
           :delete="deleteValue"
           @new-value="newDateValue"
+          @on-blur="onDateTextBlur"
         />
         <v-select
           v-model="valueToView_.calendar"
@@ -64,6 +65,13 @@ function newDateValue (value) {
   emit('on-blur', getTimeNewValue(valueToView_.value))
 }
 
+function onDateTextBlur (value) {
+  valueToView_.value = value
+  const timeNewValue = getTimeNewValue(value)
+  emit('on-blur', timeNewValue)
+  emit('new-value', timeNewValue)
+}
+
 function onChangeCalendarType (newCalendar) {
   valueToView_.calendar = newCalendar
   if (isEditable.value) {
@@ -110,13 +118,14 @@ function getTimeNewValue (value) {
 
 /**
  * Converts a partial date string to Wikibase time format with the correct precision.
- * Supported input formats: YYYY, YYYY-MM, YYYY-MM-DD, YYYY-DD (day>12), MM-DD, DD
+ * Supported input formats: YYYY, YYYY-MM, YYYY-MM-DD, MM-DD, DD
+ * MM must be 01-12; DD must be 01-31.
  */
 function toWikibaseTime (input) {
   if (!input) return { time: null, precision: null }
 
   // YYYY-MM-DD — full date, precision day (11)
-  const fullMatch = input.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+  const fullMatch = input.match(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/)
   if (fullMatch) {
     return {
       time: `+${fullMatch[1]}-${fullMatch[2]}-${fullMatch[3]}T00:00:00Z`,
@@ -124,20 +133,11 @@ function toWikibaseTime (input) {
     }
   }
 
-  // YYYY-MM or YYYY-DD (disambiguate: if second part > 12 it must be a day)
-  const yearTwoMatch = input.match(/^(\d{4})-(\d{2})$/)
-  if (yearTwoMatch) {
-    const n = parseInt(yearTwoMatch[2], 10)
-    if (n > 12) {
-      // YYYY-DD: day without month, precision day (11), month defaults to 01
-      return {
-        time: `+${yearTwoMatch[1]}-01-${yearTwoMatch[2]}T00:00:00Z`,
-        precision: 11
-      }
-    }
-    // YYYY-MM: precision month (10)
+  // YYYY-MM — precision month (10)
+  const yearMonthMatch = input.match(/^(\d{4})-(0[1-9]|1[0-2])$/)
+  if (yearMonthMatch) {
     return {
-      time: `+${yearTwoMatch[1]}-${yearTwoMatch[2]}-01T00:00:00Z`,
+      time: `+${yearMonthMatch[1]}-${yearMonthMatch[2]}-01T00:00:00Z`,
       precision: 10
     }
   }
@@ -153,7 +153,7 @@ function toWikibaseTime (input) {
 
   // MM-DD — month and day without year, precision day (11).
   // Year defaults to +0000 which is valid ISO 8601 (= 1 BCE in proleptic Gregorian).
-  const monthDayMatch = input.match(/^(\d{2})-(\d{2})$/)
+  const monthDayMatch = input.match(/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/)
   if (monthDayMatch) {
     return {
       time: `+0000-${monthDayMatch[1]}-${monthDayMatch[2]}T00:00:00Z`,
@@ -162,7 +162,7 @@ function toWikibaseTime (input) {
   }
 
   // DD — day only, precision day (11), year and month default to +0000/01.
-  const dayMatch = input.match(/^(\d{2})$/)
+  const dayMatch = input.match(/^(0[1-9]|[12]\d|3[01])$/)
   if (dayMatch) {
     return {
       time: `+0000-01-${dayMatch[1]}T00:00:00Z`,
@@ -170,7 +170,6 @@ function toWikibaseTime (input) {
     }
   }
 
-  // Unrecognized format — return null rather than producing a malformed Wikibase time string.
   return { time: null, precision: null }
 }
 </script>

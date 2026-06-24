@@ -303,7 +303,7 @@ export class QueryService {
     if (/^\d{4}$/.test(date)) {
       return isEnd ? `${date}-12-31` : `${date}-01-01`
     }
-    if (/^\d{4}-\d{2}$/.test(date)) {
+    if (/^\d{4}-(0[1-9]|1[0-2])$/.test(date)) {
       if (isEnd) {
         const [y, m] = date.split('-').map(Number)
         const lastDay = new Date(y, m, 0).getDate()
@@ -311,13 +311,22 @@ export class QueryService {
       }
       return `${date}-01`
     }
-    if (/^\d{2}-\d{2}$/.test(date)) {
-      return `0000-${date}`
+    // Full YYYY-MM-DD passes through as-is
+    if (/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(date)) {
+      return date
     }
-    if (/^\d{2}$/.test(date)) {
-      return `0000-01-${date}`
+    // MM-DD — default year to 0001 (begin) or 9999 (end) for open-ended range
+    const mmddMatch = date.match(/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/)
+    if (mmddMatch) {
+      const year = isEnd ? '9999' : '0001'
+      return `${year}-${mmddMatch[1]}-${mmddMatch[2]}`
     }
-    return date
+    // DD — default year and month for open-ended range
+    const ddMatch = date.match(/^(0[1-9]|[12]\d|3[01])$/)
+    if (ddMatch) {
+      return isEnd ? `9999-12-${ddMatch[1]}` : `0001-01-${ddMatch[1]}`
+    }
+    return null
   }
 
   _dateRangeFilters (fieldValue, { statementPattern = '', beginOptional = '', endOptional = '', beginVar = 'begin_date', endVar = 'end_date' } = {}) {
@@ -325,6 +334,8 @@ export class QueryService {
     const { begin, end } = fieldValue
     const beginNorm = this._normalizePartialDate(begin, false)
     const endNorm = this._normalizePartialDate(end, true)
+    if (begin && !beginNorm) return ''
+    if (end && !endNorm) return ''
     const completeRange = !!(begin && end)
     let filters = statementPattern ? `
         ${statementPattern}
