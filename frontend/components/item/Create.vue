@@ -108,6 +108,9 @@ onMounted(() => {
       return router.push(localePath('/'))
     } else {
       loadInitialClaims()
+      if (props.table === 'cnum') {
+        description.value = t('item.create.cnum.default_description')
+      }
     }
   })
 })

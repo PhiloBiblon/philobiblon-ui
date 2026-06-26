@@ -469,7 +469,10 @@ export default {
         text: 'Criar elemento',
         enabled: 'Criar um novo item'
       },
-      calculating_new_pbid: 'Calculando o novo ID PhiloBiblon ..'
+      calculating_new_pbid: 'Calculando o novo ID PhiloBiblon ..',
+      cnum: {
+        default_description: 'Testemunho textual'
+      }
     },
     related: {
       manid: {

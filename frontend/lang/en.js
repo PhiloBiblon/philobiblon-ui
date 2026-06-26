@@ -471,7 +471,10 @@ export default {
         text: 'Create item',
         enabled: 'Create a new item'
       },
-      calculating_new_pbid: 'Calculating new PhiloBiblon ID ..'
+      calculating_new_pbid: 'Calculating new PhiloBiblon ID ..',
+      cnum: {
+        default_description: 'Textual testimony'
+      }
     },
     related: {
       manid: {
