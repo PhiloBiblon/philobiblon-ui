@@ -138,7 +138,7 @@ function getCreateDisabledReason () {
   const requiredPropertyIds = new Set(['P2', 'P476'])
   if (props.table === 'manid') requiredPropertyIds.add('P329')
   if (props.table === 'cnum') requiredPropertyIds.add('P590')
-  if (props.table === 'copid') requiredPropertyIds.add('P839')
+  if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
 
   for (const propKey of requiredPropertyIds) {
     const claimArray = claims.value[propKey]
@@ -374,6 +374,7 @@ function cleanClaims (claimsToClean) {
 async function create () {
   const existingPBID = await $wikibase.getEntityFromPBID(pbid.value)
   if (existingPBID === null) {
+    let entityCreated = false
     try {
       const cleanedClaims = cleanClaims(claims.value)
 
@@ -395,12 +396,15 @@ async function create () {
       const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
 
       if (response.success) {
+        entityCreated = true
         await router.push(localePath('/item/' + response.entity.id))
       } else {
         throw response
       }
     } catch (error) {
-      notifyError(error)
+      if (!entityCreated) {
+        notifyError(error)
+      }
     }
   } else {
     $notification.error(t('messages.error.creation.pbid_already_exists', {

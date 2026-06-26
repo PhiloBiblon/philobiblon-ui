@@ -308,7 +308,8 @@ export class WikibaseService {
 
   getEntityLabel (table, id, lang) {
     const itemCache = useItemCacheStore()
-    const cachedValue = itemCache.cache[this.getLabelCacheKey(table, id, lang)]
+    const cacheKey = this.getLabelCacheKey(table, id, lang)
+    const cachedValue = itemCache.cache[cacheKey]
     if (cachedValue) {
       return cachedValue
     } else {
@@ -322,7 +323,7 @@ export class WikibaseService {
             )
           }
           itemCache.addEntry({
-            key: this.getLabelCacheKey(table, id, lang),
+            key: cacheKey,
             value: propertyLabel
           })
           return propertyLabel
