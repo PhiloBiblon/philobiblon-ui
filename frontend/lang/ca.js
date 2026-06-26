@@ -455,6 +455,7 @@ export default {
     label: 'Item',
     title: 'Títol',
     description: 'Descripció',
+    alias: 'Alias',
     back: 'Torna',
     identifiers: 'Identificadors',
     related_items: 'Elements relacionats',
