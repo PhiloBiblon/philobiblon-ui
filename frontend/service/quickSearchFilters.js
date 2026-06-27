@@ -1,7 +1,9 @@
-// Manifest of every QuickSearch filter known to the frontend — the single source of truth for
-// which filters exist; the backend never hardcodes one. Read at deploy time (see
-// scripts/print-quicksearch-register-commands.mjs) to register/refresh each filter's backend
-// index via POST /api/search/quick/register.
+// Manifest of QuickSearch filters that aren't tied to a single table (e.g. the global top-bar
+// search). Per-table simple_search filters are derived automatically from each table's
+// autocomplete.query by scripts/register-quicksearch-filters.mjs — not listed here.
+//
+// Read at deploy time by scripts/register-quicksearch-filters.mjs to register/refresh each
+// filter's backend index via POST /api/search/quick/register.
 //
 // Deliberately has zero Nuxt-specific imports (unlike query.service.js) so it can be loaded by a
 // plain Node script during CI, without needing Nuxt's build-time alias resolution.

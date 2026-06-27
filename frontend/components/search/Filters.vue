@@ -66,6 +66,7 @@
                 :database="searchGroup.value"
                 :bitagap-group="bitagapGroup.value"
                 :autocomplete="item.autocomplete"
+                :field-name="name"
                 @click.stop
                 @reset-value="(val) => item.value = val"
               />
