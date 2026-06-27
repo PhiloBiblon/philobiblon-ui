@@ -75,6 +75,7 @@
           :key="claim?.property?.id"
           :claim="claim"
           :for-create="forCreate"
+          :table="table"
           :initial-qualifiers="claim.qualifiers"
           @update-qualifiers="updateQualifiers($event, key)"
         />
@@ -111,7 +112,8 @@ import { WikibaseService } from '~/service/wikibase.service'
 const props = defineProps({
   item: { type: Object, default: null },
   initialClaims: { type: Array, default: null },
-  forCreate: { type: Boolean, default: false }
+  forCreate: { type: Boolean, default: false },
+  table: { type: String, default: null }
 })
 
 const emit = defineEmits(['update-claims'])
@@ -139,8 +141,13 @@ watch(claims, (newValue) => {
   }
 }, { deep: true })
 
-function onChangeProperty (property, claim) {
-  claim.property = property ?? null
+async function onChangeProperty (property, claim) {
+  if (property) {
+    const altLabel = await $wikibase.getEntityLabel(props.table, property.id, locale.value)
+    claim.property = { ...property, label: altLabel?.value ?? property.label }
+  } else {
+    claim.property = null
+  }
   claim.value.datavalue.value = null
   claim.value.property = property?.id ?? null
   claim.mainsnak.property = property?.id ?? null

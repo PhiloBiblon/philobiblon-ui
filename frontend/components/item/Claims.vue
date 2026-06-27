@@ -9,7 +9,7 @@
       @delete-claim="deleteClaim"
       @create-claim="addValueToClaim"
     />
-    <item-claim-create v-if="isUserLogged" :item="item" @update-claims="updateClaims" />
+    <item-claim-create v-if="isUserLogged" :item="item" :table="table" @update-claims="updateClaims" />
   </div>
 </template>
 

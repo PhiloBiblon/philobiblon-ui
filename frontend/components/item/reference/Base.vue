@@ -19,6 +19,7 @@
           v-if="isUserLogged"
           class="mt-5"
           :claim="claim"
+          :table="table"
           @create-reference="createReference($event)"
         />
       </v-expansion-panel-text>

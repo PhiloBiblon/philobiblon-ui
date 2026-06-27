@@ -34,6 +34,7 @@
             class="mt-5"
             :claim="claim"
             :value="valueToView"
+            :table="table"
             @create-reference="updateReference($event)"
           />
         </td>
