@@ -12,12 +12,14 @@
           :key="`${reference.hash}-${references.length}`"
           :claim="claim"
           :value="reference"
+          :table="table"
           @delete-reference="deleteReference($event)"
         />
         <item-reference-create
           v-if="isUserLogged"
           class="mt-5"
           :claim="claim"
+          :table="table"
           @create-reference="createReference($event)"
         />
       </v-expansion-panel-text>
@@ -30,7 +32,8 @@ import { computed, onMounted, ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps({
-  claim: { type: Object, required: true }
+  claim: { type: Object, required: true },
+  table: { type: String, default: null }
 })
 
 const authStore = useAuthStore()

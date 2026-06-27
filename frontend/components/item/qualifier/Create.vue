@@ -103,7 +103,8 @@ import { WikibaseService } from '~/service/wikibase.service'
 const props = defineProps({
   claim: { type: Object, default: null },
   initialQualifiers: { type: Array, default: null },
-  forCreate: { type: Boolean, default: false }
+  forCreate: { type: Boolean, default: false },
+  table: { type: String, default: null }
 })
 
 const emit = defineEmits(['update-qualifiers', 'create-qualifier'])
@@ -146,9 +147,14 @@ function onNewValue (event, qualifier) {
   qualifier.datavalue.value = event
 }
 
-function onChangeProperty (event, index) {
+async function onChangeProperty (event, index) {
   const qualifier = qualifiers[index]
-  qualifier.property = event ? { id: event.id, label: event.label, datatype: event.datatype } : null
+  if (event) {
+    const altLabel = await $wikibase.getEntityLabel(props.table, event.id, locale.value)
+    qualifier.property = { id: event.id, label: altLabel?.value ?? event.label, datatype: event.datatype }
+  } else {
+    qualifier.property = null
+  }
   qualifier.datatype = event?.datatype
   qualifier.datavalue = { value: null }
 }

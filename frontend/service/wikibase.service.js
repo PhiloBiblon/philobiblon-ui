@@ -308,7 +308,7 @@ export class WikibaseService {
 
   getEntityLabel (table, id, lang) {
     const itemCache = useItemCacheStore()
-    const cachedValue = itemCache.cache[this.getLabelCacheKey(id, lang)]
+    const cachedValue = itemCache.cache[this.getLabelCacheKey(table, id, lang)]
     if (cachedValue) {
       return cachedValue
     } else {
@@ -322,7 +322,7 @@ export class WikibaseService {
             )
           }
           itemCache.addEntry({
-            key: this.getLabelCacheKey(),
+            key: this.getLabelCacheKey(table, id, lang),
             value: propertyLabel
           })
           return propertyLabel
@@ -330,8 +330,8 @@ export class WikibaseService {
     }
   }
 
-  getLabelCacheKey (id, lang) {
-    return id + '_' + lang
+  getLabelCacheKey (table, id, lang) {
+    return table ? `${id}_${lang}_${table}` : `${id}_${lang}`
   }
 
   getAlternativeLabel (table, entity, lang) {

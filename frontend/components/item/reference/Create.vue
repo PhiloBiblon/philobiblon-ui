@@ -97,7 +97,8 @@ import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps({
   claim: { type: Object, required: true },
-  value: { type: Object, default: null }
+  value: { type: Object, default: null },
+  table: { type: String, default: null }
 })
 
 const emit = defineEmits(['update-references', 'create-reference'])
@@ -121,9 +122,14 @@ function onNewValue (event, reference) {
   reference.datavalue.value = event
 }
 
-function onChangeProperty (event, index) {
+async function onChangeProperty (event, index) {
   const reference = references[index]
-  reference.property = event
+  if (event) {
+    const altLabel = await $wikibase.getEntityLabel(props.table, event.id, locale.value)
+    reference.property = { ...event, label: altLabel?.value ?? event.label }
+  } else {
+    reference.property = null
+  }
   reference.datatype = event?.datatype
   reference.datavalue = { value: null }
 }
