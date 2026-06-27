@@ -12,6 +12,7 @@
           :key="`${reference.hash}-${references.length}`"
           :claim="claim"
           :value="reference"
+          :table="table"
           @delete-reference="deleteReference($event)"
         />
         <item-reference-create
@@ -30,7 +31,8 @@ import { computed, onMounted, ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps({
-  claim: { type: Object, required: true }
+  claim: { type: Object, required: true },
+  table: { type: String, default: null }
 })
 
 const authStore = useAuthStore()

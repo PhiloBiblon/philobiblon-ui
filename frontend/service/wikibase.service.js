@@ -322,7 +322,7 @@ export class WikibaseService {
             )
           }
           itemCache.addEntry({
-            key: this.getLabelCacheKey(),
+            key: this.getLabelCacheKey(id, lang),
             value: propertyLabel
           })
           return propertyLabel

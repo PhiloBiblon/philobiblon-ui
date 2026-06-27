@@ -40,7 +40,7 @@
       </tr>
       <tr v-if="isUserLogged || item.references" class="table-row-edit">
         <td :colspan="formattedHeaders.length">
-          <item-reference-base :claim="item" />
+          <item-reference-base :claim="item" :table="table" />
         </td>
       </tr>
     </template>
@@ -53,7 +53,8 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps({
-  claim: { type: Object, default: () => ({ values: [] }) }
+  claim: { type: Object, default: () => ({ values: [] }) },
+  table: { type: String, default: null }
 })
 
 const emit = defineEmits(['delete-claim'])
@@ -99,10 +100,9 @@ async function getHeaders () {
     return props.claim.qualifiersOrder ? props.claim.qualifiersOrder.indexOf(a) - props.claim.qualifiersOrder.indexOf(b) : -1
   })
   const headerPromises = qualifiersKeysOrdered.map(async (property) => {
-    const entity = await $wikibase.getEntity(property, locale.value)
     return {
       property,
-      label: $wikibase.getValueByLang(entity.labels, locale.value)
+      label: await $wikibase.getEntityLabel(props.table, property, locale.value)
     }
   })
   headers.value = await Promise.all(headerPromises)

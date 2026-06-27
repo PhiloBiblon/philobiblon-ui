@@ -49,7 +49,8 @@ import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps({
   claim: { type: Object, required: true },
-  value: { type: Object, required: true }
+  value: { type: Object, required: true },
+  table: { type: String, default: null }
 })
 
 const emit = defineEmits(['delete-reference'])
@@ -87,10 +88,9 @@ async function getProperties () {
     return valueToView.value['snaks-order'] ? valueToView.value['snaks-order'].indexOf(a) - valueToView.value['snaks-order'].indexOf(b) : -1
   })
   const headerPromises = referenceKeysOrdered.map(async (property) => {
-    const entity = await $wikibase.getEntity(property, locale.value)
     return {
       property,
-      label: $wikibase.getValueByLang(entity.labels, locale.value)
+      label: await $wikibase.getEntityLabel(props.table, property, locale.value)
     }
   })
   properties.value = await Promise.all(headerPromises)
