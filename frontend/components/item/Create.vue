@@ -169,7 +169,8 @@ async function loadInitialClaims () {
 }
 
 function buildClaim (entity, qualifiers = [], value = null, removable = true) {
-  const lbl = $wikibase.getValueByLang(entity.labels, locale.value)?.value || entity.id
+  const altLabel = $wikibase.getAlternativeLabel(props.table, entity, locale.value)
+  const lbl = (altLabel ?? $wikibase.getValueByLang(entity.labels, locale.value))?.value || entity.id
   return {
     default: true,
     removable,
@@ -195,7 +196,8 @@ function buildClaim (entity, qualifiers = [], value = null, removable = true) {
 }
 
 function buildQualifier (_claim, qualifier) {
-  const lbl = $wikibase.getValueByLang(qualifier.labels, locale.value)?.value || qualifier.id
+  const altLabel = $wikibase.getAlternativeLabel(props.table, qualifier, locale.value)
+  const lbl = (altLabel ?? $wikibase.getValueByLang(qualifier.labels, locale.value))?.value || qualifier.id
   return {
     default: true,
     property: {
