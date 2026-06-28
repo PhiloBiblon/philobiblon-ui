@@ -201,17 +201,9 @@ async function loadInitialClaims () {
   }
 }
 
-const cnumDefaultDescriptions = {
-  en: 'textual witness',
-  es: 'testimonio textual',
-  ca: 'testimoni textual',
-  pt: 'testemunho textual',
-  gl: 'testemuño textual'
-}
-
 function setDefaultDescription () {
   if (props.table === 'cnum' && !description.value) {
-    description.value = cnumDefaultDescriptions[locale.value] || ''
+    description.value = t('item.cnum_description')
   }
 }
 

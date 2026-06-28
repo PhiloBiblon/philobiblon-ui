@@ -458,6 +458,7 @@ export default {
     title: 'Title',
     description: 'Description',
     alias: 'Alias',
+    cnum_description: 'textual witness',
     back: 'Go back',
     identifiers: 'Identifiers',
     related_items: 'Related items',
