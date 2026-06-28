@@ -112,6 +112,7 @@ const emit = defineEmits(['update-qualifiers', 'create-qualifier'])
 const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
 const { notifyError } = useNotifyError()
+const { applyAlternativeLabels } = useAlternativeLabels()
 const authStore = useAuthStore()
 
 const properties = reactive([])
@@ -179,31 +180,13 @@ async function onInput (value, type, index) {
     if (search && search.length) {
       if (type === 'property') {
         if (props.table) {
-          await applyAlternativeLabels(search)
+          await applyAlternativeLabels(props.table, search)
         }
         properties[index] = search
       } else {
         propertyValues[index] = search
       }
     }
-  }
-}
-
-async function applyAlternativeLabels (searchResults) {
-  const ids = searchResults.map(r => r.id)
-  try {
-    const entities = await $wikibase.getEntities(ids, locale.value)
-    for (const result of searchResults) {
-      const entity = entities[result.id]
-      if (entity) {
-        const alt = $wikibase.getAlternativeLabel(props.table, entity, locale.value)
-        if (alt?.value) {
-          result.label = alt.value
-        }
-      }
-    }
-  } catch {
-    // fall back to original labels
   }
 }
 
