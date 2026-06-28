@@ -67,7 +67,7 @@ async function getEntity () {
     item.value = entity
     claims.value = await $wikibase.getOrderedClaims(props.table, entity.claims)
     label.value = $wikibase.getValueByLang(entity.labels, locale.value)
-    if (props.itemId) {
+    if (props.itemId && props.table === 'bioid') {
       await extractLinkingQualifiers(entity.claims)
     }
   } catch (err) {
