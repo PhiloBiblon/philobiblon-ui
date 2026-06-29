@@ -14,14 +14,14 @@
       v-model="currentTab"
     >
       <v-window-item value="results">
+        <div v-if="subject && subject.qid" class="subject-backlink mb-2">
+          <span class="text-caption text-grey">{{ t('search.results.subject') }}</span>
+          <NuxtLink :to="subjectLink" class="ml-1 link">{{ subject.label }}</NuxtLink>
+        </div>
         <v-container v-if="totalResults == 0">
           <span>{{ t('search.results.not_found') }}</span>
         </v-container>
         <v-container v-if="totalResults > 0" class="container-max">
-          <div v-if="subject && subject.qid" class="subject-backlink mb-2">
-            <span class="text-caption text-grey">{{ t('search.results.subject') }}</span>
-            <NuxtLink :to="subjectLink" class="ml-1 link">{{ subject.label }}</NuxtLink>
-          </div>
           <v-row density="comfortable">
             <v-col class="order-last order-sm-first" cols="10">
               <v-list v-model:selected="selectedItem" color="primary">
