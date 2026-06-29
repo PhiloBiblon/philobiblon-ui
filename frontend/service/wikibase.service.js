@@ -308,7 +308,8 @@ export class WikibaseService {
 
   getEntityLabel (table, id, lang) {
     const itemCache = useItemCacheStore()
-    const cachedValue = itemCache.cache[this.getLabelCacheKey(table, id, lang)]
+    const cacheKey = this.getLabelCacheKey(table, id, lang)
+    const cachedValue = itemCache.cache[cacheKey]
     if (cachedValue) {
       return cachedValue
     } else {
@@ -322,7 +323,7 @@ export class WikibaseService {
             )
           }
           itemCache.addEntry({
-            key: this.getLabelCacheKey(table, id, lang),
+            key: cacheKey,
             value: propertyLabel
           })
           return propertyLabel
@@ -662,6 +663,22 @@ export class WikibaseService {
     } catch (error) {
        
       console.error('Error during search:', error)
+    }
+  }
+
+  async formatQualifierSnak (snak, locale) {
+    const dv = snak.datavalue
+    if (!dv) return ''
+    if (dv.type === 'wikibase-entityid') {
+      const entity = await this.getEntity(dv.value.id, locale)
+      const label = this.getValueByLang(entity?.labels || {}, locale)
+      return label?.value || ''
+    } else if (dv.type === 'time') {
+      return this.wbk.wikibaseTimeToSimpleDay(dv.value) || ''
+    } else if (dv.type === 'monolingualtext') {
+      return dv.value?.text || ''
+    } else {
+      return String(dv.value ?? '')
     }
   }
 

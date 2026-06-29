@@ -455,7 +455,7 @@ export default {
     label: 'Elemento',
     title: 'Título',
     description: 'Descrición',
-    alias: 'Alcume',
+    alias: 'Alias',
     cnum_description: 'testemuño textual',
     back: 'Volve',
     identifiers: 'Identificadores',

@@ -30,10 +30,12 @@
                 :label="t('item.description')"
               />
               <v-text-field
-                v-model="alias"
+                v-if="aliasValue"
+                :model-value="aliasValue"
                 type="text"
                 class="text-subtitle-1"
                 :label="t('item.alias')"
+                readonly
               />
             </v-form>
           </v-col>
@@ -45,6 +47,7 @@
           v-if="initialClaimsLoaded"
           :for-create="true"
           :initial-claims="initialClaims"
+          :table="table"
           @update-claims="updateClaims"
         />
         <v-row class="mt-2" density="comfortable">
@@ -80,7 +83,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 
@@ -101,18 +104,16 @@ const initialClaimsLoaded = ref(false)
 const initialClaims = ref([])
 const claims = ref([])
 const description = ref('')
-const alias = ref('')
 
 const isUserLogged = computed(() => authStore.isLogged)
 const isCreateDisabled = computed(() => !!getCreateDisabledReason())
 const pbid = computed(() => initialClaims.value.find(
   item => item.property.id === $wikibase.constructor.PROPERTY_PBID
-)?.value?.datavalue?.value)
-
-watch(pbid, (newPbid) => {
-  if (newPbid && !alias.value) {
-    alias.value = newPbid
-  }
+)?.value)
+const aliasValue = computed(() => {
+  const val = pbid.value
+  if (!val) return ''
+  return typeof val === 'object' ? (val.datavalue?.value || '') : val
 })
 
 onMounted(() => {
@@ -134,35 +135,42 @@ function getCreateDisabledReason () {
     return t('messages.error.inputs.initial_claims')
   }
 
-  for (const [propertyId, claimArray] of Object.entries(claims.value)) {
-    const initialClaim = initialClaims.value.find(ic => ic.property?.id === propertyId)
-    const propertyLabel = initialClaim?.property?.label
+  const requiredPropertyIds = new Set(['P2', 'P476'])
+  if (props.table === 'manid') requiredPropertyIds.add('P329')
+  if (props.table === 'cnum') requiredPropertyIds.add('P590')
+  if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
 
-    if (
-      propertyId === 'P2' ||
-      propertyId === 'P476' ||
-      (props.table === 'cnum' && propertyId === 'P590') ||
-      (props.table === 'copid' && propertyId === 'P839')
-    ) {
-      for (const item of claimArray) {
-        if (item?.value == null || item?.value === '') {
-          return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+  for (const propKey of requiredPropertyIds) {
+    const claimArray = claims.value[propKey]
+    const initialClaim = initialClaims.value.find(c => c.property?.id === propKey)
+    const propertyLabel = initialClaim?.property?.label || propKey
+
+    if (!Array.isArray(claimArray) || claimArray.length === 0) {
+      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+    }
+
+    for (const item of claimArray) {
+      if (item?.value == null || item?.value === '') {
+        return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+      }
+
+      const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
+
+      for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
+        if (!qualifierKey || qualifierKey === 'null') {
+          return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
         }
-
-        const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
-
-        for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
-          if (!qualifierKey || qualifierKey === 'null') {
-            return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
-          }
-          if (!qualifierVal || qualifierVal === 'null') {
-            return t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
-          }
+        if (!qualifierVal || qualifierVal === 'null') {
+          return t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
         }
       }
     }
+  }
 
+  for (const [propertyId, claimArray] of Object.entries(claims.value)) {
     if (propertyId === 'P799') {
+      const initialClaim = initialClaims.value.find(ic => ic.property?.id === propertyId)
+      const propertyLabel = initialClaim?.property?.label || propertyId
       for (const item of claimArray) {
         if (item?.value == null || item?.value === '') {
           continue
@@ -207,14 +215,17 @@ function setDefaultDescription () {
   }
 }
 
+function getEntityLabel (entity) {
+  const alt = $wikibase.getAlternativeLabel(props.table, entity, locale.value)
+  return alt?.value || $wikibase.getValueByLang(entity.labels, locale.value)?.value || entity.id
+}
+
 function buildClaim (entity, qualifiers = [], value = null, removable = true) {
-  const altLabel = $wikibase.getAlternativeLabel(props.table, entity, locale.value)
-  const lbl = (altLabel ?? $wikibase.getValueByLang(entity.labels, locale.value))?.value || entity.id
   return {
     default: true,
     removable,
     property: {
-      label: lbl,
+      label: getEntityLabel(entity),
       id: entity.id,
       datatype: entity.datatype
     },
@@ -235,13 +246,11 @@ function buildClaim (entity, qualifiers = [], value = null, removable = true) {
 }
 
 function buildQualifier (_claim, qualifier) {
-  const altLabel = $wikibase.getAlternativeLabel(props.table, qualifier, locale.value)
-  const lbl = (altLabel ?? $wikibase.getValueByLang(qualifier.labels, locale.value))?.value || qualifier.id
   return {
     default: true,
     property: {
       id: qualifier.id,
-      label: lbl,
+      label: getEntityLabel(qualifier),
       datatype: qualifier.datatype
     },
     datatype: qualifier.datatype,
@@ -396,7 +405,7 @@ function cleanClaims (claimsToClean) {
 }
 
 async function create () {
-  const existingPBID = await $wikibase.getEntityFromPBID(pbid.value)
+  const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
   if (existingPBID === null) {
     try {
       const cleanedClaims = cleanClaims(claims.value)
@@ -408,14 +417,11 @@ async function create () {
         descriptions: {
           [locale.value]: description.value || ' '
         },
+        aliases: {
+          [locale.value]: aliasValue.value
+        },
         claims: {
           ...cleanedClaims
-        }
-      }
-
-      if (alias.value) {
-        data.aliases = {
-          [locale.value]: [alias.value]
         }
       }
 
@@ -431,7 +437,7 @@ async function create () {
     }
   } else {
     $notification.error(t('messages.error.creation.pbid_already_exists', {
-      pbid: pbid.value,
+      pbid: aliasValue.value,
       item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
     }))
   }
@@ -477,6 +483,25 @@ function getClaimValue (claimPbid) {
     return val.label || val.text || val.id
   }
   return val
+}
+
+function getQualifierValue (claimId, qualifierId) {
+  const claim = initialClaims.value.find(cl => cl.property?.id === claimId)
+  const qualifier = claim?.qualifiers?.find(q => q.property?.id === qualifierId)
+  const val = qualifier?.datavalue?.value
+  if (!val) return null
+  if (typeof val === 'object') {
+    return val.label || val.text || val.id
+  }
+  return val
+}
+
+function getManidPrefix () {
+  const claim = initialClaims.value.find(cl => cl.property?.id === 'P2')
+  const p2Id = claim?.value?.datavalue?.value?.id
+  if (p2Id === 'Q15') return 'MS: '
+  if (p2Id === 'Q20') return 'Ed.: '
+  return ''
 }
 
 function generateLabelFromClaims () {
@@ -527,18 +552,21 @@ function generateLabelFromClaims () {
     }
     case 'manid': {
       const holding = getClaimValue('P329')
-      const position = getClaimValue('P10')
-      if (holding && position) {
-        generatedLabel = `${holding}, ${position}`
+      if (holding) {
+        const prefix = getManidPrefix()
+        const position = getClaimValue('P10') || getQualifierValue('P329', 'P10')
+        generatedLabel = position ? `${prefix}${holding}, ${position}` : `${prefix}${holding}`
       }
       break
     }
     case 'copid': {
       const holding = getClaimValue('P329')
-      const position = getClaimValue('P10')
       const edition = getClaimValue('P839')
-      if (holding && position && edition) {
-        generatedLabel = `${holding}, ${position} (${edition})`
+      if (holding && edition) {
+        const position = getClaimValue('P10') || getQualifierValue('P329', 'P10')
+        generatedLabel = position
+          ? `${holding}, ${position} (${edition})`
+          : `${holding} (${edition})`
       }
       break
     }
@@ -570,7 +598,9 @@ function generateLabelFromClaims () {
       break
   }
 
-  label.value = generatedLabel || ''
+  if (generatedLabel) {
+    label.value = generatedLabel
+  }
 }
 </script>
 
