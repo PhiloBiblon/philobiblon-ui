@@ -29,6 +29,12 @@
                 class="text-subtitle-1"
                 :label="t('item.description')"
               />
+              <v-text-field
+                v-model="alias"
+                type="text"
+                class="text-subtitle-1"
+                :label="t('item.alias')"
+              />
             </v-form>
           </v-col>
         </v-row>
@@ -95,6 +101,7 @@ const initialClaimsLoaded = ref(false)
 const initialClaims = ref([])
 const claims = ref([])
 const description = ref('')
+const alias = ref('')
 
 const isUserLogged = computed(() => authStore.isLogged)
 const isCreateDisabled = computed(() => !!getCreateDisabledReason())
@@ -123,9 +130,8 @@ function getCreateDisabledReason () {
 
   const claimsEntries = Object.entries(claims.value)
 
-  for (let propIndex = 0; propIndex < claimsEntries.length; propIndex++) {
-    const [, claimArray] = claimsEntries[propIndex]
-    const initialClaim = initialClaims.value[propIndex]
+  for (const [propId, claimArray] of claimsEntries) {
+    const initialClaim = initialClaims.value.find(c => c.property?.id === propId)
     const propertyLabel = initialClaim?.property?.label
 
     if (
@@ -141,12 +147,14 @@ function getCreateDisabledReason () {
 
         const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
 
-        for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
-          if (!qualifierKey || qualifierKey === 'null') {
-            return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
-          }
-          if (!qualifierVal || qualifierVal === 'null') {
-            return t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
+        if (initialClaim?.property?.id !== 'P2') {
+          for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
+            if (!qualifierKey || qualifierKey === 'null') {
+              return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
+            }
+            if (!qualifierVal || qualifierVal === 'null') {
+              return t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
+            }
           }
         }
       }
@@ -214,9 +222,10 @@ function buildQualifier (_claim, qualifier) {
 
 async function getDefaultClaims (itemNumber) {
   const def = ['P476', 'P131']
+  if (props.table === 'geoid') { def.push('P799') }
   const res = await $wikibase.getClaimsOrderForNewItem(props.table)
   const propertyIds = [...new Set([...def, ...Object.keys(res)])]
-  const qualifiersProperties = [...new Set(['P700', ...Object.values(res).flat()])]
+  const qualifiersProperties = [...new Set(['P700', 'P106', ...Object.values(res).flat()])]
   const entities = await $wikibase.getEntities(propertyIds, locale.value)
   const qualifiersArr = await $wikibase.getEntities(qualifiersProperties, locale.value)
 
@@ -253,7 +262,11 @@ async function getDefaultClaims (itemNumber) {
         const yyyy = String(today.getFullYear()).padStart(4, '0')
         const mm = String(today.getMonth() + 1).padStart(2, '0')
         const dd = String(today.getDate()).padStart(2, '0')
-        const dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
+        let dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
+        if (!dateQualifier && isValidPropertyEntity(qualifiersArr['P106'])) {
+          dateQualifier = buildQualifier(entity, qualifiersArr['P106'])
+          qualifiers.push(dateQualifier)
+        }
         if (dateQualifier) {
           dateQualifier.datavalue.value = {
             time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
@@ -286,6 +299,10 @@ function updateClaims (data) {
   initialClaims.value = data
   claims.value = generateClaimsData(data)
   generateLabelFromClaims()
+  const pbidValue = getClaimValue('P476')
+  if (pbidValue && !alias.value) {
+    alias.value = pbidValue
+  }
 }
 
 function generateClaimsData (data) {
@@ -369,6 +386,7 @@ async function create () {
         descriptions: {
           [locale.value]: description.value || ' '
         },
+        ...(alias.value && { aliases: { en: [alias.value] } }),
         claims: {
           ...cleanedClaims
         }
@@ -496,7 +514,14 @@ function generateLabelFromClaims () {
       }
       break
     }
-    case 'geoid':
+    case 'geoid': {
+      const name = getClaimValue('P34')
+      const region = getClaimValue('P297')
+      if (name) {
+        generatedLabel = region ? `${name}, ${region}` : name
+      }
+      break
+    }
     case 'insid': {
       const name = getClaimValue('P34')
       const region = getClaimValue('P297')

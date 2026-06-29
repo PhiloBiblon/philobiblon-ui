@@ -455,6 +455,7 @@ export default {
     label: 'Artículo',
     title: 'Título',
     description: 'Descripción',
+    alias: 'Alias',
     back: 'Ir atrás',
     identifiers: 'Identificadores',
     related_items: 'Elementos relacionados',
