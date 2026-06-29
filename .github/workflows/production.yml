@@ -87,6 +87,19 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Build & push QuickSearch registrar
+        uses: docker/build-push-action@v7.1.0
+        with:
+          context: frontend
+          target: quicksearch-registrar
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-quicksearch-registrar:${{ steps.tag.outputs.version }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-quicksearch-registrar:latest
+          labels: org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
   deploy:
     name: Deploy to production
     needs: build-and-push
@@ -104,6 +117,7 @@ jobs:
           script: |
             set -e
             cd ${{ vars.DEPLOY_PATH }}
-            docker compose -f docker-compose.ui-fact.yml pull
-            docker compose -f docker-compose.ui-fact.yml up -d
+            COMPOSE_CMD="docker compose -f docker-compose.ui-fact.yml"
+            $COMPOSE_CMD pull
+            $COMPOSE_CMD up -d
             docker images --filter "dangling=true" --filter "label=org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui" -q | xargs -r docker rmi -f

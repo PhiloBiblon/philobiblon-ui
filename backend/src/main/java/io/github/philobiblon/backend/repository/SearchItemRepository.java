@@ -12,17 +12,20 @@ import java.util.List;
 public interface SearchItemRepository extends JpaRepository<SearchItem, Long> {
 
     @Query("SELECT s FROM SearchItem s " +
-            "WHERE s.lang = :lang AND s.generation = :generation " +
+            "WHERE s.filterId = :filterId AND s.lang = :lang AND s.generation = :generation " +
             "AND s.searchText LIKE CONCAT('%', :term, '%') ESCAPE '\\' " +
             "ORDER BY LOCATE(:term, s.searchText), LENGTH(s.label), s.label")
-    List<SearchItem> search(@Param("lang") String lang,
+    List<SearchItem> search(@Param("filterId") String filterId,
+                            @Param("lang") String lang,
                             @Param("generation") long generation,
                             @Param("term") String term,
                             Limit limit);
 
-    @Query("SELECT MAX(s.generation) FROM SearchItem s WHERE s.lang = :lang")
-    Long findMaxGenerationByLang(@Param("lang") String lang);
+    @Query("SELECT MAX(s.generation) FROM SearchItem s WHERE s.filterId = :filterId AND s.lang = :lang")
+    Long findMaxGenerationByFilterIdAndLang(@Param("filterId") String filterId, @Param("lang") String lang);
 
     @Transactional
-    long deleteByLangAndGenerationNot(String lang, long generation);
+    long deleteByFilterIdAndLangAndGenerationNot(String filterId, String lang, long generation);
+
+    long countByFilterId(String filterId);
 }

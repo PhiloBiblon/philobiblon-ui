@@ -77,6 +77,19 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Build & push QuickSearch registrar
+        uses: docker/build-push-action@v7.1.0
+        with:
+          context: frontend
+          target: quicksearch-registrar
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-quicksearch-registrar:main-${{ steps.meta.outputs.short_sha }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-quicksearch-registrar:main-latest
+          labels: org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
   deploy:
     name: Deploy to staging
     needs: build-and-push
@@ -94,8 +107,9 @@ jobs:
           script: |
             set -e
             cd ${{ vars.DEPLOY_PATH }}
-            docker compose -f docker-compose.ui-local.yml -f docker-compose.ui-dev.yml pull
-            docker compose -f docker-compose.ui-local.yml -f docker-compose.ui-dev.yml up -d
+            COMPOSE_CMD="docker compose -f docker-compose.ui-local.yml -f docker-compose.ui-dev.yml"
+            $COMPOSE_CMD pull
+            $COMPOSE_CMD up -d
             docker images --filter "dangling=true" --filter "label=org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui" -q | xargs -r docker rmi -f
 
   cleanup:
@@ -107,7 +121,7 @@ jobs:
 
     strategy:
       matrix:
-        package: [philobiblon-ui-backend, philobiblon-ui-frontend]
+        package: [philobiblon-ui-backend, philobiblon-ui-frontend, philobiblon-ui-quicksearch-registrar]
 
     steps:
       - name: Delete old versions of ${{ matrix.package }}

@@ -55,7 +55,8 @@ const props = defineProps({
   bitagapGroup: { type: String, required: true },
   autocomplete: { type: Object, default: null },
   hintMaxWidth: { type: Number, default: 50 },
-  disabled: { type: Boolean, default: false }
+  disabled: { type: Boolean, default: false },
+  fieldName: { type: String, default: null }
 })
 
 const emit = defineEmits(['reset-value'])
@@ -71,6 +72,7 @@ const items = ref([])
 const loadingItems = ref(false)
 const search = ref(null)
 const allowFreeText = ref(false)
+const indexLoading = ref(false)
 let searchTimeout = null
 const inputWidth = ref(0)
 
@@ -86,7 +88,11 @@ onMounted(() => {
   }
 })
 
-const checkNoDataText = computed(() => loadingItems.value ? t('common.loading') : t('common.no_data'))
+const checkNoDataText = computed(() => {
+  if (loadingItems.value) return t('common.loading')
+  if (indexLoading.value) return t('wiki.search.index_loading')
+  return t('common.no_data')
+})
 const isDisabled = computed(() => props.disabled)
 
 if (props.value instanceof Object && Object.keys(props.value).length !== 0) {
@@ -135,6 +141,12 @@ watch(() => props.database, () => {
 })
 
 function fetchItems (query) {
+  const quickSearch = props.fieldName === 'simple_search' ? { filterId: `${props.table}_simple_search` } : null
+  const bitagapGroupActive = props.database === 'BITAGAP' && props.bitagapGroup !== 'ALL'
+  if (quickSearch && !bitagapGroupActive) {
+    fetchQuickSearchItems(query, quickSearch)
+    return
+  }
   const sparqlQuery = $wikibase.$query.filterQuery(props.autocomplete.query, props.database, props.bitagapGroup, props.table, locale.value)
   if (process.env.debug) {
     console.log(`run sparlql query:\n${sparqlQuery}`)
@@ -153,10 +165,7 @@ function fetchItems (query) {
       return response.json()
     })
     .then((data) => {
-      if (allowFreeText.value) {
-        const findTextLabel = `${t('search.form.common.find_text')} "${query}"`
-        data.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
-      }
+      prependFreeTextOption(data, query)
       items.value = data
       loadingItems.value = false
     })
@@ -164,6 +173,33 @@ function fetchItems (query) {
       notifyError(error)
       loadingItems.value = false
     })
+}
+
+function fetchQuickSearchItems (query, quickSearch) {
+  $wikibase.quickSearch(quickSearch.filterId, query, locale.value)
+    .then((res) => {
+      indexLoading.value = res.indexLoading
+      const data = res.indexLoading ? [] : res.results
+        .filter(item => props.database === 'ALL' || item.pbid.startsWith(`${props.database} `))
+        .map(item => ({
+          text: item.label,
+          value: { item: item.qid, label: item.label, pbid: item.pbid, desc: item.description }
+        }))
+      prependFreeTextOption(data, query)
+      items.value = data
+      loadingItems.value = false
+    })
+    .catch((error) => {
+      notifyError(error)
+      loadingItems.value = false
+    })
+}
+
+function prependFreeTextOption (data, query) {
+  if (allowFreeText.value) {
+    const findTextLabel = `${t('search.form.common.find_text')} "${query}"`
+    data.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
+  }
 }
 
 function truncateDesc (desc) {
