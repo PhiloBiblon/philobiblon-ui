@@ -456,6 +456,7 @@ export default {
     title: 'Título',
     description: 'Descripción',
     alias: 'Alias',
+    cnum_description: 'testimonio textual',
     back: 'Ir atrás',
     identifiers: 'Identificadores',
     related_items: 'Elementos relacionados',
@@ -605,7 +606,8 @@ export default {
         initial_claims: 'Los enunciados todavía se están cargando',
         claim_value_missing: 'Por favor, rellena el valor del enunciado para "{propertyLabel}"',
         qualifier_key_missing: 'Falta una propiedad calificadora en el enunciado "{claimLabel}" para "{propertyLabel}"',
-        qualifier_value_missing: 'Falta el valor de algún calificador en el enunciado "{claimLabel}" para "{propertyLabel}"'
+        qualifier_value_missing: 'Falta el valor de algún calificador en el enunciado "{claimLabel}" para "{propertyLabel}"',
+        incomplete_date: 'Por favor, introduce una fecha completa (año, mes y día) para el calificador "{propertyLabel}"'
       },
       creation: {
         pbid_already_exists: 'El PhiloBiblon ID "{pbid}" ya existe en {item}.'

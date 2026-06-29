@@ -167,7 +167,33 @@ function getCreateDisabledReason () {
     }
   }
 
+  for (const [propertyId, claimArray] of Object.entries(claims.value)) {
+    if (propertyId === 'P799') {
+      const initialClaim = initialClaims.value.find(ic => ic.property?.id === propertyId)
+      const propertyLabel = initialClaim?.property?.label || propertyId
+      for (const item of claimArray) {
+        if (item?.value == null || item?.value === '') {
+          continue
+        }
+        const dateQualifier = item?.qualifiers?.P106
+        if (dateQualifier == null || !isCompleteDate(dateQualifier)) {
+          return t('messages.error.inputs.incomplete_date', { propertyLabel })
+        }
+      }
+    }
+  }
+
   return null
+}
+
+function isCompleteDate (value) {
+  if (typeof value === 'object' && value !== null) {
+    return value.precision === 11
+  }
+  if (typeof value === 'string') {
+    return /^[+-]?\d{4}-\d{2}-\d{2}/.test(value)
+  }
+  return false
 }
 
 async function loadInitialClaims () {
@@ -175,10 +201,17 @@ async function loadInitialClaims () {
     const res = await $wikibase.getTableLastItem(props.database, props.table)
     if (res?.length && res[0]) {
       await getDefaultClaims(res[0].item_number)
+      setDefaultDescription()
       initialClaimsLoaded.value = true
     }
   } catch (error) {
     notifyError(error)
+  }
+}
+
+function setDefaultDescription () {
+  if (props.table === 'cnum' && !description.value) {
+    description.value = t('item.cnum_description')
   }
 }
 
@@ -372,7 +405,7 @@ function cleanClaims (claimsToClean) {
 }
 
 async function create () {
-  const existingPBID = await $wikibase.getEntityFromPBID(pbid.value)
+  const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
   if (existingPBID === null) {
     try {
       const cleanedClaims = cleanClaims(claims.value)
@@ -404,7 +437,7 @@ async function create () {
     }
   } else {
     $notification.error(t('messages.error.creation.pbid_already_exists', {
-      pbid: pbid.value,
+      pbid: aliasValue.value,
       item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
     }))
   }
@@ -486,7 +519,8 @@ function generateLabelFromClaims () {
       const work = getClaimValue('P590')
       const partOf = getClaimValue('P8')
       if (work && partOf) {
-        generatedLabel = `Witness of ${work}, part of ${partOf}`
+        const workTerminated = /[.!?]\s*$/.test(work) ? work.trimEnd() : `${work}.`
+        generatedLabel = `${workTerminated} ${partOf}`
       }
       break
     }

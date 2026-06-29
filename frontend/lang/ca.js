@@ -456,6 +456,7 @@ export default {
     title: 'Títol',
     description: 'Descripció',
     alias: 'Àlies',
+    cnum_description: 'testimoni textual',
     back: 'Torna',
     identifiers: 'Identificadors',
     related_items: 'Elements relacionats',
@@ -605,7 +606,8 @@ export default {
         initial_claims: 'Les afirmacions s\'estan carregant',
         claim_value_missing: 'Si us plau, ompliu el valor de l\'afirmació per a "{propertyLabel}"',
         qualifier_key_missing: 'Falta una propietat de qualificador a l\'afirmació "{claimLabel}" per a "{propertyLabel}"',
-        qualifier_value_missing: 'Falta el valor d\'algun qualificador a l\'afirmació "{claimLabel}" per a "{propertyLabel}"'
+        qualifier_value_missing: 'Falta el valor d\'algun qualificador a l\'afirmació "{claimLabel}" per a "{propertyLabel}"',
+        incomplete_date: 'Si us plau, ompliu una data completa (any, mes i dia) per al qualificador "{propertyLabel}"'
       },
       creation: {
         pbid_already_exists: 'El PhiloBiblon ID "{pbid}" ja existeix en {item}.'

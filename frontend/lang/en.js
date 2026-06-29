@@ -458,6 +458,7 @@ export default {
     title: 'Title',
     description: 'Description',
     alias: 'Alias',
+    cnum_description: 'textual witness',
     back: 'Go back',
     identifiers: 'Identifiers',
     related_items: 'Related items',
@@ -607,7 +608,8 @@ export default {
         initial_claims: 'Claims are still loading',
         claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
         qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
-        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"'
+        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"',
+        incomplete_date: 'Please fill in a complete date (year, month and day) for the "{propertyLabel}" qualifier'
       },
       creation: {
         pbid_already_exists: 'PhiloBiblon ID "{pbid}" already exists in {item}.'
