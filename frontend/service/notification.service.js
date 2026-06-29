@@ -18,6 +18,10 @@ export class NotificationService {
     this.$notify({ title: message, type: 'info', duration: DURATION })
   }
 
+  warning (message) {
+    this.$notify({ title: message, type: 'warn', duration: ERROR_DURATION })
+  }
+
   notify (message) {
     this.$notify({ title: message, duration: DURATION })
   }

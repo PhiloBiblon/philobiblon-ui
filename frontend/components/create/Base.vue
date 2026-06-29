@@ -49,12 +49,22 @@ const database = ref('BETA')
 const showGroups = ref(false)
 const groups = ['BETA', 'BITAGAP', 'BITECA']
 
+const draft = useItemDraft(props.table)
+
 watch(() => route.query.database, (val) => {
   if (groups.includes(val)) {
     database.value = val
     showGroups.value = false
   } else {
-    showGroups.value = true
+    // No database in the URL (e.g. returning from an OAuth re-login): recover it
+    // from a saved draft so the create form remounts in the same context.
+    const savedDatabase = draft.load()?.database
+    if (groups.includes(savedDatabase)) {
+      database.value = savedDatabase
+      showGroups.value = false
+    } else {
+      showGroups.value = true
+    }
   }
 }, { immediate: true })
 
