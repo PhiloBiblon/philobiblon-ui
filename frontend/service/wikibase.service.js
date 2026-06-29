@@ -666,6 +666,22 @@ export class WikibaseService {
     }
   }
 
+  async formatQualifierSnak (snak, locale) {
+    const dv = snak.datavalue
+    if (!dv) return ''
+    if (dv.type === 'wikibase-entityid') {
+      const entity = await this.getEntity(dv.value.id, locale)
+      const label = this.getValueByLang(entity?.labels || {}, locale)
+      return label?.value || ''
+    } else if (dv.type === 'time') {
+      return this.wbk.wikibaseTimeToSimpleDay(dv.value) || ''
+    } else if (dv.type === 'monolingualtext') {
+      return dv.value?.text || ''
+    } else {
+      return String(dv.value ?? '')
+    }
+  }
+
   async getRelatedItems (pbid, refTables, currentPage, resultsPerPage) {
     return await this.runSparqlQuery(
       this.$query.getRelatedItems(pbid, refTables, currentPage, resultsPerPage),
