@@ -442,6 +442,7 @@ export default {
     },
     results: {
       results: 'Resultats',
+      subject: 'Matèria:',
       sort_by: 'Ordenar per:',
       sort_option: {
         name: 'Nom',
