@@ -55,7 +55,7 @@ watch(() => route.query.database, (val) => {
   if (groups.includes(val)) {
     database.value = val
     showGroups.value = false
-  } else {
+  } else if (val == null || val === '') {
     // No database in the URL (e.g. returning from an OAuth re-login): recover it
     // from a saved draft so the create form remounts in the same context.
     const savedDatabase = draft.load()?.database
@@ -65,6 +65,9 @@ watch(() => route.query.database, (val) => {
     } else {
       showGroups.value = true
     }
+  } else {
+    // Explicit but invalid database value: show the selector, never a stale draft.
+    showGroups.value = true
   }
 }, { immediate: true })
 

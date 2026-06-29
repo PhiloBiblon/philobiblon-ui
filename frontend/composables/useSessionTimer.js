@@ -29,6 +29,14 @@ export function useSessionTimer () {
     $notification.error(t('auth.session.expired'))
   }
 
+  function warn (expiresAt) {
+    // Re-check the live session: a throttled timer may fire after expiry or
+    // after a manual logout.
+    if (!authStore.isLogged || Date.now() >= expiresAt) return
+    const minutes = Math.max(1, Math.round((expiresAt - Date.now()) / 60000))
+    $notification.warning(t('auth.session.expiring_soon', { minutes }))
+  }
+
   function schedule (expiresAt) {
     clearTimers()
     if (!expiresAt) return
@@ -41,10 +49,10 @@ export function useSessionTimer () {
 
     const msToWarning = msToExpiry - WARNING_LEAD_MS
     if (msToWarning > 0) {
-      warnTimer = setTimeout(() => {
-        const minutes = Math.max(1, Math.round((expiresAt - Date.now()) / 60000))
-        $notification.warning(t('auth.session.expiring_soon', { minutes }))
-      }, msToWarning)
+      warnTimer = setTimeout(() => warn(expiresAt), msToWarning)
+    } else {
+      // Session restored already inside the warning window: warn right away.
+      warn(expiresAt)
     }
 
     expiryTimer = setTimeout(handleExpiry, msToExpiry)

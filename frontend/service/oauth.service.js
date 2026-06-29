@@ -69,7 +69,12 @@ export class OAuthService {
     if (!token) return
     try {
       const decoded = decodeToken(token)
-      if (!decoded?.username || !decoded?.accessToken) return
+      // Reject pre-rollout cookies without an expiry, otherwise login() would
+      // synthesize a fresh TTL and extend an already-expired session.
+      if (!decoded?.username || !decoded?.accessToken || !decoded?.expiresAt) {
+        this.oauthCookie.value = null
+        return
+      }
       const { username, accessToken, expiresAt } = decoded
       useAuthStore().login({ username, accessToken, expiresAt })
     } catch (err) {
