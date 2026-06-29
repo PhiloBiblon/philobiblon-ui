@@ -112,6 +112,7 @@ const emit = defineEmits(['update-qualifiers', 'create-qualifier'])
 const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
 const { notifyError } = useNotifyError()
+const { applyAlternativeLabels } = useAlternativeLabels()
 const authStore = useAuthStore()
 
 const properties = reactive([])
@@ -178,6 +179,9 @@ async function onInput (value, type, index) {
     const search = await $wikibase.searchEntityByName(value, locale.value, locale.value, type)
     if (search && search.length) {
       if (type === 'property') {
+        if (props.table) {
+          await applyAlternativeLabels(props.table, search)
+        }
         properties[index] = search
       } else {
         propertyValues[index] = search

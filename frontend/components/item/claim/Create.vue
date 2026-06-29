@@ -121,6 +121,7 @@ const emit = defineEmits(['update-claims'])
 const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
 const { notifyError } = useNotifyError()
+const { applyAlternativeLabels } = useAlternativeLabels()
 const authStore = useAuthStore()
 
 const claims = reactive([])
@@ -193,6 +194,9 @@ async function onInput (value, type, index) {
   if (value && typeof value === 'string') {
     const search = await $wikibase.searchEntityByName(value, locale.value, locale.value, type)
     if (search && search.length) {
+      if (props.table && type === 'property') {
+        await applyAlternativeLabels(props.table, search)
+      }
       properties[index] = search
     }
   }

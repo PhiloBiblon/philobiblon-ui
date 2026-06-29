@@ -455,6 +455,7 @@ export default {
     label: 'Elemento',
     title: 'Título',
     description: 'Descrición',
+    alias: 'Alias',
     back: 'Volve',
     identifiers: 'Identificadores',
     related_items: 'Elementos relacionados',

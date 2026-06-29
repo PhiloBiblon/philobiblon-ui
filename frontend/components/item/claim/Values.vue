@@ -33,6 +33,7 @@
       <tr v-if="isUserLogged" class="table-row-edit">
         <td :colspan="formattedHeaders.length" class="table-cell-btn-edit">
           <item-qualifier-create
+            :table="table"
             :claim="item"
             @create-qualifier="createQualifier($event, index)"
           />
@@ -53,8 +54,8 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps({
-  claim: { type: Object, default: () => ({ values: [] }) },
-  table: { type: String, default: null }
+  table: { type: String, required: true },
+  claim: { type: Object, default: () => ({ values: [] }) }
 })
 
 const emit = defineEmits(['delete-claim'])
@@ -100,9 +101,10 @@ async function getHeaders () {
     return props.claim.qualifiersOrder ? props.claim.qualifiersOrder.indexOf(a) - props.claim.qualifiersOrder.indexOf(b) : -1
   })
   const headerPromises = qualifiersKeysOrdered.map(async (property) => {
+    const label = await $wikibase.getEntityLabel(props.table, property, locale.value)
     return {
       property,
-      label: await $wikibase.getEntityLabel(props.table, property, locale.value)
+      label
     }
   })
   headers.value = await Promise.all(headerPromises)
