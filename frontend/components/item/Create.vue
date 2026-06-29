@@ -178,7 +178,8 @@ async function loadInitialClaims () {
 }
 
 function buildClaim (entity, qualifiers = [], value = null, removable = true) {
-  const lbl = $wikibase.getValueByLang(entity.labels, locale.value)?.value || entity.id
+  const altLabel = $wikibase.getAlternativeLabel(props.table, entity, locale.value)
+  const lbl = (altLabel ?? $wikibase.getValueByLang(entity.labels, locale.value))?.value || entity.id
   return {
     default: true,
     removable,
@@ -204,7 +205,8 @@ function buildClaim (entity, qualifiers = [], value = null, removable = true) {
 }
 
 function buildQualifier (_claim, qualifier) {
-  const lbl = $wikibase.getValueByLang(qualifier.labels, locale.value)?.value || qualifier.id
+  const altLabel = $wikibase.getAlternativeLabel(props.table, qualifier, locale.value)
+  const lbl = (altLabel ?? $wikibase.getValueByLang(qualifier.labels, locale.value))?.value || qualifier.id
   return {
     default: true,
     property: {
@@ -263,7 +265,11 @@ async function getDefaultClaims (itemNumber) {
         const yyyy = String(today.getFullYear()).padStart(4, '0')
         const mm = String(today.getMonth() + 1).padStart(2, '0')
         const dd = String(today.getDate()).padStart(2, '0')
-        const dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
+        let dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
+        if (!dateQualifier && isValidPropertyEntity(qualifiersArr['P106'])) {
+          dateQualifier = buildQualifier(entity, qualifiersArr['P106'])
+          qualifiers.push(dateQualifier)
+        }
         if (dateQualifier) {
           dateQualifier.datavalue.value = {
             time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
