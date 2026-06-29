@@ -214,6 +214,7 @@ function buildQualifier (_claim, qualifier) {
 
 async function getDefaultClaims (itemNumber) {
   const def = ['P476', 'P131']
+  if (props.table === 'insid') { def.push('P799') }
   const res = await $wikibase.getClaimsOrderForNewItem(props.table)
   const propertyIds = [...new Set([...def, ...Object.keys(res)])]
   const qualifiersProperties = [...new Set(['P700', ...Object.values(res).flat()])]

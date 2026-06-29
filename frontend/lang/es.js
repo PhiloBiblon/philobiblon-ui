@@ -234,6 +234,10 @@ export default {
         }
       },
       insid: {
+        name: {
+          label: 'Nombre',
+          hint: ''
+        },
         city: {
           label: 'Ciudad',
           hint: 'Se refiere a la ciudad donde se ubica la biblioteca que conserva el manuscrito o impreso. Búsquese el nombre de la ciudad en su lengua nativa (v.g., London, New York) o transliterado, si viene al caso, v.g., Moskva.'
