@@ -455,6 +455,7 @@ export default {
     label: 'Artigo',
     title: 'Título',
     description: 'Descrição',
+    alias: 'Alias',
     alias: 'Pseudónimo',
     cnum_description: 'testemunho textual',
     alias: 'Alias',

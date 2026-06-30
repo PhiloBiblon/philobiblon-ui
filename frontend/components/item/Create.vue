@@ -37,6 +37,12 @@
                 :label="t('item.alias')"
                 readonly
               />
+              <v-text-field
+                v-model="alias"
+                type="text"
+                class="text-subtitle-1"
+                :label="t('item.alias')"
+              />
             </v-form>
           </v-col>
         </v-row>
@@ -136,24 +142,23 @@ function getCreateDisabledReason () {
     return t('messages.error.inputs.initial_claims')
   }
 
-  const requiredPropertyIds = new Set(['P2', 'P476'])
-  if (props.table === 'manid') requiredPropertyIds.add('P329')
-  if (props.table === 'cnum') requiredPropertyIds.add('P590')
-  if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
+  const claimsEntries = Object.entries(claims.value)
 
-  for (const propKey of requiredPropertyIds) {
-    const claimArray = claims.value[propKey]
-    const initialClaim = initialClaims.value.find(c => c.property?.id === propKey)
-    const propertyLabel = initialClaim?.property?.label || propKey
+  for (let propIndex = 0; propIndex < claimsEntries.length; propIndex++) {
+    const [, claimArray] = claimsEntries[propIndex]
+    const initialClaim = initialClaims.value[propIndex]
+    const propertyLabel = initialClaim?.property?.label
 
-    if (!Array.isArray(claimArray) || claimArray.length === 0) {
-      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-    }
-
-    for (const item of claimArray) {
-      if (item?.value == null || item?.value === '') {
-        return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-      }
+    if (
+      initialClaim?.property?.id === 'P2' ||
+      initialClaim?.property?.id === 'P476' ||
+      (props.table === 'cnum' && initialClaim?.property?.id === 'P590') ||
+      (props.table === 'copid' && initialClaim?.property?.id === 'P839')
+    ) {
+      for (const item of claimArray) {
+        if (item?.value == null || item?.value === '') {
+          return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+        }
 
       const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
 
@@ -298,25 +303,6 @@ async function getDefaultClaims (itemNumber) {
         bibliographyQualifiers[0].datavalue.value = { id: 'Q447226' }
 
         claim = buildClaim(entity, bibliographyQualifiers, bibliographyId ? { id: bibliographyId } : null)
-      } else if (entity.id === 'P799') {
-        const today = new Date()
-        const yyyy = String(today.getFullYear()).padStart(4, '0')
-        const mm = String(today.getMonth() + 1).padStart(2, '0')
-        const dd = String(today.getDate()).padStart(2, '0')
-        let dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
-        if (!dateQualifier && isValidPropertyEntity(qualifiersArr['P106'])) {
-          dateQualifier = buildQualifier(entity, qualifiersArr['P106'])
-          qualifiers.push(dateQualifier)
-        }
-        if (dateQualifier) {
-          dateQualifier.datavalue.value = {
-            time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
-            precision: 11,
-            calendar: 'gregorian'
-          }
-          dateQualifier.hidden = true
-        }
-        claim = buildClaim(entity, qualifiers, null)
       } else if (props.table === 'cnum' && entity.id === 'P590') {
         claim = buildClaim(entity, qualifiers, null, false)
       } else if (props.table === 'copid' && entity.id === 'P839') {
@@ -427,9 +413,6 @@ async function create () {
         descriptions: {
           [locale.value]: description.value || ' '
         },
-        aliases: {
-          [locale.value]: aliasValue.value
-        },
         claims: {
           ...cleanedClaims
         }
@@ -476,6 +459,13 @@ function safeFormatTime (timeString) {
   } catch {
     return undefined
   }
+}
+
+function getClaimEntityId (propertyId) {
+  const claim = initialClaims.value.find(cl => cl.property?.id === propertyId)
+  const val = claim?.value?.datavalue?.value
+  if (typeof val === 'object' && val?.id) { return val.id }
+  return null
 }
 
 function getClaimValue (claimPbid) {
@@ -562,10 +552,9 @@ function generateLabelFromClaims () {
     }
     case 'manid': {
       const holding = getClaimValue('P329')
-      if (holding) {
-        const prefix = getManidPrefix()
-        const position = getClaimValue('P10') || getQualifierValue('P329', 'P10')
-        generatedLabel = position ? `${prefix}${holding}, ${position}` : `${prefix}${holding}`
+      const position = getClaimValue('P10')
+      if (holding && position) {
+        generatedLabel = `${holding}, ${position}`
       }
       break
     }
