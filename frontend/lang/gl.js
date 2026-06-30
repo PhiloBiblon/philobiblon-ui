@@ -456,7 +456,6 @@ export default {
     title: 'Título',
     description: 'Descrición',
     alias: 'Alias',
-    alias: 'Alias',
     cnum_description: 'testemuño textual',
     back: 'Volve',
     identifiers: 'Identificadores',

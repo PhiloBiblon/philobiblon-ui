@@ -456,7 +456,6 @@ export default {
     title: 'Títol',
     description: 'Descripció',
     alias: 'Àlies',
-    alias: 'Àlies',
     cnum_description: 'testimoni textual',
     back: 'Torna',
     identifiers: 'Identificadors',
