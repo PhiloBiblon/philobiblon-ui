@@ -234,6 +234,10 @@ export default {
         }
       },
       insid: {
+        name: {
+          label: 'Nome',
+          hint: 'Busca polo nome oficial ou de uso habitual da institución.'
+        },
         city: {
           label: 'Cidade',
           hint: 'Busque polo nome da cidade na súa lingua nativa (isto é, New York, Firenze etc.).'

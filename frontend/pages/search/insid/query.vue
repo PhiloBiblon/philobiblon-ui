@@ -82,6 +82,39 @@ const form = {
             visible: true,
             disabled: false
           },
+          name: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.insid.name.label',
+            hint: 'search.form.insid.name.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
+                {
+                  ?item wdt:P34 ?labelObj .
+                }
+                UNION
+                {
+                  ?item rdfs:label ?labelObj .
+                }
+                UNION
+                {
+                  ?item skos:altLabel ?labelObj .
+                }
+                {{langFilterWithoutBind}}
+                {{descLangFilter}}
+              }
+              `
+            }
+          },
           city: {
             active: true,
             section: 'primary',

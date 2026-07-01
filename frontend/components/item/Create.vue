@@ -262,9 +262,10 @@ function buildQualifier (_claim, qualifier) {
 
 async function getDefaultClaims (itemNumber) {
   const def = ['P476', 'P131']
+  if (props.table === 'insid') { def.push('P799') }
   const res = await $wikibase.getClaimsOrderForNewItem(props.table)
   const propertyIds = [...new Set([...def, ...Object.keys(res)])]
-  const qualifiersProperties = [...new Set(['P700', ...Object.values(res).flat()])]
+  const qualifiersProperties = [...new Set(['P700', 'P106', ...Object.values(res).flat()])]
   const entities = await $wikibase.getEntities(propertyIds, locale.value)
   const qualifiersArr = await $wikibase.getEntities(qualifiersProperties, locale.value)
 
@@ -301,7 +302,11 @@ async function getDefaultClaims (itemNumber) {
         const yyyy = String(today.getFullYear()).padStart(4, '0')
         const mm = String(today.getMonth() + 1).padStart(2, '0')
         const dd = String(today.getDate()).padStart(2, '0')
-        const dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
+        let dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
+        if (!dateQualifier && isValidPropertyEntity(qualifiersArr['P106'])) {
+          dateQualifier = buildQualifier(entity, qualifiersArr['P106'])
+          qualifiers.push(dateQualifier)
+        }
         if (dateQualifier) {
           dateQualifier.datavalue.value = {
             time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
