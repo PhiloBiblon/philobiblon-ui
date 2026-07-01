@@ -135,7 +135,7 @@ export class WikibaseService {
   }
 
   async getClaimsOrderForNewItem (table) {
-    return await this.getClaimsOrder(table, this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM)
+    return await this.getClaimsOrder(table, this.$config.wikibaseNewItemPage)
   }
 
   async getClaimsOrder (table, pageName = this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE) {
