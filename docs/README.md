@@ -160,6 +160,8 @@ cd backend
 
 ## Development Workflow
 
+> Branch naming and commit message conventions are documented in [CONTRIBUTING.md](../CONTRIBUTING.md).
+
 ```mermaid
 flowchart LR
     A[🧑‍💻 Code changes] --> B[🤖 Automated review\nCodeRabbit]
