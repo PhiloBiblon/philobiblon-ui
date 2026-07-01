@@ -156,12 +156,14 @@ function getCreateDisabledReason () {
 
       const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
 
-      for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
-        if (!qualifierKey || qualifierKey === 'null') {
-          return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
-        }
-        if (!qualifierVal || qualifierVal === 'null') {
-          return t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
+      if (propKey !== 'P2') {
+        for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
+          if (!qualifierKey || qualifierKey === 'null') {
+            return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
+          }
+          if (!qualifierVal || qualifierVal === 'null') {
+            return t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
+          }
         }
       }
     }
