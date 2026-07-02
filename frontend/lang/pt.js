@@ -464,6 +464,7 @@ export default {
     messages: {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',
+      load_after_create_failed: 'O item foi criado com sucesso, mas houve um problema ao carregá-lo. Tente atualizar em alguns segundos.',
       invalid_url: 'Por favor preencha um URL válido!'
     },
     create: {

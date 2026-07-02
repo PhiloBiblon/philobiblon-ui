@@ -433,11 +433,14 @@ async function create () {
 
       const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
 
-      if (response.success) {
-        await router.push(localePath('/item/' + response.entity.id))
-      } else {
+      if (!response.success) {
         throw response
       }
+
+      await router.push(localePath({
+        path: '/item/' + response.entity.id,
+        query: { justCreated: 'true' }
+      }))
     } catch (error) {
       notifyError(error)
     }

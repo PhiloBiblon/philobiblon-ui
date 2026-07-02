@@ -464,6 +464,7 @@ export default {
     messages: {
       invalid_id: 'Identificador inválido.',
       not_found: 'No encontrado.',
+      load_after_create_failed: 'El elemento se ha creado correctamente, pero ha habido un problema al cargarlo. Prueba a refrescar en unos segundos.',
       invalid_url: '¡Por favor rellene una URL válida!'
     },
     create: {

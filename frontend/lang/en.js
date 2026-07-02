@@ -466,6 +466,7 @@ export default {
     messages: {
       invalid_id: 'Invalid identifier.',
       not_found: 'Not found.',
+      load_after_create_failed: 'Item created successfully, but there was a problem loading it. Try refreshing in a few seconds.',
       invalid_url: 'Please fill a valid URL!'
     },
     create: {
