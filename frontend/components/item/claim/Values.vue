@@ -3,7 +3,7 @@
     v-if="claim"
     :headers="formattedHeaders"
     :hide-default-header="!headers.length"
-    :items="claim.values"
+    :items="sortedItems"
     :items-per-page-options="perPageOptions"
     :items-per-page-text="`${t('common.properties')} ${t('common.per_page')}`"
     :hide-default-footer="shouldHideFooter"
@@ -77,6 +77,19 @@ const perPageOptions = [
 
 const isUserLogged = computed(() => authStore.isLogged)
 
+const sortedItems = computed(() => {
+  const values = props.claim?.values ?? []
+  if (props.claim?.property !== 'P12') return values
+  return [...values].sort((a, b) => {
+    const timeA = a.qualifiers?.P49?.[0]?.datavalue?.value?.time
+    const timeB = b.qualifiers?.P49?.[0]?.datavalue?.value?.time
+    if (!timeA && !timeB) return 0
+    if (!timeA) return 1
+    if (!timeB) return -1
+    return timeB.localeCompare(timeA)
+  })
+})
+
 const formattedHeaders = computed(() => [
   { title: '', key: '_value', sortable: false },
   ...headers.value.map(header => ({
@@ -111,7 +124,7 @@ async function getHeaders () {
 }
 
 async function createQualifier (qualifiers, index) {
-  const value = props.claim.values[index]
+  const value = sortedItems.value[index]
   if (!value.qualifiers) {
     value.qualifiers = {}
   }
@@ -120,7 +133,7 @@ async function createQualifier (qualifiers, index) {
 }
 
 async function deleteQualifier (qualifier, index) {
-  const value = props.claim.values[index]
+  const value = sortedItems.value[index]
   const qualifiers = value.qualifiers[qualifier.property]
   const findIndex = qualifiers.findIndex(item => item.hash === qualifier.hash)
   if (findIndex !== -1) {
