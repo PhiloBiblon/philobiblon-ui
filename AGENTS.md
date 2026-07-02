@@ -52,10 +52,15 @@ Two modules behind an nginx reverse proxy:
 
 ### UI configuration via wiki pages
 
-The frontend reads special Wikibase wiki pages to drive UI behaviour:
-- `Ui_SortedProperties` — display order of claims per table type
-- `Ui_SortedProperties_NewItem` — claim order for new items
-- `Ui_ControlledVocabulary` — autocomplete queries and default values per field
+The frontend reads special Wikibase wiki pages to drive UI behaviour. All three are parsed in `frontend/service/wikibase.service.js` and fetched via `getWikibasePage(pageName)`.
+
+- **`Ui_SortedProperties`** — display order of claims per table type, on existing items. Consumed via `getClaimsOrder(table)`.
+- **`Ui_SortedProperties_NewItem`** — which claims/qualifiers get pre-filled by default when creating a new item of a given table, and in what order. Consumed via `getClaimsOrderForNewItem(table)`, which delegates to `getClaimsOrder(table, pageName)` with the page name overridden. The page name itself is configurable per environment via the `WIKIBASE_NEW_ITEM_PAGE` build arg (defaults to `Ui_SortedProperties_NewItem`, see below and `nuxt.config.ts`).
+- **`Ui_ControlledVocabulary`** — autocomplete queries and default values per field, per table and per bibliography (BETA/BITECA/BITAGAP). Consumed via `getControlledVocabularyConfig(table, bibliography)`.
+
+Both `Ui_SortedProperties` and `Ui_SortedProperties_NewItem` share the same wikitext format, parsed by `parseSortedPropertiesConfig`: one `====<table>====` section per item table, with `* Pxxx` lines listing properties in order and `:: qualifier Pxxx` sub-lines listing that property's qualifier order. `Ui_ControlledVocabulary` uses a different, table-based wikitext format (`==== <table> (...) ====` sections with `| property || bibliographies || default_value || query` rows), parsed by `parseControlledVocabularySections`.
+
+**Implication for new-item defaults:** when a new claim/qualifier needs to be forced onto item creation for a specific table (e.g. adding P799 as a default claim for one table), the correct place to express that is a `====<table>====` entry in `Ui_SortedProperties_NewItem` — not a hardcoded `if (props.table === 'x') { ... }` branch in `frontend/components/item/Create.vue`. Hardcoding per-table property IDs in `getDefaultClaims`/`getCreateDisabledReason` bypasses the wiki-driven config, is easy to get wrong during merges (see the P799/P106 gating regression across PRs #475/#476/#478, where per-table `if` guards were dropped during a merge and silently became unconditional for every table), and requires a code deploy instead of a wiki edit for what should be config-only changes.
 
 ### Item types
 

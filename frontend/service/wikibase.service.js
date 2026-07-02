@@ -229,6 +229,10 @@ export class WikibaseService {
                 if (!result[sectionName][biblio]) {
                   result[sectionName][biblio] = {}
                 }
+                if (result[sectionName][biblio][property]) {
+
+                  console.error(`Duplicate entry for property ${property} and bibliography ${biblio} in section ${sectionName}: ${rowMatch}`)
+                }
                 result[sectionName][biblio][property] = {
                   default_value: defaultValue,
                   query
