@@ -65,7 +65,7 @@ export default {
             label: 'cnum'
           },
           copid: {
-            label: 'copid'
+            label: 'Cópia adicional'
           }
         }
       },
@@ -431,6 +431,12 @@ export default {
         subject: {
           label: 'Assuntos',
           hint: ''
+        }
+      },
+      copid: {
+        edition: {
+          label: 'Edição',
+          hint: 'Pesquise pela edição impressa (MsEd) da qual esta é uma cópia adicional.'
         }
       }
     },
