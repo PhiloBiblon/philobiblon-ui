@@ -10,16 +10,16 @@ We use a lightweight GitHub Flow:
 2. **Open a Pull Request** against `master` as soon as your change is ready for feedback.
 3. **CodeRabbit runs automatically** on every PR as an automated first-pass review. Address its comments.
 4. **At least one approved human review is required** before a PR can be merged — branch protection blocks merging otherwise.
-5. **Merge via squash-merge.** All commits on your branch are squashed into a single commit on `master`, titled after the PR title (e.g. `add P799 with P106 date and comma separator for UNI items (#475)`). Individual commits on your branch don't need to be perfect, but **write your PR title as a good Conventional Commit message** (see below) — squash-merge makes it the permanent history on `master`.
+5. **Merge via squash-merge.** All commits on your branch are squashed into a single commit on `master`, titled after the PR title (e.g. `feat(frontend): add P799 with P106 date and comma separator for UNI items`). Individual commits on your branch don't need to be perfect, but **write your PR title as a good Conventional Commit message** (see below) — squash-merge makes it the permanent history on `master`.
 
 What happens after merge (staging deploy, second review, production tagging) is documented in [docs/README.md's Development Workflow section](docs/README.md#development-workflow) — this file only covers getting your PR merged.
 
 ## Branch naming
 
-Use a short, descriptive branch name prefixed with the type of change, mirroring the Conventional Commit types below:
+Use a short, descriptive branch name prefixed with a short category (for example `feature/`, `fix/`, `chore/`, or `docs/`):
 
 ```
-type/short-description
+category/short-description
 ```
 
 Examples: `feature/date-filter`, `fix/manid-item-creation`, `chore/update-dependencies`, `docs/contributing-guide`.

@@ -14,9 +14,11 @@ The repo is resolved automatically from `git remote -v`, same as `docs/agents/is
 GitHub's search syntax doesn't support a clean OR between `review-requested` and `assignee`, so run two separate queries:
 
 ```
-gh pr list --state open --search "review-requested:@me" --json number,title,url,author,updatedAt,mergeStateStatus,isDraft,headRefName,reviewDecision,statusCheckRollup
-gh pr list --state open --assignee "@me" --json number,title,url,author,updatedAt,mergeStateStatus,isDraft,headRefName,reviewDecision,statusCheckRollup
+gh pr list --state open --search "review-requested:@me" --limit 200 --json number,title,url,author,updatedAt,mergeStateStatus,isDraft,headRefName,headRepositoryOwner,reviewDecision,statusCheckRollup
+gh pr list --state open --assignee "@me" --limit 200 --json number,title,url,author,updatedAt,mergeStateStatus,isDraft,headRefName,headRepositoryOwner,reviewDecision,statusCheckRollup
 ```
+
+`--limit 200` avoids the default 30-result cap silently truncating a larger queue.
 
 ### 2. Merge and dedupe
 
@@ -55,6 +57,8 @@ Don't rely on `mergeStateStatus` for this — `BLOCKED` doesn't tell you if the 
 ```
 gh api "repos/<owner>/<repo>/compare/master...<headRefName>" --jq '{ahead_by, behind_by}'
 ```
+
+If the PR's `headRepositoryOwner.login` (fetched in step 1) differs from `<owner>` — i.e. the PR comes from a fork — prefix the head ref with that owner instead: `master...<headRepositoryOwner>:<headRefName>`. Using bare `headRefName` for a forked PR compares against a same-named branch in the base repo (or 404s) instead of the fork's actual branch.
 
 URL-encode the branch name (e.g. `#` → `%23`, non-ASCII characters) or the API returns a `404`. `behind_by: 0` means the branch is rebased/up to date with master; `behind_by > 0` means it needs a rebase or merge — report the count.
 
