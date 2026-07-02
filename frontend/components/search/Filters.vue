@@ -32,6 +32,7 @@
             item-title="text"
             item-value="value"
             :label="t('search.form.common.bitagap_group.label')"
+            @update:model-value="saveBitagapGroup"
           />
         </v-col>
       </v-row>
@@ -355,13 +356,29 @@ function loadDefaultBibliography () {
     if (savedBibliography && ['BETA', 'BITAGAP', 'BITECA'].includes(savedBibliography)) {
       searchGroup.value = savedBibliography
       onGroupChange(savedBibliography)
+      if (savedBibliography === 'BITAGAP') {
+        const savedBitagapGroup = localStorage.getItem('philobiblon_default_bitagap_group')
+        if (savedBitagapGroup && ['ALL', 'ORIG', 'CARTAS'].includes(savedBitagapGroup)) {
+          bitagapGroup.value = savedBitagapGroup
+        }
+      }
     }
   }
 }
 
+function saveBitagapGroup (group) {
+  if (typeof localStorage !== 'undefined' && ['ALL', 'ORIG', 'CARTAS'].includes(group)) {
+    localStorage.setItem('philobiblon_default_bitagap_group', group)
+  }
+}
+
 function saveDefaultBibliography (bibliography) {
-  if (typeof localStorage !== 'undefined' && ['BETA', 'BITAGAP', 'BITECA'].includes(bibliography)) {
+  if (typeof localStorage === 'undefined') return
+  if (['BETA', 'BITAGAP', 'BITECA'].includes(bibliography)) {
     localStorage.setItem('philobiblon_default_bibliography', bibliography)
+  } else {
+    localStorage.removeItem('philobiblon_default_bibliography')
+    localStorage.removeItem('philobiblon_default_bitagap_group')
   }
 }
 
