@@ -136,14 +136,18 @@ watch(currentText, (newVal, oldVal) => {
 })
 
 onMounted(() => {
-  const isCreatingWithNoValue = props.mode === 'creation' && props.value === null
-  const initialValue = isCreatingWithNoValue ? today.value : props.value
+  // Only the calendar-based qualifier (P106 Date of P799 Dataset status)
+  // defaults to today's date, since the user normally wants the creation date.
+  // Every other date field stays empty so the gray placeholder
+  // (YYYY, YYYY-MM-DD, …) is shown for manual partial-date entry.
+  const shouldDefaultToToday = props.mode === 'creation' && props.value === null && props.useCalendar
+  const initialValue = shouldDefaultToToday ? today.value : props.value
   currentText.value = initialValue
   consolidatedText.value = initialValue
   if (props.useCalendar) {
     pickerDate.value = parseDate(initialValue)
   }
-  if (isCreatingWithNoValue) {
+  if (shouldDefaultToToday) {
     emit('new-value', initialValue)
   }
 })
