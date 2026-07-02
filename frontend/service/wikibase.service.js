@@ -299,6 +299,25 @@ export class WikibaseService {
       })
   }
 
+  // Retries a just-created entity a few times with backoff, to ride out read-after-write replication lag.
+  async getEntityWithRetry (id, lang, attempts = 3, baseDelayMs = 300) {
+    let lastError
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      try {
+        const entity = await this.getEntity(id, lang)
+        if (entity && !entity.missing) {
+          return entity
+        }
+      } catch (error) {
+        lastError = error
+      }
+      if (attempt < attempts) {
+        await new Promise(resolve => setTimeout(resolve, baseDelayMs * attempt))
+      }
+    }
+    throw lastError ?? new Error(`Entity ${id} not available after ${attempts} attempts`)
+  }
+
   getEntities (ids, lang) {
     const url = this.wbk.getEntities({
       ids,

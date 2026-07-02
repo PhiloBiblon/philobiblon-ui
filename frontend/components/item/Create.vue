@@ -495,7 +495,6 @@ function cleanClaims (claimsToClean) {
 async function create () {
   const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
   if (existingPBID === null) {
-    let entityCreated = false
     try {
       const cleanedClaims = cleanClaims(claims.value)
 
@@ -516,17 +515,17 @@ async function create () {
 
       const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
 
-      if (response.success) {
-        draft.clear()
-        entityCreated = true
-        await router.push(localePath('/item/' + response.entity.id))
-      } else {
+      if (!response.success) {
         throw response
       }
+
+      draft.clear()
+      await router.push(localePath({
+        path: '/item/' + response.entity.id,
+        query: { justCreated: 'true' }
+      }))
     } catch (error) {
-      if (!entityCreated) {
-        notifyError(error)
-      }
+      notifyError(error)
     }
   } else {
     $notification.error(t('messages.error.creation.pbid_already_exists', {
