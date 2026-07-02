@@ -61,7 +61,7 @@ export default {
             label: 'Subject'
           },
           cnum: {
-            label: 'cnum'
+            label: 'Textual Witness'
           },
           copid: {
             label: 'copid'
@@ -433,6 +433,16 @@ export default {
         subject: {
           label: 'Subject',
           hint: ''
+        }
+      },
+      cnum: {
+        witness_of: {
+          label: 'Witness of',
+          hint: 'Search by the work (texid) of which this is a textual witness.'
+        },
+        part_of: {
+          label: 'Part of',
+          hint: 'Search by the manuscript or edition (manid) that contains this textual witness.'
         }
       }
     },
