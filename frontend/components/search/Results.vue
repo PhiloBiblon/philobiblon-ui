@@ -14,6 +14,10 @@
       v-model="currentTab"
     >
       <v-window-item value="results">
+        <div v-if="subject && subject.qid" class="subject-backlink mb-2">
+          <span class="text-caption text-grey">{{ t('search.results.subject') }}</span>
+          <NuxtLink :to="subjectLink" class="ml-1 link">{{ subject.label }}</NuxtLink>
+        </div>
         <v-container v-if="totalResults == 0">
           <span>{{ t('search.results.not_found') }}</span>
         </v-container>
@@ -132,11 +136,13 @@ import { computed, onBeforeUpdate, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQueryStatusStore } from '~/stores/queryStatus'
 
-defineProps({
+const props = defineProps({
   sparqlQuery: { type: String, default: null },
   results: { type: Array, default: null },
   totalResults: { type: Number, default: 0 },
   resultsPerPage: { type: Number, default: 0 },
+  subject: { type: Object, default: null },
+  database: { type: String, default: 'ALL' },
   showResults: { type: Boolean, default: false }
 })
 
@@ -144,7 +150,17 @@ const emit = defineEmits(['on-sort-by-id', 'on-sort-descending', 'on-pagination'
 
 const { t } = useI18n()
 const config = useRuntimeConfig().public
+const localePath = useLocalePath()
 const queryStatusStore = useQueryStatusStore()
+
+// Link to the subject's subid item page, where the back pointers (#175) list
+// every record that uses this heading.
+const subjectLink = computed(() => props.subject?.qid
+  ? localePath({
+    path: '/item/' + props.subject.qid,
+    query: { database: props.database, table: 'subid' }
+  })
+  : null)
 
 const currentTab = ref('results')
 const selectedItem = ref([])
