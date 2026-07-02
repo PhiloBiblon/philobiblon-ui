@@ -462,6 +462,7 @@ export default {
     messages: {
       invalid_id: 'Identificador invàlid.',
       not_found: 'No trobat.',
+      load_after_create_failed: "L'ítem s'ha creat correctament, però hi ha hagut un problema en carregar-lo. Prova de refrescar en uns segons.",
       invalid_url: 'Si us plau, ompliu un URL vàlid!'
     },
     create: {
