@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 defineOptions({ inheritAttrs: false })
@@ -55,9 +55,11 @@ const linkingQualifiers = ref([])
 const pbid = computed(() => props.value.item_pbid)
 const url = computed(() => localePath(`/item/${props.value.item}`))
 
-watch(() => props.value.item, async (newItem) => {
-  if (newItem) await getEntity()
-}, { immediate: true })
+onMounted(async () => {
+  if (props.value.item) {
+    await getEntity()
+  }
+})
 
 async function getEntity () {
   try {
