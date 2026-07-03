@@ -61,7 +61,7 @@ export default {
             label: 'Subject'
           },
           cnum: {
-            label: 'cnum'
+            label: 'Textual Witness'
           },
           copid: {
             label: 'Additional Copy'
@@ -447,6 +447,16 @@ export default {
         edition: {
           label: 'Edition',
           hint: 'Search by the printed edition (MsEd) of which this is an additional copy.'
+        }
+      },
+      cnum: {
+        witness_of: {
+          label: 'Witness of',
+          hint: 'Search by the work (texid) of which this is a textual witness.'
+        },
+        part_of: {
+          label: 'Part of',
+          hint: 'Search by the manuscript or edition (manid) that contains this textual witness.'
         }
       }
     },

@@ -62,7 +62,7 @@ export default {
             label: 'Assunto'
           },
           cnum: {
-            label: 'cnum'
+            label: 'Testemunha textual'
           },
           copid: {
             label: 'Cópia adicional'
@@ -445,6 +445,16 @@ export default {
         edition: {
           label: 'Edição',
           hint: 'Pesquise pela edição impressa (MsEd) da qual esta é uma cópia adicional.'
+        }
+      },
+      cnum: {
+        witness_of: {
+          label: 'Testimónio de',
+          hint: 'Pesquisa pela obra (texid) da qual esta é uma testemunha textual.'
+        },
+        part_of: {
+          label: 'Parte de',
+          hint: 'Pesquisa pelo manuscrito ou edição (manid) que contém esta testemunha textual.'
         }
       }
     },

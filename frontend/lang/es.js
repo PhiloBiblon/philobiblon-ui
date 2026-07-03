@@ -61,7 +61,7 @@ export default {
             label: 'Asunto'
           },
           cnum: {
-            label: 'cnum'
+            label: 'Testimonio textual'
           },
           copid: {
             label: 'Ejemplar adicional'
@@ -128,7 +128,7 @@ export default {
         find_text: 'Busca texto',
         section: {
           advanced: 'Búsqueda avanzada',
-          external_description: 'External description'
+          external_description: 'Descripción externa'
         },
         group: {
           label: 'Base de datos'
@@ -445,6 +445,16 @@ export default {
         edition: {
           label: 'Edición',
           hint: 'Busque por la edición impresa (MsEd) de la que este es un ejemplar adicional.'
+        }
+      },
+      cnum: {
+        witness_of: {
+          label: 'Testimonio de',
+          hint: 'Busca por la obra (texid) de la cual este es un testimonio textual.'
+        },
+        part_of: {
+          label: 'Parte de',
+          hint: 'Busca por el manuscrito o edición (manid) que contiene este testimonio textual.'
         }
       }
     },

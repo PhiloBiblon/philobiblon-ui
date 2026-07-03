@@ -61,7 +61,7 @@ export default {
             label: 'Assumpte'
           },
           cnum: {
-            label: 'cnum'
+            label: 'Testimoni textual'
           },
           copid: {
             label: 'Exemplar addicional'
@@ -445,6 +445,16 @@ export default {
         edition: {
           label: 'Edició',
           hint: 'Cerqueu per l\'edició impresa (MsEd) de la qual aquest és un exemplar addicional.'
+        }
+      },
+      cnum: {
+        witness_of: {
+          label: 'Testimoni de',
+          hint: 'Cerca per l\'obra (texid) de la qual aquest és un testimoni textual.'
+        },
+        part_of: {
+          label: 'Part de',
+          hint: 'Cerca pel manuscrit o edició (manid) que conté aquest testimoni textual.'
         }
       }
     },
