@@ -2,7 +2,7 @@
   <div class="all-width">
     <v-container>
       <v-row class="back">
-        <a class="link" @click="router.go(-1)">
+        <a class="link" @click="cancel">
           <v-tooltip location="right">
             <template #activator="{ props: tooltipProps }">
               <v-icon color="primary" size="large" v-bind="tooltipProps">
@@ -13,7 +13,20 @@
           </v-tooltip>
         </a>
       </v-row>
-      <template v-if="isUserLogged">
+      <v-alert
+        v-if="!isUserLogged && initialClaimsLoaded"
+        type="warning"
+        class="mb-4"
+        variant="tonal"
+      >
+        <div class="d-flex align-center justify-space-between flex-wrap ga-2">
+          <span>{{ t('auth.session.expired') }}</span>
+          <v-btn color="primary" variant="flat" @click="loginAgain">
+            {{ t('auth.login.label') }}
+          </v-btn>
+        </div>
+      </v-alert>
+      <template v-if="isUserLogged || initialClaimsLoaded">
         <v-row>
           <v-col>
             <v-form ref="form">
@@ -55,7 +68,7 @@
           <v-btn
             class="mt-4 mr-4"
             elevation="2"
-            @click="router.go(-1)"
+            @click="cancel"
           >
             {{ t('common.cancel') }}
           </v-btn>
@@ -65,7 +78,7 @@
                 <v-btn
                   class="mt-4"
                   elevation="2"
-                  :disabled="isCreateDisabled"
+                  :disabled="isCreateDisabled || !isUserLogged"
                   @click="create"
                 >
                   {{ t('common.create') }}
@@ -83,7 +96,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 
@@ -95,9 +108,12 @@ const props = defineProps({
 const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
 const router = useRouter()
+const route = useRoute()
 const localePath = useLocalePath()
 const authStore = useAuthStore()
 const { notifyError } = useNotifyError()
+const draft = useItemDraft(props.table)
+const previousPathCookie = useCookie('previous-path', { path: '/', maxAge: 5 * 60 })
 
 const label = ref('')
 const initialClaimsLoaded = ref(false)
@@ -120,11 +136,47 @@ onMounted(() => {
   nextTick(() => {
     if (!isUserLogged.value || !props.database) {
       return router.push(localePath('/'))
+    }
+    const savedDraft = draft.load()
+    if (savedDraft && savedDraft.database === props.database) {
+      restoreDraft(savedDraft)
     } else {
       loadInitialClaims()
     }
   })
 })
+
+function restoreDraft (savedDraft) {
+  label.value = savedDraft.label || ''
+  description.value = savedDraft.description || ''
+  initialClaims.value = savedDraft.initialClaims || []
+  claims.value = generateClaimsData(initialClaims.value)
+  initialClaimsLoaded.value = true
+}
+
+// Persist the in-progress form so it survives a session expiry + OAuth re-login.
+function persistDraft () {
+  if (!initialClaimsLoaded.value) return
+  draft.save({
+    database: props.database,
+    label: label.value,
+    description: description.value,
+    initialClaims: initialClaims.value
+  })
+}
+
+watch([label, description], persistDraft)
+
+function loginAgain () {
+  persistDraft()
+  previousPathCookie.value = route.path
+  $wikibase.$oauth.step1()
+}
+
+function cancel () {
+  draft.clear()
+  router.go(-1)
+}
 
 function getCreateDisabledReason () {
   if (!label.value) {
@@ -340,6 +392,7 @@ function updateClaims (data) {
   initialClaims.value = data
   claims.value = generateClaimsData(data)
   generateLabelFromClaims()
+  persistDraft()
 }
 
 function generateClaimsData (data) {
@@ -434,6 +487,7 @@ async function create () {
       const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
 
       if (response.success) {
+        draft.clear()
         await router.push(localePath('/item/' + response.entity.id))
       } else {
         throw response

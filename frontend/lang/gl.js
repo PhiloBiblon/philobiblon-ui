@@ -113,6 +113,10 @@ export default {
     logout: {
       label: 'Pechar sesión',
       success: 'Ata a próxima vez!'
+    },
+    session: {
+      expiring_soon: 'A túa sesión caducará en {minutes} minutos. Garda o teu traballo ou volve iniciar sesión para seguir conectado.',
+      expired: 'A túa sesión caducou. Inicia sesión de novo para continuar.'
     }
   },
   welcome: {
