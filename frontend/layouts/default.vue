@@ -116,6 +116,8 @@ const { mdAndDown } = useDisplay()
 const authStore = useAuthStore()
 const breadcrumbStore = useBreadcrumbStore()
 
+useSessionTimer()
+
 const previousPathCookie = useCookie('previous-path', { path: '/', maxAge: 5 * 60 })
 const oauthCookie = useCookie('oauth')
 

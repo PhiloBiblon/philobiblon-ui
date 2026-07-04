@@ -113,6 +113,10 @@ export default {
     logout: {
       label: 'Tancar sessió',
       success: 'Fins la propera!'
+    },
+    session: {
+      expiring_soon: 'La teva sessió caducarà en {minutes} minuts. Desa la teva feina o torna a iniciar sessió per continuar connectat.',
+      expired: 'La teva sessió ha caducat. Torna a iniciar sessió per continuar.'
     }
   },
   welcome: {
