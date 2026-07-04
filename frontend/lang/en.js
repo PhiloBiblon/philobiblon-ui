@@ -113,6 +113,10 @@ export default {
     logout: {
       label: 'Logout',
       success: 'See you next time!'
+    },
+    session: {
+      expiring_soon: 'Your session will expire in {minutes} minutes. Save your work or log in again to stay connected.',
+      expired: 'Your session has expired. Log in again to continue.'
     }
   },
   welcome: {

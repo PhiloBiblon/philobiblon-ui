@@ -114,6 +114,10 @@ export default {
     logout: {
       label: 'Sair',
       success: 'Até a próxima!'
+    },
+    session: {
+      expiring_soon: 'A sua sessão expirará em {minutes} minutos. Guarde o seu trabalho ou inicie sessão novamente para continuar conectado.',
+      expired: 'A sua sessão expirou. Inicie sessão novamente para continuar.'
     }
   },
   welcome: {
@@ -460,7 +464,7 @@ export default {
     title: 'Título',
     description: 'Descrição',
     alias: 'Pseudónimo',
-    cnum_description: 'testemunho textual',
+    cnum_description: 'testemunha textual',
     back: 'Volte',
     identifiers: 'Identificadores',
     related_items: 'Itens relacionados',
