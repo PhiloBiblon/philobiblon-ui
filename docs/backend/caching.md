@@ -94,7 +94,14 @@ search.index.retry.backoffMultiplier=4
 
 `GET /api/search/cache/status` reports, per registered query: hint, snippet, generation,
 row count, last refresh/access, last error, usage counters (since last refresh and
-lifetime total) and whether a load is in flight, plus totals.
+lifetime total) and whether a load is in flight, plus totals — including `dbFileSizeBytes`,
+the actual size of the H2 MVStore file on disk (also logged at the end of every nightly
+refresh). Every generation swap deletes a batch of rows and inserts a similarly-sized
+new one; H2 doesn't rewrite deleted space in place, so this delete/insert churn is
+reclaimed by MVStore's own background compaction (`AUTO_COMPACT_FILL_RATE`, 90% by
+default) rather than anything this app triggers. `dbFileSizeBytes` is how to notice, over
+time, whether that default compaction is keeping pace with the churn — not a signal that
+triggers any automatic action.
 
 ### Seeding
 

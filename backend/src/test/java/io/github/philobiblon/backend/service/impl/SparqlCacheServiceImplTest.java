@@ -7,11 +7,14 @@ import io.github.philobiblon.backend.repository.CachedQueryRowRepository;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -457,6 +460,26 @@ class SparqlCacheServiceImplTest {
                 () -> service.searchLegacy("SELECT ?label WHERE {", "cervantes"));
 
         verify(queryRepository, never()).save(any());
+    }
+
+    // --- DB file size observability ---
+
+    @Test
+    void reportsActualDbFileSizeInBytes(@TempDir Path tempDir) throws Exception {
+        Path dbPath = tempDir.resolve("searchcache");
+        Files.write(Path.of(dbPath + ".mv.db"), new byte[12345]);
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        service.dbFilePath = dbPath.toString();
+
+        assertEquals(12345L, service.currentDbFileSizeBytes());
+    }
+
+    @Test
+    void returnsZeroWhenDbFileDoesNotExist(@TempDir Path tempDir) {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        service.dbFilePath = tempDir.resolve("does-not-exist").toString();
+
+        assertEquals(0L, service.currentDbFileSizeBytes());
     }
 
     // --- searchVars normalization ---
