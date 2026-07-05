@@ -8,6 +8,7 @@
 
 <script setup>
 import { useI18n } from 'vue-i18n'
+import createForm from '~/service/search-forms/subid'
 
 const { t } = useI18n()
 
@@ -16,109 +17,5 @@ const breadcrumb_items = [
   { title: t('menu.item.search.item.subid.label'), disabled: true }
 ]
 
-const form = {
-        section: [
-          'primary'
-        ],
-        input: {
-          group: {
-            permanent: true,
-            value: 'ALL',
-            disabled: false
-          },
-          bitagap_group: {
-            permanent: true,
-            value: 'ALL',
-            disabled: false
-          },
-          simple_search: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.common.simple_search.label',
-            hint: 'search.form.common.simple_search.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?item ?label ?desc
-              WHERE {
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                {{bitagapGroupFilter}}
-                {
-                  ?item rdfs:label ?labelObj .
-                }
-                UNION
-                {
-                  ?item skos:altLabel ?labelObj .
-                }
-                {{langFilter}}
-                {{descLangFilter}}
-              }
-              `,
-              allowFreeText: true
-            }
-          },
-          q_number: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.common.q_number.label',
-            hint: 'search.form.common.q_number.hint',
-            type: 'text',
-            value: '',
-            visible: true,
-            disabled: false
-          },
-          philobiblon_id: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.common.philobiblon_id.label',
-            hint: 'search.form.common.philobiblon_id.hint',
-            type: 'text',
-            value: '',
-            visible: true,
-            disabled: false
-          },
-          subject: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.subid.subject.label',
-            hint: 'search.form.subid.subject.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?item ?label ?desc {
-                {
-                  ?item wdt:P476 ?pbid .
-                  FILTER regex(?pbid, '{{database}} {{table}} ') .
-                  {{bitagapGroupFilter}}
-                  {
-                    ?item wdt:P1031 ?label .
-                    BIND('P1031' AS ?property)
-                  }
-                  UNION
-                  {
-                    ?item rdfs:label ?labelObj .
-                    BIND('label' AS ?property)
-                  }
-                }
-                {{itemLangGroupPattern}}
-              }
-              `
-            }
-          },
-          search_type: {
-            permanent: true,
-            value: true,
-            disabled: false
-          }
-        }
-      }
+const form = createForm()
 </script>

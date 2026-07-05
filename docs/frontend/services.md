@@ -31,7 +31,7 @@ export class WikibaseService {
     this.$query = new QueryService({ config })
     this.$oauth = new OAuthService({ config })
     this.$notification = $notification
-    this.sparqlBackendEndpoint = this.joinUrl(config.apiBaseUrl, 'api/sparql/query')
+    this.cachedSearchEndpoint = this.joinUrl(config.apiBaseUrl, 'api/search')
   }
 }
 ```
@@ -54,15 +54,23 @@ Fetches multiple entities in one request.
 const entities = await $wikibase.getEntities(['Q123', 'Q456'], 'ca')
 ```
 
-#### `runSparqlQuery(query, minimize, useBackendCache, useInternalCache)`
-Executes a SPARQL query with optional caching.
+#### `runSparqlQuery(query, minimize, useInternalCache)`
+Executes a SPARQL query directly against the endpoint, with optional frontend caching.
 
 - `minimize` — simplify RDF result structure
-- `useBackendCache` — use backend Caffeine cache (24h TTL)
 - `useInternalCache` — use frontend Pinia queryCache (2-min TTL)
 
 ```javascript
-const results = await $wikibase.runSparqlQuery(query, true, true, false)
+const results = await $wikibase.runSparqlQuery(query, true)
+```
+
+#### `cachedSearch(sparqlQuery, q, { searchVars, hint, limit })`
+Searches a query's results through the backend DB cache (`POST /api/search`, v=2 contract).
+Returns `{ indexLoading, results: [{ text, value }] }`; while `indexLoading` is true the
+backend is materializing the query in the background and the caller should retry.
+
+```javascript
+const res = await $wikibase.cachedSearch(sparqlQuery, 'cervantes', { hint: 'bioid.author' })
 ```
 
 #### `getOrderedClaims(table, claims)`

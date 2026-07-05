@@ -36,13 +36,24 @@ export class WikibaseService {
     this.$query = new QueryService({ config })
     this.$oauth = new OAuthService({ config })
     this.$notification = $notification
-    this.sparqlBackendEndpoint = this.joinUrl(config.apiBaseUrl, 'api/sparql/query')
-    this.quickSearchEndpoint = this.joinUrl(config.apiBaseUrl, 'api/search/quick')
+    this.cachedSearchEndpoint = this.joinUrl(config.apiBaseUrl, 'api/search')
   }
 
-  async quickSearch (text, lang) {
-    const url = `${this.quickSearchEndpoint}?q=${encodeURIComponent(text)}&lang=${encodeURIComponent(lang)}`
-    const response = await fetch(url)
+  /**
+   * Search a query's results through the backend DB cache (POST /api/search v=2).
+   * Returns { indexLoading, results: [{ text, value }] }; while indexLoading is true
+   * the backend is materializing the query in the background and the caller should retry.
+   */
+  async cachedSearch (sparqlQuery, q, { searchVars, hint, limit } = {}) {
+    const params = new URLSearchParams({ v: '2', q, sparqlQuery })
+    if (searchVars) { params.set('searchVars', searchVars) }
+    if (hint) { params.set('hint', hint) }
+    if (limit) { params.set('limit', String(limit)) }
+    const response = await fetch(this.cachedSearchEndpoint, {
+      method: 'POST',
+      body: params.toString(),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
     if (response.status < 200 || response.status > 299) {
       throw new Error(response.statusText)
     }
@@ -565,14 +576,10 @@ export class WikibaseService {
     }
   }
 
-  runSparqlQuery (query, minimize = false, useBackendCache = false, useInternalCache = true) {
-    if (useBackendCache) {
-      useInternalCache = false
-    }
-
+  runSparqlQuery (query, minimize = false, useInternalCache = true) {
     if (process.env.debug) {
-       
-      console.log(`run sparlql query:\n${query}\ninternal cache: ${useInternalCache}\nbackend cache: ${useBackendCache}`)
+
+      console.log(`run sparlql query:\n${query}\ninternal cache: ${useInternalCache}`)
     }
 
     let queryHash = null
@@ -585,12 +592,8 @@ export class WikibaseService {
     }
 
     const urlParts = this.wbk.sparqlQuery(query).split('?')
-    let url = urlParts[0]
+    const url = urlParts[0]
     const sparql = urlParts[1]
-
-    if (useBackendCache) {
-      url = this.sparqlBackendEndpoint
-    }
 
     const options = {
       method: 'POST',
