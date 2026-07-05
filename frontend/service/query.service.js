@@ -1,9 +1,9 @@
 import { useQueryStatusStore } from '~/stores/queryStatus'
+// Pure template functions live in query.templates.js (no Nuxt/Pinia imports) so
+// scripts/seed-cache can generate byte-identical queries; this class delegates
+// to them, injecting the configured SPARQL prefix.
+import * as templates from './query.templates'
 
-const BITAGAP_DB = 'BITAGAP'
-const CARTAS_TEXT = '[Cartas de]'
-const BITAGAP_GROUP_CARTAS = 'CARTAS'
-const BITAGAP_GROUP_ORIGINAL = 'ORIG'
 export class QueryService {
   constructor ({ config }) {
     this.$config = config
@@ -25,40 +25,19 @@ export class QueryService {
   }
 
   addPrefixes (query) {
-    if (this.$config.sparqlQueryPrefix) {
-      return `${this.$config.sparqlQueryPrefix.replaceAll('\\n', '\n')} ${query}`
-    } else {
-      return query
-    }
+    return templates.addPrefixes(query, this.$config.sparqlQueryPrefix)
   }
 
   generateSearchLangFiltersWithoutBind () {
-    return "FILTER (lang(?labelObj) IN ('ca', 'es', 'en', 'gl', 'pt')) ."
+    return templates.generateSearchLangFiltersWithoutBind()
   }
 
   generateSearchLangFilters (lang) {
-    return `
-      ${this.generateSearchLangFiltersWithoutBind(lang)}
-      BIND(STR(?labelObj) AS ?label) .
-      `
+    return templates.generateSearchLangFilters(lang)
   }
 
   generateSearchLangGroupPattern (itemName, lang) {
-    // the sameAs condition is used for redirections (one item is redirected to another one)
-    return `
-      OPTIONAL {
-        {
-          ?${itemName} rdfs:label ?labelObj .
-        }
-        UNION
-        {
-          ?${itemName} owl:sameAs ?real_target .
-          ?real_target rdfs:label ?labelObj .
-        }
-        ${this.generateSearchLangFilters(lang)}
-      }
-      ${this.generateDescLangFilters(itemName, lang)}
-      `
+    return templates.generateSearchLangGroupPattern(itemName, lang)
   }
 
   generateLangFilter (lang) {
@@ -75,17 +54,11 @@ export class QueryService {
   }
 
   generateDescLangFilter (itemName, lang) {
-    return `OPTIONAL { ?${itemName} schema:description ?desc FILTER langMatches(lang(?desc), '${lang}') }.`
+    return templates.generateDescLangFilter(itemName, lang)
   }
 
   generateDescLangFilters (itemName, lang) {
-    let langFilters = this.generateDescLangFilter(itemName, lang)
-    // fallback to en if selected lang has no label
-    if (lang !== 'en') {
-      langFilters += '\n' + this.generateDescLangFilter(itemName, 'en')
-    }
-
-    return langFilters
+    return templates.generateDescLangFilters(itemName, lang)
   }
 
   replaceDiacritics (field) {
@@ -141,115 +114,40 @@ export class QueryService {
     }
   }
 
-  _bitagapGroupFilter (bitagapGroup, labelVar) {
-    if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-      return `
-          FILTER(!CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"))
-          `
-    } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-      return `
-          FILTER(CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"))
-          `
-    }
-    return ''
-  }
-
-  _generateBitagapGroupSubjectTopicFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        ${this._bitagapGroupFilter(bitagapGroup, 'related_topic_item_label')}
-        `
-  }
-
   generateBitagapGroupInstitutionFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-        ?related_work_item wdt:P243 ?topic_item .
-        ?topic_item rdfs:label ?topic_item_label .
-        ?related_work_item wdt:P243 ?item .
-        ${this._bitagapGroupFilter(bitagapGroup, 'topic_item_label')}
-        `
+    return templates.generateBitagapGroupInstitutionFilters(bitagapGroup)
   }
 
   generateBitagapGroupWorkFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return `
-        ?item wdt:P243 ?subjectItem .
-        ?subjectItem rdfs:label ?labelSubjectItem .
-        ${this._bitagapGroupFilter(bitagapGroup, 'labelSubjectItem')}
-        `
+    return templates.generateBitagapGroupWorkFilters(bitagapGroup)
   }
 
   generateBitagapGroupPersonFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-        ?related_work_item wdt:P243 ?topic_item .
-        ?topic_item rdfs:label ?topic_item_label .
-        ?related_work_item wdt:P703 ?item .
-        ${this._bitagapGroupFilter(bitagapGroup, 'topic_item_label')}
-        `
+    return templates.generateBitagapGroupPersonFilters(bitagapGroup)
   }
 
   generateBitagapGroupReferenceFilters (bitagapGroup) {
-    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+    return templates.generateBitagapGroupReferenceFilters(bitagapGroup)
   }
 
   generateBitagapGroupGeographyFilters (bitagapGroup) {
-    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+    return templates.generateBitagapGroupGeographyFilters(bitagapGroup)
   }
 
   generateBitagapGroupSubjectFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return this._bitagapGroupFilter(bitagapGroup, 'label')
+    return templates.generateBitagapGroupSubjectFilters(bitagapGroup)
   }
 
   generateBitagapGroupManuscriptFilters (bitagapGroup) {
-    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+    return templates.generateBitagapGroupManuscriptFilters(bitagapGroup)
   }
 
   generateBitagapGroupFiltersForSubject (bitagapGroup) {
-    if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-      return `
-          FILTER(!CONTAINS(?label, "${CARTAS_TEXT}"))
-        `
-    } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-      return `
-          FILTER(CONTAINS(?label, "${CARTAS_TEXT}"))
-        `
-    }
-    return ''
+    return templates.generateBitagapGroupFiltersForSubject(bitagapGroup)
   }
 
   generateBitagapGroupFilters (database, bitagapGroup, table) {
-    if (database === BITAGAP_DB) {
-      switch (table) {
-        case 'insid':
-          return this.generateBitagapGroupInstitutionFilters(bitagapGroup)
-        case 'texid':
-          return this.generateBitagapGroupWorkFilters(bitagapGroup)
-        case 'libid':
-          return ''
-        case 'bioid':
-          return this.generateBitagapGroupPersonFilters(bitagapGroup)
-        case 'bibid':
-          return this.generateBitagapGroupReferenceFilters(bitagapGroup)
-        case 'geoid':
-          return this.generateBitagapGroupGeographyFilters(bitagapGroup)
-        case 'subid':
-          return this.generateBitagapGroupSubjectFilters(bitagapGroup)
-        case 'manid':
-          return this.generateBitagapGroupManuscriptFilters(bitagapGroup)
-      }
-    }
-    return ''
+    return templates.generateBitagapGroupFilters(database, bitagapGroup, table)
   }
 
   addInstitutionFilters (form) {
@@ -1162,26 +1060,15 @@ export class QueryService {
   }
 
   fillTemplate (template, replacements) {
-    return template.replace(/{{(\w+)}}/g, (match, p1) => replacements[p1] || '')
+    return templates.fillTemplate(template, replacements)
   }
 
   filterQuery (query, database, bitagapGroup, table, lang) {
-    if (database === 'ALL') {
-      database = '(.*)'
-    }
-    const replacements = {
-      database,
-      table,
-      langFilter: this.generateSearchLangFilters(lang),
-      langFilterWithoutBind: this.generateSearchLangFiltersWithoutBind(lang),
-      itemLangGroupPattern: this.generateSearchLangGroupPattern('item', lang),
-      targetItemLangGroupPattern: this.generateSearchLangGroupPattern('target_item', lang),
-      descLangFilter: this.generateDescLangFilters('item', lang),
-      analyticItemDescLangFilter: this.generateDescLangFilters('analytic_item', lang),
-      bitagapGroupFilter: this.generateBitagapGroupFilters(database, bitagapGroup, table),
-      bitagapGroupSubjectFilter: this.generateBitagapGroupFiltersForSubject(bitagapGroup)
-    }
-    return this.addPrefixes(this.fillTemplate(query, replacements))
+    return templates.filterQuery(query, database, bitagapGroup, table, lang, this.$config.sparqlQueryPrefix)
+  }
+
+  globalSearchQuery (lang) {
+    return templates.globalSearchQuery(lang, this.$config.sparqlQueryPrefix)
   }
 
   entityFromPBIDQuery (pbid) {
