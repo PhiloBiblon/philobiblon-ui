@@ -46,7 +46,7 @@ Two modules behind an nginx reverse proxy:
 ### Two-level SPARQL caching
 
 - **Frontend** (`stores/queryCache.js`): Pinia in-memory cache, 2-min TTL, 100 entries max, keyed by query hash.
-- **Backend** (`SparqlServiceImpl`): Caffeine LoadingCache, 24h refresh, 36h expiry, no max-size limit. Inspect via `GET /api/sparql/cacheinfo`.
+- **Backend** (`SparqlCacheServiceImpl`): DB-backed (H2) result cache serving `POST /api/search`. Every query is registered in `cached_query` (keyed by SHA-256 of searchVars + query text) and its results materialized as searchable rows in `cached_query_row`; searches run as SQL LIKE + Java re-rank. Loads retry with exponential backoff; a nightly cron re-executes all registered queries and evicts ones unused for 30 days. Inspect via `GET /api/search/cache/status`. (The old Caffeine cache in `SparqlServiceImpl` now only backs the deprecated `POST /api/sparql/query`.)
 
 `wikibase-edit` on the frontend is configured to point to the **backend** (`apiBaseUrl`), not Wikibase directly — this ensures all writes go through the OAuth proxy.
 
