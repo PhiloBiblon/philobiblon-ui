@@ -55,7 +55,7 @@ public class SearchServiceImpl implements SearchService {
         return uri.substring(uri.lastIndexOf('/') + 1);
     }
 
-    static String normalize(String input) {
+    public static String normalize(String input) {
         if (input == null) return null;
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
         String withoutAccents = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
@@ -79,7 +79,7 @@ public class SearchServiceImpl implements SearchService {
                 .collect(Collectors.toList());
     }
 
-    static int rank(String label, List<String> queryWords) {
+    public static int rank(String label, List<String> queryWords) {
         String normText = normalize(label);
 
         List<Integer> wordPositions = new ArrayList<>();

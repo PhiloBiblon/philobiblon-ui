@@ -1,5 +1,6 @@
 package io.github.philobiblon.backend.controller;
 
+import io.github.philobiblon.backend.representation.CacheStatusResponse;
 import io.github.philobiblon.backend.representation.Option;
 import io.github.philobiblon.backend.representation.QuickSearchResponse;
 import jakarta.validation.constraints.NotBlank;
@@ -19,4 +20,7 @@ public interface SearchController {
 
     @GetMapping("/quick")
     QuickSearchResponse quickSearch(@RequestParam @NotBlank String q, @RequestParam @NotBlank String lang);
+
+    @GetMapping("/cache/status")
+    CacheStatusResponse cacheStatus();
 }
