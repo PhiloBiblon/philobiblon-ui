@@ -26,6 +26,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { GLOBAL_SEARCH_VARS } from '~/service/query.templates'
 
 const { $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
@@ -82,7 +83,11 @@ async function searchItems (query) {
   loading.value = true
 
   try {
-    const res = await $wikibase.quickSearch(query, locale.value)
+    const res = await $wikibase.cachedSearch(
+      $wikibase.$query.globalSearchQuery(locale.value),
+      query,
+      { searchVars: GLOBAL_SEARCH_VARS, hint: `global.${locale.value}`, limit: 20 }
+    )
     if (requestId !== lastRequestId) return
     indexLoading.value = res.indexLoading
     items.value = res.indexLoading ? [] : customizeSearchData(res.results)
@@ -95,12 +100,12 @@ async function searchItems (query) {
 
 function customizeSearchData (res) {
   return res.map(item => ({
-    id: item.pbid,
-    title: item.label.length > LABEL_MAX_DISPLAY
-      ? item.label.substring(0, LABEL_MAX_DISPLAY) + '…'
-      : item.label,
-    desc: item.description
-      ? (item.description.length > DESC_MAX_DISPLAY ? item.description.substring(0, DESC_MAX_DISPLAY) + '…' : item.description)
+    id: item.value.pbid,
+    title: item.text.length > LABEL_MAX_DISPLAY
+      ? item.text.substring(0, LABEL_MAX_DISPLAY) + '…'
+      : item.text,
+    desc: item.value.desc
+      ? (item.value.desc.length > DESC_MAX_DISPLAY ? item.value.desc.substring(0, DESC_MAX_DISPLAY) + '…' : item.value.desc)
       : null
   }))
 }

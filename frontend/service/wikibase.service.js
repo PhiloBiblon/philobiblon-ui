@@ -37,12 +37,24 @@ export class WikibaseService {
     this.$oauth = new OAuthService({ config })
     this.$notification = $notification
     this.sparqlBackendEndpoint = this.joinUrl(config.apiBaseUrl, 'api/sparql/query')
-    this.quickSearchEndpoint = this.joinUrl(config.apiBaseUrl, 'api/search/quick')
+    this.cachedSearchEndpoint = this.joinUrl(config.apiBaseUrl, 'api/search')
   }
 
-  async quickSearch (text, lang) {
-    const url = `${this.quickSearchEndpoint}?q=${encodeURIComponent(text)}&lang=${encodeURIComponent(lang)}`
-    const response = await fetch(url)
+  /**
+   * Search a query's results through the backend DB cache (POST /api/search v=2).
+   * Returns { indexLoading, results: [{ text, value }] }; while indexLoading is true
+   * the backend is materializing the query in the background and the caller should retry.
+   */
+  async cachedSearch (sparqlQuery, q, { searchVars, hint, limit } = {}) {
+    const params = new URLSearchParams({ v: '2', q, sparqlQuery })
+    if (searchVars) { params.set('searchVars', searchVars) }
+    if (hint) { params.set('hint', hint) }
+    if (limit) { params.set('limit', String(limit)) }
+    const response = await fetch(this.cachedSearchEndpoint, {
+      method: 'POST',
+      body: params.toString(),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
     if (response.status < 200 || response.status > 299) {
       throw new Error(response.statusText)
     }
