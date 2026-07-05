@@ -43,13 +43,14 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 defineOptions({ inheritAttrs: false })
 
 const props = defineProps({
   value: { type: [String, Object], default: null },
+  name: { type: String, default: '' },
   table: { type: String, required: true },
   database: { type: String, required: true },
   bitagapGroup: { type: String, required: true },
@@ -65,13 +66,21 @@ const { notifyError } = useNotifyError()
 const { t, locale } = useI18n()
 const config = useRuntimeConfig().public
 
+// While the backend is materializing the query's results (indexLoading), re-fetch
+// automatically every RETRY_DELAY_MILLIS, up to RETRY_MAX_ATTEMPTS per typed input.
+const RETRY_DELAY_MILLIS = 4000
+const RETRY_MAX_ATTEMPTS = 15
+
 const autocompleteRef = ref(null)
 const internalValue = ref(null)
 const items = ref([])
 const loadingItems = ref(false)
+const indexLoading = ref(false)
 const search = ref(null)
 const allowFreeText = ref(false)
 let searchTimeout = null
+let retryTimeout = null
+let retryCount = 0
 const inputWidth = ref(0)
 
 const menuProps = computed(() => ({
@@ -86,7 +95,12 @@ onMounted(() => {
   }
 })
 
-const checkNoDataText = computed(() => loadingItems.value ? t('common.loading') : t('common.no_data'))
+const checkNoDataText = computed(() => {
+  if (indexLoading.value) {
+    return t('search.form.common.index_loading')
+  }
+  return loadingItems.value ? t('common.loading') : t('common.no_data')
+})
 const isDisabled = computed(() => props.disabled)
 
 if (props.value instanceof Object && Object.keys(props.value).length !== 0) {
@@ -115,7 +129,10 @@ watch(internalValue, (val) => {
 })
 
 watch(search, (val) => {
+  clearTimeout(retryTimeout)
+  retryCount = 0
   if (!val) {
+    indexLoading.value = false
     const selected = internalValue.value
     items.value = selected ? [{ text: selected.label, value: selected }] : []
     return
@@ -139,7 +156,8 @@ function fetchItems (query) {
   if (process.env.debug) {
     console.log(`run sparlql query:\n${sparqlQuery}`)
   }
-  const body = `q=${encodeURIComponent(query)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
+  const hint = props.name ? `${props.table}.${props.name}` : props.table
+  const body = `v=2&q=${encodeURIComponent(query)}&hint=${encodeURIComponent(hint)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
   const options = {
     method: 'POST',
     body,
@@ -153,18 +171,48 @@ function fetchItems (query) {
       return response.json()
     })
     .then((data) => {
+      if (data.indexLoading) {
+        indexLoading.value = true
+        items.value = []
+        loadingItems.value = false
+        scheduleRetry(query)
+        return
+      }
+      indexLoading.value = false
+      retryCount = 0
+      const results = data.results
       if (allowFreeText.value) {
         const findTextLabel = `${t('search.form.common.find_text')} "${query}"`
-        data.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
+        results.unshift({ text: findTextLabel, value: { label: findTextLabel, textString: query } })
       }
-      items.value = data
+      items.value = results
       loadingItems.value = false
     })
     .catch((error) => {
+      indexLoading.value = false
       notifyError(error)
       loadingItems.value = false
     })
 }
+
+function scheduleRetry (query) {
+  clearTimeout(retryTimeout)
+  if (retryCount >= RETRY_MAX_ATTEMPTS) {
+    return
+  }
+  retryCount++
+  retryTimeout = setTimeout(() => {
+    // Only re-fetch if the user hasn't typed something else meanwhile.
+    if (search.value === query) {
+      fetchItems(query)
+    }
+  }, RETRY_DELAY_MILLIS)
+}
+
+onBeforeUnmount(() => {
+  clearTimeout(searchTimeout)
+  clearTimeout(retryTimeout)
+})
 
 function truncateDesc (desc) {
   if (!desc || desc.length <= 100) return desc

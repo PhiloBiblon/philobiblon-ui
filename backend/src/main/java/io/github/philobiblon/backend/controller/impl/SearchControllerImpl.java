@@ -4,6 +4,7 @@ import io.github.philobiblon.backend.controller.SearchController;
 import io.github.philobiblon.backend.representation.CacheStatusResponse;
 import io.github.philobiblon.backend.representation.Option;
 import io.github.philobiblon.backend.representation.QuickSearchResponse;
+import io.github.philobiblon.backend.representation.SearchResponse;
 import io.github.philobiblon.backend.service.QuickSearchService;
 import io.github.philobiblon.backend.service.SparqlCacheService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ public class SearchControllerImpl implements SearchController {
 
     public List<Option> search(String sparqlQuery, String q) {
         return sparqlCacheService.searchLegacy(sparqlQuery, q);
+    }
+
+    public SearchResponse searchV2(String sparqlQuery, String q, String searchVars, String hint, Integer limit) {
+        return sparqlCacheService.search(sparqlQuery, q, searchVars, hint, limit);
     }
 
     public QuickSearchResponse quickSearch(String q, String lang) {
