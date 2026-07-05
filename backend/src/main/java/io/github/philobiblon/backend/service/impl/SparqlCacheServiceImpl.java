@@ -31,6 +31,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.net.http.HttpClient;
 import java.time.Duration;
@@ -80,6 +83,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private int evictAfterDays;
     @Value("${search.cache.refresh.requireUsage:true}")
     boolean requireUsageForRefresh;
+    @Value("${search.cache.dbFilePath}")
+    String dbFilePath;
     @Value("${search.index.retry.maxAttempts:3}")
     int retryMaxAttempts;
     @Value("${search.index.retry.initialBackoffMs:5000}")
@@ -228,11 +233,13 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
                 }
             }
             long elapsedMs = System.currentTimeMillis() - startedAt;
-            String summary = "SPARQL cache refresh finished in {} ms: {} queries succeeded, {} failed, {} skipped (unused since last refresh), {} evicted";
+            long dbFileSizeMb = currentDbFileSizeBytes() / (1024 * 1024);
+            String summary = "SPARQL cache refresh finished in {} ms: {} queries succeeded, {} failed, "
+                    + "{} skipped (unused since last refresh), {} evicted, db file size {} MB";
             if (failed == 0) {
-                logger.info(summary, elapsedMs, succeeded, failed, skipped, evicted);
+                logger.info(summary, elapsedMs, succeeded, failed, skipped, evicted, dbFileSizeMb);
             } else {
-                logger.warn(summary, elapsedMs, succeeded, failed, skipped, evicted);
+                logger.warn(summary, elapsedMs, succeeded, failed, skipped, evicted, dbFileSizeMb);
             }
         } finally {
             refreshing.set(false);
@@ -273,7 +280,21 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             }
         }
         response.totalQueries = response.queries.size();
+        response.dbFileSizeBytes = currentDbFileSizeBytes();
         return response;
+    }
+
+    /**
+     * Size of the H2 MVStore file on disk. Cheap way to notice, over time, whether the
+     * generation-swap delete/insert churn is outgrowing H2's default background compaction
+     * (AUTO_COMPACT_FILL_RATE) — not a signal that triggers any action by itself.
+     */
+    long currentDbFileSizeBytes() {
+        try {
+            return Files.size(Path.of(dbFilePath + ".mv.db"));
+        } catch (IOException e) {
+            return 0L;
+        }
     }
 
     /** Returns the query's current generation, registering it first if unknown. */

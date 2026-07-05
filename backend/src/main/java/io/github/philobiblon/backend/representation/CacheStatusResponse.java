@@ -10,6 +10,8 @@ public class CacheStatusResponse {
     public long totalRows;
     public long loadingCount;
     public long failedCount;
+    /** Size on disk of the H2 MVStore file — watch for unbounded growth from generation-swap churn. */
+    public long dbFileSizeBytes;
     public List<QueryStatus> queries;
 
     public static class QueryStatus {
