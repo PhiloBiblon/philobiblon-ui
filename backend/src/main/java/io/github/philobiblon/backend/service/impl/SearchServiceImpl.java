@@ -1,58 +1,18 @@
 package io.github.philobiblon.backend.service.impl;
 
-import io.github.philobiblon.backend.representation.Option;
-import io.github.philobiblon.backend.service.SearchService;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.rdf.model.RDFNode;
-import org.springframework.stereotype.Component;
-
 import java.text.Normalizer;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
-@Component
-public class SearchServiceImpl implements SearchService {
+/**
+ * Text normalization and ranking shared by the SPARQL cache search and the quick search:
+ * a row matches when every query word appears in its (normalized) search text, ranked by
+ * match count, word positions/order and text length.
+ */
+public final class SearchServiceImpl {
 
-    private static final String LABEL_FIELD = "label";
-    private static final int MAX_RESULTS = 300;
-
-    @Override
-    public List<Option> search(ResultSet resultSet, String q) {
-        return convertToOptions(rankOptions(resultSet, q), resultSet);
-    }
-
-    private List<Option> convertToOptions(List<QuerySolution> solutions, ResultSet resultSet) {
-        List<Option> options = new ArrayList<>();
-        for(QuerySolution solution : solutions) {
-            if (solution.contains(LABEL_FIELD)) {
-                String label = solution.getLiteral(LABEL_FIELD).getString();
-                Map<String, String> valueMap = new HashMap<>();
-                for (Iterator<String> varNames = resultSet.getResultVars().iterator(); varNames.hasNext(); ) {
-                    String varName = varNames.next();
-                    if (solution.contains(varName)) {
-                        RDFNode node = solution.get(varName);
-                        if (node.isLiteral()) {
-                            valueMap.put(varName, node.asLiteral().getString());
-                        } else if (node.isResource()) {
-                            String uri = node.asResource().getURI();
-                            valueMap.put(varName, extractQNumber(uri));
-                        }
-                    }
-                }
-                Option option = new Option(label, valueMap);
-                if (!options.contains(option)) {
-                    options.add(option);
-                }
-            }
-        }
-
-        return options;
-    }
-
-    private String extractQNumber(String uri) {
-        return uri.substring(uri.lastIndexOf('/') + 1);
+    private SearchServiceImpl() {
     }
 
     public static String normalize(String input) {
@@ -61,22 +21,6 @@ public class SearchServiceImpl implements SearchService {
         String withoutAccents = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
         String withoutBrackets = withoutAccents.replaceAll("[\\(\\)\\[\\]]", "");
         return withoutBrackets.toLowerCase(Locale.ROOT);
-    }
-
-    private static List<QuerySolution> rankOptions(ResultSet resultSet, String query) {
-        String normQuery = normalize(query);
-        List<String> queryWords = Arrays.asList(normQuery.split("\\s+"));
-
-        return StreamSupport
-                .stream(Spliterators.spliteratorUnknownSize(resultSet, Spliterator.ORDERED), false)
-                .filter(qs -> qs.contains(LABEL_FIELD))
-                .map(qs -> new AbstractMap.SimpleEntry<>(qs, rank(qs.getLiteral(LABEL_FIELD).getString(), queryWords)))
-                // Remove options with no matches
-                .filter(entry -> entry.getValue() < Integer.MAX_VALUE)
-                .sorted(Comparator.comparingInt(Map.Entry::getValue))
-                .map(Map.Entry::getKey)
-                .limit(MAX_RESULTS)
-                .collect(Collectors.toList());
     }
 
     public static int rank(String label, List<String> queryWords) {

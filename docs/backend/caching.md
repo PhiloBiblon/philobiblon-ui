@@ -1,13 +1,13 @@
 # SPARQL Caching
 
-This document explains the caching strategy for SPARQL queries in the backend.
+This document explains how the backend caches SPARQL query results.
 
 ## Why Cache SPARQL Queries?
 
 SPARQL queries can be expensive:
 
 - **Network latency**: Round-trip to SPARQL endpoint
-- **Query execution time**: Complex queries take seconds
+- **Query execution time**: Complex queries take seconds (the global-search query loads the whole dataset)
 - **Resource usage**: CPU and memory on SPARQL server
 
 Caching provides:
@@ -16,439 +16,90 @@ Caching provides:
 - **Reduced load**: Fewer requests to SPARQL endpoint
 - **Better UX**: Snappier search interface
 
-## Caching Strategy
+## Architecture
 
-### Two-Level Caching
-
-1. **Frontend (Vuex)**: Client-side cache in browser
-2. **Backend (Caffeine)**: Server-side cache shared across users
+`POST /api/search` is served by a **DB-backed materialized cache** (`SparqlCacheServiceImpl`),
+persisted in the embedded H2 database so it survives restarts and deploys.
 
 ```mermaid
 flowchart LR
-    FC["Frontend Cache\n2 min TTL · 100 entries"] <--> BC["Backend Cache\nCaffeine · Configurable"]
-    BC <--> SE["SPARQL Endpoint\nNo cache"]
+    FE["Frontend\nAutocompleteField / Simple.vue"] -->|"POST /api/search (v=2)\nsparqlQuery + q + searchVars"| SVC["SparqlCacheService"]
+    SVC -->|"SQL LIKE candidates\n+ Java re-rank"| DB[("H2\ncached_query\ncached_query_row")]
+    SVC -->|"background load\n(retry + backoff)"| SE["SPARQL Endpoint"]
 ```
 
-### Cache Key Generation
+### Data model
 
-Queries are hashed to create cache keys:
+| Table | Purpose |
+|---|---|
+| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint` |
+| `cached_query_row` | One row per query result: `label`, normalized `search_text` (composition of the query's `searchVars` values), full value map as JSON `payload`, `generation`. Indexed by `(query_hash, generation)` |
 
-```java
-private String generateCacheKey(String query) {
-    return String.valueOf(query.hashCode());
-}
-```
+The cache key is the **exact query text** — the frontend and the seed tooling
+(`scripts/seed-cache/`) share the same template code (`frontend/service/query.templates.js`)
+so they generate byte-identical queries.
 
-**Why hash?**
-- Consistent key length
-- Fast lookup
-- Handles special characters
+### Request flow (v=2 contract)
 
-## Backend Implementation
+1. Hash the incoming `searchVars` + `sparqlQuery`.
+2. Unknown query → validate it parses (400 otherwise), register it, schedule a
+   **background load** (single-flight: concurrent misses share one execution) and answer
+   immediately with `{"indexLoading": true, "results": []}`. The frontend shows a
+   loading message and retries.
+3. Known query → SQL `LIKE` per search word (AND-ed, so reordered multi-word terms
+   match) over `search_text`, re-rank the candidates in Java
+   (`SearchServiceImpl.rank`), rebuild `Option`s from the JSON payload.
 
-### Caffeine Configuration
+The param-less legacy contract (bare array, blocks on a cold query) exists for
+already-deployed SPAs and is scheduled for removal.
 
-```java
-@Configuration
-@EnableCaching
-public class CacheConfig {
-    
-    @Bean
-    public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("sparqlCache");
-        cacheManager.setCaffeine(caffeineCacheBuilder());
-        return cacheManager;
-    }
-    
-    @Bean
-    public Caffeine<Object, Object> caffeineCacheBuilder() {
-        return Caffeine.newBuilder()
-            .maximumSize(1000)              // Max 1000 entries
-            .expireAfterWrite(10, TimeUnit.MINUTES)  // 10-minute TTL
-            .recordStats();                 // Enable statistics
-    }
-}
-```
+### Loading, refresh and eviction
 
-### SparqlController
+- **Loads** execute with a forced HTTP/1.1 client, a 15-minute timeout and exponential
+  backoff retries (`search.index.retry.*`). Results swap in under a new *generation*;
+  on failure or an empty re-load the previous generation keeps serving.
+- **Nightly cron** (`search.index.refreshCron`, default 03:00): evicts queries not
+  accessed for `search.cache.evictAfterDays` (default 30), then re-executes every
+  registered query sequentially.
+- **Startup**: no full refresh (the H2 file persists); only orphan-row cleanup and
+  resuming queries that never completed a load.
 
-```java
-@RestController
-@RequestMapping("/api/sparql")
-public class SparqlControllerImpl implements SparqlController {
-    
-    @Autowired
-    private SparqlService sparqlService;
-    
-    @PostMapping("/query")
-    public ResponseEntity<String> runSparql(
-        @RequestParam("format") String format,
-        @RequestParam("query") String query
-    ) {
-        String result = sparqlService.executeSparql(query);
-        return ResponseEntity.ok(result);
-    }
-    
-    @GetMapping("/cacheinfo")
-    public ResponseEntity<CacheInfo> cacheInfo() {
-        CacheStats stats = sparqlService.getCacheStats();
-        return ResponseEntity.ok(new CacheInfo(
-            stats.estimatedSize(),
-            stats.hitCount(),
-            stats.missCount()
-        ));
-    }
-}
-```
-
-### SparqlServiceImpl
-
-```java
-@Service
-public class SparqlServiceImpl implements SparqlService {
-    
-    @Autowired
-    private CacheManager cacheManager;
-    
-    @Value("${sparql.endpoint}")
-    private String sparqlEndpoint;
-    
-    @Cacheable(value = "sparqlCache", key = "#query.hashCode()")
-    public String executeSparql(String query) {
-        // Execute query against SPARQL endpoint
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("query", query);
-        body.add("format", "json");
-        
-        HttpEntity<MultiValueMap<String, String>> request = 
-            new HttpEntity<>(body, headers);
-        
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.postForEntity(
-            sparqlEndpoint,
-            request,
-            String.class
-        );
-        
-        return response.getBody();
-    }
-    
-    public CacheStats getCacheStats() {
-        Cache cache = cacheManager.getCache("sparqlCache");
-        CaffeineCache caffeineCache = (CaffeineCache) cache;
-        return caffeineCache.getNativeCache().stats();
-    }
-}
-```
-
-## Cache Behavior
-
-### Cache Hit
-
-```mermaid
-sequenceDiagram
-    participant F as Frontend
-    participant B as Backend
-    participant S as SPARQL
-
-    F->>B: POST /sparql/query ("SELECT...")
-    B->>B: hash(query) → key: 123456789
-    B->>B: cache.get(key) → cached result
-    B->>F: result (instant)
-```
-
-### Cache Miss
-
-```mermaid
-sequenceDiagram
-    participant F as Frontend
-    participant B as Backend
-    participant S as SPARQL
-
-    F->>B: POST /sparql/query ("SELECT...")
-    B->>B: hash(query) → key: 987654321
-    B->>B: cache.get(key) → null (miss)
-    B->>S: execute query
-    S->>B: result (slow)
-    B->>B: cache.put(key, result)
-    B->>F: result (slow)
-```
-
-## Cache Statistics
-
-### Monitoring
-
-```bash
-curl http://localhost:8080/api/sparql/cacheinfo
-```
-
-Response:
-
-```json
-{
-  "size": 42,
-  "hitCount": 156,
-  "missCount": 23,
-  "hitRate": 0.871
-}
-```
-
-**Metrics**:
-- `size`: Current number of cached queries
-- `hitCount`: Number of cache hits
-- `missCount`: Number of cache misses
-- `hitRate`: Percentage of requests served from cache
-
-### Interpreting Stats
-
-- **High hit rate (>80%)**: Cache is effective
-- **Low hit rate (<50%)**: Consider increasing cache size or TTL
-- **Size near max**: May need to increase `maximumSize`
-
-## Configuration Options
-
-### application.properties
+### Configuration
 
 ```properties
-# Cache type
-spring.cache.type=caffeine
-
-# Caffeine-specific settings
-spring.cache.caffeine.spec=maximumSize=1000,expireAfterWrite=10m
-
-# Optional: compress results to save memory
-sparql.cache.compressResults=true
+search.cache.evictAfterDays=30      # drop queries unused for N days
+search.cache.candidateLimit=1000    # SQL LIKE candidate window before re-ranking
+search.cache.maxResultLimit=300     # server-side cap for returned options
+search.cache.loadConcurrency=2      # background loader threads
+search.cache.syncTimeoutSeconds=60  # legacy contract: max blocking wait on a cold query
+search.index.refreshCron=0 0 3 * * *
+search.index.retry.maxAttempts=5
+search.index.retry.initialBackoffMs=10000
+search.index.retry.backoffMultiplier=4
 ```
 
-### Tuning Parameters
+### Observability
 
-#### Maximum Size
+`GET /api/search/cache/status` reports, per registered query: hint, snippet, generation,
+row count, last refresh/access, last error and whether a load is in flight, plus totals.
 
-```java
-.maximumSize(1000)  // Max entries
-```
+### Seeding
 
-**Trade-offs**:
-- Larger: More memory, higher hit rate
-- Smaller: Less memory, lower hit rate
+See `scripts/seed-cache/README.md`: a Node generator emits every autocomplete/global
+query the frontend can send (byte-identical), and a curl executor fires them and polls
+until all indexes are materialized. Needed only for the initial seed of an environment
+or after changing filter templates — periodic refresh is the backend's own cron.
 
-**Recommendation**: Start with 1000, monitor hit rate
+## Frontend cache
 
-#### Expiration
+Independent of the backend cache, `stores/queryCache.js` keeps a small in-memory cache
+(2-minute TTL, 100 entries, keyed by query hash) for the direct-to-endpoint SPARQL
+queries used by the result grids. It does not apply to `/api/search`.
 
-```java
-.expireAfterWrite(10, TimeUnit.MINUTES)
-```
+## History
 
-**Options**:
-- `expireAfterWrite`: Fixed TTL from creation
-- `expireAfterAccess`: TTL refreshes on each access
-- `refreshAfterWrite`: Async refresh before expiration
-
-**Recommendation**: Use `expireAfterWrite` for SPARQL (data changes infrequently)
-
-#### Eviction Policy
-
-Caffeine uses **Window TinyLFU**:
-
-1. **Admission window**: Recently accessed entries
-2. **Probation space**: Entries on trial
-3. **Protected space**: Frequently accessed entries
-
-Automatically evicts least-frequently-used entries when full.
-
-## Advanced Features
-
-### Compression
-
-For large result sets, enable compression:
-
-```java
-@Cacheable(value = "sparqlCache", key = "#query.hashCode()")
-public String executeSparql(String query) {
-    String result = executeQuery(query);
-    
-    if (shouldCompress(result)) {
-        return compress(result);
-    }
-    
-    return result;
-}
-
-private boolean shouldCompress(String result) {
-    return result.length() > 10_000;  // Compress if >10KB
-}
-
-private String compress(String data) {
-    // Use GZIP compression
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (GZIPOutputStream gzos = new GZIPOutputStream(baos)) {
-        gzos.write(data.getBytes(StandardCharsets.UTF_8));
-    }
-    return Base64.getEncoder().encodeToString(baos.toByteArray());
-}
-```
-
-### Cache Warming
-
-Pre-populate cache with common queries on startup:
-
-```java
-@Component
-public class CacheWarmer implements ApplicationListener<ApplicationReadyEvent> {
-    
-    @Autowired
-    private SparqlService sparqlService;
-    
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        List<String> commonQueries = loadCommonQueries();
-        
-        for (String query : commonQueries) {
-            sparqlService.executeSparql(query);
-        }
-    }
-}
-```
-
-### Manual Cache Invalidation
-
-```java
-@RestController
-@RequestMapping("/api/cache")
-public class CacheController {
-    
-    @Autowired
-    private CacheManager cacheManager;
-    
-    @DeleteMapping("/clear")
-    public ResponseEntity<Void> clearCache() {
-        Cache cache = cacheManager.getCache("sparqlCache");
-        cache.clear();
-        return ResponseEntity.ok().build();
-    }
-}
-```
-
-## Frontend Integration
-
-### Using Backend Cache
-
-```javascript
-// In wikibase.service.js
-async runSparqlQuery(query, minimize, useBackendCache) {
-  if (useBackendCache) {
-    // Use backend cache
-    const response = await this.$axios.post('/api/sparql/query', {
-      query,
-      format: 'json'
-    })
-    return response.data
-  } else {
-    // Direct to SPARQL endpoint (no backend cache)
-    const url = this.wbk.sparqlQuery(query)
-    const response = await fetch(url)
-    return response.json()
-  }
-}
-```
-
-### When to Use Backend Cache
-
-**Use backend cache when**:
-- Query is expensive (>1 second)
-- Results change infrequently
-- Shared across users (e.g., search results)
-
-**Skip backend cache when**:
-- Query is fast (<100ms)
-- Results are user-specific
-- Real-time data required
-
-## Performance Impact
-
-### Benchmarks
-
-Without cache:
-
-```
-Average query time: 2.3s
-P95 query time: 4.1s
-Throughput: 10 req/s
-```
-
-With cache (80% hit rate):
-
-```
-Average query time: 0.4s
-P95 query time: 2.5s
-Throughput: 50 req/s
-```
-
-**5x improvement** in throughput!
-
-### Memory Usage
-
-Estimate memory per entry:
-
-```
-Query (avg): 500 bytes
-Result (avg): 50 KB
-Total per entry: ~50 KB
-
-1000 entries = ~50 MB
-```
-
-Monitor with:
-
-```bash
-curl http://localhost:8080/actuator/metrics/cache.size
-```
-
-## Troubleshooting
-
-### Cache Not Working
-
-**Check configuration**:
-
-```bash
-curl http://localhost:8080/api/sparql/cacheinfo
-```
-
-If `hitCount` is always 0:
-1. Verify `@EnableCaching` is present
-2. Check `@Cacheable` annotation
-3. Ensure method is public
-4. Verify cache name matches
-
-### Out of Memory
-
-**Symptoms**:
-- `OutOfMemoryError`
-- Slow performance
-- High GC activity
-
-**Solutions**:
-1. Reduce `maximumSize`
-2. Enable compression
-3. Decrease TTL
-4. Increase heap size: `-Xmx2g`
-
-### Stale Data
-
-**Symptoms**:
-- Old results returned
-- Changes not reflected
-
-**Solutions**:
-1. Reduce TTL
-2. Implement cache invalidation
-3. Use `refreshAfterWrite`
-
-## Next Steps
-
-- [Architecture](architecture.md) - Understand overall structure
-- [Security](security.md) - Learn about OAuth and proxying
+Until 2026 the backend had two mechanisms: an in-memory Caffeine `LoadingCache`
+(blob per query, lost on restart, no retries) behind `/api/search` +
+`/api/sparql/query`, and a separate DB-backed language index behind
+`/api/search/quick`. They were unified into the model above; `/api/search/quick`
+remains temporarily as an alias for cached SPAs.
