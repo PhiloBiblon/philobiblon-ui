@@ -40,8 +40,8 @@ export class WikibaseService {
     this.quickSearchEndpoint = this.joinUrl(config.apiBaseUrl, 'api/search/quick')
   }
 
-  async quickSearch (text, lang) {
-    const url = `${this.quickSearchEndpoint}?q=${encodeURIComponent(text)}&lang=${encodeURIComponent(lang)}`
+  async quickSearch (filterId, text, lang) {
+    const url = `${this.quickSearchEndpoint}?filterId=${encodeURIComponent(filterId)}&q=${encodeURIComponent(text)}&lang=${encodeURIComponent(lang)}`
     const response = await fetch(url)
     if (response.status < 200 || response.status > 299) {
       throw new Error(response.statusText)

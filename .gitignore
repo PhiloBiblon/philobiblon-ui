@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .playwright*/
+.devcontainer/devcontainer-lock.json
 
 ### IntelliJ IDEA ###
 .idea/
