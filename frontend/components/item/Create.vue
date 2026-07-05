@@ -630,7 +630,14 @@ function generateLabelFromClaims () {
       }
       break
     }
-    case 'geoid':
+    case 'geoid': {
+      const name = getClaimValue('P34')
+      const region = getClaimValue('P297')
+      if (name) {
+        generatedLabel = region ? `${name}, ${region}` : name
+      }
+      break
+    }
     case 'insid': {
       const name = getClaimValue('P34')
       const region = getClaimValue('P297')
