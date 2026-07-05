@@ -64,7 +64,7 @@ export default {
             label: 'cnum'
           },
           copid: {
-            label: 'copid'
+            label: 'Exemplar addicional'
           }
         }
       },
@@ -435,6 +435,12 @@ export default {
         subject: {
           label: 'Matèria',
           hint: ''
+        }
+      },
+      copid: {
+        edition: {
+          label: 'Edició',
+          hint: 'Cerqueu per l\'edició impresa (MsEd) de la qual aquest és un exemplar addicional.'
         }
       }
     },
