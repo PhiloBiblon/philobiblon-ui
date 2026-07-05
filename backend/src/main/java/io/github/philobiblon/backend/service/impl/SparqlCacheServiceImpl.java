@@ -51,6 +51,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.LongAdder;
 
 @Service
 public class SparqlCacheServiceImpl implements SparqlCacheService {
@@ -77,6 +78,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private long syncTimeoutSeconds;
     @Value("${search.cache.evictAfterDays:30}")
     private int evictAfterDays;
+    @Value("${search.cache.refresh.requireUsage:true}")
+    boolean requireUsageForRefresh;
     @Value("${search.index.retry.maxAttempts:3}")
     int retryMaxAttempts;
     @Value("${search.index.retry.initialBackoffMs:5000}")
@@ -91,6 +94,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private final Map<String, Long> generationByHash = new ConcurrentHashMap<>();
     private final Map<String, CompletableFuture<Boolean>> inFlight = new ConcurrentHashMap<>();
     private final Map<String, Long> lastTouchMillis = new ConcurrentHashMap<>();
+    /** Usage increments not yet persisted (throttled with lastTouchMillis); flushed in full before the nightly refresh. */
+    private final Map<String, LongAdder> pendingUsage = new ConcurrentHashMap<>();
     private final AtomicBoolean refreshing = new AtomicBoolean(false);
     private ExecutorService loadExecutor;
     private final HttpClient http1Client = HttpClient.newBuilder()
@@ -194,8 +199,24 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         }
         long startedAt = System.currentTimeMillis();
         try {
+            flushPendingUsage();
             int evicted = evictUnused();
-            List<String> hashes = new ArrayList<>(generationByHash.keySet());
+
+            List<CachedQuery> candidates = queryRepository.findAll();
+            List<String> hashes = new ArrayList<>();
+            int skipped = 0;
+            for (CachedQuery cq : candidates) {
+                // Never-loaded queries (generation 0) always get another attempt: the usage-based
+                // skip only makes sense for queries that already have data to keep fresh, and
+                // touch()/usage is only ever incremented on the warm (already-loaded) path.
+                boolean neverLoaded = cq.getGeneration() == 0L;
+                if (neverLoaded || !requireUsageForRefresh || cq.getUsageSinceRefresh() > 0L) {
+                    hashes.add(cq.getQueryHash());
+                } else {
+                    skipped++;
+                }
+            }
+
             int succeeded = 0;
             int failed = 0;
             for (String hash : hashes) {
@@ -207,11 +228,11 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
                 }
             }
             long elapsedMs = System.currentTimeMillis() - startedAt;
-            String summary = "SPARQL cache refresh finished in {} ms: {} queries succeeded, {} failed, {} evicted";
+            String summary = "SPARQL cache refresh finished in {} ms: {} queries succeeded, {} failed, {} skipped (unused since last refresh), {} evicted";
             if (failed == 0) {
-                logger.info(summary, elapsedMs, succeeded, failed, evicted);
+                logger.info(summary, elapsedMs, succeeded, failed, skipped, evicted);
             } else {
-                logger.warn(summary, elapsedMs, succeeded, failed, evicted);
+                logger.warn(summary, elapsedMs, succeeded, failed, skipped, evicted);
             }
         } finally {
             refreshing.set(false);
@@ -240,6 +261,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             status.lastAccessed = cq.getLastAccessedAt();
             status.lastError = cq.getLastError();
             status.loading = inFlight.containsKey(cq.getQueryHash());
+            status.usageSinceRefresh = cq.getUsageSinceRefresh();
+            status.usageTotal = cq.getUsageTotal();
             response.queries.add(status);
             response.totalRows += status.rowCount;
             if (status.generation == 0L) {
@@ -322,12 +345,16 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         if (rows.isEmpty() && cq.getGeneration() > 0L) {
             logger.warn("SPARQL cache: query {} produced no rows; keeping previous generation {}",
                     queryHash, cq.getGeneration());
+            // This cycle's demand has still been served with the (unchanged) current data.
+            cq.setUsageSinceRefresh(0L);
+            queryRepository.save(cq);
             return true;
         }
         rowRepository.saveAll(rows);
         cq.setGeneration(newGeneration);
         cq.setLastRefreshedAt(Instant.now());
         cq.setLastError(null);
+        cq.setUsageSinceRefresh(0L);
         queryRepository.save(cq);
         generationByHash.put(queryHash, newGeneration);
         long removed = rowRepository.deleteByQueryHashAndGenerationNot(queryHash, newGeneration);
@@ -437,13 +464,36 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         return evicted;
     }
 
-    /** Updates last_accessed_at at most once per hour per query. */
+    /**
+     * Records a usage for the nightly refresh decision, and updates last_accessed_at.
+     * The usage increment is always counted in memory; the DB write (both counters plus
+     * last_accessed_at) is throttled to at most once per hour per query.
+     */
     private void touch(String queryHash) {
+        pendingUsage.computeIfAbsent(queryHash, h -> new LongAdder()).increment();
         long now = System.currentTimeMillis();
         Long lastFlush = lastTouchMillis.get(queryHash);
         if (lastFlush == null || now - lastFlush > TOUCH_THROTTLE_MILLIS) {
             lastTouchMillis.put(queryHash, now);
-            queryRepository.touch(queryHash, Instant.now());
+            flushPendingUsage(queryHash);
+        }
+    }
+
+    /** Persists one query's pending usage delta (if any) and clears it. */
+    private void flushPendingUsage(String queryHash) {
+        LongAdder adder = pendingUsage.remove(queryHash);
+        long delta = adder == null ? 0 : adder.sum();
+        queryRepository.touch(queryHash, Instant.now(), delta);
+    }
+
+    /**
+     * Persists every pending usage delta. Called before the nightly refresh decides what to
+     * reload, so a query touched only in memory since the last throttled flush isn't
+     * mistaken for unused.
+     */
+    private void flushPendingUsage() {
+        for (String queryHash : List.copyOf(pendingUsage.keySet())) {
+            flushPendingUsage(queryHash);
         }
     }
 

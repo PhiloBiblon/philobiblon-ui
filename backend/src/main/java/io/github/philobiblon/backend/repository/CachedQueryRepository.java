@@ -14,8 +14,12 @@ public interface CachedQueryRepository extends JpaRepository<CachedQuery, String
 
     List<CachedQuery> findByLastAccessedAtBefore(Instant cutoff);
 
+    /** Updates last_accessed_at and adds usageDelta to both usage counters in one write. */
     @Transactional
-    @Modifying
-    @Query("UPDATE CachedQuery q SET q.lastAccessedAt = :accessedAt WHERE q.queryHash = :queryHash")
-    void touch(@Param("queryHash") String queryHash, @Param("accessedAt") Instant accessedAt);
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE CachedQuery q SET q.lastAccessedAt = :accessedAt, " +
+            "q.usageSinceRefresh = q.usageSinceRefresh + :usageDelta, " +
+            "q.usageTotal = q.usageTotal + :usageDelta " +
+            "WHERE q.queryHash = :queryHash")
+    void touch(@Param("queryHash") String queryHash, @Param("accessedAt") Instant accessedAt, @Param("usageDelta") long usageDelta);
 }

@@ -32,7 +32,7 @@ flowchart LR
 
 | Table | Purpose |
 |---|---|
-| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint` |
+| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint`, `usage_since_refresh` / `usage_total` |
 | `cached_query_row` | One row per query result: `label`, normalized `search_text` (composition of the query's `searchVars` values), full value map as JSON `payload`, `generation`. Indexed by `(query_hash, generation)` |
 
 The cache key is the **exact query text** — the frontend and the seed tooling
@@ -57,10 +57,21 @@ already-deployed SPAs and is scheduled for removal.
 
 - **Loads** execute with a forced HTTP/1.1 client, a 15-minute timeout and exponential
   backoff retries (`search.index.retry.*`). Results swap in under a new *generation*;
-  on failure or an empty re-load the previous generation keeps serving.
-- **Nightly cron** (`search.index.refreshCron`, default 03:00): evicts queries not
-  accessed for `search.cache.evictAfterDays` (default 30), then re-executes every
-  registered query sequentially.
+  on failure or an empty re-load the previous generation keeps serving. On success,
+  `usage_since_refresh` resets to 0 (this cycle's demand has been satisfied); `usage_total`
+  never resets.
+- **Usage tracking**: every warm hit increments an in-memory per-query counter, persisted
+  to `usage_since_refresh`/`usage_total` with the same throttling (at most once per hour)
+  as `last_accessed_at`. All pending in-memory counts are flushed to the DB before the
+  nightly refresh reads them, so a query touched only minutes ago is never mistaken for
+  unused.
+- **Nightly cron** (`search.index.refreshCron`, default 03:00): flushes pending usage,
+  evicts queries not accessed for `search.cache.evictAfterDays` (default 30), then
+  re-executes only the queries used at least once since their last refresh
+  (`usage_since_refresh > 0`) — plus any query that has never completed a load, which
+  always gets another attempt regardless of usage. Set
+  `search.cache.refresh.requireUsage=false` to revert to refreshing every registered
+  query every night.
 - **Startup**: no full refresh (the H2 file persists); only orphan-row cleanup and
   resuming queries that never completed a load.
 
@@ -72,6 +83,7 @@ search.cache.candidateLimit=1000    # SQL LIKE candidate window before re-rankin
 search.cache.maxResultLimit=300     # server-side cap for returned options
 search.cache.loadConcurrency=2      # background loader threads
 search.cache.syncTimeoutSeconds=60  # legacy contract: max blocking wait on a cold query
+search.cache.refresh.requireUsage=true  # nightly cron only reloads queries used since their last refresh
 search.index.refreshCron=0 0 3 * * *
 search.index.retry.maxAttempts=5
 search.index.retry.initialBackoffMs=10000
@@ -81,7 +93,8 @@ search.index.retry.backoffMultiplier=4
 ### Observability
 
 `GET /api/search/cache/status` reports, per registered query: hint, snippet, generation,
-row count, last refresh/access, last error and whether a load is in flight, plus totals.
+row count, last refresh/access, last error, usage counters (since last refresh and
+lifetime total) and whether a load is in flight, plus totals.
 
 ### Seeding
 
