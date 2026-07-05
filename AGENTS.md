@@ -41,12 +41,12 @@ docker compose down -v   # Remove everything including volumes
 Two modules behind an nginx reverse proxy:
 
 - **Frontend** (`frontend/`) — Nuxt 3 SPA (SSR disabled), Vue 3 + Vuetify 4 + Pinia. Talks to Wikibase API directly for reads, and to the backend for writes (proxied through OAuth) and cached SPARQL queries.
-- **Backend** (`backend/`) — Spring Boot 4 middleware. Handles OAuth 1.0a with Wikibase, proxies edit requests, and caches SPARQL queries with Caffeine LoadingCache (24h refresh, 36h expiry).
+- **Backend** (`backend/`) — Spring Boot 4 middleware. Handles OAuth 1.0a with Wikibase, proxies edit requests, and serves search/autocomplete from a DB-backed SPARQL result cache (H2).
 
 ### Two-level SPARQL caching
 
 - **Frontend** (`stores/queryCache.js`): Pinia in-memory cache, 2-min TTL, 100 entries max, keyed by query hash.
-- **Backend** (`SparqlCacheServiceImpl`): DB-backed (H2) result cache serving `POST /api/search`. Every query is registered in `cached_query` (keyed by SHA-256 of searchVars + query text) and its results materialized as searchable rows in `cached_query_row`; searches run as SQL LIKE + Java re-rank. Loads retry with exponential backoff; a nightly cron re-executes all registered queries and evicts ones unused for 30 days. Inspect via `GET /api/search/cache/status`. (The old Caffeine cache in `SparqlServiceImpl` now only backs the deprecated `POST /api/sparql/query`.)
+- **Backend** (`SparqlCacheServiceImpl`): DB-backed (H2) result cache serving `POST /api/search`. Every query is registered in `cached_query` (keyed by SHA-256 of searchVars + query text) and its results materialized as searchable rows in `cached_query_row`; searches run as SQL LIKE + Java re-rank. Cold queries load in background (`indexLoading` flag on the v=2 contract); loads retry with exponential backoff; a nightly cron re-executes all registered queries and evicts ones unused for 30 days. Inspect via `GET /api/search/cache/status`, seed via `scripts/seed-cache/`. See `docs/backend/caching.md`.
 
 `wikibase-edit` on the frontend is configured to point to the **backend** (`apiBaseUrl`), not Wikibase directly — this ensures all writes go through the OAuth proxy.
 

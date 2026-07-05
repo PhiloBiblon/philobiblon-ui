@@ -33,7 +33,7 @@ All traffic from the browser passes through an **nginx reverse proxy** running i
 
 **Item reads** (fetching Wikibase entities) go directly from the frontend to the Wikibase API — no backend involved. **Item writes** (edits) are proxied through the backend, which signs each request with OAuth 1.0a using a server-side consumer secret that is never exposed to the browser.
 
-**SPARQL queries** use a two-level cache: the frontend holds an in-memory Pinia cache (2-min TTL, 100 entries) for repeated queries within the same browser session, and the backend holds a Caffeine cache (24h refresh, 36h expiry) shared across all users. Expensive search queries always go through the backend cache.
+**SPARQL queries** use a two-level cache: the frontend holds an in-memory Pinia cache (2-min TTL, 100 entries) for repeated queries within the same browser session, and the backend holds a DB-backed result cache (H2: `cached_query` registry + `cached_query_row` materialized rows, refreshed nightly, shared across all users and surviving restarts). Search/autocomplete queries always go through the backend cache; see [backend/caching.md](backend/caching.md).
 
 More detailed:
 
@@ -55,21 +55,19 @@ graph TB
         subgraph BE["Backend — Spring Boot 4 / Java 21"]
             ConfigCtrl["ConfigController\n/api/config"]
             OAuthCtrl["OAuthController\n/api/oauth/*"]
-            SparqlCtrl["SparqlController\n/api/sparql"]
             SearchCtrl["SearchController\n/api/search"]
             ProxyCtrl["ProxyController\n/api/proxy"]
 
-            SparqlSvc["SparqlService"]
-            SearchSvc["SearchService"]
+            CacheSvc["SparqlCacheService"]
+            QuickSvc["QuickSearchService\n(transitional alias)"]
             OAuthSvc["WikibaseOAuthService"]
 
-            Cache["Caffeine Cache\n24h refresh · 36h expiry"]
+            Cache[("H2 DB\ncached_query · cached_query_row\nnightly refresh")]
 
-            SparqlCtrl --> SparqlSvc
-            SearchCtrl --> SearchSvc
+            SearchCtrl --> CacheSvc
+            SearchCtrl --> QuickSvc
             OAuthCtrl --> OAuthSvc
-            SparqlSvc <--> Cache
-            SearchSvc --> SparqlSvc
+            CacheSvc <--> Cache
         end
     end
 
@@ -82,14 +80,14 @@ graph TB
     Nginx -- "/" --> FE
     Nginx -- "/(api|w|./w)/" --> BE
 
-    Services -- "SPARQL queries" --> SparqlCtrl
     Services -- "item read/edit" --> ProxyCtrl
-    Services -- "search" --> SearchCtrl
+    Services -- "search / autocomplete" --> SearchCtrl
     Services -- "OAuth flow" --> OAuthCtrl
     Services -- "config" --> ConfigCtrl
 
-    SparqlSvc --> SPARQL
-    SearchSvc --> SPARQL
+    CacheSvc --> SPARQL
+    QuickSvc --> SPARQL
+    Services -- "result grids (direct)" --> SPARQL
     ProxyCtrl --> Wikibase
     OAuthSvc --> Wikibase
 ```
@@ -97,9 +95,9 @@ graph TB
 **Architecture Summary**:
 - **nginx**: reverse proxy that routes `/(api|w|./w)/` to the backend and `/` to the frontend
 - **Frontend (Nuxt 3)**: SPA served as static files; reads Wikibase directly, routes writes and SPARQL through the backend
-- **Backend (Spring Boot 4)**: OAuth 1.0a proxy for writes, Caffeine-cached SPARQL endpoint, search API
+- **Backend (Spring Boot 4)**: OAuth 1.0a proxy for writes, DB-backed SPARQL result cache serving the search API
 - **Wikibase API**: item reads go directly from the frontend; writes are proxied through the backend with OAuth
-- **SPARQL Endpoint**: queried via the backend (Caffeine cache, 24h refresh) for search and expensive queries; the frontend also maintains a short-lived in-memory cache (2 min)
+- **SPARQL Endpoint**: search/autocomplete queries are served from the backend's DB cache (materialized rows, nightly refresh); the result grids query the endpoint directly with a short-lived frontend cache (2 min)
 
 ## Documentation Structure
 
@@ -155,7 +153,7 @@ cd backend
 ### Backend
 - **Spring Boot 4 / Java 21** - Java application framework
 - **ScribeJava** - OAuth 1.0a library
-- **Caffeine** - High-performance caching
+- **Spring Data JPA + H2** - persistence for the SPARQL result cache
 - **Apache Jena** - SPARQL processing
 
 ## Development Workflow

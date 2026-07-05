@@ -36,7 +36,6 @@ export class WikibaseService {
     this.$query = new QueryService({ config })
     this.$oauth = new OAuthService({ config })
     this.$notification = $notification
-    this.sparqlBackendEndpoint = this.joinUrl(config.apiBaseUrl, 'api/sparql/query')
     this.cachedSearchEndpoint = this.joinUrl(config.apiBaseUrl, 'api/search')
   }
 
@@ -577,14 +576,10 @@ export class WikibaseService {
     }
   }
 
-  runSparqlQuery (query, minimize = false, useBackendCache = false, useInternalCache = true) {
-    if (useBackendCache) {
-      useInternalCache = false
-    }
-
+  runSparqlQuery (query, minimize = false, useInternalCache = true) {
     if (process.env.debug) {
-       
-      console.log(`run sparlql query:\n${query}\ninternal cache: ${useInternalCache}\nbackend cache: ${useBackendCache}`)
+
+      console.log(`run sparlql query:\n${query}\ninternal cache: ${useInternalCache}`)
     }
 
     let queryHash = null
@@ -597,12 +592,8 @@ export class WikibaseService {
     }
 
     const urlParts = this.wbk.sparqlQuery(query).split('?')
-    let url = urlParts[0]
+    const url = urlParts[0]
     const sparql = urlParts[1]
-
-    if (useBackendCache) {
-      url = this.sparqlBackendEndpoint
-    }
 
     const options = {
       method: 'POST',
