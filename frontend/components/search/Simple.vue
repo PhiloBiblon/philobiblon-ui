@@ -104,10 +104,17 @@ function customizeSearchData (res) {
     title: item.text.length > LABEL_MAX_DISPLAY
       ? item.text.substring(0, LABEL_MAX_DISPLAY) + '…'
       : item.text,
+    // The pbid always leads the description: the same item can be catalogued under
+    // several bibliographies (BETA/BITECA/BITAGAP) and appear more than once with an
+    // identical label — the pbid is what tells those entries apart.
     desc: item.value.desc
-      ? (item.value.desc.length > DESC_MAX_DISPLAY ? item.value.desc.substring(0, DESC_MAX_DISPLAY) + '…' : item.value.desc)
-      : null
+      ? `${item.value.pbid} — ${truncate(item.value.desc, DESC_MAX_DISPLAY)}`
+      : item.value.pbid
   }))
+}
+
+function truncate (text, maxLength) {
+  return text.length > maxLength ? text.substring(0, maxLength) + '…' : text
 }
 
 function onItemSelected (id) {
