@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
@@ -56,10 +57,12 @@ public class CachedQuery {
 
     /** Requests served since the last successful load; reset to 0 by loadQuery(). Drives the nightly refresh decision. */
     @Column(name = "usage_since_refresh")
+    @ColumnDefault("0")
     private long usageSinceRefresh;
 
     /** Requests served over the query's whole lifetime; never reset. Observability only. */
     @Column(name = "usage_total")
+    @ColumnDefault("0")
     private long usageTotal;
 
     public CachedQuery() {
