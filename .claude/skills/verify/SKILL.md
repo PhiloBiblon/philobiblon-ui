@@ -49,3 +49,9 @@ The geoid `simple_search` template is a good small-ish probe (~22k rows).
 ## Frontend
 
 `cd frontend && yarn dev` (needs `corepack enable`; hardcodes the staging backend as API). Search pages live at `/<locale>/search/<table>/query`.
+
+Gotchas when pointing dev at a local backend (`API_BASE_URL=http://localhost:8087 npx nuxt dev`):
+- No trailing slash on `API_BASE_URL`: `AutocompleteField` concatenates `apiBaseUrl + '/api/search'`; nginx normalizes the `//` in staging/prod but a local Tomcat 404s it.
+- `SPARQL_QUERY_PREFIX` set at dev-server launch does NOT reach the client runtime config (dev-server quirk; the served `__NUXT__.config` has it but the SPA client config ends up empty — real Docker builds are fine). Workaround for browser testing: patch it in the console:
+  `const q = useNuxtApp().$wikibase.$query; q.$config = { ...q.$config, sparqlQueryPrefix: 'PREFIX ...' }`
+- The Playwright/browser may serve stale Vite chunks across dev-server restarts; if runtime config looks wrong, clear `frontend/node_modules/.vite` + `frontend/.nuxt/dev` and use a fresh origin (127.0.0.1 vs localhost).
