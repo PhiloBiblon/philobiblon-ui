@@ -126,6 +126,7 @@ export default {
     form: {
       common: {
         find_text: 'Cerca text',
+        index_loading: 'Preparant les dades de cerca, pot trigar un moment…',
         section: {
           advanced: 'Cerca avançada',
           external_description: 'Descripció externa'
