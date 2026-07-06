@@ -64,7 +64,6 @@ const emit = defineEmits(['reset-value'])
 const { $sanitize, $wikibase } = useNuxtApp()
 const { notifyError } = useNotifyError()
 const { t, locale } = useI18n()
-const config = useRuntimeConfig().public
 
 // While the backend is materializing the query's results (indexLoading), re-fetch
 // automatically every RETRY_DELAY_MILLIS, up to RETRY_MAX_ATTEMPTS per typed input.
@@ -157,19 +156,7 @@ function fetchItems (query) {
     console.log(`run sparlql query:\n${sparqlQuery}`)
   }
   const hint = props.name ? `${props.table}.${props.name}` : props.table
-  const body = `v=2&q=${encodeURIComponent(query)}&hint=${encodeURIComponent(hint)}&sparqlQuery=${encodeURIComponent(sparqlQuery)}`
-  const options = {
-    method: 'POST',
-    body,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  }
-  fetch(`${config.apiBaseUrl}/api/search`, options)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Error from the cache server')
-      }
-      return response.json()
-    })
+  $wikibase.cachedSearch(sparqlQuery, query, { hint })
     .then((data) => {
       if (data.indexLoading) {
         indexLoading.value = true
