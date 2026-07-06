@@ -100,9 +100,13 @@ const form = {
                 {{bitagapGroupFilter}}
                 {
                   ?item wdt:P34 ?labelObj .
-                } UNION {
+                }
+                UNION
+                {
                   ?item rdfs:label ?labelObj .
-                } UNION {
+                }
+                UNION
+                {
                   ?item skos:altLabel ?labelObj .
                 }
                 {{langFilterWithoutBind}}
