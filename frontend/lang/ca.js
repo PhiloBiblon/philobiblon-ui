@@ -250,10 +250,6 @@ export default {
           label: 'Tipus d\'institució',
           hint: 'Cerca per tipus d\'institució.'
         },
-        institution: {
-          label: 'Institució',
-          hint: 'Cerqueu per qualsevol dels noms formals o d\'ús habitual de la institució (p. ex., a BETA, cerqueu Universidad Complutense, Universidad de Madrid o Universidad Central).'
-        }
       },
       bioid: {
         name: {

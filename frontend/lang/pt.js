@@ -255,10 +255,6 @@ export default {
           label: 'Tipo de instituição',
           hint: 'Pesquisar por tipo de instituição.'
         },
-        institution: {
-          label: 'Instituição',
-          hint: 'Pesquise por qualquer um dos nomes formais ou comummente utilizados da instituição (por exemplo, na BETA, pesquise por Universidad Comlutense, Universidad de Madrid ou Universidad Central).'
-        }
       },
       bioid: {
         name: {

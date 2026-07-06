@@ -250,10 +250,6 @@ export default {
           label: 'Institution type',
           hint: 'Search by type of institution.'
         },
-        institution: {
-          label: 'Institution',
-          hint: 'Search by any of the institution\'s formal or commonly used names (e.g. in BETA, search for Universidad Complutense, Universidad de Madrid, or Universidad Central).'
-        }
       },
       bioid: {
         name: {
