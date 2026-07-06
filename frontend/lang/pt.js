@@ -254,7 +254,7 @@ export default {
         institution_type: {
           label: 'Tipo de instituição',
           hint: 'Pesquisar por tipo de instituição.'
-        },
+        }
       },
       bioid: {
         name: {
