@@ -238,9 +238,9 @@ export default {
         }
       },
       insid: {
-        name: {
-          label: 'Name',
-          hint: 'Search by the official or commonly used name of the institution.'
+        institution: {
+          label: 'Institution',
+          hint: 'Search by any of the institution\'s formal or commonly used names (e.g. in BETA, search for Universidad Complutense, Universidad de Madrid, or Universidad Central).'
         },
         city: {
           label: 'City',

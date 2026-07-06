@@ -238,9 +238,9 @@ export default {
         }
       },
       insid: {
-        name: {
-          label: 'Nome',
-          hint: 'Busca polo nome oficial ou de uso habitual da institución.'
+        institution: {
+          label: 'Institución',
+          hint: 'Busca por calquera dos nomes formais ou de uso habitual da institución (por exemplo, en BETA, busca Universidade Complutense, Universidade de Madrid ou Universidade Central).'
         },
         city: {
           label: 'Cidade',

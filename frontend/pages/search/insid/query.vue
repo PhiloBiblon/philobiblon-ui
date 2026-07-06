@@ -82,11 +82,11 @@ const form = {
             visible: true,
             disabled: false
           },
-          name: {
+          institution: {
             active: true,
             section: 'primary',
-            label: 'search.form.insid.name.label',
-            hint: 'search.form.insid.name.hint',
+            label: 'search.form.insid.institution.label',
+            hint: 'search.form.insid.institution.hint',
             type: 'autocomplete',
             value: {},
             visible: true,
@@ -100,13 +100,9 @@ const form = {
                 {{bitagapGroupFilter}}
                 {
                   ?item wdt:P34 ?labelObj .
-                }
-                UNION
-                {
+                } UNION {
                   ?item rdfs:label ?labelObj .
-                }
-                UNION
-                {
+                } UNION {
                   ?item skos:altLabel ?labelObj .
                 }
                 {{langFilterWithoutBind}}
