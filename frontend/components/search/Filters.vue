@@ -356,7 +356,7 @@ function loadDefaultBibliography () {
     if (savedBibliography && ['BETA', 'BITAGAP', 'BITECA'].includes(savedBibliography)) {
       searchGroup.value = savedBibliography
       onGroupChange(savedBibliography)
-      if (savedBibliography === 'BITAGAP') {
+      if (savedBibliography === 'BITAGAP' && isBitagapSelected.value) {
         const savedBitagapGroup = localStorage.getItem('philobiblon_default_bitagap_group')
         if (savedBitagapGroup && ['ALL', 'ORIG', 'CARTAS'].includes(savedBitagapGroup)) {
           bitagapGroup.value = savedBitagapGroup
