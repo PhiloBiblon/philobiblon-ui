@@ -140,6 +140,8 @@ function getCreateDisabledReason () {
   if (props.table === 'cnum') { requiredPropertyIds.add('P590'); requiredPropertyIds.add('P8') }
   if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
   if (props.table === 'geoid' || props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
+  if (props.table === 'libid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P47') }
+  if (props.table === 'subid') requiredPropertyIds.add('P34')
   if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
 
   if (props.table === 'bioid') {
@@ -148,8 +150,8 @@ function getCreateDisabledReason () {
       return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
     })
     if (!hasName) {
-      const label = initialClaims.value.find(c => c.property?.id === 'P34')?.property?.label || 'P34'
-      return t('messages.error.inputs.claim_value_missing', { propertyLabel: label })
+      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P34')?.property?.label || 'P34'
+      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
     }
   }
 
@@ -159,8 +161,8 @@ function getCreateDisabledReason () {
       return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
     })
     if (!hasName) {
-      const label = initialClaims.value.find(c => c.property?.id === 'P1134')?.property?.label || 'P1134'
-      return t('messages.error.inputs.claim_value_missing', { propertyLabel: label })
+      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P247')?.property?.label || 'P247'
+      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
     }
     requiredPropertyIds.add('P11')
   }
