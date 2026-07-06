@@ -449,7 +449,7 @@ export default {
       },
       cnum: {
         witness_of: {
-          label: 'Testimonio de',
+          label: 'Testemuño de',
           hint: 'Busca pola obra (texid) da cal este é un testemuño textual.'
         },
         part_of: {

@@ -62,7 +62,7 @@ export default {
             label: 'Assunto'
           },
           cnum: {
-            label: 'Testemunha textual'
+            label: 'Testemunho textual'
           },
           copid: {
             label: 'Cópia adicional'
@@ -449,7 +449,7 @@ export default {
       },
       cnum: {
         witness_of: {
-          label: 'Testimónio de',
+          label: 'Testemunho de',
           hint: 'Pesquisa pela obra (texid) da qual esta é uma testemunha textual.'
         },
         part_of: {
