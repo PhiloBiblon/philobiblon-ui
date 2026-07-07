@@ -311,7 +311,7 @@ const form = {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
-                    BIND ( wdt:P243 as ?property)
+                    VALUES ?property { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
                     ?item ?property ?target_item .
                     {{bitagapGroupSubjectFilter}}
                   }
