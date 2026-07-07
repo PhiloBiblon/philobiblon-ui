@@ -238,6 +238,10 @@ export default {
         }
       },
       insid: {
+        institution: {
+          label: 'Institució',
+          hint: 'Cerqueu per qualsevol dels noms formals o d\'ús habitual de la institució (p. ex., a BETA, cerqueu Universidad Complutense, Universidad de Madrid o Universidad Central).'
+        },
         city: {
           label: 'Ciutat',
           hint: 'Busquis el nom de la ciutat en la llengua original (v.g. London, New York, llevat d\'aquells que van pertànyer a la Corona d\'Aragó i tradicionalment als estudis de catalanística s\'esmenten pel seu nom català (v.g. Sogorb, Morvedre o Saragossa) o transliterat, si és el cas, v.g., Sankt Peterburg.'
@@ -245,10 +249,6 @@ export default {
         institution_type: {
           label: 'Tipus d\'institució',
           hint: 'Cerca per tipus d\'institució.'
-        },
-        institution: {
-          label: 'Institució',
-          hint: 'Cerqueu per qualsevol dels noms formals o d\'ús habitual de la institució (p. ex., a BETA, cerqueu Universidad Complutense, Universidad de Madrid o Universidad Central).'
         }
       },
       bioid: {

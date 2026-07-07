@@ -238,6 +238,10 @@ export default {
         }
       },
       insid: {
+        institution: {
+          label: 'Institution',
+          hint: 'Search by any of the institution\'s formal or commonly used names (e.g. in BETA, search for Universidad Complutense, Universidad de Madrid, or Universidad Central).'
+        },
         city: {
           label: 'City',
           hint: 'Search by the name of the city in its native language (e.g., New York, Firenze, etc.).'
@@ -245,10 +249,6 @@ export default {
         institution_type: {
           label: 'Institution type',
           hint: 'Search by type of institution.'
-        },
-        institution: {
-          label: 'Institution',
-          hint: 'Search by any of the institution\'s formal or commonly used names (e.g. in BETA, search for Universidad Complutense, Universidad de Madrid, or Universidad Central).'
         }
       },
       bioid: {

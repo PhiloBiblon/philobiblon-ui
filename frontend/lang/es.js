@@ -238,6 +238,10 @@ export default {
         }
       },
       insid: {
+        institution: {
+          label: 'Institución',
+          hint: 'Busque por cualquiera de los nombres formales o comúnmente utilizados de la institución (por ejemplo, en BETA, busque Universidad Complutense, Universidad de Madrid o Universidad Central).'
+        },
         city: {
           label: 'Ciudad',
           hint: 'Se refiere a la ciudad donde se ubica la biblioteca que conserva el manuscrito o impreso. Búsquese el nombre de la ciudad en su lengua nativa (v.g., London, New York) o transliterado, si viene al caso, v.g., Moskva.'
@@ -245,10 +249,6 @@ export default {
         institution_type: {
           label: 'Tipo de institución',
           hint: 'Búsqueda por tipo de institución.'
-        },
-        institution: {
-          label: 'Institución',
-          hint: 'Busque por cualquiera de los nombres formales o comúnmente utilizados de la institución (por ejemplo, en BETA, busque Universidad Complutense, Universidad de Madrid o Universidad Central).'
         }
       },
       bioid: {

@@ -82,6 +82,39 @@ const form = {
             visible: true,
             disabled: false
           },
+          institution: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.insid.institution.label',
+            hint: 'search.form.insid.institution.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
+                {
+                  ?item wdt:P34 ?labelObj .
+                }
+                UNION
+                {
+                  ?item rdfs:label ?labelObj .
+                }
+                UNION
+                {
+                  ?item skos:altLabel ?labelObj .
+                }
+                {{langFilterWithoutBind}}
+                {{descLangFilter}}
+              }
+              `
+            }
+          },
           city: {
             active: true,
             section: 'primary',
@@ -130,33 +163,6 @@ const form = {
                   }
                 }
                 {{itemLangGroupPattern}}
-              }
-              `
-            }
-          },
-          institution: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.insid.institution.label',
-            hint: 'search.form.insid.institution.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc {
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                {{bitagapGroupFilter}}
-                {
-                  ?item wdt:P34 ?labelObj .
-                } UNION {
-                  ?item rdfs:label ?labelObj .
-                }
-                {{langFilterWithoutBind}}
-                {{descLangFilter}}
               }
               `
             }
