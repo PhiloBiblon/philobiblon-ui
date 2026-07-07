@@ -450,11 +450,11 @@ export default {
       cnum: {
         witness_of: {
           label: 'Testemunho de',
-          hint: 'Pesquisa pela obra (texid) da qual esta é uma testemunha textual.'
+          hint: 'Pesquisa pela obra (texid) do qual este é um testemunho textual.'
         },
         part_of: {
           label: 'Parte de',
-          hint: 'Pesquisa pelo manuscrito ou edição (manid) que contém esta testemunha textual.'
+          hint: 'Pesquisa pelo manuscrito ou edição (manid) que contém este testemunho textual.'
         },
         author: {
           label: 'Autor',

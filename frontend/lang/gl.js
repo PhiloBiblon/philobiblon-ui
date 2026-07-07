@@ -96,7 +96,7 @@ export default {
             label: 'Asunto'
           },
           cnum: {
-            label: 'Testimonio textual'
+            label: 'Testemuño textual'
           },
           copid: {
             label: 'Copia adicional'
