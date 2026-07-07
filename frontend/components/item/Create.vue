@@ -189,8 +189,35 @@ function getCreateDisabledReason () {
 
   const requiredPropertyIds = new Set(['P2', 'P476'])
   if (props.table === 'manid') requiredPropertyIds.add('P329')
-  if (props.table === 'cnum') requiredPropertyIds.add('P590')
+  if (props.table === 'cnum') { requiredPropertyIds.add('P590'); requiredPropertyIds.add('P8') }
   if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
+  if (props.table === 'geoid' || props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
+  if (props.table === 'libid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P47') }
+  if (props.table === 'subid') requiredPropertyIds.add('P34')
+  if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
+
+  if (props.table === 'bioid') {
+    const hasName = ['P34', 'P77', 'P173', 'P291', 'P165', 'P746'].some(p => {
+      const arr = claims.value[p]
+      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
+    })
+    if (!hasName) {
+      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P34')?.property?.label || 'P34'
+      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+    }
+  }
+
+  if (props.table === 'bibid') {
+    const hasName = ['P247', 'P21', 'P1134'].some(p => {
+      const arr = claims.value[p]
+      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
+    })
+    if (!hasName) {
+      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P247')?.property?.label || 'P247'
+      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+    }
+    requiredPropertyIds.add('P11')
+  }
 
   for (const propKey of requiredPropertyIds) {
     const claimArray = claims.value[propKey]
