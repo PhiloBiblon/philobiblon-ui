@@ -283,6 +283,10 @@ export default {
         related_institution: {
           label: 'Related institution',
           hint: 'Search for persons associated with a specific institution.'
+        },
+        associated_person: {
+          label: 'Associated person',
+          hint: 'Search for persons related to this individual (family, professional, and other relationships).'
         }
       },
       bibid: {

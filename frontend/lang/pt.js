@@ -288,6 +288,10 @@ export default {
         related_institution: {
           label: 'Instituição relacionada',
           hint: 'Pesquise pessoas associadas a uma instituição específica.'
+        },
+        associated_person: {
+          label: 'Pessoa associada',
+          hint: 'Pesquise pessoas relacionadas com este indivíduo (relações familiares, profissionais e de outro tipo).'
         }
       },
       bibid: {
