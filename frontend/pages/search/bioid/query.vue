@@ -298,7 +298,7 @@ const form = {
             active: true,
             section: 'advanced',
             label: 'search.form.bioid.associated_person.label',
-            hint: 'search.form.common.personal_name.hint',
+            hint: 'search.form.bioid.associated_person.hint',
             type: 'autocomplete',
             value: {},
             visible: true,
