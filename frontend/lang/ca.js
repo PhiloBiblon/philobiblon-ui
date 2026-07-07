@@ -455,6 +455,90 @@ export default {
         part_of: {
           label: 'Part de',
           hint: 'Cerca pel manuscrit o edició (manid) que conté aquest testimoni textual.'
+        },
+        author: {
+          label: 'Autor',
+          hint: 'Per cercar un nom personal com a <b>Autor</b> d\'un text a WORK, utilitzeu qualsevol forma del nom, original, traduït o variant. Per exemple, cerqueu "Benedictus", "Bento", "Benet" o "Benito".<br/>A totes les altres pàgines de cerca i en tots els altres camps, com ara persones (associades), autors de referències secundàries, anteriors propietaris, traductors, mecenes, copistes, editors, és a dir, per a qualsevol nom personal cercat en qualsevol camp que no sigui el d\'Author in WORK, utilitzeu la versió moderna del nom.<br/>Consell: per identificar la forma moderna d\'un nom. nom, cerca en PERSONA qualsevol forma de <b>Nom</b>, original, traduït, pseudònim, etc.'
+        },
+        incipit: {
+          label: 'Incipit',
+          hint: 'Aquest important camp de cerca pot ajudar a identificar un text.<br/>Per a cada obra, hi ha (a) un registre mestre (amb un <b>tèxid</b> únic) i (b) una sèrie de registres per a cada còpia supervivent coneguda de l\'obra (cadascun amb un <b>cnum</b> únic). Per als primers, s\'han modernitzat els íncipits/explícits; per a aquests últims, els incipits/explícits es reprodueixen paleogràficament o semipaleogràficament, segons la bibliografia (amb o sense marques de supressió, abreviatures resoltes o no resoltes, faltes d\'ortografia, etc.) tal com es troba al manuscrit o a l\'edició impresa o com es transcriu en una secundària. font. Una cerca en aquest camp hauria de retornar una llista d\'obres basada tant en els incipits/explícits modernitzats com en els originals. Quan intenteu identificar un text, repetiu la cerca utilitzant variants de les paraules menys habituals. En alguns casos, especialment per a textos amb un gran nombre de còpies i sense edició moderna, només s\'han registrat incipits i explícits als registres de còpia. Aquest és especialment el cas de BETA.<br/>Per localitzar un text poètic, a <b>Incipit</b> cerca qualsevol paraula o paraules que apareguin a la primera línia.'
+        },
+        explicit: {
+          label: 'Explicit',
+          hint: 'Aquest important camp de cerca pot ajudar a identificar un text.<br/>Per a cada obra, hi ha (a) un registre mestre (amb un <b>tèxid</b> únic) i (b) una sèrie de registres per a cada còpia supervivent coneguda de l\'obra (cadascun amb un <b>cnum</b> únic). Per als primers, s\'han modernitzat els íncipits/explícits; per a aquests últims, els incipits/explícits es reprodueixen paleogràficament o semipaleogràficament, segons la bibliografia (amb o sense marques de supressió, abreviatures resoltes o no resoltes, faltes d\'ortografia, etc.) tal com es troba al manuscrit o a l\'edició impresa o com es transcriu en una secundària. font. Una cerca en aquest camp hauria de retornar una llista d\'obres basada tant en els incipits/explícits modernitzats com en els originals. Quan intenteu identificar un text, repetiu la cerca utilitzant variants de les paraules menys habituals. En alguns casos, especialment per a textos amb un gran nombre de còpies i sense edició moderna, només s\'han registrat incipits i explícits als registres de còpia. Aquest és especialment el cas de BETA.<br/>Per localitzar un text poètic, a <b>Incipit</b> cerca qualsevol paraula o paraules que apareguin a la primera línia.'
+        },
+        associated_person: {
+          label: 'Persona relacionada',
+          hint: ''
+        },
+        place_composition: {
+          label: 'Lloc de composició',
+          hint: ''
+        },
+        date_composition: {
+          label: 'Data de composició',
+          hint: 'Cerca aaaa i/o mm i/o dd. Una cerca aquí pot retornar la data de composició, confirmació, revisió, traducció, promulgació, etc.'
+        },
+        library: {
+          label: 'Biblioteca',
+          hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
+        },
+        city: {
+          label: 'Ciutat',
+          hint: ''
+        },
+        call_number: {
+          label: 'Número d\'inventari',
+          hint: ''
+        },
+        collection: {
+          label: 'Col·lecció',
+          hint: ''
+        },
+        place_production: {
+          label: 'Lloc de producció',
+          hint: 'Search by the name of a city or place in its modern form.'
+        },
+        scribe_printer: {
+          label: 'Copista / impressor',
+          hint: 'Search for a scribe using any form of the name. For a printer, use the name in its original form (e.g., in BITAGAP, "Hermann von Kempen" rather than "Hermão de Campos"). To learn the original form of a printer\'s name, search first in PERSON.'
+        },
+        publisher_patron: {
+          label: 'Editor / mecenes',
+          hint: 'For a printed edition, search for the person who sponsored it using the modern form of the name. For a manuscript, search for the modern form of the name of the patron for whom it was copied.'
+        },
+        previous_owner: {
+          label: 'Antic posseïdor',
+          hint: 'Search for any person or institution that has owned the object by a person\'s name or title, by the name of a monastery, museum, auction house, etc.'
+        },
+        writing_surface: {
+          label: 'Superfície d\'escriptura',
+          hint: ''
+        },
+        binding: {
+          label: 'Enquadernació',
+          hint: ''
+        },
+        watermark: {
+          label: 'Filigrana',
+          hint: ''
+        },
+        graphic_feature: {
+          label: 'Característica gràfica',
+          hint: ''
+        },
+        type: {
+          label: 'Tipus',
+          hint: ''
+        },
+        language: {
+          label: 'Idioma',
+          hint: ''
+        },
+        poetic_form: {
+          label: 'Forma poètica',
+          hint: ''
         }
       }
     },
