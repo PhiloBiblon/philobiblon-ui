@@ -606,7 +606,6 @@ export default {
         initial_claims: 'Os enunciados aínda se están cargando',
         claim_value_missing: 'Por favor, enche o valor do enunciado para "{propertyLabel}"',
         qualifier_key_missing: 'Falta unha propiedade cualificadora no enunciado "{claimLabel}" para "{propertyLabel}"',
-        qualifier_value_missing: 'Falta o valor dalgún cualificador no enunciado "{claimLabel}" para "{propertyLabel}"',
         incomplete_date: 'Por favor, enche unha data completa (ano, mes e día) para o cualificador "{propertyLabel}"'
       },
       creation: {
