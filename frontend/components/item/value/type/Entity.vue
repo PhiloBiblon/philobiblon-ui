@@ -63,8 +63,13 @@ const propertyAutocomplete = ref({})
 const loading = ref(true)
 
 const isUserLogged = computed(() => authStore.isLogged)
+const propertyKey = computed(() => {
+  const p = props.valueToView?.property
+  return (p && typeof p === 'object') ? p.id : p
+})
+
 const isItemWithCustomOptions = computed(
-  () => propertyAutocomplete.value && props.valueToView.property in propertyAutocomplete.value
+  () => propertyAutocomplete.value && propertyKey.value in propertyAutocomplete.value
 )
 
 onMounted(async () => {
@@ -132,7 +137,7 @@ function getDefaultValue (currentValue, defaultValue) {
 
 function setOptionsAutocomplete () {
   if (isItemWithCustomOptions.value) {
-    const autocomplete = propertyAutocomplete.value[props.valueToView.property]
+    const autocomplete = propertyAutocomplete.value[propertyKey.value]
     const fullSparqlQuery = buildFullQuery(autocomplete.query)
     return $wikibase.runSparqlQuery(fullSparqlQuery, true)
       .catch((error) => { notifyError(error); return [] })

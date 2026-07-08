@@ -134,6 +134,40 @@ async function handleClaims (entity) {
       claimsOrdered.value.push(claim)
     }
   }
+
+  if (isUserLogged.value) {
+    await appendTemplateClaims(entity.claims)
+  }
+}
+
+async function appendTemplateClaims (existingClaims) {
+  const template = await $wikibase.getClaimsOrderForNewItem(props.table)
+  if (!template) return
+
+  const existingPropertyIds = new Set(Object.keys(existingClaims))
+
+  const bibliographyMap = { BETA: 'Q254471', BITECA: 'Q256810', BITAGAP: 'Q256809' }
+
+  for (const [propId, qualifiersOrder] of Object.entries(template)) {
+    if (existingPropertyIds.has(propId)) continue
+
+    const entityProperty = await $wikibase.getEntity(propId, locale.value)
+    if (!entityProperty?.datatype || entityProperty.datatype === 'external-id') continue
+
+    const claim = {
+      property: propId,
+      datatype: entityProperty.datatype,
+      values: [],
+      hasQualifiers: false,
+      qualifiersOrder
+    }
+
+    if (propId === 'P131' && bibliographyMap[props.database]) {
+      claim.defaultValue = { id: bibliographyMap[props.database] }
+    }
+
+    claimsOrdered.value.push(claim)
+  }
 }
 
 function setBreadCrumb (database, table, entity) {

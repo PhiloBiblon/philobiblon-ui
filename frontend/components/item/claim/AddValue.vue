@@ -70,14 +70,15 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps({
   item: { type: Object, default: null },
   value: { type: Object, default: null },
-  forCreate: { type: Boolean, default: false }
+  forCreate: { type: Boolean, default: false },
+  defaultValue: { type: Object, default: null }
 })
 
 const emit = defineEmits(['update-claims-values', 'create-claim'])
@@ -89,6 +90,17 @@ const authStore = useAuthStore()
 
 const items = reactive({})
 const claims = reactive({})
+
+onMounted(() => {
+  if (props.defaultValue && !props.forCreate) {
+    const newKey = `P${Date.now()}`
+    claims[newKey] = {
+      property: props.value.property,
+      datatype: props.value.datatype,
+      datavalue: { value: props.defaultValue, default: true }
+    }
+  }
+})
 
 function addClaim () {
   const newKey = `P${Date.now()}`
