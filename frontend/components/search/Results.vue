@@ -153,12 +153,14 @@ const config = useRuntimeConfig().public
 const localePath = useLocalePath()
 const queryStatusStore = useQueryStatusStore()
 
-// Link to the subject's subid item page, where the back pointers (#175) list
-// every record that uses this heading.
+// Link to the subject item's own page, where the back pointers (#175) list
+// every record that uses this heading. The subject qid isn't always a subid
+// entry (P243 is also used as a subject reference on other tables), so the
+// table isn't specified — the item page resolves it from the entity itself.
 const subjectLink = computed(() => props.subject?.qid
   ? localePath({
     path: '/item/' + props.subject.qid,
-    query: { database: props.database, table: 'subid' }
+    query: { database: props.database }
   })
   : null)
 
