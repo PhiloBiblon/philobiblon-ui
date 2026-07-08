@@ -97,7 +97,7 @@ onMounted(() => {
     claims[newKey] = {
       property: props.value.property,
       datatype: props.value.datatype,
-      datavalue: { value: props.defaultValue, default: true }
+      datavalue: { value: props.defaultValue }
     }
   }
 })
@@ -136,7 +136,8 @@ function updateClaimValue (value, key) {
 }
 
 async function createClaim (index) {
-  const value = claims[index]?.datavalue?.value
+  const raw = claims[index]?.datavalue?.value
+  const value = raw && typeof raw === 'object' && 'id' in raw ? raw.id ?? null : raw
   if (value == null) {
     return
   }
