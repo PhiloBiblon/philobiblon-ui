@@ -575,7 +575,7 @@ export class QueryService {
     if (form.input.associated_person && form.input.associated_person.value && form.input.associated_person.value.target_item) {
       filters +=
         `
-        VALUES ?prop_related_person { wdt:P703 wdt:P141 wdt:P142 wdt:P150 wdt:P203 wdt:P84 wdt:P505 wdt:P629 wdt:P504 wdt:P258 wdt:P192 wdt:P191 wdt:P33 wdt:P161 wdt:P190 wdt:P220 wdt:P735 }
+        VALUES ?prop_related_person { wdt:P703 wdt:P141 wdt:P142 wdt:P150 wdt:P203 wdt:P84 wdt:P505 wdt:P629 wdt:P504 wdt:P258 wdt:P192 wdt:P191 wdt:P33 wdt:P161 wdt:P190 wdt:P220 wdt:P735 wdt:P257 wdt:P486 wdt:P591 }
         ?item ?prop_related_person wd:${form.input.associated_person.value.target_item} .
         `
     }
