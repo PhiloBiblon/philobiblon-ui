@@ -75,7 +75,8 @@ import { WikibaseService } from '~/service/wikibase.service'
 const props = defineProps({
   id: { type: String, default: null },
   database: { type: String, required: true },
-  table: { type: String, required: true }
+  table: { type: String, required: true },
+  entity: { type: Object, default: null }
 })
 
 const { $wikibase } = useNuxtApp()
@@ -113,7 +114,7 @@ function goTo (path) {
 
 async function getEntity () {
   try {
-    const entity = await $wikibase.getEntity(props.id, locale.value)
+    const entity = props.entity ?? await $wikibase.getEntity(props.id, locale.value)
     item.value = entity
     label.value = await $wikibase.getValueByLang(entity.labels, locale.value)
     description.value = await $wikibase.getValueByLang(entity.descriptions, locale.value)

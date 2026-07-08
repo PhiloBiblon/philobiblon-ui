@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <item-base v-if="itemId" :id="itemId" :database="database" :table="table" />
+    <item-base v-if="itemId" :id="itemId" :database="database" :table="table" :entity="entity" />
   </div>
 </template>
 
@@ -15,6 +15,7 @@ const route = useRoute()
 const database = ref(null)
 const table = ref(null)
 const itemId = ref(null)
+const entity = ref(null)
 
 const paramId = route.params.id
 if ($wikibase.getQItemPattern().test(paramId.toUpperCase())) {
@@ -30,10 +31,10 @@ async function setParametersFromQItem (qItem) {
   table.value = route.query.table
 
   try {
-    const entity = route.query.justCreated
+    const fetchedEntity = route.query.justCreated
       ? await $wikibase.getEntityWithRetry(qItem, locale.value)
       : await $wikibase.getEntity(qItem, locale.value)
-    const pbid = $wikibase.getPBID(entity, database.value, table.value)
+    const pbid = $wikibase.getPBID(fetchedEntity, database.value, table.value)
     if (!pbid) {
       $notification.error(t('item.messages.not_found'))
     } else {
@@ -44,6 +45,7 @@ async function setParametersFromQItem (qItem) {
       if (!table.value) {
         table.value = parsedPBID.tableid
       }
+      entity.value = fetchedEntity
       itemId.value = qItem.toUpperCase()
     }
   } catch (error) {
