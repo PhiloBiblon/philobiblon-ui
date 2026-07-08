@@ -12,7 +12,7 @@
         :key="claim.values.length"
         :item="item"
         :value="claim?.values[0]?.mainsnak ?? { property: claim.property, datatype: claim.datatype }"
-        :default-value="claim.defaultValue"
+        :default-value="claim.values.length === 0 ? claim.defaultValue : null"
         @create-claim="emit('create-claim', $event)"
       />
     </v-container>

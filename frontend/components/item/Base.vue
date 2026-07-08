@@ -70,6 +70,7 @@ import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 import { useBreadcrumbStore } from '~/stores/breadcrumb'
+import { WikibaseService } from '~/service/wikibase.service'
 
 const props = defineProps({
   id: { type: String, default: null },
@@ -145,13 +146,13 @@ async function appendTemplateClaims (existingClaims) {
   if (!template) return
 
   const existingPropertyIds = new Set(Object.keys(existingClaims))
+  const missingPropIds = Object.keys(template).filter(id => !existingPropertyIds.has(id))
+  if (!missingPropIds.length) return
 
-  const bibliographyMap = { BETA: 'Q254471', BITECA: 'Q256810', BITAGAP: 'Q256809' }
+  const entities = await $wikibase.getEntities(missingPropIds, locale.value)
 
-  for (const [propId, qualifiersOrder] of Object.entries(template)) {
-    if (existingPropertyIds.has(propId)) continue
-
-    const entityProperty = await $wikibase.getEntity(propId, locale.value)
+  for (const propId of missingPropIds) {
+    const entityProperty = entities[propId]
     if (!entityProperty?.datatype || entityProperty.datatype === 'external-id') continue
 
     const claim = {
@@ -159,11 +160,12 @@ async function appendTemplateClaims (existingClaims) {
       datatype: entityProperty.datatype,
       values: [],
       hasQualifiers: false,
-      qualifiersOrder
+      qualifiersOrder: template[propId]
     }
 
-    if (propId === 'P131' && bibliographyMap[props.database]) {
-      claim.defaultValue = { id: bibliographyMap[props.database] }
+    const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP[props.database]
+    if (propId === 'P131' && bibliographyId) {
+      claim.defaultValue = { id: bibliographyId }
     }
 
     claimsOrdered.value.push(claim)

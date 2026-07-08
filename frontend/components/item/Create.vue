@@ -99,6 +99,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
+import { WikibaseService } from '~/service/wikibase.service'
 
 const props = defineProps({
   database: { type: String, required: true },
@@ -364,12 +365,7 @@ async function getDefaultClaims (itemNumber) {
       if (entity.id === 'P476') {
         claim = buildClaim(entity, [], generatePbId(itemNumber), false)
       } else if (entity.id === 'P131') {
-        const bibliographyMap = {
-          BETA: 'Q254471',
-          BITECA: 'Q256810',
-          BITAGAP: 'Q256809'
-        }
-        const bibliographyId = bibliographyMap[props.database] || null
+        const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP[props.database] || null
 
         const bibliographyQualifiers = [
           buildQualifier(entity, qualifiersArr['P700'])
