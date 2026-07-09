@@ -52,6 +52,8 @@ const item = ref(null)
 const claims = ref(null)
 const linkingQualifiers = ref([])
 
+let entityRequestId = 0
+
 const pbid = computed(() => props.value.item_pbid)
 const url = computed(() => localePath(`/item/${props.value.item}`))
 
@@ -68,11 +70,15 @@ watch(() => props.value.item, (newItem) => {
 })
 
 async function getEntity () {
+  const requestId = ++entityRequestId
   try {
     const entity = await $wikibase.getEntity(props.value.item, locale.value)
+    if (requestId !== entityRequestId) return
     item.value = entity
     claims.value = await $wikibase.getOrderedClaims(props.table, entity.claims)
+    if (requestId !== entityRequestId) return
     label.value = $wikibase.getValueByLang(entity.labels, locale.value)
+    linkingQualifiers.value = []
     if (props.itemId && props.table === 'bioid') {
       await extractLinkingQualifiers(entity.claims)
     }
