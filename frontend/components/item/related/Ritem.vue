@@ -66,6 +66,11 @@ onMounted(async () => {
 watch(() => props.value.item, (newItem) => {
   if (newItem) {
     getEntity()
+  } else {
+    label.value = null
+    item.value = null
+    claims.value = null
+    linkingQualifiers.value = []
   }
 })
 
@@ -80,14 +85,14 @@ async function getEntity () {
     label.value = $wikibase.getValueByLang(entity.labels, locale.value)
     linkingQualifiers.value = []
     if (props.itemId && props.table === 'bioid') {
-      await extractLinkingQualifiers(entity.claims)
+      await extractLinkingQualifiers(entity.claims, requestId)
     }
   } catch (err) {
     notifyError(err)
   }
 }
 
-async function extractLinkingQualifiers (entityClaims) {
+async function extractLinkingQualifiers (entityClaims, requestId) {
   for (const statements of Object.values(entityClaims || {})) {
     for (const stmt of statements) {
       if (stmt.mainsnak?.datavalue?.value?.id === props.itemId && stmt.qualifiers) {
@@ -107,7 +112,9 @@ async function extractLinkingQualifiers (entityClaims) {
               }
             })
         )
-        linkingQualifiers.value = resolved.filter(q => q.valueDisplay)
+        if (requestId === entityRequestId) {
+          linkingQualifiers.value = resolved.filter(q => q.valueDisplay)
+        }
         return
       }
     }
