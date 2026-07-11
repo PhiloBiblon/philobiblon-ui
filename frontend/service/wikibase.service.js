@@ -20,7 +20,6 @@ export class WikibaseService {
   static PITEM_PATTERN = /^P\d+$/
 
   static CONFIG_ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
-  static CONFIG_ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM = 'Ui_SortedProperties_NewItem'
   static CONFIG_PROPERTY_AUTOCOMPLETE_PAGE = 'Ui_ControlledVocabulary'
 
   static BIBLIOGRAPHIES = new Set(['BETA', 'BITECA', 'BITAGAP'])
@@ -135,7 +134,7 @@ export class WikibaseService {
   }
 
   async getClaimsOrderForNewItem (table) {
-    return await this.getClaimsOrder(table, this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM)
+    return await this.getClaimsOrder(table, this.$config.wikibaseNewItemPage)
   }
 
   async getClaimsOrder (table, pageName = this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE) {
