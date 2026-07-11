@@ -80,6 +80,17 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Compute deployed version
+        id: version
+        env:
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          # Mirrors staging.yml's "Update frontend version" step so the
+          # comment reports the exact version that was built and deployed.
+          BASE_VERSION="$(sed -n "s/^[[:space:]]*version: '\([^']*\)'.*/\1/p" frontend/nuxt.config.ts | head -n1)"
+          SHORT_SHA="${HEAD_SHA:0:7}"
+          echo "version=${BASE_VERSION}-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+
       - name: Find linked issues and their authors
         id: issues
         env:
@@ -138,6 +149,8 @@ jobs:
           PR_NUMBER: ${{ needs.find-pr.outputs.number }}
           ISSUE_AUTHORS: ${{ steps.issues.outputs.authors }}
           DEFAULT_USER: ${{ vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER }}
+          STAGING_URL: https://philobiblon.cog.berkeley.edu/ui-dev/
+          VERSION: ${{ steps.version.outputs.version }}
           SUMMARY: ${{ fromJSON(steps.claude.outputs.structured_output).summary }}
           TEST_PLAN: ${{ fromJSON(steps.claude.outputs.structured_output).test_plan }}
         run: |
@@ -146,11 +159,11 @@ jobs:
           else
             MENTIONS="@${DEFAULT_USER}"
           fi
-          BODY="${MENTIONS} deployed to staging.
+          BODY="${MENTIONS} deployed to staging: ${STAGING_URL} (version ${VERSION})
 
           ${SUMMARY}
 
-          **Test plan:**
+          **Suggested test plan:**
           ${TEST_PLAN}"
           gh pr comment "$PR_NUMBER" --body "$BODY"
 
@@ -161,13 +174,15 @@ jobs:
           PR_NUMBER: ${{ needs.find-pr.outputs.number }}
           ISSUE_AUTHORS: ${{ steps.issues.outputs.authors }}
           DEFAULT_USER: ${{ vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER }}
+          STAGING_URL: https://philobiblon.cog.berkeley.edu/ui-dev/
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           if [ -n "$ISSUE_AUTHORS" ]; then
             MENTIONS="$(echo "$ISSUE_AUTHORS" | tr ' ' '\n' | sed 's/^/@/' | paste -sd' ')"
           else
             MENTIONS="@${DEFAULT_USER}"
           fi
-          gh pr comment "$PR_NUMBER" --body "${MENTIONS} deployed to staging. (Summary generation failed — see the workflow run for details.)"
+          gh pr comment "$PR_NUMBER" --body "${MENTIONS} deployed to staging: ${STAGING_URL} (version ${VERSION}). (Summary generation failed — see the workflow run for details.)"
 
   notify-failure:
     name: Notify deploy failure via GitHub comment
