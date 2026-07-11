@@ -283,6 +283,10 @@ export default {
         related_institution: {
           label: 'Institució relacionada',
           hint: 'Cerqueu persones associades a una institució específica.'
+        },
+        associated_person: {
+          label: 'Persona associada',
+          hint: 'Cerqueu persones relacionades amb aquest individu (relacions familiars, professionals i d\'altre tipus).'
         }
       },
       bibid: {
