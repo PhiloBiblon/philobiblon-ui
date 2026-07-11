@@ -4,20 +4,20 @@
 
 ### `staging.yml` — triggers: push to `master`, manual
 
-1. Looks up the pull request associated with the pushed commit (`find-pr` job), if any.
-2. Builds `philobiblon-ui-backend` and `philobiblon-ui-frontend` images (with layer cache via GitHub Actions cache).
-3. Pushes to GHCR with two tags each: `main-{7-char SHA}` and `main-latest`.
-4. Deploys to the staging server via SSH using `docker-compose.ui-dev.yml`.
-5. On failure of the build or deploy step, posts a failure comment (`notify-failure` job) mentioning `vars.DEPLOY_NOTIFY_FAILURE_GITHUB_USER`, with the failed job(s) and a link to the workflow run — on the PR if one was found, otherwise as a comment on the commit itself.
-6. Deletes old image versions, keeping the 5 most recent. Tags matching `^v` (production releases) are never deleted.
+Deploy only — all notifications live in `staging-deploy-notify.yml` (see below).
 
-### `staging-deploy-notify-success.yml` — triggers: `workflow_run` (fires when `staging.yml` completes on `master`)
+1. Builds `philobiblon-ui-backend` and `philobiblon-ui-frontend` images (with layer cache via GitHub Actions cache).
+2. Pushes to GHCR with two tags each: `main-{7-char SHA}` and `main-latest`.
+3. Deploys to the staging server via SSH using `docker-compose.ui-dev.yml`.
+4. Deletes old image versions, keeping the 5 most recent. Tags matching `^v` (production releases) are never deleted.
 
-Posts the success notification. This is a **separate workflow**, not a job inside `staging.yml`, because `anthropics/claude-code-action@v1` (used here to write the deploy summary) does not support running under a `push`-triggered job — it only supports `issues`, `issue_comment`, `pull_request*`, `workflow_dispatch`, `repository_dispatch`, `schedule` and `workflow_run` events. Splitting it into a `workflow_run`-triggered workflow is the only way to use it for this notification.
+### `staging-deploy-notify.yml` — triggers: `workflow_run` (fires when `staging.yml` completes on `master`)
 
-1. If the `build-and-push` and `deploy` jobs of that `staging.yml` run didn't both succeed, this workflow does nothing (checked directly via the Actions API — independent of `cleanup`'s outcome, so a `cleanup`-only failure doesn't suppress the notification for a genuinely successful deploy).
-2. Otherwise, looks up the pull request associated with the deployed commit (`find-pr` job, re-run here since it's a separate workflow run). If none is found, nothing is posted.
-3. If found, posts a comment on it mentioning the GitHub author(s) of any issue(s) the PR references (`#123`-style patterns in its title/body), or `vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER` if none are linked — GitHub emails those users via its normal @mention notification, so no SMTP setup is needed. The comment body is an English summary and test plan written by Claude from the PR's title, body, comments and reviews, plus the description/comments of the linked issue(s). Comments from the `coderabbitai` bot are ignored. If the Claude step itself fails, a bare fallback comment (still mentioning the right user(s)) is posted instead, so a successful deploy is never silently unnotified.
+Posts the deploy notifications (success and failure). This is a **separate workflow**, not jobs inside `staging.yml`, both for separation of concerns (`staging.yml` deploys, this one notifies) and because `anthropics/claude-code-action@v1` (used here to write the deploy summary) does not support running under a `push`-triggered job — it only supports `issues`, `issue_comment`, `pull_request*`, `workflow_dispatch`, `repository_dispatch`, `schedule` and `workflow_run` events.
+
+1. Checks the conclusions of the `build-and-push` and `deploy` jobs of that `staging.yml` run directly via the Actions API (independent of `cleanup`'s outcome, so a `cleanup`-only failure doesn't suppress the success notification), and looks up the pull request associated with the deployed commit (`find-pr` job).
+2. **Both succeeded** (`notify-success` job): if a PR was found, posts a comment on it mentioning the GitHub author(s) of any issue(s) the PR references (`#123`-style patterns in its title/body), or `vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER` if none are linked — GitHub emails those users via its normal @mention notification, so no SMTP setup is needed. The comment body is an English summary and test plan written by Claude from the PR's title, body, comments and reviews, plus the description/comments of the linked issue(s). Comments from the `coderabbitai` bot are ignored. If the Claude step itself fails, a bare fallback comment (still mentioning the right user(s)) is posted instead, so a successful deploy is never silently unnotified. If no PR was found, nothing is posted.
+3. **Either failed** (`notify-failure` job): posts a failure comment mentioning `vars.DEPLOY_NOTIFY_FAILURE_GITHUB_USER`, with the failed job(s) and a link to the failed `staging.yml` run — on the PR if one was found, otherwise as a comment on the commit itself. No Claude involved, so this path stays simple and reliable.
 
 ### `production.yml` — triggers: push of a `v*` tag (e.g. `v1.2.3`), manual
 
