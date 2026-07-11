@@ -8,7 +8,7 @@
 2. Builds `philobiblon-ui-backend` and `philobiblon-ui-frontend` images (with layer cache via GitHub Actions cache).
 3. Pushes to GHCR with two tags each: `main-{7-char SHA}` and `main-latest`.
 4. Deploys to the staging server via SSH using `docker-compose.ui-dev.yml`.
-5. On success, if a PR was found, posts a comment on it (`notify-success` job) mentioning `vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_USER` — GitHub emails that user via its normal @mention notification, so no SMTP setup is needed. The comment body is an English summary and test plan written by Claude (`anthropics/claude-code-action@v1`) from the PR's title, body, comments and reviews, plus the description/comments of any issue the PR references. Comments from the `coderabbitai` bot are ignored. Skipped entirely if there was no associated PR.
+5. On success, if a PR was found, posts a comment on it (`notify-success` job) mentioning the GitHub author(s) of any issue(s) the PR references (`#123`-style patterns in its title/body), or `vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER` if none are linked — GitHub emails those users via its normal @mention notification, so no SMTP setup is needed. The comment body is an English summary and test plan written by Claude (`anthropics/claude-code-action@v1`) from the PR's title, body, comments and reviews, plus the description/comments of the linked issue(s). Comments from the `coderabbitai` bot are ignored. Skipped entirely if there was no associated PR.
 6. On failure of the build or deploy step, posts a failure comment instead (`notify-failure` job) mentioning `vars.DEPLOY_NOTIFY_FAILURE_GITHUB_USER`, with the failed job(s) and a link to the workflow run — on the PR if one was found, otherwise as a comment on the commit itself. Runs even when `notify-success` is skipped.
 7. Deletes old image versions, keeping the 5 most recent. Tags matching `^v` (production releases) are never deleted.
 
@@ -48,7 +48,7 @@ Create two environments: `staging` and `production`, each with:
 | `BASE_URL` | Frontend base path (e.g. `/` or `/ui/`) — baked into the image at build time |
 | `API_BASE_URL` | Backend API URL (e.g. `https://example.com/api/`) — baked into the image at build time |
 | `DEPLOY_PATH` | Absolute path to the project on the server |
-| `DEPLOY_NOTIFY_SUCCESS_GITHUB_USER` | GitHub login mentioned in the PR comment on a successful staging deploy — staging only |
+| `DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER` | GitHub login mentioned in the PR comment on a successful staging deploy when the PR references no issue — staging only |
 | `DEPLOY_NOTIFY_FAILURE_GITHUB_USER` | GitHub login mentioned in the PR/commit comment on a failed staging deploy — staging only |
 
 ### Secrets (`secrets.*`) — encrypted
