@@ -43,6 +43,11 @@ jobs:
           # them as PR comments, so this workflow silently reviewed nothing
           # on every prior run despite completing "successfully".
           prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }} --comment'
+          # Temporary: prior runs showed permission_denials_count > 0 with no
+          # visibility into which tool was denied. Keep this on until we've
+          # confirmed a real run with --comment posts comments cleanly with
+          # zero denials, then remove it.
+          show_full_output: true
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 
