@@ -151,6 +151,11 @@ jobs:
             - test_plan: concrete steps to verify the change works.
           claude_args: |
             --json-schema '{"type":"object","properties":{"summary":{"type":"string"},"test_plan":{"type":"string"}},"required":["summary","test_plan"]}'
+          # Temporary: the last real run had permission_denials_count: 11 out
+          # of 21 turns and ended up filling summary/test_plan with "test"
+          # placeholder text instead of real content. Keep this on until we've
+          # seen which tool calls are being denied, then remove it.
+          show_full_output: true
 
       - name: Post deploy success comment on the PR
         env:
