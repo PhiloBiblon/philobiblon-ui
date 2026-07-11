@@ -10,6 +10,33 @@ env:
   OWNER: ${{ github.repository_owner }}
 
 jobs:
+  find-pr:
+    name: Find associated pull request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+
+    outputs:
+      number: ${{ steps.find.outputs.number }}
+      title: ${{ steps.find.outputs.title }}
+      url: ${{ steps.find.outputs.url }}
+
+    steps:
+      - name: Find pull request for this commit
+        id: find
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_JSON="$(gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/pulls" --jq '.[0] // empty')"
+          if [ -z "$PR_JSON" ]; then
+            echo "No pull request associated with ${{ github.sha }}"
+            exit 0
+          fi
+          echo "number=$(echo "$PR_JSON" | jq -r '.number')" >> "$GITHUB_OUTPUT"
+          echo "title=$(echo "$PR_JSON" | jq -r '.title')" >> "$GITHUB_OUTPUT"
+          echo "url=$(echo "$PR_JSON" | jq -r '.html_url')" >> "$GITHUB_OUTPUT"
+
   build-and-push:
     name: Build & push images
     runs-on: ubuntu-latest
@@ -97,6 +124,113 @@ jobs:
             docker compose -f docker-compose.ui-local.yml -f docker-compose.ui-dev.yml pull
             docker compose -f docker-compose.ui-local.yml -f docker-compose.ui-dev.yml up -d
             docker images --filter "dangling=true" --filter "label=org.opencontainers.image.source=https://github.com/PhiloBiblon/philobiblon-ui" -q | xargs -r docker rmi -f
+
+  notify-success:
+    name: Notify deploy success via PR comment
+    needs: [build-and-push, deploy, find-pr]
+    if: always() && needs.build-and-push.result == 'success' && needs.deploy.result == 'success' && needs.find-pr.outputs.number != ''
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Generate summary and test plan with Claude
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          track_progress: false
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ needs.find-pr.outputs.number }}
+
+            Read that pull request's title, body, comments and reviews with:
+              gh pr view ${{ needs.find-pr.outputs.number }} --json title,body,url,comments,reviews
+
+            If the PR title or body references an issue (patterns like "#123" or
+            "Fixes #123"), also read that issue's description and comments with:
+              gh issue view <issue-number> --json title,body,comments
+
+            Ignore any comment or content authored by the "coderabbitai" bot —
+            it is an automated review bot that is not relevant here and will
+            soon be disabled.
+
+            Using all of the above, write in English:
+            - summary: a short description of what this change fixes/does.
+            - test_plan: concrete steps to verify the change works.
+          claude_args: |
+            --json-schema '{"type":"object","properties":{"summary":{"type":"string"},"test_plan":{"type":"string"}},"required":["summary","test_plan"]}'
+
+      - name: Post deploy success comment on the PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ needs.find-pr.outputs.number }}
+          NOTIFY_USER: ${{ vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_USER }}
+          SUMMARY: ${{ fromJSON(steps.claude.outputs.structured_output).summary }}
+          TEST_PLAN: ${{ fromJSON(steps.claude.outputs.structured_output).test_plan }}
+        run: |
+          BODY="@${NOTIFY_USER} deployed to staging.
+
+          ${SUMMARY}
+
+          **Test plan:**
+          ${TEST_PLAN}"
+          gh pr comment "$PR_NUMBER" --body "$BODY"
+
+  notify-failure:
+    name: Notify deploy failure via GitHub comment
+    needs: [build-and-push, deploy, find-pr]
+    if: always() && (needs.build-and-push.result == 'failure' || needs.deploy.result == 'failure')
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Determine failed job(s)
+        id: failed
+        run: |
+          FAILED=""
+          for pair in "build-and-push:${{ needs.build-and-push.result }}" "deploy:${{ needs.deploy.result }}"; do
+            name="${pair%%:*}"
+            result="${pair##*:}"
+            if [ "$result" != "success" ]; then
+              FAILED="${FAILED:+$FAILED, }$name ($result)"
+            fi
+          done
+          echo "jobs=$FAILED" >> "$GITHUB_OUTPUT"
+
+      - name: Post failure comment on the PR
+        if: needs.find-pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ needs.find-pr.outputs.number }}
+          NOTIFY_USER: ${{ vars.DEPLOY_NOTIFY_FAILURE_GITHUB_USER }}
+          FAILED_JOBS: ${{ steps.failed.outputs.jobs }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh pr comment "$PR_NUMBER" --body "@${NOTIFY_USER} staging deploy failed (job: ${FAILED_JOBS}). Run: ${RUN_URL}"
+
+      - name: Post failure comment on the commit
+        if: needs.find-pr.outputs.number == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NOTIFY_USER: ${{ vars.DEPLOY_NOTIFY_FAILURE_GITHUB_USER }}
+          FAILED_JOBS: ${{ steps.failed.outputs.jobs }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" \
+            -f body="@${NOTIFY_USER} staging deploy failed (job: ${FAILED_JOBS}). Run: ${RUN_URL}"
 
   cleanup:
     name: Clean up old staging images
