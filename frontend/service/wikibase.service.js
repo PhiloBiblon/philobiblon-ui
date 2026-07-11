@@ -20,7 +20,6 @@ export class WikibaseService {
   static PITEM_PATTERN = /^P\d+$/
 
   static CONFIG_ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
-  static CONFIG_ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM = 'Ui_SortedProperties_NewItem'
   static CONFIG_PROPERTY_AUTOCOMPLETE_PAGE = 'Ui_ControlledVocabulary'
 
   static BIBLIOGRAPHIES = new Set(['BETA', 'BITECA', 'BITAGAP'])

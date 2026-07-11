@@ -57,6 +57,7 @@ Create two environments: `staging` and `production`, each with:
 | `BASE_URL` | Frontend base path (e.g. `/` or `/ui/`) — baked into the image at build time |
 | `API_BASE_URL` | Backend API URL (e.g. `https://example.com/api/`) — baked into the image at build time |
 | `DEPLOY_PATH` | Absolute path to the project on the server |
+| `WIKIBASE_NEW_ITEM_PAGE` | Optional override for the wiki page driving new-item property ordering — baked into the image at build time. Defaults to `Ui_SortedProperties_NewItem` when unset; only staging sets this (production intentionally always uses the default) |
 | `DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER` | GitHub login mentioned in the PR comment on a successful staging deploy when the PR references no issue — staging only |
 | `DEPLOY_NOTIFY_FAILURE_GITHUB_USER` | GitHub login mentioned in the PR/commit comment on a failed staging deploy — staging only |
 
