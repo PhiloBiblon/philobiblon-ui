@@ -458,6 +458,7 @@ export default {
     },
     results: {
       results: 'Results',
+      subject: 'Subject:',
       sort_by: 'Sort by:',
       sort_option: {
         name: 'Name',
