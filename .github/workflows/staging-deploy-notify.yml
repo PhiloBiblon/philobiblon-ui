@@ -1,4 +1,4 @@
-name: Staging deploy success notification
+name: Staging deploy notification
 
 on:
   workflow_run:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   find-pr:
-    name: Find associated pull request
+    name: Check deploy result & find pull request
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,11 +16,13 @@ jobs:
       actions: read
 
     outputs:
+      deploy_ok: ${{ steps.check.outputs.deploy_ok }}
+      failed_jobs: ${{ steps.check.outputs.failed_jobs }}
       number: ${{ steps.find.outputs.number }}
 
     steps:
-      - name: Find pull request for the deployed commit
-        id: find
+      - name: Check build-and-push and deploy conclusions
+        id: check
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -28,21 +30,38 @@ jobs:
           # run, including the unrelated cleanup job — check build-and-push and
           # deploy specifically so a cleanup-only failure doesn't suppress a
           # genuinely successful deploy's notification.
-          JOB_CONCLUSIONS="$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/jobs" \
-            --jq '.jobs[] | select(.name=="Build & push images" or .name=="Deploy to staging") | .conclusion')"
-          DEPLOY_OK=true
-          COUNT=0
-          while read -r c; do
-            COUNT=$((COUNT+1))
-            if [ "$c" != "success" ]; then
-              DEPLOY_OK=false
-            fi
-          done <<< "$JOB_CONCLUSIONS"
-          if [ "$COUNT" -ne 2 ] || [ "$DEPLOY_OK" != "true" ]; then
-            echo "build-and-push/deploy did not both succeed for this run; skipping"
-            exit 0
+          JOBS_JSON="$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/jobs" --paginate)"
+          BUILD_CONCLUSION="$(echo "$JOBS_JSON" | jq -r '.jobs[] | select(.name=="Build & push images") | .conclusion')"
+          DEPLOY_CONCLUSION="$(echo "$JOBS_JSON" | jq -r '.jobs[] | select(.name=="Deploy to staging") | .conclusion')"
+
+          DEPLOY_OK=false
+          if [ "$BUILD_CONCLUSION" = "success" ] && [ "$DEPLOY_CONCLUSION" = "success" ]; then
+            DEPLOY_OK=true
           fi
 
+          # Any conclusion other than success/skipped/empty counts as a
+          # failure (timed_out, cancelled, neutral, action_required...), not
+          # just the literal "failure" — otherwise those cases leave both
+          # deploy_ok=false and failed_jobs="", so neither notify-success nor
+          # notify-failure fires and the failure goes completely unnotified.
+          FAILED=""
+          case "$BUILD_CONCLUSION" in
+            success|skipped|"") ;;
+            *) FAILED="build-and-push (${BUILD_CONCLUSION})" ;;
+          esac
+          case "$DEPLOY_CONCLUSION" in
+            success|skipped|"") ;;
+            *) FAILED="${FAILED:+$FAILED, }deploy (${DEPLOY_CONCLUSION})" ;;
+          esac
+
+          echo "deploy_ok=$DEPLOY_OK" >> "$GITHUB_OUTPUT"
+          echo "failed_jobs=$FAILED" >> "$GITHUB_OUTPUT"
+
+      - name: Find pull request for the deployed commit
+        id: find
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           PR_JSON="$(gh api "repos/${{ github.repository }}/commits/${{ github.event.workflow_run.head_sha }}/pulls" --jq '.[0] // empty')"
           if [ -z "$PR_JSON" ]; then
             echo "No pull request associated with ${{ github.event.workflow_run.head_sha }}"
@@ -53,7 +72,7 @@ jobs:
   notify-success:
     name: Notify deploy success via PR comment
     needs: find-pr
-    if: needs.find-pr.outputs.number != ''
+    if: needs.find-pr.outputs.deploy_ok == 'true' && needs.find-pr.outputs.number != ''
     runs-on: ubuntu-latest
     environment: staging
     permissions:
@@ -69,6 +88,17 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 1
           persist-credentials: false
+
+      - name: Compute deployed version
+        id: version
+        env:
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          # Mirrors staging.yml's "Update frontend version" step so the
+          # comment reports the exact version that was built and deployed.
+          BASE_VERSION="$(sed -n "s/^[[:space:]]*version: '\([^']*\)'.*/\1/p" frontend/nuxt.config.ts | head -n1)"
+          SHORT_SHA="${HEAD_SHA:0:7}"
+          echo "version=${BASE_VERSION}-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
 
       - name: Find linked issues and their authors
         id: issues
@@ -128,6 +158,8 @@ jobs:
           PR_NUMBER: ${{ needs.find-pr.outputs.number }}
           ISSUE_AUTHORS: ${{ steps.issues.outputs.authors }}
           DEFAULT_USER: ${{ vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER }}
+          STAGING_URL: https://philobiblon.cog.berkeley.edu/ui-dev/
+          VERSION: ${{ steps.version.outputs.version }}
           SUMMARY: ${{ fromJSON(steps.claude.outputs.structured_output).summary }}
           TEST_PLAN: ${{ fromJSON(steps.claude.outputs.structured_output).test_plan }}
         run: |
@@ -136,11 +168,11 @@ jobs:
           else
             MENTIONS="@${DEFAULT_USER}"
           fi
-          BODY="${MENTIONS} deployed to staging.
+          BODY="${MENTIONS} deployed to staging: ${STAGING_URL} (version ${VERSION})
 
           ${SUMMARY}
 
-          **Test plan:**
+          **Suggested test plan:**
           ${TEST_PLAN}"
           gh pr comment "$PR_NUMBER" --body "$BODY"
 
@@ -151,10 +183,45 @@ jobs:
           PR_NUMBER: ${{ needs.find-pr.outputs.number }}
           ISSUE_AUTHORS: ${{ steps.issues.outputs.authors }}
           DEFAULT_USER: ${{ vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER }}
+          STAGING_URL: https://philobiblon.cog.berkeley.edu/ui-dev/
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           if [ -n "$ISSUE_AUTHORS" ]; then
             MENTIONS="$(echo "$ISSUE_AUTHORS" | tr ' ' '\n' | sed 's/^/@/' | paste -sd' ')"
           else
             MENTIONS="@${DEFAULT_USER}"
           fi
-          gh pr comment "$PR_NUMBER" --body "${MENTIONS} deployed to staging. (Summary generation failed — see the workflow run for details.)"
+          gh pr comment "$PR_NUMBER" --body "${MENTIONS} deployed to staging: ${STAGING_URL} (version ${VERSION}). (Summary generation failed — see the workflow run for details.)"
+
+  notify-failure:
+    name: Notify deploy failure via GitHub comment
+    needs: find-pr
+    if: needs.find-pr.outputs.failed_jobs != ''
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Post failure comment on the PR
+        if: needs.find-pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ needs.find-pr.outputs.number }}
+          NOTIFY_USER: ${{ vars.DEPLOY_NOTIFY_FAILURE_GITHUB_USER }}
+          FAILED_JOBS: ${{ needs.find-pr.outputs.failed_jobs }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          gh pr comment "$PR_NUMBER" --body "@${NOTIFY_USER} staging deploy failed (job: ${FAILED_JOBS}). Run: ${RUN_URL}"
+
+      - name: Post failure comment on the commit
+        if: needs.find-pr.outputs.number == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NOTIFY_USER: ${{ vars.DEPLOY_NOTIFY_FAILURE_GITHUB_USER }}
+          FAILED_JOBS: ${{ needs.find-pr.outputs.failed_jobs }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          gh api "repos/${{ github.repository }}/commits/${{ github.event.workflow_run.head_sha }}/comments" \
+            -f body="@${NOTIFY_USER} staging deploy failed (job: ${FAILED_JOBS}). Run: ${RUN_URL}"
