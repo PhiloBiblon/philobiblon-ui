@@ -513,21 +513,21 @@ export class WikibaseService {
   }
 
   getPBID (entity, database = null, table = null) {
-    if (entity.claims.P476) {
-      if (table) {
-        for (const claimValue of entity.claims.P476) {
-          const pbid = claimValue.mainsnak.datavalue.value
-          const parsedPBID = this.parsePBID(pbid)
-          if ((database === null || database === 'ALL' || database === parsedPBID.group) &&
-            (table === null || table === parsedPBID.tableid)) {
-            return pbid
-          }
-        }
-      } else {
-        return entity.claims.P476[0].mainsnak.datavalue.value
-      }
+    if (!entity.claims.P476) {
+      return null
     }
-    return null
+    if (database || table) {
+      for (const claimValue of entity.claims.P476) {
+        const pbid = claimValue.mainsnak.datavalue.value
+        const parsedPBID = this.parsePBID(pbid)
+        if ((database === null || database === 'ALL' || database === parsedPBID.group) &&
+          (table === null || table === parsedPBID.tableid)) {
+          return pbid
+        }
+      }
+      return null
+    }
+    return entity.claims.P476[0].mainsnak.datavalue.value
   }
 
   getValueByLang (obj, lang) {
