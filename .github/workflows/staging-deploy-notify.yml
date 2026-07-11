@@ -39,11 +39,20 @@ jobs:
             DEPLOY_OK=true
           fi
 
+          # Any conclusion other than success/skipped/empty counts as a
+          # failure (timed_out, cancelled, neutral, action_required...), not
+          # just the literal "failure" — otherwise those cases leave both
+          # deploy_ok=false and failed_jobs="", so neither notify-success nor
+          # notify-failure fires and the failure goes completely unnotified.
           FAILED=""
-          [ "$BUILD_CONCLUSION" = "failure" ] && FAILED="build-and-push (failure)"
-          if [ "$DEPLOY_CONCLUSION" = "failure" ]; then
-            FAILED="${FAILED:+$FAILED, }deploy (failure)"
-          fi
+          case "$BUILD_CONCLUSION" in
+            success|skipped|"") ;;
+            *) FAILED="build-and-push (${BUILD_CONCLUSION})" ;;
+          esac
+          case "$DEPLOY_CONCLUSION" in
+            success|skipped|"") ;;
+            *) FAILED="${FAILED:+$FAILED, }deploy (${DEPLOY_CONCLUSION})" ;;
+          esac
 
           echo "deploy_ok=$DEPLOY_OK" >> "$GITHUB_OUTPUT"
           echo "failed_jobs=$FAILED" >> "$GITHUB_OUTPUT"
