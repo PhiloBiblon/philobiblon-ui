@@ -15,7 +15,7 @@
 
 Posts the success notification. This is a **separate workflow**, not a job inside `staging.yml`, because `anthropics/claude-code-action@v1` (used here to write the deploy summary) does not support running under a `push`-triggered job — it only supports `issues`, `issue_comment`, `pull_request*`, `workflow_dispatch`, `repository_dispatch`, `schedule` and `workflow_run` events. Splitting it into a `workflow_run`-triggered workflow is the only way to use it for this notification.
 
-1. If `staging.yml` didn't conclude with success, this workflow does nothing.
+1. If the `build-and-push` and `deploy` jobs of that `staging.yml` run didn't both succeed, this workflow does nothing (checked directly via the Actions API — independent of `cleanup`'s outcome, so a `cleanup`-only failure doesn't suppress the notification for a genuinely successful deploy).
 2. Otherwise, looks up the pull request associated with the deployed commit (`find-pr` job, re-run here since it's a separate workflow run). If none is found, nothing is posted.
 3. If found, posts a comment on it mentioning the GitHub author(s) of any issue(s) the PR references (`#123`-style patterns in its title/body), or `vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER` if none are linked — GitHub emails those users via its normal @mention notification, so no SMTP setup is needed. The comment body is an English summary and test plan written by Claude from the PR's title, body, comments and reviews, plus the description/comments of the linked issue(s). Comments from the `coderabbitai` bot are ignored. If the Claude step itself fails, a bare fallback comment (still mentioning the right user(s)) is posted instead, so a successful deploy is never silently unnotified.
 
