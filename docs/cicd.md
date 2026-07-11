@@ -2,7 +2,9 @@
 
 ## Workflows
 
-### `staging.yml` — triggers: push to `master`, manual
+### `staging.yml` — triggers: push to `master` touching `backend/`, `frontend/` or the workflow file itself, manual
+
+Pushes that only touch other paths (docs, wiki pages, agent config…) don't produce a deployable change — the images are built solely from `backend/` and `frontend/` — so no run is triggered and, consequently, no deploy notification is posted either.
 
 Deploy only — all notifications live in `staging-deploy-notify.yml` (see below).
 
