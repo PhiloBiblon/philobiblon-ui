@@ -10,6 +10,7 @@ export class WikibaseService {
   static PROPERTY_PBID = 'P476'
   static PROPERTY_FORMATTER_URL = 'P236'
   static PROPERTY_NOTES = 'P817'
+  static BIBLIOGRAPHY_MAP = { BETA: 'Q254471', BITECA: 'Q256810', BITAGAP: 'Q256809' }
   static ITEM_PHILOBIBLON_PROPERTIES = 'Q394229'
   static COMMONS_WIKIMEDIA_URL_ENDPOINT =
     'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
