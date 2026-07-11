@@ -3,6 +3,10 @@ name: Staging — build, push & deploy
 on:
   push:
     branches: [master]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/staging.yml'
   workflow_dispatch:
 
 env:
