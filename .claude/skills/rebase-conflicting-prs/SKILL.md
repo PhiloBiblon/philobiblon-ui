@@ -30,13 +30,13 @@ List the matching PRs (number, title, author, branch) and get the user's confirm
 
 Work through the confirmed list in order. For each PR:
 
-1. **Check out the branch.** `git status` first — the working tree must be clean; if not, stop and ask the user (stash/commit), never discard uncommitted work silently. Then checkout the PR's `headRefName`, fetching it from origin first if it doesn't exist locally. If `headRepositoryOwner` differs from this repo's owner, the PR is from a fork — fetch/checkout from there instead.
+1. **Check out the branch.** `git status` first — the working tree must be clean; if not, stop and ask the user (stash/commit), never discard uncommitted work silently. Then run `gh pr checkout <number>` to check out the PR's branch — for same-repo PRs this tracks `origin`; for fork PRs (`headRepositoryOwner` differs from this repo's owner) it creates and tracks a remote pointing at the fork, so the push step below automatically goes to the right place.
 2. **Rebase.** Invoke the `rebase` skill with this branch onto `master`. That skill invokes `resolving-merge-conflicts` for any hunks and runs the project's checks (`yarn lint` in `frontend/`, `./mvnw test` in `backend/`, per `AGENTS.md`, for whatever the rebased commits touch).
-3. **Push.** `git push --force-with-lease origin <headRefName>`.
+3. **Push.** `git push --force-with-lease` (no explicit remote — resolves to the tracking remote `gh pr checkout` set up: the fork's remote for fork PRs, `origin` otherwise). If the push is rejected (e.g. the fork owner hasn't enabled "Allow edits from maintainers"), don't retry against `origin` — report and skip like any other per-PR failure.
 4. **Request review.** `gh pr comment <number> --body "@claude review this PR"`.
 5. **Notify the author.** `gh pr comment <number> --body "@<author-login> I've applied a rebase and triggered a new review. Could you please check and test again?"` — always in English, regardless of the conversation's language.
 
-A PR whose rebase fails partway (unresolvable conflict, broken checks) should be reported and skipped, not force-pushed in a broken state — continue with the rest of the batch.
+A PR whose rebase fails partway (unresolvable conflict, broken checks, rejected push) should be reported and skipped, not force-pushed in a broken state — continue with the rest of the batch. If the failure leaves the repo mid-rebase (an unresolvable conflict `resolving-merge-conflicts` couldn't clear), run `git rebase --abort` and confirm `git status` is clean before checking out the next PR — `resolving-merge-conflicts`'s own contract never aborts on your behalf, but this skill's batch loop overrides that for the unattended case, since leaving one PR mid-rebase would break every checkout after it. A clean rebase that only fails checks doesn't need an abort — just skip the push/comment steps for that PR.
 
 ### 5. Return
 

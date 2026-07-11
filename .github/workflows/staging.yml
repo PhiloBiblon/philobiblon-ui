@@ -142,6 +142,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          persist-credentials: false
 
       - name: Find linked issues and their authors
         id: issues
@@ -216,6 +217,21 @@ jobs:
           **Test plan:**
           ${TEST_PLAN}"
           gh pr comment "$PR_NUMBER" --body "$BODY"
+
+      - name: Post fallback success comment if Claude summary failed
+        if: always() && steps.claude.outcome != 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ needs.find-pr.outputs.number }}
+          ISSUE_AUTHORS: ${{ steps.issues.outputs.authors }}
+          DEFAULT_USER: ${{ vars.DEPLOY_NOTIFY_SUCCESS_GITHUB_DEFAULT_USER }}
+        run: |
+          if [ -n "$ISSUE_AUTHORS" ]; then
+            MENTIONS="$(echo "$ISSUE_AUTHORS" | tr ' ' '\n' | sed 's/^/@/' | paste -sd' ')"
+          else
+            MENTIONS="@${DEFAULT_USER}"
+          fi
+          gh pr comment "$PR_NUMBER" --body "${MENTIONS} deployed to staging. (Summary generation failed — see the workflow run for details.)"
 
   notify-failure:
     name: Notify deploy failure via GitHub comment
