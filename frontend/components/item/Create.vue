@@ -314,8 +314,12 @@ async function getDefaultClaims (itemNumber) {
           }
           dateQualifier.hidden = true
         }
-        claim = buildClaim(entity, qualifiers, { id: 'Q447227' })
-        claim.hidden = true
+        if (props.table === 'geoid') {
+          claim = buildClaim(entity, qualifiers, { id: 'Q447227' })
+          claim.hidden = true
+        } else {
+          claim = buildClaim(entity, qualifiers, null)
+        }
       } else if (props.table === 'cnum' && entity.id === 'P590') {
         claim = buildClaim(entity, qualifiers, null, false)
       } else if (props.table === 'copid' && entity.id === 'P839') {
