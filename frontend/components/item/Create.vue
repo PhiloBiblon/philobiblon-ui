@@ -197,7 +197,7 @@ function getCreateDisabledReason () {
   if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
 
   if (props.table === 'bioid') {
-    const hasName = ['P34', 'P77', 'P173', 'P291', 'P165', 'P746'].some(p => {
+    const hasName = ['P34', 'P173', 'P291', 'P165', 'P746'].some(p => {
       const arr = claims.value[p]
       return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
     })
@@ -395,7 +395,12 @@ async function getDefaultClaims (itemNumber) {
           }
           dateQualifier.hidden = true
         }
-        claim = buildClaim(entity, qualifiers, null)
+        if (props.table === 'geoid' || props.table === 'bioid') {
+          claim = buildClaim(entity, qualifiers, { id: 'Q447227' })
+          claim.hidden = true
+        } else {
+          claim = buildClaim(entity, qualifiers, null)
+        }
       } else if (props.table === 'cnum' && entity.id === 'P590') {
         claim = buildClaim(entity, qualifiers, null, false)
       } else if (props.table === 'copid' && entity.id === 'P839') {
@@ -627,7 +632,7 @@ function generateLabelFromClaims () {
       break
     }
     case 'bioid': {
-      const fallbackProps = ['P34', 'P77', 'P173', 'P291', 'P165', 'P746']
+      const fallbackProps = ['P34', 'P173', 'P291', 'P165', 'P746']
       for (const bioPbid of fallbackProps) {
         const val = getClaimValue(bioPbid)
         if (val) {

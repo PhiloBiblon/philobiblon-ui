@@ -2,6 +2,7 @@
   <div class="claim">
     <v-row
       v-for="(claim, key) in claims"
+      v-show="!claim.hidden"
       :key="claim?.property?.id"
       class="even-row pt-5"
       no-gutters
