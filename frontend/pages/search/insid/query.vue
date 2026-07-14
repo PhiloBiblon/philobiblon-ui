@@ -94,7 +94,7 @@ const form = {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc {
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
