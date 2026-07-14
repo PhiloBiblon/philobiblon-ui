@@ -308,7 +308,9 @@ export class WikibaseService {
         // `missing` response, and reusing it would make every retry return the same
         // stale result instead of re-fetching from Wikibase.
         const entity = await this.getEntity(id, lang, true)
-        if (entity && !entity.missing) {
+        // Wikibase marks a not-yet-replicated entity as `{ id, missing: '' }` — an empty
+        // string, which is falsy, so `!entity.missing` would wrongly accept the stub.
+        if (entity && entity.missing === undefined) {
           return entity
         }
       } catch (error) {
