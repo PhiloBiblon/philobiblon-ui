@@ -52,7 +52,6 @@ const emit = defineEmits(['on-blur', 'new-value'])
 
 const { $wikibase } = useNuxtApp()
 const { locale } = useI18n()
-const { notifyError } = useNotifyError()
 const config = useRuntimeConfig().public
 const authStore = useAuthStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -140,7 +139,10 @@ function setOptionsAutocomplete () {
     const autocomplete = propertyAutocomplete.value[propertyKey.value]
     const fullSparqlQuery = buildFullQuery(autocomplete.query)
     return $wikibase.runSparqlQuery(fullSparqlQuery, true)
-      .catch((error) => { notifyError(error); return [] })
+      // Autocomplete options are a best-effort enhancement: the SPARQL endpoint can
+      // fail transiently (e.g. read-after-write lag right after creating an item),
+      // and that must not surface an alarming error toast. Degrade to no options.
+      .catch((error) => { console.error(error); return [] })
       .then((results) => {
         Object.values(results).forEach((result) => {
           options.value.push({

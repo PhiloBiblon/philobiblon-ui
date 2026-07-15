@@ -288,15 +288,39 @@ export class WikibaseService {
     }
   }
 
-  getEntity (id, lang) {
+  getEntity (id, lang, bypassCache = false) {
     const url = this.wbk.getEntities({
       ids: [id],
       language: [lang, 'en']
     })
-    return this.wbFetcher(url)
+    return this.wbFetcher(url, bypassCache)
       .then((data) => {
         return data.entities[id]
       })
+  }
+
+  // Retries a just-created entity a few times with backoff, to ride out read-after-write replication lag.
+  async getEntityWithRetry (id, lang, attempts = 3, baseDelayMs = 300) {
+    let lastError
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      try {
+        // Bypass the query cache: a first attempt hitting replication lag can cache a
+        // `missing` response, and reusing it would make every retry return the same
+        // stale result instead of re-fetching from Wikibase.
+        const entity = await this.getEntity(id, lang, true)
+        // Wikibase marks a not-yet-replicated entity as `{ id, missing: '' }` — an empty
+        // string, which is falsy, so `!entity.missing` would wrongly accept the stub.
+        if (entity && entity.missing === undefined) {
+          return entity
+        }
+      } catch (error) {
+        lastError = error
+      }
+      if (attempt < attempts) {
+        await new Promise(resolve => setTimeout(resolve, baseDelayMs * attempt))
+      }
+    }
+    throw lastError ?? new Error(`Entity ${id} not available after ${attempts} attempts`)
   }
 
   getEntities (ids, lang) {
@@ -371,11 +395,13 @@ export class WikibaseService {
     return this.wbFetcher(url)
   }
 
-  wbFetcher (url) {
+  wbFetcher (url, bypassCache = false) {
     const urlHash = this.hashCode(url)
-    const entry = this.getResultsFromCache(urlHash)
-    if (entry) {
-      return Promise.resolve(entry.value)
+    if (!bypassCache) {
+      const entry = this.getResultsFromCache(urlHash)
+      if (entry) {
+        return Promise.resolve(entry.value)
+      }
     }
 
     return fetch(url)
@@ -387,10 +413,12 @@ export class WikibaseService {
         }
       })
       .then((data) => {
-        useQueryCacheStore().addEntry({
-          key: urlHash,
-          value: data
-        })
+        if (!bypassCache) {
+          useQueryCacheStore().addEntry({
+            key: urlHash,
+            value: data
+          })
+        }
         return data
       })
   }
