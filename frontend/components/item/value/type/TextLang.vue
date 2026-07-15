@@ -127,6 +127,7 @@ onMounted(async () => {
     const defaultLang = LANG_QITEM_MAP[propConfig.default_value]
     if (defaultLang && mapped.some(m => m.value === defaultLang.code)) {
       valueToView_.language = defaultLang.code
+      consolidatedLanguage.value = defaultLang.code
       emit('new-value', getMonolingualTextNewValue(valueToView_.value))
     }
   }
