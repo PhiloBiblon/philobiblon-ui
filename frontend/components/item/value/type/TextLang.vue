@@ -73,7 +73,7 @@ const LANG_QITEM_MAP = {
   Q164451: { code: 'pt', title: 'Português' },
   Q361085: { code: 'ca', title: 'Català' },
   Q361087: { code: 'gl', title: 'Galego' },
-  Q393616: { code: 'nl', title: 'Nederlands' },
+  Q393616: { code: 'nl', title: 'Nederlands' }, // duplicate Q-item for Dutch in FactGrid; deduped by 'seen' set below
   Q448505: { code: 'cs', title: 'Čeština' },
   Q456587: { code: 'pl', title: 'Polski' },
   Q899064: { code: 'nb', title: 'Norsk bokmål' },
@@ -103,6 +103,10 @@ onMounted(async () => {
   const propConfig = config?.[props.valueToView.property]
   if (!propConfig?.query) return
 
+  // NOTE: the query text is parsed with a regex to extract wd:Qxxxx tokens —
+  // it is NOT executed as SPARQL. The Ui_ControlledVocabulary entry for this
+  // property must list language Q-items as literals (e.g. VALUES ?item { wd:Q11149 ... }),
+  // not as a class query, or the regex will produce no matches and fall back to the hardcoded list.
   const seen = new Set()
   const mapped = []
   for (const [, qid] of propConfig.query.matchAll(/wd:(Q\d+)/g)) {
@@ -110,6 +114,8 @@ onMounted(async () => {
     if (lang && !seen.has(lang.code)) {
       seen.add(lang.code)
       mapped.push({ title: lang.title, value: lang.code })
+    } else if (!lang) {
+      console.warn(`[TextLang] Q-item ${qid} from Ui_ControlledVocabulary query is not in LANG_QITEM_MAP — add it to use it as a language option`)
     }
   }
   if (mapped.length === 0) return
@@ -119,7 +125,7 @@ onMounted(async () => {
 
   if (!valueToView_.language && propConfig.default_value) {
     const defaultLang = LANG_QITEM_MAP[propConfig.default_value]
-    if (defaultLang) {
+    if (defaultLang && mapped.some(m => m.value === defaultLang.code)) {
       valueToView_.language = defaultLang.code
       emit('new-value', getMonolingualTextNewValue(valueToView_.value))
     }
