@@ -1,4 +1,4 @@
-﻿<template>
+template>
   <search-base
     table="cnum"
     :form-definition="form"

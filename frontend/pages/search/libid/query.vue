@@ -1,4 +1,4 @@
-﻿<template>
+template>
   <search-base
     table="libid"
     :form-definition="form"

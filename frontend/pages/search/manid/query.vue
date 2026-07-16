@@ -1,4 +1,4 @@
-﻿<template>
+template>
   <search-base
     table="manid"
     :form-definition="form"
