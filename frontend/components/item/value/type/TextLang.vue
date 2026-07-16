@@ -76,51 +76,55 @@ const isEditable = computed(() => props.mode === 'edit')
 onMounted(async () => {
   if (!isUserLogged.value || !props.valueToView?.property) return
 
-  const config = await $wikibase.getControlledVocabularyConfig(
-    breadcrumbStore.table,
-    breadcrumbStore.database
-  )
-  const propConfig = config?.[props.valueToView.property]
-  if (!propConfig?.query) return
+  try {
+    const config = await $wikibase.getControlledVocabularyConfig(
+      breadcrumbStore.table,
+      breadcrumbStore.database
+    )
+    const propConfig = config?.[props.valueToView.property]
+    if (!propConfig?.query) return
 
-  // NOTE: the query text is parsed with a regex to extract wd:Qxxxx tokens —
-  // it is NOT executed as SPARQL. The Ui_ControlledVocabulary entry for this
-  // property must list language Q-items as literals (e.g. VALUES ?item { wd:Q11149 ... }),
-  // not as a class query, or the regex will produce no matches and fall back to the hardcoded list.
-  const qids = [...propConfig.query.matchAll(/wd:(Q\d+)/g)].map(([, qid]) => qid)
-  if (qids.length === 0) return
+    // NOTE: the query text is parsed with a regex to extract wd:Qxxxx tokens —
+    // it is NOT executed as SPARQL. The Ui_ControlledVocabulary entry for this
+    // property must list language Q-items as literals (e.g. VALUES ?item { wd:Q11149 ... }),
+    // not as a class query, or the regex will produce no matches and fall back to the hardcoded list.
+    const qids = [...propConfig.query.matchAll(/wd:(Q\d+)/g)].map(([, qid]) => qid)
+    if (qids.length === 0) return
 
-  // Fetch entities to read P822 (ISO 639-1 code) and labels directly from FactGrid,
-  // so adding a new language Q-item to the wiki config requires no code change.
-  const entities = await $wikibase.getEntities(qids, locale.value)
+    // Fetch entities to read P822 (ISO 639-1 code) and labels directly from FactGrid,
+    // so adding a new language Q-item to the wiki config requires no code change.
+    const entities = await $wikibase.getEntities(qids, locale.value)
 
-  const seen = new Set()
-  const mapped = []
-  for (const qid of qids) {
-    const entity = entities[qid]
-    const code = entity?.claims?.P822?.[0]?.mainsnak?.datavalue?.value
-    if (!code) {
-      console.warn(`[TextLang] Q-item ${qid} has no P822 (ISO 639-1) claim — skipping`)
-      continue
+    const seen = new Set()
+    const mapped = []
+    for (const qid of qids) {
+      const entity = entities[qid]
+      const code = entity?.claims?.P822?.[0]?.mainsnak?.datavalue?.value
+      if (!code) {
+        console.warn(`[TextLang] Q-item ${qid} has no P822 (ISO 639-1) claim — skipping`)
+        continue
+      }
+      if (seen.has(code)) continue
+      seen.add(code)
+      const title = entity.labels?.[locale.value]?.value || entity.labels?.en?.value || code
+      mapped.push({ title, value: code })
     }
-    if (seen.has(code)) continue
-    seen.add(code)
-    const title = entity.labels?.[locale.value]?.value || entity.labels?.en?.value || code
-    mapped.push({ title, value: code })
-  }
-  if (mapped.length === 0) return
+    if (mapped.length === 0) return
 
-  mapped.push({ title: '-', value: 'und' })
-  languages.value = mapped
+    mapped.push({ title: '-', value: 'und' })
+    languages.value = mapped
 
-  if (!valueToView_.language && propConfig.default_value) {
-    const defaultEntity = entities[propConfig.default_value]
-    const defaultCode = defaultEntity?.claims?.P822?.[0]?.mainsnak?.datavalue?.value
-    if (defaultCode && mapped.some(m => m.value === defaultCode)) {
-      valueToView_.language = defaultCode
-      consolidatedLanguage.value = defaultCode
-      emit('new-value', getMonolingualTextNewValue(valueToView_.value))
+    if (!valueToView_.language && propConfig.default_value) {
+      const defaultEntity = entities[propConfig.default_value]
+      const defaultCode = defaultEntity?.claims?.P822?.[0]?.mainsnak?.datavalue?.value
+      if (defaultCode && mapped.some(m => m.value === defaultCode)) {
+        valueToView_.language = defaultCode
+        consolidatedLanguage.value = defaultCode
+        emit('new-value', getMonolingualTextNewValue(valueToView_.value))
+      }
     }
+  } catch (err) {
+    console.error('[TextLang] Failed to load language options from FactGrid:', err)
   }
 })
 
