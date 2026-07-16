@@ -1,4 +1,4 @@
-template>
+<template>
   <search-base
     table="insid"
     :form-definition="form"

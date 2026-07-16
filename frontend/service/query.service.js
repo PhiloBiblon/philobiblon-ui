@@ -1,4 +1,4 @@
-mport { useQueryStatusStore } from '~/stores/queryStatus'
+import { useQueryStatusStore } from '~/stores/queryStatus'
 
 const BITAGAP_DB = 'BITAGAP'
 const CARTAS_TEXT = '[Cartas de]'

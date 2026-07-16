@@ -1,4 +1,4 @@
-template>
+<template>
   <search-base
     table="bibid"
     :form-definition="form"
