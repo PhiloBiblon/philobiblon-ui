@@ -351,8 +351,13 @@ function buildQualifier (_claim, qualifier) {
 async function getDefaultClaims (itemNumber) {
   const def = ['P476', 'P131', 'P799']
   const res = await $wikibase.getClaimsOrderForNewItem(props.table)
-  const propertyIds = [...new Set([...def, ...Object.keys(res)])]
-  const qualifiersProperties = [...new Set(['P700', 'P106', ...Object.values(res).flat()])]
+  const safeRes = res || {}
+  const resKeys = Object.keys(safeRes)
+  const defOnly = def.filter(p => !resKeys.includes(p))
+  const defWithoutP799 = defOnly.filter(p => p !== 'P799')
+  const trailingP799 = defOnly.includes('P799') ? ['P799'] : []
+  const propertyIds = [...new Set([...defWithoutP799, ...resKeys, ...trailingP799])]
+  const qualifiersProperties = [...new Set(['P700', 'P106', ...Object.values(safeRes).flat()])]
   const entities = await $wikibase.getEntities(propertyIds, locale.value)
   const qualifiersArr = await $wikibase.getEntities(qualifiersProperties, locale.value)
 
@@ -360,7 +365,7 @@ async function getDefaultClaims (itemNumber) {
     if (isValidPropertyEntity(entity)) {
       const qualifiers = []
 
-      res[entity.id]?.forEach((property) => {
+      safeRes[entity.id]?.forEach((property) => {
         if (isValidPropertyEntity(qualifiersArr[property])) {
           qualifiers.push(buildQualifier(entity, qualifiersArr[property]))
         }
@@ -411,6 +416,15 @@ async function getDefaultClaims (itemNumber) {
 
       initialClaims.value.push(claim)
     }
+  })
+
+  initialClaims.value.sort((a, b) => {
+    const ai = propertyIds.indexOf(a.property?.id)
+    const bi = propertyIds.indexOf(b.property?.id)
+    if (ai === -1 && bi === -1) return 0
+    if (ai === -1) return 1
+    if (bi === -1) return -1
+    return ai - bi
   })
 }
 
