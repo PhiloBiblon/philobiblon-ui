@@ -52,32 +52,12 @@ const props = defineProps({
 const emit = defineEmits(['on-blur', 'new-value'])
 
 const { $notification, $wikibase } = useNuxtApp()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const authStore = useAuthStore()
 const breadcrumbStore = useBreadcrumbStore()
 
 const valueToView_ = reactive({ ...props.valueToView })
 const consolidatedLanguage = ref(props.valueToView.language)
-
-// Maps FactGrid language Q-items to BCP-47 codes used for monolingual text storage
-const LANG_QITEM_MAP = {
-  Q11149: { code: 'en', title: 'English' },
-  Q11150: { code: 'de', title: 'Deutsch' },
-  Q11152: { code: 'fr', title: 'Français' },
-  Q11153: { code: 'es', title: 'Español' },
-  Q11154: { code: 'nl', title: 'Nederlands' },
-  Q11155: { code: 'it', title: 'Italiano' },
-  Q11157: { code: 'da', title: 'Dansk' },
-  Q144754: { code: 'sv', title: 'Svenska' },
-  Q152304: { code: 'hu', title: 'Magyar' },
-  Q164451: { code: 'pt', title: 'Português' },
-  Q361085: { code: 'ca', title: 'Català' },
-  Q361087: { code: 'gl', title: 'Galego' },
-  Q393616: { code: 'nl', title: 'Nederlands' }, // duplicate Q-item for Dutch in FactGrid; deduped by 'seen' set below
-  Q448505: { code: 'cs', title: 'Čeština' },
-  Q456587: { code: 'pl', title: 'Polski' },
-  Q899064: { code: 'nb', title: 'Norsk bokmål' },
-}
 
 const FALLBACK_LANGUAGES = [
   { title: 'English', value: 'en' },
@@ -107,16 +87,26 @@ onMounted(async () => {
   // it is NOT executed as SPARQL. The Ui_ControlledVocabulary entry for this
   // property must list language Q-items as literals (e.g. VALUES ?item { wd:Q11149 ... }),
   // not as a class query, or the regex will produce no matches and fall back to the hardcoded list.
+  const qids = [...propConfig.query.matchAll(/wd:(Q\d+)/g)].map(([, qid]) => qid)
+  if (qids.length === 0) return
+
+  // Fetch entities to read P822 (ISO 639-1 code) and labels directly from FactGrid,
+  // so adding a new language Q-item to the wiki config requires no code change.
+  const entities = await $wikibase.getEntities(qids, locale.value)
+
   const seen = new Set()
   const mapped = []
-  for (const [, qid] of propConfig.query.matchAll(/wd:(Q\d+)/g)) {
-    const lang = LANG_QITEM_MAP[qid]
-    if (lang && !seen.has(lang.code)) {
-      seen.add(lang.code)
-      mapped.push({ title: lang.title, value: lang.code })
-    } else if (!lang) {
-      console.warn(`[TextLang] Q-item ${qid} from Ui_ControlledVocabulary query is not in LANG_QITEM_MAP — add it to use it as a language option`)
+  for (const qid of qids) {
+    const entity = entities[qid]
+    const code = entity?.claims?.P822?.[0]?.mainsnak?.datavalue?.value
+    if (!code) {
+      console.warn(`[TextLang] Q-item ${qid} has no P822 (ISO 639-1) claim — skipping`)
+      continue
     }
+    if (seen.has(code)) continue
+    seen.add(code)
+    const title = entity.labels?.[locale.value]?.value || entity.labels?.en?.value || code
+    mapped.push({ title, value: code })
   }
   if (mapped.length === 0) return
 
@@ -124,10 +114,11 @@ onMounted(async () => {
   languages.value = mapped
 
   if (!valueToView_.language && propConfig.default_value) {
-    const defaultLang = LANG_QITEM_MAP[propConfig.default_value]
-    if (defaultLang && mapped.some(m => m.value === defaultLang.code)) {
-      valueToView_.language = defaultLang.code
-      consolidatedLanguage.value = defaultLang.code
+    const defaultEntity = entities[propConfig.default_value]
+    const defaultCode = defaultEntity?.claims?.P822?.[0]?.mainsnak?.datavalue?.value
+    if (defaultCode && mapped.some(m => m.value === defaultCode)) {
+      valueToView_.language = defaultCode
+      consolidatedLanguage.value = defaultCode
       emit('new-value', getMonolingualTextNewValue(valueToView_.value))
     }
   }
