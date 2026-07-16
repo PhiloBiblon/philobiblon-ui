@@ -61,7 +61,7 @@ export default {
             label: 'Asunto'
           },
           cnum: {
-            label: 'cnum'
+            label: 'Testimonio textual'
           },
           copid: {
             label: 'Ejemplar adicional'
@@ -128,7 +128,7 @@ export default {
         find_text: 'Busca texto',
         section: {
           advanced: 'Búsqueda avanzada',
-          external_description: 'External description'
+          external_description: 'Descripción externa'
         },
         group: {
           label: 'Base de datos'
@@ -445,6 +445,100 @@ export default {
         edition: {
           label: 'Edición',
           hint: 'Busque por la edición impresa (MsEd) de la que este es un ejemplar adicional.'
+        }
+      },
+      cnum: {
+        witness_of: {
+          label: 'Testimonio de',
+          hint: 'Busca por la obra (texid) de la cual este es un testimonio textual.'
+        },
+        part_of: {
+          label: 'Parte de',
+          hint: 'Busca por el manuscrito o edición (manid) que contiene este testimonio textual.'
+        },
+        author: {
+          label: 'Autor',
+          hint: 'Para buscar un nombre personal como el <b>Autor</b> de un texto en OBRA, utilice cualquier forma del nombre, original, traducido o una variante. Por ejemplo, busque "Benedictus", "Bento", "Benet" o "Benito".<br/>En todas las demás páginas de búsqueda y en todos los demás campos, como personas (asociadas), autores de referencias secundarias, propietarios anteriores, traductores, mecenas, copistas, editores, es decir, para cualquier nombre personal buscado en cualquier campo que no sea el de Autor en OBRA, utilice la versión moderna del nombre.<br/>Sugerencia: Para identificar la forma moderna de un nombre, busque en PERSONA cualquier forma en <b>Nombre</b>, original, traducido, seudónimo, etc.'
+        },
+        incipit: {
+          label: 'Incipit',
+          hint: 'Este importante campo de búsqueda puede ayudar a identificar un texto.<br/>Para cada obra, hay (a) un registro maestro (con un <b>texid</b> único) y (b) una serie de registros para cada copia conocida que sobrevive de la obra (cada una con un <b>cnum</b> único). Para el primero, los incipits/explícitos se han modernizado; para el segundo, los incipits/explícitos se reproducen paleográficamente o semipaleográficamente, dependiendo de la bibliografía (con o sin marcas de supresión, abreviaturas resueltas o no resueltas, errores ortográficos, etc.) tal como se encuentran en el manuscrito o la edición impresa o tal como se transcriben en una fuente secundaria. Una búsqueda en este campo debe devolver una lista de obras basada tanto en los incipits/explícitos modernizados como en los originales. Cuando intente identificar un texto, repita la búsqueda utilizando variantes de las palabras menos comunes. En algunos casos, en particular en el caso de textos con un gran número de copias y sin edición moderna, los íncipits y los explícitos se han registrado solo en los registros de copias. Este es particularmente el caso de BETA.<br/>Para localizar un texto poético, en <b>Incipit</b> busque cualquier palabra o palabras que aparezcan en la primera línea.'
+        },
+        explicit: {
+          label: 'Explicit',
+          hint: 'Este importante campo de búsqueda puede ayudar a identificar un texto.<br/>Para cada obra, hay (a) un registro maestro (con un <b>texid</b> único) y (b) una serie de registros para cada copia conocida que sobrevive de la obra (cada una con un <b>cnum</b> único). Para el primero, los incipits/explícitos se han modernizado; para el segundo, los incipits/explícitos se reproducen paleográficamente o semipaleográficamente, dependiendo de la bibliografía (con o sin marcas de supresión, abreviaturas resueltas o no resueltas, errores ortográficos, etc.) tal como se encuentran en el manuscrito o la edición impresa o tal como se transcriben en una fuente secundaria. Una búsqueda en este campo debe devolver una lista de obras basada tanto en los incipits/explícitos modernizados como en los originales. Cuando intente identificar un texto, repita la búsqueda utilizando variantes de las palabras menos comunes. En algunos casos, en particular en el caso de textos con un gran número de copias y sin edición moderna, los íncipits y los explícitos se han registrado solo en los registros de copias. Este es particularmente el caso de BETA.<br/>Para localizar un texto poético, en <b>Incipit</b> busque cualquier palabra o palabras que aparezcan en la primera línea.'
+        },
+        associated_person: {
+          label: 'Persona asociada',
+          hint: ''
+        },
+        place_composition: {
+          label: 'Lugar de composición',
+          hint: ''
+        },
+        date_composition: {
+          label: 'Fecha de composición',
+          hint: 'Busque por aaaa y/o mm y/o dd. Una búsqueda aquí podría devolver la fecha de composición, confirmación, revisión, traducción, promulgación, etc.'
+        },
+        library: {
+          label: 'Biblioteca',
+          hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
+        },
+        city: {
+          label: 'Ciudad',
+          hint: ''
+        },
+        call_number: {
+          label: 'Signatura',
+          hint: ''
+        },
+        collection: {
+          label: 'Colección',
+          hint: ''
+        },
+        place_production: {
+          label: 'Lugar de producción',
+          hint: 'Search by the name of a city or place in its modern form.'
+        },
+        scribe_printer: {
+          label: 'Copista / impresor',
+          hint: 'Search for a scribe using any form of the name. For a printer, use the name in its original form (e.g., in BITAGAP, "Hermann von Kempen" rather than "Hermão de Campos"). To learn the original form of a printer\'s name, search first in PERSON.'
+        },
+        publisher_patron: {
+          label: 'Editorial / mecenas',
+          hint: 'For a printed edition, search for the person who sponsored it using the modern form of the name. For a manuscript, search for the modern form of the name of the patron for whom it was copied.'
+        },
+        previous_owner: {
+          label: 'Antiguo posesor',
+          hint: 'Search for any person or institution that has owned the object by a person\'s name or title, by the name of a monastery, museum, auction house, etc.'
+        },
+        writing_surface: {
+          label: 'Superficie de escritura',
+          hint: ''
+        },
+        binding: {
+          label: 'Encuadernación',
+          hint: ''
+        },
+        watermark: {
+          label: 'Marca de agua',
+          hint: ''
+        },
+        graphic_feature: {
+          label: 'Característica gráfica',
+          hint: ''
+        },
+        type: {
+          label: 'Tipo',
+          hint: ''
+        },
+        language: {
+          label: 'Idioma',
+          hint: ''
+        },
+        poetic_form: {
+          label: 'Forma poética',
+          hint: ''
         }
       }
     },

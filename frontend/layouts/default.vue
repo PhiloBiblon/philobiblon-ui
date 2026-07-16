@@ -136,7 +136,8 @@ const searchItems = [
   { path: '/search/manid/query', label: 'menu.item.search.item.manid.label' },
   { path: '/search/geoid/query', label: 'menu.item.search.item.geoid.label' },
   { path: '/search/subid/query', label: 'menu.item.search.item.subid.label' },
-  { path: '/search/copid/query', label: 'menu.item.search.item.copid.label' }
+  { path: '/search/copid/query', label: 'menu.item.search.item.copid.label' },
+  { path: '/search/cnum/query', label: 'menu.item.search.item.cnum.label' }
 ]
 const createItems = [
   { path: '/item/texid/create', label: 'menu.item.create.item.texid.label' },
