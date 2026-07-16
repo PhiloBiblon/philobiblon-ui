@@ -99,6 +99,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
+import { WikibaseService } from '~/service/wikibase.service'
 
 const props = defineProps({
   database: { type: String, required: true },
@@ -189,8 +190,35 @@ function getCreateDisabledReason () {
 
   const requiredPropertyIds = new Set(['P2', 'P476'])
   if (props.table === 'manid') requiredPropertyIds.add('P329')
-  if (props.table === 'cnum') requiredPropertyIds.add('P590')
+  if (props.table === 'cnum') { requiredPropertyIds.add('P590'); requiredPropertyIds.add('P8') }
   if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
+  if (props.table === 'geoid' || props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
+  if (props.table === 'libid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P47') }
+  if (props.table === 'subid') requiredPropertyIds.add('P34')
+  if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
+
+  if (props.table === 'bioid') {
+    const hasName = ['P34', 'P77', 'P173', 'P291', 'P165', 'P746'].some(p => {
+      const arr = claims.value[p]
+      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
+    })
+    if (!hasName) {
+      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P34')?.property?.label || 'P34'
+      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+    }
+  }
+
+  if (props.table === 'bibid') {
+    const hasName = ['P247', 'P21', 'P1134'].some(p => {
+      const arr = claims.value[p]
+      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
+    })
+    if (!hasName) {
+      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P247')?.property?.label || 'P247'
+      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
+    }
+    requiredPropertyIds.add('P11')
+  }
 
   for (const propKey of requiredPropertyIds) {
     const claimArray = claims.value[propKey]
@@ -210,11 +238,17 @@ function getCreateDisabledReason () {
 
       if (propKey !== 'P2') {
         for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
+          // Empty qualifiers are dropped by cleanClaims before saving, so they
+          // must not block creation. This is what happens with the default
+          // empty qualifiers pre-filled on a required claim (e.g. P10/P805 on
+          // P329 for manid): leaving them blank should be allowed instead of
+          // forcing the user to fill or delete each line.
+          const hasValue = qualifierVal != null && qualifierVal !== '' && qualifierVal !== 'null'
+          if (!hasValue) {
+            continue
+          }
           if (!qualifierKey || qualifierKey === 'null') {
             return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
-          }
-          if (!qualifierVal || qualifierVal === 'null') {
-            return t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
           }
         }
       }
@@ -342,12 +376,7 @@ async function getDefaultClaims (itemNumber) {
       if (entity.id === 'P476') {
         claim = buildClaim(entity, [], generatePbId(itemNumber), false)
       } else if (entity.id === 'P131') {
-        const bibliographyMap = {
-          BETA: 'Q254471',
-          BITECA: 'Q256810',
-          BITAGAP: 'Q256809'
-        }
-        const bibliographyId = bibliographyMap[props.database] || null
+        const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP[props.database] || null
 
         const bibliographyQualifiers = [
           buildQualifier(entity, qualifiersArr['P700'])
@@ -500,12 +529,15 @@ async function create () {
 
       const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
 
-      if (response.success) {
-        draft.clear()
-        await router.push(localePath('/item/' + response.entity.id))
-      } else {
+      if (!response.success) {
         throw response
       }
+
+      draft.clear()
+      await router.push(localePath({
+        path: '/item/' + response.entity.id,
+        query: { justCreated: 'true' }
+      }))
     } catch (error) {
       notifyError(error)
     }
@@ -644,7 +676,14 @@ function generateLabelFromClaims () {
       }
       break
     }
-    case 'geoid':
+    case 'geoid': {
+      const name = getClaimValue('P34')
+      const region = getClaimValue('P297')
+      if (name) {
+        generatedLabel = region ? `${name}, ${region}` : name
+      }
+      break
+    }
     case 'insid': {
       const name = getClaimValue('P34')
       const region = getClaimValue('P297')

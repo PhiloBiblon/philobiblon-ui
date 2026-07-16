@@ -40,7 +40,8 @@ export default defineNuxtConfig({
       sparqlBaseUrl: process.env.SPARQL_BASE_URL,
       wikibaseApiUrl: process.env.WIKIBASE_API_URL,
       sparqlEndpoint: process.env.SPARQL_ENDPOINT,
-      sparqlQueryPrefix: process.env.SPARQL_QUERY_PREFIX
+      sparqlQueryPrefix: process.env.SPARQL_QUERY_PREFIX,
+      wikibaseNewItemPage: process.env.WIKIBASE_NEW_ITEM_PAGE || 'Ui_SortedProperties_NewItem'
     }
   },
 

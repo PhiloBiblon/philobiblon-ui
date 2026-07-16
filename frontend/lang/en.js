@@ -61,10 +61,10 @@ export default {
             label: 'Subject'
           },
           cnum: {
-            label: 'cnum'
+            label: 'Textual Witness'
           },
           copid: {
-            label: 'copid'
+            label: 'Additional Copy'
           }
         }
       },
@@ -96,7 +96,7 @@ export default {
             label: 'Subject'
           },
           cnum: {
-            label: 'Textual testimony'
+            label: 'Textual Witness'
           },
           copid: {
             label: 'Additional copy'
@@ -283,6 +283,10 @@ export default {
         related_institution: {
           label: 'Related institution',
           hint: 'Search for persons associated with a specific institution.'
+        },
+        associated_person: {
+          label: 'Associated person',
+          hint: 'Search for persons related to this individual (family, professional, and other relationships).'
         }
       },
       bibid: {
@@ -438,6 +442,106 @@ export default {
           label: 'Subject',
           hint: ''
         }
+      },
+      copid: {
+        edition: {
+          label: 'Edition',
+          hint: 'Search by the printed edition (MsEd) of which this is an additional copy.'
+        }
+      },
+      cnum: {
+        witness_of: {
+          label: 'Witness of',
+          hint: 'Search by the work (texid) of which this is a textual witness.'
+        },
+        part_of: {
+          label: 'Part of',
+          hint: 'Search by the manuscript or edition (manid) that contains this textual witness.'
+        },
+        author: {
+          label: 'Author',
+          hint: 'To search for a personal name as the <b>Author</b> of a text in WORK, use any form of the name, original, translated, or a variant. For example, search for "Benedictus", "Bento", "Benet", or "Benito."<br/>On all other search pages and in all other fields, such as (associated) persons, authors of secondary references, previous owners, translators, patrons, copyists, publishers, that is, for any personal name searched in any field other than that of Author in WORK, use the modern version of the name.<br/>Tip: To identify the modern form of a name, search in PERSON for any form in <b>Name</b>, original, translated, pseudonym, etc.'
+        },
+        incipit: {
+          label: 'Incipit',
+          hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
+        },
+        explicit: {
+          label: 'Explicit',
+          hint: 'This important search field may aid in the identification of a text.<br/>For every work, there is (a) a master record (with a unique <b>texid</b>) and (b) a series of records for every known surviving copy of the work (each with a unique <b>cnum</b>). For the former, incipits/explicits have been modernized; for the latter, incipits/explicits are reproduced paleographically or semi-paleographically, depending on the bibliography (with or without suppression marks, resolved or unresolved abbreviations, misspellings, etc.) as found in the manuscript or printed edition or as transcribed in a secondary source. A search in this field should return a list of works based on both the modernized incipits/explicits as well as the original ones. When trying to identify a text, repeat the search using variants of the less common words. In some case, particularly for texts with a large number of copies and no modern edition, incipits and explicits have been recorded only in the copy records. This is particularly the case for BETA.<br/>To locate a poetic text, in <b>Incipit</b> search for any word or words appearing in the first line.'
+        },
+        associated_person: {
+          label: 'Associated person',
+          hint: ''
+        },
+        place_composition: {
+          label: 'Place of composition',
+          hint: ''
+        },
+        date_composition: {
+          label: 'Date of composition',
+          hint: 'Search for yyyy and/or mm and/or dd. A search here might return the date of composition, confirmation, revision, translation, promulgation, etc.'
+        },
+        library: {
+          label: 'Library',
+          hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
+        },
+        city: {
+          label: 'City',
+          hint: ''
+        },
+        call_number: {
+          label: 'Shelfmark',
+          hint: ''
+        },
+        collection: {
+          label: 'Collection',
+          hint: ''
+        },
+        place_production: {
+          label: 'Place of production',
+          hint: 'Search by the name of a city or place in its modern form.'
+        },
+        scribe_printer: {
+          label: 'Scribe / printer',
+          hint: 'Search for a scribe using any form of the name. For a printer, use the name in its original form (e.g., in BITAGAP, "Hermann von Kempen" rather than "Hermão de Campos"). To learn the original form of a printer\'s name, search first in PERSON.'
+        },
+        publisher_patron: {
+          label: 'Publisher / patron',
+          hint: 'For a printed edition, search for the person who sponsored it using the modern form of the name. For a manuscript, search for the modern form of the name of the patron for whom it was copied.'
+        },
+        previous_owner: {
+          label: 'Previous owner',
+          hint: 'Search for any person or institution that has owned the object by a person\'s name or title, by the name of a monastery, museum, auction house, etc.'
+        },
+        writing_surface: {
+          label: 'Writing surface',
+          hint: ''
+        },
+        binding: {
+          label: 'Binding',
+          hint: ''
+        },
+        watermark: {
+          label: 'Watermark',
+          hint: ''
+        },
+        graphic_feature: {
+          label: 'Graphic feature',
+          hint: ''
+        },
+        type: {
+          label: 'Type',
+          hint: ''
+        },
+        language: {
+          label: 'Language',
+          hint: ''
+        },
+        poetic_form: {
+          label: 'Poetic form',
+          hint: ''
+        }
       }
     },
     button: {
@@ -448,6 +552,7 @@ export default {
     },
     results: {
       results: 'Results',
+      subject: 'Subject:',
       sort_by: 'Sort by:',
       sort_option: {
         name: 'Name',
@@ -470,6 +575,7 @@ export default {
     messages: {
       invalid_id: 'Invalid identifier.',
       not_found: 'Not found.',
+      load_after_create_failed: 'Item created successfully, but there was a problem loading it. Try refreshing in a few seconds.',
       invalid_url: 'Please fill a valid URL!'
     },
     create: {
@@ -612,7 +718,6 @@ export default {
         initial_claims: 'Claims are still loading',
         claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
         qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
-        qualifier_value_missing: 'Some qualifier(s) value are missing in the claim "{claimLabel}" for "{propertyLabel}"',
         incomplete_date: 'Please fill in a complete date (year, month and day) for the "{propertyLabel}" qualifier'
       },
       creation: {

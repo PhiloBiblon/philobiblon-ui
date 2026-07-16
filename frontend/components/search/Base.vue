@@ -17,6 +17,8 @@
       :results="results"
       :total-results="totalResults"
       :results-per-page="resultsPerPage"
+      :subject="searchedSubject"
+      :database="activeDatabase"
       :show-results="showResults && !waitingResults"
       @on-sort-by-id="search"
       @on-sort-descending="search"
@@ -62,6 +64,7 @@ const sparqlQuery = ref(null)
 const resultsPerPage = 50
 const results = ref([])
 const totalResults = ref(0)
+const searchedSubject = ref(null)
 const qs = ref(null)
 let searchErrorShown = false
 
@@ -93,8 +96,19 @@ onBeforeUnmount(() => {
 function countAndSearch () {
   searchErrorShown = false
   queryStatusStore.setForm(JSON.parse(JSON.stringify(form.value)))
+  captureSearchedSubject()
   count()
   search()
+}
+
+// Capture the subject selected for the executed query so the results can link
+// back to its subid item page (where the back pointers list every record with
+// that heading). subid table stores the id under `item`; other tables under
+// `target_item`.
+function captureSearchedSubject () {
+  const subjectValue = form.value?.input?.subject?.value
+  const qid = subjectValue?.target_item || subjectValue?.item
+  searchedSubject.value = qid ? { label: subjectValue.label, qid } : null
 }
 
 function count () {
@@ -145,6 +159,7 @@ function clearResults () {
   showResults.value = false
   waitingCount.value = false
   waitingItems.value = false
+  searchedSubject.value = null
   queryStatusStore.setShowResults(showResults.value)
   queryStatusStore.setPage(1)
   queryStatusStore.setSortBy('name')
