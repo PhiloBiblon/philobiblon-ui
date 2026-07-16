@@ -24,6 +24,8 @@ onMounted(async () => {
     console.error('OAuth login failed:', response.error)
     $notification.error(t('messages.error.auth.login_failed'))
   }
-  router.push(localePath(previousPathCookie.value || '/'))
+  const previousPath = previousPathCookie.value || '/'
+  const isItemView = previousPath.includes('/item/') && !previousPath.endsWith('/create')
+  router.push(localePath(isItemView ? '/' : previousPath))
 })
 </script>
