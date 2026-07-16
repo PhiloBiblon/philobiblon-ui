@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 defineOptions({ inheritAttrs: false })
@@ -52,6 +52,8 @@ const item = ref(null)
 const claims = ref(null)
 const linkingQualifiers = ref([])
 
+let entityRequestId = 0
+
 const pbid = computed(() => props.value.item_pbid)
 const url = computed(() => localePath(`/item/${props.value.item}`))
 
@@ -61,21 +63,36 @@ onMounted(async () => {
   }
 })
 
+watch(() => props.value.item, (newItem) => {
+  if (newItem) {
+    getEntity()
+  } else {
+    label.value = null
+    item.value = null
+    claims.value = null
+    linkingQualifiers.value = []
+  }
+})
+
 async function getEntity () {
+  const requestId = ++entityRequestId
   try {
     const entity = await $wikibase.getEntity(props.value.item, locale.value)
+    if (requestId !== entityRequestId) return
     item.value = entity
     claims.value = await $wikibase.getOrderedClaims(props.table, entity.claims)
+    if (requestId !== entityRequestId) return
     label.value = $wikibase.getValueByLang(entity.labels, locale.value)
+    linkingQualifiers.value = []
     if (props.itemId && props.table === 'bioid') {
-      await extractLinkingQualifiers(entity.claims)
+      await extractLinkingQualifiers(entity.claims, requestId)
     }
   } catch (err) {
     notifyError(err)
   }
 }
 
-async function extractLinkingQualifiers (entityClaims) {
+async function extractLinkingQualifiers (entityClaims, requestId) {
   for (const statements of Object.values(entityClaims || {})) {
     for (const stmt of statements) {
       if (stmt.mainsnak?.datavalue?.value?.id === props.itemId && stmt.qualifiers) {
@@ -95,7 +112,9 @@ async function extractLinkingQualifiers (entityClaims) {
               }
             })
         )
-        linkingQualifiers.value = resolved.filter(q => q.valueDisplay)
+        if (requestId === entityRequestId) {
+          linkingQualifiers.value = resolved.filter(q => q.valueDisplay)
+        }
         return
       }
     }

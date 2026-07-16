@@ -61,7 +61,7 @@ export default {
             label: 'Asunto'
           },
           cnum: {
-            label: 'cnum'
+            label: 'Testemuño textual'
           },
           copid: {
             label: 'Copia adicional'
@@ -96,7 +96,7 @@ export default {
             label: 'Asunto'
           },
           cnum: {
-            label: 'Testimonio textual'
+            label: 'Testemuño textual'
           },
           copid: {
             label: 'Copia adicional'
@@ -283,6 +283,10 @@ export default {
         related_institution: {
           label: 'Institución relacionada',
           hint: 'Busca persoas asociadas a unha institución específica.'
+        },
+        associated_person: {
+          label: 'Persoa asociada',
+          hint: 'Busca persoas relacionadas con este individuo (relacións familiares, profesionais e doutro tipo).'
         }
       },
       bibid: {
@@ -442,6 +446,100 @@ export default {
           label: 'Edición',
           hint: 'Busca pola edición impresa (MsEd) da que este é unha copia adicional.'
         }
+      },
+      cnum: {
+        witness_of: {
+          label: 'Testemuño de',
+          hint: 'Busca pola obra (texid) da cal este é un testemuño textual.'
+        },
+        part_of: {
+          label: 'Parte de',
+          hint: 'Busca polo manuscrito ou edición (manid) que contén este testemuño textual.'
+        },
+        author: {
+          label: 'Autor',
+          hint: 'Para buscar un nome persoal como <b>Autor</b> dun texto en WORK, utiliza calquera forma do nome, orixinal, traducido ou variante. Por exemplo, busque "Benedictus", "Bento", "Benet" ou "Benito".<br/>En todas as outras páxinas de busca e en todos os demais campos, como persoas (asociadas), autores de referencias secundarias, anteriores propietarios, tradutores, mecenas, copistas, editores, é dicir, para calquera nome persoal buscado en calquera campo que non sexa o de Autor en WORK, use a versión moderna do nome.<br/>Consello: para identificar a forma moderna dun nome. nome, busca en PERSOA calquera forma en <b>Nome</b>, orixinal, traducido, pseudónimo, etc.'
+        },
+        incipit: {
+          label: 'Incipit',
+          hint: 'Este importante campo de busca pode axudar na identificación dun texto.<br/>Para cada traballo, hai (a) un rexistro mestre (cun ​​<b>texid</b> único) e (b) unha serie de rexistros por cada copia supervivente coñecida da obra (cada unha cun <b>cnum</b> único). Para os primeiros modernizáronse os incipits/explícitos; para estes últimos, os incipits/explícitos reprodúcense paleográfica ou semipaleográficamente, dependendo da bibliografía (con ou sen marcas de supresión, abreviaturas resoltas ou non resoltas, faltas de ortografía, etc.) tal e como se atopa no manuscrito ou na edición impresa ou como se transcribe nun secundario. fonte. Unha busca neste campo debería devolver unha lista de obras baseada tanto nos incipits/explícitos modernizados como nos orixinais. Cando intente identificar un texto, repita a busca utilizando variantes das palabras menos habituais. Nalgúns casos, especialmente para textos con gran número de copias e sen edición moderna, só se rexistraron incipits e explícitos nos rexistros de copias. Este é particularmente o caso de BETA.<br/>Para localizar un texto poético, en <b>Incipit</b> busca calquera palabra ou palabras que aparezan na primeira liña.'
+        },
+        explicit: {
+          label: 'Explicit',
+          hint: 'Este importante campo de busca pode axudar na identificación dun texto.<br/>Para cada traballo, hai (a) un rexistro mestre (cun ​​<b>texid</b> único) e (b) unha serie de rexistros por cada copia supervivente coñecida da obra (cada unha cun <b>cnum</b> único). Para os primeiros modernizáronse os incipits/explícitos; para estes últimos, os incipits/explícitos reprodúcense paleográfica ou semipaleográficamente, dependendo da bibliografía (con ou sen marcas de supresión, abreviaturas resoltas ou non resoltas, faltas de ortografía, etc.) tal e como se atopa no manuscrito ou na edición impresa ou como se transcribe nun secundario. fonte. Unha busca neste campo debería devolver unha lista de obras baseada tanto nos incipits/explícitos modernizados como nos orixinais. Cando intente identificar un texto, repita a busca utilizando variantes das palabras menos habituais. Nalgúns casos, especialmente para textos con gran número de copias e sen edición moderna, só se rexistraron incipits e explícitos nos rexistros de copias. Este é particularmente o caso de BETA.<br/>Para localizar un texto poético, en <b>Incipit</b> busca calquera palabra ou palabras que aparezan na primeira liña.'
+        },
+        associated_person: {
+          label: 'Persoa asociada',
+          hint: ''
+        },
+        place_composition: {
+          label: 'Lugar de composición',
+          hint: ''
+        },
+        date_composition: {
+          label: 'Data de composición',
+          hint: 'Busca aaaa e/ou mm e/ou dd. Unha busca aquí pode devolver a data de composición, confirmación, revisión, tradución, promulgación, etc.'
+        },
+        library: {
+          label: 'Biblioteca',
+          hint: 'Search by the current or former name of the library that holds the manuscript or printed edition.'
+        },
+        city: {
+          label: 'Cidade',
+          hint: ''
+        },
+        call_number: {
+          label: 'Posición de inventario',
+          hint: ''
+        },
+        collection: {
+          label: 'Colección',
+          hint: ''
+        },
+        place_production: {
+          label: 'Lugar de produción',
+          hint: 'Search by the name of a city or place in its modern form.'
+        },
+        scribe_printer: {
+          label: 'Copista / impresor',
+          hint: 'Search for a scribe using any form of the name. For a printer, use the name in its original form (e.g., in BITAGAP, "Hermann von Kempen" rather than "Hermão de Campos"). To learn the original form of a printer\'s name, search first in PERSON.'
+        },
+        publisher_patron: {
+          label: 'Editor / mecenas',
+          hint: 'For a printed edition, search for the person who sponsored it using the modern form of the name. For a manuscript, search for the modern form of the name of the patron for whom it was copied.'
+        },
+        previous_owner: {
+          label: 'Antigo propietario',
+          hint: 'Search for any person or institution that has owned the object by a person\'s name or title, by the name of a monastery, museum, auction house, etc.'
+        },
+        writing_surface: {
+          label: 'Superficie de escritura',
+          hint: ''
+        },
+        binding: {
+          label: 'Encadernación',
+          hint: ''
+        },
+        watermark: {
+          label: 'Marca de auga',
+          hint: ''
+        },
+        graphic_feature: {
+          label: 'Característica gráfica',
+          hint: ''
+        },
+        type: {
+          label: 'Tipo',
+          hint: ''
+        },
+        language: {
+          label: 'Lingua',
+          hint: ''
+        },
+        poetic_form: {
+          label: 'Forma poética',
+          hint: ''
+        }
       }
     },
     button: {
@@ -452,6 +550,7 @@ export default {
     },
     results: {
       results: 'Resultados',
+      subject: 'Materia:',
       sort_by: 'Ordenar por:',
       sort_option: {
         name: 'Nome',
@@ -474,6 +573,7 @@ export default {
     messages: {
       invalid_id: 'Identificador non válido.',
       not_found: 'Non atopado.',
+      load_after_create_failed: 'O elemento creouse correctamente, pero houbo un problema ao cargalo. Proba a actualizar en uns segundos.',
       invalid_url: 'Enche un URL válido!'
     },
     create: {
@@ -616,7 +716,6 @@ export default {
         initial_claims: 'Os enunciados aínda se están cargando',
         claim_value_missing: 'Por favor, enche o valor do enunciado para "{propertyLabel}"',
         qualifier_key_missing: 'Falta unha propiedade cualificadora no enunciado "{claimLabel}" para "{propertyLabel}"',
-        qualifier_value_missing: 'Falta o valor dalgún cualificador no enunciado "{claimLabel}" para "{propertyLabel}"',
         incomplete_date: 'Por favor, enche unha data completa (ano, mes e día) para o cualificador "{propertyLabel}"'
       },
       creation: {

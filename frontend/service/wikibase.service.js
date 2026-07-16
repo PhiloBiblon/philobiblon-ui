@@ -10,6 +10,7 @@ export class WikibaseService {
   static PROPERTY_PBID = 'P476'
   static PROPERTY_FORMATTER_URL = 'P236'
   static PROPERTY_NOTES = 'P817'
+  static BIBLIOGRAPHY_MAP = { BETA: 'Q254471', BITECA: 'Q256810', BITAGAP: 'Q256809' }
   static ITEM_PHILOBIBLON_PROPERTIES = 'Q394229'
   static COMMONS_WIKIMEDIA_URL_ENDPOINT =
     'https://en.wikipedia.org/w/api.php?action=query&titles=File:$file&prop=imageinfo&iiprop=url&format=json&origin=*'
@@ -19,7 +20,6 @@ export class WikibaseService {
   static PITEM_PATTERN = /^P\d+$/
 
   static CONFIG_ORDER_PROPS_WIKI_PAGE = 'Ui_SortedProperties'
-  static CONFIG_ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM = 'Ui_SortedProperties_NewItem'
   static CONFIG_PROPERTY_AUTOCOMPLETE_PAGE = 'Ui_ControlledVocabulary'
 
   static BIBLIOGRAPHIES = new Set(['BETA', 'BITECA', 'BITAGAP'])
@@ -134,7 +134,7 @@ export class WikibaseService {
   }
 
   async getClaimsOrderForNewItem (table) {
-    return await this.getClaimsOrder(table, this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE_FOR_NEW_ITEM)
+    return await this.getClaimsOrder(table, this.$config.wikibaseNewItemPage)
   }
 
   async getClaimsOrder (table, pageName = this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE) {
@@ -288,15 +288,39 @@ export class WikibaseService {
     }
   }
 
-  getEntity (id, lang) {
+  getEntity (id, lang, bypassCache = false) {
     const url = this.wbk.getEntities({
       ids: [id],
       language: [lang, 'en']
     })
-    return this.wbFetcher(url)
+    return this.wbFetcher(url, bypassCache)
       .then((data) => {
         return data.entities[id]
       })
+  }
+
+  // Retries a just-created entity a few times with backoff, to ride out read-after-write replication lag.
+  async getEntityWithRetry (id, lang, attempts = 3, baseDelayMs = 300) {
+    let lastError
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      try {
+        // Bypass the query cache: a first attempt hitting replication lag can cache a
+        // `missing` response, and reusing it would make every retry return the same
+        // stale result instead of re-fetching from Wikibase.
+        const entity = await this.getEntity(id, lang, true)
+        // Wikibase marks a not-yet-replicated entity as `{ id, missing: '' }` — an empty
+        // string, which is falsy, so `!entity.missing` would wrongly accept the stub.
+        if (entity && entity.missing === undefined) {
+          return entity
+        }
+      } catch (error) {
+        lastError = error
+      }
+      if (attempt < attempts) {
+        await new Promise(resolve => setTimeout(resolve, baseDelayMs * attempt))
+      }
+    }
+    throw lastError ?? new Error(`Entity ${id} not available after ${attempts} attempts`)
   }
 
   getEntities (ids, lang) {
@@ -371,11 +395,13 @@ export class WikibaseService {
     return this.wbFetcher(url)
   }
 
-  wbFetcher (url) {
+  wbFetcher (url, bypassCache = false) {
     const urlHash = this.hashCode(url)
-    const entry = this.getResultsFromCache(urlHash)
-    if (entry) {
-      return Promise.resolve(entry.value)
+    if (!bypassCache) {
+      const entry = this.getResultsFromCache(urlHash)
+      if (entry) {
+        return Promise.resolve(entry.value)
+      }
     }
 
     return fetch(url)
@@ -387,10 +413,12 @@ export class WikibaseService {
         }
       })
       .then((data) => {
-        useQueryCacheStore().addEntry({
-          key: urlHash,
-          value: data
-        })
+        if (!bypassCache) {
+          useQueryCacheStore().addEntry({
+            key: urlHash,
+            value: data
+          })
+        }
         return data
       })
   }
@@ -518,21 +546,21 @@ export class WikibaseService {
   }
 
   getPBID (entity, database = null, table = null) {
-    if (entity.claims.P476) {
-      if (table) {
-        for (const claimValue of entity.claims.P476) {
-          const pbid = claimValue.mainsnak.datavalue.value
-          const parsedPBID = this.parsePBID(pbid)
-          if ((database === null || database === 'ALL' || database === parsedPBID.group) &&
-            (table === null || table === parsedPBID.tableid)) {
-            return pbid
-          }
-        }
-      } else {
-        return entity.claims.P476[0].mainsnak.datavalue.value
-      }
+    if (!entity.claims.P476) {
+      return null
     }
-    return null
+    if (database || table) {
+      for (const claimValue of entity.claims.P476) {
+        const pbid = claimValue.mainsnak.datavalue.value
+        const parsedPBID = this.parsePBID(pbid)
+        if ((database === null || database === 'ALL' || database === parsedPBID.group) &&
+          (table === null || table === parsedPBID.tableid)) {
+          return pbid
+        }
+      }
+      return null
+    }
+    return entity.claims.P476[0].mainsnak.datavalue.value
   }
 
   getValueByLang (obj, lang) {

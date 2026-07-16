@@ -99,6 +99,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
+import { WikibaseService } from '~/service/wikibase.service'
 
 const props = defineProps({
   database: { type: String, required: true },
@@ -237,11 +238,17 @@ function getCreateDisabledReason () {
 
       if (propKey !== 'P2') {
         for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
+          // Empty qualifiers are dropped by cleanClaims before saving, so they
+          // must not block creation. This is what happens with the default
+          // empty qualifiers pre-filled on a required claim (e.g. P10/P805 on
+          // P329 for manid): leaving them blank should be allowed instead of
+          // forcing the user to fill or delete each line.
+          const hasValue = qualifierVal != null && qualifierVal !== '' && qualifierVal !== 'null'
+          if (!hasValue) {
+            continue
+          }
           if (!qualifierKey || qualifierKey === 'null') {
             return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
-          }
-          if (!qualifierVal || qualifierVal === 'null') {
-            return t('messages.error.inputs.qualifier_value_missing', { claimLabel, propertyLabel })
           }
         }
       }
@@ -364,12 +371,7 @@ async function getDefaultClaims (itemNumber) {
       if (entity.id === 'P476') {
         claim = buildClaim(entity, [], generatePbId(itemNumber), false)
       } else if (entity.id === 'P131') {
-        const bibliographyMap = {
-          BETA: 'Q254471',
-          BITECA: 'Q256810',
-          BITAGAP: 'Q256809'
-        }
-        const bibliographyId = bibliographyMap[props.database] || null
+        const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP[props.database] || null
 
         const bibliographyQualifiers = [
           buildQualifier(entity, qualifiersArr['P700'])
@@ -518,12 +520,15 @@ async function create () {
 
       const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
 
-      if (response.success) {
-        draft.clear()
-        await router.push(localePath('/item/' + response.entity.id))
-      } else {
+      if (!response.success) {
         throw response
       }
+
+      draft.clear()
+      await router.push(localePath({
+        path: '/item/' + response.entity.id,
+        query: { justCreated: 'true' }
+      }))
     } catch (error) {
       notifyError(error)
     }
