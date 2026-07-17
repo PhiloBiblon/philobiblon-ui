@@ -716,7 +716,8 @@ export default {
         initial_claims: 'Los enunciados todavía se están cargando',
         claim_value_missing: 'Por favor, rellena el valor del enunciado para "{propertyLabel}"',
         qualifier_key_missing: 'Falta una propiedad calificadora en el enunciado "{claimLabel}" para "{propertyLabel}"',
-        incomplete_date: 'Por favor, introduce una fecha completa (año, mes y día) para el calificador "{propertyLabel}"'
+        incomplete_date: 'Por favor, introduce una fecha completa (año, mes y día) para el calificador "{propertyLabel}"',
+        language_mismatch: 'La lengua de la interfaz no coincide con la bibliografía. Para BETA usa español, para BITECA catalán, para BITAGAP portugués.'
       },
       creation: {
         pbid_already_exists: 'El PhiloBiblon ID "{pbid}" ya existe en {item}.'

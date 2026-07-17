@@ -565,7 +565,7 @@ export default {
     title: 'Título',
     description: 'Descrição',
     alias: 'Pseudónimo',
-    cnum_description: 'testemunha textual',
+    cnum_description: 'testemunho textual',
     back: 'Volte',
     identifiers: 'Identificadores',
     related_items: 'Itens relacionados',
@@ -716,7 +716,8 @@ export default {
         initial_claims: 'Os enunciados ainda estão a carregar',
         claim_value_missing: 'Por favor, preencha o valor do enunciado para "{propertyLabel}"',
         qualifier_key_missing: 'Falta uma propriedade qualificadora no enunciado "{claimLabel}" para "{propertyLabel}"',
-        incomplete_date: 'Por favor, preencha uma data completa (ano, mês e dia) para o qualificador "{propertyLabel}"'
+        incomplete_date: 'Por favor, preencha uma data completa (ano, mês e dia) para o qualificador "{propertyLabel}"',
+        language_mismatch: 'O idioma da interface não corresponde à bibliografia. Para BETA use o espanhol, para BITECA o catalão, para BITAGAP o português.'
       },
       creation: {
         pbid_already_exists: 'O PhiloBiblon ID "{pbid}" já existe em {item}.'
