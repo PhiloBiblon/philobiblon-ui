@@ -180,6 +180,12 @@ function cancel () {
 }
 
 function getCreateDisabledReason () {
+  const BIBLIOGRAPHY_LOCALE_MAP = { BETA: 'es', BITECA: 'ca', BITAGAP: 'pt' }
+  const expectedLocale = BIBLIOGRAPHY_LOCALE_MAP[props.database]
+  if (expectedLocale && locale.value !== expectedLocale) {
+    return t('messages.error.inputs.language_mismatch')
+  }
+
   if (!label.value) {
     return t('messages.error.inputs.label')
   }
