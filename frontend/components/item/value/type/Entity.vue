@@ -52,7 +52,6 @@ const emit = defineEmits(['on-blur', 'new-value'])
 
 const { $wikibase } = useNuxtApp()
 const { locale } = useI18n()
-const { notifyError } = useNotifyError()
 const config = useRuntimeConfig().public
 const authStore = useAuthStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -63,8 +62,13 @@ const propertyAutocomplete = ref({})
 const loading = ref(true)
 
 const isUserLogged = computed(() => authStore.isLogged)
+const propertyKey = computed(() => {
+  const p = props.valueToView?.property
+  return (p && typeof p === 'object') ? p.id : p
+})
+
 const isItemWithCustomOptions = computed(
-  () => propertyAutocomplete.value && props.valueToView.property in propertyAutocomplete.value
+  () => propertyAutocomplete.value && propertyKey.value in propertyAutocomplete.value
 )
 
 onMounted(async () => {
@@ -132,10 +136,13 @@ function getDefaultValue (currentValue, defaultValue) {
 
 function setOptionsAutocomplete () {
   if (isItemWithCustomOptions.value) {
-    const autocomplete = propertyAutocomplete.value[props.valueToView.property]
+    const autocomplete = propertyAutocomplete.value[propertyKey.value]
     const fullSparqlQuery = buildFullQuery(autocomplete.query)
     return $wikibase.runSparqlQuery(fullSparqlQuery, true)
-      .catch((error) => { notifyError(error); return [] })
+      // Autocomplete options are a best-effort enhancement: the SPARQL endpoint can
+      // fail transiently (e.g. read-after-write lag right after creating an item),
+      // and that must not surface an alarming error toast. Degrade to no options.
+      .catch((error) => { console.error(error); return [] })
       .then((results) => {
         Object.values(results).forEach((result) => {
           options.value.push({

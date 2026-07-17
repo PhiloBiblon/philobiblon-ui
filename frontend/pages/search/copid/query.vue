@@ -1,6 +1,6 @@
 <template>
   <search-base
-    table="bibid"
+    table="copid"
     :form-definition="form"
     :breadcrumb-items="breadcrumb_items"
   />
@@ -13,13 +13,12 @@ const { t } = useI18n()
 
 const breadcrumb_items = [
   { title: t('menu.item.search.label'), disabled: true },
-  { title: t('menu.item.search.item.bibid.label'), disabled: true }
+  { title: t('menu.item.search.item.copid.label'), disabled: true }
 ]
 
 const form = {
         section: [
-          'primary',
-          'advanced'
+          'primary'
         ],
         input: {
           group: {
@@ -83,155 +82,11 @@ const form = {
             visible: true,
             disabled: false
           },
-          author: {
+          edition: {
             active: true,
             section: 'primary',
-            label: 'search.form.bibid.author.label',
-            hint: 'search.form.bibid.author.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?label
-              WHERE {
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                VALUES ?property { wdt:P1134 wdt:P1136 }
-                ?item ?property ?label .
-                {{bitagapGroupFilter}}
-              }
-              `
-            }
-          },
-          title: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.bibid.title.label',
-            hint: 'search.form.bibid.title.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?label
-              WHERE { 
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                ?item wdt:P11 ?label .
-                {{bitagapGroupFilter}}
-              }
-              `
-            }
-          },
-          date: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.bibid.date.label',
-            hint: 'search.form.bibid.date.hint',
-            type: 'date',
-            value: {},
-            visible: true,
-            disabled: false
-          },
-          volume: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.bibid.volume.label',
-            hint: 'search.form.bibid.volume.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?label
-              WHERE { 
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                ?item wdt:P1137 ?label .
-                {{bitagapGroupFilter}}
-                {{descLangFilter}}
-              }
-              `
-            }
-          },
-          place_publication: {
-            active: true,
-            section: 'advanced',
-            label: 'search.form.bibid.place_publication.label',
-            hint: 'search.form.bibid.place_publication.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?label
-              WHERE { 
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                ?item wdt:P1141 ?label .
-                {{bitagapGroupFilter}}
-              }
-              `
-            }
-          },
-          publisher: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.bibid.publisher.label',
-            hint: 'search.form.bibid.publisher.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?label
-              WHERE { 
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                ?item wdt:P1140 ?label .
-                {{bitagapGroupFilter}}
-              }
-              `
-            }
-          },
-          series: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.bibid.series.label',
-            hint: 'search.form.bibid.series.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?label
-              WHERE { 
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                ?item wdt:P1139 ?label .
-                {{bitagapGroupFilter}}
-              }
-              `
-            }
-          },
-          locations: {
-            active: true,
-            section: 'advanced',
-            label: 'search.form.bibid.locations.label',
-            hint: 'search.form.bibid.locations.hint',
+            label: 'search.form.copid.edition.label',
+            hint: 'search.form.copid.edition.hint',
             type: 'autocomplete',
             value: {},
             visible: true,
@@ -244,8 +99,10 @@ const form = {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    ?item wdt:P329 ?target_item .
                     {{bitagapGroupFilter}}
+                    ?item wdt:P839 ?target_item .
+                    ?target_item wdt:P476 ?target_pbid .
+                    FILTER regex(?target_pbid, '(.*) manid ') .
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -253,11 +110,60 @@ const form = {
               `
             }
           },
-          international_standard_number: {
+          library: {
             active: true,
-            section: 'advanced',
-            label: 'search.form.bibid.international_standard_number.label',
-            hint: 'search.form.bibid.international_standard_number.hint',
+            section: 'primary',
+            label: 'search.form.manid.library.label',
+            hint: 'search.form.manid.library.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
+                    ?item wdt:P329 ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          collection: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.collection.label',
+            hint: 'search.form.manid.collection.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              allowFreeText: true,
+              query:
+              `
+              SELECT DISTINCT ?label WHERE {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
+                ?item p:P329 ?library_stmt .
+                ?library_stmt pq:P1054 ?label .
+              }
+              `
+            }
+          },
+          call_number: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.call_number.label',
+            hint: 'search.form.manid.call_number.hint',
             type: 'autocomplete',
             value: {},
             visible: true,
@@ -269,17 +175,23 @@ const form = {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
-                VALUES ?prop { wdt:P605 wdt:P606 wdt:P743 wdt:P634 }
-                ?item ?prop ?label .
+                ?item p:P329 ?library_stmt .
+                {
+                  ?library_stmt pq:P10 ?label
+                }
+                UNION
+                {
+                  ?library_stmt pq:P30 ?label
+                }
               }
               `
             }
           },
-          type: {
+          previous_owner: {
             active: true,
-            section: 'advanced',
-            label: 'search.form.bibid.type.label',
-            hint: 'search.form.bibid.type.hint',
+            section: 'primary',
+            label: 'search.form.manid.previous_owner.label',
+            hint: 'search.form.manid.previous_owner.hint',
             type: 'autocomplete',
             value: {},
             visible: true,
@@ -292,8 +204,133 @@ const form = {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    ?item wdt:P2 ?target_item .
                     {{bitagapGroupFilter}}
+                    ?item wdt:P229 ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          associated_person: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.associated_person.label',
+            hint: 'search.form.manid.associated_person.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
+                    ?item wdt:P703 ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          writing_surface: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.writing_surface.label',
+            hint: 'search.form.manid.writing_surface.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
+                    ?item wdt:P480 ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          binding: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.binding.label',
+            hint: 'search.form.manid.binding.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?label WHERE {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
+                ?item wdt:P800 ?label .
+              }
+              `
+            }
+          },
+          watermark: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.watermark.label',
+            hint: 'search.form.manid.watermark.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
+                    ?item wdt:P749 ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          graphic_feature: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.manid.graphic_feature.label',
+            hint: 'search.form.manid.graphic_feature.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc WHERE {
+                {
+                  SELECT DISTINCT ?target_item WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    {{bitagapGroupFilter}}
+                    ?item wdt:P801 ?target_item .
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -303,7 +340,7 @@ const form = {
           },
           subject: {
             active: true,
-            section: 'advanced',
+            section: 'primary',
             label: 'search.form.common.subject.label',
             hint: 'search.form.common.subject.hint',
             type: 'autocomplete',
@@ -318,9 +355,9 @@ const form = {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
+                    {{bitagapGroupSubjectFilter}}
                     VALUES ?property { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
                     ?item ?property ?target_item .
-                    {{bitagapGroupSubjectFilter}}
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -336,3 +373,9 @@ const form = {
         }
       }
 </script>
+
+<style scoped>
+.search {
+  width: 100% !important
+}
+</style>

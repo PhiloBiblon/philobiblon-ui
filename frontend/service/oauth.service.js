@@ -1,4 +1,4 @@
-import { useAuthStore } from '~/stores/auth'
+import { SESSION_TTL_MS, useAuthStore } from '~/stores/auth'
 
 const b64url = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 const b64urlDecode = s => decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/'))))
@@ -52,10 +52,12 @@ export class OAuthService {
     if (response.status === 0) {
       const accessToken = response.accessToken
       const username = await this.getUsername(accessToken)
-      useAuthStore().login({ username, accessToken })
+      const expiresAt = Date.now() + SESSION_TTL_MS
+      useAuthStore().login({ username, accessToken, expiresAt })
       const oauth = {
         username,
-        accessToken
+        accessToken,
+        expiresAt
       }
       this.oauthCookie.value = signToken(oauth)
     }
@@ -67,9 +69,14 @@ export class OAuthService {
     if (!token) return
     try {
       const decoded = decodeToken(token)
-      if (!decoded?.username || !decoded?.accessToken) return
-      const { username, accessToken } = decoded
-      useAuthStore().login({ username, accessToken })
+      // Reject pre-rollout cookies without an expiry, otherwise login() would
+      // synthesize a fresh TTL and extend an already-expired session.
+      if (!decoded?.username || !decoded?.accessToken || !decoded?.expiresAt) {
+        this.oauthCookie.value = null
+        return
+      }
+      const { username, accessToken, expiresAt } = decoded
+      useAuthStore().login({ username, accessToken, expiresAt })
     } catch (err) {
        
       console.error(err)

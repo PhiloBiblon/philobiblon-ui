@@ -70,11 +70,13 @@ import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 import { useBreadcrumbStore } from '~/stores/breadcrumb'
+import { WikibaseService } from '~/service/wikibase.service'
 
 const props = defineProps({
   id: { type: String, default: null },
   database: { type: String, required: true },
-  table: { type: String, required: true }
+  table: { type: String, required: true },
+  entity: { type: Object, default: null }
 })
 
 const { $wikibase } = useNuxtApp()
@@ -113,7 +115,7 @@ function goTo (path) {
 
 async function getEntity () {
   try {
-    const entity = await $wikibase.getEntity(props.id, locale.value)
+    const entity = props.entity ?? await $wikibase.getEntity(props.id, locale.value)
     item.value = entity
     label.value = await $wikibase.getValueByLang(entity.labels, locale.value)
     description.value = await $wikibase.getValueByLang(entity.descriptions, locale.value)
@@ -135,35 +137,40 @@ async function handleClaims (entity) {
       claimsOrdered.value.push(claim)
     }
   }
+
   if (isUserLogged.value) {
-    loadTemplateClaims(entity.claims)
+    await appendTemplateClaims(entity.claims)
   }
 }
 
-async function loadTemplateClaims (existingClaims) {
-  const order = await $wikibase.getClaimsOrderForNewItem(props.table)
-  if (!order) return
-  const existingKeys = new Set(Object.keys(existingClaims))
-  for (const propertyId of Object.keys(order)) {
-    if (existingKeys.has(propertyId)) continue
-    const propertyEntity = await $wikibase.getEntity(propertyId, locale.value)
-    const label = await $wikibase.getEntityLabel(props.table, propertyId, locale.value)
-    templateClaims.value.push({
-      default: true,
-      property: {
-        label: label?.value ?? propertyId,
-        id: propertyId,
-        datatype: propertyEntity.datatype
-      },
-      mainsnak: { property: propertyId },
-      claimsValues: [],
-      value: {
-        property: propertyId,
-        datatype: propertyEntity.datatype,
-        datavalue: { value: null }
-      },
-      qualifiers: []
-    })
+async function appendTemplateClaims (existingClaims) {
+  const template = await $wikibase.getClaimsOrderForNewItem(props.table)
+  if (!template) return
+
+  const existingPropertyIds = new Set(Object.keys(existingClaims))
+  const missingPropIds = Object.keys(template).filter(id => !existingPropertyIds.has(id))
+  if (!missingPropIds.length) return
+
+  const entities = await $wikibase.getEntities(missingPropIds, locale.value)
+
+  for (const propId of missingPropIds) {
+    const entityProperty = entities[propId]
+    if (!entityProperty?.datatype || entityProperty.datatype === 'external-id') continue
+
+    const claim = {
+      property: propId,
+      datatype: entityProperty.datatype,
+      values: [],
+      hasQualifiers: false,
+      qualifiersOrder: template[propId]
+    }
+
+    const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP[props.database]
+    if (propId === 'P131' && bibliographyId) {
+      claim.defaultValue = { id: bibliographyId }
+    }
+
+    claimsOrdered.value.push(claim)
   }
 }
 

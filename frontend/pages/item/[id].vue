@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <item-base v-if="itemId" :id="itemId" :database="database" :table="table" />
+    <item-base v-if="itemId" :id="itemId" :database="database" :table="table" :entity="entity" />
   </div>
 </template>
 
@@ -15,6 +15,7 @@ const route = useRoute()
 const database = ref(null)
 const table = ref(null)
 const itemId = ref(null)
+const entity = ref(null)
 
 const paramId = route.params.id
 if ($wikibase.getQItemPattern().test(paramId.toUpperCase())) {
@@ -29,19 +30,31 @@ async function setParametersFromQItem (qItem) {
   database.value = route.query.database
   table.value = route.query.table
 
-  const entity = await $wikibase.getEntity(qItem, locale.value)
-  const pbid = $wikibase.getPBID(entity, database.value, table.value)
-  if (!pbid) {
-    $notification.error(t('item.messages.not_found'))
-  } else {
-    const parsedPBID = $wikibase.parsePBID(pbid)
-    if (!database.value || database.value === 'ALL') {
-      database.value = parsedPBID.group
+  try {
+    const fetchedEntity = route.query.justCreated
+      ? await $wikibase.getEntityWithRetry(qItem, locale.value)
+      : await $wikibase.getEntity(qItem, locale.value)
+    const pbid = $wikibase.getPBID(fetchedEntity, database.value, table.value)
+    if (!pbid) {
+      $notification.error(t('item.messages.not_found'))
+    } else {
+      const parsedPBID = $wikibase.parsePBID(pbid)
+      if (!database.value || database.value === 'ALL') {
+        database.value = parsedPBID.group
+      }
+      if (!table.value) {
+        table.value = parsedPBID.tableid
+      }
+      entity.value = fetchedEntity
+      itemId.value = qItem.toUpperCase()
     }
-    if (!table.value) {
-      table.value = parsedPBID.tableid
+  } catch (error) {
+    console.error(error)
+    if (route.query.justCreated) {
+      $notification.error(t('item.messages.load_after_create_failed'))
+    } else {
+      $notification.error(t('item.messages.not_found'))
     }
-    itemId.value = qItem.toUpperCase()
   }
 }
 

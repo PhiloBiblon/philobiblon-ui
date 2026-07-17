@@ -6,12 +6,13 @@
       </div>
     </v-row>
     <v-container class="claim-values">
-      <item-claim-values :table="table" :claim="claim" @delete-claim="emit('delete-claim', $event)" />
+      <item-claim-values v-if="claim.values.length > 0" :table="table" :claim="claim" @delete-claim="emit('delete-claim', $event)" />
       <item-claim-add-value
         v-if="isUserLogged && isAllowedAddValue"
         :key="claim.values.length"
         :item="item"
-        :value="claim?.values[0]?.mainsnak"
+        :value="claim?.values[0]?.mainsnak ?? { property: claim.property, datatype: claim.datatype }"
+        :default-value="claim.values.length === 0 ? claim.defaultValue : null"
         @create-claim="emit('create-claim', $event)"
       />
     </v-container>

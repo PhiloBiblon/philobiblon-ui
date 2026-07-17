@@ -269,7 +269,8 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.target_item} .
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
     if (form.input.institution_type && form.input.institution_type.value) {
@@ -495,7 +496,8 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.target_item} .
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
     filters += this._dateRangeFilters(form.input.date_composition.value, {
@@ -572,10 +574,18 @@ export class QueryService {
         ?item wdt:P232 wd:${form.input.related_institution.value.target_item} .
         `
     }
+    if (form.input.associated_person && form.input.associated_person.value && form.input.associated_person.value.target_item) {
+      filters +=
+        `
+        VALUES ?prop_related_person { wdt:P703 wdt:P141 wdt:P142 wdt:P150 wdt:P203 wdt:P84 wdt:P505 wdt:P629 wdt:P504 wdt:P258 wdt:P192 wdt:P191 wdt:P33 wdt:P161 wdt:P190 wdt:P220 wdt:P735 wdt:P257 wdt:P486 wdt:P591 }
+        ?item ?prop_related_person wd:${form.input.associated_person.value.target_item} .
+        `
+    }
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.target_item} .
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
     return filters
@@ -620,7 +630,8 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.target_item} .
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
     return filters
@@ -699,7 +710,8 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.target_item} .
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
     return filters
@@ -722,7 +734,8 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.target_item} .
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
     return filters
@@ -1035,7 +1048,8 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        ?item wdt:P243 wd:${form.input.subject.value.target_item} .
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
     return filters

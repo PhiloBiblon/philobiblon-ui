@@ -3,6 +3,10 @@ name: Staging — build, push & deploy
 on:
   push:
     branches: [master]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/staging.yml'
   workflow_dispatch:
 
 env:
@@ -70,6 +74,7 @@ jobs:
           build-args: |
             BASE_URL=${{ vars.BASE_URL }}
             API_BASE_URL=${{ vars.API_BASE_URL }}
+            WIKIBASE_NEW_ITEM_PAGE=${{ vars.WIKIBASE_NEW_ITEM_PAGE }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-frontend:main-${{ steps.meta.outputs.short_sha }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/philobiblon-ui-frontend:main-latest

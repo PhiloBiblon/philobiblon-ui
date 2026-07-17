@@ -137,14 +137,17 @@ watch(currentText, (newVal, oldVal) => {
 
 onMounted(() => {
   const isCreatingWithNoValue = props.mode === 'creation' && props.value === null
-  const initialValue = isCreatingWithNoValue ? today.value : props.value
-  currentText.value = initialValue
-  consolidatedText.value = initialValue
-  if (props.useCalendar) {
-    pickerDate.value = parseDate(initialValue)
-  }
-  if (isCreatingWithNoValue) {
-    emit('new-value', initialValue)
+  if (props.useCalendar && isCreatingWithNoValue) {
+    currentText.value = today.value
+    consolidatedText.value = today.value
+    pickerDate.value = parseDate(today.value)
+    emit('new-value', today.value)
+  } else {
+    currentText.value = props.value
+    consolidatedText.value = props.value
+    if (props.useCalendar) {
+      pickerDate.value = parseDate(props.value)
+    }
   }
 })
 

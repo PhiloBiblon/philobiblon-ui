@@ -385,6 +385,7 @@ const relatedTables = {
         { refTable: 'bibid', property: 'P243' },
         { refTable: 'bioid', property: 'P243' },
         { refTable: 'cnum', property: 'P243' },
+        { refTable: 'geoid', property: 'P243' },
         { refTable: 'insid', property: 'P243' },
         { refTable: 'libid', property: 'P243' },
         { refTable: 'manid', property: 'P243' },

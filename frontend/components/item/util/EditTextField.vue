@@ -4,6 +4,7 @@
     v-model="currentText"
     :type="type"
     density="compact"
+    autocomplete="off"
     v-bind="$attrs"
     @blur="blur"
     @focus="focus"

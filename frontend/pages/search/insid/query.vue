@@ -82,6 +82,39 @@ const form = {
             visible: true,
             disabled: false
           },
+          institution: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.insid.institution.label',
+            hint: 'search.form.insid.institution.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc WHERE {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                {{bitagapGroupFilter}}
+                {
+                  ?item wdt:P34 ?labelObj .
+                }
+                UNION
+                {
+                  ?item rdfs:label ?labelObj .
+                }
+                UNION
+                {
+                  ?item skos:altLabel ?labelObj .
+                }
+                {{langFilterWithoutBind}}
+                {{descLangFilter}}
+              }
+              `
+            }
+          },
           city: {
             active: true,
             section: 'primary',
@@ -134,33 +167,6 @@ const form = {
               `
             }
           },
-          institution: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.insid.institution.label',
-            hint: 'search.form.insid.institution.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc {
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                {{bitagapGroupFilter}}
-                {
-                  ?item wdt:P34 ?labelObj .
-                } UNION {
-                  ?item rdfs:label ?labelObj .
-                }
-                {{langFilterWithoutBind}}
-                {{descLangFilter}}
-              }
-              `
-            }
-          },
           subject: {
             active: true,
             section: 'primary',
@@ -179,7 +185,7 @@ const form = {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
                     {{bitagapGroupSubjectFilter}}
-                    BIND ( wdt:P243 as ?property)
+                    VALUES ?property { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P452 wdt:P608 wdt:P1094 wdt:P1278 }
                     ?item ?property ?target_item .
                   }
                 }

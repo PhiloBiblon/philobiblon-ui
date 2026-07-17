@@ -116,6 +116,8 @@ const { mdAndDown } = useDisplay()
 const authStore = useAuthStore()
 const breadcrumbStore = useBreadcrumbStore()
 
+useSessionTimer()
+
 const previousPathCookie = useCookie('previous-path', { path: '/', maxAge: 5 * 60 })
 const oauthCookie = useCookie('oauth')
 
@@ -133,7 +135,9 @@ const searchItems = [
   { path: '/search/bibid/query', label: 'menu.item.search.item.bibid.label' },
   { path: '/search/manid/query', label: 'menu.item.search.item.manid.label' },
   { path: '/search/geoid/query', label: 'menu.item.search.item.geoid.label' },
-  { path: '/search/subid/query', label: 'menu.item.search.item.subid.label' }
+  { path: '/search/subid/query', label: 'menu.item.search.item.subid.label' },
+  { path: '/search/copid/query', label: 'menu.item.search.item.copid.label' },
+  { path: '/search/cnum/query', label: 'menu.item.search.item.cnum.label' }
 ]
 const createItems = [
   { path: '/item/texid/create', label: 'menu.item.create.item.texid.label' },
