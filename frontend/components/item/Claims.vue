@@ -9,7 +9,7 @@
       @delete-claim="deleteClaim"
       @create-claim="addValueToClaim"
     />
-    <item-claim-create v-if="isUserLogged" :item="item" :table="table" @update-claims="updateClaims" />
+    <item-claim-create v-if="isUserLogged" :item="item" :table="table" :initial-claims="templateClaims" @update-claims="updateClaims" />
   </div>
 </template>
 
@@ -20,7 +20,8 @@ import { useAuthStore } from '~/stores/auth'
 const props = defineProps({
   table: { type: String, required: true },
   item: { type: Object, default: null },
-  claims: { type: Array, default: null }
+  claims: { type: Array, default: null },
+  templateClaims: { type: Array, default: null }
 })
 
 const authStore = useAuthStore()

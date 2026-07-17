@@ -129,12 +129,16 @@ const properties = reactive([])
 
 const pbid = computed(() => WikibaseService.PROPERTY_PBID)
 
-if (props.initialClaims) {
-  props.initialClaims.forEach((claim, index) => {
-    properties[index] = [claim.property]
-    claims.push(claim)
-  })
-}
+watch(() => props.initialClaims?.length, () => {
+  if (props.initialClaims) {
+    props.initialClaims.forEach((claim) => {
+      if (!claims.some(c => c.property?.id === claim.property?.id)) {
+        properties[claims.length] = [claim.property]
+        claims.push(claim)
+      }
+    })
+  }
+}, { immediate: true })
 
 watch(claims, (newValue) => {
   if (props.forCreate) {

@@ -48,7 +48,7 @@
           </v-col>
         </span>
       </v-row>
-      <item-claims :table="table" :item="item" :claims="claimsOrdered" />
+      <item-claims :table="table" :item="item" :claims="claimsOrdered" :template-claims="templateClaims" />
       <div v-if="hasRelatedTable" class="text-h6 mt-6">
         {{ t('item.related_items') }}
       </div>
@@ -91,6 +91,7 @@ const description = ref(null)
 const showItem = ref(false)
 const claimsOrdered = ref([])
 const externalIdClaims = ref([])
+const templateClaims = ref([])
 const hasRelatedTable = ref(false)
 const hasNotes = ref(false)
 
@@ -133,6 +134,36 @@ async function handleClaims (entity) {
     } else {
       claimsOrdered.value.push(claim)
     }
+  }
+  if (isUserLogged.value) {
+    loadTemplateClaims(entity.claims)
+  }
+}
+
+async function loadTemplateClaims (existingClaims) {
+  const order = await $wikibase.getClaimsOrderForNewItem(props.table)
+  if (!order) return
+  const existingKeys = new Set(Object.keys(existingClaims))
+  for (const propertyId of Object.keys(order)) {
+    if (existingKeys.has(propertyId)) continue
+    const propertyEntity = await $wikibase.getEntity(propertyId, locale.value)
+    const label = await $wikibase.getEntityLabel(props.table, propertyId, locale.value)
+    templateClaims.value.push({
+      default: true,
+      property: {
+        label: label?.value ?? propertyId,
+        id: propertyId,
+        datatype: propertyEntity.datatype
+      },
+      mainsnak: { property: propertyId },
+      claimsValues: [],
+      value: {
+        property: propertyId,
+        datatype: propertyEntity.datatype,
+        datavalue: { value: null }
+      },
+      qualifiers: []
+    })
   }
 }
 
