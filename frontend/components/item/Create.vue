@@ -192,7 +192,8 @@ function getCreateDisabledReason () {
   if (props.table === 'manid') requiredPropertyIds.add('P329')
   if (props.table === 'cnum') { requiredPropertyIds.add('P590'); requiredPropertyIds.add('P8') }
   if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
-  if (props.table === 'geoid' || props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
+  if (props.table === 'geoid') requiredPropertyIds.add('P34')
+  if (props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
   if (props.table === 'libid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P47') }
   if (props.table === 'subid') requiredPropertyIds.add('P34')
   if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
