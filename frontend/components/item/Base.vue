@@ -159,7 +159,7 @@ async function appendTemplateClaims (existingClaims) {
     if (!entityProperty?.datatype || entityProperty.datatype === 'external-id') continue
 
     const altLabel = await $wikibase.getEntityLabel(props.table, propId, locale.value)
-    const defaultValue = propId === 'P131' && bibliographyId ? bibliographyId : null
+    const defaultValue = propId === 'P131' && bibliographyId ? { id: bibliographyId } : null
 
     templateClaims.value.push({
       default: true,
