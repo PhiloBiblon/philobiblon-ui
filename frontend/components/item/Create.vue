@@ -101,6 +101,8 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 import { WikibaseService } from '~/service/wikibase.service'
 
+const BIBLIOGRAPHY_LOCALE_MAP = { BETA: 'es', BITECA: 'ca', BITAGAP: 'pt' }
+
 const props = defineProps({
   database: { type: String, required: true },
   table: { type: String, required: true }
@@ -180,9 +182,8 @@ function cancel () {
 }
 
 function getCreateDisabledReason () {
-  const BIBLIOGRAPHY_LOCALE_MAP = { BETA: 'es', BITECA: 'ca', BITAGAP: 'pt' }
   const expectedLocale = BIBLIOGRAPHY_LOCALE_MAP[props.database]
-  if (expectedLocale && locale.value !== expectedLocale) {
+  if (expectedLocale && ['es', 'ca', 'pt'].includes(locale.value) && locale.value !== expectedLocale) {
     return t('messages.error.inputs.language_mismatch')
   }
 
