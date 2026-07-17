@@ -153,24 +153,30 @@ async function appendTemplateClaims (existingClaims) {
 
   const entities = await $wikibase.getEntities(missingPropIds, locale.value)
 
+  const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP?.[props.database]
   for (const propId of missingPropIds) {
     const entityProperty = entities[propId]
     if (!entityProperty?.datatype || entityProperty.datatype === 'external-id') continue
 
-    const claim = {
-      property: propId,
-      datatype: entityProperty.datatype,
-      values: [],
-      hasQualifiers: false,
-      qualifiersOrder: template[propId]
-    }
+    const altLabel = await $wikibase.getEntityLabel(props.table, propId, locale.value)
+    const defaultValue = propId === 'P131' && bibliographyId ? bibliographyId : null
 
-    const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP[props.database]
-    if (propId === 'P131' && bibliographyId) {
-      claim.defaultValue = { id: bibliographyId }
-    }
-
-    claimsOrdered.value.push(claim)
+    templateClaims.value.push({
+      default: true,
+      property: {
+        label: altLabel?.value ?? propId,
+        id: propId,
+        datatype: entityProperty.datatype
+      },
+      mainsnak: { property: propId },
+      claimsValues: [],
+      value: {
+        property: propId,
+        datatype: entityProperty.datatype,
+        datavalue: { value: defaultValue }
+      },
+      qualifiers: []
+    })
   }
 }
 
