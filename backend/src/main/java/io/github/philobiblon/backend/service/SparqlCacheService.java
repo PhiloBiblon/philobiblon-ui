@@ -13,8 +13,13 @@ import java.util.List;
  */
 public interface SparqlCacheService {
 
-    /** Async contract: never blocks on the SPARQL endpoint; a cold query returns indexLoading=true. */
-    SearchResponse search(String sparqlQuery, String q, String searchVars, String hint, Integer limit);
+    /**
+     * Async contract: never blocks on the SPARQL endpoint; a cold query returns indexLoading=true.
+     *
+     * @param lang UI language whose column lang-aware queries match and display (default en);
+     *             ignored for legacy per-language queries
+     */
+    SearchResponse search(String sparqlQuery, String q, String searchVars, String hint, Integer limit, String lang);
 
     /** Transitional sync contract (legacy /api/search shape): blocks on a cold query until loaded or timed out. */
     List<Option> searchLegacy(String sparqlQuery, String q);

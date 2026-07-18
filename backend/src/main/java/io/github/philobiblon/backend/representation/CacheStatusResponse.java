@@ -26,6 +26,7 @@ public class CacheStatusResponse {
         public Instant lastAccessed;
         public String lastError;
         public boolean loading;
+        public boolean langAware;
         public long usageSinceRefresh;
         public long usageTotal;
     }

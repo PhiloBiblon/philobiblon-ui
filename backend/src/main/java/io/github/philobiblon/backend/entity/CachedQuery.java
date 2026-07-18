@@ -65,10 +65,20 @@ public class CachedQuery {
     @ColumnDefault("0")
     private long usageTotal;
 
+    /**
+     * True when the query projects a {@code ?lang} var: results are pivoted into per-language
+     * columns and searches must target the requested language's column. False for legacy
+     * per-language queries, which use the single label/search_text pair.
+     */
+    @Column(name = "lang_aware")
+    @ColumnDefault("false")
+    private boolean langAware;
+
     public CachedQuery() {
     }
 
-    public CachedQuery(String queryHash, String sparqlText, String searchVars, String labelHint, Instant createdAt) {
+    public CachedQuery(String queryHash, String sparqlText, String searchVars, String labelHint, Instant createdAt,
+                       boolean langAware) {
         this.queryHash = queryHash;
         this.sparqlText = sparqlText;
         this.searchVars = searchVars;
@@ -76,6 +86,7 @@ public class CachedQuery {
         this.createdAt = createdAt;
         this.lastAccessedAt = createdAt;
         this.generation = 0L;
+        this.langAware = langAware;
     }
 
     public String getQueryHash() {
@@ -148,5 +159,9 @@ public class CachedQuery {
 
     public void setUsageTotal(long usageTotal) {
         this.usageTotal = usageTotal;
+    }
+
+    public boolean isLangAware() {
+        return langAware;
     }
 }

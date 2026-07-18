@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.philobiblon.backend.entity.CachedQuery;
 import io.github.philobiblon.backend.entity.CachedQueryRow;
+import io.github.philobiblon.backend.helper.CacheLang;
 import io.github.philobiblon.backend.helper.QueryHasher;
 import io.github.philobiblon.backend.repository.CachedQueryRepository;
 import io.github.philobiblon.backend.repository.CachedQueryRowRepository;
@@ -39,6 +40,7 @@ import java.net.http.HttpClient;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -55,6 +57,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.stream.Collectors;
 
 @Service
 public class SparqlCacheServiceImpl implements SparqlCacheService {
@@ -62,6 +65,19 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private static final Logger logger = LoggerFactory.getLogger(SparqlCacheServiceImpl.class);
 
     private static final String LABEL_VAR = "label";
+    private static final String LANG_VAR = "lang";
+    private static final String ALIASES_VAR = "aliases";
+    private static final String DESC_VAR = "desc";
+    /**
+     * Result vars carrying language-tagged values in a lang-aware query (one projecting ?lang):
+     * they are pivoted into per-language columns/payload keys instead of being treated as
+     * plain row values. Order defines payload key order.
+     */
+    private static final List<String> PER_LANG_VARS = List.of(LABEL_VAR, ALIASES_VAR, DESC_VAR);
+    /** Payload keys holding pivoted per-language values ({@code label_en}, {@code desc_ca}, ...). */
+    private static final Set<String> PER_LANG_KEYS = PER_LANG_VARS.stream()
+            .flatMap(var -> Arrays.stream(CacheLang.values()).map(lang -> var + "_" + lang.getCode()))
+            .collect(Collectors.toUnmodifiableSet());
     private static final String DEFAULT_SEARCH_VARS = LABEL_VAR;
     private static final int LABEL_MAX_LENGTH = 1000;
     private static final int SEARCH_TEXT_MAX_LENGTH = 10000;
@@ -72,9 +88,9 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     @Value("${sparql.endpoint}")
     private String sparqlEndpoint;
     @Value("${search.cache.candidateLimit:1000}")
-    private int candidateLimit;
+    int candidateLimit;
     @Value("${search.cache.maxResultLimit:300}")
-    private int maxResultLimit;
+    int maxResultLimit;
     @Value("${search.cache.loadConcurrency:2}")
     private int loadConcurrency;
     @Value("${search.cache.syncTimeoutSeconds:60}")
@@ -97,6 +113,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final Map<String, Long> generationByHash = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> langAwareByHash = new ConcurrentHashMap<>();
     private final Map<String, CompletableFuture<Boolean>> inFlight = new ConcurrentHashMap<>();
     private final Map<String, Long> lastTouchMillis = new ConcurrentHashMap<>();
     /** Usage increments not yet persisted (throttled with lastTouchMillis); flushed in full before the nightly refresh. */
@@ -122,6 +139,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         });
         for (CachedQuery cq : queryRepository.findAll()) {
             generationByHash.put(cq.getQueryHash(), cq.getGeneration());
+            langAwareByHash.put(cq.getQueryHash(), cq.isLangAware());
         }
         logger.info("SPARQL cache initialized with {} registered queries", generationByHash.size());
     }
@@ -152,7 +170,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     }
 
     @Override
-    public SearchResponse search(String sparqlQuery, String q, String searchVars, String hint, Integer limit) {
+    public SearchResponse search(String sparqlQuery, String q, String searchVars, String hint, Integer limit, String lang) {
+        CacheLang requestedLang = parseLang(lang);
         String vars = normalizeSearchVars(searchVars);
         String queryHash = QueryHasher.hash(vars, sparqlQuery);
         long generation = ensureRegistered(queryHash, sparqlQuery, vars, hint);
@@ -161,7 +180,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             return new SearchResponse(true, List.of());
         }
         touch(queryHash);
-        return new SearchResponse(false, searchRows(queryHash, generation, q, effectiveLimit(limit)));
+        return new SearchResponse(false,
+                searchRows(queryHash, generation, q, effectiveLimit(limit), effectiveLang(queryHash, requestedLang)));
     }
 
     @Override
@@ -172,7 +192,23 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             generation = awaitLoad(queryHash);
         }
         touch(queryHash);
-        return searchRows(queryHash, generation, q, maxResultLimit);
+        return searchRows(queryHash, generation, q, maxResultLimit, effectiveLang(queryHash, null));
+    }
+
+    private static CacheLang parseLang(String lang) {
+        try {
+            return CacheLang.from(lang);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
+    /** Lang-aware queries always search a language column (default en); legacy queries ignore lang. */
+    private CacheLang effectiveLang(String queryHash, CacheLang requested) {
+        if (!Boolean.TRUE.equals(langAwareByHash.get(queryHash))) {
+            return null;
+        }
+        return requested != null ? requested : CacheLang.EN;
     }
 
     /** Blocks until the query is loaded (or the sync timeout expires); the load keeps running in background. */
@@ -268,6 +304,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             status.lastAccessed = cq.getLastAccessedAt();
             status.lastError = cq.getLastError();
             status.loading = inFlight.containsKey(cq.getQueryHash());
+            status.langAware = cq.isLangAware();
             status.usageSinceRefresh = cq.getUsageSinceRefresh();
             status.usageTotal = cq.getUsageTotal();
             response.queries.add(status);
@@ -306,17 +343,21 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         Optional<CachedQuery> existing = queryRepository.findById(queryHash);
         if (existing.isPresent()) {
             generationByHash.put(queryHash, existing.get().getGeneration());
+            langAwareByHash.put(queryHash, existing.get().isLangAware());
             return existing.get().getGeneration();
         }
         // Parse errors are not transient: reject before persisting so the registry never
         // accumulates queries that every retry, startup and nightly refresh would fail on.
+        boolean langAware;
         try {
-            QueryFactory.create(sparqlQuery);
+            langAware = QueryFactory.create(sparqlQuery).getResultVars().contains(LANG_VAR);
         } catch (QueryException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid SPARQL query: " + e.getMessage(), e);
         }
-        queryRepository.save(new CachedQuery(queryHash, sparqlQuery, searchVars, truncate(hint, 255), Instant.now()));
+        queryRepository.save(new CachedQuery(queryHash, sparqlQuery, searchVars, truncate(hint, 255), Instant.now(),
+                langAware));
         generationByHash.put(queryHash, 0L);
+        langAwareByHash.put(queryHash, langAware);
         logger.info("SPARQL cache: registered new query {} (hint: {})", queryHash, hint);
         return 0L;
     }
@@ -397,23 +438,14 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     }
 
     List<CachedQueryRow> buildRows(ResultSet resultSet, List<String> searchVars, String queryHash, long generation) {
+        if (resultSet.getResultVars().contains(LANG_VAR)) {
+            return buildLangAwareRows(resultSet, searchVars, queryHash, generation);
+        }
         List<String> resultVars = resultSet.getResultVars();
         List<CachedQueryRow> rows = new ArrayList<>();
         Set<String> seen = new HashSet<>();
         while (resultSet.hasNext()) {
-            QuerySolution solution = resultSet.next();
-            Map<String, String> valueMap = new LinkedHashMap<>();
-            for (String varName : resultVars) {
-                if (!solution.contains(varName)) {
-                    continue;
-                }
-                RDFNode node = solution.get(varName);
-                if (node.isLiteral()) {
-                    valueMap.put(varName, node.asLiteral().getString());
-                } else if (node.isResource()) {
-                    valueMap.put(varName, extractQNumber(node.asResource().getURI()));
-                }
-            }
+            Map<String, String> valueMap = extractValues(resultSet.next(), resultVars);
             String label = valueMap.get(LABEL_VAR);
             if (label == null && searchVars.contains("pbid")) {
                 label = valueMap.get("pbid");
@@ -442,7 +474,163 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         return rows;
     }
 
-    private List<Option> searchRows(String queryHash, long generation, String q, int resultLimit) {
+    /**
+     * Pivots a lang-aware result set (one solution per item and language) into one row per item
+     * with per-language label/searchText columns. Grouping key: the values of every projected var
+     * except {@code ?lang} and the per-lang vars. Languages with no data are fallback-filled
+     * (en, else first non-empty language, else pbid) so every item stays findable in every UI
+     * language; the payload keeps only the raw per-language values.
+     */
+    private List<CachedQueryRow> buildLangAwareRows(ResultSet resultSet, List<String> searchVars, String queryHash,
+                                                    long generation) {
+        List<String> resultVars = resultSet.getResultVars();
+        List<String> neutralVars = resultVars.stream()
+                .filter(var -> !LANG_VAR.equals(var) && !PER_LANG_VARS.contains(var))
+                .toList();
+        Map<String, LangAwareGroup> groups = new LinkedHashMap<>();
+        while (resultSet.hasNext()) {
+            Map<String, String> values = extractValues(resultSet.next(), resultVars);
+            StringBuilder key = new StringBuilder();
+            for (String var : neutralVars) {
+                key.append(values.get(var)).append(' ');
+            }
+            LangAwareGroup group = groups.computeIfAbsent(key.toString(), k -> new LangAwareGroup());
+            for (String var : neutralVars) {
+                String value = values.get(var);
+                if (value != null) {
+                    group.neutral.putIfAbsent(var, value);
+                }
+            }
+            CacheLang lang = solutionLang(values.get(LANG_VAR));
+            if (lang != null) {
+                for (String var : PER_LANG_VARS) {
+                    String value = values.get(var);
+                    if (value != null && !value.isBlank()) {
+                        group.values(lang, var).add(value);
+                    }
+                }
+            }
+        }
+
+        List<CachedQueryRow> rows = new ArrayList<>();
+        for (LangAwareGroup group : groups.values()) {
+            CachedQueryRow row = buildLangAwareRow(group, searchVars, resultVars, queryHash, generation);
+            if (row != null) {
+                rows.add(row);
+            }
+        }
+        return rows;
+    }
+
+    private CachedQueryRow buildLangAwareRow(LangAwareGroup group, List<String> searchVars, List<String> resultVars,
+                                             String queryHash, long generation) {
+        Map<CacheLang, String> ownLabels = new EnumMap<>(CacheLang.class);
+        for (CacheLang lang : CacheLang.values()) {
+            group.firstValue(lang, LABEL_VAR).ifPresent(label -> ownLabels.put(lang, label));
+        }
+        String fallbackLabel = ownLabels.get(CacheLang.EN);
+        if (fallbackLabel == null) {
+            fallbackLabel = ownLabels.values().stream().findFirst().orElse(null);
+        }
+        if (fallbackLabel == null && searchVars.contains("pbid")) {
+            fallbackLabel = group.neutral.get("pbid");
+        }
+        if (fallbackLabel == null) {
+            return null;
+        }
+
+        Map<CacheLang, String> labels = new EnumMap<>(CacheLang.class);
+        Map<CacheLang, String> searchTexts = new EnumMap<>(CacheLang.class);
+        for (CacheLang lang : CacheLang.values()) {
+            String label = ownLabels.getOrDefault(lang, fallbackLabel);
+            labels.put(lang, truncate(label, LABEL_MAX_LENGTH));
+
+            StringBuilder searchSource = new StringBuilder();
+            for (String varName : searchVars) {
+                String value;
+                if (PER_LANG_VARS.contains(varName)) {
+                    value = String.join(" ", group.values(lang, varName));
+                    if (LABEL_VAR.equals(varName) && value.isBlank()) {
+                        value = label;
+                    }
+                } else {
+                    value = group.neutral.get(varName);
+                }
+                if (value != null && !value.isBlank()) {
+                    if (searchSource.length() > 0) {
+                        searchSource.append(' ');
+                    }
+                    searchSource.append(value);
+                }
+            }
+            searchTexts.put(lang, truncate(SearchServiceImpl.normalize(searchSource.toString()), SEARCH_TEXT_MAX_LENGTH));
+        }
+
+        Map<String, String> payloadMap = new LinkedHashMap<>();
+        for (String var : resultVars) {
+            String value = group.neutral.get(var);
+            if (value != null) {
+                payloadMap.put(var, value);
+            }
+        }
+        for (String var : PER_LANG_VARS) {
+            if (!resultVars.contains(var)) {
+                continue;
+            }
+            for (CacheLang lang : CacheLang.values()) {
+                LinkedHashSet<String> values = group.values(lang, var);
+                if (values.isEmpty()) {
+                    continue;
+                }
+                String value = ALIASES_VAR.equals(var) ? String.join(" | ", values) : values.iterator().next();
+                payloadMap.put(var + "_" + lang.getCode(), value);
+            }
+        }
+        return new CachedQueryRow(queryHash, generation, labels, searchTexts, toJson(payloadMap));
+    }
+
+    /** Language tag of one solution; null (row kept, no per-lang data) when unbound or not a UI language. */
+    private CacheLang solutionLang(String langTag) {
+        try {
+            return CacheLang.from(langTag);
+        } catch (IllegalArgumentException e) {
+            logger.debug("SPARQL cache: ignoring values with unexpected language tag {}", langTag);
+            return null;
+        }
+    }
+
+    /** Accumulator for one pivoted row: neutral var values plus per-language collected values. */
+    private static final class LangAwareGroup {
+        final Map<String, String> neutral = new LinkedHashMap<>();
+        final Map<CacheLang, Map<String, LinkedHashSet<String>>> perLang = new EnumMap<>(CacheLang.class);
+
+        LinkedHashSet<String> values(CacheLang lang, String var) {
+            return perLang.computeIfAbsent(lang, l -> new LinkedHashMap<>())
+                    .computeIfAbsent(var, v -> new LinkedHashSet<>());
+        }
+
+        Optional<String> firstValue(CacheLang lang, String var) {
+            return values(lang, var).stream().findFirst();
+        }
+    }
+
+    private static Map<String, String> extractValues(QuerySolution solution, List<String> resultVars) {
+        Map<String, String> valueMap = new LinkedHashMap<>();
+        for (String varName : resultVars) {
+            if (!solution.contains(varName)) {
+                continue;
+            }
+            RDFNode node = solution.get(varName);
+            if (node.isLiteral()) {
+                valueMap.put(varName, node.asLiteral().getString());
+            } else if (node.isResource()) {
+                valueMap.put(varName, extractQNumber(node.asResource().getURI()));
+            }
+        }
+        return valueMap;
+    }
+
+    private List<Option> searchRows(String queryHash, long generation, String q, int resultLimit, CacheLang lang) {
         String term = SearchServiceImpl.normalize(q);
         if (term == null || term.isBlank()) {
             return List.of();
@@ -455,16 +643,54 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             return List.of();
         }
         List<String> escapedWords = words.stream().map(SparqlCacheServiceImpl::escapeLike).toList();
-        List<CachedQueryRow> candidates = rowRepository.searchCandidates(queryHash, generation, escapedWords, candidateLimit);
+        List<CachedQueryRow> candidates =
+                rowRepository.searchCandidates(queryHash, generation, escapedWords, candidateLimit, lang);
 
         List<Option> options = new ArrayList<>();
         candidates.stream()
-                .map(row -> Map.entry(row, SearchServiceImpl.rank(row.getSearchText(), words)))
+                .map(row -> Map.entry(row, SearchServiceImpl.rank(row.getSearchText(lang), words)))
                 .filter(entry -> entry.getValue() < Integer.MAX_VALUE)
                 .sorted(Map.Entry.comparingByValue())
                 .limit(resultLimit)
-                .forEach(entry -> options.add(new Option(entry.getKey().getLabel(), fromJson(entry.getKey().getPayload()))));
+                .forEach(entry -> options.add(new Option(entry.getKey().getLabel(lang),
+                        displayMap(entry.getKey().getPayload(), lang))));
         return options;
+    }
+
+    /**
+     * Payload as sent to the client. Legacy rows pass through untouched; lang-aware rows get the
+     * per-language keys resolved to the flat legacy shape (label/aliases/desc in the requested
+     * language, falling back to en, then to any language that has a value).
+     */
+    private Map<String, String> displayMap(String payload, CacheLang lang) {
+        Map<String, String> raw = fromJson(payload);
+        if (lang == null) {
+            return raw;
+        }
+        Map<String, String> resolved = new LinkedHashMap<>();
+        raw.forEach((key, value) -> {
+            if (!PER_LANG_KEYS.contains(key)) {
+                resolved.put(key, value);
+            }
+        });
+        for (String var : PER_LANG_VARS) {
+            String value = raw.get(var + "_" + lang.getCode());
+            if (value == null) {
+                value = raw.get(var + "_" + CacheLang.EN.getCode());
+            }
+            if (value == null) {
+                for (CacheLang candidate : CacheLang.values()) {
+                    value = raw.get(var + "_" + candidate.getCode());
+                    if (value != null) {
+                        break;
+                    }
+                }
+            }
+            if (value != null) {
+                resolved.put(var, value);
+            }
+        }
+        return resolved;
     }
 
     private int evictUnused() {
@@ -478,6 +704,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             rowRepository.deleteByQueryHash(hash);
             queryRepository.deleteById(hash);
             generationByHash.remove(hash);
+            langAwareByHash.remove(hash);
             lastTouchMillis.remove(hash);
             evicted++;
             logger.info("SPARQL cache: evicted query {} (hint: {}), last accessed {}", hash, cq.getLabelHint(), cq.getLastAccessedAt());
@@ -543,7 +770,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         Set<String> vars = new LinkedHashSet<>();
         for (String var : searchVars.split(",")) {
             String trimmed = var.trim();
-            if (!trimmed.isEmpty()) {
+            // ?lang is the pivot discriminator of lang-aware queries, never a searchable value.
+            if (!trimmed.isEmpty() && !LANG_VAR.equals(trimmed)) {
                 vars.add(trimmed);
             }
         }
