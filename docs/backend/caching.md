@@ -23,7 +23,7 @@ persisted in the embedded H2 database so it survives restarts and deploys.
 
 ```mermaid
 flowchart LR
-    FE["Frontend\nAutocompleteField / Simple.vue"] -->|"POST /api/search (v=2)\nsparqlQuery + q + searchVars"| SVC["SparqlCacheService"]
+    FE["Frontend\nAutocompleteField / Simple.vue"] -->|"POST /api/search (v=2)\nsparqlQuery + q + searchVars + lang"| SVC["SparqlCacheService"]
     SVC -->|"SQL LIKE candidates\n+ Java re-rank"| DB[("H2\ncached_query\ncached_query_row")]
     SVC -->|"background load\n(retry + backoff)"| SE["SPARQL Endpoint"]
 ```
@@ -32,23 +32,42 @@ flowchart LR
 
 | Table | Purpose |
 |---|---|
-| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint`, `usage_since_refresh` / `usage_total` |
-| `cached_query_row` | One row per query result: `label`, normalized `search_text` (composition of the query's `searchVars` values), full value map as JSON `payload`, `generation`. Indexed by `(query_hash, generation)` |
+| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, `lang_aware` (query projects `?lang`), current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint`, `usage_since_refresh` / `usage_total` |
+| `cached_query_row` | One row per query result. Lang-aware queries fill one `label_xx` / `search_text_xx` column pair per UI language (en, ca, es, gl, pt); legacy per-language queries fill the single `label` / `search_text` pair. `search_text_xx` is the normalized composition of the query's `searchVars` values in that language; the full value map is stored as JSON `payload` (per-language values under `label_xx` / `aliases_xx` / `desc_xx` keys). Indexed by `(query_hash, generation)` |
 
 The cache key is the **exact query text** — the frontend and the seed tooling
 (`scripts/seed-cache/`) share the same template code (`frontend/service/query.templates.js`)
 so they generate byte-identical queries.
 
+### One query for all languages
+
+Frontend query templates are **language-free**: instead of one query per UI language
+(5 cache entries per logical query), each query fetches labels/descriptions in all five
+languages at once and projects a `?lang` var. At load time the backend pivots the
+per-language solutions into **one row per item with per-language columns**, grouping by
+the values of every projected var except `?lang` and the per-lang vars
+(`label`/`aliases`/`desc`). Languages with no value are fallback-filled at
+materialization time (en → first non-empty language → `pbid`), so an item labeled only
+in English is still findable — and displayed — under any UI language.
+
+The v=2 request carries an optional `lang` param (default `en`, 400 on unknown values):
+it selects which `search_text_xx` column the SQL `LIKE` targets and which
+label/desc/aliases are returned. Display resolution falls back per field
+(requested lang → en → any). Legacy queries (no `?lang` projection) ignore the param.
+
 ### Request flow (v=2 contract)
 
 1. Hash the incoming `searchVars` + `sparqlQuery`.
-2. Unknown query → validate it parses (400 otherwise), register it, schedule a
-   **background load** (single-flight: concurrent misses share one execution) and answer
-   immediately with `{"indexLoading": true, "results": []}`. The frontend shows a
-   loading message and retries.
+2. Unknown query → validate it parses (400 otherwise), register it (detecting
+   `lang_aware` from the projection), schedule a **background load** (single-flight:
+   concurrent misses share one execution) and answer immediately with
+   `{"indexLoading": true, "results": []}`. The frontend shows a loading message and
+   retries.
 3. Known query → SQL `LIKE` per search word (AND-ed, so reordered multi-word terms
-   match) over `search_text`, re-rank the candidates in Java
-   (`SearchServiceImpl.rank`), rebuild `Option`s from the JSON payload.
+   match) over the requested language's `search_text_xx` column (or legacy
+   `search_text`), re-rank the candidates in Java (`SearchServiceImpl.rank`), rebuild
+   `Option`s from the JSON payload with the per-language keys resolved for the
+   requested language.
 
 The param-less legacy contract (bare array, blocks on a cold query) exists for
 already-deployed SPAs and is scheduled for removal.
@@ -123,3 +142,9 @@ Until 2026 the backend had two mechanisms: an in-memory Caffeine `LoadingCache`
 `/api/sparql/query`, and a separate DB-backed language index behind
 `/api/search/quick`. They were unified into the model above; `/api/search/quick`
 remains temporarily as an alias for cached SPAs.
+
+Originally each UI language produced its own query text and therefore its own cache
+entry (×5 queries, rows and nightly refresh work). Queries were later made
+language-free with per-language row columns (see "One query for all languages").
+Old per-language entries registered by cached SPAs keep working as legacy entries
+and age out via the 30-day eviction after the new SPA is deployed.

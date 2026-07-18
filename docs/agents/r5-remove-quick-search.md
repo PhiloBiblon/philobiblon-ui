@@ -13,7 +13,7 @@ SPARQL cache unification. Phases R1–R4 were delivered in PR "Unify SPARQL cach
 2. Verify in the production/staging **nginx access logs** that `GET /api/search/quick`
    traffic has dropped to zero (or a negligible trickle of stale clients you accept breaking).
 3. The cache has been **seeded** in each environment (`scripts/seed-cache/README.md`)
-   and `GET /api/search/cache/status` shows the 5 `global.<lang>` queries materialized —
+   and `GET /api/search/cache/status` shows the `global` query materialized —
    otherwise removing quick breaks the global search bar for everyone.
 
 ## Prompt
