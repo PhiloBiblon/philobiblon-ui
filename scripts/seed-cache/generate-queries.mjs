@@ -90,7 +90,7 @@ if (!args.onlyGlobal) {
       for (const group of args.groups) {
         for (const bitagapGroup of args.bitagapGroups) {
           // Same hint format as AutocompleteField, so seeded and organic entries match.
-          add(`${table}.${field}`, 'label',
+          add(`${table}.${field}`, 'label,aliases',
             filterQuery(def.autocomplete.query, group, bitagapGroup, table, prefix))
         }
       }

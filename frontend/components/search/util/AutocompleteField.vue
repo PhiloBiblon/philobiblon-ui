@@ -156,7 +156,8 @@ function fetchItems (query) {
     console.log(`run sparlql query:\n${sparqlQuery}`)
   }
   const hint = props.name ? `${props.table}.${props.name}` : props.table
-  $wikibase.cachedSearch(sparqlQuery, query, { hint, lang: locale.value })
+  // aliases (altLabels) are searchable but never displayed as the option label.
+  $wikibase.cachedSearch(sparqlQuery, query, { searchVars: 'label,aliases', hint, lang: locale.value })
     .then((data) => {
       if (data.indexLoading) {
         indexLoading.value = true

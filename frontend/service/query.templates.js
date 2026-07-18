@@ -25,15 +25,19 @@ export function addPrefixes (query, sparqlQueryPrefix) {
 // Lang-aware queries fetch every UI language at once and project a ?lang var; the
 // backend pivots the per-language rows into columns and the request's lang param picks
 // which one is searched/displayed (with fallback to en done backend-side).
+// Templates bind real labels to ?labelObj and alternative labels to ?aliasObj: only
+// ?label is used as the displayed text, while ?aliases only feeds the search text
+// (searchVars label,aliases), so an altLabel never becomes an item's visible label.
 export function generateSearchLangFiltersWithoutBind () {
-  return `FILTER (lang(?labelObj) IN ('ca', 'es', 'en', 'gl', 'pt')) .
-      BIND(lang(?labelObj) AS ?lang) .`
+  return `FILTER (lang(COALESCE(?labelObj, ?aliasObj)) IN ('ca', 'es', 'en', 'gl', 'pt')) .
+      BIND(lang(COALESCE(?labelObj, ?aliasObj)) AS ?lang) .`
 }
 
 export function generateSearchLangFilters () {
   return `
       ${generateSearchLangFiltersWithoutBind()}
       BIND(STR(?labelObj) AS ?label) .
+      BIND(STR(?aliasObj) AS ?aliases) .
       `
 }
 
