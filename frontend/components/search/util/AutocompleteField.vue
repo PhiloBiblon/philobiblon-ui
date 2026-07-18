@@ -151,12 +151,12 @@ watch(() => props.database, () => {
 })
 
 function fetchItems (query) {
-  const sparqlQuery = $wikibase.$query.filterQuery(props.autocomplete.query, props.database, props.bitagapGroup, props.table, locale.value)
+  const sparqlQuery = $wikibase.$query.filterQuery(props.autocomplete.query, props.database, props.bitagapGroup, props.table)
   if (process.env.debug) {
     console.log(`run sparlql query:\n${sparqlQuery}`)
   }
   const hint = props.name ? `${props.table}.${props.name}` : props.table
-  $wikibase.cachedSearch(sparqlQuery, query, { hint })
+  $wikibase.cachedSearch(sparqlQuery, query, { hint, lang: locale.value })
     .then((data) => {
       if (data.indexLoading) {
         indexLoading.value = true

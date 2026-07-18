@@ -32,12 +32,12 @@ export class QueryService {
     return templates.generateSearchLangFiltersWithoutBind()
   }
 
-  generateSearchLangFilters (lang) {
-    return templates.generateSearchLangFilters(lang)
+  generateSearchLangFilters () {
+    return templates.generateSearchLangFilters()
   }
 
-  generateSearchLangGroupPattern (itemName, lang) {
-    return templates.generateSearchLangGroupPattern(itemName, lang)
+  generateSearchLangGroupPattern (itemName) {
+    return templates.generateSearchLangGroupPattern(itemName)
   }
 
   generateLangFilter (lang) {
@@ -53,12 +53,19 @@ export class QueryService {
     return langFilters
   }
 
+  // Per-language desc filters for the (non-cached) results listing only; the cached
+  // autocomplete/global queries use the lang-free templates.generateDescLangFilter(s).
   generateDescLangFilter (itemName, lang) {
-    return templates.generateDescLangFilter(itemName, lang)
+    return `OPTIONAL { ?${itemName} schema:description ?desc FILTER langMatches(lang(?desc), '${lang}') }.`
   }
 
   generateDescLangFilters (itemName, lang) {
-    return templates.generateDescLangFilters(itemName, lang)
+    let langFilters = this.generateDescLangFilter(itemName, lang)
+    // fallback to en if selected lang has no desc
+    if (lang !== 'en') {
+      langFilters += '\n' + this.generateDescLangFilter(itemName, 'en')
+    }
+    return langFilters
   }
 
   replaceDiacritics (field) {
@@ -939,7 +946,7 @@ export class QueryService {
     return filters
   }
 
-  generateQuery (table, baseQueryFunction, form, lang) {
+  generateQuery (table, baseQueryFunction, form) {
     let filters = ''
     const group = form.input.group.value === 'ALL' ? '(.*)' : form.input.group.value
     if (form.input.simple_search && form.input.simple_search.value) {
@@ -980,7 +987,7 @@ export class QueryService {
         break
     }
     if (filters.includes('STR(?label)') || filters.includes('lcase(?label)')) {
-      filters += `?item rdfs:label ?labelObj ${this.generateSearchLangFilters(lang)}`
+      filters += `?item rdfs:label ?labelObj ${this.generateSearchLangFilters()}`
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
   }
@@ -1056,19 +1063,19 @@ export class QueryService {
       ORDER BY ${this.getSortClause()}
       OFFSET ${(useQueryStatusStore().currentPage - 1) * resultsPerPage}
       LIMIT ${resultsPerPage}`
-    return this.generateQuery(table, SEARCH_QUERY, form, lang)
+    return this.generateQuery(table, SEARCH_QUERY, form)
   }
 
   fillTemplate (template, replacements) {
     return templates.fillTemplate(template, replacements)
   }
 
-  filterQuery (query, database, bitagapGroup, table, lang) {
-    return templates.filterQuery(query, database, bitagapGroup, table, lang, this.$config.sparqlQueryPrefix)
+  filterQuery (query, database, bitagapGroup, table) {
+    return templates.filterQuery(query, database, bitagapGroup, table, this.$config.sparqlQueryPrefix)
   }
 
-  globalSearchQuery (lang) {
-    return templates.globalSearchQuery(lang, this.$config.sparqlQueryPrefix)
+  globalSearchQuery () {
+    return templates.globalSearchQuery(this.$config.sparqlQueryPrefix)
   }
 
   entityFromPBIDQuery (pbid) {
