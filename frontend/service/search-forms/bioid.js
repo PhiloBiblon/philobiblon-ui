@@ -33,7 +33,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?desc ?lang
+              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -43,7 +43,7 @@ export default function createForm () {
                 }
                 UNION
                 {
-                  ?item skos:altLabel ?labelObj .
+                  ?item skos:altLabel ?aliasObj .
                 }
                 {{langFilter}}
                 {{descLangFilter}}
@@ -84,7 +84,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc ?lang {
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) (STR(?aliasObj) AS ?aliases) ?desc ?lang {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
@@ -97,7 +97,7 @@ export default function createForm () {
                 }
                 UNION
                 {
-                  ?item skos:altLabel ?labelObj .
+                  ?item skos:altLabel ?aliasObj .
                 }
                 {{langFilterWithoutBind}}
                 {{descLangFilter}}

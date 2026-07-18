@@ -534,6 +534,28 @@ class SparqlCacheServiceImplTest {
     }
 
     @Test
+    void itemWithOnlyAliasesUsesAnAliasAsDisplayLabelAndStaysSearchable() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["item", "lang", "label", "aliases"] },
+                  "results": { "bindings": [
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "lang": { "type": "literal", "value": "ca" },
+                      "aliases": { "type": "literal", "value": "Londres" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label", "aliases"), "hash1", 7L);
+
+        assertEquals(1, rows.size());
+        assertEquals("Londres", rows.get(0).getLabel(CacheLang.CA));
+        assertEquals("Londres", rows.get(0).getLabel(CacheLang.EN));
+        assertEquals("londres londres", rows.get(0).getSearchText(CacheLang.CA));
+    }
+
+    @Test
     void langUnboundRowFallsBackToPbidAndIsSkippedWithoutIt() {
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
         String json = """

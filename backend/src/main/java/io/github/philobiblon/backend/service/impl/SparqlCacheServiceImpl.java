@@ -532,6 +532,17 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         if (fallbackLabel == null) {
             fallbackLabel = ownLabels.values().stream().findFirst().orElse(null);
         }
+        if (fallbackLabel == null) {
+            fallbackLabel = group.firstValue(CacheLang.EN, ALIASES_VAR).orElse(null);
+        }
+        if (fallbackLabel == null) {
+            for (CacheLang lang : CacheLang.values()) {
+                fallbackLabel = group.firstValue(lang, ALIASES_VAR).orElse(null);
+                if (fallbackLabel != null) {
+                    break;
+                }
+            }
+        }
         if (fallbackLabel == null && searchVars.contains("pbid")) {
             fallbackLabel = group.neutral.get("pbid");
         }
