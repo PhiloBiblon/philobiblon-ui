@@ -32,7 +32,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?desc
+              SELECT DISTINCT ?item ?label ?desc ?lang
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -83,7 +83,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc WHERE {
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc ?lang WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
@@ -116,7 +116,7 @@ export default function createForm () {
             autocomplete: {
               query:
                 `
-                SELECT DISTINCT ?target_item ?label ?desc WHERE {
+                SELECT DISTINCT ?target_item ?label ?desc ?lang WHERE {
                   {
                     SELECT DISTINCT ?target_item WHERE {
                       ?item wdt:P476 ?pbid .
@@ -144,7 +144,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?desc WHERE {
+              SELECT DISTINCT ?item ?label ?desc ?lang WHERE {
                 {
                   SELECT DISTINCT ?item WHERE {
                     ?item wdt:P994 ?pbid .
@@ -168,7 +168,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang WHERE {
                 {
                   SELECT DISTINCT ?target_item WHERE {
                     ?item wdt:P476 ?pbid .

@@ -32,7 +32,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?desc
+              SELECT DISTINCT ?item ?label ?desc ?lang
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -83,7 +83,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?desc {
+              SELECT DISTINCT ?item ?label ?desc ?lang {
                 {
                   ?item wdt:P476 ?pbid .
                   FILTER regex(?pbid, '{{database}} {{table}} ') .

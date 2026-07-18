@@ -84,9 +84,9 @@ async function searchItems (query) {
 
   try {
     const res = await $wikibase.cachedSearch(
-      $wikibase.$query.globalSearchQuery(locale.value),
+      $wikibase.$query.globalSearchQuery(),
       query,
-      { searchVars: GLOBAL_SEARCH_VARS, hint: `global.${locale.value}`, limit: 20 }
+      { searchVars: GLOBAL_SEARCH_VARS, hint: 'global', limit: 20, lang: locale.value }
     )
     if (requestId !== lastRequestId) return
     indexLoading.value = res.indexLoading

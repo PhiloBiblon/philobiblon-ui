@@ -44,11 +44,12 @@ export class WikibaseService {
    * Returns { indexLoading, results: [{ text, value }] }; while indexLoading is true
    * the backend is materializing the query in the background and the caller should retry.
    */
-  async cachedSearch (sparqlQuery, q, { searchVars, hint, limit } = {}) {
+  async cachedSearch (sparqlQuery, q, { searchVars, hint, limit, lang } = {}) {
     const params = new URLSearchParams({ v: '2', q, sparqlQuery })
     if (searchVars) { params.set('searchVars', searchVars) }
     if (hint) { params.set('hint', hint) }
     if (limit) { params.set('limit', String(limit)) }
+    if (lang) { params.set('lang', lang) }
     const response = await fetch(this.cachedSearchEndpoint, {
       method: 'POST',
       body: params.toString(),
