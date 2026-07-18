@@ -52,7 +52,7 @@ class SearchControllerImplTest {
 
     @Test
     void v2RequestReturnsEnvelopeWithIndexLoadingFlag() throws Exception {
-        when(sparqlCacheService.search(anyString(), anyString(), eq("label,pbid"), eq("bioid.author"), any()))
+        when(sparqlCacheService.search(anyString(), anyString(), eq("label,pbid"), eq("bioid.author"), any(), any()))
                 .thenReturn(new SearchResponse(true, List.of()));
 
         mockMvc.perform(post("/api/search")
@@ -68,8 +68,23 @@ class SearchControllerImplTest {
     }
 
     @Test
+    void v2RequestPassesLangThrough() throws Exception {
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), eq("ca")))
+                .thenReturn(new SearchResponse(false, List.of()));
+
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("v", "2")
+                        .param("sparqlQuery", "SELECT ?label ?lang WHERE {}")
+                        .param("q", "barcelona")
+                        .param("lang", "ca"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.indexLoading").value(false));
+    }
+
+    @Test
     void v2WarmRequestReturnsResultsInsideEnvelope() throws Exception {
-        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any()))
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any()))
                 .thenReturn(new SearchResponse(false, List.of(new Option("Barcelona", Map.of("item", "Q42")))));
 
         mockMvc.perform(post("/api/search")

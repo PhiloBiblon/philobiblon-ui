@@ -26,7 +26,8 @@ public interface SearchController {
                             @RequestParam String q,
                             @RequestParam(required = false) String searchVars,
                             @RequestParam(required = false) String hint,
-                            @RequestParam(required = false) Integer limit);
+                            @RequestParam(required = false) Integer limit,
+                            @RequestParam(required = false) String lang);
 
     @GetMapping("/quick")
     QuickSearchResponse quickSearch(@RequestParam @NotBlank String q, @RequestParam @NotBlank String lang);
