@@ -27,9 +27,10 @@ curl -s $API_BASE_URL/api/search/cache/status | jq '{totalQueries, totalRows, lo
 
 ## Default scope (deliberately conservative)
 
-By default the generator emits the 5 global-search queries plus every autocomplete
-field for `group=ALL, bitagapGroup=ALL` per table × language — the combination every
-user hits first. **Do not blanket-seed the full cartesian** (`--groups ALL,BETA,BITECA,BITAGAP
+By default the generator emits the global-search query plus every autocomplete field
+for `group=ALL, bitagapGroup=ALL` per table — the combination every user hits first.
+Queries are language-free: each one fetches all five UI languages at once and the
+backend stores them as per-language columns, so there is no language dimension to seed. **Do not blanket-seed the full cartesian** (`--groups ALL,BETA,BITECA,BITAGAP
 --bitagap-groups ALL,ORIG,CARTAS`) unless you accept millions of cached rows and a long
 nightly refresh: big fields can return 10⁴–10⁵ rows per query. The long tail is
 populated lazily by real usage and evicted after `search.cache.evictAfterDays` (30 days)
@@ -39,7 +40,6 @@ without accesses.
 
 | Flag | Meaning | Default |
 |---|---|---|
-| `--langs ca,es` | languages | `ca,es,en,gl,pt` |
 | `--tables bioid,geoid` | item tables | all 8 |
 | `--groups ALL,BETA` | database filter values | `ALL` |
 | `--bitagap-groups ALL,ORIG` | BITAGAP subgroup values | `ALL` |

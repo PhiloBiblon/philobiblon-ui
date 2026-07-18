@@ -9,7 +9,6 @@
  *   API_BASE_URL=https://host/path node generate-queries.mjs [options]
  *
  * Options:
- *   --langs ca,es          Languages (default: ca,es,en,gl,pt)
  *   --tables bioid,geoid   Tables (default: all 8)
  *   --groups ALL,BETA      Databases (default: ALL — seed the full cartesian only deliberately)
  *   --bitagap-groups ALL   BITAGAP subgroups (default: ALL)
@@ -24,14 +23,12 @@ import { writeFileSync } from 'node:fs'
 import { filterQuery, globalSearchQuery, GLOBAL_SEARCH_VARS } from '../../frontend/service/query.templates.js'
 
 const TABLES = ['bibid', 'bioid', 'geoid', 'insid', 'libid', 'manid', 'subid', 'texid']
-const LANGS = ['ca', 'es', 'en', 'gl', 'pt']
 
 function parseArgs (argv) {
-  const args = { langs: LANGS, tables: TABLES, groups: ['ALL'], bitagapGroups: ['ALL'], global: true, onlyGlobal: false, out: null }
+  const args = { tables: TABLES, groups: ['ALL'], bitagapGroups: ['ALL'], global: true, onlyGlobal: false, out: null }
   for (let i = 2; i < argv.length; i++) {
     const next = () => argv[++i]
     switch (argv[i]) {
-      case '--langs': args.langs = next().split(','); break
       case '--tables': args.tables = next().split(','); break
       case '--groups': args.groups = next().split(','); break
       case '--bitagap-groups': args.bitagapGroups = next().split(','); break
@@ -77,9 +74,9 @@ function add (hint, searchVars, sparql) {
 }
 
 if (args.global || args.onlyGlobal) {
-  for (const lang of args.langs) {
-    add(`global.${lang}`, GLOBAL_SEARCH_VARS, globalSearchQuery(lang, prefix))
-  }
+  // One lang-free query covers all UI languages: the backend pivots the projected
+  // ?lang into per-language columns and the request's lang param picks one.
+  add('global', GLOBAL_SEARCH_VARS, globalSearchQuery(prefix))
 }
 
 if (!args.onlyGlobal) {
@@ -90,13 +87,11 @@ if (!args.onlyGlobal) {
       if (def.type !== 'autocomplete' || !def.autocomplete?.query) {
         continue
       }
-      for (const lang of args.langs) {
-        for (const group of args.groups) {
-          for (const bitagapGroup of args.bitagapGroups) {
-            // Same hint format as AutocompleteField, so seeded and organic entries match.
-            add(`${table}.${field}`, 'label',
-              filterQuery(def.autocomplete.query, group, bitagapGroup, table, lang, prefix))
-          }
+      for (const group of args.groups) {
+        for (const bitagapGroup of args.bitagapGroups) {
+          // Same hint format as AutocompleteField, so seeded and organic entries match.
+          add(`${table}.${field}`, 'label',
+            filterQuery(def.autocomplete.query, group, bitagapGroup, table, prefix))
         }
       }
     }
