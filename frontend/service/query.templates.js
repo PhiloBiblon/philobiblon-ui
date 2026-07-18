@@ -208,28 +208,28 @@ export function filterQuery (query, database, bitagapGroup, table, sparqlQueryPr
 /**
  * Global search over the 8 PhiloBiblon tables, served by the backend cache
  * (POST /api/search v=2 with searchVars label,aliases,pbid,item). Fetches every UI
- * language at once, one result row per (item, pbid, lang); the backend pivots the
- * languages into columns of one cached row per item. The outer OPTIONAL keeps items
- * without any label/alias/desc (their ?lang is unbound; the backend falls back to pbid).
+ * language at once, one result row per (item, pbid) and label/alias/desc value; the
+ * backend pivots and merges them into one cached row per item with per-language
+ * columns (first label wins, aliases joined, first desc wins), so no server-side
+ * aggregation is needed — a GROUP BY over the whole dataset times out on Blazegraph.
+ * The outer OPTIONAL keeps items without any label/alias/desc (their ?lang is
+ * unbound; the backend falls back to pbid).
  */
 export function globalSearchQuery (sparqlQueryPrefix) {
   const query =
   `
-  SELECT ?item ?pbid ?lang (SAMPLE(?label_) AS ?label)
-         (GROUP_CONCAT(DISTINCT ?alias; separator=' | ') AS ?aliases)
-         (SAMPLE(?desc_) AS ?desc)
+  SELECT ?item ?pbid ?lang ?label ?aliases ?desc
   WHERE {
     ?item wdt:P476 ?pbid .
     FILTER (REGEX(?pbid, '(.*) bibid ') || REGEX(?pbid, '(.*) bioid ') || REGEX(?pbid, '(.*) geoid ')
       || REGEX(?pbid, '(.*) insid ') || REGEX(?pbid, '(.*) libid ') || REGEX(?pbid, '(.*) manid ')
       || REGEX(?pbid, '(.*) subid ') || REGEX(?pbid, '(.*) texid ')) .
     OPTIONAL {
-      { ?item rdfs:label ?label_ } UNION { ?item skos:altLabel ?alias } UNION { ?item schema:description ?desc_ }
-      BIND(lang(COALESCE(?label_, ?alias, ?desc_)) AS ?lang)
+      { ?item rdfs:label ?label } UNION { ?item skos:altLabel ?aliases } UNION { ?item schema:description ?desc }
+      BIND(lang(COALESCE(?label, ?aliases, ?desc)) AS ?lang)
       FILTER (?lang IN ('ca', 'es', 'en', 'gl', 'pt'))
     }
   }
-  GROUP BY ?item ?pbid ?lang
   `
   return addPrefixes(query, sparqlQueryPrefix)
 }
