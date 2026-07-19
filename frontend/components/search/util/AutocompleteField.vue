@@ -151,14 +151,14 @@ watch(() => props.database, () => {
 })
 
 function fetchItems (query) {
-  const sparqlQuery = $wikibase.$query.filterQuery(props.autocomplete.query, props.database, props.bitagapGroup, props.table)
+  const sparqlQuery = $wikibase.$query.filterQuery(props.autocomplete.query, props.table)
   if (process.env.debug) {
     console.log(`run sparlql query:\n${sparqlQuery}`)
   }
   const hint = props.name ? `${props.table}.${props.name}` : props.table
   // aliases (altLabels) are searchable but never displayed as the option label.
   $wikibase.cachedSearch(sparqlQuery, query,
-    { searchVars: 'label,aliases', hint, lang: locale.value, group: props.database })
+    { searchVars: 'label,aliases', hint, lang: locale.value, group: props.database, bitagapGroup: props.bitagapGroup })
     .then((data) => {
       if (data.indexLoading) {
         indexLoading.value = true

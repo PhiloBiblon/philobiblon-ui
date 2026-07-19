@@ -32,7 +32,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang ?db
+              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang ?db ?bg
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -85,7 +85,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) ?desc ?lang ?db ?bg WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -119,9 +119,9 @@ export default function createForm () {
             autocomplete: {
               query:
                 `
-                SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+                SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                   {
-                    SELECT DISTINCT ?target_item ?db WHERE {
+                    SELECT DISTINCT ?target_item ?db ?bg WHERE {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ')
                       BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -172,9 +172,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .

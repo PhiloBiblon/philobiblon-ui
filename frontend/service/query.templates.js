@@ -7,8 +7,6 @@
 
 const BITAGAP_DB = 'BITAGAP'
 const CARTAS_TEXT = '[Cartas de]'
-const BITAGAP_GROUP_CARTAS = 'CARTAS'
-const BITAGAP_GROUP_ORIGINAL = 'ORIG'
 
 export function fillTemplate (template, replacements) {
   return template.replace(/{{(\w+)}}/g, (match, p1) => replacements[p1] || '')
@@ -89,133 +87,133 @@ export function generateSearchLangGroupPattern (itemName) {
       `
 }
 
-function bitagapGroupFilter (bitagapGroup, labelVar) {
-  if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-    return `
-          FILTER(!CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"))
-          `
-  } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-    return `
-          FILTER(CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"))
-          `
+// BITAGAP subgroup membership (ORIG/CARTAS): instead of baking a constraining join +
+// FILTER into the text when a subgroup is selected, every query computes each source
+// record's membership as a reserved ?bg var inside a self-contained OPTIONAL (it
+// re-matches the related subject labels it needs, so placement only requires the
+// source var to be bound). The backend collects the values into the row's
+// bitagap_groups column and the request's bitagapGroup param filters at search time.
+function bitagapMembershipBind (labelVar) {
+  return `BIND(IF(CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"), 'CARTAS', 'ORIG') AS ?bg) .`
+}
+
+function generateBitagapGroupSubjectTopicFilters () {
+  return `
+        OPTIONAL {
+          ?item wdt:P243 ?related_topic_item .
+          ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+          FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+          ?related_topic_item rdfs:label ?related_topic_item_label .
+          ${bitagapMembershipBind('related_topic_item_label')}
+        }
+        `
+}
+
+export function generateBitagapGroupInstitutionFilters () {
+  return `
+        OPTIONAL {
+          ?related_work_item wdt:P476 ?related_work_item_pbid .
+          FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
+          ?related_work_item wdt:P243 ?topic_item .
+          ?topic_item rdfs:label ?topic_item_label .
+          ?related_work_item wdt:P243 ?item .
+          ${bitagapMembershipBind('topic_item_label')}
+        }
+        `
+}
+
+export function generateBitagapGroupWorkFilters () {
+  return `
+        OPTIONAL {
+          ?item wdt:P243 ?subjectItem .
+          ?subjectItem rdfs:label ?labelSubjectItem .
+          ${bitagapMembershipBind('labelSubjectItem')}
+        }
+        `
+}
+
+export function generateBitagapGroupPersonFilters () {
+  return `
+        OPTIONAL {
+          ?related_work_item wdt:P476 ?related_work_item_pbid .
+          FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
+          ?related_work_item wdt:P243 ?topic_item .
+          ?topic_item rdfs:label ?topic_item_label .
+          ?related_work_item wdt:P703 ?item .
+          ${bitagapMembershipBind('topic_item_label')}
+        }
+        `
+}
+
+export function generateBitagapGroupReferenceFilters () {
+  return generateBitagapGroupSubjectTopicFilters()
+}
+
+export function generateBitagapGroupGeographyFilters () {
+  return generateBitagapGroupSubjectTopicFilters()
+}
+
+export function generateBitagapGroupSubjectFilters () {
+  // subid rows are subjects themselves: membership from the item's own labels.
+  return `
+        OPTIONAL {
+          ?item rdfs:label ?bg_label .
+          ${bitagapMembershipBind('bg_label')}
+        }
+        `
+}
+
+export function generateBitagapGroupManuscriptFilters () {
+  return generateBitagapGroupSubjectTopicFilters()
+}
+
+export function generateBitagapGroupCnumFilters () {
+  return generateBitagapGroupSubjectTopicFilters()
+}
+
+export function generateBitagapGroupFiltersForSubject (table) {
+  // The subject autocompletes list subject items directly: membership from the
+  // target's own labels, computed where ?target_item is bound (inner subquery).
+  if (table === 'libid') { return '' }
+  return `
+        OPTIONAL {
+          ?target_item rdfs:label ?bg_label .
+          ${bitagapMembershipBind('bg_label')}
+        }
+        `
+}
+
+export function generateBitagapGroupFilters (table) {
+  switch (table) {
+    case 'insid':
+      return generateBitagapGroupInstitutionFilters()
+    case 'texid':
+      return generateBitagapGroupWorkFilters()
+    case 'libid':
+      return ''
+    case 'bioid':
+      return generateBitagapGroupPersonFilters()
+    case 'bibid':
+      return generateBitagapGroupReferenceFilters()
+    case 'geoid':
+      return generateBitagapGroupGeographyFilters()
+    case 'subid':
+      return generateBitagapGroupSubjectFilters()
+    case 'manid':
+      return generateBitagapGroupManuscriptFilters()
+    case 'cnum':
+      return generateBitagapGroupCnumFilters()
   }
   return ''
 }
 
-function generateBitagapGroupSubjectTopicFilters (bitagapGroup) {
-  if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-  return `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        ${bitagapGroupFilter(bitagapGroup, 'related_topic_item_label')}
-        `
-}
-
-export function generateBitagapGroupInstitutionFilters (bitagapGroup) {
-  if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-  return `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-        ?related_work_item wdt:P243 ?topic_item .
-        ?topic_item rdfs:label ?topic_item_label .
-        ?related_work_item wdt:P243 ?item .
-        ${bitagapGroupFilter(bitagapGroup, 'topic_item_label')}
-        `
-}
-
-export function generateBitagapGroupWorkFilters (bitagapGroup) {
-  if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-  return `
-        ?item wdt:P243 ?subjectItem .
-        ?subjectItem rdfs:label ?labelSubjectItem .
-        ${bitagapGroupFilter(bitagapGroup, 'labelSubjectItem')}
-        `
-}
-
-export function generateBitagapGroupPersonFilters (bitagapGroup) {
-  if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-  return `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-        ?related_work_item wdt:P243 ?topic_item .
-        ?topic_item rdfs:label ?topic_item_label .
-        ?related_work_item wdt:P703 ?item .
-        ${bitagapGroupFilter(bitagapGroup, 'topic_item_label')}
-        `
-}
-
-export function generateBitagapGroupReferenceFilters (bitagapGroup) {
-  return generateBitagapGroupSubjectTopicFilters(bitagapGroup)
-}
-
-export function generateBitagapGroupGeographyFilters (bitagapGroup) {
-  return generateBitagapGroupSubjectTopicFilters(bitagapGroup)
-}
-
-export function generateBitagapGroupSubjectFilters (bitagapGroup) {
-  if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-  return bitagapGroupFilter(bitagapGroup, 'label')
-}
-
-export function generateBitagapGroupManuscriptFilters (bitagapGroup) {
-  return generateBitagapGroupSubjectTopicFilters(bitagapGroup)
-}
-
-export function generateBitagapGroupCnumFilters (bitagapGroup) {
-  return generateBitagapGroupSubjectTopicFilters(bitagapGroup)
-}
-
-export function generateBitagapGroupFiltersForSubject (bitagapGroup) {
-  if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-    return `
-          FILTER(!CONTAINS(?label, "${CARTAS_TEXT}"))
-        `
-  } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-    return `
-          FILTER(CONTAINS(?label, "${CARTAS_TEXT}"))
-        `
-  }
-  return ''
-}
-
-export function generateBitagapGroupFilters (database, bitagapGroup, table) {
-  if (database === BITAGAP_DB) {
-    switch (table) {
-      case 'insid':
-        return generateBitagapGroupInstitutionFilters(bitagapGroup)
-      case 'texid':
-        return generateBitagapGroupWorkFilters(bitagapGroup)
-      case 'libid':
-        return ''
-      case 'bioid':
-        return generateBitagapGroupPersonFilters(bitagapGroup)
-      case 'bibid':
-        return generateBitagapGroupReferenceFilters(bitagapGroup)
-      case 'geoid':
-        return generateBitagapGroupGeographyFilters(bitagapGroup)
-      case 'subid':
-        return generateBitagapGroupSubjectFilters(bitagapGroup)
-      case 'manid':
-        return generateBitagapGroupManuscriptFilters(bitagapGroup)
-      case 'cnum':
-        return generateBitagapGroupCnumFilters(bitagapGroup)
-    }
-  }
-  return ''
-}
-
-export function filterQuery (query, database, bitagapGroup, table, sparqlQueryPrefix) {
-  // The database is no longer baked into the query text: templates always match every
-  // group ((.*)), bind each source record's group as ?db, and the backend filters rows
-  // by membership with the request's group param — so all four database selections
-  // share one cache entry. The only exception is a BITAGAP subgroup (ORIG/CARTAS),
-  // whose extra graph patterns only make sense within BITAGAP: that text keeps the
-  // group baked in and registers as its own cache entry.
-  const bakedDatabase = (database === 'BITAGAP' && bitagapGroup && bitagapGroup !== 'ALL') ? database : '(.*)'
+export function filterQuery (query, table, sparqlQueryPrefix) {
+  // No dimension is baked into the query text any more: every locale, database group
+  // and BITAGAP subgroup shares one cache entry per field. Templates match all
+  // databases ((.*)) and project the reserved ?lang/?db/?bg vars; the request's
+  // lang/group/bitagapGroup params pick what is matched at search time.
   const replacements = {
-    database: bakedDatabase,
+    database: '(.*)',
     table,
     langFilter: generateSearchLangFilters(),
     langFilterWithoutBind: generateSearchLangFiltersWithoutBind(),
@@ -225,8 +223,8 @@ export function filterQuery (query, database, bitagapGroup, table, sparqlQueryPr
     targetItemLangGroupPattern: generateSearchLangGroupPattern('target_item'),
     descLangFilter: generateDescLangFilters('item'),
     analyticItemDescLangFilter: generateDescLangFilters('analytic_item'),
-    bitagapGroupFilter: generateBitagapGroupFilters(database, bitagapGroup, table),
-    bitagapGroupSubjectFilter: generateBitagapGroupFiltersForSubject(bitagapGroup)
+    bitagapGroupFilter: generateBitagapGroupFilters(table),
+    bitagapGroupSubjectFilter: generateBitagapGroupFiltersForSubject(table)
   }
   return addPrefixes(fillTemplate(query, replacements), sparqlQueryPrefix)
 }

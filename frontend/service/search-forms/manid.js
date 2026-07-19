@@ -34,7 +34,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang ?db
+              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang ?db ?bg
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -87,9 +87,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -128,9 +128,9 @@ export default function createForm () {
               allowFreeText: true,
               query:
                 `
-                SELECT DISTINCT ?label ?db WHERE {
+                SELECT DISTINCT ?label ?db ?bg WHERE {
                   {
-                    SELECT ?label ?db WHERE {
+                    SELECT ?label ?db ?bg WHERE {
                       {
                         ?item wdt:P476 ?pbid .
                         FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -169,7 +169,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?db WHERE {
+              SELECT DISTINCT ?label ?db ?bg WHERE {
                 {
                   {
                     ?item wdt:P476 ?pbid .
@@ -216,9 +216,9 @@ export default function createForm () {
             autocomplete: {
               query:
                 `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -277,9 +277,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg {
                 {
-                  SELECT DISTINCT ?target_item ?db {
+                  SELECT DISTINCT ?target_item ?db ?bg {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -314,9 +314,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg {
                 {
-                  SELECT DISTINCT ?target_item ?db {
+                  SELECT DISTINCT ?target_item ?db ?bg {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -351,9 +351,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -378,9 +378,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -418,9 +418,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -463,9 +463,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?db {
+              SELECT DISTINCT ?label ?db ?bg {
                 {
-                  SELECT ?label ?db
+                  SELECT ?label ?db ?bg
                   WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -474,7 +474,7 @@ export default function createForm () {
                     ?item wdt:P5 ?label .
                   }
                 } UNION {
-                  SELECT ?label ?db
+                  SELECT ?label ?db ?bg
                   WHERE {
                     ?cnum_item wdt:P476 ?cnum_pbid .
                     FILTER regex(?cnum_pbid, '(.*) cnum ') .
@@ -502,9 +502,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -529,9 +529,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -557,9 +557,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg {
                 {
-                  SELECT ?target_item ?db WHERE {
+                  SELECT ?target_item ?db ?bg WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -597,9 +597,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -624,9 +624,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?db {
+              SELECT DISTINCT ?label ?db ?bg {
                 {
-                  SELECT ?label ?db
+                  SELECT ?label ?db ?bg
                   WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -635,7 +635,7 @@ export default function createForm () {
                     ?item wdt:P800 ?label .
                   }
                 } UNION {
-                  SELECT ?label ?db
+                  SELECT ?label ?db ?bg
                   WHERE {
                     ?copid_item wdt:P476 ?copid_pbid .
                     FILTER regex(?copid_pbid, '(.*) copid ') .
@@ -663,7 +663,7 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?label ?db
+              SELECT DISTINCT ?label ?db ?bg
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -686,9 +686,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -713,9 +713,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -740,9 +740,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -780,9 +780,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg {
                 {
-                  SELECT ?target_item ?db WHERE {
+                  SELECT ?target_item ?db ?bg WHERE {
                     {
                       ?item wdt:P476 ?pbid .
                       FILTER regex(?pbid, '{{database}} {{table}} ') .
@@ -820,9 +820,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
@@ -847,9 +847,9 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
                 {
-                  SELECT DISTINCT ?target_item ?db WHERE {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .

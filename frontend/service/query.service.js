@@ -1276,8 +1276,8 @@ export class QueryService {
     return templates.fillTemplate(template, replacements)
   }
 
-  filterQuery (query, database, bitagapGroup, table) {
-    return templates.filterQuery(query, database, bitagapGroup, table, this.$config.sparqlQueryPrefix)
+  filterQuery (query, table) {
+    return templates.filterQuery(query, table, this.$config.sparqlQueryPrefix)
   }
 
   globalSearchQuery () {
