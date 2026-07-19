@@ -33,10 +33,11 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang
+              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang ?db
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                 {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
@@ -84,9 +85,10 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) (STR(?aliasObj) AS ?aliases) ?desc ?lang {
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) (STR(?aliasObj) AS ?aliases) ?desc ?lang ?db {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                 {{bitagapGroupFilter}}
                 {
                   ?item wdt:P34 ?labelObj .
@@ -117,10 +119,11 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                 {{bitagapGroupFilter}}
 
                 VALUES ?property { wdt:P171 wdt:P165 }
@@ -153,11 +156,12 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
                 {
-                  SELECT DISTINCT ?target_item WHERE {
+                  SELECT DISTINCT ?target_item ?db WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                     {{bitagapGroupFilter}}
                     {
                       VALUES ?property { p:P137 p:P165 p:P746 p:P172 }
@@ -189,11 +193,12 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
                 {
-                  SELECT DISTINCT ?target_item WHERE {
+                  SELECT DISTINCT ?target_item ?db WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                     {{bitagapGroupFilter}}
                     ?item wdt:P172 ?target_item .
                   }
@@ -215,11 +220,12 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
                 {
-                  SELECT DISTINCT ?target_item WHERE {
+                  SELECT DISTINCT ?target_item ?db WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                     ?item wdt:P746 ?target_item .
                     {{bitagapGroupFilter}}
                   }
@@ -241,11 +247,12 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
                 {
-                  SELECT DISTINCT ?target_item WHERE {
+                  SELECT DISTINCT ?target_item ?db WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                     ?item wdt:P165 ?target_item .
                     {{bitagapGroupFilter}}
                   }
@@ -267,11 +274,12 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
                 {
-                  SELECT DISTINCT ?target_item WHERE {
+                  SELECT DISTINCT ?target_item ?db WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                     {{bitagapGroupFilter}}
                     ?item wdt:P232 ?target_item .
                     ?target_item wdt:P476 ?target_pbid .
@@ -295,11 +303,12 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?target_item ?label ?desc ?lang WHERE {
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
                 {
-                  SELECT DISTINCT ?target_item WHERE {
+                  SELECT DISTINCT ?target_item ?db WHERE {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                     BIND ( wdt:P243 as ?property)
                     ?item ?property ?target_item .
                     {{bitagapGroupSubjectFilter}}

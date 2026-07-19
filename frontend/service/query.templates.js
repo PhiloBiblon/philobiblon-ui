@@ -181,11 +181,15 @@ export function generateBitagapGroupFilters (database, bitagapGroup, table) {
 }
 
 export function filterQuery (query, database, bitagapGroup, table, sparqlQueryPrefix) {
-  if (database === 'ALL') {
-    database = '(.*)'
-  }
+  // The database is no longer baked into the query text: templates always match every
+  // group ((.*)), bind each source record's group as ?db, and the backend filters rows
+  // by membership with the request's group param — so all four database selections
+  // share one cache entry. The only exception is a BITAGAP subgroup (ORIG/CARTAS),
+  // whose extra graph patterns only make sense within BITAGAP: that text keeps the
+  // group baked in and registers as its own cache entry.
+  const bakedDatabase = (database === 'BITAGAP' && bitagapGroup && bitagapGroup !== 'ALL') ? database : '(.*)'
   const replacements = {
-    database,
+    database: bakedDatabase,
     table,
     langFilter: generateSearchLangFilters(),
     langFilterWithoutBind: generateSearchLangFiltersWithoutBind(),

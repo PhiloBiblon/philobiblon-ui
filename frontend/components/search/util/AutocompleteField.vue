@@ -157,7 +157,8 @@ function fetchItems (query) {
   }
   const hint = props.name ? `${props.table}.${props.name}` : props.table
   // aliases (altLabels) are searchable but never displayed as the option label.
-  $wikibase.cachedSearch(sparqlQuery, query, { searchVars: 'label,aliases', hint, lang: locale.value })
+  $wikibase.cachedSearch(sparqlQuery, query,
+    { searchVars: 'label,aliases', hint, lang: locale.value, group: props.database })
     .then((data) => {
       if (data.indexLoading) {
         indexLoading.value = true

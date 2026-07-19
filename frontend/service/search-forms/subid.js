@@ -32,10 +32,11 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang
+              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang ?db
               WHERE {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
+                BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                 {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
@@ -83,10 +84,11 @@ export default function createForm () {
             autocomplete: {
               query:
               `
-              SELECT DISTINCT ?item ?label ?desc ?lang {
+              SELECT DISTINCT ?item ?label ?desc ?lang ?db {
                 {
                   ?item wdt:P476 ?pbid .
                   FILTER regex(?pbid, '{{database}} {{table}} ') .
+                  BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                   {{bitagapGroupFilter}}
                   {
                     ?item wdt:P1031 ?label .
