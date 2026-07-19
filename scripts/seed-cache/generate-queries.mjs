@@ -10,8 +10,8 @@
  *
  * Options:
  *   --tables bioid,geoid   Tables (default: all 8)
- *   --groups ALL,BETA      Databases (default: ALL — seed the full cartesian only deliberately)
- *   --bitagap-groups ALL   BITAGAP subgroups (default: ALL)
+ *   --bitagap-groups ALL   BITAGAP subgroups (default: ALL; non-ALL values emit the
+ *                          BITAGAP-baked ORIG/CARTAS query texts)
  *   --only-global          Only the global-search queries
  *   --no-global            Skip the global-search queries
  *   --out queries.json     Output file (default: stdout)
@@ -25,12 +25,11 @@ import { filterQuery, globalSearchQuery, GLOBAL_SEARCH_VARS } from '../../fronte
 const TABLES = ['bibid', 'bioid', 'geoid', 'insid', 'libid', 'manid', 'subid', 'texid']
 
 function parseArgs (argv) {
-  const args = { tables: TABLES, groups: ['ALL'], bitagapGroups: ['ALL'], global: true, onlyGlobal: false, out: null }
+  const args = { tables: TABLES, bitagapGroups: ['ALL'], global: true, onlyGlobal: false, out: null }
   for (let i = 2; i < argv.length; i++) {
     const next = () => argv[++i]
     switch (argv[i]) {
       case '--tables': args.tables = next().split(','); break
-      case '--groups': args.groups = next().split(','); break
       case '--bitagap-groups': args.bitagapGroups = next().split(','); break
       case '--only-global': args.onlyGlobal = true; break
       case '--no-global': args.global = false; break
@@ -87,12 +86,12 @@ if (!args.onlyGlobal) {
       if (def.type !== 'autocomplete' || !def.autocomplete?.query) {
         continue
       }
-      for (const group of args.groups) {
-        for (const bitagapGroup of args.bitagapGroups) {
-          // Same hint format as AutocompleteField, so seeded and organic entries match.
-          add(`${table}.${field}`, 'label,aliases',
-            filterQuery(def.autocomplete.query, group, bitagapGroup, table, prefix))
-        }
+      for (const bitagapGroup of args.bitagapGroups) {
+        // Queries are database-free (the group travels as a request param); only a
+        // BITAGAP subgroup produces a distinct, BITAGAP-baked text.
+        // Same hint format as AutocompleteField, so seeded and organic entries match.
+        add(`${table}.${field}`, 'label,aliases',
+          filterQuery(def.autocomplete.query, bitagapGroup !== 'ALL' ? 'BITAGAP' : 'ALL', bitagapGroup, table, prefix))
       }
     }
   }
