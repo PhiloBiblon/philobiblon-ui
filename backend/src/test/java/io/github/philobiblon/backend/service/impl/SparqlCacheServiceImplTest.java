@@ -703,6 +703,82 @@ class SparqlCacheServiceImplTest {
         verify(rowRepository).searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq((CacheLang) null), eq((CacheDb) null));
     }
 
+    // --- Untagged literals (solutions with the per-lang var bound but ?lang unbound) ---
+
+    @Test
+    void untaggedTitleFeedsEverySearchTextAndPayloadPlainKey() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["item", "lang", "label"] },
+                  "results": { "bindings": [
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "lang": { "type": "literal", "value": "en" },
+                      "label": { "type": "literal", "value": "Chronicle" } },
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "label": { "type": "literal", "value": "Cronica Geral" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label"), "hash1", 7L);
+
+        assertEquals(1, rows.size());
+        CachedQueryRow row = rows.get(0);
+        // Tagged labels win the display; the untagged title feeds every language's search text.
+        assertEquals("Chronicle", row.getLabel(CacheLang.EN));
+        assertEquals("Chronicle", row.getLabel(CacheLang.CA));
+        assertEquals("chronicle cronica geral", row.getSearchText(CacheLang.EN));
+        assertEquals("chronicle cronica geral", row.getSearchText(CacheLang.CA));
+        assertTrue(row.getPayload().contains("\"label\":\"Cronica Geral\""));
+        assertTrue(row.getPayload().contains("\"label_en\":\"Chronicle\""));
+    }
+
+    @Test
+    void itemWithOnlyAnUntaggedTitleIsKeptAndSearchable() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["item", "lang", "label"] },
+                  "results": { "bindings": [
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "label": { "type": "literal", "value": "Livro das Fortalezas" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label"), "hash1", 7L);
+
+        assertEquals(1, rows.size());
+        assertEquals("Livro das Fortalezas", rows.get(0).getLabel(CacheLang.PT));
+        assertEquals("Livro das Fortalezas", rows.get(0).getLabel(CacheLang.EN));
+        assertEquals("livro das fortalezas", rows.get(0).getSearchText(CacheLang.CA));
+    }
+
+    @Test
+    void valuesTaggedWithANonUiLanguageStayExcluded() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["item", "lang", "label"] },
+                  "results": { "bindings": [
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "lang": { "type": "literal", "value": "en" },
+                      "label": { "type": "literal", "value": "Chronicle" } },
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "lang": { "type": "literal", "value": "de" },
+                      "label": { "type": "literal", "value": "Chronik" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label"), "hash1", 7L);
+
+        assertEquals(1, rows.size());
+        assertFalse(rows.get(0).getSearchText(CacheLang.EN).contains("chronik"));
+        assertFalse(rows.get(0).getPayload().contains("Chronik"));
+    }
+
     // --- Db-aware pivot (queries projecting ?db) ---
 
     @Test

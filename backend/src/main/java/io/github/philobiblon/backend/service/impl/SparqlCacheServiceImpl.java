@@ -507,13 +507,20 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
                 group.dbs.add(db);
             }
             if (langAware) {
-                CacheLang lang = solutionLang(values.get(LANG_VAR));
-                if (lang != null) {
-                    for (String var : PER_LANG_VARS) {
-                        String value = values.get(var);
-                        if (value != null && !value.isBlank()) {
-                            group.values(lang, var).add(value);
-                        }
+                String langTag = values.get(LANG_VAR);
+                CacheLang lang = solutionLang(langTag);
+                for (String var : PER_LANG_VARS) {
+                    String value = values.get(var);
+                    if (value == null || value.isBlank()) {
+                        continue;
+                    }
+                    if (lang != null) {
+                        group.values(lang, var).add(value);
+                    } else if (langTag == null) {
+                        // Untagged literals (e.g. plain title properties) are language-neutral:
+                        // they feed every language's search text and the label fallback.
+                        // Values tagged with a non-UI language stay excluded.
+                        group.untagged(var).add(value);
                     }
                 }
             }
@@ -569,6 +576,9 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             fallbackLabel = ownLabels.values().stream().findFirst().orElse(null);
         }
         if (fallbackLabel == null) {
+            fallbackLabel = group.untagged(LABEL_VAR).stream().findFirst().orElse(null);
+        }
+        if (fallbackLabel == null) {
             fallbackLabel = group.firstValue(CacheLang.EN, ALIASES_VAR).orElse(null);
         }
         if (fallbackLabel == null) {
@@ -596,10 +606,12 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             for (String varName : searchVars) {
                 String value;
                 if (PER_LANG_VARS.contains(varName)) {
-                    value = String.join(" ", group.values(lang, varName));
-                    if (LABEL_VAR.equals(varName) && value.isBlank()) {
-                        value = label;
+                    LinkedHashSet<String> parts = new LinkedHashSet<>(group.values(lang, varName));
+                    if (LABEL_VAR.equals(varName) && parts.isEmpty()) {
+                        parts.add(label);
                     }
+                    parts.addAll(group.untagged(varName));
+                    value = String.join(" ", parts);
                 } else {
                     value = group.neutral.get(varName);
                 }
@@ -623,6 +635,12 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         for (String var : PER_LANG_VARS) {
             if (!resultVars.contains(var)) {
                 continue;
+            }
+            LinkedHashSet<String> untagged = group.untagged(var);
+            if (!untagged.isEmpty()) {
+                // Language-neutral values keep the plain var key; tagged values override it
+                // at display time when present for the requested language.
+                payloadMap.put(var, ALIASES_VAR.equals(var) ? String.join(" | ", untagged) : untagged.iterator().next());
             }
             for (CacheLang lang : CacheLang.values()) {
                 LinkedHashSet<String> values = group.values(lang, var);
@@ -669,10 +687,16 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         final Map<String, String> neutral = new LinkedHashMap<>();
         final LinkedHashSet<CacheDb> dbs = new LinkedHashSet<>();
         final Map<CacheLang, Map<String, LinkedHashSet<String>>> perLang = new EnumMap<>(CacheLang.class);
+        /** Values of per-lang vars whose solutions carry no language tag (plain literals). */
+        final Map<String, LinkedHashSet<String>> untaggedPerLang = new LinkedHashMap<>();
 
         LinkedHashSet<String> values(CacheLang lang, String var) {
             return perLang.computeIfAbsent(lang, l -> new LinkedHashMap<>())
                     .computeIfAbsent(var, v -> new LinkedHashSet<>());
+        }
+
+        LinkedHashSet<String> untagged(String var) {
+            return untaggedPerLang.computeIfAbsent(var, v -> new LinkedHashSet<>());
         }
 
         Optional<String> firstValue(CacheLang lang, String var) {
