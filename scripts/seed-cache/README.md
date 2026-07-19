@@ -28,21 +28,21 @@ curl -s $API_BASE_URL/api/search/cache/status | jq '{totalQueries, totalRows, lo
 ## Default scope (deliberately conservative)
 
 By default the generator emits the global-search query plus every autocomplete field
-for `group=ALL, bitagapGroup=ALL` per table — the combination every user hits first.
-Queries are language-free: each one fetches all five UI languages at once and the
-backend stores them as per-language columns, so there is no language dimension to seed. **Do not blanket-seed the full cartesian** (`--groups ALL,BETA,BITECA,BITAGAP
---bitagap-groups ALL,ORIG,CARTAS`) unless you accept millions of cached rows and a long
-nightly refresh: big fields can return 10⁴–10⁵ rows per query. The long tail is
-populated lazily by real usage and evicted after `search.cache.evictAfterDays` (30 days)
-without accesses.
+per table — the combination every user hits first. Queries are language- and
+database-free: each one fetches all five UI languages and all three bibliographies at
+once; the backend stores per-language columns plus per-row group membership, and the
+`lang`/`group` request params pick what is matched. So neither dimension needs
+seeding — one entry per field serves every locale and every database selection. The
+only extra texts are the BITAGAP ORIG/CARTAS subgroup variants (`--bitagap-groups`),
+which stay distinct; they are populated lazily by real usage and evicted after
+`search.cache.evictAfterDays` (30 days) without accesses.
 
 ## Options
 
 | Flag | Meaning | Default |
 |---|---|---|
 | `--tables bioid,geoid` | item tables | all 8 |
-| `--groups ALL,BETA` | database filter values | `ALL` |
-| `--bitagap-groups ALL,ORIG` | BITAGAP subgroup values | `ALL` |
+| `--bitagap-groups ALL,ORIG` | BITAGAP subgroup values (non-ALL emits BITAGAP-baked texts) | `ALL` |
 | `--only-global` / `--no-global` | only/skip the global-search queries | include |
 | `--out queries.json` | write to file instead of stdout | stdout |
 
