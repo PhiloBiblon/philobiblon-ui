@@ -2,6 +2,7 @@ package io.github.philobiblon.backend.service.impl;
 
 import io.github.philobiblon.backend.entity.CachedQuery;
 import io.github.philobiblon.backend.entity.CachedQueryRow;
+import io.github.philobiblon.backend.helper.CacheDb;
 import io.github.philobiblon.backend.helper.CacheLang;
 import io.github.philobiblon.backend.repository.CachedQueryRepository;
 import io.github.philobiblon.backend.repository.CachedQueryRowRepository;
@@ -145,7 +146,7 @@ class SparqlCacheServiceImplTest {
     void emptyResultKeepsPreviousGeneration() {
         CachedQueryRepository queryRepository = mockQueryRepository();
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
-        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false, false);
         cq.setGeneration(42L);
         when(queryRepository.findById("hash1")).thenReturn(Optional.of(cq));
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
@@ -169,7 +170,7 @@ class SparqlCacheServiceImplTest {
     void emptyResultOnFirstLoadSwapsGenerationSoItStopsLoading() {
         CachedQueryRepository queryRepository = mockQueryRepository();
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
-        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false, false);
         when(queryRepository.findById("hash1")).thenReturn(Optional.of(cq));
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
             @Override
@@ -190,7 +191,7 @@ class SparqlCacheServiceImplTest {
     void successfulLoadSwapsGenerationAndRemovesStaleRows() {
         CachedQueryRepository queryRepository = mockQueryRepository();
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
-        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false, false);
         cq.setGeneration(42L);
         cq.setLastError("previous failure");
         when(queryRepository.findById("hash1")).thenReturn(Optional.of(cq));
@@ -214,7 +215,7 @@ class SparqlCacheServiceImplTest {
     void successfulLoadResetsUsageSinceRefreshButNotTotal() {
         CachedQueryRepository queryRepository = mockQueryRepository();
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
-        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false, false);
         cq.setGeneration(42L);
         cq.setUsageSinceRefresh(5L);
         cq.setUsageTotal(20L);
@@ -240,10 +241,10 @@ class SparqlCacheServiceImplTest {
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
         when(queryRepository.findByLastAccessedAtBefore(any())).thenReturn(List.of());
 
-        CachedQuery used = new CachedQuery("used", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery used = new CachedQuery("used", "SELECT ...", "label", null, Instant.now(), false, false);
         used.setGeneration(1L);
         used.setUsageSinceRefresh(3L);
-        CachedQuery unused = new CachedQuery("unused", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery unused = new CachedQuery("unused", "SELECT ...", "label", null, Instant.now(), false, false);
         unused.setGeneration(1L);
         unused.setUsageSinceRefresh(0L);
         when(queryRepository.findAll()).thenReturn(List.of(used, unused));
@@ -273,7 +274,7 @@ class SparqlCacheServiceImplTest {
 
         // Never successfully loaded: generation stays 0, and since usage only increments on the
         // warm path, a stuck query can never accrue usage — it must always get another attempt.
-        CachedQuery stuck = new CachedQuery("stuck", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery stuck = new CachedQuery("stuck", "SELECT ...", "label", null, Instant.now(), false, false);
         when(queryRepository.findAll()).thenReturn(List.of(stuck));
 
         Set<String> reloaded = new HashSet<>();
@@ -299,9 +300,9 @@ class SparqlCacheServiceImplTest {
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
         when(queryRepository.findByLastAccessedAtBefore(any())).thenReturn(List.of());
 
-        CachedQuery a = new CachedQuery("a", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery a = new CachedQuery("a", "SELECT ...", "label", null, Instant.now(), false, false);
         a.setGeneration(1L);
-        CachedQuery b = new CachedQuery("b", "SELECT ...", "label", null, Instant.now(), false);
+        CachedQuery b = new CachedQuery("b", "SELECT ...", "label", null, Instant.now(), false, false);
         b.setGeneration(1L);
         when(queryRepository.findAll()).thenReturn(List.of(a, b));
 
@@ -326,12 +327,12 @@ class SparqlCacheServiceImplTest {
     void refreshAllFlushesAccumulatedPendingUsageBeforeReadingCandidates() {
         CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
-        CachedQuery cq = new CachedQuery("hash1", "SELECT ?label WHERE {}", "label", null, Instant.now(), false);
+        CachedQuery cq = new CachedQuery("hash1", "SELECT ?label WHERE {}", "label", null, Instant.now(), false, false);
         cq.setGeneration(1L);
         when(queryRepository.findById(anyString())).thenReturn(Optional.of(cq));
         when(queryRepository.findAll()).thenReturn(List.of(cq));
         when(queryRepository.findByLastAccessedAtBefore(any())).thenReturn(List.of());
-        when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any())).thenReturn(List.of());
+        when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any(), any())).thenReturn(List.of());
 
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
             @Override
@@ -344,9 +345,9 @@ class SparqlCacheServiceImplTest {
 
         // The first search flushes immediately (no prior throttle timestamp); the next two stay
         // pending in memory only, throttled by the 1-hour window.
-        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null);
-        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null);
-        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null);
+        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null, null);
+        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null, null);
+        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null, null);
         verify(queryRepository, times(1)).touch(anyString(), any(), eq(1L));
 
         service.refreshAll();
@@ -608,8 +609,8 @@ class SparqlCacheServiceImplTest {
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, mock(CachedQueryRowRepository.class));
         service.init();
 
-        service.search("SELECT ?label ?lang WHERE {}", "x", "label", null, null, null);
-        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null);
+        service.search("SELECT ?label ?lang WHERE {}", "x", "label", null, null, null, null);
+        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null, null);
 
         ArgumentCaptor<CachedQuery> saved = ArgumentCaptor.forClass(CachedQuery.class);
         verify(queryRepository, times(2)).save(saved.capture());
@@ -623,7 +624,7 @@ class SparqlCacheServiceImplTest {
         service.init();
 
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.search("SELECT ?label ?lang WHERE {}", "x", "label", null, null, "xx"));
+                () -> service.search("SELECT ?label ?lang WHERE {}", "x", "label", null, null, "xx", null));
         assertEquals(400, e.getStatusCode().value());
     }
 
@@ -633,7 +634,7 @@ class SparqlCacheServiceImplTest {
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
         String sparql = "SELECT ?item ?lang ?label ?desc WHERE {}";
         String hash = io.github.philobiblon.backend.helper.QueryHasher.hash("label", sparql);
-        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), true);
+        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), true, false);
         cq.setGeneration(7L);
         when(queryRepository.findById(hash)).thenReturn(Optional.of(cq));
 
@@ -643,7 +644,7 @@ class SparqlCacheServiceImplTest {
                 Map.of(CacheLang.EN, "cervantes author", CacheLang.CA, "cervantes autor",
                         CacheLang.ES, "x", CacheLang.GL, "x", CacheLang.PT, "x"),
                 "{\"item\":\"Q42\",\"label_en\":\"Cervantes (author)\",\"label_ca\":\"Cervantes (autor)\",\"desc_en\":\"Spanish writer\"}");
-        when(rowRepository.searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq(CacheLang.CA)))
+        when(rowRepository.searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq(CacheLang.CA), any()))
                 .thenReturn(List.of(row));
 
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository);
@@ -651,7 +652,7 @@ class SparqlCacheServiceImplTest {
         service.maxResultLimit = 300;
         service.init();
 
-        SearchResponse response = service.search(sparql, "cervantes", "label", null, null, "ca");
+        SearchResponse response = service.search(sparql, "cervantes", "label", null, null, "ca", null);
 
         assertFalse(response.isIndexLoading());
         assertEquals(1, response.getResults().size());
@@ -670,17 +671,17 @@ class SparqlCacheServiceImplTest {
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
         String sparql = "SELECT ?label ?lang WHERE {}";
         String hash = io.github.philobiblon.backend.helper.QueryHasher.hash("label", sparql);
-        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), true);
+        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), true, false);
         cq.setGeneration(7L);
         when(queryRepository.findById(hash)).thenReturn(Optional.of(cq));
-        when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any())).thenReturn(List.of());
+        when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any(), any())).thenReturn(List.of());
 
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository);
         service.init();
 
-        service.search(sparql, "cervantes", "label", null, null, null);
+        service.search(sparql, "cervantes", "label", null, null, null, null);
 
-        verify(rowRepository).searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq(CacheLang.EN));
+        verify(rowRepository).searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq(CacheLang.EN), eq((CacheDb) null));
     }
 
     @Test
@@ -689,17 +690,161 @@ class SparqlCacheServiceImplTest {
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
         String sparql = "SELECT ?label WHERE {}";
         String hash = io.github.philobiblon.backend.helper.QueryHasher.hash("label", sparql);
-        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), false);
+        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), false, false);
         cq.setGeneration(7L);
         when(queryRepository.findById(hash)).thenReturn(Optional.of(cq));
-        when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any())).thenReturn(List.of());
+        when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any(), any())).thenReturn(List.of());
 
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository);
         service.init();
 
-        service.search(sparql, "cervantes", "label", null, null, "ca");
+        service.search(sparql, "cervantes", "label", null, null, "ca", null);
 
-        verify(rowRepository).searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq((CacheLang) null));
+        verify(rowRepository).searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq((CacheLang) null), eq((CacheDb) null));
+    }
+
+    // --- Db-aware pivot (queries projecting ?db) ---
+
+    @Test
+    void dbOnlyPivotFillsLegacyColumnsAndCollectsMembership() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["label", "db"] },
+                  "results": { "bindings": [
+                    { "label": { "type": "literal", "value": "Crónica general" },
+                      "db": { "type": "literal", "value": "BETA" } },
+                    { "label": { "type": "literal", "value": "Crónica general" },
+                      "db": { "type": "literal", "value": "BITECA" } },
+                    { "label": { "type": "literal", "value": "Cancioneiro" },
+                      "db": { "type": "literal", "value": "BITAGAP" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label"), "hash1", 7L);
+
+        assertEquals(2, rows.size());
+        CachedQueryRow shared = rows.get(0);
+        assertEquals("Crónica general", shared.getLabel());
+        assertEquals("cronica general", shared.getSearchText());
+        assertNull(shared.getLabel(CacheLang.EN));
+        assertEquals(" BETA BITECA ", shared.getDbGroups());
+        assertEquals(" BITAGAP ", rows.get(1).getDbGroups());
+        // ?db never enters the payload.
+        assertFalse(shared.getPayload().contains("db"));
+    }
+
+    @Test
+    void langAndDbAwareQueryCollectsMembershipAlongsidePerLanguageColumns() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["item", "lang", "label", "db"] },
+                  "results": { "bindings": [
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "lang": { "type": "literal", "value": "en" },
+                      "label": { "type": "literal", "value": "London" },
+                      "db": { "type": "literal", "value": "BETA" } },
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "lang": { "type": "literal", "value": "ca" },
+                      "label": { "type": "literal", "value": "Londres" },
+                      "db": { "type": "literal", "value": "BITECA" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label"), "hash1", 7L);
+
+        assertEquals(1, rows.size());
+        assertEquals("London", rows.get(0).getLabel(CacheLang.EN));
+        assertEquals("Londres", rows.get(0).getLabel(CacheLang.CA));
+        assertEquals(" BETA BITECA ", rows.get(0).getDbGroups());
+    }
+
+    @Test
+    void unknownDbTokenIsIgnoredAndTheRowKept() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["label", "db"] },
+                  "results": { "bindings": [
+                    { "label": { "type": "literal", "value": "Crónica" },
+                      "db": { "type": "literal", "value": "WHATEVER" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label"), "hash1", 7L);
+
+        assertEquals(1, rows.size());
+        assertNull(rows.get(0).getDbGroups());
+    }
+
+    @Test
+    void registrationDetectsDbAwareQueriesFromTheProjection() {
+        CachedQueryRepository queryRepository = mockQueryRepository();
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, mock(CachedQueryRowRepository.class));
+        service.init();
+
+        service.search("SELECT ?label ?db WHERE {}", "x", "label", null, null, null, null);
+        service.search("SELECT ?label WHERE {}", "x", "label", null, null, null, null);
+
+        ArgumentCaptor<CachedQuery> saved = ArgumentCaptor.forClass(CachedQuery.class);
+        verify(queryRepository, times(2)).save(saved.capture());
+        assertTrue(saved.getAllValues().get(0).isDbAware());
+        assertFalse(saved.getAllValues().get(1).isDbAware());
+    }
+
+    @Test
+    void rejectsUnknownGroupWithBadRequest() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(mockQueryRepository(), mock(CachedQueryRowRepository.class));
+        service.init();
+
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+                () -> service.search("SELECT ?label ?db WHERE {}", "x", "label", null, null, null, "FOO"));
+        assertEquals(400, e.getStatusCode().value());
+    }
+
+    @Test
+    void dbAwareSearchFiltersByRequestedGroupAndAllMeansNoFilter() {
+        CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
+        CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
+        String sparql = "SELECT ?label ?db WHERE {}";
+        String hash = io.github.philobiblon.backend.helper.QueryHasher.hash("label", sparql);
+        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), false, true);
+        cq.setGeneration(7L);
+        when(queryRepository.findById(hash)).thenReturn(Optional.of(cq));
+        when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any(), any())).thenReturn(List.of());
+
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository);
+        service.init();
+
+        service.search(sparql, "cronica", "label", null, null, null, "BETA");
+        verify(rowRepository).searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq((CacheLang) null), eq(CacheDb.BETA));
+
+        service.search(sparql, "cronica", "label", null, null, null, "ALL");
+        verify(rowRepository).searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq((CacheLang) null),
+                eq((CacheDb) null));
+    }
+
+    @Test
+    void legacyQueryIgnoresGroupParam() {
+        CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
+        CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
+        String sparql = "SELECT ?label WHERE {}";
+        String hash = io.github.philobiblon.backend.helper.QueryHasher.hash("label", sparql);
+        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), false, false);
+        cq.setGeneration(7L);
+        when(queryRepository.findById(hash)).thenReturn(Optional.of(cq));
+        when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any(), any())).thenReturn(List.of());
+
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository);
+        service.init();
+
+        service.search(sparql, "cronica", "label", null, null, null, "BETA");
+
+        verify(rowRepository).searchCandidates(eq(hash), eq(7L), any(), anyInt(), eq((CacheLang) null), eq((CacheDb) null));
     }
 
     // --- Registration-time validation ---
@@ -744,9 +889,10 @@ class SparqlCacheServiceImplTest {
         assertEquals("label,pbid", SparqlCacheServiceImpl.normalizeSearchVars(" label , pbid ,label,"));
         // Order is significant: it defines searchText composition order.
         assertEquals("pbid,label", SparqlCacheServiceImpl.normalizeSearchVars("pbid,label"));
-        // ?lang is the pivot discriminator, never a searchable value.
+        // ?lang and ?db are reserved pivot discriminators, never searchable values.
         assertEquals("label,pbid", SparqlCacheServiceImpl.normalizeSearchVars("label,lang,pbid"));
-        assertEquals("label", SparqlCacheServiceImpl.normalizeSearchVars("lang"));
+        assertEquals("label,pbid", SparqlCacheServiceImpl.normalizeSearchVars("label,db,pbid"));
+        assertEquals("label", SparqlCacheServiceImpl.normalizeSearchVars("lang,db"));
     }
 
     private static CachedQueryRepository mockQueryRepository() {

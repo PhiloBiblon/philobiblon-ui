@@ -27,6 +27,7 @@ public class CacheStatusResponse {
         public String lastError;
         public boolean loading;
         public boolean langAware;
+        public boolean dbAware;
         public long usageSinceRefresh;
         public long usageTotal;
     }
