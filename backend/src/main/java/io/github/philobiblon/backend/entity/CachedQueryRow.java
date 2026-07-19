@@ -75,6 +75,13 @@ public class CachedQueryRow {
     @Column(name = "search_text_pt", length = 10000)
     private String searchTextPt;
 
+    /**
+     * Database-group membership for db-aware queries: space-delimited padded tokens
+     * (e.g. " BETA BITECA "), matched with LIKE '% BETA %'. Null for non-db-aware rows.
+     */
+    @Column(name = "db_groups", length = 32)
+    private String dbGroups;
+
     /** JSON of the full value map (all result vars: literals as strings, resources as Q-numbers). */
     @Lob
     private String payload;
@@ -165,6 +172,14 @@ public class CachedQueryRow {
             case GL -> searchTextGl = value;
             case PT -> searchTextPt = value;
         }
+    }
+
+    public String getDbGroups() {
+        return dbGroups;
+    }
+
+    public void setDbGroups(String dbGroups) {
+        this.dbGroups = dbGroups;
     }
 
     public String getPayload() {

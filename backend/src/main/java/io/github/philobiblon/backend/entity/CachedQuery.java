@@ -74,11 +74,20 @@ public class CachedQuery {
     @ColumnDefault("false")
     private boolean langAware;
 
+    /**
+     * True when the query projects a {@code ?db} var: each row's database-group membership is
+     * collected into db_groups and searches can be filtered with the {@code group} param.
+     * False for legacy per-database queries, whose text bakes the group in.
+     */
+    @Column(name = "db_aware")
+    @ColumnDefault("false")
+    private boolean dbAware;
+
     public CachedQuery() {
     }
 
     public CachedQuery(String queryHash, String sparqlText, String searchVars, String labelHint, Instant createdAt,
-                       boolean langAware) {
+                       boolean langAware, boolean dbAware) {
         this.queryHash = queryHash;
         this.sparqlText = sparqlText;
         this.searchVars = searchVars;
@@ -87,6 +96,7 @@ public class CachedQuery {
         this.lastAccessedAt = createdAt;
         this.generation = 0L;
         this.langAware = langAware;
+        this.dbAware = dbAware;
     }
 
     public String getQueryHash() {
@@ -163,5 +173,9 @@ public class CachedQuery {
 
     public boolean isLangAware() {
         return langAware;
+    }
+
+    public boolean isDbAware() {
+        return dbAware;
     }
 }

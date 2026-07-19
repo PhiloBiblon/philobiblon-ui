@@ -29,8 +29,8 @@ public class SearchControllerImpl implements SearchController {
     }
 
     public SearchResponse searchV2(String sparqlQuery, String q, String searchVars, String hint, Integer limit,
-                                   String lang) {
-        return sparqlCacheService.search(sparqlQuery, q, searchVars, hint, limit, lang);
+                                   String lang, String group) {
+        return sparqlCacheService.search(sparqlQuery, q, searchVars, hint, limit, lang, group);
     }
 
     public QuickSearchResponse quickSearch(String q, String lang) {
