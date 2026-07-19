@@ -549,7 +549,7 @@ export default function createForm () {
                       FILTER regex(?copid_pbid, '(.*) copid ') .
                       ?copid_item wdt:P839 ?item .
                       ?item wdt:P476 ?pbid .
-                      FILTER regex(?table_pbid, '{{database}} {{table}} ') .
+                      FILTER regex(?pbid, '{{database}} {{table}} ') .
                       {{bitagapGroupFilter}}
                       ?copid_item wdt:P480 ?target_item .
                     }
