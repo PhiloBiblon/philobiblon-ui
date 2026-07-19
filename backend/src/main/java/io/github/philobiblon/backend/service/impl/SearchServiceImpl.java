@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Text normalization and ranking shared by the SPARQL cache search and the quick search:
- * a row matches when every query word appears in its (normalized) search text, ranked by
- * match count, word positions/order and text length.
+ * Text normalization and ranking for the SPARQL cache search: a row matches when every
+ * query word appears in its (normalized) search text, ranked by match count, word
+ * positions/order and text length.
  */
 public final class SearchServiceImpl {
 

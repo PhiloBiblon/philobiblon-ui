@@ -51,11 +51,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
@@ -99,8 +97,6 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     int maxResultLimit;
     @Value("${search.cache.loadConcurrency:2}")
     private int loadConcurrency;
-    @Value("${search.cache.syncTimeoutSeconds:60}")
-    private long syncTimeoutSeconds;
     @Value("${search.cache.evictAfterDays:30}")
     private int evictAfterDays;
     @Value("${search.cache.refresh.requireUsage:true}")
@@ -197,17 +193,6 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
                         effectiveLang(queryHash, requestedLang), effectiveDb(queryHash, requestedDb)));
     }
 
-    @Override
-    public List<Option> searchLegacy(String sparqlQuery, String q) {
-        String queryHash = QueryHasher.hash(DEFAULT_SEARCH_VARS, sparqlQuery);
-        long generation = ensureRegistered(queryHash, sparqlQuery, DEFAULT_SEARCH_VARS, null);
-        if (generation == 0L) {
-            generation = awaitLoad(queryHash);
-        }
-        touch(queryHash);
-        return searchRows(queryHash, generation, q, maxResultLimit, effectiveLang(queryHash, null), null);
-    }
-
     private static CacheLang parseLang(String lang) {
         try {
             return CacheLang.from(lang);
@@ -240,26 +225,6 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             return null;
         }
         return requested;
-    }
-
-    /** Blocks until the query is loaded (or the sync timeout expires); the load keeps running in background. */
-    private long awaitLoad(String queryHash) {
-        CompletableFuture<Boolean> future = scheduleLoad(queryHash);
-        try {
-            future.get(syncTimeoutSeconds, TimeUnit.SECONDS);
-        } catch (TimeoutException e) {
-            throw new RuntimeException("SPARQL query load timed out after " + syncTimeoutSeconds + " seconds");
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("SPARQL query load interrupted", e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException("SPARQL query execution failed", e.getCause());
-        }
-        long generation = generationByHash.getOrDefault(queryHash, 0L);
-        if (generation == 0L) {
-            throw new RuntimeException("SPARQL query execution failed");
-        }
-        return generation;
     }
 
     @Override

@@ -855,7 +855,7 @@ class SparqlCacheServiceImplTest {
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, null);
 
         assertThrows(ResponseStatusException.class,
-                () -> service.searchLegacy("SELECT ?label WHERE {", "cervantes"));
+                () -> service.search("SELECT ?label WHERE {", "cervantes", "label", null, null, null, null));
 
         verify(queryRepository, never()).save(any());
     }

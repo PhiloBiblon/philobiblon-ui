@@ -26,11 +26,10 @@ SPARQL_BASE_URL=https://database.factgrid.de/query \
 SPARQL_ENDPOINT=https://database.factgrid.de/sparql/bigdata/namespace/wdq/sparql \
 SPARQL_QUERY_PREFIX='' \
 SEARCH_DB_PATH=/tmp/<scratch>/searchcache \
-./mvnw -q spring-boot:run -Dspring-boot.run.arguments="--search.index.languages= --server.port=8087"
+./mvnw -q spring-boot:run -Dspring-boot.run.arguments="--server.port=8087"
 ```
 
 Gotchas:
-- `--search.index.languages=` (empty) disables the QuickSearch startup load — otherwise boot fires 5 heavy SPARQL loads (one per language) against the real endpoint.
 - Startup takes ~20–40 s; poll `GET /api/search/cache/status` until 200.
 - `SEARCH_DB_PATH` is the H2 file — point it at scratch space to start cold, reuse it to test persistence across restarts.
 
