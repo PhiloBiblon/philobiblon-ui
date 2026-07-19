@@ -28,21 +28,18 @@ curl -s $API_BASE_URL/api/search/cache/status | jq '{totalQueries, totalRows, lo
 ## Default scope (deliberately conservative)
 
 By default the generator emits the global-search query plus every autocomplete field
-per table — the combination every user hits first. Queries are language- and
-database-free: each one fetches all five UI languages and all three bibliographies at
-once; the backend stores per-language columns plus per-row group membership, and the
-`lang`/`group` request params pick what is matched. So neither dimension needs
-seeding — one entry per field serves every locale and every database selection. The
-only extra texts are the BITAGAP ORIG/CARTAS subgroup variants (`--bitagap-groups`),
-which stay distinct; they are populated lazily by real usage and evicted after
-`search.cache.evictAfterDays` (30 days) without accesses.
+per table — one entry per field, full stop. Query texts carry no dimension: each one
+fetches all five UI languages, all three bibliographies and the BITAGAP subgroup
+membership at once; the backend stores per-language columns plus per-row memberships,
+and the `lang`/`group`/`bitagapGroup` request params pick what is matched. Nothing
+else needs seeding — the single entry serves every locale, database and subgroup
+selection.
 
 ## Options
 
 | Flag | Meaning | Default |
 |---|---|---|
 | `--tables bioid,geoid` | item tables | all 8 |
-| `--bitagap-groups ALL,ORIG` | BITAGAP subgroup values (non-ALL emits BITAGAP-baked texts) | `ALL` |
 | `--only-global` / `--no-global` | only/skip the global-search queries | include |
 | `--out queries.json` | write to file instead of stdout | stdout |
 
