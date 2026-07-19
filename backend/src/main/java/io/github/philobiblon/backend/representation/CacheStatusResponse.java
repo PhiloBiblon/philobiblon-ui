@@ -28,6 +28,7 @@ public class CacheStatusResponse {
         public boolean loading;
         public boolean langAware;
         public boolean dbAware;
+        public boolean bgAware;
         public long usageSinceRefresh;
         public long usageTotal;
     }

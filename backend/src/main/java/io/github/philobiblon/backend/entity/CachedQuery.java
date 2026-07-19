@@ -83,11 +83,20 @@ public class CachedQuery {
     @ColumnDefault("false")
     private boolean dbAware;
 
+    /**
+     * True when the query projects a {@code ?bg} var: each row's BITAGAP subgroup membership
+     * (ORIG/CARTAS) is collected into bitagap_groups and searches can be filtered with the
+     * {@code bitagapGroup} param.
+     */
+    @Column(name = "bg_aware")
+    @ColumnDefault("false")
+    private boolean bgAware;
+
     public CachedQuery() {
     }
 
     public CachedQuery(String queryHash, String sparqlText, String searchVars, String labelHint, Instant createdAt,
-                       boolean langAware, boolean dbAware) {
+                       boolean langAware, boolean dbAware, boolean bgAware) {
         this.queryHash = queryHash;
         this.sparqlText = sparqlText;
         this.searchVars = searchVars;
@@ -97,6 +106,7 @@ public class CachedQuery {
         this.generation = 0L;
         this.langAware = langAware;
         this.dbAware = dbAware;
+        this.bgAware = bgAware;
     }
 
     public String getQueryHash() {
@@ -177,5 +187,9 @@ public class CachedQuery {
 
     public boolean isDbAware() {
         return dbAware;
+    }
+
+    public boolean isBgAware() {
+        return bgAware;
     }
 }

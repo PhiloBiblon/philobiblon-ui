@@ -18,8 +18,8 @@ public class SearchControllerImpl implements SearchController {
     }
 
     public SearchResponse searchV2(String sparqlQuery, String q, String searchVars, String hint, Integer limit,
-                                   String lang, String group) {
-        return sparqlCacheService.search(sparqlQuery, q, searchVars, hint, limit, lang, group);
+                                   String lang, String group, String bitagapGroup) {
+        return sparqlCacheService.search(sparqlQuery, q, searchVars, hint, limit, lang, group, bitagapGroup);
     }
 
     public CacheStatusResponse cacheStatus() {

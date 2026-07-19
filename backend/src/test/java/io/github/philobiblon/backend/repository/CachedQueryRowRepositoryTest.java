@@ -1,6 +1,7 @@
 package io.github.philobiblon.backend.repository;
 
 import io.github.philobiblon.backend.entity.CachedQueryRow;
+import io.github.philobiblon.backend.helper.CacheBitagapGroup;
 import io.github.philobiblon.backend.helper.CacheDb;
 import io.github.philobiblon.backend.helper.CacheLang;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +40,7 @@ class CachedQueryRowRepositoryTest {
 
     @Test
     void matchesReorderedMultiWordTerms() {
-        List<CachedQueryRow> rows = repository.searchCandidates(HASH, GENERATION, List.of("cervantes", "miguel"), 10, null, null);
+        List<CachedQueryRow> rows = repository.searchCandidates(HASH, GENERATION, List.of("cervantes", "miguel"), 10, null, null, null);
 
         assertEquals(1, rows.size());
         assertEquals("Miguel de Cervantes", rows.get(0).getLabel());
@@ -47,7 +48,7 @@ class CachedQueryRowRepositoryTest {
 
     @Test
     void isolatesByQueryHashAndGeneration() {
-        List<CachedQueryRow> rows = repository.searchCandidates(HASH, GENERATION, List.of("cervantes"), 10, null, null);
+        List<CachedQueryRow> rows = repository.searchCandidates(HASH, GENERATION, List.of("cervantes"), 10, null, null, null);
 
         assertEquals(2, rows.size());
         assertTrue(rows.stream().noneMatch(row -> row.getLabel().startsWith("Stale")));
@@ -57,18 +58,18 @@ class CachedQueryRowRepositoryTest {
     @Test
     void treatsLikeWildcardsAsLiterals() {
         // Escaped '%' must only match a literal percent sign, not act as a wildcard.
-        List<CachedQueryRow> rows = repository.searchCandidates(HASH, GENERATION, List.of("100\\%"), 10, null, null);
+        List<CachedQueryRow> rows = repository.searchCandidates(HASH, GENERATION, List.of("100\\%"), 10, null, null, null);
         assertEquals(1, rows.size());
         assertEquals("Cervantes 100%", rows.get(0).getLabel());
 
         // Escaped '_' must not match an arbitrary character.
-        assertEquals(0, repository.searchCandidates(HASH, GENERATION, List.of("especiaX"), 10, null, null).size());
-        assertEquals(1, repository.searchCandidates(HASH, GENERATION, List.of("especial\\_"), 10, null, null).size());
+        assertEquals(0, repository.searchCandidates(HASH, GENERATION, List.of("especiaX"), 10, null, null, null).size());
+        assertEquals(1, repository.searchCandidates(HASH, GENERATION, List.of("especial\\_"), 10, null, null, null).size());
     }
 
     @Test
     void ordersByPositionOfFirstWord() {
-        List<CachedQueryRow> rows = repository.searchCandidates(HASH, GENERATION, List.of("cervantes"), 10, null, null);
+        List<CachedQueryRow> rows = repository.searchCandidates(HASH, GENERATION, List.of("cervantes"), 10, null, null, null);
 
         // "Cervantes 100%" has the word at position 1; "Miguel de Cervantes" further in.
         assertEquals("Cervantes 100%", rows.get(0).getLabel());
@@ -77,7 +78,7 @@ class CachedQueryRowRepositoryTest {
 
     @Test
     void respectsCandidateLimit() {
-        assertEquals(1, repository.searchCandidates(HASH, GENERATION, List.of("cervantes"), 1, null, null).size());
+        assertEquals(1, repository.searchCandidates(HASH, GENERATION, List.of("cervantes"), 1, null, null, null).size());
     }
 
     @Test
@@ -97,13 +98,13 @@ class CachedQueryRowRepositoryTest {
         ));
 
         List<CachedQueryRow> caRows = repository.searchCandidates(langHash, GENERATION, List.of("autor"), 10,
-                CacheLang.CA, null);
+                CacheLang.CA, null, null);
         assertEquals(1, caRows.size());
         assertEquals("Cervantes (autor)", caRows.get(0).getLabel(CacheLang.CA));
 
         // "author" only exists in the English column: the Catalan search must not see it.
-        assertEquals(0, repository.searchCandidates(langHash, GENERATION, List.of("author"), 10, CacheLang.CA, null).size());
-        assertEquals(1, repository.searchCandidates(langHash, GENERATION, List.of("author"), 10, CacheLang.EN, null).size());
+        assertEquals(0, repository.searchCandidates(langHash, GENERATION, List.of("author"), 10, CacheLang.CA, null, null).size());
+        assertEquals(1, repository.searchCandidates(langHash, GENERATION, List.of("author"), 10, CacheLang.EN, null, null).size());
     }
 
     @Test
@@ -115,15 +116,35 @@ class CachedQueryRowRepositoryTest {
         shared.setDbGroups(" BETA BITECA ");
         repository.saveAll(List.of(betaOnly, shared));
 
-        assertEquals(2, repository.searchCandidates(dbHash, GENERATION, List.of("cronica"), 10, null, null).size());
-        assertEquals(2, repository.searchCandidates(dbHash, GENERATION, List.of("cronica"), 10, null, CacheDb.BETA).size());
+        assertEquals(2, repository.searchCandidates(dbHash, GENERATION, List.of("cronica"), 10, null, null, null).size());
+        assertEquals(2, repository.searchCandidates(dbHash, GENERATION, List.of("cronica"), 10, null, CacheDb.BETA, null).size());
 
         List<CachedQueryRow> biteca =
-                repository.searchCandidates(dbHash, GENERATION, List.of("cronica"), 10, null, CacheDb.BITECA);
+                repository.searchCandidates(dbHash, GENERATION, List.of("cronica"), 10, null, CacheDb.BITECA, null);
         assertEquals(1, biteca.size());
         assertEquals("Crónica compartida", biteca.get(0).getLabel());
 
-        assertEquals(0, repository.searchCandidates(dbHash, GENERATION, List.of("cronica"), 10, null, CacheDb.BITAGAP).size());
+        assertEquals(0, repository.searchCandidates(dbHash, GENERATION, List.of("cronica"), 10, null, CacheDb.BITAGAP, null).size());
+    }
+
+    @Test
+    void bgAwareSearchFiltersBySubgroupMembership() {
+        String bgHash = "bghash";
+        CachedQueryRow origOnly = new CachedQueryRow(bgHash, GENERATION, "Crónica Geral", "cronica geral", "{}");
+        origOnly.setBitagapGroups(" ORIG ");
+        CachedQueryRow both = new CachedQueryRow(bgHash, GENERATION, "Crónica mixta", "cronica mixta", "{}");
+        both.setBitagapGroups(" ORIG CARTAS ");
+        CachedQueryRow noMembership = new CachedQueryRow(bgHash, GENERATION, "Crónica sense tema", "cronica sense tema", "{}");
+        repository.saveAll(List.of(origOnly, both, noMembership));
+
+        assertEquals(3, repository.searchCandidates(bgHash, GENERATION, List.of("cronica"), 10, null, null, null).size());
+        assertEquals(2, repository.searchCandidates(bgHash, GENERATION, List.of("cronica"), 10, null, null,
+                CacheBitagapGroup.ORIG).size());
+
+        List<CachedQueryRow> cartas = repository.searchCandidates(bgHash, GENERATION, List.of("cronica"), 10, null, null,
+                CacheBitagapGroup.CARTAS);
+        assertEquals(1, cartas.size());
+        assertEquals("Crónica mixta", cartas.get(0).getLabel());
     }
 
     private static CachedQueryRow langAwareRow(String hash, String labelEn, String searchEn, String labelCa,

@@ -21,7 +21,7 @@ class CachedQueryRepositoryTest {
     @BeforeEach
     void setUp() {
         repository.deleteAll();
-        repository.save(new CachedQuery(HASH, "SELECT ?label WHERE {}", "label", null, Instant.now(), false, false));
+        repository.save(new CachedQuery(HASH, "SELECT ?label WHERE {}", "label", null, Instant.now(), false, false, false));
     }
 
     @Test

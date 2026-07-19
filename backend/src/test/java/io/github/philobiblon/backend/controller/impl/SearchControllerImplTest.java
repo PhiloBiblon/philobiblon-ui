@@ -45,7 +45,7 @@ class SearchControllerImplTest {
 
     @Test
     void v2RequestReturnsEnvelopeWithIndexLoadingFlag() throws Exception {
-        when(sparqlCacheService.search(anyString(), anyString(), eq("label,pbid"), eq("bioid.author"), any(), any(), any()))
+        when(sparqlCacheService.search(anyString(), anyString(), eq("label,pbid"), eq("bioid.author"), any(), any(), any(), any()))
                 .thenReturn(new SearchResponse(true, List.of()));
 
         mockMvc.perform(post("/api/search")
@@ -62,7 +62,7 @@ class SearchControllerImplTest {
 
     @Test
     void v2RequestPassesLangThrough() throws Exception {
-        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), eq("ca"), any()))
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), eq("ca"), any(), any()))
                 .thenReturn(new SearchResponse(false, List.of()));
 
         mockMvc.perform(post("/api/search")
@@ -77,7 +77,7 @@ class SearchControllerImplTest {
 
     @Test
     void v2RequestPassesGroupThrough() throws Exception {
-        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any(), eq("BETA")))
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any(), eq("BETA"), any()))
                 .thenReturn(new SearchResponse(false, List.of()));
 
         mockMvc.perform(post("/api/search")
@@ -91,8 +91,23 @@ class SearchControllerImplTest {
     }
 
     @Test
+    void v2RequestPassesBitagapGroupThrough() throws Exception {
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any(), any(), eq("ORIG")))
+                .thenReturn(new SearchResponse(false, List.of()));
+
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("v", "2")
+                        .param("sparqlQuery", "SELECT ?label ?bg WHERE {}")
+                        .param("q", "cartas")
+                        .param("bitagapGroup", "ORIG"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.indexLoading").value(false));
+    }
+
+    @Test
     void v2WarmRequestReturnsResultsInsideEnvelope() throws Exception {
-        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any(), any()))
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(new SearchResponse(false, List.of(new Option("Barcelona", Map.of("item", "Q42")))));
 
         mockMvc.perform(post("/api/search")

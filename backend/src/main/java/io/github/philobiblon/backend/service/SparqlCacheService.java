@@ -13,13 +13,15 @@ public interface SparqlCacheService {
     /**
      * Async contract: never blocks on the SPARQL endpoint; a cold query returns indexLoading=true.
      *
-     * @param lang  UI language whose column lang-aware queries match and display (default en);
-     *              ignored for legacy per-language queries
-     * @param group database group (BETA/BITECA/BITAGAP) filtering db-aware queries' rows by
-     *              membership; absent or ALL means no filter; ignored for legacy queries
+     * @param lang         UI language whose column lang-aware queries match and display (default
+     *                     en); ignored for legacy per-language queries
+     * @param group        database group (BETA/BITECA/BITAGAP) filtering db-aware queries' rows
+     *                     by membership; absent or ALL means no filter; ignored for legacy queries
+     * @param bitagapGroup BITAGAP subgroup (ORIG/CARTAS) filtering bg-aware queries' rows by
+     *                     membership; absent or ALL means no filter; ignored otherwise
      */
     SearchResponse search(String sparqlQuery, String q, String searchVars, String hint, Integer limit, String lang,
-                          String group);
+                          String group, String bitagapGroup);
 
     /** Re-executes every registered query (nightly cron) after evicting unused ones. */
     void refreshAll();

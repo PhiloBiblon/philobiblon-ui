@@ -16,7 +16,8 @@ public interface SearchController {
                             @RequestParam(required = false) String hint,
                             @RequestParam(required = false) Integer limit,
                             @RequestParam(required = false) String lang,
-                            @RequestParam(required = false) String group);
+                            @RequestParam(required = false) String group,
+                            @RequestParam(required = false) String bitagapGroup);
 
     @GetMapping("/cache/status")
     CacheStatusResponse cacheStatus();

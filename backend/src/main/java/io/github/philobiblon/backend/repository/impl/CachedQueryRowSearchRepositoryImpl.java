@@ -1,6 +1,7 @@
 package io.github.philobiblon.backend.repository.impl;
 
 import io.github.philobiblon.backend.entity.CachedQueryRow;
+import io.github.philobiblon.backend.helper.CacheBitagapGroup;
 import io.github.philobiblon.backend.helper.CacheDb;
 import io.github.philobiblon.backend.helper.CacheLang;
 import io.github.philobiblon.backend.repository.CachedQueryRowSearchRepository;
@@ -17,10 +18,10 @@ public class CachedQueryRowSearchRepositoryImpl implements CachedQueryRowSearchR
 
     @Override
     public List<CachedQueryRow> searchCandidates(String queryHash, long generation, List<String> escapedWords,
-                                                 int limit, CacheLang lang, CacheDb db) {
+                                                 int limit, CacheLang lang, CacheDb db, CacheBitagapGroup bg) {
         // Attribute names come exclusively from the CacheLang enum (or the legacy constants),
-        // never from client input, so interpolating them into the JPQL is safe. The db filter
-        // value is likewise a whitelisted enum code bound as a parameter.
+        // never from client input, so interpolating them into the JPQL is safe. The membership
+        // filter values are likewise whitelisted enum codes bound as parameters.
         String searchTextAttr = lang == null ? "searchText" : lang.getSearchTextAttribute();
         String labelAttr = lang == null ? "label" : lang.getLabelAttribute();
 
@@ -28,6 +29,9 @@ public class CachedQueryRowSearchRepositoryImpl implements CachedQueryRowSearchR
                 "SELECT r FROM CachedQueryRow r WHERE r.queryHash = :queryHash AND r.generation = :generation");
         if (db != null) {
             jpql.append(" AND r.dbGroups LIKE :dbToken");
+        }
+        if (bg != null) {
+            jpql.append(" AND r.bitagapGroups LIKE :bgToken");
         }
         for (int i = 0; i < escapedWords.size(); i++) {
             jpql.append(" AND r.").append(searchTextAttr)
@@ -43,6 +47,9 @@ public class CachedQueryRowSearchRepositoryImpl implements CachedQueryRowSearchR
                 .setMaxResults(limit);
         if (db != null) {
             query.setParameter("dbToken", "% " + db.getCode() + " %");
+        }
+        if (bg != null) {
+            query.setParameter("bgToken", "% " + bg.getCode() + " %");
         }
         for (int i = 0; i < escapedWords.size(); i++) {
             query.setParameter("w" + i, escapedWords.get(i));

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.philobiblon.backend.entity.CachedQuery;
 import io.github.philobiblon.backend.entity.CachedQueryRow;
+import io.github.philobiblon.backend.helper.CacheBitagapGroup;
 import io.github.philobiblon.backend.helper.CacheDb;
 import io.github.philobiblon.backend.helper.CacheLang;
 import io.github.philobiblon.backend.helper.QueryHasher;
@@ -70,6 +71,11 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
      * collected per row into db_groups instead of being treated as plain row values.
      */
     private static final String DB_VAR = "db";
+    /**
+     * BITAGAP subgroup membership var of a bg-aware query: its values (ORIG/CARTAS, derived
+     * from related subject labels) are collected per row into bitagap_groups.
+     */
+    private static final String BG_VAR = "bg";
     private static final String ALIASES_VAR = "aliases";
     private static final String DESC_VAR = "desc";
     /**
@@ -115,7 +121,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /** Pivot capabilities of a registered query, mirrored from cached_query for the warm path. */
-    private record QueryTraits(boolean langAware, boolean dbAware) {
+    private record QueryTraits(boolean langAware, boolean dbAware, boolean bgAware) {
     }
 
     private final Map<String, Long> generationByHash = new ConcurrentHashMap<>();
@@ -145,7 +151,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         });
         for (CachedQuery cq : queryRepository.findAll()) {
             generationByHash.put(cq.getQueryHash(), cq.getGeneration());
-            traitsByHash.put(cq.getQueryHash(), new QueryTraits(cq.isLangAware(), cq.isDbAware()));
+            traitsByHash.put(cq.getQueryHash(), new QueryTraits(cq.isLangAware(), cq.isDbAware(), cq.isBgAware()));
         }
         logger.info("SPARQL cache initialized with {} registered queries", generationByHash.size());
     }
@@ -177,9 +183,10 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
 
     @Override
     public SearchResponse search(String sparqlQuery, String q, String searchVars, String hint, Integer limit,
-                                 String lang, String group) {
+                                 String lang, String group, String bitagapGroup) {
         CacheLang requestedLang = parseLang(lang);
         CacheDb requestedDb = parseDb(group);
+        CacheBitagapGroup requestedBg = parseBg(bitagapGroup);
         String vars = normalizeSearchVars(searchVars);
         String queryHash = QueryHasher.hash(vars, sparqlQuery);
         long generation = ensureRegistered(queryHash, sparqlQuery, vars, hint);
@@ -190,7 +197,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         touch(queryHash);
         return new SearchResponse(false,
                 searchRows(queryHash, generation, q, effectiveLimit(limit),
-                        effectiveLang(queryHash, requestedLang), effectiveDb(queryHash, requestedDb)));
+                        effectiveLang(queryHash, requestedLang), effectiveDb(queryHash, requestedDb),
+                        effectiveBg(queryHash, requestedBg)));
     }
 
     private static CacheLang parseLang(String lang) {
@@ -209,6 +217,14 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         }
     }
 
+    private static CacheBitagapGroup parseBg(String bitagapGroup) {
+        try {
+            return CacheBitagapGroup.from(bitagapGroup);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
     /** Lang-aware queries always search a language column (default en); legacy queries ignore lang. */
     private CacheLang effectiveLang(String queryHash, CacheLang requested) {
         QueryTraits traits = traitsByHash.get(queryHash);
@@ -222,6 +238,15 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private CacheDb effectiveDb(String queryHash, CacheDb requested) {
         QueryTraits traits = traitsByHash.get(queryHash);
         if (traits == null || !traits.dbAware()) {
+            return null;
+        }
+        return requested;
+    }
+
+    /** Bg-aware queries filter rows by BITAGAP subgroup membership; ignored otherwise. */
+    private CacheBitagapGroup effectiveBg(String queryHash, CacheBitagapGroup requested) {
+        QueryTraits traits = traitsByHash.get(queryHash);
+        if (traits == null || !traits.bgAware()) {
             return null;
         }
         return requested;
@@ -302,6 +327,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             status.loading = inFlight.containsKey(cq.getQueryHash());
             status.langAware = cq.isLangAware();
             status.dbAware = cq.isDbAware();
+            status.bgAware = cq.isBgAware();
             status.usageSinceRefresh = cq.getUsageSinceRefresh();
             status.usageTotal = cq.getUsageTotal();
             response.queries.add(status);
@@ -340,7 +366,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         Optional<CachedQuery> existing = queryRepository.findById(queryHash);
         if (existing.isPresent()) {
             generationByHash.put(queryHash, existing.get().getGeneration());
-            traitsByHash.put(queryHash, new QueryTraits(existing.get().isLangAware(), existing.get().isDbAware()));
+            traitsByHash.put(queryHash, new QueryTraits(existing.get().isLangAware(), existing.get().isDbAware(),
+                    existing.get().isBgAware()));
             return existing.get().getGeneration();
         }
         // Parse errors are not transient: reject before persisting so the registry never
@@ -348,12 +375,13 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         QueryTraits traits;
         try {
             List<String> resultVars = QueryFactory.create(sparqlQuery).getResultVars();
-            traits = new QueryTraits(resultVars.contains(LANG_VAR), resultVars.contains(DB_VAR));
+            traits = new QueryTraits(resultVars.contains(LANG_VAR), resultVars.contains(DB_VAR),
+                    resultVars.contains(BG_VAR));
         } catch (QueryException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid SPARQL query: " + e.getMessage(), e);
         }
         queryRepository.save(new CachedQuery(queryHash, sparqlQuery, searchVars, truncate(hint, 255), Instant.now(),
-                traits.langAware(), traits.dbAware()));
+                traits.langAware(), traits.dbAware(), traits.bgAware()));
         generationByHash.put(queryHash, 0L);
         traitsByHash.put(queryHash, traits);
         logger.info("SPARQL cache: registered new query {} (hint: {})", queryHash, hint);
@@ -436,7 +464,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     }
 
     List<CachedQueryRow> buildRows(ResultSet resultSet, List<String> searchVars, String queryHash, long generation) {
-        if (resultSet.getResultVars().contains(LANG_VAR) || resultSet.getResultVars().contains(DB_VAR)) {
+        List<String> vars = resultSet.getResultVars();
+        if (vars.contains(LANG_VAR) || vars.contains(DB_VAR) || vars.contains(BG_VAR)) {
             return buildPivotedRows(resultSet, searchVars, queryHash, generation);
         }
         List<String> resultVars = resultSet.getResultVars();
@@ -473,19 +502,20 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     }
 
     /**
-     * Pivots a result set projecting the reserved {@code ?lang} and/or {@code ?db} vars into one
-     * row per grouping key: the values of every projected var except {@code ?lang}, {@code ?db}
-     * and (when lang-aware) the per-lang vars. Lang-aware groups get per-language label/searchText
-     * columns with fallback fill (en, else first non-empty language, else aliases, else pbid);
-     * db-only groups get legacy-shaped single columns. Collected {@code ?db} values become the
-     * row's db_groups membership. Neither {@code ?lang} nor {@code ?db} enters the payload.
+     * Pivots a result set projecting any of the reserved {@code ?lang}/{@code ?db}/{@code ?bg}
+     * vars into one row per grouping key: the values of every projected var except the reserved
+     * ones and (when lang-aware) the per-lang vars. Lang-aware groups get per-language
+     * label/searchText columns with fallback fill (en, else first non-empty language, else
+     * aliases, else pbid); groups without {@code ?lang} get legacy-shaped single columns.
+     * Collected {@code ?db}/{@code ?bg} values become the row's db_groups/bitagap_groups
+     * membership. Reserved vars never enter the payload.
      */
     private List<CachedQueryRow> buildPivotedRows(ResultSet resultSet, List<String> searchVars, String queryHash,
                                                   long generation) {
         List<String> resultVars = resultSet.getResultVars();
         boolean langAware = resultVars.contains(LANG_VAR);
         List<String> neutralVars = resultVars.stream()
-                .filter(var -> !LANG_VAR.equals(var) && !DB_VAR.equals(var)
+                .filter(var -> !LANG_VAR.equals(var) && !DB_VAR.equals(var) && !BG_VAR.equals(var)
                         && !(langAware && PER_LANG_VARS.contains(var)))
                 .toList();
         Map<String, PivotGroup> groups = new LinkedHashMap<>();
@@ -505,6 +535,10 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             CacheDb db = solutionDb(values.get(DB_VAR));
             if (db != null) {
                 group.dbs.add(db);
+            }
+            CacheBitagapGroup bg = solutionBg(values.get(BG_VAR));
+            if (bg != null) {
+                group.bgs.add(bg);
             }
             if (langAware) {
                 String langTag = values.get(LANG_VAR);
@@ -532,7 +566,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
                     ? buildLangAwareRow(group, searchVars, resultVars, queryHash, generation)
                     : buildDbOnlyRow(group, searchVars, queryHash, generation);
             if (row != null) {
-                row.setDbGroups(dbGroupsToken(group.dbs));
+                row.setDbGroups(membershipToken(group.dbs, CacheDb::getCode));
+                row.setBitagapGroups(membershipToken(group.bgs, CacheBitagapGroup::getCode));
                 rows.add(row);
             }
         }
@@ -674,18 +709,29 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         }
     }
 
-    /** Space-delimited padded membership tokens (" BETA BITECA "), matched with LIKE '% BETA %'. */
-    private static String dbGroupsToken(Set<CacheDb> dbs) {
-        if (dbs.isEmpty()) {
+    /** BITAGAP subgroup of one solution; null (row kept, no membership added) when unbound or unknown. */
+    private CacheBitagapGroup solutionBg(String bgToken) {
+        try {
+            return CacheBitagapGroup.from(bgToken);
+        } catch (IllegalArgumentException e) {
+            logger.debug("SPARQL cache: ignoring membership with unexpected subgroup token {}", bgToken);
             return null;
         }
-        return dbs.stream().map(CacheDb::getCode).collect(Collectors.joining(" ", " ", " "));
     }
 
-    /** Accumulator for one pivoted row: neutral var values, db membership, per-language collected values. */
+    /** Space-delimited padded membership tokens (" BETA BITECA "), matched with LIKE '% BETA %'. */
+    private static <T> String membershipToken(Set<T> members, java.util.function.Function<T, String> code) {
+        if (members.isEmpty()) {
+            return null;
+        }
+        return members.stream().map(code).collect(Collectors.joining(" ", " ", " "));
+    }
+
+    /** Accumulator for one pivoted row: neutral var values, memberships, per-language collected values. */
     private static final class PivotGroup {
         final Map<String, String> neutral = new LinkedHashMap<>();
         final LinkedHashSet<CacheDb> dbs = new LinkedHashSet<>();
+        final LinkedHashSet<CacheBitagapGroup> bgs = new LinkedHashSet<>();
         final Map<CacheLang, Map<String, LinkedHashSet<String>>> perLang = new EnumMap<>(CacheLang.class);
         /** Values of per-lang vars whose solutions carry no language tag (plain literals). */
         final Map<String, LinkedHashSet<String>> untaggedPerLang = new LinkedHashMap<>();
@@ -721,7 +767,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     }
 
     private List<Option> searchRows(String queryHash, long generation, String q, int resultLimit, CacheLang lang,
-                                    CacheDb db) {
+                                    CacheDb db, CacheBitagapGroup bg) {
         String term = SearchServiceImpl.normalize(q);
         if (term == null || term.isBlank()) {
             return List.of();
@@ -735,7 +781,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         }
         List<String> escapedWords = words.stream().map(SparqlCacheServiceImpl::escapeLike).toList();
         List<CachedQueryRow> candidates =
-                rowRepository.searchCandidates(queryHash, generation, escapedWords, candidateLimit, lang, db);
+                rowRepository.searchCandidates(queryHash, generation, escapedWords, candidateLimit, lang, db, bg);
 
         List<Option> options = new ArrayList<>();
         candidates.stream()
@@ -861,8 +907,9 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         Set<String> vars = new LinkedHashSet<>();
         for (String var : searchVars.split(",")) {
             String trimmed = var.trim();
-            // ?lang and ?db are reserved pivot discriminators, never searchable values.
-            if (!trimmed.isEmpty() && !LANG_VAR.equals(trimmed) && !DB_VAR.equals(trimmed)) {
+            // ?lang, ?db and ?bg are reserved pivot discriminators, never searchable values.
+            if (!trimmed.isEmpty() && !LANG_VAR.equals(trimmed) && !DB_VAR.equals(trimmed)
+                    && !BG_VAR.equals(trimmed)) {
                 vars.add(trimmed);
             }
         }

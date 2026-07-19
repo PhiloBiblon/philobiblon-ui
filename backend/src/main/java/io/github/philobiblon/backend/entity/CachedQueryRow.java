@@ -82,6 +82,14 @@ public class CachedQueryRow {
     @Column(name = "db_groups", length = 32)
     private String dbGroups;
 
+    /**
+     * BITAGAP subgroup membership for bg-aware queries: space-delimited padded tokens
+     * (e.g. " ORIG CARTAS "), matched with LIKE '% ORIG %'. Null when the row has no
+     * membership (no related BITAGAP subject).
+     */
+    @Column(name = "bitagap_groups", length = 16)
+    private String bitagapGroups;
+
     /** JSON of the full value map (all result vars: literals as strings, resources as Q-numbers). */
     @Lob
     private String payload;
@@ -180,6 +188,14 @@ public class CachedQueryRow {
 
     public void setDbGroups(String dbGroups) {
         this.dbGroups = dbGroups;
+    }
+
+    public String getBitagapGroups() {
+        return bitagapGroups;
+    }
+
+    public void setBitagapGroups(String bitagapGroups) {
+        this.bitagapGroups = bitagapGroups;
     }
 
     public String getPayload() {
