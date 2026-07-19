@@ -123,13 +123,11 @@ export function generateBitagapGroupInstitutionFilters () {
 }
 
 export function generateBitagapGroupWorkFilters () {
-  return `
-        OPTIONAL {
-          ?item wdt:P243 ?subjectItem .
-          ?subjectItem rdfs:label ?labelSubjectItem .
-          ${bitagapMembershipBind('labelSubjectItem')}
-        }
-        `
+  // Unlike the old constraining filter, membership is restricted to BITAGAP subid
+  // subjects (like every other table): ORIG/CARTAS only ever means BITAGAP topics,
+  // and the unconstrained join over every P243 subject label is prohibitively
+  // expensive on the full texid table.
+  return generateBitagapGroupSubjectTopicFilters()
 }
 
 export function generateBitagapGroupPersonFilters () {
