@@ -67,10 +67,28 @@ BETA"), so one cached row can legitimately belong to several groups at once.
 
 The v=2 request carries an optional `group` param (`BETA`/`BITECA`/`BITAGAP`; absent
 or `ALL` means no filter; 400 on unknown values): it ANDs a membership `LIKE` over
-`db_groups` into the candidate query. It is ignored for non-db-aware queries. The
-BITAGAP ORIG/CARTAS subgroup selections still produce distinct, BITAGAP-baked query
-texts (their extra graph patterns only make sense within BITAGAP) and register as
-their own cache entries.
+`db_groups` into the candidate query. It is ignored for non-db-aware queries.
+
+### One query for all BITAGAP subgroups
+
+The BITAGAP thematic subgroups (ORIG/CARTAS, i.e. whether a related BITAGAP subject
+label contains the `[Cartas de]` marker) follow the same membership model. Every
+query computes each source record's membership in a self-contained OPTIONAL that
+binds a reserved `?bg` var — per table, from the labels of the related BITAGAP subid
+topics, of the subjects of related BITAGAP texids, or of the item's own labels (subid
+and the subject autocompletes). An item reachable via both kinds of subjects belongs
+to both; an item with no related BITAGAP subject belongs to neither and is excluded
+whenever a subgroup filter is requested (matching the old constraining-join
+semantics). Collected values land in the row's `bitagap_groups` column and the
+optional `bitagapGroup` param (`ORIG`/`CARTAS`; absent or `ALL` → no filter; 400 on
+unknown values; ignored for non-bg-aware queries) filters at search time. libid has
+no subgroup semantics and its templates carry no `?bg`.
+
+This membership OPTIONAL runs on every load and nightly refresh of every affected
+query — the cost of serving subgroup selections instantly from the same single entry
+per field. It also structurally fixed a long-standing bug: the old subject-autocomplete
+subgroup filter referenced `?label` inside a subquery where it is never bound, so any
+ORIG/CARTAS selection returned zero subject options.
 
 ### Request flow (v=2 contract)
 
