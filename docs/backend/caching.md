@@ -87,9 +87,6 @@ their own cache entries.
    rebuild `Option`s from the JSON payload with the per-language keys resolved for
    the requested language.
 
-The param-less legacy contract (bare array, blocks on a cold query) exists for
-already-deployed SPAs and is scheduled for removal.
-
 ### Loading, refresh and eviction
 
 - **Loads** execute with a forced HTTP/1.1 client, a 15-minute timeout and exponential
@@ -119,7 +116,6 @@ search.cache.evictAfterDays=30      # drop queries unused for N days
 search.cache.candidateLimit=1000    # SQL LIKE candidate window before re-ranking
 search.cache.maxResultLimit=300     # server-side cap for returned options
 search.cache.loadConcurrency=2      # background loader threads
-search.cache.syncTimeoutSeconds=60  # legacy contract: max blocking wait on a cold query
 search.cache.refresh.requireUsage=true  # nightly cron only reloads queries used since their last refresh
 search.index.refreshCron=0 0 3 * * *
 search.index.retry.maxAttempts=5
@@ -158,8 +154,11 @@ queries used by the result grids. It does not apply to `/api/search`.
 Until 2026 the backend had two mechanisms: an in-memory Caffeine `LoadingCache`
 (blob per query, lost on restart, no retries) behind `/api/search` +
 `/api/sparql/query`, and a separate DB-backed language index behind
-`/api/search/quick`. They were unified into the model above; `/api/search/quick`
-remains temporarily as an alias for cached SPAs.
+`/api/search/quick`. They were unified into the model above; the `/api/search/quick`
+alias and the param-less legacy `/api/search` contract were later removed, leaving
+`v=2` as the only contract. The orphaned `SEARCH_ITEM` table from the old language
+index is not dropped by `ddl-auto=update`; it is harmless to leave, or can be removed
+manually (`DROP TABLE SEARCH_ITEM` via the dev H2 console).
 
 Originally each UI language produced its own query text and therefore its own cache
 entry (×5 queries, rows and nightly refresh work). Queries were later made

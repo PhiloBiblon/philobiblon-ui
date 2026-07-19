@@ -2,7 +2,6 @@ package io.github.philobiblon.backend.controller.impl;
 
 import io.github.philobiblon.backend.representation.Option;
 import io.github.philobiblon.backend.representation.SearchResponse;
-import io.github.philobiblon.backend.service.QuickSearchService;
 import io.github.philobiblon.backend.service.SparqlCacheService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/** Both /api/search contracts (legacy bare array vs v=2 envelope) must coexist on the same path. */
 class SearchControllerImplTest {
 
     private SparqlCacheService sparqlCacheService;
@@ -32,22 +30,17 @@ class SearchControllerImplTest {
     void setUp() {
         sparqlCacheService = mock(SparqlCacheService.class);
         mockMvc = MockMvcBuilders
-                .standaloneSetup(new SearchControllerImpl(sparqlCacheService, mock(QuickSearchService.class)))
+                .standaloneSetup(new SearchControllerImpl(sparqlCacheService))
                 .build();
     }
 
     @Test
-    void legacyRequestWithoutVersionReturnsBareArray() throws Exception {
-        when(sparqlCacheService.searchLegacy(anyString(), anyString()))
-                .thenReturn(List.of(new Option("Barcelona", Map.of("item", "Q42"))));
-
+    void requestWithoutVersionIsRejected() throws Exception {
         mockMvc.perform(post("/api/search")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("sparqlQuery", "SELECT ?label WHERE {}")
                         .param("q", "barcelona"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].text").value("Barcelona"))
-                .andExpect(jsonPath("$[0].value.item").value("Q42"));
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
