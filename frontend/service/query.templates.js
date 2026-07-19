@@ -97,14 +97,21 @@ function bitagapMembershipBind (labelVar) {
   return `BIND(IF(CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"), 'CARTAS', 'ORIG') AS ?bg) .`
 }
 
+// The membership is computed inside a DISTINCT subquery so the endpoint materializes
+// the (item, bg) table once and hash-joins it, instead of re-running the topic/label
+// join per outer solution — the nested-loop form 500s on the bigger tables.
 function generateBitagapGroupSubjectTopicFilters () {
   return `
         OPTIONAL {
-          ?item wdt:P243 ?related_topic_item .
-          ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-          FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-          ?related_topic_item rdfs:label ?related_topic_item_label .
-          ${bitagapMembershipBind('related_topic_item_label')}
+          {
+            SELECT DISTINCT ?item ?bg WHERE {
+              ?item wdt:P243 ?related_topic_item .
+              ?related_topic_item wdt:P476 ?related_topic_item_pbid .
+              FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
+              ?related_topic_item rdfs:label ?related_topic_item_label .
+              ${bitagapMembershipBind('related_topic_item_label')}
+            }
+          }
         }
         `
 }
@@ -112,12 +119,16 @@ function generateBitagapGroupSubjectTopicFilters () {
 export function generateBitagapGroupInstitutionFilters () {
   return `
         OPTIONAL {
-          ?related_work_item wdt:P476 ?related_work_item_pbid .
-          FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-          ?related_work_item wdt:P243 ?topic_item .
-          ?topic_item rdfs:label ?topic_item_label .
-          ?related_work_item wdt:P243 ?item .
-          ${bitagapMembershipBind('topic_item_label')}
+          {
+            SELECT DISTINCT ?item ?bg WHERE {
+              ?related_work_item wdt:P476 ?related_work_item_pbid .
+              FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
+              ?related_work_item wdt:P243 ?topic_item .
+              ?topic_item rdfs:label ?topic_item_label .
+              ?related_work_item wdt:P243 ?item .
+              ${bitagapMembershipBind('topic_item_label')}
+            }
+          }
         }
         `
 }
@@ -133,12 +144,16 @@ export function generateBitagapGroupWorkFilters () {
 export function generateBitagapGroupPersonFilters () {
   return `
         OPTIONAL {
-          ?related_work_item wdt:P476 ?related_work_item_pbid .
-          FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-          ?related_work_item wdt:P243 ?topic_item .
-          ?topic_item rdfs:label ?topic_item_label .
-          ?related_work_item wdt:P703 ?item .
-          ${bitagapMembershipBind('topic_item_label')}
+          {
+            SELECT DISTINCT ?item ?bg WHERE {
+              ?related_work_item wdt:P476 ?related_work_item_pbid .
+              FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
+              ?related_work_item wdt:P243 ?topic_item .
+              ?topic_item rdfs:label ?topic_item_label .
+              ?related_work_item wdt:P703 ?item .
+              ${bitagapMembershipBind('topic_item_label')}
+            }
+          }
         }
         `
 }
