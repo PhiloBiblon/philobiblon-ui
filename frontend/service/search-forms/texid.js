@@ -46,7 +46,7 @@ export default function createForm () {
                 UNION
                 {
                   ?item skos:altLabel ?aliasObj .
-                  {{langFilter}}
+                  {{aliasLangFilter}}
                 }
                 UNION
                 {
