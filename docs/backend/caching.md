@@ -32,8 +32,8 @@ flowchart LR
 
 | Table | Purpose |
 |---|---|
-| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, `lang_aware` (query projects `?lang`), current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint`, `usage_since_refresh` / `usage_total` |
-| `cached_query_row` | One row per query result. Lang-aware queries fill one `label_xx` / `search_text_xx` column pair per UI language (en, ca, es, gl, pt); legacy per-language queries fill the single `label` / `search_text` pair. `search_text_xx` is the normalized composition of the query's `searchVars` values in that language; the full value map is stored as JSON `payload` (per-language values under `label_xx` / `aliases_xx` / `desc_xx` keys). Indexed by `(query_hash, generation)` |
+| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, `lang_aware` (query projects `?lang`), `db_aware` (query projects `?db`), current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint`, `usage_since_refresh` / `usage_total` |
+| `cached_query_row` | One row per query result. Lang-aware queries fill one `label_xx` / `search_text_xx` column pair per UI language (en, ca, es, gl, pt); legacy per-language queries fill the single `label` / `search_text` pair. `search_text_xx` is the normalized composition of the query's `searchVars` values in that language; the full value map is stored as JSON `payload` (per-language values under `label_xx` / `aliases_xx` / `desc_xx` keys). Db-aware queries additionally fill `db_groups` — the row's database-group membership as space-delimited padded tokens (`" BETA BITECA "`). Indexed by `(query_hash, generation)` |
 
 The cache key is the **exact query text** — the frontend and the seed tooling
 (`scripts/seed-cache/`) share the same template code (`frontend/service/query.templates.js`)
@@ -55,6 +55,23 @@ it selects which `search_text_xx` column the SQL `LIKE` targets and which
 label/desc/aliases are returned. Display resolution falls back per field
 (requested lang → en → any). Legacy queries (no `?lang` projection) ignore the param.
 
+### One query for all databases
+
+The database group (BETA/BITECA/BITAGAP) is likewise no longer baked into the query
+text. Templates match every group (`(.*)` in the pbid regex) and bind each source
+record's pbid prefix as a reserved `?db` var, projected alongside the results. During
+the pivot `?db` is excluded from the grouping key and its values are collected into
+the row's `db_groups` membership — crucially, in most autocomplete queries the
+database filter applies to a *related* source record (e.g. "authors of works in
+BETA"), so one cached row can legitimately belong to several groups at once.
+
+The v=2 request carries an optional `group` param (`BETA`/`BITECA`/`BITAGAP`; absent
+or `ALL` means no filter; 400 on unknown values): it ANDs a membership `LIKE` over
+`db_groups` into the candidate query. It is ignored for non-db-aware queries. The
+BITAGAP ORIG/CARTAS subgroup selections still produce distinct, BITAGAP-baked query
+texts (their extra graph patterns only make sense within BITAGAP) and register as
+their own cache entries.
+
 ### Request flow (v=2 contract)
 
 1. Hash the incoming `searchVars` + `sparqlQuery`.
@@ -65,9 +82,10 @@ label/desc/aliases are returned. Display resolution falls back per field
    retries.
 3. Known query → SQL `LIKE` per search word (AND-ed, so reordered multi-word terms
    match) over the requested language's `search_text_xx` column (or legacy
-   `search_text`), re-rank the candidates in Java (`SearchServiceImpl.rank`), rebuild
-   `Option`s from the JSON payload with the per-language keys resolved for the
-   requested language.
+   `search_text`), plus a `db_groups` membership filter when a `group` was requested
+   on a db-aware query; re-rank the candidates in Java (`SearchServiceImpl.rank`),
+   rebuild `Option`s from the JSON payload with the per-language keys resolved for
+   the requested language.
 
 The param-less legacy contract (bare array, blocks on a cold query) exists for
 already-deployed SPAs and is scheduled for removal.
