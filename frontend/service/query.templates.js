@@ -28,23 +28,43 @@ export function addPrefixes (query, sparqlQueryPrefix) {
 // Templates bind real labels to ?labelObj and alternative labels to ?aliasObj: only
 // ?label is used as the displayed text, while ?aliases only feeds the search text
 // (searchVars label,aliases), so an altLabel never becomes an item's visible label.
+// The label and alias filters are separate fragments placed inside their own UNION
+// branches: a shared expression over COALESCE(?labelObj, ?aliasObj) blocks the
+// endpoint's filter pushdown and times out on the big tables.
 export function generateSearchLangFiltersWithoutBind () {
-  return `FILTER (lang(COALESCE(?labelObj, ?aliasObj)) IN ('ca', 'es', 'en', 'gl', 'pt')) .
-      BIND(lang(COALESCE(?labelObj, ?aliasObj)) AS ?lang) .`
+  return `FILTER (lang(?labelObj) IN ('ca', 'es', 'en', 'gl', 'pt')) .
+      BIND(lang(?labelObj) AS ?lang) .`
 }
 
 export function generateSearchLangFilters () {
   return `
       ${generateSearchLangFiltersWithoutBind()}
       BIND(STR(?labelObj) AS ?label) .
+      `
+}
+
+export function generateAliasLangFiltersWithoutBind () {
+  return `FILTER (lang(?aliasObj) IN ('ca', 'es', 'en', 'gl', 'pt')) .
+      BIND(lang(?aliasObj) AS ?lang) .`
+}
+
+export function generateAliasLangFilters () {
+  return `
+      ${generateAliasLangFiltersWithoutBind()}
       BIND(STR(?aliasObj) AS ?aliases) .
       `
 }
 
 export function generateDescLangFilter (itemName) {
-  // The desc rides the label row's language; when ?lang is unbound the filter
-  // errors out and the desc simply stays unbound.
-  return `OPTIONAL { ?${itemName} schema:description ?desc FILTER (lang(?desc) = ?lang) }.`
+  // Self-contained: binds the desc's own language and joins on (?item, ?lang)
+  // compatibility. A correlated FILTER (lang(?desc) = ?lang) referencing the outer
+  // ?lang forces a catastrophic left-join plan on the endpoint.
+  return `OPTIONAL {
+        ?${itemName} schema:description ?descObj .
+        FILTER (lang(?descObj) IN ('ca', 'es', 'en', 'gl', 'pt')) .
+        BIND(lang(?descObj) AS ?lang) .
+        BIND(STR(?descObj) AS ?desc) .
+      }`
 }
 
 export function generateDescLangFilters (itemName) {
@@ -199,6 +219,8 @@ export function filterQuery (query, database, bitagapGroup, table, sparqlQueryPr
     table,
     langFilter: generateSearchLangFilters(),
     langFilterWithoutBind: generateSearchLangFiltersWithoutBind(),
+    aliasLangFilter: generateAliasLangFilters(),
+    aliasLangFilterWithoutBind: generateAliasLangFiltersWithoutBind(),
     itemLangGroupPattern: generateSearchLangGroupPattern('item'),
     targetItemLangGroupPattern: generateSearchLangGroupPattern('target_item'),
     descLangFilter: generateDescLangFilters('item'),

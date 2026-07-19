@@ -42,12 +42,13 @@ export default function createForm () {
                 {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
+                  {{langFilter}}
                 }
                 UNION
                 {
                   ?item skos:altLabel ?aliasObj .
+                  {{aliasLangFilter}}
                 }
-                {{langFilter}}
                 {{descLangFilter}}
               }
               `,

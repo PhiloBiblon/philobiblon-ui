@@ -41,12 +41,13 @@ export default function createForm () {
                 {{bitagapGroupFilter}}
                 {
                   ?item rdfs:label ?labelObj .
+                  {{langFilter}}
                 }
                 UNION
                 {
                   ?item skos:altLabel ?aliasObj .
+                  {{aliasLangFilter}}
                 }
-                {{langFilter}}
                 {{descLangFilter}}
               }
               `,
@@ -92,16 +93,18 @@ export default function createForm () {
                 {{bitagapGroupFilter}}
                 {
                   ?item wdt:P34 ?labelObj .
+                  {{langFilterWithoutBind}}
                 }
                 UNION
                 {
                   ?item rdfs:label ?labelObj .
+                  {{langFilterWithoutBind}}
                 }
                 UNION
                 {
                   ?item skos:altLabel ?aliasObj .
+                  {{aliasLangFilterWithoutBind}}
                 }
-                {{langFilterWithoutBind}}
                 {{descLangFilter}}
               }
               `
