@@ -160,8 +160,12 @@ alias and the param-less legacy `/api/search` contract were later removed, leavi
 index is not dropped by `ddl-auto=update`; it is harmless to leave, or can be removed
 manually (`DROP TABLE SEARCH_ITEM` via the dev H2 console).
 
-Originally each UI language produced its own query text and therefore its own cache
-entry (×5 queries, rows and nightly refresh work). Queries were later made
-language-free with per-language row columns (see "One query for all languages").
-Old per-language entries registered by cached SPAs keep working as legacy entries
-and age out via the 30-day eviction after the new SPA is deployed.
+Originally each UI language and each database group produced its own query text and
+therefore its own cache entry (×5 languages, ×4 groups per field). Queries were later
+made language- and database-free (see the sections above). All of these iterations
+happened on one branch before any deployment, so no intermediate contract or query
+shape ever shipped: the transition visible in production is a single jump from the
+pre-unification SPA (which calls the removed `/quick` and param-less endpoints, and
+breaks until the browser reloads it) to the final model. Queries that don't project
+the reserved `?lang`/`?db` vars still work through the plain single-column path —
+that is the v=2 base case for arbitrary SPARQL, not a compatibility shim.
