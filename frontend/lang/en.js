@@ -717,7 +717,6 @@ export default {
         description: 'Please fill description',
         initial_claims: 'Claims are still loading',
         claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
-        qualifier_key_missing: 'A qualifier property is missing in the claim "{claimLabel}" for "{propertyLabel}"',
         incomplete_date: 'Please fill in a complete date (year, month and day) for the "{propertyLabel}" qualifier'
       },
       creation: {

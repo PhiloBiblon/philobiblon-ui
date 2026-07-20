@@ -233,25 +233,6 @@ function getCreateDisabledReason () {
       if (item?.value == null || item?.value === '') {
         return t('messages.error.inputs.claim_value_missing', { propertyLabel })
       }
-
-      const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
-
-      if (propKey !== 'P2') {
-        for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
-          // Empty qualifiers are dropped by cleanClaims before saving, so they
-          // must not block creation. This is what happens with the default
-          // empty qualifiers pre-filled on a required claim (e.g. P10/P805 on
-          // P329 for manid): leaving them blank should be allowed instead of
-          // forcing the user to fill or delete each line.
-          const hasValue = qualifierVal != null && qualifierVal !== '' && qualifierVal !== 'null'
-          if (!hasValue) {
-            continue
-          }
-          if (!qualifierKey || qualifierKey === 'null') {
-            return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
-          }
-        }
-      }
     }
   }
 
