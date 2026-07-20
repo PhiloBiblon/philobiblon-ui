@@ -1055,6 +1055,93 @@ export class QueryService {
     return filters
   }
 
+  addCopidFilters (form) {
+    let filters = ''
+    if (form.input.edition && form.input.edition.value) {
+      filters +=
+        `
+        ?item wdt:P839 wd:${form.input.edition.value.target_item} .
+        `
+    }
+    if (form.input.library && form.input.library.value) {
+      filters +=
+        `
+        ?item wdt:P329 wd:${form.input.library.value.target_item} .
+        `
+    }
+    if (form.input.collection && form.input.collection.value) {
+      const collectionValue = form.input.collection.value
+      const collectionFilter = collectionValue.textString
+        ? `FILTER(CONTAINS(LCASE(STR(?item_collection)), LCASE("${this.sanitizeSparqlString(collectionValue.textString)}")))`
+        : `FILTER (?item_collection = "${this.sanitizeSparqlString(collectionValue.label)}")`
+      filters +=
+        `
+        ?item p:P329 ?library_stmt .
+        ?library_stmt pq:P1054 ?item_collection .
+        ${collectionFilter}
+        `
+    }
+    if (form.input.call_number && form.input.call_number.value) {
+      filters +=
+        `
+        ?item p:P329 ?library_stmt .
+        {
+          ?library_stmt pq:P10 ?call_number_label
+        }
+        UNION
+        {
+          ?library_stmt pq:P30 ?call_number_label
+        }
+        FILTER (?call_number_label = "${this.sanitizeSparqlString(form.input.call_number.value.label)}")
+        `
+    }
+    if (form.input.previous_owner && form.input.previous_owner.value) {
+      filters +=
+        `
+        ?item wdt:P229 wd:${form.input.previous_owner.value.target_item} .
+        `
+    }
+    if (form.input.associated_person && form.input.associated_person.value) {
+      filters +=
+        `
+        ?item wdt:P703 wd:${form.input.associated_person.value.target_item} .
+        `
+    }
+    if (form.input.writing_surface && form.input.writing_surface.value) {
+      filters +=
+        `
+        ?item wdt:P480 wd:${form.input.writing_surface.value.target_item} .
+        `
+    }
+    if (form.input.binding && form.input.binding.value) {
+      filters +=
+        `
+        ?item wdt:P800 ?item_binding .
+        FILTER (?item_binding = "${this.sanitizeSparqlString(form.input.binding.value.label)}")
+        `
+    }
+    if (form.input.watermark && form.input.watermark.value) {
+      filters +=
+        `
+        ?item wdt:P749 wd:${form.input.watermark.value.target_item} .
+        `
+    }
+    if (form.input.graphic_feature && form.input.graphic_feature.value) {
+      filters +=
+        `
+        ?item wdt:P801 wd:${form.input.graphic_feature.value.target_item} .
+        `
+    }
+    if (form.input.subject && form.input.subject.value) {
+      filters +=
+        `
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
+        `
+    }
+    return filters
+  }
+
   generateQuery (table, baseQueryFunction, form, lang) {
     let filters = ''
     const group = form.input.group.value === 'ALL' ? '(.*)' : form.input.group.value
@@ -1093,6 +1180,9 @@ export class QueryService {
         break
       case 'manid':
         filters += this.addManuscriptFilters(form)
+        break
+      case 'copid':
+        filters += this.addCopidFilters(form)
         break
     }
     if (filters.includes('STR(?label)') || filters.includes('lcase(?label)')) {
