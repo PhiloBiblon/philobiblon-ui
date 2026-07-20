@@ -65,6 +65,7 @@ const { t, locale } = useI18n()
 const authStore = useAuthStore()
 
 const headers = ref([])
+const p12Dates = ref({})
 
 const perPageOptions = [
   { title: '20', value: 20 },
@@ -81,12 +82,14 @@ const sortedItems = computed(() => {
   const values = props.claim?.values ?? []
   if (props.claim?.property !== 'P12') return values
   return [...values].sort((a, b) => {
-    const timeA = a.qualifiers?.P49?.[0]?.datavalue?.value?.time
-    const timeB = b.qualifiers?.P49?.[0]?.datavalue?.value?.time
-    if (!timeA && !timeB) return 0
-    if (!timeA) return 1
-    if (!timeB) return -1
-    return timeB.localeCompare(timeA)
+    const qA = a.mainsnak?.datavalue?.value?.id
+    const qB = b.mainsnak?.datavalue?.value?.id
+    const dateA = p12Dates.value[qA]
+    const dateB = p12Dates.value[qB]
+    if (!dateA && !dateB) return 0
+    if (!dateA) return 1
+    if (!dateB) return -1
+    return dateB.localeCompare(dateA)
   })
 })
 
@@ -103,7 +106,31 @@ const shouldHideFooter = computed(() => props.claim?.values?.length <= perPageOp
 
 onMounted(async () => {
   await getHeaders()
+  if (props.claim?.property === 'P12') {
+    await loadP12Dates()
+  }
 })
+
+async function loadP12Dates () {
+  const qIds = (props.claim?.values ?? [])
+    .map(v => v.mainsnak?.datavalue?.value?.id)
+    .filter(Boolean)
+  if (!qIds.length) return
+  const query = $wikibase.$query.addPrefixes(
+    `SELECT ?item ?date WHERE {
+      VALUES ?item { ${qIds.map(id => `wd:${id}`).join(' ')} }
+      OPTIONAL { ?item wdt:P49 ?date }
+    }`
+  )
+  const results = await $wikibase.runSparqlQuery(query, true).catch(() => [])
+  const dates = {}
+  for (const row of results) {
+    if (row?.item && row?.date) {
+      dates[row.item] = row.date
+    }
+  }
+  p12Dates.value = dates
+}
 
 async function getHeaders () {
   const qualifierKeys = new Set()

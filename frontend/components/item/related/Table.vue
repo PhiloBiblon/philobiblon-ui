@@ -48,7 +48,7 @@ const resultsPerPage = 10
 onMounted(async () => {
   if (props.itemId) {
     count()
-    items.value = await $wikibase.getRelatedItems(props.itemId, props.references.refTables, currentPage.value, resultsPerPage)
+    items.value = await fetchItems()
     emit('has-related-table', items.value.length > 0)
   }
 })
@@ -63,7 +63,13 @@ function count () {
     .catch((error) => { console.error('Error loading related items count:', error) })
 }
 
+function fetchItems () {
+  return $wikibase.getRelatedItems(
+    props.itemId, props.references.refTables, currentPage.value, resultsPerPage
+  )
+}
+
 async function changePage () {
-  items.value = await $wikibase.getRelatedItems(props.itemId, props.references.refTables, currentPage.value, resultsPerPage)
+  items.value = await fetchItems()
 }
 </script>
