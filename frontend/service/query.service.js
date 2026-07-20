@@ -1249,16 +1249,40 @@ export class QueryService {
     return conditions
   }
 
-  getRelatedItems (pbid, refTables, currentPage, resultsPerPage) {
+  getRelatedItems (pbid, refTables, currentPage, resultsPerPage, sortBy = 'id', sortDir = 'asc', locale = 'en') {
+    const needsDate = sortBy === 'date'
+    const needsLabel = sortBy === 'name'
+
+    const selectExtra = needsLabel ? ' ?itemLabel' : ''
+    const optionalDate = needsDate ? 'OPTIONAL { ?item wdt:P49 ?sort_date }' : ''
+    const labelService = needsLabel ? `SERVICE wikibase:label { bd:serviceParam wikibase:language "${locale},en". }` : ''
+
+    let orderBy
+    if (sortBy === 'date') {
+      orderBy = sortDir === 'desc'
+        ? 'DESC(?sort_date) ?item_type xsd:integer(?item_number) ?item_pbid'
+        : '?sort_date ?item_type xsd:integer(?item_number) ?item_pbid'
+    } else if (sortBy === 'name') {
+      orderBy = sortDir === 'desc'
+        ? 'DESC(?itemLabel) ?item_type xsd:integer(?item_number)'
+        : '?itemLabel ?item_type xsd:integer(?item_number)'
+    } else {
+      orderBy = sortDir === 'desc'
+        ? 'DESC(?item_type) DESC(xsd:integer(?item_number)) DESC(?item_pbid)'
+        : '?item_type xsd:integer(?item_number) ?item_pbid'
+    }
+
     const query =
       `
-      SELECT ?item ?item_pbid
+      SELECT ?item ?item_pbid${selectExtra}
       WHERE {
         ${this.getRefTableConditions(pbid, refTables)}
         BIND(REPLACE(?item_pbid, ".* ([0-9]+)$", "$1") AS ?item_number)
         BIND(REPLACE(?item_pbid, " \\\\S+$", "") AS ?item_type)
+        ${optionalDate}
+        ${labelService}
       }
-      ORDER BY ?item_type xsd:integer(?item_number) ?item_pbid
+      ORDER BY ${orderBy}
       OFFSET ${(currentPage - 1) * resultsPerPage}
       LIMIT ${resultsPerPage}
       `
