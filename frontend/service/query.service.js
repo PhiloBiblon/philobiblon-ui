@@ -215,6 +215,10 @@ export class QueryService {
     return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
   }
 
+  generateBitagapGroupCnumFilters (bitagapGroup) {
+    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+  }
+
   generateBitagapGroupFiltersForSubject (bitagapGroup) {
     if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
       return `
@@ -247,6 +251,8 @@ export class QueryService {
           return this.generateBitagapGroupSubjectFilters(bitagapGroup)
         case 'manid':
           return this.generateBitagapGroupManuscriptFilters(bitagapGroup)
+        case 'cnum':
+          return this.generateBitagapGroupCnumFilters(bitagapGroup)
       }
     }
     return ''
@@ -1055,6 +1061,185 @@ export class QueryService {
     return filters
   }
 
+  addCnumFilters (form) {
+    let filters = this.generateBitagapGroupCnumFilters(form.input.bitagap_group?.value)
+    if (form.input.witness_of && form.input.witness_of.value) {
+      filters += `
+        ?item wdt:P590 wd:${form.input.witness_of.value.target_item} .
+        `
+    }
+    if (form.input.part_of && form.input.part_of.value) {
+      filters += `
+        ?item wdt:P8 wd:${form.input.part_of.value.target_item} .
+        `
+    }
+    if (form.input.author && form.input.author.value) {
+      filters += `
+        ?item wdt:P21 wd:${form.input.author.value.target_item} .
+        `
+    }
+    if (form.input.incipit && form.input.incipit.value) {
+      filters += `
+        ?item p:P543 ?incipit_statement .
+        ?incipit_statement pq:P70 ?incipit .
+        FILTER (?incipit = "${this.sanitizeSparqlString(form.input.incipit.value.label)}")
+        `
+    }
+    if (form.input.explicit && form.input.explicit.value) {
+      filters += `
+        ?item p:P543 ?explicit_statement .
+        ?explicit_statement pq:P602 ?explicit .
+        FILTER (?explicit = "${this.sanitizeSparqlString(form.input.explicit.value.label)}")
+        `
+    }
+    if (form.input.associated_person && form.input.associated_person.value) {
+      filters += `
+        ?item wdt:P703 wd:${form.input.associated_person.value.target_item} .
+        `
+    }
+    if (form.input.place_composition && form.input.place_composition.value) {
+      filters += `
+        ?item p:P137 ?history_stmt .
+        ?history_stmt pq:P47 wd:${form.input.place_composition.value.target_item} .
+        `
+    }
+    if (form.input.language && form.input.language.value) {
+      filters += `
+        ?item wdt:P18 wd:${form.input.language.value.target_item} .
+        `
+    }
+    if (form.input.type && form.input.type.value) {
+      filters += `
+        ?item p:P121 ?type_statement .
+        ?type_statement pq:P700 wd:${form.input.type.value.target_item} .
+        `
+    }
+    if (form.input.poetic_form && form.input.poetic_form.value) {
+      filters += `
+        ?item wdt:P781 ?poetic_form .
+        FILTER (?poetic_form = "${this.sanitizeSparqlString(form.input.poetic_form.value.label)}")
+        `
+    }
+    if (form.input.library && form.input.library.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid wdt:P329 wd:${form.input.library.value.target_item} .
+        `
+    }
+    if (form.input.city && form.input.city.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid wdt:P329 ?cnum_lib .
+        ?cnum_lib wdt:P47 wd:${form.input.city.value.target_item} .
+        `
+    }
+    if (form.input.call_number && form.input.call_number.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid p:P329 ?library_stmt .
+        {
+          ?library_stmt pq:P10 ?call_number_label .
+        }
+        UNION
+        {
+          ?library_stmt pq:P30 ?call_number_label .
+        }
+        FILTER (?call_number_label = "${this.sanitizeSparqlString(form.input.call_number.value.label)}")
+        `
+    }
+    if (form.input.collection && form.input.collection.value) {
+      const collectionValue = form.input.collection.value
+      const collectionFilter = collectionValue.textString
+        ? `FILTER(CONTAINS(LCASE(STR(?item_collection)), LCASE("${this.sanitizeSparqlString(collectionValue.textString)}")))`
+        : `FILTER (?item_collection = "${this.sanitizeSparqlString(collectionValue.label)}")`
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid p:P329 ?library_stmt .
+        ?library_stmt pq:P1054 ?item_collection .
+        ${collectionFilter}
+        `
+    }
+    if (form.input.place_production && form.input.place_production.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        {
+          ?cnum_manid wdt:P47 ?cnum_place_production .
+        }
+        UNION
+        {
+          ?cnum_manid wdt:P241 ?cnum_place_production .
+        }
+        FILTER (?cnum_place_production = wd:${form.input.place_production.value.target_item})
+        `
+    }
+    if (form.input.scribe_printer && form.input.scribe_printer.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        {
+          ?cnum_manid wdt:P25 ?cnum_scribe .
+        }
+        UNION
+        {
+          ?cnum_manid wdt:P207 ?cnum_scribe .
+        }
+        FILTER (?cnum_scribe = wd:${form.input.scribe_printer.value.target_item})
+        `
+    }
+    if (form.input.publisher_patron && form.input.publisher_patron.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid wdt:P67 wd:${form.input.publisher_patron.value.target_item} .
+        `
+    }
+    if (form.input.previous_owner && form.input.previous_owner.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid wdt:P229 wd:${form.input.previous_owner.value.target_item} .
+        `
+    }
+    if (form.input.writing_surface && form.input.writing_surface.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid wdt:P480 wd:${form.input.writing_surface.value.target_item} .
+        `
+    }
+    if (form.input.binding && form.input.binding.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid wdt:P800 ?cnum_binding .
+        FILTER (?cnum_binding = "${this.sanitizeSparqlString(form.input.binding.value.label)}")
+        `
+    }
+    if (form.input.watermark && form.input.watermark.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid wdt:P749 wd:${form.input.watermark.value.target_item} .
+        `
+    }
+    if (form.input.graphic_feature && form.input.graphic_feature.value) {
+      filters += `
+        ?item wdt:P8 ?cnum_manid .
+        ?cnum_manid wdt:P801 wd:${form.input.graphic_feature.value.target_item} .
+        `
+    }
+    if (form.input.subject && form.input.subject.value) {
+      filters += `
+        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
+        `
+    }
+    filters += this._dateRangeFilters(form.input.date_composition.value, {
+      statementPattern: '?item p:P412 ?date_of_creation .',
+      beginOptional: `
+          OPTIONAL { ?item wdt:P412 ?begin_date }
+          `,
+      endOptional: `
+          OPTIONAL { ?date_of_creation pq:P291 ?end_date }
+          `
+    })
+    return filters
+  }
+
   generateQuery (table, baseQueryFunction, form, lang) {
     let filters = ''
     const group = form.input.group.value === 'ALL' ? '(.*)' : form.input.group.value
@@ -1093,6 +1278,9 @@ export class QueryService {
         break
       case 'manid':
         filters += this.addManuscriptFilters(form)
+        break
+      case 'cnum':
+        filters += this.addCnumFilters(form)
         break
     }
     if (filters.includes('STR(?label)') || filters.includes('lcase(?label)')) {
