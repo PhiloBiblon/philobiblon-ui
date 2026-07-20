@@ -215,6 +215,10 @@ export class QueryService {
     return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
   }
 
+  generateBitagapGroupCnumFilters (bitagapGroup) {
+    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+  }
+
   generateBitagapGroupFiltersForSubject (bitagapGroup) {
     if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
       return `
@@ -247,6 +251,8 @@ export class QueryService {
           return this.generateBitagapGroupSubjectFilters(bitagapGroup)
         case 'manid':
           return this.generateBitagapGroupManuscriptFilters(bitagapGroup)
+        case 'cnum':
+          return this.generateBitagapGroupCnumFilters(bitagapGroup)
       }
     }
     return ''
@@ -1056,7 +1062,7 @@ export class QueryService {
   }
 
   addCnumFilters (form) {
-    let filters = ''
+    let filters = this.generateBitagapGroupCnumFilters(form.input.bitagap_group?.value)
     if (form.input.witness_of && form.input.witness_of.value) {
       filters += `
         ?item wdt:P590 wd:${form.input.witness_of.value.target_item} .
