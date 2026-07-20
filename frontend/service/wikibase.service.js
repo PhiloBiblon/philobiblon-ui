@@ -714,9 +714,9 @@ export class WikibaseService {
     }
   }
 
-  async getRelatedItems (pbid, refTables, currentPage, resultsPerPage, sortBy, sortDir, locale) {
+  async getRelatedItems (pbid, refTables, currentPage, resultsPerPage) {
     return await this.runSparqlQuery(
-      this.$query.getRelatedItems(pbid, refTables, currentPage, resultsPerPage, sortBy, sortDir, locale),
+      this.$query.getRelatedItems(pbid, refTables, currentPage, resultsPerPage),
       true
     ).then((results) => {
       return results

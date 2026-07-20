@@ -69,7 +69,6 @@ const relatedTables = {
   bibid: [
     {
       label: 'item.related.bibid.related_bibliography',
-      sortable: true,
       refTables: [
         { refTable: 'bibid', property: 'P12' },
         { refTable: 'bioid', property: 'P12' },

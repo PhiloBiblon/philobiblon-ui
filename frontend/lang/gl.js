@@ -584,12 +584,6 @@ export default {
       calculating_new_pbid: 'Calculando o novo ID de PhiloBiblon ..'
     },
     related: {
-      sort_by: 'Ordenar por',
-      sort_option: {
-        date: 'Data',
-        name: 'Nome',
-        id: 'ID'
-      },
       manid: {
         related_ms_ed: 'Ms/Ed relacionados',
         manuscript_edition: 'Edición manuscrita',
