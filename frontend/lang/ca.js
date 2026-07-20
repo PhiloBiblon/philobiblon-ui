@@ -715,7 +715,6 @@ export default {
         description: 'Si us plau, ompliu la descripció',
         initial_claims: 'Les afirmacions s\'estan carregant',
         claim_value_missing: 'Si us plau, ompliu el valor de l\'afirmació per a "{propertyLabel}"',
-        qualifier_key_missing: 'Falta una propietat de qualificador a l\'afirmació "{claimLabel}" per a "{propertyLabel}"',
         incomplete_date: 'Si us plau, ompliu una data completa (any, mes i dia) per al qualificador "{propertyLabel}"'
       },
       creation: {
