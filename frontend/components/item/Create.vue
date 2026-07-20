@@ -233,8 +233,6 @@ function getCreateDisabledReason () {
       if (item?.value == null || item?.value === '') {
         return t('messages.error.inputs.claim_value_missing', { propertyLabel })
       }
-
-
     }
   }
 
