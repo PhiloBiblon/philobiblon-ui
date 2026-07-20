@@ -234,8 +234,6 @@ function getCreateDisabledReason () {
         return t('messages.error.inputs.claim_value_missing', { propertyLabel })
       }
 
-      const claimLabel = initialClaim?.value?.datavalue?.value?.label || propertyLabel
-
       if (propKey !== 'P2') {
         for (const [qualifierKey, qualifierVal] of Object.entries(item.qualifiers || {})) {
           // Empty qualifiers are dropped by cleanClaims before saving, so they
@@ -247,8 +245,10 @@ function getCreateDisabledReason () {
           if (!hasValue) {
             continue
           }
+          // A qualifier with a value but no property selected (null key) is dropped by
+          // cleanClaims before saving, so it must not block creation either.
           if (!qualifierKey || qualifierKey === 'null') {
-            return t('messages.error.inputs.qualifier_key_missing', { claimLabel, propertyLabel })
+            continue
           }
         }
       }
