@@ -5,6 +5,16 @@ const CARTAS_TEXT = '[Cartas de]'
 const BITAGAP_GROUP_CARTAS = 'CARTAS'
 const BITAGAP_GROUP_ORIGINAL = 'ORIG'
 export class QueryService {
+  static DATE_SORT_PATTERNS = {
+    bibid: 'OPTIONAL { ?item wdt:P49 ?date_raw }',
+    texid: 'OPTIONAL { ?item wdt:P412 ?date_raw }',
+    manid: 'OPTIONAL { ?item wdt:P536 ?date_raw }',
+    bioid: `OPTIONAL {
+          ?item p:P137 ?history_sort .
+          ?history_sort pq:P49 ?date_raw .
+        }`
+  }
+
   constructor ({ config }) {
     this.$config = config
   }
@@ -1303,41 +1313,37 @@ export class QueryService {
     return this.generateQuery(table, COUNT_QUERY, form)
   }
 
-  getSortClause () {
+  getSortClause (hasDateBinding) {
     const queryStatus = useQueryStatusStore()
-    let sortBy
+    const nameSort = this.replaceDiacritics('xsd:string(?label)')
     switch (queryStatus.sortBy) {
-      case 'id':
-        sortBy = 'xsd:integer(?pbidn)'
-        break
-      case 'date':
-        sortBy = 'xsd:dateTime(?date)'
-        break
+      case 'id': {
+        const idExpr = 'xsd:integer(?pbidn)'
+        return queryStatus.isSortDescending ? `DESC(${idExpr})` : idExpr
+      }
+      case 'date': {
+        const tieBreak = queryStatus.isSortDescending ? `DESC(${nameSort})` : nameSort
+        if (!hasDateBinding) {
+          return tieBreak
+        }
+        const dateExpr = 'xsd:dateTime(?date)'
+        const primary = queryStatus.isSortDescending ? `DESC(${dateExpr})` : dateExpr
+        return `${primary} ${tieBreak}`
+      }
       case 'name':
       default:
-        sortBy = this.replaceDiacritics('xsd:string(?label)')
+        return queryStatus.isSortDescending ? `DESC(${nameSort})` : nameSort
     }
-    return queryStatus.isSortDescending ? `DESC(${sortBy})` : sortBy
   }
 
   getDateSortPattern (table) {
     const queryStatus = useQueryStatusStore()
     if (queryStatus.sortBy !== 'date') { return '' }
-    switch (table) {
-      case 'bibid':
-        return 'OPTIONAL { ?item wdt:P49 ?date_raw }'
-      case 'texid':
-        return 'OPTIONAL { ?item wdt:P412 ?date_raw }'
-      case 'manid':
-        return 'OPTIONAL { ?item wdt:P536 ?date_raw }'
-      case 'bioid':
-        return `OPTIONAL {
-          ?item p:P137 ?history_sort .
-          ?history_sort pq:P49 ?date_raw .
-        }`
-      default:
-        return ''
-    }
+    return this.constructor.DATE_SORT_PATTERNS[table] || ''
+  }
+
+  supportsDateSort (table) {
+    return table in this.constructor.DATE_SORT_PATTERNS
   }
 
   itemsQuery (table, form, lang, resultsPerPage) {
@@ -1357,7 +1363,7 @@ export class QueryService {
         ${this.generateLangFilters(lang)}
         ${this.generateDescLangFilters('item', lang)}
       }
-      ORDER BY ${this.getSortClause()}
+      ORDER BY ${this.getSortClause(!!dateSortPattern)}
       OFFSET ${(useQueryStatusStore().currentPage - 1) * resultsPerPage}
       LIMIT ${resultsPerPage}`
     return this.generateQuery(table, SEARCH_QUERY, form, lang)
