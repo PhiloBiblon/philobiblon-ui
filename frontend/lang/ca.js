@@ -598,7 +598,7 @@ export default {
       },
       bioid: {
         subject_references: 'Referències temàtiques',
-        authors: 'Autors',
+        texts: 'Text',
         commentary: 'Comentari',
         financed_by: 'Finançat per',
         former_owners: 'Antics propietaris',

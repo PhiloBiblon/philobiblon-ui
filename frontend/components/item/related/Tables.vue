@@ -100,7 +100,7 @@ const relatedTables = {
       ]
     },
     {
-      label: 'item.related.bioid.authors',
+      label: 'item.related.bioid.texts',
       refTables: [
         { refTable: 'texid', property: 'P21' }
       ]
