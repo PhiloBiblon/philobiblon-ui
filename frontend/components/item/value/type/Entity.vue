@@ -145,6 +145,11 @@ function setOptionsAutocomplete () {
       .catch((error) => { console.error(error); return [] })
       .then((results) => {
         Object.values(results).forEach((result) => {
+          // A row missing the ?item binding (e.g. an incomplete SPARQL result for
+          // some Instance-of values, see #393) must be skipped instead of throwing.
+          if (!result?.item?.value) {
+            return
+          }
           options.value.push({
             id: extractQid(result.item.value),
             label: result.item.label
