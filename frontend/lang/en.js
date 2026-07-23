@@ -600,7 +600,7 @@ export default {
       },
       bioid: {
         subject_references: 'Subject references',
-        authors: 'Authors',
+        texts: 'Texts',
         commentary: 'Commentary',
         financed_by: 'Financed by',
         former_owners: 'Former owners',
