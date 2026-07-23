@@ -101,6 +101,7 @@ const relatedTables = {
     },
     {
       label: 'item.related.bioid.texts',
+      resultsPerPage: 20,
       refTables: [
         { refTable: 'texid', property: 'P21' }
       ]
@@ -151,6 +152,7 @@ const relatedTables = {
     },
     {
       label: 'item.related.bioid.related_individuals',
+      resultsPerPage: 20,
       refTables: [
         { refTable: 'bioid', property: 'P703' },
         { refTable: 'cnum', property: 'P703' },
