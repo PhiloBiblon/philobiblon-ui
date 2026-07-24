@@ -167,7 +167,7 @@ export class WikibaseService {
   }
 
   async getClaimsOrderForNewItem (table) {
-    return await this.getClaimsOrder(table, this.$config.wikibaseNewItemPage)
+    return (await this.getNewItemConfig(table)).properties
   }
 
   async getClaimsOrder (table, pageName = this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE) {
@@ -188,26 +188,34 @@ export class WikibaseService {
     }
   }
 
-  // Field requirement/behaviour rules (required fields, "at least one of" groups, removable/hidden flags)
-  // declared for a table in the new-item wiki page. Fails soft to an empty ruleset (no extra requirements
-  // or flags) when the page or table isn't configured yet, matching getClaimsOrder's error-logging behaviour.
-  async getNewItemFieldRules (table) {
-    const emptyRules = { required: [], notRemovable: [], hidden: [], groups: {}, qualifierHidden: {} }
+  // Full per-table config from the new-item wiki page in a single fetch+parse: claim/qualifier order
+  // (`properties`, same shape as getClaimsOrder) plus the required/notRemovable/hidden/groups/qualifierHidden
+  // rules. getClaimsOrderForNewItem and getNewItemFieldRules are thin views over this for callers that only
+  // need one half; Create.vue calls this directly to avoid parsing the page twice on the same page load.
+  async getNewItemConfig (table) {
+    const empty = { properties: null, required: [], notRemovable: [], hidden: [], groups: {}, qualifierHidden: {} }
     const data = await this.getWikibasePage(this.$config.wikibaseNewItemPage)
     if (data.error) {
 
       console.error(`Error fetching ui sorted page: ${data.error}`)
-      return emptyRules
+      return empty
     }
     const fullOrder = this.parseSortedPropertiesConfig(data.parse.wikitext)
     if (table in fullOrder) {
-      const { required, notRemovable, hidden, groups, qualifierHidden } = fullOrder[table]
-      return { required, notRemovable, hidden, groups, qualifierHidden }
+      return fullOrder[table]
     } else {
 
       console.error(`Table ${table} not found in ui sorted page.`)
-      return emptyRules
+      return empty
     }
+  }
+
+  // Field requirement/behaviour rules (required fields, "at least one of" groups, removable/hidden flags)
+  // declared for a table in the new-item wiki page. Fails soft to an empty ruleset (no extra requirements
+  // or flags) when the page or table isn't configured yet, matching getClaimsOrder's error-logging behaviour.
+  async getNewItemFieldRules (table) {
+    const { properties: _properties, ...rules } = await this.getNewItemConfig(table)
+    return rules
   }
 
   getOrderedQualifiers (qualifiers, qualifiersOrder) {

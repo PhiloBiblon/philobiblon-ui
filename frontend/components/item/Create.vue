@@ -194,7 +194,7 @@ function getCreateDisabledReason () {
   for (const propIds of Object.values(fieldRules.value.groups)) {
     const hasValue = propIds.some(p => {
       const arr = claims.value[p]
-      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
+      return Array.isArray(arr) && arr.some(item => item?.value != null && item?.value !== '')
     })
     if (!hasValue) {
       const propertyLabel = initialClaims.value.find(c => propIds.includes(c.property?.id))?.property?.label || propIds[0]
@@ -251,9 +251,14 @@ async function loadInitialClaims () {
   try {
     const res = await $wikibase.getTableLastItem(props.database, props.table)
     if (res?.length && res[0]) {
-      fieldRules.value = await $wikibase.getNewItemFieldRules(props.table)
-      cvConfig.value = await $wikibase.getControlledVocabularyConfig(props.table, props.database) || {}
-      await getDefaultClaims(res[0].item_number)
+      const [newItemConfig, cv] = await Promise.all([
+        $wikibase.getNewItemConfig(props.table),
+        $wikibase.getControlledVocabularyConfig(props.table, props.database)
+      ])
+      const { properties, ...rules } = newItemConfig
+      fieldRules.value = rules
+      cvConfig.value = cv || {}
+      await getDefaultClaims(res[0].item_number, properties)
       setDefaultDescription()
       initialClaimsLoaded.value = true
     }
@@ -315,9 +320,9 @@ function buildQualifier (_claim, qualifier) {
 
 function getTodayDateQualifierValue () {
   const today = new Date()
-  const yyyy = String(today.getFullYear()).padStart(4, '0')
-  const mm = String(today.getMonth() + 1).padStart(2, '0')
-  const dd = String(today.getDate()).padStart(2, '0')
+  const yyyy = String(today.getUTCFullYear()).padStart(4, '0')
+  const mm = String(today.getUTCMonth() + 1).padStart(2, '0')
+  const dd = String(today.getUTCDate()).padStart(2, '0')
   return {
     time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
     precision: 11,
@@ -325,10 +330,9 @@ function getTodayDateQualifierValue () {
   }
 }
 
-async function getDefaultClaims (itemNumber) {
+async function getDefaultClaims (itemNumber, order) {
   const def = ['P476', 'P131', 'P799']
-  const res = await $wikibase.getClaimsOrderForNewItem(props.table)
-  const safeRes = res || {}
+  const safeRes = order || {}
   const resKeys = Object.keys(safeRes)
   const defOnly = def.filter(p => !resKeys.includes(p))
   const defWithoutP799 = defOnly.filter(p => p !== 'P799')
