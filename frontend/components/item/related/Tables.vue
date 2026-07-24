@@ -13,6 +13,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { SUBJECT_PROPERTIES } from '~/service/query.service'
 
 defineProps({
   itemId: { type: String, default: null },
@@ -87,16 +88,14 @@ const relatedTables = {
     {
       label: 'item.related.bioid.subject_references',
       refTables: [
-        { refTable: 'bibid', property: 'P243' },
-        { refTable: 'bioid', property: 'P243' },
-        { refTable: 'copid', property: 'P243' },
-        { refTable: 'copid', property: 'P243' },
-        { refTable: 'geoid', property: 'P243' },
-        { refTable: 'geoid', property: 'P243' },
-        { refTable: 'insid', property: 'P243' },
-        { refTable: 'libid', property: 'P243' },
-        { refTable: 'manid', property: 'P243' },
-        { refTable: 'texid', property: 'P243' }
+        { refTable: 'bibid', property: SUBJECT_PROPERTIES },
+        { refTable: 'bioid', property: SUBJECT_PROPERTIES },
+        { refTable: 'copid', property: SUBJECT_PROPERTIES },
+        { refTable: 'geoid', property: SUBJECT_PROPERTIES },
+        { refTable: 'insid', property: SUBJECT_PROPERTIES },
+        { refTable: 'libid', property: SUBJECT_PROPERTIES },
+        { refTable: 'manid', property: SUBJECT_PROPERTIES },
+        { refTable: 'texid', property: SUBJECT_PROPERTIES }
       ]
     },
     {
@@ -283,14 +282,14 @@ const relatedTables = {
     {
       label: 'item.related.geoid.subject_references',
       refTables: [
-        { refTable: 'bibid', property: 'P243' },
-        { refTable: 'bioid', property: 'P243' },
-        { refTable: 'copid', property: 'P243' },
-        { refTable: 'geoid', property: 'P243' },
-        { refTable: 'insid', property: 'P243' },
-        { refTable: 'libid', property: 'P243' },
-        { refTable: 'manid', property: 'P243' },
-        { refTable: 'texid', property: 'P243' }
+        { refTable: 'bibid', property: SUBJECT_PROPERTIES },
+        { refTable: 'bioid', property: SUBJECT_PROPERTIES },
+        { refTable: 'copid', property: SUBJECT_PROPERTIES },
+        { refTable: 'geoid', property: SUBJECT_PROPERTIES },
+        { refTable: 'insid', property: SUBJECT_PROPERTIES },
+        { refTable: 'libid', property: SUBJECT_PROPERTIES },
+        { refTable: 'manid', property: SUBJECT_PROPERTIES },
+        { refTable: 'texid', property: SUBJECT_PROPERTIES }
       ]
     }
   ],
@@ -360,7 +359,7 @@ const relatedTables = {
     {
       label: 'item.related.insid.subject_references',
       refTables: [
-        { refTable: 'subid', property: 'P243' }
+        { refTable: 'subid', property: SUBJECT_PROPERTIES }
       ]
     }
   ],
@@ -382,14 +381,14 @@ const relatedTables = {
     {
       label: 'item.related.subid.subject_references',
       refTables: [
-        { refTable: 'bibid', property: 'P243' },
-        { refTable: 'bioid', property: 'P243' },
-        { refTable: 'cnum', property: 'P243' },
-        { refTable: 'geoid', property: 'P243' },
-        { refTable: 'insid', property: 'P243' },
-        { refTable: 'libid', property: 'P243' },
-        { refTable: 'manid', property: 'P243' },
-        { refTable: 'texid', property: 'P243' }
+        { refTable: 'bibid', property: SUBJECT_PROPERTIES },
+        { refTable: 'bioid', property: SUBJECT_PROPERTIES },
+        { refTable: 'cnum', property: SUBJECT_PROPERTIES },
+        { refTable: 'geoid', property: SUBJECT_PROPERTIES },
+        { refTable: 'insid', property: SUBJECT_PROPERTIES },
+        { refTable: 'libid', property: SUBJECT_PROPERTIES },
+        { refTable: 'manid', property: SUBJECT_PROPERTIES },
+        { refTable: 'texid', property: SUBJECT_PROPERTIES }
       ]
     }
   ]
