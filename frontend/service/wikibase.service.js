@@ -73,7 +73,10 @@ export class WikibaseService {
     return this.$config.wikibaseBaseUrl + '/wiki/Item:' + itemId
   }
 
-  // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers
+  // Transform wiki text to an object with first-level keys as statements and second-level keys as qualifiers.
+  // Property lines (`* Pxxx`) and qualifier lines (`:: qualifier Pxxx`) accept trailing space-separated
+  // modifiers (`required`, `not-removable`, `hidden`), and a section can declare `:: required-group:<name>
+  // Pxxx,Pyyy` lines for "at least one of" validation groups.
   parseSortedPropertiesConfig (inputText) {
     const result = {}
 
@@ -85,6 +88,11 @@ export class WikibaseService {
         const sectionContent = sections[i + 1].trim()
 
         const properties = {}
+        const required = []
+        const notRemovable = []
+        const hidden = []
+        const groups = {}
+        const qualifierHidden = {}
         const lines = sectionContent.split('\n')
 
         let currentProperty = null
@@ -92,22 +100,47 @@ export class WikibaseService {
         for (const line of lines) {
           try {
             if (line.startsWith('*')) {
-              const [, property] = line.match(/\* ?(\S+)/)
+              const [, property, rawModifiers] = line.match(/\* ?(\S+)(.*)/)
               currentProperty = property.trim()
               if (this.getPItemPattern().test(currentProperty)) {
                 if (!(currentProperty in properties)) {
                   properties[currentProperty] = []
                 }
+                for (const modifier of rawModifiers.trim().split(/\s+/).filter(Boolean)) {
+                  if (modifier === 'required') required.push(currentProperty)
+                  else if (modifier === 'not-removable') notRemovable.push(currentProperty)
+                  else if (modifier === 'hidden') hidden.push(currentProperty)
+                  else console.warn(`Unknown modifier '${modifier}' for property ${currentProperty} in section ${sectionName}: ${line}`)
+                }
               } else {
                 console.error(`Invalid property ${currentProperty} in section ${sectionName}: ${line}`)
                 currentProperty = null
               }
+            } else if (/^:: ?required-group:/.test(line)) {
+              const match = line.match(/:: ?required-group:(\S+) ?(.*)/)
+              const groupName = match?.[1]?.trim()
+              const groupProperties = (match?.[2] || '').split(',').map(p => p.trim()).filter(Boolean)
+              if (groupName && groupProperties.length && groupProperties.every(p => this.getPItemPattern().test(p))) {
+                groups[groupName] = [...new Set([...(groups[groupName] || []), ...groupProperties])]
+              } else {
+                console.error(`Invalid required-group in section ${sectionName}: ${line}`)
+              }
             } else if (/^:: ?qualifier/.test(line)) {
-              let [, qualifier] = line.match(/:: ?qualifier (\S+)/)
+              let [, qualifier, rawModifiers] = line.match(/:: ?qualifier (\S+)(.*)/)
               qualifier = qualifier.trim()
               if (this.getPItemPattern().test(qualifier)) {
                 if (currentProperty && !properties[currentProperty].includes(qualifier)) {
                   properties[currentProperty].push(qualifier)
+                }
+                for (const modifier of rawModifiers.trim().split(/\s+/).filter(Boolean)) {
+                  if (modifier === 'hidden' && currentProperty) {
+                    qualifierHidden[currentProperty] = qualifierHidden[currentProperty] || []
+                    if (!qualifierHidden[currentProperty].includes(qualifier)) {
+                      qualifierHidden[currentProperty].push(qualifier)
+                    }
+                  } else if (modifier !== 'hidden') {
+                    console.warn(`Unknown modifier '${modifier}' for qualifier ${qualifier} in section ${sectionName}: ${line}`)
+                  }
                 }
               } else {
                 console.error(`Invalid qualifier ${qualifier} for property ${currentProperty} in section ${sectionName}: ${line}`)
@@ -120,7 +153,7 @@ export class WikibaseService {
           }
         }
 
-        result[sectionName] = properties
+        result[sectionName] = { properties, required, notRemovable, hidden, groups, qualifierHidden }
       }
     } catch (error) {
       console.log(error)
@@ -140,18 +173,40 @@ export class WikibaseService {
   async getClaimsOrder (table, pageName = this.constructor.CONFIG_ORDER_PROPS_WIKI_PAGE) {
     const data = await this.getWikibasePage(pageName)
     if (data.error) {
-       
+
       console.error(`Error fetching ui sorted page: ${data.error}`)
       return null
     } else {
       const fullOrder = this.parseSortedPropertiesConfig(data.parse.wikitext)
       if (table in fullOrder) {
-        return fullOrder[table]
+        return fullOrder[table].properties
       } else {
-         
+
         console.error(`Table ${table} not found in ui sorted page.`)
         return null
       }
+    }
+  }
+
+  // Field requirement/behaviour rules (required fields, "at least one of" groups, removable/hidden flags)
+  // declared for a table in the new-item wiki page. Fails soft to an empty ruleset (no extra requirements
+  // or flags) when the page or table isn't configured yet, matching getClaimsOrder's error-logging behaviour.
+  async getNewItemFieldRules (table) {
+    const emptyRules = { required: [], notRemovable: [], hidden: [], groups: {}, qualifierHidden: {} }
+    const data = await this.getWikibasePage(this.$config.wikibaseNewItemPage)
+    if (data.error) {
+
+      console.error(`Error fetching ui sorted page: ${data.error}`)
+      return emptyRules
+    }
+    const fullOrder = this.parseSortedPropertiesConfig(data.parse.wikitext)
+    if (table in fullOrder) {
+      const { required, notRemovable, hidden, groups, qualifierHidden } = fullOrder[table]
+      return { required, notRemovable, hidden, groups, qualifierHidden }
+    } else {
+
+      console.error(`Table ${table} not found in ui sorted page.`)
+      return emptyRules
     }
   }
 
@@ -218,7 +273,13 @@ export class WikibaseService {
       let rowMatch
       while ((rowMatch = rowRegex.exec(sectionBody)) !== null) {
         const property = rowMatch[1].trim()
-        if (this.getPItemPattern().test(property)) {
+        // A `Pxxx.Pyyy` property id refers to the default value of qualifier Pyyy on claim Pxxx.
+        const propertyParts = property.split('.')
+        const [claimProperty, qualifierProperty] = propertyParts
+        const isValidProperty = propertyParts.length === 1
+          ? this.getPItemPattern().test(claimProperty)
+          : propertyParts.length === 2 && this.getPItemPattern().test(claimProperty) && this.getPItemPattern().test(qualifierProperty)
+        if (isValidProperty) {
           const bibliographies = rowMatch[2].split(',').map(b => b.trim()).filter(Boolean)
           if (bibliographies.every(b => this.constructor.BIBLIOGRAPHIES.has(b))) {
             const defaultValue = rowMatch[3].trim()
