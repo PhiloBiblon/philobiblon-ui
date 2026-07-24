@@ -4,6 +4,7 @@ import { useQueryStatusStore } from '~/stores/queryStatus'
 // to them, injecting the configured SPARQL prefix.
 import * as templates from './query.templates'
 
+export const SUBJECT_PROPERTIES = ['P97', 'P121', 'P122', 'P243', 'P304', 'P422', 'P452', 'P608', 'P1031', 'P1094', 'P1278']
 export class QueryService {
   static DATE_SORT_PATTERNS = {
     bibid: 'OPTIONAL { ?item wdt:P49 ?date_raw }',
@@ -210,7 +211,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -437,7 +438,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -525,7 +526,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -571,7 +572,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -651,7 +652,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -675,7 +676,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -989,7 +990,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -1159,7 +1160,7 @@ export class QueryService {
     }
     if (form.input.subject && form.input.subject.value) {
       filters += `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -1255,7 +1256,7 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        VALUES ?prop_subject { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
         ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
@@ -1427,16 +1428,25 @@ export class QueryService {
     const commonCondition = `
           ?item wdt:P476 ?item_pbid .
           FILTER regex(?item_pbid, '(.*) ${refTable.refTable} ') .`
+    const properties = Array.isArray(refTable.property) ? refTable.property : [refTable.property]
     if (refTable.qualifier) {
+      const statementCondition = properties.length > 1
+        ? `VALUES ?ref_prop { ${properties.map(p => `p:${p}`).join(' ')} }
+          ?item ?ref_prop ?related_prop .`
+        : `?item p:${properties[0]} ?related_prop .`
       return `
           ${commonCondition}
-          ?item p:${refTable.property} ?related_prop .
+          ${statementCondition}
           ?related_prop pq:${refTable.qualifier} wd:${pbid} .
         `
     } else {
+      const directCondition = properties.length > 1
+        ? `VALUES ?ref_prop { ${properties.map(p => `wdt:${p}`).join(' ')} }
+          ?item ?ref_prop wd:${pbid} .`
+        : `?item wdt:${properties[0]} wd:${pbid} .`
       return `
           ${commonCondition}
-          ?item wdt:${refTable.property} wd:${pbid} .
+          ${directCondition}
         `
     }
   }
