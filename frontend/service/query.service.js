@@ -1462,7 +1462,7 @@ export class QueryService {
   getRelatedItems (pbid, refTables, currentPage, resultsPerPage) {
     const query =
       `
-      SELECT ?item ?item_pbid
+      SELECT DISTINCT ?item ?item_pbid
       WHERE {
         ${this.getRefTableConditions(pbid, refTables)}
         BIND(REPLACE(?item_pbid, ".* ([0-9]+)$", "$1") AS ?item_number)
@@ -1478,7 +1478,7 @@ export class QueryService {
   getRelatedItemsCount (pbid, refTables) {
     const query =
       `
-      SELECT (COUNT(?item) AS ?total)
+      SELECT (COUNT(DISTINCT ?item) AS ?total)
       WHERE {
         ${this.getRefTableConditions(pbid, refTables)}
         BIND(REPLACE(?item_pbid, ".* ([0-9]+)$", "$1") AS ?item_number)
