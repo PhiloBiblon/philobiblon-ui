@@ -189,6 +189,8 @@ function getCreateDisabledReason () {
     return t('messages.error.inputs.initial_claims')
   }
 
+  // P2/P476 are required the same way on every table, not information that varies per table
+  // like the wiki-configured entries in fieldRules.value.required, so they stay hardcoded here.
   const requiredPropertyIds = new Set(['P2', 'P476', ...fieldRules.value.required])
 
   for (const propIds of Object.values(fieldRules.value.groups)) {
