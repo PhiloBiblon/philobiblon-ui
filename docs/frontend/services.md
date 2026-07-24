@@ -68,8 +68,25 @@ const results = await $wikibase.runSparqlQuery(query, true, true, false)
 #### `getOrderedClaims(table, claims)`
 Sorts claims according to the `Ui_SortedProperties` wiki page configuration.
 
+#### `getNewItemConfig(table)`
+Fetches and parses the `Ui_SortedProperties_NewItem` wiki page once (via `parseSortedPropertiesConfig`)
+and returns both which claims/qualifiers to pre-fill for a new item of `table` (and in what order) and
+that table's validation/behaviour rules: `{ properties, required, notRemovable, hidden, groups,
+qualifierHidden }`, driven by modifiers on the same wiki page (`* Pxxx required`, `* Pxxx not-removable`,
+`* Pxxx hidden`, `:: qualifier Pxxx hidden`, `:: required-group:<name> Pxxx,Pyyy`). Fails soft — an
+empty ruleset (`properties: null`) and a logged error — when the page or table isn't configured, so
+`frontend/components/item/Create.vue`, which calls this directly, never needs a per-table `if` branch
+for this.
+
+`getClaimsOrderForNewItem(table)` (ordering only, same shape as `getOrderedClaims`'s use of
+`Ui_SortedProperties`; used by `Base.vue` for existing items) and `getNewItemFieldRules(table)` (rules
+only) are thin wrappers around `getNewItemConfig` for callers that only need one half — prefer
+`getNewItemConfig` when a caller needs both, to avoid fetching/parsing the page twice.
+
 #### `getControlledVocabularyConfig(table, bibliography)`
-Fetches autocomplete configuration from `Ui_ControlledVocabulary` wiki page.
+Fetches autocomplete configuration from `Ui_ControlledVocabulary` wiki page. A row's `property`
+column may be a plain `Pxxx` (default value / autocomplete query for that claim) or a composite
+`Pxxx.Pyyy` (default value for qualifier `Pyyy` of claim `Pxxx`).
 
 ### Value Formatting
 
