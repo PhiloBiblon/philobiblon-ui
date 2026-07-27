@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 import { useBreadcrumbStore } from '~/stores/breadcrumb'
@@ -98,6 +98,12 @@ const hasRelatedTable = ref(false)
 const hasNotes = ref(false)
 
 const isUserLogged = computed(() => authStore.isLogged)
+
+watch(isUserLogged, async (isLogged) => {
+  if (isLogged && item.value && templateClaims.value.length === 0) {
+    await appendTemplateClaims(item.value.claims)
+  }
+})
 
 onMounted(async () => {
   if (props.id) {
