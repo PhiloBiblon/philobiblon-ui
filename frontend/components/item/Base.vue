@@ -96,12 +96,13 @@ const externalIdClaims = ref([])
 const templateClaims = ref([])
 const hasRelatedTable = ref(false)
 const hasNotes = ref(false)
+let templateClaimsRequested = false
 
 const isUserLogged = computed(() => authStore.isLogged)
 
 watch(isUserLogged, async (isLogged) => {
-  if (isLogged && item.value && templateClaims.value.length === 0) {
-    await appendTemplateClaims(item.value.claims)
+  if (isLogged && item.value) {
+    await appendTemplateClaims(item.value.claims).catch(notifyError)
   }
 })
 
@@ -150,39 +151,46 @@ async function handleClaims (entity) {
 }
 
 async function appendTemplateClaims (existingClaims) {
-  const template = await $wikibase.getClaimsOrderForNewItem(props.table)
-  if (!template) return
+  if (templateClaimsRequested) return
+  templateClaimsRequested = true
+  try {
+    const template = await $wikibase.getClaimsOrderForNewItem(props.table)
+    if (!template) return
 
-  const existingPropertyIds = new Set(Object.keys(existingClaims))
-  const missingPropIds = Object.keys(template).filter(id => !existingPropertyIds.has(id))
-  if (!missingPropIds.length) return
+    const existingPropertyIds = new Set(Object.keys(existingClaims))
+    const missingPropIds = Object.keys(template).filter(id => !existingPropertyIds.has(id))
+    if (!missingPropIds.length) return
 
-  const entities = await $wikibase.getEntities(missingPropIds, locale.value)
+    const entities = await $wikibase.getEntities(missingPropIds, locale.value)
 
-  const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP?.[props.database]
-  for (const propId of missingPropIds) {
-    const entityProperty = entities[propId]
-    if (!entityProperty?.datatype || entityProperty.datatype === 'external-id') continue
+    const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP?.[props.database]
+    for (const propId of missingPropIds) {
+      const entityProperty = entities[propId]
+      if (!entityProperty?.datatype || entityProperty.datatype === 'external-id') continue
 
-    const altLabel = await $wikibase.getEntityLabel(props.table, propId, locale.value)
-    const defaultValue = propId === 'P131' && bibliographyId ? { id: bibliographyId } : null
+      const altLabel = await $wikibase.getEntityLabel(props.table, propId, locale.value)
+      const defaultValue = propId === 'P131' && bibliographyId ? { id: bibliographyId } : null
 
-    templateClaims.value.push({
-      default: true,
-      property: {
-        label: altLabel?.value ?? propId,
-        id: propId,
-        datatype: entityProperty.datatype
-      },
-      mainsnak: { property: propId },
-      claimsValues: [],
-      value: {
-        property: propId,
-        datatype: entityProperty.datatype,
-        datavalue: { value: defaultValue }
-      },
-      qualifiers: []
-    })
+      templateClaims.value.push({
+        default: true,
+        property: {
+          label: altLabel?.value ?? propId,
+          id: propId,
+          datatype: entityProperty.datatype
+        },
+        mainsnak: { property: propId },
+        claimsValues: [],
+        value: {
+          property: propId,
+          datatype: entityProperty.datatype,
+          datavalue: { value: defaultValue }
+        },
+        qualifiers: []
+      })
+    }
+  } catch (err) {
+    templateClaimsRequested = false
+    throw err
   }
 }
 
