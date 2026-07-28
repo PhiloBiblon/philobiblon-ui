@@ -493,11 +493,26 @@ function cleanClaims (claimsToClean) {
   return cleanedClaims
 }
 
+// Ui_ControlledVocabulary only supports one default value per property, so Q453706
+// (WEMI Item, required for editions alongside Q453705 Manifestation) cannot be
+// expressed as a second P843 default in wiki config — it must be injected here.
+function addManidEditionFrbrClaim (cleanedClaims) {
+  const p2Claims = cleanedClaims['P2'] || []
+  const isEdition = p2Claims.some(c => c.value === 'Q20')
+  if (!isEdition) return
+  const p843Claims = cleanedClaims['P843']
+  if (!p843Claims?.length) return
+  if (!p843Claims.some(c => c.value === 'Q453706')) {
+    p843Claims.push({ value: 'Q453706', qualifiers: {} })
+  }
+}
+
 async function create () {
   const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
   if (existingPBID === null) {
     try {
       const cleanedClaims = cleanClaims(claims.value)
+      if (props.table === 'manid') addManidEditionFrbrClaim(cleanedClaims)
 
       const data = {
         labels: {
