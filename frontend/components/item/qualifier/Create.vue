@@ -151,13 +151,15 @@ function onNewValue (event, qualifier) {
 async function onChangeProperty (event, index) {
   const qualifier = qualifiers[index]
   if (event) {
+    qualifier.datatype = event.datatype
+    qualifier.datavalue = { value: null }
     const altLabel = await $wikibase.getEntityLabel(props.table, event.id, locale.value)
     qualifier.property = { id: event.id, label: altLabel?.value ?? event.label, datatype: event.datatype }
   } else {
     qualifier.property = null
+    qualifier.datatype = null
+    qualifier.datavalue = { value: null }
   }
-  qualifier.datatype = event?.datatype
-  qualifier.datavalue = { value: null }
 }
 
 function addQualifier () {
