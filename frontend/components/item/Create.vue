@@ -221,6 +221,18 @@ function getCreateDisabledReason () {
     requiredPropertyIds.add('P11')
   }
 
+  if (props.table === 'manid') {
+    const p2Array = claims.value['P2']
+    const isEdition = Array.isArray(p2Array) && p2Array.some(c => c?.value === 'Q20')
+    if (isEdition) {
+      const p843Array = claims.value['P843']
+      const p843Label = initialClaims.value.find(c => c.property?.id === 'P843')?.property?.label || 'P843'
+      if (!Array.isArray(p843Array) || !p843Array.some(c => c?.value != null && c?.value !== '')) {
+        return t('messages.error.inputs.claim_value_missing', { propertyLabel: p843Label })
+      }
+    }
+  }
+
   for (const propKey of requiredPropertyIds) {
     const claimArray = claims.value[propKey]
     const initialClaim = initialClaims.value.find(c => c.property?.id === propKey)
