@@ -11,6 +11,11 @@ const WIKIBASE_ERROR_KEYS = {
   blocked: 'messages.error.wikibase_blocked',
 }
 
+export function isSessionExpired (error) {
+  const code = error?.body?.error?.code ?? error?.error?.code
+  return code === 'session-expired' || error?.message === 'query is undefined'
+}
+
 export function useNotifyError () {
   const { $notification } = useNuxtApp()
   const { t } = useI18n()
@@ -19,8 +24,7 @@ export function useNotifyError () {
   function notifyError (error) {
     console.error(error)
 
-    const code = error?.body?.error?.code ?? error?.error?.code
-    if (code === 'session-expired' || error?.message === 'query is undefined') {
+    if (isSessionExpired(error)) {
       authStore.logout()
       $notification.error(t('messages.error.session.expired'))
       return
