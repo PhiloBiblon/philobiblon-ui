@@ -209,7 +209,7 @@ function getCreateDisabledReason () {
   }
 
   if (props.table === 'bibid') {
-    const hasName = ['P247', 'P21', 'P1134'].some(p => {
+    const hasName = ['P247', 'P21', 'P845', 'P1134'].some(p => {
       const arr = claims.value[p]
       return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
     })
@@ -597,9 +597,11 @@ function getBibidDate () {
   if (!val) return null
   if (typeof val === 'string') return val
   if (typeof val === 'object' && val.time) {
-    const match = val.time.replace(/^\+/, '').match(/^(\d{4})-(\d{2})/)
+    const match = val.time.replace(/^\+/, '').match(/^(\d{4})-(\d{2})-(\d{2})/)
     if (!match) return null
-    return val.precision >= 10 ? `${match[1]}-${match[2]}` : match[1]
+    if (val.precision >= 11) return `${match[1]}-${match[2]}-${match[3]}`
+    if (val.precision >= 10) return `${match[1]}-${match[2]}`
+    return match[1]
   }
   return null
 }
