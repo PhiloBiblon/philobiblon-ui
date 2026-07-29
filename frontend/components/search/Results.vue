@@ -137,6 +137,7 @@ import { useI18n } from 'vue-i18n'
 import { useQueryStatusStore } from '~/stores/queryStatus'
 
 const props = defineProps({
+  table: { type: String, default: null },
   sparqlQuery: { type: String, default: null },
   results: { type: Array, default: null },
   totalResults: { type: Number, default: 0 },
@@ -149,6 +150,7 @@ const props = defineProps({
 const emit = defineEmits(['on-sort-by-id', 'on-sort-descending', 'on-pagination', 'go-to-item'])
 
 const { t } = useI18n()
+const { $wikibase } = useNuxtApp()
 const config = useRuntimeConfig().public
 const localePath = useLocalePath()
 const queryStatusStore = useQueryStatusStore()
@@ -166,11 +168,16 @@ const subjectLink = computed(() => props.subject?.qid
 
 const currentTab = ref('results')
 const selectedItem = ref([])
-const sortItems = [
-  { text: t('search.results.sort_option.id'), value: 'id' },
-  { text: t('search.results.sort_option.name'), value: 'name' },
-  { text: t('search.results.sort_option.date'), value: 'date' }
-]
+const sortItems = computed(() => {
+  const items = [
+    { text: t('search.results.sort_option.id'), value: 'id' },
+    { text: t('search.results.sort_option.name'), value: 'name' }
+  ]
+  if ($wikibase.$query.supportsDateSort(props.table)) {
+    items.push({ text: t('search.results.sort_option.date'), value: 'date' })
+  }
+  return items
+})
 const sortBy = ref(null)
 const currentPage = ref(null)
 
