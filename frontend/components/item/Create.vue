@@ -591,6 +591,19 @@ function getManidPrefix () {
   return ''
 }
 
+function getBibidDate () {
+  const claim = initialClaims.value.find(cl => cl.property?.id === 'P49')
+  const val = claim?.value?.datavalue?.value
+  if (!val) return null
+  if (typeof val === 'string') return val
+  if (typeof val === 'object' && val.time) {
+    const match = val.time.replace(/^\+/, '').match(/^(\d{4})-(\d{2})/)
+    if (!match) return null
+    return val.precision >= 10 ? `${match[1]}-${match[2]}` : match[1]
+  }
+  return null
+}
+
 function generateLabelFromClaims () {
   let generatedLabel = ''
   switch (props.table) {
@@ -614,9 +627,9 @@ function generateLabelFromClaims () {
     case 'bibid': {
       const surname = getClaimValue('P247')
       const author = getClaimValue('P21')
-      const creator = getClaimValue('P1134')
+      const creator = getClaimValue('P845') || getClaimValue('P1134')
       const title = getClaimValue('P11')
-      const date = getClaimValue('P222')
+      const date = getBibidDate()
 
       const name = surname || author || creator
 
