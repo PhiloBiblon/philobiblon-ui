@@ -18,12 +18,15 @@ const previousPathCookie = useCookie('previous-path')
 onMounted(async () => {
   const { oauth_token: oauthToken, oauth_verifier: oauthVerifier } = route.query
   const response = await $wikibase.$oauth.step3(oauthToken, oauthVerifier)
+  const previousPath = previousPathCookie.value || '/'
   if (response.status === 0) {
     $notification.success(t('auth.login.success', { name: authStore.username }))
+    const isItemView = previousPath.includes('/item/') && !previousPath.endsWith('/create')
+    router.push(localePath(isItemView ? '/' : previousPath))
   } else {
     console.error('OAuth login failed:', response.error)
     $notification.error(t('messages.error.auth.login_failed'))
+    router.push(localePath(previousPath))
   }
-  router.push(localePath(previousPathCookie.value || '/'))
 })
 </script>
