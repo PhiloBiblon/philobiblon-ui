@@ -225,14 +225,9 @@ function getCreateDisabledReason () {
     const initialClaim = initialClaims.value.find(c => c.property?.id === propKey)
     const propertyLabel = initialClaim?.property?.label || propKey
 
-    if (!Array.isArray(claimArray) || claimArray.length === 0) {
+    const hasValue = Array.isArray(claimArray) && claimArray.some(item => item?.value != null && item?.value !== '')
+    if (!hasValue) {
       return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-    }
-
-    for (const item of claimArray) {
-      if (item?.value == null || item?.value === '') {
-        return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-      }
     }
   }
 
