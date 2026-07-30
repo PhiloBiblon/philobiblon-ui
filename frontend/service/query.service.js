@@ -111,6 +111,8 @@ export class QueryService {
     return input
       .replace(/\\/g, '\\\\')
       .replace(/"/g, '\\"')
+      .replace(/\r/g, '\\r')
+      .replace(/\n/g, '\\n')
   }
 
   // Escapes for SPARQL single-quoted string literals; use sanitizeSparqlString for double-quoted contexts.
@@ -118,6 +120,8 @@ export class QueryService {
     return String(input)
       .replace(/\\/g, '\\\\')
       .replace(/'/g, "\\'")
+      .replace(/\r/g, '\\r')
+      .replace(/\n/g, '\\n')
   }
 
   generateFilterByWords (form, filterField, filterValues) {
@@ -1269,14 +1273,10 @@ export class QueryService {
         filters += `FILTER(?item = wd:${qnum}) .`
       }
     }
-    if (form.input.philobiblon_id.value) {
-      const pbid = String(form.input.philobiblon_id.value)
-      if (/^\d+$/.test(pbid)) {
-        filters += `FILTER regex(?pbid, '${group} ${table} ${pbid}') . `
-      }
-    } else {
-      filters += `FILTER regex(?pbid, '${group} ${table} ') .`
-    }
+    const pbid = String(form.input.philobiblon_id.value ?? '')
+    filters += /^\d+$/.test(pbid)
+      ? `FILTER regex(?pbid, '${group} ${table} ${pbid}') . `
+      : `FILTER regex(?pbid, '${group} ${table} ') .`
     switch (table) {
       case 'insid':
         filters += this.addInstitutionFilters(form)
