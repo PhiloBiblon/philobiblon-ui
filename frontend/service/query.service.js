@@ -72,7 +72,7 @@ export class QueryService {
   }
 
   generateLangFilter (lang) {
-    return `OPTIONAL { ?item rdfs:label ?label FILTER langMatches(lang(?label), '${lang}') }.`
+    return `OPTIONAL { ?item rdfs:label ?label FILTER langMatches(lang(?label), '${this.sanitizeSparqlLiteral(lang)}') }.`
   }
 
   generateLangFilters (lang) {
@@ -85,7 +85,7 @@ export class QueryService {
   }
 
   generateDescLangFilter (itemName, lang) {
-    return `OPTIONAL { ?${itemName} schema:description ?desc FILTER langMatches(lang(?desc), '${lang}') }.`
+    return `OPTIONAL { ?${itemName} schema:description ?desc FILTER langMatches(lang(?desc), '${this.sanitizeSparqlLiteral(lang)}') }.`
   }
 
   generateDescLangFilters (itemName, lang) {
@@ -104,13 +104,20 @@ export class QueryService {
 
   generateFilterByWord (filterField, filterValue) {
     const filterFieldWithoutDiacritics = this.replaceDiacritics(`?${filterField}`)
-    return `contains(${filterFieldWithoutDiacritics}, '${filterValue}')`
+    return `contains(${filterFieldWithoutDiacritics}, '${this.sanitizeSparqlLiteral(filterValue)}')`
   }
 
   sanitizeSparqlString (input) {
     return input
       .replace(/\\/g, '\\\\')
       .replace(/"/g, '\\"')
+  }
+
+  // Escapes for SPARQL single-quoted string literals; use sanitizeSparqlString for double-quoted contexts.
+  sanitizeSparqlLiteral (input) {
+    return String(input)
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
   }
 
   generateFilterByWords (form, filterField, filterValues) {
@@ -1252,15 +1259,21 @@ export class QueryService {
 
   generateQuery (table, baseQueryFunction, form, lang) {
     let filters = ''
-    const group = form.input.group.value === 'ALL' ? '(.*)' : form.input.group.value
+    const group = form.input.group.value === 'ALL' ? '(.*)' : this.sanitizeSparqlLiteral(form.input.group.value)
     if (form.input.simple_search && form.input.simple_search.value) {
       filters += this.generateFilterSimpleSearch(form)
     }
     if (form.input.q_number.value) {
-      filters += `FILTER(?item = wd:${form.input.q_number.value}) .`
+      const qnum = String(form.input.q_number.value)
+      if (/^Q\d+$/.test(qnum)) {
+        filters += `FILTER(?item = wd:${qnum}) .`
+      }
     }
     if (form.input.philobiblon_id.value) {
-      filters += `FILTER regex(?pbid, '${group} ${table} ${form.input.philobiblon_id.value}') . `
+      const pbid = String(form.input.philobiblon_id.value)
+      if (/^\d+$/.test(pbid)) {
+        filters += `FILTER regex(?pbid, '${group} ${table} ${pbid}') . `
+      }
     } else {
       filters += `FILTER regex(?pbid, '${group} ${table} ') .`
     }
@@ -1393,7 +1406,7 @@ export class QueryService {
   }
 
   entityFromPBIDQuery (pbid) {
-    return this.addPrefixes(`SELECT ?item WHERE { ?item wdt:P476 '${pbid}'. }`)
+    return this.addPrefixes(`SELECT ?item WHERE { ?item wdt:P476 '${this.sanitizeSparqlLiteral(pbid)}'. }`)
   }
 
   allItemsQuery (text, lang) {
@@ -1407,9 +1420,9 @@ export class QueryService {
           || REGEX(?pbid, '(.*) subid ') || REGEX(?pbid, '(.*) texid ')).
         OPTIONAL { ?item skos:altLabel ?alias }
         OPTIONAL { ?item schema:description ?desc }
-        FILTER ((contains(replace(replace(replace(replace(replace(lcase(?label), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${text}'))
-          || (contains(replace(replace(replace(replace(replace(lcase(?desc), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${text}'))
-          || (contains(replace(replace(replace(replace(replace(lcase(?alias), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${text}')))
+        FILTER ((contains(replace(replace(replace(replace(replace(lcase(?label), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${this.sanitizeSparqlLiteral(text)}'))
+          || (contains(replace(replace(replace(replace(replace(lcase(?desc), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${this.sanitizeSparqlLiteral(text)}'))
+          || (contains(replace(replace(replace(replace(replace(lcase(?alias), '[áàâäãåā]', 'a', 'i'), '[éèêëē]', 'e', 'i'), '[íìîïī]', 'i', 'i'), '[óòôöõō]', 'o', 'i'), '[úùûüū]', 'u', 'i'), '${this.sanitizeSparqlLiteral(text)}')))
       }
       OFFSET 0
       LIMIT 10
@@ -1478,7 +1491,7 @@ export class QueryService {
       SELECT ?item ?item_pbid ?item_number
       WHERE {
         ?item wdt:P476 ?item_pbid .
-        FILTER regex(?item_pbid, '${database} ${table} ') .
+        FILTER regex(?item_pbid, '${this.sanitizeSparqlLiteral(database)} ${this.sanitizeSparqlLiteral(table)} ') .
         BIND(REPLACE(?item_pbid, ".* ([0-9]+)$", "$1") AS ?item_number)
       }
       ORDER BY DESC(xsd:integer(?item_number))
