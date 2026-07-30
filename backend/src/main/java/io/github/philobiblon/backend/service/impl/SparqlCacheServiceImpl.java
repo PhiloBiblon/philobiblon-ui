@@ -357,35 +357,36 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         }
     }
 
-    /** Returns the query's current generation, registering it first if unknown. */
+    /**
+     * Returns the query's current generation, registering it first if unknown.
+     * computeIfAbsent makes the check-then-register atomic per hash: two concurrent
+     * first-time requests for the same never-before-seen query would otherwise both pass
+     * the "not registered" check and both insert, wastefully double-registering it.
+     */
     private long ensureRegistered(String queryHash, String sparqlQuery, String searchVars, String hint) {
-        Long generation = generationByHash.get(queryHash);
-        if (generation != null) {
-            return generation;
-        }
-        Optional<CachedQuery> existing = queryRepository.findById(queryHash);
-        if (existing.isPresent()) {
-            generationByHash.put(queryHash, existing.get().getGeneration());
-            traitsByHash.put(queryHash, new QueryTraits(existing.get().isLangAware(), existing.get().isDbAware(),
-                    existing.get().isBgAware()));
-            return existing.get().getGeneration();
-        }
-        // Parse errors are not transient: reject before persisting so the registry never
-        // accumulates queries that every retry, startup and nightly refresh would fail on.
-        QueryTraits traits;
-        try {
-            List<String> resultVars = QueryFactory.create(sparqlQuery).getResultVars();
-            traits = new QueryTraits(resultVars.contains(LANG_VAR), resultVars.contains(DB_VAR),
-                    resultVars.contains(BG_VAR));
-        } catch (QueryException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid SPARQL query: " + e.getMessage(), e);
-        }
-        queryRepository.save(new CachedQuery(queryHash, sparqlQuery, searchVars, truncate(hint, 255), Instant.now(),
-                traits.langAware(), traits.dbAware(), traits.bgAware()));
-        generationByHash.put(queryHash, 0L);
-        traitsByHash.put(queryHash, traits);
-        logger.info("SPARQL cache: registered new query {} (hint: {})", queryHash, hint);
-        return 0L;
+        return generationByHash.computeIfAbsent(queryHash, hash -> {
+            Optional<CachedQuery> existing = queryRepository.findById(hash);
+            if (existing.isPresent()) {
+                traitsByHash.put(hash, new QueryTraits(existing.get().isLangAware(), existing.get().isDbAware(),
+                        existing.get().isBgAware()));
+                return existing.get().getGeneration();
+            }
+            // Parse errors are not transient: reject before persisting so the registry never
+            // accumulates queries that every retry, startup and nightly refresh would fail on.
+            QueryTraits traits;
+            try {
+                List<String> resultVars = QueryFactory.create(sparqlQuery).getResultVars();
+                traits = new QueryTraits(resultVars.contains(LANG_VAR), resultVars.contains(DB_VAR),
+                        resultVars.contains(BG_VAR));
+            } catch (QueryException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid SPARQL query: " + e.getMessage(), e);
+            }
+            queryRepository.save(new CachedQuery(hash, sparqlQuery, searchVars, truncate(hint, 255), Instant.now(),
+                    traits.langAware(), traits.dbAware(), traits.bgAware()));
+            traitsByHash.put(hash, traits);
+            logger.info("SPARQL cache: registered new query {} (hint: {})", hash, hint);
+            return 0L;
+        });
     }
 
     /** Single-flight: concurrent requests for the same query share one load. */
