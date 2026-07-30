@@ -131,36 +131,47 @@ export class QueryService {
     }
   }
 
+  // templates.generateBitagapGroup*Filters() only bind ?bg (no arg, no filtering): the
+  // cached-search contract needs the query text unchanged across ALL/ORIG/CARTAS so the
+  // three selections share one cache entry, and filters by ?bg server-side instead. This
+  // class's addXxxFilters() methods build queries run directly against the SPARQL
+  // endpoint (Base.vue, not the backend cache), so there's no such entry to share —
+  // restrict by the selected subgroup locally instead.
+  _bitagapGroupFilter (bitagapGroup) {
+    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
+    return `FILTER(?bg = "${bitagapGroup}") .`
+  }
+
   generateBitagapGroupInstitutionFilters (bitagapGroup) {
-    return templates.generateBitagapGroupInstitutionFilters(bitagapGroup)
+    return templates.generateBitagapGroupInstitutionFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupWorkFilters (bitagapGroup) {
-    return templates.generateBitagapGroupWorkFilters(bitagapGroup)
+    return templates.generateBitagapGroupWorkFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupPersonFilters (bitagapGroup) {
-    return templates.generateBitagapGroupPersonFilters(bitagapGroup)
+    return templates.generateBitagapGroupPersonFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupReferenceFilters (bitagapGroup) {
-    return templates.generateBitagapGroupReferenceFilters(bitagapGroup)
+    return templates.generateBitagapGroupReferenceFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupGeographyFilters (bitagapGroup) {
-    return templates.generateBitagapGroupGeographyFilters(bitagapGroup)
+    return templates.generateBitagapGroupGeographyFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupSubjectFilters (bitagapGroup) {
-    return templates.generateBitagapGroupSubjectFilters(bitagapGroup)
+    return templates.generateBitagapGroupSubjectFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupManuscriptFilters (bitagapGroup) {
-    return templates.generateBitagapGroupManuscriptFilters(bitagapGroup)
+    return templates.generateBitagapGroupManuscriptFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupCnumFilters (bitagapGroup) {
-    return templates.generateBitagapGroupCnumFilters(bitagapGroup)
+    return templates.generateBitagapGroupCnumFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupFiltersForSubject (bitagapGroup) {
