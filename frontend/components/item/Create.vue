@@ -101,12 +101,6 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 import { WikibaseService } from '~/service/wikibase.service'
 
-const CNUM_LABEL_PREFIXES = {
-  BETA: { work: 'Testimonio de', partOf: 'Parte de' },
-  BITECA: { work: 'Testimoni de', partOf: 'Part de' },
-  BITAGAP: { work: 'Testimonio de', partOf: 'Parte de' }
-}
-
 const props = defineProps({
   database: { type: String, required: true },
   table: { type: String, required: true }
@@ -606,7 +600,7 @@ function generateLabelFromClaims () {
       const work = getClaimValue('P590')
       const partOf = getClaimValue('P8')
       if (work && partOf) {
-        const prefixes = CNUM_LABEL_PREFIXES[props.database] || {}
+        const prefixes = WikibaseService.CNUM_LABEL_PREFIXES[props.database] || {}
         const prefixedWork = prefixes.work ? `${prefixes.work} ${work}` : work
         const prefixedPartOf = prefixes.partOf ? `${prefixes.partOf} ${partOf}` : partOf
         const workTerminated = /[.!?]\s*$/.test(prefixedWork) ? prefixedWork.trimEnd() : `${prefixedWork}.`
