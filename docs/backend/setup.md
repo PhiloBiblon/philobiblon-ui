@@ -112,19 +112,21 @@ Should return JSON with configuration:
 }
 ```
 
-### 2. SPARQL Cache Info
+### 2. SPARQL Cache Status
 
 ```bash
-curl http://localhost:8080/api/sparql/cacheinfo
+curl http://localhost:8080/api/search/cache/status
 ```
 
-Should return cache statistics:
+Should return the state of the DB-backed result cache:
 
 ```json
 {
-  "size": 0,
-  "hitCount": 0,
-  "missCount": 0
+  "totalQueries": 0,
+  "totalRows": 0,
+  "loadingCount": 0,
+  "failedCount": 0,
+  "queries": []
 }
 ```
 

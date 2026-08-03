@@ -4,11 +4,11 @@ This document explains the architecture and structure of the PhiloBiblon UI back
 
 ## Technology Stack
 
-- **Spring Boot 3.0.5**: Application framework
-- **Java 17**: Programming language
-- **ScribeJava 8.3.3**: OAuth 1.0a library
-- **Caffeine 3.1.6**: High-performance caching
-- **Apache Jena 5.4.0**: SPARQL processing (if needed)
+- **Spring Boot 4**: Application framework
+- **Java 21**: Programming language
+- **ScribeJava**: OAuth 1.0a library
+- **Spring Data JPA + H2 (file-based)**: persistence for the SPARQL result cache
+- **Apache Jena**: SPARQL processing
 
 ## Application Structure
 
@@ -22,19 +22,22 @@ backend/
     │   ├── OAuthController.java
     │   ├── ProxyController.java
     │   ├── SearchController.java
-    │   ├── SparqlController.java
     │   └── impl/                  # Controller implementations
     ├── service/                   # Business logic
     │   ├── WikibaseOAuthService.java
-    │   ├── SparqlService.java
-    │   ├── SearchService.java
+    │   ├── SparqlCacheService.java
+    │   ├── QuickSearchService.java
     │   └── impl/                  # Service implementations
+    ├── entity/                    # JPA entities (cached_query, cached_query_row, search_item)
+    ├── repository/                # Spring Data repositories
     ├── helper/                    # Utility classes
-    │   └── TimedMap.java          # Token expiration map
+    │   ├── TimedMap.java          # Token expiration map
+    │   └── QueryHasher.java       # SHA-256 cache keys
     ├── representation/            # DTOs
     │   ├── AccessToken.java
     │   ├── RequestToken.java
-    │   └── CacheInfo.java
+    │   ├── SearchResponse.java
+    │   └── CacheStatusResponse.java
     └── error/                     # Exception handling
         └── WikibaseException.java
 ```
@@ -217,19 +220,13 @@ private final TimedMap<String, OAuth1AccessToken> accessTokens =
 - Request tokens: 5-minute TTL
 - Access tokens: 60-minute TTL with auto-refresh on access
 
-#### SparqlServiceImpl
+#### SparqlCacheServiceImpl
 
-Executes SPARQL queries and manages caching.
-
-```java
-@Cacheable("sparqlCache")
-public String executeSparql(String query) {
-    // Execute query against SPARQL endpoint
-    // Return JSON results
-}
-```
-
-Uses Spring's `@Cacheable` annotation with Caffeine cache.
+Serves `POST /api/search` from a DB-backed materialized cache: each query is registered
+in `cached_query` and its results stored as searchable rows in `cached_query_row`;
+searches run as SQL LIKE + Java re-rank, cold queries load in the background with
+retries, and a nightly cron refreshes every registered query. See
+[caching.md](caching.md) for the full design.
 
 ### Helper Classes
 
@@ -258,7 +255,7 @@ public class TimedMap<K, V> {
 }
 ```
 
-**Why not use Caffeine?** `TimedMap` is used for OAuth tokens which need custom expiration logic and manual cleanup.
+`TimedMap` is used for OAuth tokens, which need custom expiration logic and manual cleanup.
 
 ### DTOs (Data Transfer Objects)
 
@@ -278,13 +275,10 @@ public record AccessToken(String token, String tokenSecret) {}
 
 Returned by `/api/oauth/access-token`.
 
-#### CacheInfo
+#### CacheStatusResponse
 
-```java
-public record CacheInfo(long size, long hitCount, long missCount) {}
-```
-
-Returned by `/api/sparql/cacheinfo`.
+State of the DB-backed SPARQL cache (totals plus per-query generation, row count,
+last refresh/access and last error). Returned by `/api/search/cache/status`.
 
 ## Configuration
 
@@ -308,8 +302,8 @@ sparql.endpoint=${SPARQL_ENDPOINT}
 # CORS
 allowed.origins=${ALLOWED_ORIGINS}
 
-# Caching
-spring.cache.type=caffeine
+# SPARQL result cache (see caching.md for the search.cache.* / search.index.* properties)
+spring.datasource.url=jdbc:h2:file:${SEARCH_DB_PATH:./data/searchcache}
 ```
 
 ### CORS Configuration
@@ -361,23 +355,23 @@ Frontend                Backend                 Wikibase
    |<--response------------|                        |
 ```
 
-### 3. Cached SPARQL Query
+### 3. Cached Search Query
 
 ```
-Frontend                Backend                 SPARQL Endpoint
-   |                       |                        |
-   |--POST /sparql/query-->|                        |
-   |                       |--check cache---------->|
-   |                       |  (Caffeine)            |
-   |                       |                        |
-   |                       |--[cache miss]--------->|
-   |                       |                        |
-   |                       |--execute query-------->|
-   |                       |                        |
-   |                       |<--results--------------|
-   |                       |                        |
-   |                       |--store in cache------->|
-   |<--results-------------|                        |
+Frontend                Backend                     SPARQL Endpoint
+   |                       |                            |
+   |--POST /api/search---->|                            |
+   |  (v=2, sparqlQuery,q) |--lookup cached_query------>|
+   |                       |                            |
+   |                       |--[unknown query]           |
+   |                       |  register + background---->|
+   |<--{indexLoading:true}-|  load (retries)            |
+   |                       |                            |
+   |  ...retry later...    |<--results, stored as rows--|
+   |                       |                            |
+   |--POST /api/search---->|                            |
+   |                       |--SQL LIKE + re-rank        |
+   |<--{results:[...]}-----|  from cached_query_row     |
 ```
 
 ## Error Handling
@@ -433,7 +427,7 @@ logging.level.org.springframework.web=DEBUG
 
 ### 1. Caching
 
-- **SPARQL queries**: Caffeine cache (in-memory)
+- **SPARQL queries**: DB-backed result cache (H2, materialized rows — see [caching.md](caching.md))
 - **OAuth tokens**: TimedMap (in-memory with expiration)
 
 ### 2. Connection Pooling

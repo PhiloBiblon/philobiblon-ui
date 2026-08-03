@@ -1,0 +1,122 @@
+package io.github.philobiblon.backend.controller.impl;
+
+import io.github.philobiblon.backend.representation.Option;
+import io.github.philobiblon.backend.representation.SearchResponse;
+import io.github.philobiblon.backend.service.SparqlCacheService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+class SearchControllerImplTest {
+
+    private SparqlCacheService sparqlCacheService;
+    private MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        sparqlCacheService = mock(SparqlCacheService.class);
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(new SearchControllerImpl(sparqlCacheService))
+                .build();
+    }
+
+    @Test
+    void requestWithoutVersionIsRejected() throws Exception {
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("sparqlQuery", "SELECT ?label WHERE {}")
+                        .param("q", "barcelona"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void v2RequestReturnsEnvelopeWithIndexLoadingFlag() throws Exception {
+        when(sparqlCacheService.search(anyString(), anyString(), eq("label,pbid"), eq("bioid.author"), any(), any(), any(), any()))
+                .thenReturn(new SearchResponse(true, List.of()));
+
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("v", "2")
+                        .param("sparqlQuery", "SELECT ?label WHERE {}")
+                        .param("q", "barcelona")
+                        .param("searchVars", "label,pbid")
+                        .param("hint", "bioid.author"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.indexLoading").value(true))
+                .andExpect(jsonPath("$.results").isArray());
+    }
+
+    @Test
+    void v2RequestPassesLangThrough() throws Exception {
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), eq("ca"), any(), any()))
+                .thenReturn(new SearchResponse(false, List.of()));
+
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("v", "2")
+                        .param("sparqlQuery", "SELECT ?label ?lang WHERE {}")
+                        .param("q", "barcelona")
+                        .param("lang", "ca"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.indexLoading").value(false));
+    }
+
+    @Test
+    void v2RequestPassesGroupThrough() throws Exception {
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any(), eq("BETA"), any()))
+                .thenReturn(new SearchResponse(false, List.of()));
+
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("v", "2")
+                        .param("sparqlQuery", "SELECT ?label ?db WHERE {}")
+                        .param("q", "barcelona")
+                        .param("group", "BETA"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.indexLoading").value(false));
+    }
+
+    @Test
+    void v2RequestPassesBitagapGroupThrough() throws Exception {
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any(), any(), eq("ORIG")))
+                .thenReturn(new SearchResponse(false, List.of()));
+
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("v", "2")
+                        .param("sparqlQuery", "SELECT ?label ?bg WHERE {}")
+                        .param("q", "cartas")
+                        .param("bitagapGroup", "ORIG"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.indexLoading").value(false));
+    }
+
+    @Test
+    void v2WarmRequestReturnsResultsInsideEnvelope() throws Exception {
+        when(sparqlCacheService.search(anyString(), anyString(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(new SearchResponse(false, List.of(new Option("Barcelona", Map.of("item", "Q42")))));
+
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("v", "2")
+                        .param("sparqlQuery", "SELECT ?label WHERE {}")
+                        .param("q", "barcelona"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.indexLoading").value(false))
+                .andExpect(jsonPath("$.results[0].text").value("Barcelona"));
+    }
+}

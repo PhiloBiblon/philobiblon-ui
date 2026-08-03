@@ -1,9 +1,9 @@
 import { useQueryStatusStore } from '~/stores/queryStatus'
+// Pure template functions live in query.templates.js (no Nuxt/Pinia imports) so
+// scripts/seed-cache can generate byte-identical queries; this class delegates
+// to them, injecting the configured SPARQL prefix.
+import * as templates from './query.templates'
 
-const BITAGAP_DB = 'BITAGAP'
-const CARTAS_TEXT = '[Cartas de]'
-const BITAGAP_GROUP_CARTAS = 'CARTAS'
-const BITAGAP_GROUP_ORIGINAL = 'ORIG'
 export class QueryService {
   static DATE_SORT_PATTERNS = {
     bibid: 'OPTIONAL { ?item wdt:P49 ?date_raw }',
@@ -35,40 +35,19 @@ export class QueryService {
   }
 
   addPrefixes (query) {
-    if (this.$config.sparqlQueryPrefix) {
-      return `${this.$config.sparqlQueryPrefix.replaceAll('\\n', '\n')} ${query}`
-    } else {
-      return query
-    }
+    return templates.addPrefixes(query, this.$config.sparqlQueryPrefix)
   }
 
   generateSearchLangFiltersWithoutBind () {
-    return "FILTER (lang(?labelObj) IN ('ca', 'es', 'en', 'gl', 'pt')) ."
+    return templates.generateSearchLangFiltersWithoutBind()
   }
 
-  generateSearchLangFilters (lang) {
-    return `
-      ${this.generateSearchLangFiltersWithoutBind(lang)}
-      BIND(STR(?labelObj) AS ?label) .
-      `
+  generateSearchLangFilters () {
+    return templates.generateSearchLangFilters()
   }
 
-  generateSearchLangGroupPattern (itemName, lang) {
-    // the sameAs condition is used for redirections (one item is redirected to another one)
-    return `
-      OPTIONAL {
-        {
-          ?${itemName} rdfs:label ?labelObj .
-        }
-        UNION
-        {
-          ?${itemName} owl:sameAs ?real_target .
-          ?real_target rdfs:label ?labelObj .
-        }
-        ${this.generateSearchLangFilters(lang)}
-      }
-      ${this.generateDescLangFilters(itemName, lang)}
-      `
+  generateSearchLangGroupPattern (itemName) {
+    return templates.generateSearchLangGroupPattern(itemName)
   }
 
   generateLangFilter (lang) {
@@ -84,17 +63,18 @@ export class QueryService {
     return langFilters
   }
 
+  // Per-language desc filters for the (non-cached) results listing only; the cached
+  // autocomplete/global queries use the lang-free templates.generateDescLangFilter(s).
   generateDescLangFilter (itemName, lang) {
     return `OPTIONAL { ?${itemName} schema:description ?desc FILTER langMatches(lang(?desc), '${lang}') }.`
   }
 
   generateDescLangFilters (itemName, lang) {
     let langFilters = this.generateDescLangFilter(itemName, lang)
-    // fallback to en if selected lang has no label
+    // fallback to en if selected lang has no desc
     if (lang !== 'en') {
       langFilters += '\n' + this.generateDescLangFilter(itemName, 'en')
     }
-
     return langFilters
   }
 
@@ -151,121 +131,55 @@ export class QueryService {
     }
   }
 
-  _bitagapGroupFilter (bitagapGroup, labelVar) {
-    if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-      return `
-          FILTER(!CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"))
-          `
-    } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-      return `
-          FILTER(CONTAINS(STR(?${labelVar}), "${CARTAS_TEXT}"))
-          `
-    }
-    return ''
-  }
-
-  _generateBitagapGroupSubjectTopicFilters (bitagapGroup) {
+  // templates.generateBitagapGroup*Filters() only bind ?bg (no arg, no filtering): the
+  // cached-search contract needs the query text unchanged across ALL/ORIG/CARTAS so the
+  // three selections share one cache entry, and filters by ?bg server-side instead. This
+  // class's addXxxFilters() methods build queries run directly against the SPARQL
+  // endpoint (Base.vue, not the backend cache), so there's no such entry to share —
+  // restrict by the selected subgroup locally instead.
+  _bitagapGroupFilter (bitagapGroup) {
     if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return `
-        ?item wdt:P243 ?related_topic_item .
-        ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-        FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-        ?related_topic_item rdfs:label ?related_topic_item_label .
-        ${this._bitagapGroupFilter(bitagapGroup, 'related_topic_item_label')}
-        `
+    return `FILTER(?bg = "${bitagapGroup}") .`
   }
 
   generateBitagapGroupInstitutionFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-        ?related_work_item wdt:P243 ?topic_item .
-        ?topic_item rdfs:label ?topic_item_label .
-        ?related_work_item wdt:P243 ?item .
-        ${this._bitagapGroupFilter(bitagapGroup, 'topic_item_label')}
-        `
+    return templates.generateBitagapGroupInstitutionFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupWorkFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return `
-        ?item wdt:P243 ?subjectItem .
-        ?subjectItem rdfs:label ?labelSubjectItem .
-        ${this._bitagapGroupFilter(bitagapGroup, 'labelSubjectItem')}
-        `
+    return templates.generateBitagapGroupWorkFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupPersonFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return `
-        ?related_work_item wdt:P476 ?related_work_item_pbid .
-        FILTER regex(?related_work_item_pbid, '${BITAGAP_DB} texid ') .
-        ?related_work_item wdt:P243 ?topic_item .
-        ?topic_item rdfs:label ?topic_item_label .
-        ?related_work_item wdt:P703 ?item .
-        ${this._bitagapGroupFilter(bitagapGroup, 'topic_item_label')}
-        `
+    return templates.generateBitagapGroupPersonFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupReferenceFilters (bitagapGroup) {
-    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+    return templates.generateBitagapGroupReferenceFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupGeographyFilters (bitagapGroup) {
-    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+    return templates.generateBitagapGroupGeographyFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupSubjectFilters (bitagapGroup) {
-    if (!bitagapGroup || bitagapGroup === 'ALL') { return '' }
-    return this._bitagapGroupFilter(bitagapGroup, 'label')
+    return templates.generateBitagapGroupSubjectFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupManuscriptFilters (bitagapGroup) {
-    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+    return templates.generateBitagapGroupManuscriptFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupCnumFilters (bitagapGroup) {
-    return this._generateBitagapGroupSubjectTopicFilters(bitagapGroup)
+    return templates.generateBitagapGroupCnumFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
   generateBitagapGroupFiltersForSubject (bitagapGroup) {
-    if (bitagapGroup === BITAGAP_GROUP_ORIGINAL) {
-      return `
-          FILTER(!CONTAINS(?label, "${CARTAS_TEXT}"))
-        `
-    } else if (bitagapGroup === BITAGAP_GROUP_CARTAS) {
-      return `
-          FILTER(CONTAINS(?label, "${CARTAS_TEXT}"))
-        `
-    }
-    return ''
+    return templates.generateBitagapGroupFiltersForSubject(bitagapGroup)
   }
 
   generateBitagapGroupFilters (database, bitagapGroup, table) {
-    if (database === BITAGAP_DB) {
-      switch (table) {
-        case 'insid':
-          return this.generateBitagapGroupInstitutionFilters(bitagapGroup)
-        case 'texid':
-          return this.generateBitagapGroupWorkFilters(bitagapGroup)
-        case 'libid':
-          return ''
-        case 'bioid':
-          return this.generateBitagapGroupPersonFilters(bitagapGroup)
-        case 'bibid':
-          return this.generateBitagapGroupReferenceFilters(bitagapGroup)
-        case 'geoid':
-          return this.generateBitagapGroupGeographyFilters(bitagapGroup)
-        case 'subid':
-          return this.generateBitagapGroupSubjectFilters(bitagapGroup)
-        case 'manid':
-          return this.generateBitagapGroupManuscriptFilters(bitagapGroup)
-        case 'cnum':
-          return this.generateBitagapGroupCnumFilters(bitagapGroup)
-      }
-    }
-    return ''
+    return templates.generateBitagapGroupFilters(database, bitagapGroup, table)
   }
 
   addInstitutionFilters (form) {
@@ -1250,7 +1164,7 @@ export class QueryService {
     return filters
   }
 
-  generateQuery (table, baseQueryFunction, form, lang) {
+  generateQuery (table, baseQueryFunction, form) {
     let filters = ''
     const group = form.input.group.value === 'ALL' ? '(.*)' : form.input.group.value
     if (form.input.simple_search && form.input.simple_search.value) {
@@ -1294,7 +1208,7 @@ export class QueryService {
         break
     }
     if (filters.includes('STR(?label)') || filters.includes('lcase(?label)')) {
-      filters += `?item rdfs:label ?labelObj ${this.generateSearchLangFilters(lang)}`
+      filters += `?item rdfs:label ?labelObj ${this.generateSearchLangFilters()}`
     }
     return this.addPrefixes(baseQueryFunction({ filters }))
   }
@@ -1366,30 +1280,19 @@ export class QueryService {
       ORDER BY ${this.getSortClause(!!dateSortPattern)}
       OFFSET ${(useQueryStatusStore().currentPage - 1) * resultsPerPage}
       LIMIT ${resultsPerPage}`
-    return this.generateQuery(table, SEARCH_QUERY, form, lang)
+    return this.generateQuery(table, SEARCH_QUERY, form)
   }
 
   fillTemplate (template, replacements) {
-    return template.replace(/{{(\w+)}}/g, (match, p1) => replacements[p1] || '')
+    return templates.fillTemplate(template, replacements)
   }
 
-  filterQuery (query, database, bitagapGroup, table, lang) {
-    if (database === 'ALL') {
-      database = '(.*)'
-    }
-    const replacements = {
-      database,
-      table,
-      langFilter: this.generateSearchLangFilters(lang),
-      langFilterWithoutBind: this.generateSearchLangFiltersWithoutBind(lang),
-      itemLangGroupPattern: this.generateSearchLangGroupPattern('item', lang),
-      targetItemLangGroupPattern: this.generateSearchLangGroupPattern('target_item', lang),
-      descLangFilter: this.generateDescLangFilters('item', lang),
-      analyticItemDescLangFilter: this.generateDescLangFilters('analytic_item', lang),
-      bitagapGroupFilter: this.generateBitagapGroupFilters(database, bitagapGroup, table),
-      bitagapGroupSubjectFilter: this.generateBitagapGroupFiltersForSubject(bitagapGroup)
-    }
-    return this.addPrefixes(this.fillTemplate(query, replacements))
+  filterQuery (query, table) {
+    return templates.filterQuery(query, table, this.$config.sparqlQueryPrefix)
+  }
+
+  globalSearchQuery () {
+    return templates.globalSearchQuery(this.$config.sparqlQueryPrefix)
   }
 
   entityFromPBIDQuery (pbid) {

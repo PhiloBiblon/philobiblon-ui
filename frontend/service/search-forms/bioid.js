@@ -1,0 +1,360 @@
+/**
+ * Search form definition for the bioid table.
+ * Pure data (labels are i18n keys, autocomplete.query are SPARQL templates
+ * filled by query.templates.js filterQuery), importable from Nuxt and Node
+ * (scripts/seed-cache uses it to generate every autocomplete query).
+ */
+export default function createForm () {
+  return {
+        section: [
+          'primary',
+          'advanced'
+        ],
+        input: {
+          group: {
+            permanent: true,
+            value: 'ALL',
+            disabled: false
+          },
+          bitagap_group: {
+            permanent: true,
+            value: 'ALL',
+            disabled: false
+          },
+          simple_search: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.simple_search.label',
+            hint: 'search.form.common.simple_search.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?item ?label ?aliases ?desc ?lang ?db ?bg
+              WHERE {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                {{bitagapGroupFilter}}
+                {
+                  ?item rdfs:label ?labelObj .
+                  {{langFilter}}
+                }
+                UNION
+                {
+                  ?item skos:altLabel ?aliasObj .
+                  {{aliasLangFilter}}
+                }
+                {{descLangFilter}}
+              }
+              `,
+              allowFreeText: true
+            }
+          },
+          q_number: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.q_number.label',
+            hint: 'search.form.common.q_number.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
+          philobiblon_id: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.common.philobiblon_id.label',
+            hint: 'search.form.common.philobiblon_id.hint',
+            type: 'text',
+            value: '',
+            visible: true,
+            disabled: false
+          },
+          name: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.bioid.name.label',
+            hint: 'search.form.common.personal_name.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?item (STR(?labelObj) AS ?label) (STR(?aliasObj) AS ?aliases) ?desc ?lang ?db ?bg {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                {{bitagapGroupFilter}}
+                {
+                  ?item wdt:P34 ?labelObj .
+                  {{langFilterWithoutBind}}
+                }
+                UNION
+                {
+                  ?item rdfs:label ?labelObj .
+                  {{langFilterWithoutBind}}
+                }
+                UNION
+                {
+                  ?item skos:altLabel ?aliasObj .
+                  {{aliasLangFilterWithoutBind}}
+                }
+                {{descLangFilter}}
+              }
+              `
+            }
+          },
+          title: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.bioid.title.label',
+            hint: 'search.form.bioid.title.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg
+              WHERE {
+                ?item wdt:P476 ?pbid .
+                FILTER regex(?pbid, '{{database}} {{table}} ') .
+                BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                {{bitagapGroupFilter}}
+
+                VALUES ?property { wdt:P171 wdt:P165 }
+                ?item ?property ?target_item .
+
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          date: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.bioid.date.label',
+            hint: 'search.form.bioid.date.hint',
+            type: 'date',
+            value: {},
+            visible: true,
+            disabled: false
+          },
+          associated_place: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.bioid.associated_place.label',
+            hint: 'search.form.bioid.associated_place.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
+                {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                    {{bitagapGroupFilter}}
+                    {
+                      VALUES ?property { p:P137 p:P165 p:P746 p:P172 }
+                      ?item ?property ?item_prop .
+                      ?item_prop pq:P47 ?target_item
+                    }
+                    UNION
+                    {
+                      ?item wdt:P47 ?target_item .
+                    }
+                    ?target_item wdt:P476 ?geo_pbid .
+                    FILTER regex(?geo_pbid, "(.*) geoid ") .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          religion: {
+            active: true,
+            section: 'advanced',
+            label: 'search.form.bioid.religion.label',
+            hint: 'search.form.bioid.religion.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
+                {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                    {{bitagapGroupFilter}}
+                    ?item wdt:P172 ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          religious_order: {
+            active: true,
+            section: 'advanced',
+            label: 'search.form.bioid.religious_order.label',
+            hint: 'search.form.bioid.religious_order.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
+                {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                    ?item wdt:P746 ?target_item .
+                    {{bitagapGroupFilter}}
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          profession: {
+            active: true,
+            section: 'primary',
+            label: 'search.form.bioid.profession.label',
+            hint: 'search.form.bioid.profession.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
+                {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                    ?item wdt:P165 ?target_item .
+                    {{bitagapGroupFilter}}
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          related_institution: {
+            active: true,
+            section: 'advanced',
+            label: 'search.form.bioid.related_institution.label',
+            hint: 'search.form.bioid.related_institution.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
+                {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                    {{bitagapGroupFilter}}
+                    ?item wdt:P232 ?target_item .
+                    ?target_item wdt:P476 ?target_pbid .
+                    FILTER regex(?target_pbid, "(.*) insid ") .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          associated_person: {
+            active: true,
+            section: 'advanced',
+            label: 'search.form.bioid.associated_person.label',
+            hint: 'search.form.bioid.associated_person.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db WHERE {
+                {
+                  SELECT DISTINCT ?target_item ?db WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ') .
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                    {{bitagapGroupFilter}}
+                    VALUES ?property { wdt:P703 wdt:P141 wdt:P142 wdt:P150 wdt:P203 wdt:P84 wdt:P505 wdt:P629 wdt:P504 wdt:P258 wdt:P192 wdt:P191 wdt:P33 wdt:P161 wdt:P190 wdt:P220 wdt:P735 wdt:P257 wdt:P486 wdt:P591 }
+                    ?item ?property ?target_item .
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          subject: {
+            active: true,
+            section: 'advanced',
+            label: 'search.form.common.subject.label',
+            hint: 'search.form.common.subject.hint',
+            type: 'autocomplete',
+            value: {},
+            visible: true,
+            disabled: false,
+            autocomplete: {
+              query:
+              `
+              SELECT DISTINCT ?target_item ?label ?desc ?lang ?db ?bg WHERE {
+                {
+                  SELECT DISTINCT ?target_item ?db ?bg WHERE {
+                    ?item wdt:P476 ?pbid .
+                    FILTER regex(?pbid, '{{database}} {{table}} ')
+                    BIND(STRBEFORE(?pbid, ' ') AS ?db) .
+                    VALUES ?property { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
+                    ?item ?property ?target_item .
+                    {{bitagapGroupSubjectFilter}}
+                  }
+                }
+                {{targetItemLangGroupPattern}}
+              }
+              `
+            }
+          },
+          search_type: {
+            permanent: true,
+            value: true,
+            disabled: false
+          }
+        }
+      }
+}

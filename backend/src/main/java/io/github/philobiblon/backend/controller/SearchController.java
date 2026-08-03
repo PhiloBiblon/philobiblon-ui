@@ -1,22 +1,24 @@
 package io.github.philobiblon.backend.controller;
 
-import io.github.philobiblon.backend.representation.Option;
-import io.github.philobiblon.backend.representation.QuickSearchResponse;
-import jakarta.validation.constraints.NotBlank;
-import org.springframework.validation.annotation.Validated;
+import io.github.philobiblon.backend.representation.CacheStatusResponse;
+import io.github.philobiblon.backend.representation.SearchResponse;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/search")
-@Validated
 public interface SearchController {
 
-    @PostMapping(consumes = "application/x-www-form-urlencoded")
-    List<Option> search(@RequestParam String sparqlQuery, @RequestParam String q) throws IOException;
+    /** Async contract: never blocks; a cold query answers immediately with indexLoading=true. */
+    @PostMapping(params = "v=2", consumes = "application/x-www-form-urlencoded")
+    SearchResponse searchV2(@RequestParam String sparqlQuery,
+                            @RequestParam String q,
+                            @RequestParam(required = false) String searchVars,
+                            @RequestParam(required = false) String hint,
+                            @RequestParam(required = false) Integer limit,
+                            @RequestParam(required = false) String lang,
+                            @RequestParam(required = false) String group,
+                            @RequestParam(required = false) String bitagapGroup);
 
-    @GetMapping("/quick")
-    QuickSearchResponse quickSearch(@RequestParam @NotBlank String q, @RequestParam @NotBlank String lang);
+    @GetMapping("/cache/status")
+    CacheStatusResponse cacheStatus();
 }
