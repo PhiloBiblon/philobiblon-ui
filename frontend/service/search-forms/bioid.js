@@ -313,8 +313,26 @@ export default function createForm () {
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
                     {{bitagapGroupFilter}}
-                    VALUES ?property { wdt:P703 wdt:P141 wdt:P142 wdt:P150 wdt:P203 wdt:P84 wdt:P505 wdt:P629 wdt:P504 wdt:P258 wdt:P192 wdt:P191 wdt:P33 wdt:P161 wdt:P190 wdt:P220 wdt:P735 wdt:P257 wdt:P486 wdt:P591 }
-                    ?item ?property ?target_item .
+                    { ?item wdt:P703 ?target_item }
+                    UNION { ?item wdt:P141 ?target_item }
+                    UNION { ?item wdt:P142 ?target_item }
+                    UNION { ?item wdt:P150 ?target_item }
+                    UNION { ?item wdt:P203 ?target_item }
+                    UNION { ?item wdt:P84  ?target_item }
+                    UNION { ?item wdt:P505 ?target_item }
+                    UNION { ?item wdt:P629 ?target_item }
+                    UNION { ?item wdt:P504 ?target_item }
+                    UNION { ?item wdt:P258 ?target_item }
+                    UNION { ?item wdt:P192 ?target_item }
+                    UNION { ?item wdt:P191 ?target_item }
+                    UNION { ?item wdt:P33  ?target_item }
+                    UNION { ?item wdt:P161 ?target_item }
+                    UNION { ?item wdt:P190 ?target_item }
+                    UNION { ?item wdt:P220 ?target_item }
+                    UNION { ?item wdt:P735 ?target_item }
+                    UNION { ?item wdt:P257 ?target_item }
+                    UNION { ?item wdt:P486 ?target_item }
+                    UNION { ?item wdt:P591 ?target_item }
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -340,8 +358,17 @@ export default function createForm () {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
-                    VALUES ?property { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
-                    ?item ?property ?target_item .
+                    { ?item wdt:P97   ?target_item }
+                    UNION { ?item wdt:P121  ?target_item }
+                    UNION { ?item wdt:P122  ?target_item }
+                    UNION { ?item wdt:P243  ?target_item }
+                    UNION { ?item wdt:P304  ?target_item }
+                    UNION { ?item wdt:P422  ?target_item }
+                    UNION { ?item wdt:P452  ?target_item }
+                    UNION { ?item wdt:P608  ?target_item }
+                    UNION { ?item wdt:P1031 ?target_item }
+                    UNION { ?item wdt:P1094 ?target_item }
+                    UNION { ?item wdt:P1278 ?target_item }
                     {{bitagapGroupSubjectFilter}}
                   }
                 }
