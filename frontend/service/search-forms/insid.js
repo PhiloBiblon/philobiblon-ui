@@ -178,8 +178,17 @@ export default function createForm () {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
-                    VALUES ?property { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
-                    ?item ?property ?target_item .
+                    { ?item wdt:P97   ?target_item }
+                    UNION { ?item wdt:P121  ?target_item }
+                    UNION { ?item wdt:P122  ?target_item }
+                    UNION { ?item wdt:P243  ?target_item }
+                    UNION { ?item wdt:P304  ?target_item }
+                    UNION { ?item wdt:P422  ?target_item }
+                    UNION { ?item wdt:P452  ?target_item }
+                    UNION { ?item wdt:P608  ?target_item }
+                    UNION { ?item wdt:P1031 ?target_item }
+                    UNION { ?item wdt:P1094 ?target_item }
+                    UNION { ?item wdt:P1278 ?target_item }
                     {{bitagapGroupSubjectFilter}}
                   }
                 }
