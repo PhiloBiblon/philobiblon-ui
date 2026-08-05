@@ -195,19 +195,8 @@ function getCreateDisabledReason () {
   if (props.table === 'geoid') requiredPropertyIds.add('P34')
   if (props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
   if (props.table === 'libid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P47') }
-  if (props.table === 'subid') requiredPropertyIds.add('P34')
+  if (props.table === 'subid' || props.table === 'bioid') requiredPropertyIds.add('P34')
   if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
-
-  if (props.table === 'bioid') {
-    const hasName = ['P34', 'P173', 'P291', 'P165', 'P746'].some(p => {
-      const arr = claims.value[p]
-      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
-    })
-    if (!hasName) {
-      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P34')?.property?.label || 'P34'
-      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-    }
-  }
 
   if (props.table === 'bibid') {
     const hasName = ['P247', 'P21', 'P845', 'P1134'].some(p => {
@@ -653,8 +642,11 @@ function generateLabelFromClaims () {
       const work = getClaimValue('P590')
       const partOf = getClaimValue('P8')
       if (work && partOf) {
-        const workTerminated = /[.!?]\s*$/.test(work) ? work.trimEnd() : `${work}.`
-        generatedLabel = `${workTerminated} ${partOf}`
+        const prefixes = WikibaseService.CNUM_LABEL_PREFIXES[props.database] || {}
+        const prefixedWork = prefixes.work ? `${prefixes.work} ${work}` : work
+        const prefixedPartOf = prefixes.partOf ? `${prefixes.partOf} ${partOf}` : partOf
+        const workTerminated = /[.!?]\s*$/.test(prefixedWork) ? prefixedWork.trimEnd() : `${prefixedWork}.`
+        generatedLabel = `${workTerminated} ${prefixedPartOf}`
       }
       break
     }
@@ -674,13 +666,9 @@ function generateLabelFromClaims () {
       break
     }
     case 'bioid': {
-      const fallbackProps = ['P34', 'P173', 'P291', 'P165', 'P746']
-      for (const bioPbid of fallbackProps) {
-        const val = getClaimValue(bioPbid)
-        if (val) {
-          generatedLabel = val
-          break
-        }
+      const name = getClaimValue('P34')
+      if (name) {
+        generatedLabel = name
       }
       break
     }
@@ -699,8 +687,8 @@ function generateLabelFromClaims () {
       if (holding && edition) {
         const position = getClaimValue('P10') || getQualifierValue('P329', 'P10')
         generatedLabel = position
-          ? `${holding}, ${position} (${edition})`
-          : `${holding} (${edition})`
+          ? `${edition}. ${holding}, ${position}`
+          : `${edition}. ${holding}`
       }
       break
     }
