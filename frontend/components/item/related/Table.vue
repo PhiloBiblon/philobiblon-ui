@@ -43,7 +43,7 @@ const { t } = useI18n()
 const items = ref([])
 const currentPage = ref(1)
 const totalResults = ref(0)
-const resultsPerPage = 10
+const resultsPerPage = props.references?.resultsPerPage ?? 10
 
 onMounted(async () => {
   if (props.itemId) {
