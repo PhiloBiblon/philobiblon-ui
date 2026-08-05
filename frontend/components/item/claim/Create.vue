@@ -46,7 +46,7 @@
           </v-tooltip>
         </v-btn>
         <v-btn
-          v-if="claim?.property?.id !== pbid"
+          v-if="claim.removable !== false"
           variant="text"
           icon
           density="compact"
@@ -105,10 +105,9 @@
 </template>
 
 <script setup>
-import { computed, reactive, watch } from 'vue'
+import { reactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
-import { WikibaseService } from '~/service/wikibase.service'
 
 const props = defineProps({
   item: { type: Object, default: null },
@@ -127,8 +126,6 @@ const authStore = useAuthStore()
 
 const claims = reactive([])
 const properties = reactive([])
-
-const pbid = computed(() => WikibaseService.PROPERTY_PBID)
 
 watch(() => props.initialClaims?.length, () => {
   if (props.initialClaims) {

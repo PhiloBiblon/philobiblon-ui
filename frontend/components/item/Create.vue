@@ -99,7 +99,6 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
-import { WikibaseService } from '~/service/wikibase.service'
 
 const props = defineProps({
   database: { type: String, required: true },
@@ -121,6 +120,8 @@ const initialClaimsLoaded = ref(false)
 const initialClaims = ref([])
 const claims = ref([])
 const description = ref('')
+const fieldRules = ref({ required: [], notRemovable: [], hidden: [], groups: {}, qualifierHidden: {} })
+const cvConfig = ref({})
 
 const isUserLogged = computed(() => authStore.isLogged)
 const isCreateDisabled = computed(() => !!getCreateDisabledReason())
@@ -188,36 +189,19 @@ function getCreateDisabledReason () {
     return t('messages.error.inputs.initial_claims')
   }
 
-  const requiredPropertyIds = new Set(['P2', 'P476'])
-  if (props.table === 'manid') requiredPropertyIds.add('P329')
-  if (props.table === 'cnum') { requiredPropertyIds.add('P590'); requiredPropertyIds.add('P8') }
-  if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
-  if (props.table === 'geoid' || props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
-  if (props.table === 'libid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P47') }
-  if (props.table === 'subid') requiredPropertyIds.add('P34')
-  if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
+  // P2/P476 are required the same way on every table, not information that varies per table
+  // like the wiki-configured entries in fieldRules.value.required, so they stay hardcoded here.
+  const requiredPropertyIds = new Set(['P2', 'P476', ...fieldRules.value.required])
 
-  if (props.table === 'bioid') {
-    const hasName = ['P34', 'P173', 'P291', 'P165', 'P746'].some(p => {
+  for (const propIds of Object.values(fieldRules.value.groups)) {
+    const hasValue = propIds.some(p => {
       const arr = claims.value[p]
-      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
+      return Array.isArray(arr) && arr.some(item => item?.value != null && item?.value !== '')
     })
-    if (!hasName) {
-      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P34')?.property?.label || 'P34'
+    if (!hasValue) {
+      const propertyLabel = initialClaims.value.find(c => propIds.includes(c.property?.id))?.property?.label || propIds[0]
       return t('messages.error.inputs.claim_value_missing', { propertyLabel })
     }
-  }
-
-  if (props.table === 'bibid') {
-    const hasName = ['P247', 'P21', 'P1134'].some(p => {
-      const arr = claims.value[p]
-      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
-    })
-    if (!hasName) {
-      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P247')?.property?.label || 'P247'
-      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-    }
-    requiredPropertyIds.add('P11')
   }
 
   for (const propKey of requiredPropertyIds) {
@@ -269,7 +253,14 @@ async function loadInitialClaims () {
   try {
     const res = await $wikibase.getTableLastItem(props.database, props.table)
     if (res?.length && res[0]) {
-      await getDefaultClaims(res[0].item_number)
+      const [newItemConfig, cv] = await Promise.all([
+        $wikibase.getNewItemConfig(props.table),
+        $wikibase.getControlledVocabularyConfig(props.table, props.database)
+      ])
+      const { properties, ...rules } = newItemConfig
+      fieldRules.value = rules
+      cvConfig.value = cv || {}
+      await getDefaultClaims(res[0].item_number, properties)
       setDefaultDescription()
       initialClaimsLoaded.value = true
     }
@@ -329,10 +320,21 @@ function buildQualifier (_claim, qualifier) {
   }
 }
 
-async function getDefaultClaims (itemNumber) {
+function getTodayDateQualifierValue () {
+  const today = new Date()
+  const yyyy = String(today.getUTCFullYear()).padStart(4, '0')
+  const mm = String(today.getUTCMonth() + 1).padStart(2, '0')
+  const dd = String(today.getUTCDate()).padStart(2, '0')
+  return {
+    time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
+    precision: 11,
+    calendar: 'gregorian'
+  }
+}
+
+async function getDefaultClaims (itemNumber, order) {
   const def = ['P476', 'P131', 'P799']
-  const res = await $wikibase.getClaimsOrderForNewItem(props.table)
-  const safeRes = res || {}
+  const safeRes = order || {}
   const resKeys = Object.keys(safeRes)
   const defOnly = def.filter(p => !resKeys.includes(p))
   const defWithoutP799 = defOnly.filter(p => p !== 'P799')
@@ -341,59 +343,65 @@ async function getDefaultClaims (itemNumber) {
   const qualifiersProperties = [...new Set(['P700', 'P106', ...Object.values(safeRes).flat()])]
   const entities = await $wikibase.getEntities(propertyIds, locale.value)
   const qualifiersArr = await $wikibase.getEntities(qualifiersProperties, locale.value)
+  const rules = fieldRules.value
+
+  const claimDefaultValue = (propId) => {
+    const defaultValue = cvConfig.value[propId]?.default_value
+    return defaultValue ? { id: defaultValue } : null
+  }
+  const qualifierDefaultValue = (propId, qualifierPropId) => {
+    const defaultValue = cvConfig.value[`${propId}.${qualifierPropId}`]?.default_value
+    return defaultValue ? { id: defaultValue } : null
+  }
+  const isQualifierHidden = (propId, qualifierPropId) =>
+    !!rules.qualifierHidden?.[propId]?.includes(qualifierPropId)
 
   Object.values(entities).forEach((entity) => {
     if (isValidPropertyEntity(entity)) {
+      if (entity.id === 'P476') {
+        initialClaims.value.push(buildClaim(entity, [], generatePbId(itemNumber), false))
+        return
+      }
+
       const qualifiers = []
 
       safeRes[entity.id]?.forEach((property) => {
         if (isValidPropertyEntity(qualifiersArr[property])) {
-          qualifiers.push(buildQualifier(entity, qualifiersArr[property]))
+          const qualifier = buildQualifier(entity, qualifiersArr[property])
+          const defaultValue = qualifierDefaultValue(entity.id, property)
+          if (defaultValue) qualifier.datavalue.value = defaultValue
+          if (isQualifierHidden(entity.id, property)) qualifier.hidden = true
+          qualifiers.push(qualifier)
         }
       })
 
-      let claim = buildClaim(entity, qualifiers, null)
-
-      if (entity.id === 'P476') {
-        claim = buildClaim(entity, [], generatePbId(itemNumber), false)
-      } else if (entity.id === 'P131') {
-        const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP[props.database] || null
-
-        const bibliographyQualifiers = [
-          buildQualifier(entity, qualifiersArr['P700'])
-        ]
-        bibliographyQualifiers[0].datavalue.value = { id: 'Q447226' }
-
-        claim = buildClaim(entity, bibliographyQualifiers, bibliographyId ? { id: bibliographyId } : null)
+      // P131 (bibliography) and P799 (creation date) always carry their system qualifier,
+      // even if a table's wiki config doesn't declare it explicitly.
+      if (entity.id === 'P131') {
+        let bibliographyQualifier = qualifiers.find(q => q.property?.id === 'P700')
+        if (!bibliographyQualifier && isValidPropertyEntity(qualifiersArr['P700'])) {
+          bibliographyQualifier = buildQualifier(entity, qualifiersArr['P700'])
+          qualifiers.push(bibliographyQualifier)
+        }
+        if (bibliographyQualifier) {
+          bibliographyQualifier.datavalue.value = qualifierDefaultValue('P131', 'P700') ?? bibliographyQualifier.datavalue.value
+          if (isQualifierHidden('P131', 'P700')) bibliographyQualifier.hidden = true
+        }
       } else if (entity.id === 'P799') {
-        const today = new Date()
-        const yyyy = String(today.getFullYear()).padStart(4, '0')
-        const mm = String(today.getMonth() + 1).padStart(2, '0')
-        const dd = String(today.getDate()).padStart(2, '0')
         let dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
         if (!dateQualifier && isValidPropertyEntity(qualifiersArr['P106'])) {
           dateQualifier = buildQualifier(entity, qualifiersArr['P106'])
           qualifiers.push(dateQualifier)
         }
         if (dateQualifier) {
-          dateQualifier.datavalue.value = {
-            time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
-            precision: 11,
-            calendar: 'gregorian'
-          }
-          dateQualifier.hidden = true
+          dateQualifier.datavalue.value = getTodayDateQualifierValue()
+          if (isQualifierHidden('P799', 'P106')) dateQualifier.hidden = true
         }
-        if (props.table === 'geoid' || props.table === 'bioid') {
-          claim = buildClaim(entity, qualifiers, { id: 'Q447227' })
-          claim.hidden = true
-        } else {
-          claim = buildClaim(entity, qualifiers, null)
-        }
-      } else if (props.table === 'cnum' && entity.id === 'P590') {
-        claim = buildClaim(entity, qualifiers, null, false)
-      } else if (props.table === 'copid' && entity.id === 'P839') {
-        claim = buildClaim(entity, qualifiers, null, false)
       }
+
+      const removable = !rules.notRemovable?.includes(entity.id)
+      const claim = buildClaim(entity, qualifiers, claimDefaultValue(entity.id), removable)
+      if (rules.hidden?.includes(entity.id)) claim.hidden = true
 
       initialClaims.value.push(claim)
     }
