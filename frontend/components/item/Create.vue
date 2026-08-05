@@ -192,7 +192,8 @@ function getCreateDisabledReason () {
   if (props.table === 'manid') requiredPropertyIds.add('P329')
   if (props.table === 'cnum') { requiredPropertyIds.add('P590'); requiredPropertyIds.add('P8') }
   if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
-  if (props.table === 'geoid' || props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
+  if (props.table === 'geoid') requiredPropertyIds.add('P34')
+  if (props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
   if (props.table === 'libid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P47') }
   if (props.table === 'subid') requiredPropertyIds.add('P34')
   if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
@@ -218,6 +219,18 @@ function getCreateDisabledReason () {
       return t('messages.error.inputs.claim_value_missing', { propertyLabel })
     }
     requiredPropertyIds.add('P11')
+  }
+
+  if (props.table === 'manid') {
+    const p2Array = claims.value['P2']
+    const isEdition = Array.isArray(p2Array) && p2Array.some(c => c?.value === 'Q20')
+    if (isEdition) {
+      const p843Array = claims.value['P843']
+      const p843Label = initialClaims.value.find(c => c.property?.id === 'P843')?.property?.label || 'P843'
+      if (!Array.isArray(p843Array) || !p843Array.some(c => c?.value != null && c?.value !== '')) {
+        return t('messages.error.inputs.claim_value_missing', { propertyLabel: p843Label })
+      }
+    }
   }
 
   for (const propKey of requiredPropertyIds) {
@@ -492,11 +505,26 @@ function cleanClaims (claimsToClean) {
   return cleanedClaims
 }
 
+// Ui_ControlledVocabulary only supports one default value per property, so Q453706
+// (WEMI Item, required for editions alongside Q453705 Manifestation) cannot be
+// expressed as a second P843 default in wiki config — it must be injected here.
+function addManidEditionFrbrClaim (cleanedClaims) {
+  const p2Claims = cleanedClaims['P2'] || []
+  const isEdition = p2Claims.some(c => c.value === 'Q20')
+  if (!isEdition) return
+  const p843Claims = cleanedClaims['P843']
+  if (!p843Claims?.length) return
+  if (!p843Claims.some(c => c.value === 'Q453706')) {
+    p843Claims.push({ value: 'Q453706', qualifiers: {} })
+  }
+}
+
 async function create () {
   const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
   if (existingPBID === null) {
     try {
       const cleanedClaims = cleanClaims(claims.value)
+      if (props.table === 'manid') addManidEditionFrbrClaim(cleanedClaims)
 
       const data = {
         labels: {
