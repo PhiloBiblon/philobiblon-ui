@@ -210,7 +210,7 @@ function getCreateDisabledReason () {
   }
 
   if (props.table === 'bibid') {
-    const hasName = ['P247', 'P21', 'P1134'].some(p => {
+    const hasName = ['P247', 'P21', 'P845', 'P1134'].some(p => {
       const arr = claims.value[p]
       return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
     })
@@ -238,14 +238,9 @@ function getCreateDisabledReason () {
     const initialClaim = initialClaims.value.find(c => c.property?.id === propKey)
     const propertyLabel = initialClaim?.property?.label || propKey
 
-    if (!Array.isArray(claimArray) || claimArray.length === 0) {
+    const hasValue = Array.isArray(claimArray) && claimArray.some(item => item?.value != null && item?.value !== '')
+    if (!hasValue) {
       return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-    }
-
-    for (const item of claimArray) {
-      if (item?.value == null || item?.value === '') {
-        return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-      }
     }
   }
 
@@ -628,6 +623,21 @@ function getManidPrefix () {
   return ''
 }
 
+function getBibidDate () {
+  const claim = initialClaims.value.find(cl => cl.property?.id === 'P49')
+  const val = claim?.value?.datavalue?.value
+  if (!val) return null
+  if (typeof val === 'string') return val
+  if (typeof val === 'object' && val.time) {
+    const match = val.time.replace(/^\+/, '').match(/^(\d{4})-(\d{2})-(\d{2})/)
+    if (!match) return null
+    if (val.precision >= 11) return `${match[1]}-${match[2]}-${match[3]}`
+    if (val.precision >= 10) return `${match[1]}-${match[2]}`
+    return match[1]
+  }
+  return null
+}
+
 function generateLabelFromClaims () {
   let generatedLabel = ''
   switch (props.table) {
@@ -651,9 +661,9 @@ function generateLabelFromClaims () {
     case 'bibid': {
       const surname = getClaimValue('P247')
       const author = getClaimValue('P21')
-      const creator = getClaimValue('P1134')
+      const creator = getClaimValue('P845') || getClaimValue('P1134')
       const title = getClaimValue('P11')
-      const date = getClaimValue('P222')
+      const date = getBibidDate()
 
       const name = surname || author || creator
 
