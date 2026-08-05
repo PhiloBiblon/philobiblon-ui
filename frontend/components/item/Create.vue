@@ -525,6 +525,9 @@ async function create () {
         query: { justCreated: 'true' }
       }))
     } catch (error) {
+      if (!isSessionExpired(error)) {
+        draft.clear()
+      }
       notifyError(error)
     }
   } else {
