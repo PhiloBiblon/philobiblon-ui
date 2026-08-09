@@ -1,14 +1,14 @@
 # build stage
 FROM node:22-alpine AS build-stage
 WORKDIR /app
-COPY package.json .yarnrc.yml ./
+COPY package.json yarn.lock .yarnrc.yml ./
 ARG BASE_URL
 ARG API_BASE_URL
 ARG WIKIBASE_NEW_ITEM_PAGE
 ENV BASE_URL=$BASE_URL
 ENV API_BASE_URL=$API_BASE_URL
 ENV WIKIBASE_NEW_ITEM_PAGE=$WIKIBASE_NEW_ITEM_PAGE
-RUN corepack enable && yarn install
+RUN corepack enable && yarn install --immutable
 COPY . .
 RUN yarn run generate
 

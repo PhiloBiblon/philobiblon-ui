@@ -13,9 +13,6 @@ pids
 *.seed
 *.pid.lock
 
-# Ignore Yarn lock file
-yarn.lock
-
 # Ignore Yarn rc file
 .yarnrc
 
