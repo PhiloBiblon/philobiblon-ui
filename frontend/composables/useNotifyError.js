@@ -44,17 +44,25 @@ function getFriendlyMessage (error, t) {
   if (isNetworkOrTimeout(error)) {
     return t('messages.error.wikibase_unreachable')
   }
-  // Fall back to the raw error message (e.g. a wikibase-edit client-side validation
-  // error, which has neither a Wikibase API error.code nor a recognizable error.name)
-  // instead of masking it behind the generic message — see #393, where several
-  // unrelated causes all surfaced as an undiagnosable "Something went wrong!".
-  return error?.body?.error?.info ?? error?.error?.info ?? error?.message ?? t('messages.error.something_went_wrong')
+  return error?.body?.error?.info ?? error?.error?.info ?? t('messages.error.something_went_wrong')
 }
 
 function getHint (error) {
   const code = error?.body?.error?.code ?? error?.error?.code ?? error?.name
-  if (!code || code === 'Error' || WIKIBASE_ERROR_KEYS[code]) return null
-  return code
+  if (code && code !== 'Error' && !WIKIBASE_ERROR_KEYS[code]) {
+    return code
+  }
+  // No recognizable Wikibase error code and no structured info: fall back to the raw
+  // error message as a hint alongside the translated generic message, instead of
+  // masking it entirely — see #393, where several unrelated causes all surfaced as an
+  // undiagnosable "Something went wrong!". The main message stays translated; only this
+  // technical detail (parenthesized, same as the existing "(TypeError)"-style hints) is
+  // untranslated raw text, since it's arbitrary diagnostic content, not UI copy.
+  const hasStructuredInfo = (error?.body?.error?.info ?? error?.error?.info) != null
+  if (!hasStructuredInfo && error?.message) {
+    return error.message
+  }
+  return null
 }
 
 function buildMessage (error, t) {
