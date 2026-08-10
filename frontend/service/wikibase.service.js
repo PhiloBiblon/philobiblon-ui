@@ -45,12 +45,12 @@ export class WikibaseService {
   }
 
   /**
-   * Search a query's results through the backend DB cache (POST /api/search v=2).
+   * Search a query's results through the backend DB cache (POST /api/search).
    * Returns { indexLoading, results: [{ text, value }] }; while indexLoading is true
    * the backend is materializing the query in the background and the caller should retry.
    */
   async cachedSearch (sparqlQuery, q, { searchVars, hint, limit, lang, group, bitagapGroup } = {}) {
-    const params = new URLSearchParams({ v: '2', q, sparqlQuery })
+    const params = new URLSearchParams({ q, sparqlQuery })
     if (searchVars) { params.set('searchVars', searchVars) }
     if (hint) { params.set('hint', hint) }
     if (limit) { params.set('limit', String(limit)) }

@@ -244,7 +244,7 @@ export function filterQuery (query, table, sparqlQueryPrefix) {
 
 /**
  * Global search over the 8 PhiloBiblon tables, served by the backend cache
- * (POST /api/search v=2 with searchVars label,aliases,pbid,item). Fetches every UI
+ * (POST /api/search with searchVars label,aliases,pbid,item). Fetches every UI
  * language at once, one result row per (item, pbid) and label/alias/desc value; the
  * backend pivots and merges them into one cached row per item with per-language
  * columns (first label wins, aliases joined, first desc wins), so no server-side

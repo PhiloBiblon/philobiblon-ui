@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public interface SearchController {
 
     /** Async contract: never blocks; a cold query answers immediately with indexLoading=true. */
-    @PostMapping(params = "v=2", consumes = "application/x-www-form-urlencoded")
+    @PostMapping(consumes = "application/x-www-form-urlencoded")
     SearchResponse searchV2(@RequestParam String sparqlQuery,
                             @RequestParam String q,
                             @RequestParam(required = false) String searchVars,
