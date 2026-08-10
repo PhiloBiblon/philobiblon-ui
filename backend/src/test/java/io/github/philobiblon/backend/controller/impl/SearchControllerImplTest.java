@@ -35,22 +35,12 @@ class SearchControllerImplTest {
     }
 
     @Test
-    void requestWithoutVersionIsRejected() throws Exception {
-        mockMvc.perform(post("/api/search")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("sparqlQuery", "SELECT ?label WHERE {}")
-                        .param("q", "barcelona"))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
     void v2RequestReturnsEnvelopeWithIndexLoadingFlag() throws Exception {
         when(sparqlCacheService.search(anyString(), anyString(), eq("label,pbid"), eq("bioid.author"), any(), any(), any(), any()))
                 .thenReturn(new SearchResponse(true, List.of()));
 
         mockMvc.perform(post("/api/search")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("v", "2")
                         .param("sparqlQuery", "SELECT ?label WHERE {}")
                         .param("q", "barcelona")
                         .param("searchVars", "label,pbid")
@@ -67,7 +57,6 @@ class SearchControllerImplTest {
 
         mockMvc.perform(post("/api/search")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("v", "2")
                         .param("sparqlQuery", "SELECT ?label ?lang WHERE {}")
                         .param("q", "barcelona")
                         .param("lang", "ca"))
@@ -82,7 +71,6 @@ class SearchControllerImplTest {
 
         mockMvc.perform(post("/api/search")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("v", "2")
                         .param("sparqlQuery", "SELECT ?label ?db WHERE {}")
                         .param("q", "barcelona")
                         .param("group", "BETA"))
@@ -97,7 +85,6 @@ class SearchControllerImplTest {
 
         mockMvc.perform(post("/api/search")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("v", "2")
                         .param("sparqlQuery", "SELECT ?label ?bg WHERE {}")
                         .param("q", "cartas")
                         .param("bitagapGroup", "ORIG"))
@@ -112,7 +99,6 @@ class SearchControllerImplTest {
 
         mockMvc.perform(post("/api/search")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("v", "2")
                         .param("sparqlQuery", "SELECT ?label WHERE {}")
                         .param("q", "barcelona"))
                 .andExpect(status().isOk())
