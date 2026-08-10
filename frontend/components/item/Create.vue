@@ -504,6 +504,7 @@ function addManidEditionFrbrClaim (cleanedClaims) {
 }
 
 async function create () {
+  let entityCreationStarted = false
   try {
     const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
     if (existingPBID !== null) {
@@ -532,6 +533,7 @@ async function create () {
       }
     }
 
+    entityCreationStarted = true
     const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
 
     if (!response.success) {
@@ -544,7 +546,7 @@ async function create () {
       query: { justCreated: 'true' }
     }))
   } catch (error) {
-    if (!isSessionExpired(error)) {
+    if (entityCreationStarted && !isSessionExpired(error)) {
       draft.clear()
     }
     notifyError(error)
