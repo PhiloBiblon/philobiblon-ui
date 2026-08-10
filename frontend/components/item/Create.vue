@@ -504,49 +504,50 @@ function addManidEditionFrbrClaim (cleanedClaims) {
 }
 
 async function create () {
-  const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
-  if (existingPBID === null) {
-    try {
-      const cleanedClaims = cleanClaims(claims.value)
-      if (props.table === 'manid') addManidEditionFrbrClaim(cleanedClaims)
-
-      const data = {
-        labels: {
-          [locale.value]: label.value
-        },
-        descriptions: {
-          [locale.value]: description.value || ' '
-        },
-        aliases: {
-          [locale.value]: aliasValue.value
-        },
-        claims: {
-          ...cleanedClaims
-        }
-      }
-
-      const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
-
-      if (!response.success) {
-        throw response
-      }
-
-      draft.clear()
-      await router.push(localePath({
-        path: '/item/' + response.entity.id,
-        query: { justCreated: 'true' }
+  try {
+    const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
+    if (existingPBID !== null) {
+      $notification.error(t('messages.error.creation.pbid_already_exists', {
+        pbid: aliasValue.value,
+        item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
       }))
-    } catch (error) {
-      if (!isSessionExpired(error)) {
-        draft.clear()
-      }
-      notifyError(error)
+      return
     }
-  } else {
-    $notification.error(t('messages.error.creation.pbid_already_exists', {
-      pbid: aliasValue.value,
-      item: `&nbsp;<a target="_blank" style="color: #ffffff; font-weight: bold;" href="${$wikibase.getQItemUrl(existingPBID)}">${existingPBID}</a>`
+
+    const cleanedClaims = cleanClaims(claims.value)
+    if (props.table === 'manid') addManidEditionFrbrClaim(cleanedClaims)
+
+    const data = {
+      labels: {
+        [locale.value]: label.value
+      },
+      descriptions: {
+        [locale.value]: description.value || ' '
+      },
+      aliases: {
+        [locale.value]: aliasValue.value
+      },
+      claims: {
+        ...cleanedClaims
+      }
+    }
+
+    const response = await $wikibase.getWbEdit().entity.create(data, authStore.requestConfig)
+
+    if (!response.success) {
+      throw response
+    }
+
+    draft.clear()
+    await router.push(localePath({
+      path: '/item/' + response.entity.id,
+      query: { justCreated: 'true' }
     }))
+  } catch (error) {
+    if (!isSessionExpired(error)) {
+      draft.clear()
+    }
+    notifyError(error)
   }
 }
 

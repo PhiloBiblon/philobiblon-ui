@@ -44,7 +44,11 @@ function getFriendlyMessage (error, t) {
   if (isNetworkOrTimeout(error)) {
     return t('messages.error.wikibase_unreachable')
   }
-  return error?.body?.error?.info ?? error?.error?.info ?? t('messages.error.something_went_wrong')
+  // Fall back to the raw error message (e.g. a wikibase-edit client-side validation
+  // error, which has neither a Wikibase API error.code nor a recognizable error.name)
+  // instead of masking it behind the generic message — see #393, where several
+  // unrelated causes all surfaced as an undiagnosable "Something went wrong!".
+  return error?.body?.error?.info ?? error?.error?.info ?? error?.message ?? t('messages.error.something_went_wrong')
 }
 
 function getHint (error) {
