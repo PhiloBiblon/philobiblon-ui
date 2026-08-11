@@ -76,7 +76,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 
@@ -156,6 +156,12 @@ onMounted(async () => {
   await getHeaders()
   if (isSortable.value) {
     await loadP12SortData()
+  }
+})
+
+watch(locale, () => {
+  if (isSortable.value) {
+    loadP12SortData()
   }
 })
 
