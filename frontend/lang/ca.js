@@ -26,7 +26,9 @@ export default {
     remove: 'elimina',
     cancel: 'Cancel·lar',
     create: 'Crear',
-    items: 'elements'
+    items: 'elements',
+    sort_ascending: 'Ascendent',
+    sort_descending: 'Descendent'
   },
   menu: {
     item: {
