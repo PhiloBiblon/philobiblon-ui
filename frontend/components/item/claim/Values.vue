@@ -15,38 +15,15 @@
         />
       </v-col>
       <v-col cols="auto">
-        <v-icon
-          v-if="sortField === 'name' && !sortDescending"
-          class="sort-icon"
+        <v-btn
+          :icon="sortIcon"
+          variant="text"
           density="compact"
+          size="small"
+          class="sort-icon-btn"
+          :aria-label="sortDirectionLabel"
           @click="sortDescending = !sortDescending"
-        >
-          mdi-sort-alphabetical-ascending
-        </v-icon>
-        <v-icon
-          v-if="sortField === 'name' && sortDescending"
-          class="sort-icon"
-          density="compact"
-          @click="sortDescending = !sortDescending"
-        >
-          mdi-sort-alphabetical-descending
-        </v-icon>
-        <v-icon
-          v-if="sortField === 'date' && !sortDescending"
-          class="sort-icon"
-          density="compact"
-          @click="sortDescending = !sortDescending"
-        >
-          mdi-sort-calendar-ascending
-        </v-icon>
-        <v-icon
-          v-if="sortField === 'date' && sortDescending"
-          class="sort-icon"
-          density="compact"
-          @click="sortDescending = !sortDescending"
-        >
-          mdi-sort-calendar-descending
-        </v-icon>
+        />
       </v-col>
     </v-row>
     <v-data-table
@@ -124,6 +101,15 @@ const sortFieldItems = computed(() => [
   { text: t('search.results.sort_option.date'), value: 'date' },
   { text: t('search.results.sort_option.name'), value: 'name' }
 ])
+
+const sortIcons = {
+  date: ['mdi-sort-calendar-ascending', 'mdi-sort-calendar-descending'],
+  name: ['mdi-sort-alphabetical-ascending', 'mdi-sort-alphabetical-descending']
+}
+
+const sortIcon = computed(() => sortIcons[sortField.value][sortDescending.value ? 1 : 0])
+
+const sortDirectionLabel = computed(() => sortDescending.value ? t('common.sort_descending') : t('common.sort_ascending'))
 
 const perPageOptions = [
   { title: '20', value: 20 },
@@ -318,8 +304,7 @@ async function deleteQualifier (qualifier, index) {
   font-size: 12px !important;
 }
 
-.sort-icon {
+.sort-icon-btn {
   color: #757575;
-  font-size: 18px;
 }
 </style>
