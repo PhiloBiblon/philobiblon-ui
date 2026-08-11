@@ -1,51 +1,101 @@
 <template>
-  <v-data-table
-    v-if="claim"
-    :headers="formattedHeaders"
-    :hide-default-header="!headers.length"
-    :items="sortedItems"
-    :items-per-page-options="perPageOptions"
-    :items-per-page-text="`${t('common.properties')} ${t('common.per_page')}`"
-    :hide-default-footer="shouldHideFooter"
-    class="elevation-1"
-  >
-    <template #item="{ item, index }">
-      <tr class="table-row">
-        <td v-for="(header, key) in formattedHeaders" :key="header.key" class="table-cell">
-          <item-value-base
-            v-if="!key"
-            :claim="item"
-            :value="item.mainsnak"
-            type="claim"
-            :in-table="true"
-            :column-width="header.width"
-            @delete-claim="emit('delete-claim', $event)"
-          />
-          <item-qualifier-list
-            v-if="item.qualifiers?.[header.key]"
-            :key="item.qualifiers[header.key].length"
-            :claim="item"
-            :qualifiers="item.qualifiers[header.key]"
-            @delete-qualifier="deleteQualifier($event, index)"
-          />
-        </td>
-      </tr>
-      <tr v-if="isUserLogged" class="table-row-edit">
-        <td :colspan="formattedHeaders.length" class="table-cell-btn-edit">
-          <item-qualifier-create
-            :table="table"
-            :claim="item"
-            @create-qualifier="createQualifier($event, index)"
-          />
-        </td>
-      </tr>
-      <tr v-if="isUserLogged || item.references" class="table-row-edit">
-        <td :colspan="formattedHeaders.length">
-          <item-reference-base :claim="item" :table="table" />
-        </td>
-      </tr>
-    </template>
-  </v-data-table>
+  <div v-if="claim">
+    <v-row v-if="isSortable" justify="end" density="comfortable" class="sort-toolbar">
+      <v-col class="text-right text-caption" cols="auto">
+        <span>{{ t('search.results.sort_by') }}</span>
+      </v-col>
+      <v-col cols="auto" class="sort-select-field">
+        <v-select
+          v-model="sortField"
+          :items="sortFieldItems"
+          item-title="text"
+          item-value="value"
+          class="sort-select"
+          density="compact"
+        />
+      </v-col>
+      <v-col cols="auto">
+        <v-icon
+          v-if="sortField === 'name' && !sortDescending"
+          class="sort-icon"
+          density="compact"
+          @click="sortDescending = !sortDescending"
+        >
+          mdi-sort-alphabetical-ascending
+        </v-icon>
+        <v-icon
+          v-if="sortField === 'name' && sortDescending"
+          class="sort-icon"
+          density="compact"
+          @click="sortDescending = !sortDescending"
+        >
+          mdi-sort-alphabetical-descending
+        </v-icon>
+        <v-icon
+          v-if="sortField === 'date' && !sortDescending"
+          class="sort-icon"
+          density="compact"
+          @click="sortDescending = !sortDescending"
+        >
+          mdi-sort-calendar-ascending
+        </v-icon>
+        <v-icon
+          v-if="sortField === 'date' && sortDescending"
+          class="sort-icon"
+          density="compact"
+          @click="sortDescending = !sortDescending"
+        >
+          mdi-sort-calendar-descending
+        </v-icon>
+      </v-col>
+    </v-row>
+    <v-data-table
+      :headers="formattedHeaders"
+      :hide-default-header="!headers.length"
+      :items="sortedItems"
+      :items-per-page-options="perPageOptions"
+      :items-per-page-text="`${t('common.properties')} ${t('common.per_page')}`"
+      :hide-default-footer="shouldHideFooter"
+      class="elevation-1"
+    >
+      <template #item="{ item, index }">
+        <tr class="table-row">
+          <td v-for="(header, key) in formattedHeaders" :key="header.key" class="table-cell">
+            <item-value-base
+              v-if="!key"
+              :claim="item"
+              :value="item.mainsnak"
+              type="claim"
+              :in-table="true"
+              :column-width="header.width"
+              @delete-claim="emit('delete-claim', $event)"
+            />
+            <item-qualifier-list
+              v-if="item.qualifiers?.[header.key]"
+              :key="item.qualifiers[header.key].length"
+              :claim="item"
+              :qualifiers="item.qualifiers[header.key]"
+              @delete-qualifier="deleteQualifier($event, index)"
+            />
+          </td>
+        </tr>
+        <tr v-if="isUserLogged" class="table-row-edit">
+          <td :colspan="formattedHeaders.length" class="table-cell-btn-edit">
+            <item-qualifier-create
+              :table="table"
+              :claim="item"
+              @create-qualifier="createQualifier($event, index)"
+            />
+          </td>
+        </tr>
+        <tr v-if="isUserLogged || item.references" class="table-row-edit">
+          <td :colspan="formattedHeaders.length">
+            <item-reference-base :claim="item" :table="table" />
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
+  </div>
 </template>
 
 <script setup>
@@ -66,6 +116,14 @@ const authStore = useAuthStore()
 
 const headers = ref([])
 const p12Dates = ref({})
+const p12Labels = ref({})
+const sortField = ref('date')
+const sortDescending = ref(true)
+
+const sortFieldItems = computed(() => [
+  { text: t('search.results.sort_option.date'), value: 'date' },
+  { text: t('search.results.sort_option.name'), value: 'name' }
+])
 
 const perPageOptions = [
   { title: '20', value: 20 },
@@ -78,18 +136,22 @@ const perPageOptions = [
 
 const isUserLogged = computed(() => authStore.isLogged)
 
+const isSortable = computed(() => props.claim?.property === 'P12')
+
 const sortedItems = computed(() => {
   const values = props.claim?.values ?? []
-  if (props.claim?.property !== 'P12') return values
+  if (!isSortable.value) return values
+  const direction = sortDescending.value ? -1 : 1
+  const sortValues = sortField.value === 'name' ? p12Labels.value : p12Dates.value
   return [...values].sort((a, b) => {
     const qA = a.mainsnak?.datavalue?.value?.id
     const qB = b.mainsnak?.datavalue?.value?.id
-    const dateA = p12Dates.value[qA]
-    const dateB = p12Dates.value[qB]
-    if (!dateA && !dateB) return 0
-    if (!dateA) return 1
-    if (!dateB) return -1
-    return dateB.localeCompare(dateA)
+    const valueA = sortValues[qA]
+    const valueB = sortValues[qB]
+    if (!valueA && !valueB) return 0
+    if (!valueA) return 1
+    if (!valueB) return -1
+    return direction * valueA.localeCompare(valueB)
   })
 })
 
@@ -106,30 +168,36 @@ const shouldHideFooter = computed(() => props.claim?.values?.length <= perPageOp
 
 onMounted(async () => {
   await getHeaders()
-  if (props.claim?.property === 'P12') {
-    await loadP12Dates()
+  if (isSortable.value) {
+    await loadP12SortData()
   }
 })
 
-async function loadP12Dates () {
+async function loadP12SortData () {
   const qIds = (props.claim?.values ?? [])
     .map(v => v.mainsnak?.datavalue?.value?.id)
     .filter(Boolean)
   if (!qIds.length) return
   const query = $wikibase.$query.addPrefixes(
-    `SELECT ?item ?date WHERE {
+    `SELECT ?item ?date ?label WHERE {
       VALUES ?item { ${qIds.map(id => `wd:${id}`).join(' ')} }
       OPTIONAL { ?item wdt:P49 ?date }
+      ${$wikibase.$query.generateLangFilters(locale.value)}
     }`
   )
   const results = await $wikibase.runSparqlQuery(query, true).catch(() => [])
   const dates = {}
+  const labels = {}
   for (const row of results) {
+    if (row?.item && row?.label) {
+      labels[row.item] = row.label
+    }
     if (row?.item && row?.date) {
       dates[row.item] = row.date
     }
   }
   p12Dates.value = dates
+  p12Labels.value = labels
 }
 
 async function getHeaders () {
@@ -234,5 +302,24 @@ async function deleteQualifier (qualifier, index) {
   border-top: none;
   width: 100%;
   padding: 8px 16px;
+}
+
+.sort-toolbar {
+  margin: 0;
+}
+
+.sort-select-field {
+  padding: 4px 0 0 0;
+  width: 90px;
+}
+
+:deep(.sort-select .v-field__input),
+:deep(.sort-select .v-label) {
+  font-size: 12px !important;
+}
+
+.sort-icon {
+  color: #757575;
+  font-size: 18px;
 }
 </style>
