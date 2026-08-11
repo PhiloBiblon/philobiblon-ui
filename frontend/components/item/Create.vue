@@ -649,11 +649,7 @@ function generateLabelFromClaims () {
       const work = getClaimValue('P590')
       const partOf = getClaimValue('P8')
       if (work && partOf) {
-        const prefixes = WikibaseService.CNUM_LABEL_PREFIXES[props.database] || {}
-        const prefixedWork = prefixes.work ? `${prefixes.work} ${work}` : work
-        const prefixedPartOf = prefixes.partOf ? `${prefixes.partOf} ${partOf}` : partOf
-        const workTerminated = /[.!?]\s*$/.test(prefixedWork) ? prefixedWork.trimEnd() : `${prefixedWork}.`
-        generatedLabel = `${workTerminated} ${prefixedPartOf}`
+        generatedLabel = `${work}, ${partOf}`
       }
       break
     }
