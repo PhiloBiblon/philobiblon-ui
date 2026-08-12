@@ -196,6 +196,8 @@ export function generateBitagapGroupLibraryFilters () {
         OPTIONAL {
           {
             SELECT DISTINCT ?item ?bg WHERE {
+              ?related_manuscript_item wdt:P476 ?related_manuscript_item_pbid .
+              FILTER regex(?related_manuscript_item_pbid, '${BITAGAP_DB} manid ') .
               ?related_manuscript_item wdt:P329 ?item .
               ?related_manuscript_item wdt:P243 ?related_topic_item .
               ?related_topic_item wdt:P476 ?related_topic_item_pbid .

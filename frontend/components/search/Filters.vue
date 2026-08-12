@@ -194,6 +194,7 @@ if (queryStatusStore.showResults) {
 }
 if (searchGroup.value === 'BITAGAP') {
   isBitagapSelected.value = true
+  bitagapGroup.value = 'ORIG'
 }
 loadDefaultBibliography()
 
