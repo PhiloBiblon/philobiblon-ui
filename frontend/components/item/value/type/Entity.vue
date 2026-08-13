@@ -159,11 +159,15 @@ function setOptionsAutocomplete () {
           options.value.push(foundOption)
         }
         selectedOption.value = foundOption || null
-        // currentId came from defaultValue (no existing item value): propagate the
-        // resolved {id, label} option, not the raw QID, so consumers reading
+        // currentId came from defaultValue (no existing item value): propagate an
+        // {id, label} object, not the raw QID, so consumers reading
         // claim.value.datavalue.value.id (e.g. manid's MS:/Ed.: label prefix) see it.
-        if (!props.valueToView.item && foundOption) {
-          emit('new-value', foundOption)
+        // Fall back to a bare { id } even if the SPARQL-fetched options don't
+        // include it yet (e.g. transient endpoint lag, see #393): the claim must
+        // still carry a non-null, id-shaped value so required-field validation
+        // and submission aren't blocked by a slow autocomplete load.
+        if (!props.valueToView.item && currentId) {
+          emit('new-value', foundOption || { id: currentId })
         }
       })
   } else {
