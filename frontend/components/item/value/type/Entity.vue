@@ -126,12 +126,8 @@ function buildFullQuery (sparqlQuery) {
 function getDefaultValue (currentValue, defaultValue) {
   if (currentValue) {
     return currentValue
-  } else if (defaultValue) {
-    emit('new-value', defaultValue)
-    return defaultValue
-  } else {
-    return null
   }
+  return defaultValue || null
 }
 
 function setOptionsAutocomplete () {
@@ -163,6 +159,12 @@ function setOptionsAutocomplete () {
           options.value.push(foundOption)
         }
         selectedOption.value = foundOption || null
+        // currentId came from defaultValue (no existing item value): propagate the
+        // resolved {id, label} option, not the raw QID, so consumers reading
+        // claim.value.datavalue.value.id (e.g. manid's MS:/Ed.: label prefix) see it.
+        if (!props.valueToView.item && foundOption) {
+          emit('new-value', foundOption)
+        }
       })
   } else {
     options.value = [{

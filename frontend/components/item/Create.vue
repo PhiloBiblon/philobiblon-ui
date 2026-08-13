@@ -679,8 +679,10 @@ function generateLabelFromClaims () {
       const holding = getClaimValue('P329')
       if (holding) {
         const prefix = getManidPrefix()
+        const collection = getClaimValue('P1054') || getQualifierValue('P329', 'P1054')
         const position = getClaimValue('P10') || getQualifierValue('P329', 'P10')
-        generatedLabel = position ? `${prefix}${holding}, ${position}` : `${prefix}${holding}`
+        const holdingPart = collection ? `${holding} (${collection})` : holding
+        generatedLabel = position ? `${prefix}${holdingPart}, ${position}` : `${prefix}${holdingPart}`
       }
       break
     }
