@@ -134,6 +134,8 @@ const form = {
                     UNION
                     {
                       ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
                       ?manid_item wdt:P329 ?target_item .
                     }
                   }
@@ -166,6 +168,8 @@ const form = {
                 UNION
                 {
                   ?item wdt:P839 ?manid_item .
+                  ?manid_item wdt:P476 ?manid_pbid .
+                  FILTER regex(?manid_pbid, '(.*) manid ') .
                   ?manid_item p:P329 ?library_stmt .
                 }
                 ?library_stmt pq:P1054 ?label .
@@ -195,6 +199,8 @@ const form = {
                 UNION
                 {
                   ?item wdt:P839 ?manid_item .
+                  ?manid_item wdt:P476 ?manid_pbid .
+                  FILTER regex(?manid_pbid, '(.*) manid ') .
                   ?manid_item p:P329 ?library_stmt .
                 }
                 {
@@ -232,6 +238,8 @@ const form = {
                     UNION
                     {
                       ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
                       ?manid_item wdt:P229 ?target_item .
                     }
                   }
@@ -265,6 +273,8 @@ const form = {
                     UNION
                     {
                       ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
                       ?manid_item wdt:P703 ?target_item .
                     }
                   }
@@ -298,6 +308,8 @@ const form = {
                     UNION
                     {
                       ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
                       ?manid_item wdt:P480 ?target_item .
                     }
                   }
@@ -329,6 +341,8 @@ const form = {
                 UNION
                 {
                   ?item wdt:P839 ?manid_item .
+                  ?manid_item wdt:P476 ?manid_pbid .
+                  FILTER regex(?manid_pbid, '(.*) manid ') .
                   ?manid_item wdt:P800 ?label .
                 }
               }
@@ -359,6 +373,8 @@ const form = {
                     UNION
                     {
                       ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
                       ?manid_item wdt:P749 ?target_item .
                     }
                   }
@@ -392,6 +408,8 @@ const form = {
                     UNION
                     {
                       ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
                       ?manid_item wdt:P801 ?target_item .
                     }
                   }

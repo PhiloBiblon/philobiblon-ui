@@ -1192,6 +1192,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item wdt:P329 ?item_lib .
         }
         FILTER (?item_lib = wd:${form.input.library.value.target_item})
@@ -1210,6 +1212,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item p:P329 ?library_stmt .
         }
         ?library_stmt pq:P1054 ?item_collection .
@@ -1225,6 +1229,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item p:P329 ?library_stmt .
         }
         {
@@ -1246,6 +1252,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item wdt:P229 ?item_prev_owner .
         }
         FILTER (?item_prev_owner = wd:${form.input.previous_owner.value.target_item})
@@ -1260,6 +1268,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item wdt:P703 ?item_aso_person .
         }
         FILTER (?item_aso_person = wd:${form.input.associated_person.value.target_item})
@@ -1274,6 +1284,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item wdt:P480 ?item_writing_surf .
         }
         FILTER (?item_writing_surf = wd:${form.input.writing_surface.value.target_item})
@@ -1288,6 +1300,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item wdt:P800 ?item_binding .
         }
         FILTER (?item_binding = "${this.sanitizeSparqlString(form.input.binding.value.label)}")
@@ -1302,6 +1316,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item wdt:P749 ?item_watermark .
         }
         FILTER (?item_watermark = wd:${form.input.watermark.value.target_item})
@@ -1316,6 +1332,8 @@ export class QueryService {
         UNION
         {
           ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
           ?manid_item wdt:P801 ?item_graphic_feature .
         }
         FILTER (?item_graphic_feature = wd:${form.input.graphic_feature.value.target_item})
