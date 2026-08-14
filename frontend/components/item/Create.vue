@@ -660,10 +660,11 @@ function generateLabelFromClaims () {
       const title = getClaimValue('P11')
       const date = getBibidDate()
 
+      const usesP845Creator = !surname && !author && Boolean(creator)
       const name = surname || author || creator || getClaimValue('P1134')
 
       if (name && title) {
-        const role = name === creator ? getQualifierValue('P845', 'P820') : null
+        const role = usesP845Creator ? getQualifierValue('P845', 'P820') : null
         const rolePart = role ? ` (${role})` : ''
         const datePart = date ? ` (${date})` : ''
         generatedLabel = `${name}${rolePart}${datePart}, ${title}`
