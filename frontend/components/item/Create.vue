@@ -656,15 +656,17 @@ function generateLabelFromClaims () {
     case 'bibid': {
       const surname = getClaimValue('P247')
       const author = getClaimValue('P21')
-      const creator = getClaimValue('P845') || getClaimValue('P1134')
+      const creator = getClaimValue('P845')
       const title = getClaimValue('P11')
       const date = getBibidDate()
 
-      const name = surname || author || creator
+      const name = surname || author || creator || getClaimValue('P1134')
 
       if (name && title) {
+        const role = name === creator ? getQualifierValue('P845', 'P820') : null
+        const rolePart = role ? ` (${role})` : ''
         const datePart = date ? ` (${date})` : ''
-        generatedLabel = `${name}${datePart}, ${title}`
+        generatedLabel = `${name}${rolePart}${datePart}, ${title}`
       }
       break
     }
