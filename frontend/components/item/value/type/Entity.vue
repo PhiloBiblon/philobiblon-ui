@@ -12,6 +12,7 @@
         :options="options"
         :delete="deleteValue"
         :mode="mode"
+        :custom-filter="matchesEntitySearch"
         @on-blur="emit('on-blur', $event)"
         @new-value="emit('new-value', $event)"
       />
@@ -22,7 +23,7 @@
         :options="options"
         :delete="deleteValue"
         :mode="mode"
-        :filter="acceptAll"
+        :custom-filter="acceptAll"
         @update-options="options = $event"
         @input="oninput($event)"
         @on-blur="emit('on-blur', $event)"
@@ -102,10 +103,48 @@ function oninput (e) {
 }
 
 async function handleSearchChange (value) {
-  if (value) {
-    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
-    if (search && search.length) { options.value = search }
+  if (!value) { return }
+  const directMatch = await resolveEntityFromSearchTerm(value)
+  if (directMatch) {
+    options.value = [directMatch]
+    return
   }
+  const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
+  if (search && search.length) { options.value = search }
+}
+
+// Q# and PB ID (e.g. "BETA bioid 1345") aren't things Wikibase's own label
+// search understands, so resolve them directly instead of searching by label.
+async function resolveEntityFromSearchTerm (term) {
+  const value = term?.trim()
+  if (!value) { return null }
+  try {
+    let qid = null
+    if ($wikibase.getQItemPattern().test(value.toUpperCase())) {
+      qid = value.toUpperCase()
+    } else if ($wikibase.getPBIDPattern().test(value)) {
+      qid = await $wikibase.getEntityFromPBID(value)
+    } else {
+      return null
+    }
+    if (!qid) { return null }
+    const entity = await $wikibase.getEntity(qid, locale.value)
+    if (!entity || entity.missing !== undefined) { return null }
+    const label = $wikibase.getValueByLang(entity.labels, locale.value)
+    return { id: qid, label: label?.value ?? qid }
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+function matchesEntitySearch (itemTitle, queryText, item) {
+  if (!queryText) { return true }
+  const search = queryText.toString().toLocaleLowerCase()
+  const raw = item?.raw ?? {}
+  return [itemTitle, raw.id, raw.pbid]
+    .filter(Boolean)
+    .some(value => value.toString().toLocaleLowerCase().includes(search))
 }
 
 function buildFullQuery (sparqlQuery) {
@@ -148,7 +187,8 @@ function setOptionsAutocomplete () {
           }
           options.value.push({
             id: extractQid(result.item.value),
-            label: result.item.label
+            label: result.item.label,
+            pbid: result.pbid ?? null
           })
         })
         const defaultValue = props.valueToView.useDefault === false ? null : autocomplete.default_value
