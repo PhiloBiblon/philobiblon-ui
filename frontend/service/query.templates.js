@@ -8,6 +8,12 @@
 const BITAGAP_DB = 'BITAGAP'
 const CARTAS_TEXT = '[Cartas de]'
 
+// Single source of truth for the FactGrid properties that link an item to a
+// subject (#365/#517): reused by query.service.js's search filters, Tables.vue's
+// item-detail subject_references and every search-forms/*.js subject autocomplete,
+// so a future property change can't make one of them silently fall out of sync.
+export const SUBJECT_PROPERTIES = ['P97', 'P121', 'P122', 'P243', 'P304', 'P422', 'P452', 'P608', 'P1031', 'P1094', 'P1278']
+
 export function fillTemplate (template, replacements) {
   return template.replace(/{{(\w+)}}/g, (match, p1) => replacements[p1] || '')
 }

@@ -4,7 +4,7 @@ import { useQueryStatusStore } from '~/stores/queryStatus'
 // to them, injecting the configured SPARQL prefix.
 import * as templates from './query.templates'
 
-export const SUBJECT_PROPERTIES = ['P97', 'P121', 'P122', 'P243', 'P304', 'P422', 'P452', 'P608', 'P1031', 'P1094', 'P1278']
+export const { SUBJECT_PROPERTIES } = templates
 export class QueryService {
   static DATE_SORT_PATTERNS = {
     bibid: 'OPTIONAL { ?item wdt:P49 ?date_raw }',
