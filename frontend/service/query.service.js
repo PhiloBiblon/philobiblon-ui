@@ -688,7 +688,8 @@ export class QueryService {
     if (form.input.subject && form.input.subject.value) {
       filters +=
         `
-        FILTER(?item = wd:${form.input.subject.value.item})
+        VALUES ?prop_subject { ${SUBJECT_PROPERTIES.map(p => `wdt:${p}`).join(' ')} }
+        ?item ?prop_subject wd:${form.input.subject.value.target_item} .
         `
     }
     return filters

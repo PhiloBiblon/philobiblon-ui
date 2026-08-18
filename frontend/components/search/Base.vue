@@ -103,11 +103,10 @@ function countAndSearch () {
 
 // Capture the subject selected for the executed query so the results can link
 // back to its subid item page (where the back pointers list every record with
-// that heading). subid table stores the id under `item`; other tables under
-// `target_item`.
+// that heading).
 function captureSearchedSubject () {
   const subjectValue = form.value?.input?.subject?.value
-  const qid = subjectValue?.target_item || subjectValue?.item
+  const qid = subjectValue?.target_item
   searchedSubject.value = qid ? { label: subjectValue.label, qid } : null
 }
 
