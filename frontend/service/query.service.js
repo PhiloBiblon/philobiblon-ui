@@ -185,14 +185,6 @@ export class QueryService {
     return templates.generateBitagapGroupCnumFilters() + this._bitagapGroupFilter(bitagapGroup)
   }
 
-  generateBitagapGroupCopidFilters (bitagapGroup) {
-    return templates.generateBitagapGroupCopidFilters() + this._bitagapGroupFilter(bitagapGroup)
-  }
-
-  generateBitagapGroupLibraryFilters (bitagapGroup) {
-    return templates.generateBitagapGroupLibraryFilters() + this._bitagapGroupFilter(bitagapGroup)
-  }
-
   generateBitagapGroupFiltersForSubject (bitagapGroup) {
     return templates.generateBitagapGroupFiltersForSubject(bitagapGroup)
   }
@@ -541,7 +533,7 @@ export class QueryService {
   }
 
   addLibraryFilters (form) {
-    let filters = this.generateBitagapGroupLibraryFilters(form.input.bitagap_group?.value)
+    let filters = ''
     if (form.input.city && form.input.city.value) {
       filters +=
         `
@@ -1184,7 +1176,7 @@ export class QueryService {
   }
 
   addCopidFilters (form) {
-    let filters = this.generateBitagapGroupCopidFilters(form.input.bitagap_group?.value)
+    let filters = ''
     if (form.input.edition && form.input.edition.value) {
       filters +=
         `

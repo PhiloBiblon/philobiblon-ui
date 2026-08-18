@@ -184,35 +184,10 @@ export function generateBitagapGroupCnumFilters () {
   return generateBitagapGroupSubjectTopicFilters()
 }
 
-export function generateBitagapGroupCopidFilters () {
-  return generateBitagapGroupSubjectTopicFilters()
-}
-
-export function generateBitagapGroupLibraryFilters () {
-  // Libraries carry no subject topic of their own: membership comes from the
-  // topics of the manuscripts they hold (manid --P329--> libid, same reverse-join
-  // shape as the institution/person/reference/geography patterns above).
-  return `
-        OPTIONAL {
-          {
-            SELECT DISTINCT ?item ?bg WHERE {
-              ?related_manuscript_item wdt:P476 ?related_manuscript_item_pbid .
-              FILTER regex(?related_manuscript_item_pbid, '${BITAGAP_DB} manid ') .
-              ?related_manuscript_item wdt:P329 ?item .
-              ?related_manuscript_item wdt:P243 ?related_topic_item .
-              ?related_topic_item wdt:P476 ?related_topic_item_pbid .
-              FILTER regex(?related_topic_item_pbid, '${BITAGAP_DB} subid ') .
-              ?related_topic_item rdfs:label ?related_topic_item_label .
-              ${bitagapMembershipBind('related_topic_item_label')}
-            }
-          }
-        }
-        `
-}
-
-export function generateBitagapGroupFiltersForSubject () {
+export function generateBitagapGroupFiltersForSubject (table) {
   // The subject autocompletes list subject items directly: membership from the
   // target's own labels, computed where ?target_item is bound (inner subquery).
+  if (table === 'libid') { return '' }
   return `
         OPTIONAL {
           ?target_item rdfs:label ?bg_label .
@@ -228,7 +203,7 @@ export function generateBitagapGroupFilters (table) {
     case 'texid':
       return generateBitagapGroupWorkFilters()
     case 'libid':
-      return generateBitagapGroupLibraryFilters()
+      return ''
     case 'bioid':
       return generateBitagapGroupPersonFilters()
     case 'bibid':
@@ -241,8 +216,6 @@ export function generateBitagapGroupFilters (table) {
       return generateBitagapGroupManuscriptFilters()
     case 'cnum':
       return generateBitagapGroupCnumFilters()
-    case 'copid':
-      return generateBitagapGroupCopidFilters()
   }
   return ''
 }
