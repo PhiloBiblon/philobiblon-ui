@@ -192,9 +192,13 @@ watch(showResults, (newValue) => {
 if (queryStatusStore.showResults) {
   showResults.value = queryStatusStore.showResults
 }
-if (searchGroup.value === 'BITAGAP' && !['libid', 'copid'].includes(props.table)) {
-  isBitagapSelected.value = true
-  bitagapGroup.value = 'ORIG'
+if (searchGroup.value === 'BITAGAP') {
+  if (!['libid', 'copid'].includes(props.table)) {
+    isBitagapSelected.value = true
+    bitagapGroup.value = 'ORIG'
+  } else {
+    bitagapGroup.value = 'ALL'
+  }
 }
 loadDefaultBibliography()
 
