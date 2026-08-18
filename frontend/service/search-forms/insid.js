@@ -4,6 +4,8 @@
  * filled by query.templates.js filterQuery), importable from Nuxt and Node
  * (scripts/seed-cache uses it to generate every autocomplete query).
  */
+import { SUBJECT_PROPERTIES } from '../query.templates.js'
+
 export default function createForm () {
   return {
         section: [
@@ -178,17 +180,7 @@ export default function createForm () {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ')
                     BIND(STRBEFORE(?pbid, ' ') AS ?db) .
-                    { ?item wdt:P97   ?target_item }
-                    UNION { ?item wdt:P121  ?target_item }
-                    UNION { ?item wdt:P122  ?target_item }
-                    UNION { ?item wdt:P243  ?target_item }
-                    UNION { ?item wdt:P304  ?target_item }
-                    UNION { ?item wdt:P422  ?target_item }
-                    UNION { ?item wdt:P452  ?target_item }
-                    UNION { ?item wdt:P608  ?target_item }
-                    UNION { ?item wdt:P1031 ?target_item }
-                    UNION { ?item wdt:P1094 ?target_item }
-                    UNION { ?item wdt:P1278 ?target_item }
+                    ${SUBJECT_PROPERTIES.map(p => `{ ?item wdt:${p} ?target_item }`).join('\n                    UNION ')}
                     {{bitagapGroupSubjectFilter}}
                   }
                 }
