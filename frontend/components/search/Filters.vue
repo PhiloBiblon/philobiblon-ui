@@ -32,7 +32,6 @@
             item-title="text"
             item-value="value"
             :label="t('search.form.common.bitagap_group.label')"
-            @update:model-value="saveBitagapGroup"
           />
         </v-col>
       </v-row>
@@ -193,8 +192,13 @@ watch(showResults, (newValue) => {
 if (queryStatusStore.showResults) {
   showResults.value = queryStatusStore.showResults
 }
-if (searchGroup.value === 'BITAGAP' && props.table !== 'libid') {
-  isBitagapSelected.value = true
+if (searchGroup.value === 'BITAGAP') {
+  if (!['libid', 'copid'].includes(props.table)) {
+    isBitagapSelected.value = true
+    bitagapGroup.value = 'ORIG'
+  } else {
+    bitagapGroup.value = 'ALL'
+  }
 }
 loadDefaultBibliography()
 
@@ -341,8 +345,9 @@ function isFieldValueNotEmpty (item) {
 }
 
 function onGroupChange (newDatabase) {
-  if (newDatabase === 'BITAGAP' && props.table !== 'libid') {
+  if (newDatabase === 'BITAGAP' && !['libid', 'copid'].includes(props.table)) {
     isBitagapSelected.value = true
+    bitagapGroup.value = 'ORIG'
   } else {
     isBitagapSelected.value = false
     bitagapGroup.value = 'ALL'
@@ -357,19 +362,7 @@ function loadDefaultBibliography () {
     if (savedBibliography && ['BETA', 'BITAGAP', 'BITECA'].includes(savedBibliography)) {
       searchGroup.value = savedBibliography
       onGroupChange(savedBibliography)
-      if (savedBibliography === 'BITAGAP' && isBitagapSelected.value) {
-        const savedBitagapGroup = localStorage.getItem('philobiblon_default_bitagap_group')
-        if (savedBitagapGroup && ['ALL', 'ORIG', 'CARTAS'].includes(savedBitagapGroup)) {
-          bitagapGroup.value = savedBitagapGroup
-        }
-      }
     }
-  }
-}
-
-function saveBitagapGroup (group) {
-  if (typeof localStorage !== 'undefined' && ['ALL', 'ORIG', 'CARTAS'].includes(group)) {
-    localStorage.setItem('philobiblon_default_bitagap_group', group)
   }
 }
 
@@ -379,7 +372,6 @@ function saveDefaultBibliography (bibliography) {
     localStorage.setItem('philobiblon_default_bibliography', bibliography)
   } else {
     localStorage.removeItem('philobiblon_default_bibliography')
-    localStorage.removeItem('philobiblon_default_bitagap_group')
   }
 }
 
