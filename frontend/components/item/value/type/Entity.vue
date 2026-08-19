@@ -57,10 +57,14 @@ const config = useRuntimeConfig().public
 const authStore = useAuthStore()
 const breadcrumbStore = useBreadcrumbStore()
 
+const DEBOUNCE_MS = 300
+
 const selectedOption = ref(null)
 const options = ref([])
 const propertyAutocomplete = ref({})
 const loading = ref(true)
+let debounceTimer = null
+let lastRequestId = 0
 
 const isUserLogged = computed(() => authStore.isLogged)
 const propertyKey = computed(() => {
@@ -99,17 +103,25 @@ function getWikiBaseEntityIdValue (newValue, oldValue) {
 }
 
 function oninput (e) {
-  if (e) { handleSearchChange(e) }
+  clearTimeout(debounceTimer)
+  if (!e) { return }
+  debounceTimer = setTimeout(() => handleSearchChange(e), DEBOUNCE_MS)
 }
 
+// Guarded by a request-sequence check after each await so a stale response
+// (e.g. from an earlier, shorter search prefix) can't overwrite the result
+// of a more recent keystroke once it resolves out of order.
 async function handleSearchChange (value) {
   if (!value) { return }
+  const requestId = ++lastRequestId
   const directMatch = await resolveEntityFromSearchTerm(value)
+  if (requestId !== lastRequestId) { return }
   if (directMatch) {
     options.value = [directMatch]
     return
   }
   const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
+  if (requestId !== lastRequestId) { return }
   if (search && search.length) { options.value = search }
 }
 
