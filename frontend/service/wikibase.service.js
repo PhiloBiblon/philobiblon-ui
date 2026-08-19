@@ -11,7 +11,10 @@ import { useQueryCacheStore } from '~/stores/queryCache'
 // that as an error to the user, trim silently before every write (issue #556).
 function trimStringsDeep (value) {
   if (typeof value === 'string') {
-    return value.trim()
+    const trimmed = value.trim()
+    // Leave whitespace-only strings untouched: Create.vue relies on a single space as a
+    // placeholder to work around Wikibase rejecting an empty description (see PR #261).
+    return trimmed === '' ? value : trimmed
   }
   if (Array.isArray(value)) {
     return value.map(trimStringsDeep)
