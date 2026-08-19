@@ -104,16 +104,19 @@ function getWikiBaseEntityIdValue (newValue, oldValue) {
 
 function oninput (e) {
   clearTimeout(debounceTimer)
+  // Bump the request id for every input event, including one that clears the
+  // field, so a still-in-flight search from a previous value can never win
+  // and set options.value after the field has already moved on.
+  const requestId = ++lastRequestId
   if (!e) { return }
-  debounceTimer = setTimeout(() => handleSearchChange(e), DEBOUNCE_MS)
+  debounceTimer = setTimeout(() => handleSearchChange(e, requestId), DEBOUNCE_MS)
 }
 
 // Guarded by a request-sequence check after each await so a stale response
 // (e.g. from an earlier, shorter search prefix) can't overwrite the result
 // of a more recent keystroke once it resolves out of order.
-async function handleSearchChange (value) {
+async function handleSearchChange (value, requestId) {
   if (!value) { return }
-  const requestId = ++lastRequestId
   const directMatch = await resolveEntityFromSearchTerm(value)
   if (requestId !== lastRequestId) { return }
   if (directMatch) {
@@ -161,7 +164,7 @@ function matchesEntitySearch (itemTitle, queryText, item) {
 
 function buildFullQuery (sparqlQuery) {
   return $wikibase.$query.addPrefixes(`
-    SELECT ?item ?itemLabel ?itemDescription
+    SELECT ?item ?itemLabel ?itemDescription ?pbid
       (CONCAT(?itemLabel, IF(BOUND(?pbid), CONCAT(" [", ?pbid, "]"), ""), " (", ?qid, ")") AS ?extendedLabel)
     WHERE {
       {
