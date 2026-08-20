@@ -124,6 +124,12 @@ const initialClaims = ref([])
 const claims = ref([])
 const description = ref('')
 
+// Label, description and alias must always be tagged/generated under the
+// bibliography's own language, not the interface locale — otherwise a BETA
+// item created with the English/Galician UI would get them stored as
+// "en"/"gl" instead of "es" (#552, #559).
+const entityLocale = computed(() => BIBLIOGRAPHY_LOCALE_MAP[props.database] || locale.value)
+
 const isUserLogged = computed(() => authStore.isLogged)
 const isCreateDisabled = computed(() => !!getCreateDisabledReason())
 const pbid = computed(() => initialClaims.value.find(
@@ -284,7 +290,7 @@ async function loadInitialClaims () {
 
 function setDefaultDescription () {
   if (props.table === 'cnum' && !description.value) {
-    description.value = t('item.cnum_description')
+    description.value = t('item.cnum_description', {}, { locale: entityLocale.value })
   }
 }
 
@@ -517,21 +523,15 @@ async function create () {
       const cleanedClaims = cleanClaims(claims.value)
       if (props.table === 'manid') addManidEditionFrbrClaim(cleanedClaims)
 
-      // Label, description and alias must always be tagged under the
-      // bibliography's own language, not the interface locale — otherwise a
-      // BETA item created with the English/Galician UI would get them
-      // stored as "en"/"gl" instead of "es" (#552, #559).
-      const entityLocale = BIBLIOGRAPHY_LOCALE_MAP[props.database] || locale.value
-
       const data = {
         labels: {
-          [entityLocale]: label.value
+          [entityLocale.value]: label.value
         },
         descriptions: {
-          [entityLocale]: description.value || ' '
+          [entityLocale.value]: description.value || ' '
         },
         aliases: {
-          [entityLocale]: aliasValue.value
+          [entityLocale.value]: aliasValue.value
         },
         claims: {
           ...cleanedClaims
