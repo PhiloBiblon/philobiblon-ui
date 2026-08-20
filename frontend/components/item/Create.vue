@@ -517,21 +517,21 @@ async function create () {
       const cleanedClaims = cleanClaims(claims.value)
       if (props.table === 'manid') addManidEditionFrbrClaim(cleanedClaims)
 
-      // The alias is the PBID (e.g. "BETA texid 0000"), which must always be
-      // tagged under the bibliography's language, not the interface locale —
-      // otherwise a BETA item created with the English/Galician UI would get
-      // its alias stored as "en"/"gl" instead of "es".
-      const aliasLocale = BIBLIOGRAPHY_LOCALE_MAP[props.database] || locale.value
+      // Label, description and alias must always be tagged under the
+      // bibliography's own language, not the interface locale — otherwise a
+      // BETA item created with the English/Galician UI would get them
+      // stored as "en"/"gl" instead of "es" (#552, #559).
+      const entityLocale = BIBLIOGRAPHY_LOCALE_MAP[props.database] || locale.value
 
       const data = {
         labels: {
-          [locale.value]: label.value
+          [entityLocale]: label.value
         },
         descriptions: {
-          [locale.value]: description.value || ' '
+          [entityLocale]: description.value || ' '
         },
         aliases: {
-          [aliasLocale]: aliasValue.value
+          [entityLocale]: aliasValue.value
         },
         claims: {
           ...cleanedClaims
