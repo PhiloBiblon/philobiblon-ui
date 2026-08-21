@@ -6,6 +6,56 @@ import { useAuthStore } from '~/stores/auth'
 import { useItemCacheStore } from '~/stores/itemCache'
 import { useQueryCacheStore } from '~/stores/queryCache'
 
+// Wikibase rejects string/monolingualtext/url/external-id values with leading or trailing
+// whitespace ("White space found at the beginning/end of the value."). Rather than surfacing
+// that as an error to the user, trim silently before every write (issue #556).
+function trimStringsDeep (value) {
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    // Leave whitespace-only strings untouched: Create.vue relies on a single space as a
+    // placeholder to work around Wikibase rejecting an empty description (see PR #261).
+    return trimmed === '' ? value : trimmed
+  }
+  if (Array.isArray(value)) {
+    return value.map(trimStringsDeep)
+  }
+  if (value !== null && typeof value === 'object' && value.constructor === Object) {
+    return Object.fromEntries(Object.entries(value).map(([key, v]) => [key, trimStringsDeep(v)]))
+  }
+  return value
+}
+
+// `oldValue` is left untouched: claim/qualifier update look up the currently stored snak by
+// an exact value match, so trimming it could break that lookup against legacy padded data.
+function trimEditParams (params) {
+  if (Array.isArray(params)) {
+    return params.map(trimEditParams)
+  }
+  if (params === null || typeof params !== 'object') {
+    return params
+  }
+  const { oldValue, ...rest } = params
+  const trimmed = trimStringsDeep(rest)
+  return 'oldValue' in params ? { ...trimmed, oldValue } : trimmed
+}
+
+function withTrimmedValues (wbEditInstance) {
+  const wrapped = {}
+  for (const [namespace, methods] of Object.entries(wbEditInstance)) {
+    if (methods === null || typeof methods !== 'object') {
+      wrapped[namespace] = methods
+      continue
+    }
+    wrapped[namespace] = {}
+    for (const [name, fn] of Object.entries(methods)) {
+      wrapped[namespace][name] = typeof fn === 'function'
+        ? (params, ...rest) => fn(trimEditParams(params), ...rest)
+        : fn
+    }
+  }
+  return wrapped
+}
+
 export class WikibaseService {
   static PROPERTY_PBID = 'P476'
   static PROPERTY_FORMATTER_URL = 'P236'
@@ -30,9 +80,9 @@ export class WikibaseService {
       instance: config.wikibaseApiUrl,
       sparqlEndpoint: config.sparqlEndpoint
     })
-    this.wbEdit = wbEdit({
+    this.wbEdit = withTrimmedValues(wbEdit({
       instance: config.apiBaseUrl
-    })
+    }))
     this.$query = new QueryService({ config })
     this.$oauth = new OAuthService({ config })
     this.$notification = $notification
