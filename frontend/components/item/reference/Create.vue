@@ -39,11 +39,11 @@
       </v-col>
       <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
         <v-btn
+          v-if="allowCreateReference(reference)"
           variant="text"
           icon
           density="compact"
           class="action-btn"
-          :disabled="!reference.property || !reference?.datavalue?.value"
           @click.stop="createReference(key)"
         >
           <v-tooltip location="top">
@@ -75,6 +75,7 @@
       </v-col>
     </v-row>
     <v-row
+      v-if="isAllowedAddReference"
       class="add-reference pr-5"
       justify="end"
     >
@@ -91,14 +92,17 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue'
+import { computed, reactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
+import { WikibaseService } from '~/service/wikibase.service'
 
 const props = defineProps({
   claim: { type: Object, required: true },
   value: { type: Object, default: null },
-  table: { type: String, default: null }
+  table: { type: String, default: null },
+  initialReferences: { type: Array, default: null },
+  forCreate: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['update-references', 'create-reference'])
@@ -112,11 +116,30 @@ const properties = reactive([])
 const references = reactive([])
 const propertyValues = reactive([])
 
+const isAllowedAddReference = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
+
+if (props.initialReferences) {
+  props.initialReferences.forEach((reference, index) => {
+    properties[index] = [reference.property]
+    // Clone reference and its nested datavalue to prevent prop mutations
+    const clonedReference = { ...reference }
+    if (reference.datavalue) {
+      clonedReference.datavalue = { ...reference.datavalue }
+    }
+    references.push(clonedReference)
+  })
+}
+
 watch(references, (val) => {
-  if (!props.claim) {
+  if (!props.claim?.id || props.forCreate) {
     emit('update-references', val)
   }
 }, { deep: true })
+
+function allowCreateReference (reference) {
+  const propertyId = reference.property?.id || reference.property
+  return props.claim?.id && !props.forCreate && propertyId && reference.datavalue?.value !== undefined && reference.datavalue?.value !== null
+}
 
 function onNewValue (event, reference) {
   reference.datavalue.value = event
