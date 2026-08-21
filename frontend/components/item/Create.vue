@@ -109,7 +109,7 @@ const props = defineProps({
 })
 
 const { $notification, $wikibase } = useNuxtApp()
-const { t, locale } = useI18n()
+const { t, locale, loadLocaleMessages } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const localePath = useLocalePath()
@@ -280,7 +280,7 @@ async function loadInitialClaims () {
     const res = await $wikibase.getTableLastItem(props.database, props.table)
     if (res?.length && res[0]) {
       await getDefaultClaims(res[0].item_number)
-      setDefaultDescription()
+      await setDefaultDescription()
       initialClaimsLoaded.value = true
     }
   } catch (error) {
@@ -288,8 +288,15 @@ async function loadInitialClaims () {
   }
 }
 
-function setDefaultDescription () {
+// @nuxtjs/i18n lazy-loads each locale's message bundle on demand: only the
+// active UI locale (plus the "en" fallback) is guaranteed loaded. Requesting
+// t(key, {}, { locale }) for the bibliography locale before it's loaded
+// silently falls back to "en" text instead of throwing, so a BETA cnum item
+// created with the English UI got English text stored under the "es" key.
+// Force-load the target bundle first (#562).
+async function setDefaultDescription () {
   if (props.table === 'cnum' && !description.value) {
+    await loadLocaleMessages(entityLocale.value)
     description.value = t('item.cnum_description', {}, { locale: entityLocale.value })
   }
 }
@@ -523,13 +530,22 @@ async function create () {
       const cleanedClaims = cleanClaims(claims.value)
       if (props.table === 'manid') addManidEditionFrbrClaim(cleanedClaims)
 
+      const labels = { [entityLocale.value]: label.value }
+      const descriptions = { [entityLocale.value]: description.value || ' ' }
+
+      // Wikibase's default working language is English: without an "en" label
+      // (and, for cnum, description), BETA/BITECA/BITAGAP items are hard to
+      // find/read outside their own bibliography locale (#562).
+      if (entityLocale.value !== 'en') {
+        labels.en = label.value
+        if (props.table === 'cnum') {
+          descriptions.en = t('item.cnum_description', {}, { locale: 'en' })
+        }
+      }
+
       const data = {
-        labels: {
-          [entityLocale.value]: label.value
-        },
-        descriptions: {
-          [entityLocale.value]: description.value || ' '
-        },
+        labels,
+        descriptions,
         aliases: {
           [entityLocale.value]: aliasValue.value
         },
