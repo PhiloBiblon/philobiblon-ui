@@ -1188,7 +1188,17 @@ export class QueryService {
     if (form.input.library && form.input.library.value) {
       filters +=
         `
-        ?item wdt:P329 wd:${form.input.library.value.target_item} .
+        {
+          ?item wdt:P329 ?item_lib .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item wdt:P329 ?item_lib .
+        }
+        FILTER (?item_lib = wd:${form.input.library.value.target_item})
         `
     }
     if (form.input.collection && form.input.collection.value) {
@@ -1198,7 +1208,16 @@ export class QueryService {
         : `FILTER (?item_collection = "${this.sanitizeSparqlString(collectionValue.label)}")`
       filters +=
         `
-        ?item p:P329 ?library_stmt .
+        {
+          ?item p:P329 ?library_stmt .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item p:P329 ?library_stmt .
+        }
         ?library_stmt pq:P1054 ?item_collection .
         ${collectionFilter}
         `
@@ -1206,7 +1225,16 @@ export class QueryService {
     if (form.input.call_number && form.input.call_number.value) {
       filters +=
         `
-        ?item p:P329 ?library_stmt .
+        {
+          ?item p:P329 ?library_stmt .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item p:P329 ?library_stmt .
+        }
         {
           ?library_stmt pq:P10 ?call_number_label
         }
@@ -1220,38 +1248,97 @@ export class QueryService {
     if (form.input.previous_owner && form.input.previous_owner.value) {
       filters +=
         `
-        ?item wdt:P229 wd:${form.input.previous_owner.value.target_item} .
+        {
+          ?item wdt:P229 ?item_prev_owner .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item wdt:P229 ?item_prev_owner .
+        }
+        FILTER (?item_prev_owner = wd:${form.input.previous_owner.value.target_item})
         `
     }
     if (form.input.associated_person && form.input.associated_person.value) {
       filters +=
         `
-        ?item wdt:P703 wd:${form.input.associated_person.value.target_item} .
+        {
+          ?item wdt:P703 ?item_aso_person .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item wdt:P703 ?item_aso_person .
+        }
+        FILTER (?item_aso_person = wd:${form.input.associated_person.value.target_item})
         `
     }
     if (form.input.writing_surface && form.input.writing_surface.value) {
       filters +=
         `
-        ?item wdt:P480 wd:${form.input.writing_surface.value.target_item} .
+        {
+          ?item wdt:P480 ?item_writing_surf .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item wdt:P480 ?item_writing_surf .
+        }
+        FILTER (?item_writing_surf = wd:${form.input.writing_surface.value.target_item})
         `
     }
     if (form.input.binding && form.input.binding.value) {
       filters +=
         `
-        ?item wdt:P800 ?item_binding .
+        {
+          ?item wdt:P800 ?item_binding .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item wdt:P800 ?item_binding .
+        }
         FILTER (?item_binding = "${this.sanitizeSparqlString(form.input.binding.value.label)}")
         `
     }
     if (form.input.watermark && form.input.watermark.value) {
       filters +=
         `
-        ?item wdt:P749 wd:${form.input.watermark.value.target_item} .
+        {
+          ?item wdt:P749 ?item_watermark .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item wdt:P749 ?item_watermark .
+        }
+        FILTER (?item_watermark = wd:${form.input.watermark.value.target_item})
         `
     }
     if (form.input.graphic_feature && form.input.graphic_feature.value) {
       filters +=
         `
-        ?item wdt:P801 wd:${form.input.graphic_feature.value.target_item} .
+        {
+          ?item wdt:P801 ?item_graphic_feature .
+        }
+        UNION
+        {
+          ?item wdt:P839 ?manid_item .
+          ?manid_item wdt:P476 ?manid_pbid .
+          FILTER regex(?manid_pbid, '(.*) manid ') .
+          ?manid_item wdt:P801 ?item_graphic_feature .
+        }
+        FILTER (?item_graphic_feature = wd:${form.input.graphic_feature.value.target_item})
         `
     }
     if (form.input.subject && form.input.subject.value) {

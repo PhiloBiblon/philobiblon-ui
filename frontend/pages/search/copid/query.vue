@@ -128,7 +128,16 @@ const form = {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?item wdt:P329 ?target_item .
+                    {
+                      ?item wdt:P329 ?target_item .
+                    }
+                    UNION
+                    {
+                      ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
+                      ?manid_item wdt:P329 ?target_item .
+                    }
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -153,7 +162,16 @@ const form = {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
-                ?item p:P329 ?library_stmt .
+                {
+                  ?item p:P329 ?library_stmt .
+                }
+                UNION
+                {
+                  ?item wdt:P839 ?manid_item .
+                  ?manid_item wdt:P476 ?manid_pbid .
+                  FILTER regex(?manid_pbid, '(.*) manid ') .
+                  ?manid_item p:P329 ?library_stmt .
+                }
                 ?library_stmt pq:P1054 ?label .
               }
               `
@@ -175,7 +193,16 @@ const form = {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
-                ?item p:P329 ?library_stmt .
+                {
+                  ?item p:P329 ?library_stmt .
+                }
+                UNION
+                {
+                  ?item wdt:P839 ?manid_item .
+                  ?manid_item wdt:P476 ?manid_pbid .
+                  FILTER regex(?manid_pbid, '(.*) manid ') .
+                  ?manid_item p:P329 ?library_stmt .
+                }
                 {
                   ?library_stmt pq:P10 ?label
                 }
@@ -205,7 +232,16 @@ const form = {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?item wdt:P229 ?target_item .
+                    {
+                      ?item wdt:P229 ?target_item .
+                    }
+                    UNION
+                    {
+                      ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
+                      ?manid_item wdt:P229 ?target_item .
+                    }
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -231,7 +267,16 @@ const form = {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?item wdt:P703 ?target_item .
+                    {
+                      ?item wdt:P703 ?target_item .
+                    }
+                    UNION
+                    {
+                      ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
+                      ?manid_item wdt:P703 ?target_item .
+                    }
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -257,7 +302,16 @@ const form = {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?item wdt:P480 ?target_item .
+                    {
+                      ?item wdt:P480 ?target_item .
+                    }
+                    UNION
+                    {
+                      ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
+                      ?manid_item wdt:P480 ?target_item .
+                    }
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -281,7 +335,16 @@ const form = {
                 ?item wdt:P476 ?pbid .
                 FILTER regex(?pbid, '{{database}} {{table}} ') .
                 {{bitagapGroupFilter}}
-                ?item wdt:P800 ?label .
+                {
+                  ?item wdt:P800 ?label .
+                }
+                UNION
+                {
+                  ?item wdt:P839 ?manid_item .
+                  ?manid_item wdt:P476 ?manid_pbid .
+                  FILTER regex(?manid_pbid, '(.*) manid ') .
+                  ?manid_item wdt:P800 ?label .
+                }
               }
               `
             }
@@ -304,7 +367,16 @@ const form = {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?item wdt:P749 ?target_item .
+                    {
+                      ?item wdt:P749 ?target_item .
+                    }
+                    UNION
+                    {
+                      ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
+                      ?manid_item wdt:P749 ?target_item .
+                    }
                   }
                 }
                 {{targetItemLangGroupPattern}}
@@ -330,7 +402,16 @@ const form = {
                     ?item wdt:P476 ?pbid .
                     FILTER regex(?pbid, '{{database}} {{table}} ') .
                     {{bitagapGroupFilter}}
-                    ?item wdt:P801 ?target_item .
+                    {
+                      ?item wdt:P801 ?target_item .
+                    }
+                    UNION
+                    {
+                      ?item wdt:P839 ?manid_item .
+                      ?manid_item wdt:P476 ?manid_pbid .
+                      FILTER regex(?manid_pbid, '(.*) manid ') .
+                      ?manid_item wdt:P801 ?target_item .
+                    }
                   }
                 }
                 {{targetItemLangGroupPattern}}
