@@ -444,12 +444,6 @@ export default {
           hint: ''
         }
       },
-      copid: {
-        edition: {
-          label: 'Edição',
-          hint: 'Pesquise pela edição impressa (MsEd) da qual esta é uma cópia adicional.'
-        }
-      },
       cnum: {
         witness_of: {
           label: 'Testemunho de',

@@ -446,12 +446,6 @@ export default {
           hint: ''
         }
       },
-      copid: {
-        edition: {
-          label: 'Edition',
-          hint: 'Search by the printed edition (MsEd) of which this is an additional copy.'
-        }
-      },
       cnum: {
         witness_of: {
           label: 'Witness of',
