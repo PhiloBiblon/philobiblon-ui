@@ -28,6 +28,9 @@ function trimStringsDeep (value) {
 // `oldValue` is left untouched: claim/qualifier update look up the currently stored snak by
 // an exact value match, so trimming it could break that lookup against legacy padded data.
 function trimEditParams (params) {
+  if (Array.isArray(params)) {
+    return params.map(trimEditParams)
+  }
   if (params === null || typeof params !== 'object') {
     return params
   }
