@@ -82,34 +82,6 @@ const form = {
             visible: true,
             disabled: false
           },
-          edition: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.copid.edition.label',
-            hint: 'search.form.copid.edition.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?target_item ?label ?desc WHERE {
-                {
-                  SELECT DISTINCT ?target_item WHERE {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    ?item wdt:P839 ?target_item .
-                    ?target_item wdt:P476 ?target_pbid .
-                    FILTER regex(?target_pbid, '(.*) manid ') .
-                  }
-                }
-                {{targetItemLangGroupPattern}}
-              }
-              `
-            }
-          },
           library: {
             active: true,
             section: 'primary',
@@ -210,6 +182,22 @@ const form = {
                 {
                   ?library_stmt pq:P30 ?label
                 }
+                UNION
+                {
+                  ?library_stmt pq:P802 ?label
+                }
+                UNION
+                {
+                  ?library_stmt pq:P806 ?label
+                }
+                UNION
+                {
+                  ?library_stmt pq:P803 ?label
+                }
+                UNION
+                {
+                  ?library_stmt pq:P804 ?label
+                }
               }
               `
             }
@@ -237,10 +225,20 @@ const form = {
                     }
                     UNION
                     {
+                      ?item wdt:P136 ?target_item .
+                    }
+                    UNION
+                    {
                       ?item wdt:P839 ?manid_item .
                       ?manid_item wdt:P476 ?manid_pbid .
                       FILTER regex(?manid_pbid, '(.*) manid ') .
-                      ?manid_item wdt:P229 ?target_item .
+                      {
+                        ?manid_item wdt:P229 ?target_item .
+                      }
+                      UNION
+                      {
+                        ?manid_item wdt:P136 ?target_item .
+                      }
                     }
                   }
                 }
@@ -277,168 +275,6 @@ const form = {
                       FILTER regex(?manid_pbid, '(.*) manid ') .
                       ?manid_item wdt:P703 ?target_item .
                     }
-                  }
-                }
-                {{targetItemLangGroupPattern}}
-              }
-              `
-            }
-          },
-          writing_surface: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.manid.writing_surface.label',
-            hint: 'search.form.manid.writing_surface.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?target_item ?label ?desc WHERE {
-                {
-                  SELECT DISTINCT ?target_item WHERE {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    {
-                      ?item wdt:P480 ?target_item .
-                    }
-                    UNION
-                    {
-                      ?item wdt:P839 ?manid_item .
-                      ?manid_item wdt:P476 ?manid_pbid .
-                      FILTER regex(?manid_pbid, '(.*) manid ') .
-                      ?manid_item wdt:P480 ?target_item .
-                    }
-                  }
-                }
-                {{targetItemLangGroupPattern}}
-              }
-              `
-            }
-          },
-          binding: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.manid.binding.label',
-            hint: 'search.form.manid.binding.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?label WHERE {
-                ?item wdt:P476 ?pbid .
-                FILTER regex(?pbid, '{{database}} {{table}} ') .
-                {{bitagapGroupFilter}}
-                {
-                  ?item wdt:P800 ?label .
-                }
-                UNION
-                {
-                  ?item wdt:P839 ?manid_item .
-                  ?manid_item wdt:P476 ?manid_pbid .
-                  FILTER regex(?manid_pbid, '(.*) manid ') .
-                  ?manid_item wdt:P800 ?label .
-                }
-              }
-              `
-            }
-          },
-          watermark: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.manid.watermark.label',
-            hint: 'search.form.manid.watermark.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?target_item ?label ?desc WHERE {
-                {
-                  SELECT DISTINCT ?target_item WHERE {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    {
-                      ?item wdt:P749 ?target_item .
-                    }
-                    UNION
-                    {
-                      ?item wdt:P839 ?manid_item .
-                      ?manid_item wdt:P476 ?manid_pbid .
-                      FILTER regex(?manid_pbid, '(.*) manid ') .
-                      ?manid_item wdt:P749 ?target_item .
-                    }
-                  }
-                }
-                {{targetItemLangGroupPattern}}
-              }
-              `
-            }
-          },
-          graphic_feature: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.manid.graphic_feature.label',
-            hint: 'search.form.manid.graphic_feature.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?target_item ?label ?desc WHERE {
-                {
-                  SELECT DISTINCT ?target_item WHERE {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ') .
-                    {{bitagapGroupFilter}}
-                    {
-                      ?item wdt:P801 ?target_item .
-                    }
-                    UNION
-                    {
-                      ?item wdt:P839 ?manid_item .
-                      ?manid_item wdt:P476 ?manid_pbid .
-                      FILTER regex(?manid_pbid, '(.*) manid ') .
-                      ?manid_item wdt:P801 ?target_item .
-                    }
-                  }
-                }
-                {{targetItemLangGroupPattern}}
-              }
-              `
-            }
-          },
-          subject: {
-            active: true,
-            section: 'primary',
-            label: 'search.form.common.subject.label',
-            hint: 'search.form.common.subject.hint',
-            type: 'autocomplete',
-            value: {},
-            visible: true,
-            disabled: false,
-            autocomplete: {
-              query:
-              `
-              SELECT DISTINCT ?target_item ?label ?desc WHERE {
-                {
-                  SELECT DISTINCT ?target_item WHERE {
-                    ?item wdt:P476 ?pbid .
-                    FILTER regex(?pbid, '{{database}} {{table}} ')
-                    {{bitagapGroupSubjectFilter}}
-                    VALUES ?property { wdt:P97 wdt:P121 wdt:P122 wdt:P243 wdt:P304 wdt:P422 wdt:P452 wdt:P608 wdt:P1031 wdt:P1094 wdt:P1278 }
-                    ?item ?property ?target_item .
                   }
                 }
                 {{targetItemLangGroupPattern}}
