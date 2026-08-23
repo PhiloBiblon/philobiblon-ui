@@ -144,6 +144,7 @@ const properties = reactive([])
 const references = reactive([])
 const propertyValues = reactive([])
 const resolvedValues = reactive([])
+const propertyChangeTokens = reactive([])
 
 const isAllowedAddReference = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
 
@@ -184,9 +185,13 @@ function isConfirmed (reference) {
 
 async function confirmReference (index) {
   const reference = references[index]
-  reference.confirmed = true
   const propertyId = reference.property?.id ?? reference.property
-  resolvedValues[index] = await $wikibase.getWbValue(propertyId, reference.datatype, reference.datavalue.value, locale.value)
+  try {
+    resolvedValues[index] = await $wikibase.getWbValue(propertyId, reference.datatype, reference.datavalue.value, locale.value)
+    reference.confirmed = true
+  } catch (error) {
+    notifyError(error)
+  }
 }
 
 function onNewValue (event, reference) {
@@ -195,10 +200,16 @@ function onNewValue (event, reference) {
 
 async function onChangeProperty (event, index) {
   const reference = references[index]
+  const requestId = (propertyChangeTokens[index] = (propertyChangeTokens[index] || 0) + 1)
   if (event) {
     reference.datatype = event.datatype
     reference.datavalue = { value: null }
     const altLabel = await $wikibase.getEntityLabel(props.table, event.id, locale.value)
+    if (propertyChangeTokens[index] !== requestId) {
+      // A newer property selection has since started; don't let this stale
+      // lookup overwrite it with a mismatched datatype/property pair.
+      return
+    }
     reference.property = { ...event, label: altLabel?.value ?? event.label }
   } else {
     reference.property = null
@@ -220,6 +231,7 @@ function removeReference (index) {
   properties.splice(index, 1)
   propertyValues.splice(index, 1)
   resolvedValues.splice(index, 1)
+  propertyChangeTokens.splice(index, 1)
 }
 
 async function onInput (value, type, index) {

@@ -116,6 +116,7 @@ const localePath = useLocalePath()
 const authStore = useAuthStore()
 const { notifyError } = useNotifyError()
 const draft = useItemDraft(props.table)
+const { groupByProperty } = useQualifierGrouping()
 const previousPathCookie = useCookie('previous-path', { path: '/', maxAge: 5 * 60 })
 
 const label = ref('')
@@ -254,7 +255,8 @@ function getCreateDisabledReason () {
         if (item?.value == null || item?.value === '') {
           continue
         }
-        const dateQualifier = item?.qualifiers?.P106
+        const dateQualifiers = item?.qualifiers?.P106
+        const dateQualifier = Array.isArray(dateQualifiers) ? dateQualifiers[0] : dateQualifiers
         if (dateQualifier == null || !isCompleteDate(dateQualifier)) {
           return t('messages.error.inputs.incomplete_date', { propertyLabel })
         }
@@ -445,8 +447,8 @@ function generateClaimsData (data) {
   const result = {}
   const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
 
-  const formatQualifiers = (qualifiers) => Object.fromEntries(
-    (qualifiers || []).map(q => [q.property?.id ?? q.property, extractValue(q)])
+  const formatQualifiers = (qualifiers) => groupByProperty(
+    qualifiers, q => q.property?.id ?? q.property, q => extractValue(q)
   )
 
   const formatReferences = (references) => (references || [])
@@ -490,15 +492,14 @@ function cleanClaims (claimsToClean) {
       }
 
       const cleanedQualifiers = {}
-      for (const [qualKey, qualVal] of Object.entries(claim.qualifiers || {})) {
-        if (
-          qualKey &&
-          qualKey !== 'null' &&
-          qualVal != null &&
-          qualVal !== 'null' &&
-          qualVal !== ''
-        ) {
-          cleanedQualifiers[qualKey] = qualVal
+      for (const [qualKey, qualVals] of Object.entries(claim.qualifiers || {})) {
+        if (!qualKey || qualKey === 'null') {
+          continue
+        }
+        const values = (Array.isArray(qualVals) ? qualVals : [qualVals])
+          .filter(v => v != null && v !== 'null' && v !== '')
+        if (values.length) {
+          cleanedQualifiers[qualKey] = values
         }
       }
 

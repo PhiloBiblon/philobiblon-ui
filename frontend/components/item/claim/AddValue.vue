@@ -120,6 +120,7 @@ const emit = defineEmits(['update-claims-values', 'create-claim'])
 const { $notification, $wikibase } = useNuxtApp()
 const { t } = useI18n()
 const { notifyError } = useNotifyError()
+const { groupByProperty } = useQualifierGrouping()
 const authStore = useAuthStore()
 
 const items = reactive({})
@@ -207,7 +208,7 @@ function updateReferences (data, key) {
 
 function referenceHeader (claim) {
   const count = claim.references?.length ?? 0
-  return `${count} reference${count === 1 ? '' : 's'}`
+  return t('common.reference_count', count)
 }
 
 async function createClaim (index) {
@@ -218,11 +219,7 @@ async function createClaim (index) {
     return
   }
 
-  const formattedQualifiers = Object.fromEntries(
-    (claim.qualifiers || [])
-      .filter(q => q.property && q.value)
-      .map(({ property: p, value: v }) => [p, { value: v }])
-  )
+  const formattedQualifiers = groupByProperty(claim.qualifiers, q => q.property, q => q.value)
 
   const formattedReferences = (claim.references || [])
     .filter(r => r.property && r.value)

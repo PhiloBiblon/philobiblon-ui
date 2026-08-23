@@ -17,6 +17,7 @@
             :items="properties[key]"
             item-title="label"
             return-object
+            :aria-label="t('common.property')"
             variant="underlined"
             density="compact"
             :filter="acceptAll"
@@ -149,6 +150,7 @@ const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
 const { notifyError } = useNotifyError()
 const { applyAlternativeLabels } = useAlternativeLabels()
+const { groupByProperty } = useQualifierGrouping()
 const authStore = useAuthStore()
 
 const claims = reactive([])
@@ -260,11 +262,7 @@ async function addClaim (index) {
 async function createClaim (index) {
   const { property, value, qualifiers: rawQualifiers, references: rawReferences } = claims[index]
 
-  const formattedQualifiers = Object.fromEntries(
-    (rawQualifiers || [])
-      .filter(q => q.property && q.value)
-      .map(({ property: p, value: v }) => [p, { value: v }])
-  )
+  const formattedQualifiers = groupByProperty(rawQualifiers, q => q.property, q => q.value)
 
   const formattedReferences = (rawReferences || [])
     .filter(r => r.property && r.value)
@@ -323,7 +321,7 @@ function acceptAll () {
 
 function referenceHeader (claim) {
   const count = claim.references?.length ?? 0
-  return `${count} reference${count === 1 ? '' : 's'}`
+  return t('common.reference_count', count)
 }
 </script>
 
