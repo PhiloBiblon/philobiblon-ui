@@ -444,12 +444,6 @@ export default {
           hint: ''
         }
       },
-      copid: {
-        edition: {
-          label: 'Edició',
-          hint: 'Cerqueu per l\'edició impresa (MsEd) de la qual aquest és un exemplar addicional.'
-        }
-      },
       cnum: {
         witness_of: {
           label: 'Testimoni de',
