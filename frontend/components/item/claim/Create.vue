@@ -80,6 +80,14 @@
           :initial-qualifiers="claim.qualifiers"
           @update-qualifiers="updateQualifiers($event, key)"
         />
+        <item-reference-create
+          :key="claim?.property?.id"
+          :claim="claim"
+          :for-create="forCreate"
+          :table="table"
+          :initial-references="claim.references"
+          @update-references="updateReferences($event, key)"
+        />
       </v-container>
       <item-claim-add-value
         v-if="forCreate"
@@ -168,11 +176,13 @@ function canCreate (index) {
   const c = claims[index]
   const v = c?.value?.datavalue?.value
 
+  const validSnak = s =>
+    s?.property && s?.value &&
+    (typeof s.value === 'string' ? s.value.trim() : Object.values(s.value).every(vv => vv != null && vv !== ''))
+
   return !!(c?.property && v && (typeof v !== 'object' || Object.values(v).every(val => val != null && val !== '')) &&
-    c.qualifiers?.every(q =>
-      q?.property && q?.value &&
-      (typeof q.value === 'string' ? q.value.trim() : Object.values(q.value).every(vv => vv != null && vv !== ''))
-    ))
+    c.qualifiers?.every(validSnak) &&
+    c.references?.every(validSnak))
 }
 
 function addNewClaim () {
@@ -186,7 +196,8 @@ function addNewClaim () {
     claimsValues: [],
     mainsnak: { property: null },
     property: null,
-    qualifiers: []
+    qualifiers: [],
+    references: []
   })
 }
 
@@ -229,7 +240,7 @@ async function addClaim (index) {
 }
 
 async function createClaim (index) {
-  const { property, value, qualifiers: rawQualifiers } = claims[index]
+  const { property, value, qualifiers: rawQualifiers, references: rawReferences } = claims[index]
 
   const formattedQualifiers = Object.fromEntries(
     (rawQualifiers || [])
@@ -237,12 +248,31 @@ async function createClaim (index) {
       .map(({ property: p, value: v }) => [p, { value: v }])
   )
 
+  const formattedReferences = (rawReferences || [])
+    .filter(r => r.property && r.value)
+    .map(({ property: p, value: v }) => ({ [p]: v }))
+
   return await $wikibase.getWbEdit().claim.create({
     id: props.item.id,
     property: property.id,
     value: value.datavalue.value.id ?? value.datavalue.value,
-    qualifiers: Object.keys(formattedQualifiers).length ? formattedQualifiers : undefined
+    qualifiers: Object.keys(formattedQualifiers).length ? formattedQualifiers : undefined,
+    references: formattedReferences.length ? formattedReferences : undefined
   }, authStore.requestConfig)
+}
+
+function updateReferences (data, key) {
+  claims[key].references = data.map((reference) => {
+    if (!props.forCreate) {
+      const propertyId = reference?.property?.id || reference?.property
+      return {
+        property: propertyId,
+        value: reference?.datavalue?.value?.id ?? reference.datavalue?.value
+      }
+    } else {
+      return reference
+    }
+  })
 }
 
 function updateQualifiers (data, key) {

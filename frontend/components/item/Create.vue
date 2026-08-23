@@ -443,16 +443,22 @@ function generateClaimsData (data) {
       result[claimKey] = result[claimKey] || []
       const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
 
-      const createClaim = (val, qualifiers = {}) => ({
+      const createClaim = (val, qualifiers = {}, references = []) => ({
         value: extractValue(val),
-        qualifiers
+        qualifiers,
+        references
       })
 
       const qualifiers = Object.fromEntries(
         (claim.qualifiers || []).map(q => [q.property?.id ?? q.property, extractValue(q)])
       )
 
-      result[claimKey].push(createClaim(claim.value, qualifiers))
+      const references = (claim.references || [])
+        .map(r => ({ propertyId: r.property?.id ?? r.property, value: extractValue(r) }))
+        .filter(r => r.propertyId && r.value != null && r.value !== '')
+        .map(r => ({ [r.propertyId]: r.value }))
+
+      result[claimKey].push(createClaim(claim.value, qualifiers, references))
 
       const values = Object.values(claim.claimsValues || {}) || []
       values.forEach((v) => {
@@ -488,9 +494,15 @@ function cleanClaims (claimsToClean) {
         }
       }
 
+      const cleanedReferences = (claim.references || []).filter((refObj) => {
+        const [k, v] = Object.entries(refObj)[0] || []
+        return k && k !== 'null' && v != null && v !== 'null' && v !== ''
+      })
+
       cleanedClaimArray.push({
         value,
-        qualifiers: cleanedQualifiers
+        qualifiers: cleanedQualifiers,
+        references: cleanedReferences
       })
     }
 
