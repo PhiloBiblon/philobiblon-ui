@@ -443,33 +443,34 @@ function updateClaims (data) {
 
 function generateClaimsData (data) {
   const result = {}
+  const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
+
+  const formatQualifiers = (qualifiers) => Object.fromEntries(
+    (qualifiers || []).map(q => [q.property?.id ?? q.property, extractValue(q)])
+  )
+
+  const formatReferences = (references) => (references || [])
+    .map(r => ({ propertyId: r.property?.id ?? r.property, value: extractValue(r) }))
+    .filter(r => r.propertyId && r.value != null && r.value !== '')
+    .map(r => ({ [r.propertyId]: r.value }))
+
+  const createClaim = (val, qualifiers = {}, references = []) => ({
+    value: extractValue(val),
+    qualifiers,
+    references
+  })
+
   data.forEach((claim) => {
     if (claim.property) {
       const claimKey = claim?.property?.id
 
       result[claimKey] = result[claimKey] || []
-      const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
 
-      const createClaim = (val, qualifiers = {}, references = []) => ({
-        value: extractValue(val),
-        qualifiers,
-        references
-      })
-
-      const qualifiers = Object.fromEntries(
-        (claim.qualifiers || []).map(q => [q.property?.id ?? q.property, extractValue(q)])
-      )
-
-      const references = (claim.references || [])
-        .map(r => ({ propertyId: r.property?.id ?? r.property, value: extractValue(r) }))
-        .filter(r => r.propertyId && r.value != null && r.value !== '')
-        .map(r => ({ [r.propertyId]: r.value }))
-
-      result[claimKey].push(createClaim(claim.value, qualifiers, references))
+      result[claimKey].push(createClaim(claim.value, formatQualifiers(claim.qualifiers), formatReferences(claim.references)))
 
       const values = Object.values(claim.claimsValues || {}) || []
       values.forEach((v) => {
-        result[claimKey].push(createClaim(v))
+        result[claimKey].push(createClaim(v, formatQualifiers(v.qualifiers), formatReferences(v.references)))
       })
     }
   })

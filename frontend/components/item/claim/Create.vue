@@ -17,7 +17,6 @@
             :items="properties[key]"
             item-title="label"
             return-object
-            :label="t('common.property')"
             variant="underlined"
             density="compact"
             :filter="acceptAll"
@@ -64,30 +63,48 @@
         </v-btn>
       </v-col>
       <v-container v-if="claim?.property?.id || claim.default" class="claim-values">
-        <item-value-base
-          :key="`${claim.property?.id}-${key}`"
-          :claim="claim"
-          :value="claim.value"
-          type="claim"
-          mode="creation"
-          @new-value="onNewValue($event, claim)"
-        />
-        <item-qualifier-create
-          :key="claim?.property?.id"
-          :claim="claim"
-          :for-create="forCreate"
-          :table="table"
-          :initial-qualifiers="claim.qualifiers"
-          @update-qualifiers="updateQualifiers($event, key)"
-        />
-        <item-reference-create
-          :key="claim?.property?.id"
-          :claim="claim"
-          :for-create="forCreate"
-          :table="table"
-          :initial-references="claim.references"
-          @update-references="updateReferences($event, key)"
-        />
+        <div class="value-wrapper">
+          <item-value-base
+            :key="`${claim.property?.id}-${key}`"
+            :label="t('common.value')"
+            :claim="claim"
+            :value="claim.value"
+            type="claim"
+            mode="creation"
+            @new-value="onNewValue($event, claim)"
+          />
+        </div>
+        <div class="subsection-indent">
+          <item-qualifier-create
+            :key="claim?.property?.id"
+            :claim="claim"
+            :for-create="forCreate"
+            :table="table"
+            :initial-qualifiers="claim.qualifiers"
+            @update-qualifiers="updateQualifiers($event, key)"
+          />
+        </div>
+        <div class="subsection-indent">
+          <v-expansion-panels class="mt-2 mb-2 mr-2 pa-2 bg-gray none-z-index">
+            <v-expansion-panel class="bg-gray">
+              <v-expansion-panel-title class="bg-gray header">
+                <p class="text-subtitle-2 mb-0 reference-header">
+                  {{ referenceHeader(claim) }}
+                </p>
+              </v-expansion-panel-title>
+              <v-expansion-panel-text class="bg-gray">
+                <item-reference-create
+                  :key="claim?.property?.id"
+                  :claim="claim"
+                  :for-create="forCreate"
+                  :table="table"
+                  :initial-references="claim.references"
+                  @update-references="updateReferences($event, key)"
+                />
+              </v-expansion-panel-text>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
       </v-container>
       <item-claim-add-value
         v-if="forCreate"
@@ -96,6 +113,7 @@
         :item="item"
         :value="claim.value"
         :for-create="forCreate"
+        :table="table"
         @update-claims-values="updateClaimValues($event, key)"
       />
     </v-row>
@@ -302,6 +320,11 @@ function updateClaims (res) {
 function acceptAll () {
   return true
 }
+
+function referenceHeader (claim) {
+  const count = claim.references?.length ?? 0
+  return `${count} reference${count === 1 ? '' : 's'}`
+}
 </script>
 
 <style scoped>
@@ -314,11 +337,23 @@ function acceptAll () {
   padding: 0 16px;
   min-height: 48px;
 }
+.claim-header :deep(.v-field__input),
+.claim-header :deep(.v-label) {
+  font-size: 18px;
+  font-weight: 500;
+}
 .claim-values {
+  padding: 0;
   background-color: rgb(247, 245, 245);
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
+}
+.value-wrapper {
+  padding: 8px 16px;
+}
+.subsection-indent {
+  padding-left: 40px;
 }
 
 :deep(.add-claim-value) {
@@ -336,5 +371,21 @@ function acceptAll () {
 .action-btn {
   width: 28px !important;
   height: 28px !important;
+}
+.bg-gray {
+  background-color: #ECEFF1;
+}
+.none-z-index {
+  z-index: unset;
+}
+.header {
+  padding: 0;
+  align-items: center;
+}
+.reference-header {
+  font-weight: normal !important;
+}
+:deep(.v-expansion-panel-text__wrapper) {
+  padding: 0 8px 0 8px;
 }
 </style>

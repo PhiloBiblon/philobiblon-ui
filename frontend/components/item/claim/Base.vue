@@ -13,6 +13,7 @@
         :item="item"
         :value="claim?.values[0]?.mainsnak ?? { property: claim.property, datatype: claim.datatype }"
         :default-value="claim.values.length === 0 ? claim.defaultValue : null"
+        :table="table"
         @create-claim="emit('create-claim', $event)"
       />
     </v-container>
