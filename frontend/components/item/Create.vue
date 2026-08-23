@@ -116,6 +116,7 @@ const localePath = useLocalePath()
 const authStore = useAuthStore()
 const { notifyError } = useNotifyError()
 const draft = useItemDraft(props.table)
+const { groupByProperty } = useQualifierGrouping()
 const previousPathCookie = useCookie('previous-path', { path: '/', maxAge: 5 * 60 })
 
 const label = ref('')
@@ -254,8 +255,9 @@ function getCreateDisabledReason () {
         if (item?.value == null || item?.value === '') {
           continue
         }
-        const dateQualifier = item?.qualifiers?.P106
-        if (dateQualifier == null || !isCompleteDate(dateQualifier)) {
+        const dateQualifiers = item?.qualifiers?.P106
+        const dateQualifierValues = Array.isArray(dateQualifiers) ? dateQualifiers : [dateQualifiers]
+        if (dateQualifierValues.length === 0 || !dateQualifierValues.every(v => v != null && isCompleteDate(v))) {
           return t('messages.error.inputs.incomplete_date', { propertyLabel })
         }
       }
@@ -443,33 +445,34 @@ function updateClaims (data) {
 
 function generateClaimsData (data) {
   const result = {}
+  const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
+
+  const formatQualifiers = (qualifiers) => groupByProperty(
+    qualifiers, q => q.property?.id ?? q.property, q => extractValue(q)
+  )
+
+  const formatReferences = (references) => (references || [])
+    .map(r => ({ propertyId: r.property?.id ?? r.property, value: extractValue(r) }))
+    .filter(r => r.propertyId && r.value != null && r.value !== '')
+    .map(r => ({ [r.propertyId]: r.value }))
+
+  const createClaim = (val, qualifiers = {}, references = []) => ({
+    value: extractValue(val),
+    qualifiers,
+    references
+  })
+
   data.forEach((claim) => {
     if (claim.property) {
       const claimKey = claim?.property?.id
 
       result[claimKey] = result[claimKey] || []
-      const extractValue = v => v?.datavalue?.value?.id ?? v?.datavalue?.value
 
-      const createClaim = (val, qualifiers = {}, references = []) => ({
-        value: extractValue(val),
-        qualifiers,
-        references
-      })
-
-      const qualifiers = Object.fromEntries(
-        (claim.qualifiers || []).map(q => [q.property?.id ?? q.property, extractValue(q)])
-      )
-
-      const references = (claim.references || [])
-        .map(r => ({ propertyId: r.property?.id ?? r.property, value: extractValue(r) }))
-        .filter(r => r.propertyId && r.value != null && r.value !== '')
-        .map(r => ({ [r.propertyId]: r.value }))
-
-      result[claimKey].push(createClaim(claim.value, qualifiers, references))
+      result[claimKey].push(createClaim(claim.value, formatQualifiers(claim.qualifiers), formatReferences(claim.references)))
 
       const values = Object.values(claim.claimsValues || {}) || []
       values.forEach((v) => {
-        result[claimKey].push(createClaim(v))
+        result[claimKey].push(createClaim(v, formatQualifiers(v.qualifiers), formatReferences(v.references)))
       })
     }
   })
@@ -489,15 +492,14 @@ function cleanClaims (claimsToClean) {
       }
 
       const cleanedQualifiers = {}
-      for (const [qualKey, qualVal] of Object.entries(claim.qualifiers || {})) {
-        if (
-          qualKey &&
-          qualKey !== 'null' &&
-          qualVal != null &&
-          qualVal !== 'null' &&
-          qualVal !== ''
-        ) {
-          cleanedQualifiers[qualKey] = qualVal
+      for (const [qualKey, qualVals] of Object.entries(claim.qualifiers || {})) {
+        if (!qualKey || qualKey === 'null') {
+          continue
+        }
+        const values = (Array.isArray(qualVals) ? qualVals : [qualVals])
+          .filter(v => v != null && v !== 'null' && v !== '')
+        if (values.length) {
+          cleanedQualifiers[qualKey] = values
         }
       }
 

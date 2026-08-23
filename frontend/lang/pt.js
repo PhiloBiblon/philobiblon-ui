@@ -20,6 +20,7 @@ export default {
     to: 'para',
     add: 'adicionar',
     add_reference: 'adicionar referência',
+    reference_count: '{count} referência | {count} referências',
     add_value: 'agregar valor',
     add_qualifier: 'adicionar qualificador',
     add_claim: 'adicionar declaração',

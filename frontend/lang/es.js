@@ -19,6 +19,7 @@ export default {
     to: 'a',
     add: 'añadir',
     add_reference: 'añadir referencia',
+    reference_count: '{count} referencia | {count} referencias',
     add_value: 'añadir valor',
     add_qualifier: 'añadir calificador',
     add_claim: 'añadir declaración',

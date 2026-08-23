@@ -8,71 +8,99 @@
       no-gutters
       density="comfortable"
     >
-      <v-col class="p-0 pr-3">
-        <v-autocomplete
-          v-model="reference.property"
-          :label="t('common.property')"
-          required
-          return-object
-          :items="properties[key]"
-          item-title="label"
-          item-value="id"
-          variant="underlined"
-          density="compact"
-          :filter="acceptAll"
-          @update:model-value="onChangeProperty($event, key)"
-          @update:search="onInput($event, 'property', key)"
-        />
-      </v-col>
-      <v-col class="p-0 pr-3">
-        <div v-if="reference.property">
-          <item-value-base
-            :key="`${key}-${reference.property}`"
-            :label="t('common.value')"
-            :claim="claim"
-            :value="reference"
-            type="reference"
-            mode="creation"
-            @new-value="onNewValue($event, reference)"
+      <template v-if="isConfirmed(reference)">
+        <v-col class="p-0 pr-3">
+          <span>{{ reference.property?.label }}</span>
+        </v-col>
+        <v-col class="p-0 pr-3">
+          <span>{{ resolvedValues[key]?.value ?? reference.datavalue?.value?.label ?? reference.datavalue?.value }}</span>
+        </v-col>
+        <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
+          <v-btn
+            variant="text"
+            icon
+            density="compact"
+            class="action-btn"
+            @click.stop="removeReference(key)"
+          >
+            <v-tooltip location="top">
+              <template #activator="{ props: btnProps }">
+                <v-icon v-bind="btnProps" color="#616161" size="22">
+                  mdi-trash-can
+                </v-icon>
+              </template>
+              <span>{{ t("common.remove") }}</span>
+            </v-tooltip>
+          </v-btn>
+        </v-col>
+      </template>
+      <template v-else>
+        <v-col class="p-0 pr-3">
+          <v-autocomplete
+            v-model="reference.property"
+            :label="t('common.property')"
+            required
+            return-object
+            :items="properties[key]"
+            item-title="label"
+            item-value="id"
+            variant="underlined"
+            density="compact"
+            :filter="acceptAll"
+            @update:model-value="onChangeProperty($event, key)"
+            @update:search="onInput($event, 'property', key)"
           />
-        </div>
-      </v-col>
-      <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
-        <v-btn
-          v-if="allowCreateReference(reference)"
-          variant="text"
-          icon
-          density="compact"
-          class="action-btn"
-          @click.stop="createReference(key)"
-        >
-          <v-tooltip location="top">
-            <template #activator="{ props: btnProps }">
-              <v-icon v-bind="btnProps" color="#616161" size="22">
-                mdi-check
-              </v-icon>
-            </template>
-            <span>{{ t("common.save") }}</span>
-          </v-tooltip>
-        </v-btn>
-        <v-btn
-          v-if="claim"
-          variant="text"
-          icon
-          density="compact"
-          class="action-btn"
-          @click.stop="removeReference(key)"
-        >
-          <v-tooltip location="top">
-            <template #activator="{ props: btnProps }">
-              <v-icon v-bind="btnProps" color="#616161" size="22">
-                mdi-trash-can
-              </v-icon>
-            </template>
-            <span>{{ t("common.remove") }}</span>
-          </v-tooltip>
-        </v-btn>
-      </v-col>
+        </v-col>
+        <v-col class="p-0 pr-3">
+          <div v-if="reference.property">
+            <item-value-base
+              :key="`${key}-${reference.property?.id ?? reference.property}`"
+              :label="t('common.value')"
+              :claim="claim"
+              :value="reference"
+              type="reference"
+              mode="creation"
+              @new-value="onNewValue($event, reference)"
+            />
+          </div>
+        </v-col>
+        <v-col class="p-0 pr-3 d-flex justify-end align-center max-w-100">
+          <v-btn
+            v-if="allowCreateReference(reference) || allowConfirmReference(reference)"
+            variant="text"
+            icon
+            density="compact"
+            class="action-btn"
+            @click.stop="allowConfirmReference(reference) ? confirmReference(key) : createReference(key)"
+          >
+            <v-tooltip location="top">
+              <template #activator="{ props: btnProps }">
+                <v-icon v-bind="btnProps" color="#616161" size="22">
+                  mdi-check
+                </v-icon>
+              </template>
+              <span>{{ t("common.save") }}</span>
+            </v-tooltip>
+          </v-btn>
+          <v-btn
+            v-if="claim"
+            variant="text"
+            icon
+            density="compact"
+            class="action-btn"
+            @click.stop="removeReference(key)"
+          >
+            <v-tooltip location="top">
+              <template #activator="{ props: btnProps }">
+                <v-icon v-bind="btnProps" color="#616161" size="22">
+                  mdi-trash-can
+                </v-icon>
+              </template>
+              <span>{{ t("common.remove") }}</span>
+            </v-tooltip>
+          </v-btn>
+        </v-col>
+      </template>
     </v-row>
     <v-row
       v-if="isAllowedAddReference"
@@ -115,6 +143,7 @@ const authStore = useAuthStore()
 const properties = reactive([])
 const references = reactive([])
 const propertyValues = reactive([])
+const resolvedValues = reactive([])
 
 const isAllowedAddReference = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
 
@@ -136,9 +165,38 @@ watch(references, (val) => {
   }
 }, { deep: true })
 
-function allowCreateReference (reference) {
+function hasReferenceValue (reference) {
   const propertyId = reference.property?.id || reference.property
-  return props.claim?.id && !props.forCreate && propertyId && reference.datavalue?.value !== undefined && reference.datavalue?.value !== null
+  return !!propertyId && reference.datavalue?.value !== undefined && reference.datavalue?.value !== null
+}
+
+function allowCreateReference (reference) {
+  return props.claim?.id && !props.forCreate && hasReferenceValue(reference)
+}
+
+function allowConfirmReference (reference) {
+  return props.forCreate && hasReferenceValue(reference)
+}
+
+function isConfirmed (reference) {
+  return props.forCreate && !!reference.confirmed
+}
+
+async function confirmReference (index) {
+  const reference = references[index]
+  const propertyId = reference.property?.id ?? reference.property
+  try {
+    const resolved = await $wikibase.getWbValue(propertyId, reference.datatype, reference.datavalue.value, locale.value)
+    const currentIndex = references.indexOf(reference)
+    if (currentIndex === -1) {
+      // The reference row was removed while this lookup was in flight.
+      return
+    }
+    resolvedValues[currentIndex] = resolved
+    reference.confirmed = true
+  } catch (error) {
+    notifyError(error)
+  }
 }
 
 function onNewValue (event, reference) {
@@ -147,14 +205,24 @@ function onNewValue (event, reference) {
 
 async function onChangeProperty (event, index) {
   const reference = references[index]
+  const requestId = (reference._changeToken || 0) + 1
+  reference._changeToken = requestId
   if (event) {
+    reference.datatype = event.datatype
+    reference.datavalue = { value: null }
     const altLabel = await $wikibase.getEntityLabel(props.table, event.id, locale.value)
+    if (reference._changeToken !== requestId || !references.includes(reference)) {
+      // A newer property selection has since started, or the row was
+      // removed while this lookup was in flight; don't let this stale
+      // lookup overwrite it with a mismatched datatype/property pair.
+      return
+    }
     reference.property = { ...event, label: altLabel?.value ?? event.label }
   } else {
     reference.property = null
+    reference.datatype = null
+    reference.datavalue = { value: null }
   }
-  reference.datatype = event?.datatype
-  reference.datavalue = { value: null }
 }
 
 function addReference () {
@@ -169,6 +237,7 @@ function removeReference (index) {
   references.splice(index, 1)
   properties.splice(index, 1)
   propertyValues.splice(index, 1)
+  resolvedValues.splice(index, 1)
 }
 
 async function onInput (value, type, index) {
@@ -239,6 +308,7 @@ function acceptAll () {
 <style scoped>
 .add-reference {
   margin-bottom: 5px;
+  font-size: 12px;
 }
 .create-reference {
   padding: 0;

@@ -19,6 +19,7 @@ export default {
     to: 'a',
     add: 'engadir',
     add_reference: 'engadir referencia',
+    reference_count: '{count} referencia | {count} referencias',
     add_value: 'valor engadido',
     add_qualifier: 'engadir cualificativo',
     add_claim: 'engadir declaración',
