@@ -295,10 +295,10 @@ async function loadInitialClaims () {
 // created with the English UI got English text stored under the "es" key.
 // Force-load the target bundle first (#562).
 async function setDefaultDescription () {
-  if (props.table === 'cnum' && !description.value) {
-    await loadLocaleMessages(entityLocale.value)
-    description.value = t('item.cnum_description', {}, { locale: entityLocale.value })
-  }
+  if (props.table !== 'cnum' || description.value) return
+  await loadLocaleMessages(entityLocale.value)
+  if (description.value) return
+  description.value = t('item.cnum_description', {}, { locale: entityLocale.value })
 }
 
 function getEntityLabel (entity) {
