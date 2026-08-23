@@ -256,8 +256,8 @@ function getCreateDisabledReason () {
           continue
         }
         const dateQualifiers = item?.qualifiers?.P106
-        const dateQualifier = Array.isArray(dateQualifiers) ? dateQualifiers[0] : dateQualifiers
-        if (dateQualifier == null || !isCompleteDate(dateQualifier)) {
+        const dateQualifierValues = Array.isArray(dateQualifiers) ? dateQualifiers : [dateQualifiers]
+        if (dateQualifierValues.length === 0 || !dateQualifierValues.every(v => v != null && isCompleteDate(v))) {
           return t('messages.error.inputs.incomplete_date', { propertyLabel })
         }
       }
