@@ -20,9 +20,9 @@
             :aria-label="t('common.property')"
             variant="underlined"
             density="compact"
-            :filter="acceptAll"
+            :custom-filter="acceptAll"
             @update:model-value="onChangeProperty($event, claim)"
-            @update:search="onInput($event, 'property', key)"
+            @update:search="onInput($event, key)"
           />
         </div>
       </v-col>
@@ -149,12 +149,15 @@ const emit = defineEmits(['update-claims'])
 const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
 const { notifyError } = useNotifyError()
-const { applyAlternativeLabels } = useAlternativeLabels()
 const { groupByProperty } = useQualifierGrouping()
+const { searchProperties } = usePropertySearch()
 const authStore = useAuthStore()
 
 const claims = reactive([])
 const properties = reactive([])
+// Per-index counter guarding against an in-flight search resolving after a
+// newer keystroke's search already updated the same row (out-of-order responses).
+const searchRequestIds = []
 
 const pbid = computed(() => WikibaseService.PROPERTY_PBID)
 
@@ -224,18 +227,15 @@ function addNewClaim () {
 function removeClaim (index) {
   claims.splice(index, 1)
   properties.splice(index, 1)
+  searchRequestIds.splice(index, 1)
 }
 
-async function onInput (value, type, index) {
-  if (value && typeof value === 'string') {
-    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value, type)
-    if (search && search.length) {
-      if (props.table && type === 'property') {
-        await applyAlternativeLabels(props.table, search)
-      }
-      properties[index] = search
-    }
-  }
+async function onInput (value, index) {
+  if (!value || typeof value !== 'string') { return }
+  const requestId = (searchRequestIds[index] = (searchRequestIds[index] || 0) + 1)
+  const search = await searchProperties(value, props.table)
+  if (searchRequestIds[index] !== requestId) { return }
+  if (search.length) { properties[index] = search }
 }
 
 function updateClaimValues (data, key) {

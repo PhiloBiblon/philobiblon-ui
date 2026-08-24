@@ -46,9 +46,9 @@
             item-value="id"
             variant="underlined"
             density="compact"
-            :filter="acceptAll"
+            :custom-filter="acceptAll"
             @update:model-value="onChangeProperty($event, key)"
-            @update:search="onInput($event, 'property', key)"
+            @update:search="onInput($event, key)"
           />
         </v-col>
         <v-col class="p-0 pr-3">
@@ -138,12 +138,16 @@ const emit = defineEmits(['update-references', 'create-reference'])
 const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
 const { notifyError } = useNotifyError()
+const { searchProperties } = usePropertySearch()
 const authStore = useAuthStore()
 
 const properties = reactive([])
 const references = reactive([])
 const propertyValues = reactive([])
 const resolvedValues = reactive([])
+// Per-index counter guarding against an in-flight search resolving after a
+// newer keystroke's search already updated the same row (out-of-order responses).
+const searchRequestIds = []
 
 const isAllowedAddReference = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
 
@@ -238,19 +242,15 @@ function removeReference (index) {
   properties.splice(index, 1)
   propertyValues.splice(index, 1)
   resolvedValues.splice(index, 1)
+  searchRequestIds.splice(index, 1)
 }
 
-async function onInput (value, type, index) {
-  if (value && typeof value === 'string') {
-    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value, type)
-    if (search && search.length) {
-      if (type === 'property') {
-        properties[index] = search
-      } else {
-        propertyValues[index] = search
-      }
-    }
-  }
+async function onInput (value, index) {
+  if (!value || typeof value !== 'string') { return }
+  const requestId = (searchRequestIds[index] = (searchRequestIds[index] || 0) + 1)
+  const search = await searchProperties(value, props.table)
+  if (searchRequestIds[index] !== requestId) { return }
+  if (search.length) { properties[index] = search }
 }
 
 async function createReference (index) {
