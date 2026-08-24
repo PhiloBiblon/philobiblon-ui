@@ -145,9 +145,11 @@ const properties = reactive([])
 const references = reactive([])
 const propertyValues = reactive([])
 const resolvedValues = reactive([])
-// Per-index counter guarding against an in-flight search resolving after a
-// newer keystroke's search already updated the same row (out-of-order responses).
+// Guards against an in-flight search resolving after a newer one already updated
+// the same row. A single monotonic counter (rather than one per row) ensures a
+// stale response can never match a fresh row that reused its index after splice().
 const searchRequestIds = []
+let nextSearchRequestId = 0
 
 const isAllowedAddReference = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
 
@@ -246,11 +248,14 @@ function removeReference (index) {
 }
 
 async function onInput (value, index) {
-  if (!value || typeof value !== 'string') { return }
-  const requestId = (searchRequestIds[index] = (searchRequestIds[index] || 0) + 1)
+  const requestId = (searchRequestIds[index] = ++nextSearchRequestId)
+  if (!value || typeof value !== 'string') {
+    properties[index] = []
+    return
+  }
   const search = await searchProperties(value, props.table)
   if (searchRequestIds[index] !== requestId) { return }
-  if (search.length) { properties[index] = search }
+  properties[index] = search
 }
 
 async function createReference (index) {
