@@ -619,6 +619,14 @@ function safeFormatTime (timeString) {
   }
 }
 
+// Trims each piece before it's concatenated into the generated label: the pieces come
+// straight from user input (untrimmed), and generateLabelFromClaims joins them with
+// separators like ", " — a leading/trailing space on a piece becomes an internal double
+// space in the final label that trimEditParams' start/end-only trim wouldn't catch.
+function trimIfString (val) {
+  return typeof val === 'string' ? val.trim() : val
+}
+
 function getClaimValue (claimPbid) {
   const claim = initialClaims.value.find(cl => cl.property?.id === claimPbid)
   const val = claim?.value?.datavalue?.value
@@ -629,11 +637,11 @@ function getClaimValue (claimPbid) {
   if (typeof val === 'object') {
     if (val.time !== undefined) {
       const formatted = safeFormatTime(val.time)
-      return val.label || val.text || formatted || val.id
+      return trimIfString(val.label || val.text || formatted || val.id)
     }
-    return val.label || val.text || val.id
+    return trimIfString(val.label || val.text || val.id)
   }
-  return val
+  return trimIfString(val)
 }
 
 function getQualifierValue (claimId, qualifierId) {
@@ -642,9 +650,9 @@ function getQualifierValue (claimId, qualifierId) {
   const val = qualifier?.datavalue?.value
   if (!val) return null
   if (typeof val === 'object') {
-    return val.label || val.text || val.id
+    return trimIfString(val.label || val.text || val.id)
   }
-  return val
+  return trimIfString(val)
 }
 
 function getManidPrefix () {
