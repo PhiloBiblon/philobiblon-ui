@@ -622,7 +622,7 @@ function safeFormatTime (timeString) {
 // Trims each piece before it's concatenated into the generated label: the pieces come
 // straight from user input (untrimmed), and generateLabelFromClaims joins them with
 // separators like ", " — a leading/trailing space on a piece becomes an internal double
-// space in the final label that trimEditParams' start/end-only trim wouldn't catch.
+// space in the final label that trimEditParams' start/end-only trim wouldn't catch (#558).
 function trimIfString (val) {
   return typeof val === 'string' ? val.trim() : val
 }
@@ -667,7 +667,7 @@ function getBibidDate () {
   const claim = initialClaims.value.find(cl => cl.property?.id === 'P49')
   const val = claim?.value?.datavalue?.value
   if (!val) return null
-  if (typeof val === 'string') return val
+  if (typeof val === 'string') return trimIfString(val)
   if (typeof val === 'object' && val.time) {
     const match = val.time.replace(/^\+/, '').match(/^(\d{4})-(\d{2})-(\d{2})/)
     if (!match) return null
