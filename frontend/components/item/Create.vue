@@ -738,9 +738,8 @@ function generateLabelFromClaims () {
       const edition = getClaimValue('P839')
       if (holding && edition) {
         const position = getClaimValue('P10') || getQualifierValue('P329', 'P10')
-        generatedLabel = position
-          ? `${edition}. ${holding}, ${position}`
-          : `${edition}. ${holding}`
+        const holdingPart = position ? `${holding}, ${position}` : holding
+        generatedLabel = `${holdingPart}. ${edition}`
       }
       break
     }
