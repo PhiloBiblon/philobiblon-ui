@@ -557,12 +557,27 @@ async function create () {
         }
       }
 
+      const aliases = { [entityLocale.value]: [aliasValue.value] }
+
+      // Manuscripts/editions are hard to find because the label leads with
+      // city/library, not the shelfmark: adding the P10 (shelfmark) value as
+      // an alias -- duplicated under "en" the same way labels are (#562) --
+      // makes them searchable by shelfmark too (#571). Skipped when P10 is
+      // absent, matching the existing items backfilled via QuickStatements.
+      if (['manid', 'copid'].includes(props.table)) {
+        const shelfmark = getP10Value()
+        if (shelfmark) {
+          aliases[entityLocale.value].push(shelfmark)
+          if (entityLocale.value !== 'en') {
+            aliases.en = [shelfmark]
+          }
+        }
+      }
+
       const data = {
         labels,
         descriptions,
-        aliases: {
-          [entityLocale.value]: aliasValue.value
-        },
+        aliases,
         claims: {
           ...cleanedClaims
         }
@@ -655,6 +670,13 @@ function getQualifierValue (claimId, qualifierId) {
   return trimIfString(val)
 }
 
+// P10 (shelfmark/signatura) is entered either as a direct claim or as a
+// qualifier on the holding library (P329), depending on the table's wiki
+// config -- same fallback used to build the generated label.
+function getP10Value () {
+  return getClaimValue('P10') || getQualifierValue('P329', 'P10')
+}
+
 function getManidPrefix () {
   const claim = initialClaims.value.find(cl => cl.property?.id === 'P2')
   const p2Id = claim?.value?.datavalue?.value?.id
@@ -727,7 +749,7 @@ function generateLabelFromClaims () {
       if (holding) {
         const prefix = getManidPrefix()
         const collection = getClaimValue('P1054') || getQualifierValue('P329', 'P1054')
-        const position = getClaimValue('P10') || getQualifierValue('P329', 'P10')
+        const position = getP10Value()
         const holdingPart = collection ? `${holding} (${collection})` : holding
         generatedLabel = position ? `${prefix}${holdingPart}, ${position}` : `${prefix}${holdingPart}`
       }
@@ -737,7 +759,7 @@ function generateLabelFromClaims () {
       const holding = getClaimValue('P329')
       const edition = getClaimValue('P839')
       if (holding && edition) {
-        const position = getClaimValue('P10') || getQualifierValue('P329', 'P10')
+        const position = getP10Value()
         const holdingPart = position ? `${holding}, ${position}` : holding
         generatedLabel = `${holdingPart}. ${edition}`
       }
