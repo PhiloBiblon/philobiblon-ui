@@ -659,6 +659,30 @@ function getClaimValue (claimPbid) {
   return trimIfString(val)
 }
 
+function getClaimEntityId (claimPbid) {
+  const claim = initialClaims.value.find(cl => cl.property?.id === claimPbid)
+  const val = claim?.value?.datavalue?.value
+  return typeof val === 'object' ? val?.id : null
+}
+
+// P247 (Family name) is recorded on the author's own person entity, not as a
+// direct claim on the bibid item -- e.g. a BIB record's P21 (Author) points at
+// a person item, and THAT item carries its own P247 pointing at a "surname"
+// item. Cascade through the referenced entity to read it (#574).
+async function getCascadedSurname (claimPbid) {
+  const entityId = getClaimEntityId(claimPbid)
+  if (!entityId) return null
+  try {
+    const entity = await $wikibase.getEntity(entityId, locale.value)
+    const familyNameId = entity?.claims?.P247?.[0]?.mainsnak?.datavalue?.value?.id
+    if (!familyNameId) return null
+    const familyNameLabel = await $wikibase.getEntityLabel(null, familyNameId, locale.value)
+    return trimIfString(familyNameLabel?.value || familyNameId)
+  } catch {
+    return null
+  }
+}
+
 function getQualifierValue (claimId, qualifierId) {
   const claim = initialClaims.value.find(cl => cl.property?.id === claimId)
   const qualifier = claim?.qualifiers?.find(q => q.property?.id === qualifierId)
@@ -700,7 +724,10 @@ function getBibidDate () {
   return null
 }
 
-function generateLabelFromClaims () {
+let labelGenerationToken = 0
+
+async function generateLabelFromClaims () {
+  const token = ++labelGenerationToken
   let generatedLabel = ''
   switch (props.table) {
     case 'texid': {
@@ -720,7 +747,7 @@ function generateLabelFromClaims () {
       break
     }
     case 'bibid': {
-      const surname = getClaimValue('P247')
+      const surname = getClaimValue('P247') || await getCascadedSurname('P21')
       const author = getClaimValue('P21')
       const creator = getClaimValue('P845')
       const title = getClaimValue('P11')
@@ -800,6 +827,7 @@ function generateLabelFromClaims () {
       break
   }
 
+  if (token !== labelGenerationToken) return
   if (generatedLabel) {
     label.value = generatedLabel
   }
