@@ -439,7 +439,7 @@ function generatePbId (lastItemPbId) {
 function updateClaims (data) {
   initialClaims.value = data
   claims.value = generateClaimsData(data)
-  generateLabelFromClaims()
+  labelGenerationPromise = generateLabelFromClaims()
   persistDraft()
 }
 
@@ -538,6 +538,9 @@ function addManidEditionFrbrClaim (cleanedClaims) {
 }
 
 async function create () {
+  // Wait for any auto-generated-label lookup still in flight (e.g. the bibid
+  // surname cascade), so we never submit a stale label read before it resolves.
+  await labelGenerationPromise
   const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
   if (existingPBID === null) {
     try {
@@ -673,10 +676,10 @@ async function getCascadedSurname (claimPbid) {
   const entityId = getClaimEntityId(claimPbid)
   if (!entityId) return null
   try {
-    const entity = await $wikibase.getEntity(entityId, locale.value)
+    const entity = await $wikibase.getEntity(entityId, entityLocale.value)
     const familyNameId = entity?.claims?.P247?.[0]?.mainsnak?.datavalue?.value?.id
     if (!familyNameId) return null
-    const familyNameLabel = await $wikibase.getEntityLabel(null, familyNameId, locale.value)
+    const familyNameLabel = await $wikibase.getEntityLabel(null, familyNameId, entityLocale.value)
     return trimIfString(familyNameLabel?.value || familyNameId)
   } catch {
     return null
@@ -725,6 +728,7 @@ function getBibidDate () {
 }
 
 let labelGenerationToken = 0
+let labelGenerationPromise = Promise.resolve()
 
 async function generateLabelFromClaims () {
   const token = ++labelGenerationToken
