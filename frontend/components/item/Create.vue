@@ -668,10 +668,10 @@ function getClaimEntityId (claimPbid) {
   return typeof val === 'object' ? val?.id : null
 }
 
-// P247 (Family name) is recorded on the author's own person entity, not as a
-// direct claim on the bibid item -- e.g. a BIB record's P21 (Author) points at
-// a person item, and THAT item carries its own P247 pointing at a "surname"
-// item. Cascade through the referenced entity to read it (#574).
+// P247 (Family name) is recorded on the person's own entity, not as a direct
+// claim on the bibid item -- e.g. a BIB record's P21 (Author) or P845 (Creator)
+// points at a person item, and THAT item carries its own P247 pointing at a
+// "surname" item. Cascade through the referenced entity to read it (#574).
 async function getCascadedSurname (claimPbid) {
   const entityId = getClaimEntityId(claimPbid)
   if (!entityId) return null
@@ -758,7 +758,11 @@ async function generateLabelFromClaims () {
       const date = getBibidDate()
 
       const usesP845Creator = !surname && !author && Boolean(creator)
-      const name = surname || author || creator || getClaimValue('P1134')
+      // The same P247 cascade applies to the creator: a person creator shows only
+      // their surname, while an organisation (no P247, e.g. Sotheby's) keeps its
+      // full name (#574).
+      const creatorSurname = usesP845Creator ? await getCascadedSurname('P845') : null
+      const name = surname || author || creatorSurname || creator || getClaimValue('P1134')
 
       if (name && title) {
         const role = usesP845Creator ? getQualifierValue('P845', 'P820') : null
