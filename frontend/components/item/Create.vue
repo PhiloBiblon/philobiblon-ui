@@ -537,11 +537,24 @@ function addManidEditionFrbrClaim (cleanedClaims) {
   }
 }
 
+// Awaiting labelGenerationPromise once isn't enough: create() itself yields on
+// getEntityFromPBID() below, and a claim edited during that window makes
+// updateClaims() reassign labelGenerationPromise to a new in-flight generation.
+// Loop until the observed promise reference is still the current one.
+async function waitForCurrentLabelGeneration () {
+  while (true) {
+    const generation = labelGenerationPromise
+    await generation
+    if (generation === labelGenerationPromise) return
+  }
+}
+
 async function create () {
   // Wait for any auto-generated-label lookup still in flight (e.g. the bibid
   // surname cascade), so we never submit a stale label read before it resolves.
-  await labelGenerationPromise
+  await waitForCurrentLabelGeneration()
   const existingPBID = await $wikibase.getEntityFromPBID(aliasValue.value)
+  await waitForCurrentLabelGeneration()
   if (existingPBID === null) {
     try {
       const cleanedClaims = cleanClaims(claims.value)
