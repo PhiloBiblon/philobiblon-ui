@@ -99,7 +99,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
-import { WikibaseService } from '~/service/wikibase.service'
+import { applyClaimOverride, applyExtraClaimsOnSave, getDefaultDescription, planDefaultClaims } from '~/service/item-forms/engine.js'
 
 const BIBLIOGRAPHY_LOCALE_MAP = { BETA: 'es', BITECA: 'ca', BITAGAP: 'pt' }
 
@@ -117,6 +117,7 @@ const authStore = useAuthStore()
 const { notifyError } = useNotifyError()
 const draft = useItemDraft(props.table)
 const { groupByProperty } = useQualifierGrouping()
+const itemForm = useItemForm()
 const previousPathCookie = useCookie('previous-path', { path: '/', maxAge: 5 * 60 })
 
 const label = ref('')
@@ -202,79 +203,11 @@ function getCreateDisabledReason () {
     return t('messages.error.inputs.initial_claims')
   }
 
-  const requiredPropertyIds = new Set(['P2', 'P476'])
-  if (props.table === 'manid') requiredPropertyIds.add('P329')
-  if (props.table === 'cnum') { requiredPropertyIds.add('P590'); requiredPropertyIds.add('P8') }
-  if (props.table === 'copid') { requiredPropertyIds.add('P839'); requiredPropertyIds.add('P329') }
-  if (props.table === 'geoid') requiredPropertyIds.add('P34')
-  if (props.table === 'insid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P297') }
-  if (props.table === 'libid') { requiredPropertyIds.add('P34'); requiredPropertyIds.add('P47') }
-  if (props.table === 'subid' || props.table === 'bioid') requiredPropertyIds.add('P34')
-  if (props.table === 'texid') { requiredPropertyIds.add('P21'); requiredPropertyIds.add('P11') }
-
-  if (props.table === 'bibid') {
-    const hasName = ['P247', 'P21', 'P845', 'P1134'].some(p => {
-      const arr = claims.value[p]
-      return Array.isArray(arr) && arr.length > 0 && arr[0]?.value != null && arr[0]?.value !== ''
-    })
-    if (!hasName) {
-      const propertyLabel = initialClaims.value.find(c => c.property?.id === 'P247')?.property?.label || 'P247'
-      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-    }
-    requiredPropertyIds.add('P11')
-  }
-
-  if (props.table === 'manid') {
-    const p2Array = claims.value['P2']
-    const isEdition = Array.isArray(p2Array) && p2Array.some(c => c?.value === 'Q20')
-    if (isEdition) {
-      const p843Array = claims.value['P843']
-      const p843Label = initialClaims.value.find(c => c.property?.id === 'P843')?.property?.label || 'P843'
-      if (!Array.isArray(p843Array) || !p843Array.some(c => c?.value != null && c?.value !== '')) {
-        return t('messages.error.inputs.claim_value_missing', { propertyLabel: p843Label })
-      }
-    }
-  }
-
-  for (const propKey of requiredPropertyIds) {
-    const claimArray = claims.value[propKey]
-    const initialClaim = initialClaims.value.find(c => c.property?.id === propKey)
-    const propertyLabel = initialClaim?.property?.label || propKey
-
-    const hasValue = Array.isArray(claimArray) && claimArray.some(item => item?.value != null && item?.value !== '')
-    if (!hasValue) {
-      return t('messages.error.inputs.claim_value_missing', { propertyLabel })
-    }
-  }
-
-  for (const [propertyId, claimArray] of Object.entries(claims.value)) {
-    if (propertyId === 'P799') {
-      const initialClaim = initialClaims.value.find(ic => ic.property?.id === propertyId)
-      const propertyLabel = initialClaim?.property?.label || propertyId
-      for (const item of claimArray) {
-        if (item?.value == null || item?.value === '') {
-          continue
-        }
-        const dateQualifiers = item?.qualifiers?.P106
-        const dateQualifierValues = Array.isArray(dateQualifiers) ? dateQualifiers : [dateQualifiers]
-        if (dateQualifierValues.length === 0 || !dateQualifierValues.every(v => v != null && isCompleteDate(v))) {
-          return t('messages.error.inputs.incomplete_date', { propertyLabel })
-        }
-      }
-    }
-  }
-
-  return null
-}
-
-function isCompleteDate (value) {
-  if (typeof value === 'object' && value !== null) {
-    return value.precision === 11
-  }
-  if (typeof value === 'string') {
-    return /^[+-]?\d{4}-\d{2}-\d{2}/.test(value)
-  }
-  return false
+  // Required-field derivation, the "at least one of" bibid name group, the
+  // manid P843-on-edition conditional, and the global P799 date-completeness
+  // rule all live in service/item-forms/ now (#527) -- every table is
+  // registered there.
+  return itemForm.validateRequired(props.table, initialClaims.value)
 }
 
 async function loadInitialClaims () {
@@ -297,10 +230,11 @@ async function loadInitialClaims () {
 // created with the English UI got English text stored under the "es" key.
 // Force-load the target bundle first (#562).
 async function setDefaultDescription () {
-  if (props.table !== 'cnum' || description.value) return
+  const descriptionConfig = getDefaultDescription(itemForm.getItemForm(props.table))
+  if (!descriptionConfig || description.value) return
   await loadLocaleMessages(entityLocale.value)
   if (description.value) return
-  description.value = t('item.cnum_description', {}, { locale: entityLocale.value })
+  description.value = t(descriptionConfig.key, {}, { locale: entityLocale.value })
 }
 
 function getEntityLabel (entity) {
@@ -349,78 +283,41 @@ function buildQualifier (_claim, qualifier) {
 }
 
 async function getDefaultClaims (itemNumber) {
-  const def = ['P476', 'P131', 'P799']
-  const res = await $wikibase.getClaimsOrderForNewItem(props.table)
-  const safeRes = res || {}
-  const resKeys = Object.keys(safeRes)
-  const defOnly = def.filter(p => !resKeys.includes(p))
-  const defWithoutP799 = defOnly.filter(p => p !== 'P799')
-  const trailingP799 = defOnly.includes('P799') ? ['P799'] : []
-  const propertyIds = [...new Set([...defWithoutP799, ...resKeys, ...trailingP799])]
-  const qualifiersProperties = [...new Set(['P700', 'P106', ...Object.values(safeRes).flat()])]
-  const entities = await $wikibase.getEntities(propertyIds, locale.value)
-  const qualifiersArr = await $wikibase.getEntities(qualifiersProperties, locale.value)
+  const form = itemForm.getItemForm(props.table)
+  const wikiOrder = (await $wikibase.getClaimsOrderForNewItem(props.table)) || {}
+  const plan = planDefaultClaims(form, {
+    database: props.database,
+    table: props.table,
+    itemNumber,
+    wikiOrder,
+    now: new Date()
+  })
+
+  const entities = await $wikibase.getEntities(plan.propertyOrder, locale.value)
+  const qualifiersArr = await $wikibase.getEntities(plan.qualifierPropertyIds, locale.value)
 
   Object.values(entities).forEach((entity) => {
-    if (isValidPropertyEntity(entity)) {
-      const qualifiers = []
+    if (!isValidPropertyEntity(entity)) return
 
-      safeRes[entity.id]?.forEach((property) => {
-        if (isValidPropertyEntity(qualifiersArr[property])) {
-          qualifiers.push(buildQualifier(entity, qualifiersArr[property]))
-        }
-      })
-
-      let claim = buildClaim(entity, qualifiers, null)
-
-      if (entity.id === 'P476') {
-        claim = buildClaim(entity, [], generatePbId(itemNumber), false)
-      } else if (entity.id === 'P131') {
-        const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP[props.database] || null
-
-        const bibliographyQualifiers = [
-          buildQualifier(entity, qualifiersArr['P700'])
-        ]
-        bibliographyQualifiers[0].datavalue.value = { id: 'Q447226' }
-
-        claim = buildClaim(entity, bibliographyQualifiers, bibliographyId ? { id: bibliographyId } : null)
-      } else if (entity.id === 'P799') {
-        const today = new Date()
-        const yyyy = String(today.getFullYear()).padStart(4, '0')
-        const mm = String(today.getMonth() + 1).padStart(2, '0')
-        const dd = String(today.getDate()).padStart(2, '0')
-        let dateQualifier = qualifiers.find(q => q.property?.id === 'P106')
-        if (!dateQualifier && isValidPropertyEntity(qualifiersArr['P106'])) {
-          dateQualifier = buildQualifier(entity, qualifiersArr['P106'])
-          qualifiers.push(dateQualifier)
-        }
-        if (dateQualifier) {
-          dateQualifier.datavalue.value = {
-            time: `+${yyyy}-${mm}-${dd}T00:00:00Z`,
-            precision: 11,
-            calendar: 'gregorian'
-          }
-          dateQualifier.hidden = true
-        }
-        if (props.table === 'geoid' || props.table === 'bioid') {
-          claim = buildClaim(entity, qualifiers, { id: 'Q447227' })
-          claim.hidden = true
-        } else {
-          claim = buildClaim(entity, qualifiers, null)
-        }
-      } else if (props.table === 'cnum' && entity.id === 'P590') {
-        claim = buildClaim(entity, qualifiers, null, false)
-      } else if (props.table === 'copid' && entity.id === 'P839') {
-        claim = buildClaim(entity, qualifiers, null, false)
+    const qualifiers = []
+    wikiOrder[entity.id]?.forEach((property) => {
+      if (isValidPropertyEntity(qualifiersArr[property])) {
+        qualifiers.push(buildQualifier(entity, qualifiersArr[property]))
       }
+    })
 
-      initialClaims.value.push(claim)
-    }
+    const claim = buildClaim(entity, qualifiers, null)
+    applyClaimOverride(claim, plan.overrides[entity.id], (qualifierPropertyId) => {
+      const qualifierEntity = qualifiersArr[qualifierPropertyId]
+      return isValidPropertyEntity(qualifierEntity) ? buildQualifier(entity, qualifierEntity) : null
+    })
+
+    initialClaims.value.push(claim)
   })
 
   initialClaims.value.sort((a, b) => {
-    const ai = propertyIds.indexOf(a.property?.id)
-    const bi = propertyIds.indexOf(b.property?.id)
+    const ai = plan.propertyOrder.indexOf(a.property?.id)
+    const bi = plan.propertyOrder.indexOf(b.property?.id)
     if (ai === -1 && bi === -1) return 0
     if (ai === -1) return 1
     if (bi === -1) return -1
@@ -430,10 +327,6 @@ async function getDefaultClaims (itemNumber) {
 
 function isValidPropertyEntity (entity) {
   return entity?.title?.startsWith('Property:') && entity?.labels
-}
-
-function generatePbId (lastItemPbId) {
-  return `${props.database} ${props.table} ${parseInt(lastItemPbId) + 1}`
 }
 
 function updateClaims (data) {
@@ -523,20 +416,6 @@ function cleanClaims (claimsToClean) {
   return cleanedClaims
 }
 
-// Ui_ControlledVocabulary only supports one default value per property, so Q453706
-// (WEMI Item, required for editions alongside Q453705 Manifestation) cannot be
-// expressed as a second P843 default in wiki config — it must be injected here.
-function addManidEditionFrbrClaim (cleanedClaims) {
-  const p2Claims = cleanedClaims['P2'] || []
-  const isEdition = p2Claims.some(c => c.value === 'Q20')
-  if (!isEdition) return
-  const p843Claims = cleanedClaims['P843']
-  if (!p843Claims?.length) return
-  if (!p843Claims.some(c => c.value === 'Q453706')) {
-    p843Claims.push({ value: 'Q453706', qualifiers: {} })
-  }
-}
-
 // Awaiting labelGenerationPromise once isn't enough: create() itself yields on
 // getEntityFromPBID() below, and a claim edited during that window makes
 // updateClaims() reassign labelGenerationPromise to a new in-flight generation.
@@ -558,7 +437,7 @@ async function create () {
   if (existingPBID === null) {
     try {
       const cleanedClaims = cleanClaims(claims.value)
-      if (props.table === 'manid') addManidEditionFrbrClaim(cleanedClaims)
+      applyExtraClaimsOnSave(itemForm.getItemForm(props.table), cleanedClaims)
 
       const labels = { [entityLocale.value]: label.value }
       const descriptions = { [entityLocale.value]: description.value || ' ' }
@@ -568,25 +447,25 @@ async function create () {
       // find/read outside their own bibliography locale (#562).
       if (entityLocale.value !== 'en') {
         labels.en = label.value
-        if (props.table === 'cnum') {
-          descriptions.en = t('item.cnum_description', {}, { locale: 'en' })
+        const descriptionConfig = getDefaultDescription(itemForm.getItemForm(props.table))
+        if (descriptionConfig?.duplicateInEnglish) {
+          descriptions.en = t(descriptionConfig.key, {}, { locale: 'en' })
         }
       }
 
       const aliases = { [entityLocale.value]: [aliasValue.value] }
 
       // Manuscripts/editions are hard to find because the label leads with
-      // city/library, not the shelfmark: adding the P10 (shelfmark) value as
-      // an alias -- duplicated under "en" the same way labels are (#562) --
-      // makes them searchable by shelfmark too (#571). Skipped when P10 is
-      // absent, matching the existing items backfilled via QuickStatements.
-      if (['manid', 'copid'].includes(props.table)) {
-        const shelfmark = getP10Value()
-        if (shelfmark) {
-          aliases[entityLocale.value].push(shelfmark)
-          if (entityLocale.value !== 'en') {
-            aliases.en = [shelfmark]
-          }
+      // city/library, not the shelfmark: manid/copid's P10 alias hook adds it
+      // as an alias -- duplicated under "en" the same way labels are (#562)
+      // -- making them searchable by shelfmark too (#571). Resolves to []
+      // when P10 is absent, matching the existing items backfilled via
+      // QuickStatements.
+      const extraAliases = await itemForm.getAliases(props.table, initialClaims.value, entityLocale.value)
+      for (const value of extraAliases) {
+        aliases[entityLocale.value].push(value)
+        if (entityLocale.value !== 'en') {
+          aliases.en = [value]
         }
       }
 
@@ -624,230 +503,16 @@ async function create () {
   }
 }
 
-function formatTime (raw) {
-  const cleaned = raw.replace(/^\+/, '')
-  const date = new Date(cleaned)
-  return new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC'
-  }).format(date)
-}
-
-function safeFormatTime (timeString) {
-  if (!timeString || typeof timeString !== 'string' || !timeString.trim()) {
-    return undefined
-  }
-  const datePattern = /^[+-]?\d{4}-\d{2}-\d{2}/
-  if (!datePattern.test(timeString)) {
-    return undefined
-  }
-  try {
-    return formatTime(timeString)
-  } catch {
-    return undefined
-  }
-}
-
-// Trims each piece before it's concatenated into the generated label: the pieces come
-// straight from user input (untrimmed), and generateLabelFromClaims joins them with
-// separators like ", " — a leading/trailing space on a piece becomes an internal double
-// space in the final label that trimEditParams' start/end-only trim wouldn't catch (#558).
-function trimIfString (val) {
-  return typeof val === 'string' ? val.trim() : val
-}
-
-function getClaimValue (claimPbid) {
-  const claim = initialClaims.value.find(cl => cl.property?.id === claimPbid)
-  const val = claim?.value?.datavalue?.value
-
-  if (!val) {
-    return null
-  }
-  if (typeof val === 'object') {
-    if (val.time !== undefined) {
-      const formatted = safeFormatTime(val.time)
-      return trimIfString(val.label || val.text || formatted || val.id)
-    }
-    return trimIfString(val.label || val.text || val.id)
-  }
-  return trimIfString(val)
-}
-
-function getClaimEntityId (claimPbid) {
-  const claim = initialClaims.value.find(cl => cl.property?.id === claimPbid)
-  const val = claim?.value?.datavalue?.value
-  return typeof val === 'object' ? val?.id : null
-}
-
-// P247 (Family name) is recorded on the person's own entity, not as a direct
-// claim on the bibid item -- e.g. a BIB record's P21 (Author) or P845 (Creator)
-// points at a person item, and THAT item carries its own P247 pointing at a
-// "surname" item. Cascade through the referenced entity to read it (#574).
-async function getCascadedSurname (claimPbid) {
-  const entityId = getClaimEntityId(claimPbid)
-  if (!entityId) return null
-  try {
-    const entity = await $wikibase.getEntity(entityId, entityLocale.value)
-    const familyNameId = entity?.claims?.P247?.[0]?.mainsnak?.datavalue?.value?.id
-    if (!familyNameId) return null
-    const familyNameLabel = await $wikibase.getEntityLabel(null, familyNameId, entityLocale.value)
-    return trimIfString(familyNameLabel?.value || familyNameId)
-  } catch {
-    return null
-  }
-}
-
-function getQualifierValue (claimId, qualifierId) {
-  const claim = initialClaims.value.find(cl => cl.property?.id === claimId)
-  const qualifier = claim?.qualifiers?.find(q => q.property?.id === qualifierId)
-  const val = qualifier?.datavalue?.value
-  if (!val) return null
-  if (typeof val === 'object') {
-    return trimIfString(val.label || val.text || val.id)
-  }
-  return trimIfString(val)
-}
-
-// P10 (shelfmark/signatura) is entered either as a direct claim or as a
-// qualifier on the holding library (P329), depending on the table's wiki
-// config -- same fallback used to build the generated label.
-function getP10Value () {
-  return getClaimValue('P10') || getQualifierValue('P329', 'P10')
-}
-
-function getManidPrefix () {
-  const claim = initialClaims.value.find(cl => cl.property?.id === 'P2')
-  const p2Id = claim?.value?.datavalue?.value?.id
-  if (p2Id === 'Q15') return 'MS: '
-  if (p2Id === 'Q20') return 'Ed.: '
-  return ''
-}
-
-function getBibidDate () {
-  const claim = initialClaims.value.find(cl => cl.property?.id === 'P49')
-  const val = claim?.value?.datavalue?.value
-  if (!val) return null
-  if (typeof val === 'string') return trimIfString(val)
-  if (typeof val === 'object' && val.time) {
-    const match = val.time.replace(/^\+/, '').match(/^(\d{4})-(\d{2})-(\d{2})/)
-    if (!match) return null
-    if (val.precision >= 11) return `${match[1]}-${match[2]}-${match[3]}`
-    if (val.precision >= 10) return `${match[1]}-${match[2]}`
-    return match[1]
-  }
-  return null
-}
-
 let labelGenerationToken = 0
 let labelGenerationPromise = Promise.resolve()
 
+// Label generation lives in service/item-forms/ now (#527) -- every table is
+// registered there. The token/promise pair guards against an in-flight
+// lookup (e.g. bibid's async surname cascade) resolving after a newer one
+// already updated the label.
 async function generateLabelFromClaims () {
   const token = ++labelGenerationToken
-  let generatedLabel = ''
-  switch (props.table) {
-    case 'texid': {
-      const author = getClaimValue('P21')
-      const title = getClaimValue('P11')
-      if (author && title) {
-        generatedLabel = `${author}, ${title}`
-      }
-      break
-    }
-    case 'cnum': {
-      const work = getClaimValue('P590')
-      const partOf = getClaimValue('P8')
-      if (work && partOf) {
-        generatedLabel = `${work}, ${partOf}`
-      }
-      break
-    }
-    case 'bibid': {
-      const surname = getClaimValue('P247') || await getCascadedSurname('P21')
-      const author = getClaimValue('P21')
-      const creator = getClaimValue('P845')
-      const title = getClaimValue('P11')
-      const date = getBibidDate()
-
-      const usesP845Creator = !surname && !author && Boolean(creator)
-      // The same P247 cascade applies to the creator: a person creator shows only
-      // their surname, while an organisation (no P247, e.g. Sotheby's) keeps its
-      // full name (#574).
-      const creatorSurname = usesP845Creator ? await getCascadedSurname('P845') : null
-      const name = surname || author || creatorSurname || creator || getClaimValue('P1134')
-
-      if (name && title) {
-        const role = usesP845Creator ? getQualifierValue('P845', 'P820') : null
-        const rolePart = role ? ` (${role})` : ''
-        const datePart = date ? ` (${date})` : ''
-        generatedLabel = `${name}${rolePart}${datePart}, ${title}`
-      }
-      break
-    }
-    case 'bioid': {
-      const name = getClaimValue('P34')
-      if (name) {
-        generatedLabel = name
-      }
-      break
-    }
-    case 'manid': {
-      const holding = getClaimValue('P329')
-      if (holding) {
-        const prefix = getManidPrefix()
-        const collection = getClaimValue('P1054') || getQualifierValue('P329', 'P1054')
-        const position = getP10Value()
-        const holdingPart = collection ? `${holding} (${collection})` : holding
-        generatedLabel = position ? `${prefix}${holdingPart}, ${position}` : `${prefix}${holdingPart}`
-      }
-      break
-    }
-    case 'copid': {
-      const holding = getClaimValue('P329')
-      const edition = getClaimValue('P839')
-      if (holding && edition) {
-        const position = getP10Value()
-        const holdingPart = position ? `${holding}, ${position}` : holding
-        generatedLabel = `${holdingPart}. ${edition}`
-      }
-      break
-    }
-    case 'geoid': {
-      const name = getClaimValue('P34')
-      const region = getClaimValue('P297')
-      if (name) {
-        generatedLabel = region ? `${name}, ${region}` : name
-      }
-      break
-    }
-    case 'insid': {
-      const name = getClaimValue('P34')
-      const region = getClaimValue('P297')
-      if (name && region) {
-        generatedLabel = `${name}, ${region}`
-      }
-      break
-    }
-    case 'libid': {
-      const name = getClaimValue('P34')
-      const location = getClaimValue('P47')
-      if (name && location) {
-        generatedLabel = `${name}, ${location}`
-      }
-      break
-    }
-    case 'subid': {
-      const name = getClaimValue('P34')
-      if (name) {
-        generatedLabel = name
-      }
-      break
-    }
-    default:
-      break
-  }
-
+  const generatedLabel = (await itemForm.generateLabel(props.table, initialClaims.value, entityLocale.value)) || ''
   if (token !== labelGenerationToken) return
   if (generatedLabel) {
     label.value = generatedLabel

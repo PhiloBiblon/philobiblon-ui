@@ -46,7 +46,7 @@
           </v-tooltip>
         </v-btn>
         <v-btn
-          v-if="claim?.property?.id !== pbid"
+          v-if="claim?.removable !== false && claim?.property?.id !== pbid"
           variant="text"
           icon
           density="compact"

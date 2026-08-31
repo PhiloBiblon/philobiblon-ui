@@ -15,7 +15,9 @@ export function useAlternativeLabels () {
           }
         }
       }
-    } catch {}
+    } catch {
+      // Best-effort enrichment: leave the original search-result labels on failure.
+    }
   }
 
   return { applyAlternativeLabels }
