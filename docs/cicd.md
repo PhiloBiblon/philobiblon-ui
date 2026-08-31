@@ -4,7 +4,7 @@
 
 ### `ci.yml` — triggers: every PR
 
-Runs two jobs: `Backend tests` (`./mvnw test`, Java 21) and `Frontend lint and build` (`yarn lint` and `yarn generate`, Node 22). It has no path filters, so every PR is tested. The patufet review finds this workflow on its own and waits for it (a red job is a `fail`): renaming or adding a job needs no change in `patufet.yml`.
+Runs two jobs: `Backend tests` (`./mvnw test`, Java 21) and `Frontend lint, test and build` (`yarn lint`, `yarn test` and `yarn generate`, Node 22). It has no path filters, so every PR is tested. The patufet review finds this workflow on its own and waits for it (a red job is a `fail`): renaming or adding a job needs no change in `patufet.yml`.
 
 ### `staging.yml` — triggers: push to `master` touching `backend/`, `frontend/` or the workflow file itself, manual
 
