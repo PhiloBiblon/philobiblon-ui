@@ -213,3 +213,4 @@ const results = await $wikibase.runSparqlQuery(query, true, false, false)
 
 - [Components](components.md) — How components use these services
 - [State Management](state-management.md) — How services interact with Pinia stores
+- [item-forms](item-forms.md) — Item-creation label/validation/defaults engine, `service/item-forms/`

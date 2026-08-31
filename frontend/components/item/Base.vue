@@ -70,7 +70,7 @@ import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '~/stores/auth'
 import { useBreadcrumbStore } from '~/stores/breadcrumb'
-import { WikibaseService } from '~/service/wikibase.service'
+import { getBibliographyClaimValue } from '~/service/item-forms/engine.js'
 
 const props = defineProps({
   id: { type: String, default: null },
@@ -163,13 +163,12 @@ async function appendTemplateClaims (existingClaims) {
 
     const entities = await $wikibase.getEntities(missingPropIds, locale.value)
 
-    const bibliographyId = WikibaseService.BIBLIOGRAPHY_MAP?.[props.database]
     for (const propId of missingPropIds) {
       const entityProperty = entities[propId]
       if (!entityProperty?.datatype || entityProperty.datatype === 'external-id') continue
 
       const altLabel = await $wikibase.getEntityLabel(props.table, propId, locale.value)
-      const defaultValue = propId === 'P131' && bibliographyId ? { id: bibliographyId } : null
+      const defaultValue = propId === 'P131' ? getBibliographyClaimValue(props.database) : null
 
       templateClaims.value.push({
         default: true,
