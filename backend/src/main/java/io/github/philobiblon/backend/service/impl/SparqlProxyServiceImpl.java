@@ -19,6 +19,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Set;
 
 @Service
 public class SparqlProxyServiceImpl implements SparqlProxyService {
@@ -28,6 +29,7 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
     private static final String USER_AGENT = "PhiloBiblon-UI/1.0 (+https://philobiblon.cog.berkeley.edu)";
     private static final String REPUTATION_CHALLENGE_PATH = "rep-pow-challenge";
     private static final int LOG_BODY_SNIPPET_LENGTH = 300;
+    private static final Set<Integer> PASS_THROUGH_STATUSES = Set.of(400, 413, 414);
 
     private final String sparqlEndpoint;
     private final long maxResponseBytes;
@@ -88,7 +90,10 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    /** 4xx are the caller's fault (e.g. malformed query) and pass through; anything else is a gateway error. */
+    /**
+     * Only the statuses that blame the query itself pass through; 401/403/429 and the like describe how the
+     * endpoint sees this backend, not the caller, so they become a gateway error. The upstream body is only logged.
+     */
     private ResponseStatusException upstreamError(HttpResponse<InputStream> response, InputStream in)
             throws IOException {
         int status = response.statusCode();
@@ -99,8 +104,8 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
             return new ResponseStatusException(HttpStatus.BAD_GATEWAY, "SPARQL endpoint reputation challenge");
         }
         logger.warn("SPARQL endpoint answered {}: {}", status, snippet);
-        if (status / 100 == 4) {
-            return new ResponseStatusException(HttpStatusCode.valueOf(status), snippet);
+        if (PASS_THROUGH_STATUSES.contains(status)) {
+            return new ResponseStatusException(HttpStatusCode.valueOf(status), "SPARQL query rejected by the endpoint");
         }
         return new ResponseStatusException(HttpStatus.BAD_GATEWAY, "SPARQL endpoint answered " + status);
     }

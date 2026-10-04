@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +22,7 @@ class SparqlProxyServiceImplTest {
 
     private static final long MAX_BYTES = 100;
 
+    private final CountDownLatch releaseSlowHandler = new CountDownLatch(1);
     private HttpServer server;
     private final AtomicReference<String> receivedBody = new AtomicReference<>();
     private final AtomicReference<String> receivedUserAgent = new AtomicReference<>();
@@ -32,6 +35,7 @@ class SparqlProxyServiceImplTest {
 
     @AfterEach
     void stopServer() {
+        releaseSlowHandler.countDown();
         server.stop(0);
     }
 
@@ -85,7 +89,23 @@ class SparqlProxyServiceImplTest {
         ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> service().query("nope"));
 
         assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
-        assertEquals("MalformedQueryException", e.getReason());
+        assertEquals("SPARQL query rejected by the endpoint", e.getReason());
+    }
+
+    @Test
+    void endpointAuthAndRateLimitErrorsAreABadGateway() {
+        boolean first = true;
+        for (int status : new int[] {401, 403, 429}) {
+            if (!first) {
+                server.removeContext("/sparql");
+            }
+            first = false;
+            respond(status, "denied", null);
+
+            ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> service().query("ASK{}"));
+
+            assertEquals(HttpStatus.BAD_GATEWAY, e.getStatusCode(), "status " + status);
+        }
     }
 
     @Test
@@ -122,7 +142,7 @@ class SparqlProxyServiceImplTest {
     void slowEndpointTimesOutAsABadGateway() {
         server.createContext("/sparql", exchange -> {
             try {
-                Thread.sleep(3000);
+                releaseSlowHandler.await(10, TimeUnit.SECONDS);
             } catch (InterruptedException ignored) {
                 Thread.currentThread().interrupt();
             }
