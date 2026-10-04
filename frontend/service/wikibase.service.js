@@ -80,6 +80,7 @@ export class WikibaseService {
     // redirects some browsers to a PoW challenge page that has no CORS headers.
     this.wbk = WBK({
       instance: this.joinUrl(config.apiBaseUrl, 'w/api.php'),
+      // Only used to build the query string; the request itself goes to the backend (runSparqlQuery)
       sparqlEndpoint: config.sparqlEndpoint
     })
     this.wbEdit = withTrimmedValues(wbEdit({

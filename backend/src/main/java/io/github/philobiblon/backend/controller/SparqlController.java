@@ -14,6 +14,6 @@ public interface SparqlController {
      * check redirects some clients to a challenge page without CORS headers).
      * Answers the endpoint's SPARQL JSON results.
      */
-    @PostMapping(consumes = "application/x-www-form-urlencoded", produces = "application/sparql-results+json")
+    @PostMapping(consumes = "application/x-www-form-urlencoded", produces = "application/json")
     String query(@RequestParam String query);
 }
