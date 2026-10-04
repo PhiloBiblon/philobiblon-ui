@@ -76,8 +76,11 @@ export class WikibaseService {
 
   constructor ({ config, $notification }) {
     this.$config = config
+    // Wikibase reads go through the backend proxy: FactGrid's reputation check
+    // redirects some browsers to a PoW challenge page that has no CORS headers.
     this.wbk = WBK({
-      instance: config.wikibaseApiUrl,
+      instance: this.joinUrl(config.apiBaseUrl, 'w/api.php'),
+      // Only used to build the query string; the request itself goes to the backend (runSparqlQuery)
       sparqlEndpoint: config.sparqlEndpoint
     })
     this.wbEdit = withTrimmedValues(wbEdit({
@@ -455,7 +458,7 @@ export class WikibaseService {
   }
 
   getWikibasePage (pageName) {
-    const url = `${this.$config.wikibaseApiUrl}?action=parse&page=${pageName}&prop=wikitext&formatversion=2&format=json&origin=*`
+    const url = `${this.joinUrl(this.$config.apiBaseUrl, 'w/api.php')}?action=parse&page=${pageName}&prop=wikitext&formatversion=2&format=json`
     return this.wbFetcher(url)
   }
 
@@ -672,9 +675,9 @@ export class WikibaseService {
       }
     }
 
-    const urlParts = this.wbk.sparqlQuery(query).split('?')
-    const url = urlParts[0]
-    const sparql = urlParts[1]
+    // Goes through the backend: FactGrid's reputation check can redirect browsers to a challenge page.
+    const url = this.joinUrl(this.$config.apiBaseUrl, 'api/sparql')
+    const sparql = this.wbk.sparqlQuery(query).split('?')[1]
 
     const options = {
       method: 'POST',
@@ -687,7 +690,7 @@ export class WikibaseService {
         if (response.status >= 200 && response.status <= 299) {
           return response.json()
         } else {
-          throw new Error(response.statusText)
+          throw this.sparqlHttpError(response)
         }
       })
       .then(results => this.wbk.simplify.sparqlResults(results, { minimize }))
@@ -703,6 +706,20 @@ export class WikibaseService {
       .catch((error) => {
         throw error
       })
+  }
+
+  /**
+   * Error for a non-2xx answer of /api/sparql. statusText is empty over HTTP/2, so the status goes in the
+   * message. 502/503/504 (challenge, timeout, endpoint down) are named TimeoutError so that useNotifyError
+   * shows the "could not connect" message instead of the generic one.
+   */
+  sparqlHttpError (response) {
+    const error = new Error(`SPARQL request failed (${response.status})`)
+    error.status = response.status
+    if ([502, 503, 504].includes(response.status)) {
+      error.name = 'TimeoutError'
+    }
+    return error
   }
 
   getResultsFromCache (hash) {

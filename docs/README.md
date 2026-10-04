@@ -23,17 +23,15 @@ flowchart LR
 
     Browser <--> Frontend
     Frontend <--> Backend
-    Frontend -- "read" --> Wikibase
-    Backend -- "write" --> Wikibase
-    Frontend -- "direct" --> SPARQL
-    Backend -- "cached" --> SPARQL
+    Backend -- "read / write (proxy)" --> Wikibase
+    Backend -- "cached / pass-through" --> SPARQL
 ```
 
 All traffic from the browser passes through an **nginx reverse proxy** running inside Docker Compose. nginx routes requests matching `/(api|w|./w)/` to the backend, and everything else to the frontend (static SPA files). This means the browser always talks to a single origin, avoiding CORS issues. The `/w/` and `./w/` patterns cover Wikibase API and OAuth paths that the backend proxies.
 
-**Item reads** (fetching Wikibase entities) go directly from the frontend to the Wikibase API — no backend involved. **Item writes** (edits) are proxied through the backend, which signs each request with OAuth 1.0a using a server-side consumer secret that is never exposed to the browser.
+**Item reads** (fetching Wikibase entities, UI config wiki pages) and **item writes** (edits) both go through the backend `/w/**` proxy, never directly from the browser to Wikibase. Writes are signed with OAuth 1.0a using a server-side consumer secret that is never exposed to the browser. Routing reads through the backend also avoids FactGrid's reputation check, which redirects some browsers to a `/rep-pow-challenge` page without CORS headers and breaks direct `fetch` calls.
 
-**SPARQL queries** use a two-level cache: the frontend holds an in-memory Pinia cache (2-min TTL, 100 entries) for repeated queries within the same browser session, and the backend holds a DB-backed result cache (H2: `cached_query` registry + `cached_query_row` materialized rows, refreshed nightly, shared across all users and surviving restarts). Search/autocomplete queries always go through the backend cache; see [backend/caching.md](backend/caching.md).
+**SPARQL queries** use a two-level cache: the frontend holds an in-memory Pinia cache (2-min TTL, 100 entries) for repeated queries within the same browser session, and the backend holds a DB-backed result cache (H2: `cached_query` registry + `cached_query_row` materialized rows, refreshed nightly, shared across all users and surviving restarts). Search/autocomplete queries always go through the backend cache; see [backend/caching.md](backend/caching.md). Other queries (result grids, counts, related items) are forwarded by `POST /api/sparql`, a pass-through to the SPARQL endpoint that is not cached on the backend.
 
 More detailed:
 
@@ -56,7 +54,8 @@ graph TB
             ConfigCtrl["ConfigController\n/api/config"]
             OAuthCtrl["OAuthController\n/api/oauth/*"]
             SearchCtrl["SearchController\n/api/search"]
-            ProxyCtrl["ProxyController\n/api/proxy"]
+            ProxyCtrl["ProxyController\n/w/**"]
+            SparqlCtrl["SparqlController\n/api/sparql"]
 
             CacheSvc["SparqlCacheService"]
             QuickSvc["QuickSearchService\n(transitional alias)"]
@@ -81,23 +80,24 @@ graph TB
     Nginx -- "/(api|w|./w)/" --> BE
 
     Services -- "item read/edit" --> ProxyCtrl
+    Services -- "result grids / counts" --> SparqlCtrl
     Services -- "search / autocomplete" --> SearchCtrl
     Services -- "OAuth flow" --> OAuthCtrl
     Services -- "config" --> ConfigCtrl
 
     CacheSvc --> SPARQL
     QuickSvc --> SPARQL
-    Services -- "result grids (direct)" --> SPARQL
+    SparqlCtrl --> SPARQL
     ProxyCtrl --> Wikibase
     OAuthSvc --> Wikibase
 ```
 
 **Architecture Summary**:
 - **nginx**: reverse proxy that routes `/(api|w|./w)/` to the backend and `/` to the frontend
-- **Frontend (Nuxt 3)**: SPA served as static files; reads Wikibase directly, routes writes and SPARQL through the backend
+- **Frontend (Nuxt 3)**: SPA served as static files; routes Wikibase reads/writes and SPARQL through the backend
 - **Backend (Spring Boot 4)**: OAuth 1.0a proxy for writes, DB-backed SPARQL result cache serving the search API
-- **Wikibase API**: item reads go directly from the frontend; writes are proxied through the backend with OAuth
-- **SPARQL Endpoint**: search/autocomplete queries are served from the backend's DB cache (materialized rows, nightly refresh); the result grids query the endpoint directly with a short-lived frontend cache (2 min)
+- **Wikibase API**: reads and writes are proxied through the backend (writes are signed with OAuth)
+- **SPARQL Endpoint**: search/autocomplete queries are served from the backend's DB cache (materialized rows, nightly refresh); the result grids go through `POST /api/sparql` (pass-through) with a short-lived frontend cache (2 min)
 
 ## Documentation Structure
 
