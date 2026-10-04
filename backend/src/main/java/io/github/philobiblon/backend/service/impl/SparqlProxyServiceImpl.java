@@ -16,6 +16,7 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
@@ -30,6 +31,7 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
 
     private final String sparqlEndpoint;
     private final long maxResponseBytes;
+    private final Duration requestTimeout;
     // Redirects are not followed (HttpClient default): a reputation challenge must surface as an error.
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
@@ -37,15 +39,19 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
             .build();
 
     public SparqlProxyServiceImpl(@Value("${sparql.endpoint}") String sparqlEndpoint,
-                                  @Value("${sparql.proxy.maxResponseBytes:10485760}") long maxResponseBytes) {
+                                  @Value("${sparql.proxy.maxResponseBytes:10485760}") long maxResponseBytes,
+                                  // Keep it below the nginx proxy_read_timeout (60 s by default) so that the
+                                  // backend answers a readable 502 before a proxy answers a bare 504.
+                                  @Value("${sparql.proxy.timeoutSeconds:45}") long timeoutSeconds) {
         this.sparqlEndpoint = sparqlEndpoint;
         this.maxResponseBytes = maxResponseBytes;
+        this.requestTimeout = Duration.ofSeconds(timeoutSeconds);
     }
 
     @Override
     public String query(String sparqlQuery) {
         HttpRequest request = HttpRequest.newBuilder(URI.create(sparqlEndpoint))
-                .timeout(Duration.ofSeconds(60))
+                .timeout(requestTimeout)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .header("Accept", "application/sparql-results+json")
                 .header("User-Agent", USER_AGENT)
@@ -61,6 +67,9 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
                 }
                 throw upstreamError(response, in);
             }
+        } catch (HttpTimeoutException e) {
+            logger.warn("SPARQL endpoint did not answer within {}", requestTimeout);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "SPARQL endpoint timed out", e);
         } catch (IOException e) {
             logger.warn("SPARQL endpoint unreachable: {}", e.toString());
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "SPARQL endpoint unreachable", e);

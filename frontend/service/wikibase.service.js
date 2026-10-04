@@ -690,7 +690,7 @@ export class WikibaseService {
         if (response.status >= 200 && response.status <= 299) {
           return response.json()
         } else {
-          throw new Error(response.statusText)
+          throw this.sparqlHttpError(response)
         }
       })
       .then(results => this.wbk.simplify.sparqlResults(results, { minimize }))
@@ -706,6 +706,20 @@ export class WikibaseService {
       .catch((error) => {
         throw error
       })
+  }
+
+  /**
+   * Error for a non-2xx answer of /api/sparql. statusText is empty over HTTP/2, so the status goes in the
+   * message. 502/503/504 (challenge, timeout, endpoint down) are named TimeoutError so that useNotifyError
+   * shows the "could not connect" message instead of the generic one.
+   */
+  sparqlHttpError (response) {
+    const error = new Error(`SPARQL request failed (${response.status})`)
+    error.status = response.status
+    if ([502, 503, 504].includes(response.status)) {
+      error.name = 'TimeoutError'
+    }
+    return error
   }
 
   getResultsFromCache (hash) {

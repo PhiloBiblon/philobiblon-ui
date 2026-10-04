@@ -36,7 +36,7 @@ class SparqlProxyServiceImplTest {
     }
 
     private SparqlProxyServiceImpl service() {
-        return new SparqlProxyServiceImpl("http://127.0.0.1:" + server.getAddress().getPort() + "/sparql", MAX_BYTES);
+        return new SparqlProxyServiceImpl("http://127.0.0.1:" + server.getAddress().getPort() + "/sparql", MAX_BYTES, 5);
     }
 
     private void respond(int status, String body, String location) {
@@ -113,8 +113,27 @@ class SparqlProxyServiceImplTest {
         server.stop(0);
 
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> new SparqlProxyServiceImpl("http://127.0.0.1:" + port + "/sparql", MAX_BYTES).query("ASK{}"));
+                () -> new SparqlProxyServiceImpl("http://127.0.0.1:" + port + "/sparql", MAX_BYTES, 5).query("ASK{}"));
 
         assertEquals(HttpStatus.BAD_GATEWAY, e.getStatusCode());
+    }
+
+    @Test
+    void slowEndpointTimesOutAsABadGateway() {
+        server.createContext("/sparql", exchange -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
+            }
+            exchange.close();
+        });
+        SparqlProxyServiceImpl shortTimeout =
+                new SparqlProxyServiceImpl("http://127.0.0.1:" + server.getAddress().getPort() + "/sparql", MAX_BYTES, 1);
+
+        ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> shortTimeout.query("ASK{}"));
+
+        assertEquals(HttpStatus.BAD_GATEWAY, e.getStatusCode());
+        assertEquals("SPARQL endpoint timed out", e.getReason());
     }
 }

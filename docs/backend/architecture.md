@@ -166,7 +166,7 @@ Pass-through to the SPARQL endpoint for queries that are not served by the DB ca
 String query(@RequestParam String query);
 ```
 
-`SparqlProxyServiceImpl` POSTs the query to `sparql.endpoint` over HTTP/1.1 with an identifying `User-Agent` and returns the JSON body as-is. Redirects are not followed, so FactGrid's reputation challenge (a `302` to `/rep-pow-challenge`) is logged and answered as `502`. Other 5xx, unreachable endpoints and responses larger than `sparql.proxy.maxResponseBytes` (default 10 MB) are also `502`; 4xx from the endpoint (e.g. a malformed query) pass through with the same status. Nothing is cached on the backend; the frontend keeps its own 2-minute cache.
+`SparqlProxyServiceImpl` POSTs the query to `sparql.endpoint` over HTTP/1.1 with an identifying `User-Agent` and returns the JSON body as-is. Redirects are not followed, so FactGrid's reputation challenge (a `302` to `/rep-pow-challenge`) is logged and answered as `502`. Requests that get no answer within `sparql.proxy.timeoutSeconds` (default 45, kept below nginx's 60 s `proxy_read_timeout`), other 5xx, unreachable endpoints and responses larger than `sparql.proxy.maxResponseBytes` (default 10 MB) are also `502`; 4xx from the endpoint (e.g. a malformed query) pass through with the same status. Nothing is cached on the backend; the frontend keeps its own 2-minute cache.
 
 #### ProxyController
 
