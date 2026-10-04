@@ -21,8 +21,9 @@ The primary service for all Wikibase-related operations.
 export class WikibaseService {
   constructor({ config, $notification }) {
     this.$config = config
+    // Reads go through the backend proxy (see the note below)
     this.wbk = WBK({
-      instance: config.wikibaseApiUrl,
+      instance: this.joinUrl(config.apiBaseUrl, 'w/api.php'),
       sparqlEndpoint: config.sparqlEndpoint
     })
     this.wbEdit = wbEdit({
@@ -37,6 +38,8 @@ export class WikibaseService {
 ```
 
 **Key point**: `wikibase-edit` is configured with `config.apiBaseUrl` (the backend), not the Wikibase instance directly. All writes go through the backend OAuth proxy.
+
+Reads (`wbgetentities`, entity search, `getWikibasePage`) use the backend `/w/api.php` proxy too, not `config.wikibaseApiUrl`. FactGrid's reputation check redirects some browsers to a PoW challenge page without CORS headers, which makes direct cross-origin `fetch` calls fail.
 
 ### Core Methods
 
@@ -55,7 +58,7 @@ const entities = await $wikibase.getEntities(['Q123', 'Q456'], 'ca')
 ```
 
 #### `runSparqlQuery(query, minimize, useInternalCache)`
-Executes a SPARQL query directly against the endpoint, with optional frontend caching.
+Executes a SPARQL query through the backend (`POST /api/sparql`, a pass-through to the SPARQL endpoint), with optional frontend caching.
 
 - `minimize` — simplify RDF result structure
 - `useInternalCache` — use frontend Pinia queryCache (2-min TTL)

@@ -159,31 +159,14 @@ Handles OAuth 1.0a flow.
 
 #### SparqlController
 
-Proxies SPARQL queries with caching.
+Pass-through to the SPARQL endpoint for queries that are not served by the DB cache (result grids, counts, related items). The browser never calls the endpoint directly, because FactGrid's reputation check can redirect it to a challenge page without CORS headers.
 
 ```java
-@PostMapping("/query")
-public ResponseEntity<String> runSparql(
-    @RequestParam("format") String format,
-    @RequestParam("query") String query
-) {
-    String cacheKey = generateCacheKey(query);
-    
-    // Check cache
-    String cached = cache.getIfPresent(cacheKey);
-    if (cached != null) {
-        return ResponseEntity.ok(cached);
-    }
-    
-    // Execute query
-    String result = executeSparqlQuery(query);
-    
-    // Cache result
-    cache.put(cacheKey, result);
-    
-    return ResponseEntity.ok(result);
-}
+@PostMapping(consumes = "application/x-www-form-urlencoded", produces = "application/sparql-results+json")
+String query(@RequestParam String query);
 ```
+
+`SparqlProxyServiceImpl` POSTs the query to `sparql.endpoint` over HTTP/1.1 with an identifying `User-Agent` and returns the JSON body as-is. It answers `502` if the endpoint is unreachable or does not answer 2xx. Nothing is cached on the backend; the frontend keeps its own 2-minute cache.
 
 #### ProxyController
 
