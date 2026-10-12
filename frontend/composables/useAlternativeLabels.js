@@ -15,7 +15,9 @@ export function useAlternativeLabels () {
           }
         }
       }
-    } catch {}
+    } catch {
+      // Best effort: keep the search labels if the entities cannot be fetched
+    }
   }
 
   return { applyAlternativeLabels }

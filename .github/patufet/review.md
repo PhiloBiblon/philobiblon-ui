@@ -1,0 +1,6 @@
+- Frontend components must not call `fetch` directly; they go through the injected services (`$wikibase`, `$notification`, `$sanitize`, ...) from `useNuxtApp()`.
+- All Wikibase reads/writes and SPARQL go through the backend (`/w/**` proxy, `/api/search`, `/api/sparql`); `wikibase-edit` must point at the backend `apiBaseUrl`, never at Wikibase directly, so writes stay OAuth-signed.
+- Backend: controllers and services are interfaces with implementations in `impl/` subpackages; keep controllers thin.
+- No hardcoded per-table property IDs (`if (props.table === 'x')`) in `getDefaultClaims` / `getCreateDisabledReason`: new-item defaults are configured in the `Ui_SortedProperties_NewItem` wiki page (regression history: PRs #475/#476/#478).
+- Every new user-facing string must be added to all five locale files in `frontend/lang/` (`en`, `ca`, `es`, `gl`, `pt`).
+- Changes to the SPARQL cache contract (reserved `?lang`/`?db`/`?bg` vars, v=2 `/api/search` params) must stay consistent with `docs/backend/caching.md` and `scripts/seed-cache/`.

@@ -26,6 +26,21 @@ Posts the deploy notifications (success and failure). This is a **separate workf
 1. Builds both images and pushes with tags `v1.2.3` and `latest`.
 2. Deploys to the production server via SSH using `docker-compose.ui-fact.yml`.
 
+### `patufet.yml` / `patufet-mention.yml` — triggers: issue and PR labels, PR pushes, `@claude` mentions
+
+Autonomous issue → PR → review → fix flow from [patufet](https://github.com/jmformenti/patufet), pinned to `@v1`. The callers only hold project settings; the jobs run in patufet's reusable workflows.
+
+| Event | Job | What it does |
+|---|---|---|
+| `ready-to-implement` added to an issue | `implement` | Implements the approved plan on `agent/issue-<n>`, runs `test-command` (backend tests, frontend lint + `yarn generate`) and opens a PR |
+| PR opened / pushed (non-draft) | `review` | Reviews the PR and labels it `pass`, `warning` or `fail` |
+| `warning` or `fail` added to a PR | `fix-review` | Applies the review, pushes (which re-runs `review`); after 10 cycles labels `needs-human-review` and mentions the reviewer |
+| `@claude` in an issue, comment or review | `patufet-mention` | Answers the mention |
+
+These labels are triggers, not just tags: adding `ready-to-implement`, `warning` or `fail` by hand starts an agent that pushes code. `ready-to-implement` is only added by a human after approving the plan (`/plan-issue <n>` from Claude Code). `in-progress`, `to-refine`, `blocked`, `pass` and `needs-human-review` are set by the flow. Project-specific instructions for the agents live in `.github/patufet/*.md`.
+
+A PR that edits `patufet.yml` gets no automatic review (the action refuses a workflow that differs from the default branch's copy): review and merge it by hand.
+
 ## Deploy sequence
 
 Both environments follow the same sequence on the server:
@@ -70,7 +85,7 @@ Create two environments: `staging` and `production`, each with:
 | `SSH_KEY` | Private SSH key (RSA or Ed25519) |
 
 `GITHUB_TOKEN` is provided automatically by GitHub Actions — no manual setup needed.
-`CLAUDE_CODE_OAUTH_TOKEN` is a repository-level secret (not per-environment), also used by `claude.yml` and `claude-code-review.yml`.
+`CLAUDE_CODE_OAUTH_TOKEN` is a repository-level secret (not per-environment), also used by `staging-deploy-notify.yml` and the patufet workflows (`patufet.yml`, `patufet-mention.yml`).
 
 ## Testing pipelines manually
 
