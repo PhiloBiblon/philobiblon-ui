@@ -37,11 +37,10 @@ jobs:
       language: "en"
       # Shell that must pass before a PR is opened (leave empty to let the agent infer it).
       # fix-review reuses it through the YAML alias *test-command.
-      # Backend needs Java 21 (ubuntu-latest defaults to 17).
+      # The agent runs each line as a separate shell call, so none may rely on state
+      # (exports, cwd) set by another. Backend needs Java 21 (ubuntu-latest defaults to 17).
       test-command: &test-command |
-        set -e
-        export JAVA_HOME="${JAVA_HOME_21_X64:-$JAVA_HOME}"
-        (cd backend && ./mvnw -B -q test)
+        (cd backend && JAVA_HOME="${JAVA_HOME_21_X64:-$JAVA_HOME}" ./mvnw -B -q test)
         (cd frontend && corepack enable && yarn install --immutable && yarn lint && yarn generate)
 
   # every push to a non-draft PR → review + verdict label

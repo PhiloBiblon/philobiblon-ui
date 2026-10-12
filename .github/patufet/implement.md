@@ -1,4 +1,4 @@
-- Regression anchors are the backend tests under `backend/src/test/java` (search/SPARQL cache, SPARQL proxy, controllers). The frontend has no test suite; `yarn generate` is the only frontend gate.
+- Regression anchors are the backend tests under `backend/src/test/java` (search/SPARQL cache, SPARQL proxy, controllers). The frontend has no test suite; `yarn lint` (0 errors required) and `yarn generate` are the only frontend gates.
 - Run a single backend test: `cd backend && ./mvnw -B test -Dtest=SparqlCacheServiceImplTest` (or `-Dtest=Class#method`).
 - Per-table new-item defaults belong in the `Ui_SortedProperties_NewItem` wiki page, not in `if (props.table === '...')` branches in `frontend/components/item/Create.vue` (see AGENTS.md).
 - Never touch `.github/workflows/staging.yml`, `production.yml` or the `docker-compose.ui-*.yml` files unless the issue asks for it: they deploy to the real staging/production servers.
