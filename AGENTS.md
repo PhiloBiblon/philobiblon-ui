@@ -90,10 +90,13 @@ Controllers and services are defined as Java interfaces with implementations in 
 
 ## CI/CD
 
-Two GitHub Actions workflows in `.github/workflows/`:
+Deploy workflows in `.github/workflows/`:
 
 - **`staging.yml`** — triggers on push to `master` or manually (`workflow_dispatch`). Builds both images, pushes to GHCR with tags `main-{sha}` and `main-latest`, deploys via SSH to the staging server (`docker-compose.ui-dev.yml`), cleans up old GHCR versions (keeps 5, never deletes `v*` tags).
 - **`production.yml`** — triggers on `v*` tag push or manually. Builds both images, pushes with tags `v1.2.3` and `latest`, deploys via SSH to the production server (`docker-compose.ui-fact.yml`).
+
+- **`staging-deploy-notify.yml`** — after each staging deploy, comments on the deployed PR (summary + test plan written by Claude).
+- **`patufet.yml`** / **`patufet-mention.yml`** — autonomous issue → PR → review → fix flow ([patufet](https://github.com/jmformenti/patufet)). The labels `ready-to-implement` (issue) and `warning` / `fail` (PR) **start agents that push code**: never add them unless that is the intent. `ready-to-implement` is added only by a human, after approving a plan made with `/plan-issue <n>`. See `docs/cicd.md`.
 
 GHCR image names:
 ```
