@@ -9,7 +9,7 @@
 # PR are therefore NOT exercised, and there is no login: nothing can be written
 # to FactGrid from here.
 #
-# Contract (see https://github.com/jmformenti/patufet/blob/main/docs/e2e.md):
+# Contract (see https://github.com/jmformenti/patufet/blob/v1/docs/e2e.md):
 #   - Runs from the repository root with the PR branch checked out.
 #   - Must exit non-zero if the app is not usable (the job then fails, no verdict).
 #   - Must append KEY=VALUE lines to the file named by $PATUFET_E2E_ENV.
@@ -31,7 +31,12 @@ if ! grep -q '"sitename"' <<<"$siteinfo"; then
   exit 1
 fi
 
-# 2. Build the PR's SPA as the Docker image does, and serve it with an SPA fallback
+# 2. Build the PR's SPA as the Docker image does, and serve it with an SPA fallback.
+# The Dockerfile builds with Node 22; take it from the runner's tool cache when
+# the default `node` on the runner is another major version.
+node22=$(ls -d "${RUNNER_TOOL_CACHE:-/opt/hostedtoolcache}"/node/22.*/x64/bin 2>/dev/null | sort -V | tail -n 1 || true)
+[ -z "$node22" ] || export PATH="$node22:$PATH"
+echo "Building with Node $(node --version)"
 cd frontend
 corepack enable
 yarn install --immutable
