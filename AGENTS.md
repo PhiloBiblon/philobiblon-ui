@@ -95,7 +95,7 @@ Workflows in `.github/workflows/`:
 - **`staging.yml`** — triggers on push to `master` or manually (`workflow_dispatch`). Builds both images, pushes to GHCR with tags `main-{sha}` and `main-latest`, deploys via SSH to the staging server (`docker-compose.ui-dev.yml`), cleans up old GHCR versions (keeps 5, never deletes `v*` tags).
 - **`production.yml`** — triggers on `v*` tag push or manually. Builds both images, pushes with tags `v1.2.3` and `latest`, deploys via SSH to the production server (`docker-compose.ui-fact.yml`).
 - **`staging-deploy-notify.yml`** — after each staging deploy, posts the result on the deployed PR when one is found; see `docs/cicd.md` for the exact cases.
-- **`patufet.yml`** / **`patufet-mention.yml`** — autonomous issue → PR → review → fix flow ([patufet](https://github.com/jmformenti/patufet)). The labels `ready-to-implement` (issue) and `warning` / `fail` (PR) **start agents that push code**: never add them unless that is the intent. `ready-to-implement` is added only by a human, after approving a plan made with `/plan-issue <n>`. See `docs/cicd.md`.
+- **`patufet.yml`** / **`patufet-mention.yml`** — autonomous issue → PR → review → fix → e2e flow ([patufet](https://github.com/jmformenti/patufet)). The labels `ready-to-implement` (issue) and `warning` / `fail` (PR) **start agents that push code**, and `pass` (PR) starts a read-only e2e run of the PR's frontend against the staging backend: never add them unless that is the intent. `ready-to-implement` is added only by a human, after approving a plan made with `/plan-issue <n>`. See `docs/cicd.md`.
 
 GHCR image names:
 ```

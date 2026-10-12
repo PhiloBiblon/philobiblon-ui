@@ -2,4 +2,4 @@
 - Run a single backend test: `cd backend && ./mvnw -B test -Dtest=SparqlCacheServiceImplTest` (or `-Dtest=Class#method`).
 - Per-table new-item defaults belong in the `Ui_SortedProperties_NewItem` wiki page, not in `if (props.table === '...')` branches in `frontend/components/item/Create.vue` (see AGENTS.md).
 - Never touch `.github/workflows/staging.yml`, `production.yml` or the `docker-compose.ui-*.yml` files unless the issue asks for it: they deploy to the real staging/production servers.
-- The SPA cannot be exercised end-to-end in CI: it needs the FactGrid Wikibase, its SPARQL endpoint and OAuth credentials.
+- Do not try to start the app end-to-end yourself: a backend on the runner cannot reach FactGrid (its reputation check sends runner IPs to a PoW challenge page) and there are no OAuth credentials. After the review passes, the e2e stage serves the PR's frontend against the staging backend and tests read-only flows (`.github/patufet/e2e-up.sh`); backend changes are only covered by the backend tests.
