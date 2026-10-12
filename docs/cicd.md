@@ -32,7 +32,7 @@ Autonomous issue → PR → review → fix flow from [patufet](https://github.co
 
 | Event | Job | What it does |
 |---|---|---|
-| `ready-to-implement` added to an issue | `implement` | Implements the approved plan on `agent/issue-<n>`, runs `test-command` (backend tests, frontend lint + build) and opens a PR |
+| `ready-to-implement` added to an issue | `implement` | Implements the approved plan on `agent/issue-<n>`, runs `test-command` (backend tests, frontend lint + `yarn generate`) and opens a PR |
 | PR opened / pushed (non-draft) | `review` | Reviews the PR and labels it `pass`, `warning` or `fail` |
 | `warning` or `fail` added to a PR | `fix-review` | Applies the review, pushes (which re-runs `review`); after 10 cycles labels `needs-human-review` and mentions the reviewer |
 | `@claude` in an issue, comment or review | `patufet-mention` | Answers the mention |

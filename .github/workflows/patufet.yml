@@ -30,7 +30,8 @@ jobs:
       pull-requests: write
       issues: write
       id-token: write
-    secrets: inherit
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
     with:
       issue-number: ${{ fromJSON(inputs.issue || github.event.issue.number) }}
       language: "en"
@@ -55,7 +56,8 @@ jobs:
       pull-requests: write
       issues: read
       id-token: write
-    secrets: inherit
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
     with:
       language: "en"
       # Names of the CI jobs that already run tests/build on PRs (so the reviewer does not try to)
@@ -72,7 +74,8 @@ jobs:
       pull-requests: write
       issues: read
       id-token: write
-    secrets: inherit
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
     with:
       language: "en"
       max-review-cycles: 10
