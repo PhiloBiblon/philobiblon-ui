@@ -81,3 +81,19 @@ jobs:
       human-reviewer: "jmformenti"
       test-command: *test-command
 
+  # pass → serve the PR's frontend (against the staging backend) with
+  # .github/patufet/e2e-up.sh and test it live, read-only
+  e2e:
+    if: |
+      github.event_name == 'pull_request' && github.event.action == 'labeled' &&
+      github.event.label.name == 'pass'
+    uses: jmformenti/patufet/.github/workflows/e2e.yml@v1
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+    secrets: inherit
+    with:
+      language: "en"
+      human-reviewer: "jmformenti"
