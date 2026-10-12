@@ -70,7 +70,7 @@ Create two environments: `staging` and `production`, each with:
 | `SSH_KEY` | Private SSH key (RSA or Ed25519) |
 
 `GITHUB_TOKEN` is provided automatically by GitHub Actions — no manual setup needed.
-`CLAUDE_CODE_OAUTH_TOKEN` is a repository-level secret (not per-environment), also used by `claude.yml` and `claude-code-review.yml`.
+`CLAUDE_CODE_OAUTH_TOKEN` is a repository-level secret (not per-environment), also used by `staging-deploy-notify.yml` and the patufet workflows (`patufet.yml`, `patufet-mention.yml`).
 
 ## Testing pipelines manually
 
