@@ -6,8 +6,10 @@
 # reputation (GitHub runners included) to a PoW challenge page, so a backend
 # started here cannot reach it. The SPA is built from the PR and pointed at the
 # staging backend instead, which FactGrid lets through. Backend changes in the
-# PR are therefore NOT exercised, and there is no login: nothing can be written
-# to FactGrid from here.
+# PR are therefore NOT exercised. There is no real login, but a simulated
+# session (an oauth cookie with a fake token) unlocks the screens that need
+# login. The backend rejects the fake token with session-expired before
+# sending anything to FactGrid, so nothing can be written from here.
 #
 # Contract (see https://github.com/jmformenti/patufet/blob/v1/docs/e2e.md):
 #   - Runs from the repository root with the PR branch checked out.
@@ -60,8 +62,24 @@ if [ "$code" != "200" ]; then
   exit 1
 fi
 
+# 3. Simulated session: same cookie format as signToken() in oauth.service.js
+fake_cookie=$(node -e '
+const b64 = (s) => Buffer.from(s).toString("base64url");
+const payload = { username: "patufet-e2e", accessToken: { token: "patufet-e2e-fake", tokenSecret: "x" }, expiresAt: Date.now() + 55 * 60 * 1000 };
+process.stdout.write(b64("{}") + "." + b64(JSON.stringify(payload)) + ".");
+')
+# Safety: the backend must reject the fake token, otherwise writes could go through
+csrf=$(curl -s -H 'Authorization: OAuth oauth_token="patufet-e2e-fake", oauth_token_secret="x"' \
+  "$backend_url/w/api.php?action=query&meta=tokens&type=csrf&format=json" || true)
+if ! grep -q 'session-expired' <<<"$csrf"; then
+  echo "The simulated session is not safe: the backend did not answer session-expired to the fake token. Answer:"
+  head -c 500 <<<"$csrf"; echo
+  exit 1
+fi
+
 {
   echo "APP_URL=$app_url"
   echo "BACKEND=staging ($backend_url), shared with the team: read-only flows only"
-  echo "LOGIN=not available, do not try the OAuth login or any edit flow"
+  echo "FAKE_SESSION_COOKIE=$fake_cookie"
+  echo "LOGIN=simulated only: set the oauth cookie to FAKE_SESSION_COOKIE (e.g. document.cookie = 'oauth=<value>; path=/') and reload. The backend rejects its token, so any write fails with \"session expired\". Never use the real Login button."
 } >> "$PATUFET_E2E_ENV"
