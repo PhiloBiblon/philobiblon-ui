@@ -9,4 +9,5 @@
   - Opening one of those results loads its item page (`/en/item/Q...`) with its claims.
   - Switching the language (top bar) to `ca` or `es` translates the UI and keeps the current page.
 - Known noise, not a failure: console errors `Invalid qualifier P700) for property P73 in section libid` and warnings `Ignored line: ...` come from the `Ui_SortedProperties` wiki page content, not from the code.
+- Known noise, not a failure: session warnings and `session-expired` errors caused by the simulated session (`FAKE_SESSION_COOKIE`), e.g. on token refresh or on a blocked write attempt.
 - If staging or FactGrid answers errors or the PoW challenge page during the test, report it as an environment problem, not as a regression of the PR.
