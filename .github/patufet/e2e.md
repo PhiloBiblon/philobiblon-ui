@@ -4,6 +4,7 @@
   - To test screens that need login (`/item/<table>/create`, edit buttons), set the `oauth` cookie from `FAKE_SESSION_COOKIE` and reload.
   - Create and edit forms may be filled and inspected (generated label, defaults, validation messages), but do **not** press the final Create/Save buttons.
   - If a write is attempted anyway, the expected answer is a "session expired" error. That is not a regression.
+  - To add a property that is not on a create/edit form, click **add statement** and type its label or id (e.g. `Published in` or `P1137`) in the new **Property** field. The field searches as you type: its list stays empty until you type, which does not mean the property is unavailable. Never inject claims into the stored draft instead.
 - Always check, on top of the PR's functionality:
   - `/en/search/manid/query`: type `Barcel` in **City**, the autocomplete lists `Barcelona`; pick it and **Search** returns a non-empty results tab. The first autocomplete of a field can take ~20 s while the staging cache warms up; wait before calling it broken.
   - Opening one of those results loads its item page (`/en/item/Q...`) with its claims.
