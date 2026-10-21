@@ -782,7 +782,9 @@ async function generateLabelFromClaims () {
       const author = getClaimValue('P21')
       const creator = getClaimValue('P845')
       const title = stripHtml(getClaimValue('P11'))
-      const container = stripHtml(getClaimValue('P1137'))
+      // P64 (Published in, an item) is the container going forward; P1137 (* Published in,
+      // a string) is the legacy one, kept as fallback (#580).
+      const container = stripHtml(getClaimValue('P64') || getClaimValue('P1137'))
       const date = getBibidDate()
 
       const usesP845Creator = !surname && !author && Boolean(creator)
