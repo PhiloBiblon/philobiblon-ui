@@ -713,6 +713,7 @@ export default {
         description: 'Si us plau, ompliu la descripció',
         initial_claims: 'Les afirmacions s\'estan carregant',
         claim_value_missing: 'Si us plau, ompliu el valor de l\'afirmació per a "{propertyLabel}"',
+        qualifier_value_missing: '"{propertyLabel}" necessita un valor per a "{qualifierLabel}"',
         incomplete_date: 'Si us plau, ompliu una data completa (any, mes i dia) per al qualificador "{propertyLabel}"',
         language_mismatch: 'La llengua de la interfície no coincideix amb la bibliografia. Per a BETA usa el castellà, per a BITECA el català, per a BITAGAP el portuguès.'
       },

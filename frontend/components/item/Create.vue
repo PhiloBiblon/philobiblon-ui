@@ -222,6 +222,18 @@ function getCreateDisabledReason () {
       return t('messages.error.inputs.claim_value_missing', { propertyLabel })
     }
     requiredPropertyIds.add('P11')
+
+    const p845Filled = (claims.value.P845 || []).filter(c => c?.value != null && c?.value !== '')
+    const missingRole = p845Filled.some(c => {
+      const role = c.qualifiers?.P820
+      return !(Array.isArray(role) ? role.some(v => v != null && v !== '') : role)
+    })
+    if (missingRole) {
+      const p845 = initialClaims.value.find(c => c.property?.id === 'P845')
+      const propertyLabel = p845?.property?.label || 'P845'
+      const qualifierLabel = p845?.qualifiers?.find(q => q.property?.id === 'P820')?.property?.label || 'P820'
+      return t('messages.error.inputs.qualifier_value_missing', { propertyLabel, qualifierLabel })
+    }
   }
 
   if (props.table === 'manid') {
@@ -800,7 +812,10 @@ async function generateLabelFromClaims () {
         const datePart = date ? ` (${date})` : ''
         const titlePart = isBibidArticle() ? `“${title}”` : title
         const containerPart = container ? `, ${container}` : ''
-        generatedLabel = `${name}${rolePart}${datePart}, ${titlePart}${containerPart}`
+        // The name comes from elsewhere: P845 and its role go at the end instead.
+        const creatorRole = !usesP845Creator && creator ? getQualifierValue('P845', 'P820') : null
+        const creatorSuffix = creatorRole ? ` (${creatorRole.charAt(0).toLocaleLowerCase() + creatorRole.slice(1)} ${creator})` : ''
+        generatedLabel = `${name}${rolePart}${datePart}, ${titlePart}${containerPart}${creatorSuffix}`
       }
       break
     }

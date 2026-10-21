@@ -37,6 +37,7 @@
             mode="creation"
             :parent-property-id="claim?.mainsnak?.property ?? null"
             @on-blur="onNewValue($event, qualifier)"
+            @new-value="onNewValue($event, qualifier)"
           />
         </div>
       </v-col>
