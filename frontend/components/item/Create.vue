@@ -675,6 +675,20 @@ function getClaimValue (claimPbid) {
   return trimIfString(val)
 }
 
+// P2 values whose bibid label quotes the P11 title (#580)
+const BIBID_QUOTED_TITLE_TYPES = new Set(['Q395111', 'Q395198', 'Q394503', 'Q1815987'])
+
+function isBibidArticle () {
+  const p2Array = claims.value['P2']
+  return Array.isArray(p2Array) && p2Array.some(c => BIBID_QUOTED_TITLE_TYPES.has(c?.value))
+}
+
+// Plain text of a value that may carry HTML markup (e.g. <i> in P11); also decodes entities.
+function stripHtml (value) {
+  if (typeof value !== 'string') return value
+  return new DOMParser().parseFromString(value, 'text/html').body.textContent.trim()
+}
+
 function getClaimEntityId (claimPbid) {
   const claim = initialClaims.value.find(cl => cl.property?.id === claimPbid)
   const val = claim?.value?.datavalue?.value
@@ -767,7 +781,8 @@ async function generateLabelFromClaims () {
       const surname = getClaimValue('P247') || await getCascadedSurname('P21')
       const author = getClaimValue('P21')
       const creator = getClaimValue('P845')
-      const title = getClaimValue('P11')
+      const title = stripHtml(getClaimValue('P11'))
+      const container = stripHtml(getClaimValue('P1137'))
       const date = getBibidDate()
 
       const usesP845Creator = !surname && !author && Boolean(creator)
@@ -781,7 +796,9 @@ async function generateLabelFromClaims () {
         const role = usesP845Creator ? getQualifierValue('P845', 'P820') : null
         const rolePart = role ? ` (${role})` : ''
         const datePart = date ? ` (${date})` : ''
-        generatedLabel = `${name}${rolePart}${datePart}, ${title}`
+        const titlePart = isBibidArticle() ? `“${title}”` : title
+        const containerPart = container ? `, ${container}` : ''
+        generatedLabel = `${name}${rolePart}${datePart}, ${titlePart}${containerPart}`
       }
       break
     }
