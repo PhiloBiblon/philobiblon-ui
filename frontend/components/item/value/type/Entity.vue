@@ -237,10 +237,7 @@ function setOptionsAutocomplete () {
         }
       })
   } else {
-    options.value = [{
-      id: props.valueToView.item,
-      label: props.valueToView.value
-    }]
+    options.value = selectedValueOptions()
     const currentId = getDefaultValue(props.valueToView.item, null)
     selectedOption.value = options.value.find(o => o.id === currentId) || currentId
     return Promise.resolve()

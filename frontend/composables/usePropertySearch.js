@@ -39,7 +39,8 @@ export function usePropertySearch () {
   // Debounced per-row search for the Property fields. Each row owns one timer and
   // one request id; a response is dropped if a newer keystroke happened meanwhile
   // (ids come from a single monotonic counter so a row reusing an index after
-  // splice() can never match a stale response).
+  // splice() can never match a stale response). The row is looked up by its id
+  // when the response arrives, so removing a row above it doesn't drop the result.
   function createRowSearch (getTable, onResult, debounceMs = 300) {
     const timers = []
     const requestIds = []
@@ -54,8 +55,9 @@ export function usePropertySearch () {
       }
       timers[index] = setTimeout(async () => {
         const result = await searchProperties(value, getTable())
-        if (requestIds[index] !== requestId) { return }
-        onResult(index, result)
+        const row = requestIds.indexOf(requestId)
+        if (row === -1) { return }
+        onResult(row, result)
       }, debounceMs)
     }
 
