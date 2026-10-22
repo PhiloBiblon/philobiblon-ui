@@ -106,7 +106,9 @@ function oninput (e) {
   clearTimeout(debounceTimer)
   // Bump the request id for every input event, including one that clears the
   // field, so a still-in-flight search from a previous value can never win
-  // and set options.value after the field has already moved on.
+  // and set options.value after the field has already moved on. Options aren't
+  // reset on an empty search: EditSelectField.restore() does it on blur with the
+  // consolidated value, and resetting here would drop a freshly picked entity.
   const requestId = ++lastRequestId
   if (!e) { return }
   debounceTimer = setTimeout(() => handleSearchChange(e, requestId), DEBOUNCE_MS)
@@ -125,7 +127,15 @@ async function handleSearchChange (value, requestId) {
   }
   const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
   if (requestId !== lastRequestId) { return }
-  if (search && search.length) { options.value = search }
+  options.value = search?.length ? search : []
+}
+
+// Options left when no search is active: only the value already stored, so
+// results of an earlier search never show up when the field is reopened.
+function selectedValueOptions () {
+  return props.valueToView?.item
+    ? [{ id: props.valueToView.item, label: props.valueToView.value }]
+    : []
 }
 
 // Q# and PB ID (e.g. "BETA bioid 1345") aren't things Wikibase's own label
@@ -226,10 +236,7 @@ function setOptionsAutocomplete () {
         }
       })
   } else {
-    options.value = [{
-      id: props.valueToView.item,
-      label: props.valueToView.value
-    }]
+    options.value = selectedValueOptions()
     const currentId = getDefaultValue(props.valueToView.item, null)
     selectedOption.value = options.value.find(o => o.id === currentId) || currentId
     return Promise.resolve()
