@@ -113,17 +113,13 @@ const emit = defineEmits(['update-qualifiers', 'create-qualifier'])
 const { $notification, $wikibase } = useNuxtApp()
 const { t, locale } = useI18n()
 const { notifyError } = useNotifyError()
-const { searchProperties } = usePropertySearch()
+const { createRowSearch } = usePropertySearch()
 const authStore = useAuthStore()
 
 const properties = reactive([])
 const qualifiers = reactive([])
 const propertyValues = reactive([])
-// Guards against an in-flight search resolving after a newer one already updated
-// the same row. A single monotonic counter (rather than one per row) ensures a
-// stale response can never match a fresh row that reused its index after splice().
-const searchRequestIds = []
-let nextSearchRequestId = 0
+const rowSearch = createRowSearch(() => props.table, (index, result) => { properties[index] = result })
 
 const isAllowedAddQualifier = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
 
@@ -180,18 +176,11 @@ function removeQualifier (index) {
   qualifiers.splice(index, 1)
   properties.splice(index, 1)
   propertyValues.splice(index, 1)
-  searchRequestIds.splice(index, 1)
+  rowSearch.remove(index)
 }
 
-async function onInput (value, index) {
-  const requestId = (searchRequestIds[index] = ++nextSearchRequestId)
-  if (!value || typeof value !== 'string') {
-    properties[index] = []
-    return
-  }
-  const search = await searchProperties(value, props.table)
-  if (searchRequestIds[index] !== requestId) { return }
-  properties[index] = search
+function onInput (value, index) {
+  rowSearch.search(value, index)
 }
 
 async function createQualifier (index) {
