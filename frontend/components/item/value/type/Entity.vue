@@ -106,12 +106,11 @@ function oninput (e) {
   clearTimeout(debounceTimer)
   // Bump the request id for every input event, including one that clears the
   // field, so a still-in-flight search from a previous value can never win
-  // and set options.value after the field has already moved on.
+  // and set options.value after the field has already moved on. Options aren't
+  // reset on an empty search: EditSelectField.restore() does it on blur with the
+  // consolidated value, and resetting here would drop a freshly picked entity.
   const requestId = ++lastRequestId
-  if (!e) {
-    options.value = selectedValueOptions()
-    return
-  }
+  if (!e) { return }
   debounceTimer = setTimeout(() => handleSearchChange(e, requestId), DEBOUNCE_MS)
 }
 
