@@ -163,6 +163,7 @@ const { $wikibase } = useNuxtApp()
 const queryStatusStore = useQueryStatusStore()
 const authStore = useAuthStore()
 const previousPathCookie = useCookie('previous-path', { path: '/', maxAge: 5 * 60 })
+const defaultBibliography = useDefaultBibliography()
 
 const searchGroup = reactive(props.form.input.group)
 const searchType = reactive(props.form.input.search_type)
@@ -357,9 +358,9 @@ function onGroupChange (newDatabase) {
 }
 
 function loadDefaultBibliography () {
-  if (searchGroup.value === 'ALL' && typeof localStorage !== 'undefined') {
-    const savedBibliography = localStorage.getItem('philobiblon_default_bibliography')
-    if (savedBibliography && ['BETA', 'BITAGAP', 'BITECA'].includes(savedBibliography)) {
+  if (searchGroup.value === 'ALL') {
+    const savedBibliography = defaultBibliography.load()
+    if (savedBibliography) {
       searchGroup.value = savedBibliography
       onGroupChange(savedBibliography)
     }
@@ -367,12 +368,7 @@ function loadDefaultBibliography () {
 }
 
 function saveDefaultBibliography (bibliography) {
-  if (typeof localStorage === 'undefined') return
-  if (['BETA', 'BITAGAP', 'BITECA'].includes(bibliography)) {
-    localStorage.setItem('philobiblon_default_bibliography', bibliography)
-  } else {
-    localStorage.removeItem('philobiblon_default_bibliography')
-  }
+  defaultBibliography.save(bibliography)
 }
 
 defineExpose({ back })
