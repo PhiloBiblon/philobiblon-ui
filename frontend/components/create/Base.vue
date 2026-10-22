@@ -7,6 +7,7 @@
             <v-radio-group
               v-model="database"
               inline
+              @update:model-value="defaultBibliography.save"
             >
               <template #label>
                 {{ t('search.form.common.group.label') }}
@@ -50,6 +51,7 @@ const showGroups = ref(false)
 const groups = ['BETA', 'BITAGAP', 'BITECA']
 
 const draft = useItemDraft(props.table)
+const defaultBibliography = useDefaultBibliography()
 
 watch(() => route.query.database, (val) => {
   if (groups.includes(val)) {
@@ -63,6 +65,9 @@ watch(() => route.query.database, (val) => {
       database.value = savedDatabase
       showGroups.value = false
     } else {
+      // Preselect the bibliography last used in a search, keeping the selector
+      // visible so the user can still pick another one (#430).
+      database.value = defaultBibliography.load() || 'BETA'
       showGroups.value = true
     }
   } else {
