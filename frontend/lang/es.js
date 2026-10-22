@@ -713,6 +713,7 @@ export default {
         description: 'Por favor, rellena la descripción',
         initial_claims: 'Los enunciados todavía se están cargando',
         claim_value_missing: 'Por favor, rellena el valor del enunciado para "{propertyLabel}"',
+        qualifier_value_missing: '"{propertyLabel}" necesita un valor para "{qualifierLabel}"',
         incomplete_date: 'Por favor, introduce una fecha completa (año, mes y día) para el calificador "{propertyLabel}"',
         language_mismatch: 'La lengua de la interfaz no coincide con la bibliografía. Para BETA usa español, para BITECA catalán, para BITAGAP portugués.'
       },

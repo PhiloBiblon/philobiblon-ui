@@ -715,6 +715,7 @@ export default {
         description: 'Please fill description',
         initial_claims: 'Claims are still loading',
         claim_value_missing: 'Please fill in the claim value for "{propertyLabel}"',
+        qualifier_value_missing: '"{propertyLabel}" needs a value for "{qualifierLabel}"',
         incomplete_date: 'Please fill in a complete date (year, month and day) for the "{propertyLabel}" qualifier',
         language_mismatch: 'The interface language does not match the bibliography. BETA requires Spanish, BITECA Catalan, BITAGAP Portuguese.'
       },
