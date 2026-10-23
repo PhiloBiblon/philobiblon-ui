@@ -64,6 +64,7 @@ const emit = defineEmits(['reset-value'])
 const { $sanitize, $wikibase } = useNuxtApp()
 const { notifyError } = useNotifyError()
 const { t, locale } = useI18n()
+const { noDataText } = useNoDataText()
 
 // While the backend is materializing the query's results (indexLoading), re-fetch
 // automatically every RETRY_DELAY_MILLIS, up to RETRY_MAX_ATTEMPTS per typed input.
@@ -98,7 +99,7 @@ const checkNoDataText = computed(() => {
   if (indexLoading.value) {
     return t('search.form.common.index_loading')
   }
-  return loadingItems.value ? t('common.loading') : t('common.no_data')
+  return noDataText({ search: search.value, loading: loadingItems.value })
 })
 const isDisabled = computed(() => props.disabled)
 

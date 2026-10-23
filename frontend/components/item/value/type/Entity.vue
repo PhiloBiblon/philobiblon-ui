@@ -24,6 +24,7 @@
         :delete="deleteValue"
         :mode="mode"
         :custom-filter="acceptAll"
+        :loading="searching"
         @update-options="options = $event"
         @input="oninput($event)"
         @on-blur="emit('on-blur', $event)"
@@ -63,6 +64,7 @@ const selectedOption = ref(null)
 const options = ref([])
 const propertyAutocomplete = ref({})
 const loading = ref(true)
+const searching = ref(false)
 let debounceTimer = null
 let lastRequestId = 0
 
@@ -110,6 +112,7 @@ function oninput (e) {
   // reset on an empty search: EditSelectField.restore() does it on blur with the
   // consolidated value, and resetting here would drop a freshly picked entity.
   const requestId = ++lastRequestId
+  searching.value = !!e
   if (!e) { return }
   debounceTimer = setTimeout(() => handleSearchChange(e, requestId), DEBOUNCE_MS)
 }
@@ -119,15 +122,19 @@ function oninput (e) {
 // of a more recent keystroke once it resolves out of order.
 async function handleSearchChange (value, requestId) {
   if (!value) { return }
-  const directMatch = await resolveEntityFromSearchTerm(value)
-  if (requestId !== lastRequestId) { return }
-  if (directMatch) {
-    options.value = [directMatch]
-    return
+  try {
+    const directMatch = await resolveEntityFromSearchTerm(value)
+    if (requestId !== lastRequestId) { return }
+    if (directMatch) {
+      options.value = [directMatch]
+      return
+    }
+    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
+    if (requestId !== lastRequestId) { return }
+    options.value = search?.length ? search : []
+  } finally {
+    if (requestId === lastRequestId) { searching.value = false }
   }
-  const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
-  if (requestId !== lastRequestId) { return }
-  options.value = search?.length ? search : []
 }
 
 // Options left when no search is active: only the value already stored, so

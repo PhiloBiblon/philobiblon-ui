@@ -25,6 +25,7 @@
               :options="unitOptions"
               :mode="mode"
               :filter="acceptAll"
+              :loading="searchingUnit"
               style="width: 200px"
               class="ma-0 pa-0 mt-2"
               @update-options="unitOptions = $event"
@@ -65,6 +66,7 @@ const unitItemId = ref(null)
 const unitLabel = ref(null)
 const selectedUnit = ref(null)
 const unitOptions = ref([])
+const searchingUnit = ref(false)
 
 const isUserLogged = computed(() => authStore.isLogged)
 
@@ -125,8 +127,13 @@ function oninput (e) {
 
 async function handleSearchChange (value) {
   if (value) {
-    const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
-    if (search && search.length) { unitOptions.value = search }
+    searchingUnit.value = true
+    try {
+      const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
+      if (search && search.length) { unitOptions.value = search }
+    } finally {
+      searchingUnit.value = false
+    }
   }
 }
 

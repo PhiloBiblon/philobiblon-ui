@@ -6,6 +6,7 @@ export default {
     per_page: 'per pàgina',
     value: 'Valor',
     no_data: 'No hi ha dades disponibles',
+    type_to_search: 'Escriviu per cercar',
     loading: 'Carregant..',
     language: 'Idioma',
     language_selector: 'Selecciona idioma',
