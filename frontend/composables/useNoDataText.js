@@ -5,8 +5,8 @@ export function useNoDataText () {
   const { t } = useI18n()
 
   function noDataText ({ search, loading } = {}) {
-    if (loading) { return t('common.loading') }
     if (!search) { return t('common.type_to_search') }
+    if (loading) { return t('common.loading') }
     return t('common.no_data')
   }
 

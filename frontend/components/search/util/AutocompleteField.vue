@@ -132,6 +132,9 @@ watch(search, (val) => {
   clearTimeout(retryTimeout)
   retryCount = 0
   if (!val) {
+    // Drop a search still waiting for its debounce: it would fill the now empty field.
+    clearTimeout(searchTimeout)
+    loadingItems.value = false
     indexLoading.value = false
     const selected = internalValue.value
     items.value = selected ? [{ text: selected.label, value: selected }] : []
@@ -161,6 +164,8 @@ function fetchItems (query) {
   $wikibase.cachedSearch(sparqlQuery, query,
     { searchVars: 'label,aliases', hint, lang: locale.value, group: props.database, bitagapGroup: props.bitagapGroup })
     .then((data) => {
+      // The field was cleared while the request was running.
+      if (!search.value) { return }
       if (data.indexLoading) {
         indexLoading.value = true
         items.value = []

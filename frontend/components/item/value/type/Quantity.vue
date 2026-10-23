@@ -134,7 +134,7 @@ async function handleSearchChange (value, requestId) {
   try {
     const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
     if (requestId !== lastRequestId) { return }
-    if (search && search.length) { unitOptions.value = search }
+    unitOptions.value = search?.length ? search : []
   } finally {
     if (requestId === lastRequestId) { searchingUnit.value = false }
   }
