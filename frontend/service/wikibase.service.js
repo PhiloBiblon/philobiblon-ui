@@ -25,6 +25,24 @@ function trimStringsDeep (value) {
   return value
 }
 
+// wbsearchentities ranks a match in the requested language first, even an alias match whose
+// displayed label doesn't start with the search ("CRAI Biblioteca..., Universitat de
+// Barcelona" via the alias "Barcelona: CRAI..."), above an exact label in another language.
+// Re-rank by the displayed label: exact first, then prefix, then the rest, keeping
+// Wikibase's order inside each group.
+function rankByLabel (results, search, normalize) {
+  const term = normalize(search.trim())
+  const rank = (result) => {
+    const label = normalize(result.label || '')
+    if (label === term) { return 0 }
+    return label.startsWith(term) ? 1 : 2
+  }
+  return results
+    .map((result, index) => ({ result, index, rank: rank(result) }))
+    .sort((a, b) => a.rank - b.rank || a.index - b.index)
+    .map(({ result }) => result)
+}
+
 // `oldValue` is left untouched: claim/qualifier update look up the currently stored snak by
 // an exact value match, so trimming it could break that lookup against legacy padded data.
 function trimEditParams (params) {
@@ -764,7 +782,7 @@ export class WikibaseService {
       const response = await fetch(url)
       const result = await response.json()
 
-      return result.search
+      return result.search && rankByLabel(result.search, search, str => this.$query.normalize(str))
     } catch (error) {
        
       console.error('Error during search:', error)
