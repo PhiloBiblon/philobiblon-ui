@@ -54,7 +54,12 @@ export function usePropertySearch () {
         return
       }
       timers[index] = setTimeout(async () => {
-        const result = await searchProperties(value, getTable())
+        let result = []
+        try {
+          result = await searchProperties(value, getTable())
+        } catch (e) {
+          console.error(e)
+        }
         const row = requestIds.indexOf(requestId)
         if (row === -1) { return }
         onResult(row, result)
