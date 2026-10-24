@@ -25,6 +25,7 @@
               :options="unitOptions"
               :mode="mode"
               :filter="acceptAll"
+              :loading="searchingUnit"
               style="width: 200px"
               class="ma-0 pa-0 mt-2"
               @update-options="unitOptions = $event"
@@ -65,6 +66,8 @@ const unitItemId = ref(null)
 const unitLabel = ref(null)
 const selectedUnit = ref(null)
 const unitOptions = ref([])
+const searchingUnit = ref(false)
+let lastRequestId = 0
 
 const isUserLogged = computed(() => authStore.isLogged)
 
@@ -119,14 +122,21 @@ function getQuantityValue (newValue, oldValue) {
   }
 }
 
+// Flag set synchronously on input so the dropdown never shows "no data" before
+// the request starts; only the latest request is allowed to clear it.
 function oninput (e) {
-  if (e) { handleSearchChange(e) }
+  const requestId = ++lastRequestId
+  searchingUnit.value = !!e
+  if (e) { handleSearchChange(e, requestId) }
 }
 
-async function handleSearchChange (value) {
-  if (value) {
+async function handleSearchChange (value, requestId) {
+  try {
     const search = await $wikibase.searchEntityByName(value, locale.value, locale.value)
-    if (search && search.length) { unitOptions.value = search }
+    if (requestId !== lastRequestId) { return }
+    unitOptions.value = search?.length ? search : []
+  } finally {
+    if (requestId === lastRequestId) { searchingUnit.value = false }
   }
 }
 

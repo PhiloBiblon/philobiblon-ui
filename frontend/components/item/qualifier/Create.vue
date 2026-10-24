@@ -22,6 +22,7 @@
           variant="underlined"
           density="compact"
           :custom-filter="acceptAll"
+          :no-data-text="noDataText(propertySearch[key])"
           @update:model-value="onChangeProperty($event, key)"
           @update:search="onInput($event, key)"
         />
@@ -119,7 +120,12 @@ const authStore = useAuthStore()
 const properties = reactive([])
 const qualifiers = reactive([])
 const propertyValues = reactive([])
-const rowSearch = createRowSearch(() => props.table, (index, result) => { properties[index] = result })
+const propertySearch = reactive([])
+const { noDataText } = useNoDataText()
+const rowSearch = createRowSearch(() => props.table, (index, result) => {
+  properties[index] = result
+  propertySearch[index] = { ...propertySearch[index], loading: false }
+})
 
 const isAllowedAddQualifier = computed(() => props.claim && props.claim.mainsnak.property !== WikibaseService.PROPERTY_NOTES)
 
@@ -175,11 +181,13 @@ function addQualifier () {
 function removeQualifier (index) {
   qualifiers.splice(index, 1)
   properties.splice(index, 1)
+  propertySearch.splice(index, 1)
   propertyValues.splice(index, 1)
   rowSearch.remove(index)
 }
 
 function onInput (value, index) {
+  propertySearch[index] = { search: value, loading: !!value }
   rowSearch.search(value, index)
 }
 

@@ -9,11 +9,12 @@
     required
     variant="underlined"
     density="compact"
+    :no-data-text="noDataText({ search, loading: props.loading })"
     v-bind="$attrs"
     @blur="blur"
     @focus="focus"
     @update:model-value="onchange"
-    @update:search="emit('input', $event)"
+    @update:search="onSearch"
   >
     <template #item="{ props: itemProps, item }">
       <v-list-item v-bind="itemProps" :title="item.label">
@@ -89,7 +90,9 @@ const props = defineProps({
   options: { type: Array, default: () => [] },
   save: { type: Function, default: null },
   delete: { type: Function, default: null },
-  mode: { type: String, default: 'edit' }
+  mode: { type: String, default: 'edit' },
+  // The parent is fetching options for the typed text.
+  loading: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['on-blur', 'new-value', 'input', 'update-options'])
@@ -97,8 +100,10 @@ const emit = defineEmits(['on-blur', 'new-value', 'input', 'update-options'])
 const { $notification } = useNuxtApp()
 const { t } = useI18n()
 const { notifyError } = useNotifyError()
+const { noDataText } = useNoDataText()
 
 const autocomplete = ref(null)
+const search = ref('')
 const currentText = ref(null)
 const consolidatedText = ref(null)
 const consolidatedOptions = ref([])
@@ -127,6 +132,11 @@ onMounted(() => {
 function onchange () {
   focussed.value = true
   emit('new-value', currentText.value)
+}
+
+function onSearch (value) {
+  search.value = value
+  emit('input', value)
 }
 
 function focus () {
