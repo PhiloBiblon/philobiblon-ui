@@ -36,7 +36,7 @@ Autonomous issue → PR → review → fix → e2e flow from [patufet](https://g
 
 | Event | Job | What it does |
 |---|---|---|
-| `ready-to-implement` added to an issue | `implement` | Implements the approved plan on `agent/issue-<n>`, runs `test-command` (backend tests, frontend lint + `yarn generate`) and opens a PR |
+| `ready-to-implement` added to an issue | `implement` | Implements the approved plan on `agent/issue-<n>`, reproduces `ci.yml` (backend tests, frontend lint + `yarn generate`) and opens a PR |
 | PR opened / pushed (non-draft) | `review` | Reviews the PR and labels it `pass`, `warning` or `fail` |
 | `warning` or `fail` added to a PR | `fix-review` | Applies the review, pushes (which re-runs `review`); after 10 cycles labels `needs-human-review` and mentions the reviewer |
 | `pass` added to a PR | `e2e` | Serves the PR's frontend on the runner and tests it live, read-only (see below). On failure it relabels the PR `fail`, which starts `fix-review`; on success it mentions the reviewer |
