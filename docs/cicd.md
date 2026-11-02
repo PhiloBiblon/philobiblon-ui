@@ -2,6 +2,10 @@
 
 ## Workflows
 
+### `ci.yml` — triggers: every PR
+
+Runs two jobs: `Backend tests` (`./mvnw test`, Java 21) and `Frontend lint and build` (`yarn lint` and `yarn generate`, Node 22). It has no path filters because the patufet review waits for both jobs by name, so a job that does not run would make it wait until its timeout. If you rename a job, update `ci-checks` in `patufet.yml`.
+
 ### `staging.yml` — triggers: push to `master` touching `backend/`, `frontend/` or the workflow file itself, manual
 
 Pushes that only touch other paths (docs, wiki pages, agent config…) don't produce a deployable change — the images are built solely from `backend/` and `frontend/` — so no run is triggered and, consequently, no deploy notification is posted either.

@@ -92,6 +92,7 @@ Controllers and services are defined as Java interfaces with implementations in 
 
 Workflows in `.github/workflows/`:
 
+- **`ci.yml`** — triggers on every PR. Runs the backend tests (`./mvnw test`, Java 21) and the frontend lint and build (`yarn lint`, `yarn generate`, Node 22).
 - **`staging.yml`** — triggers on push to `master` or manually (`workflow_dispatch`). Builds both images, pushes to GHCR with tags `main-{sha}` and `main-latest`, deploys via SSH to the staging server (`docker-compose.ui-dev.yml`), cleans up old GHCR versions (keeps 5, never deletes `v*` tags).
 - **`production.yml`** — triggers on `v*` tag push or manually. Builds both images, pushes with tags `v1.2.3` and `latest`, deploys via SSH to the production server (`docker-compose.ui-fact.yml`).
 - **`staging-deploy-notify.yml`** — after each staging deploy, posts the result on the deployed PR when one is found; see `docs/cicd.md` for the exact cases.
