@@ -2,6 +2,10 @@
 
 ## Workflows
 
+### `ci.yml` — triggers: every PR
+
+Runs two jobs: `Backend tests` (`./mvnw test`, Java 21) and `Frontend lint and build` (`yarn lint` and `yarn generate`, Node 22). It has no path filters because the patufet review waits for both jobs by name, so a job that does not run would make it wait until its timeout. If you rename a job, update `ci-checks` in `patufet.yml`.
+
 ### `staging.yml` — triggers: push to `master` touching `backend/`, `frontend/` or the workflow file itself, manual
 
 Pushes that only touch other paths (docs, wiki pages, agent config…) don't produce a deployable change — the images are built solely from `backend/` and `frontend/` — so no run is triggered and, consequently, no deploy notification is posted either.
@@ -32,7 +36,7 @@ Autonomous issue → PR → review → fix → e2e flow from [patufet](https://g
 
 | Event | Job | What it does |
 |---|---|---|
-| `ready-to-implement` added to an issue | `implement` | Implements the approved plan on `agent/issue-<n>`, runs `test-command` (backend tests, frontend lint + `yarn generate`) and opens a PR |
+| `ready-to-implement` added to an issue | `implement` | Implements the approved plan on `agent/issue-<n>`, reproduces `ci.yml` (backend tests, frontend lint + `yarn generate`) and opens a PR |
 | PR opened / pushed (non-draft) | `review` | Reviews the PR and labels it `pass`, `warning` or `fail` |
 | `warning` or `fail` added to a PR | `fix-review` | Applies the review, pushes (which re-runs `review`); after 10 cycles labels `needs-human-review` and mentions the reviewer |
 | `pass` added to a PR | `e2e` | Serves the PR's frontend on the runner and tests it live, read-only (see below). On failure it relabels the PR `fail`, which starts `fix-review`; on success it mentions the reviewer |
