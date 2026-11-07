@@ -142,7 +142,10 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'language',
-      alwaysRedirect: true
+      alwaysRedirect: true,
+      // The cookie (the last language chosen) wins over the URL prefix on the
+      // first load of any route, not only the root (#430).
+      redirectOn: 'all'
     },
     compilation: {
       strictMessage: false
