@@ -52,4 +52,4 @@ Env: `SPARQL_QUERY_PREFIX` overrides the prefix fetched from `/api/config`;
 - **After adding/changing filters** in the frontend (a changed template is a new
   cache key; the old entry ages out via eviction).
 - Not needed periodically: the backend's nightly cron (`search.index.refreshCron`)
-  re-executes every registered query by itself.
+  reloads the registered queries affected by FactGrid changes by itself (and all of them weekly).
