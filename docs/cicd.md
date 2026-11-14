@@ -4,7 +4,7 @@
 
 ### `ci.yml` — triggers: every PR
 
-Runs two jobs: `Backend tests` (`./mvnw test`, Java 21) and `Frontend lint and build` (`yarn lint` and `yarn generate`, Node 22). It has no path filters because the patufet review waits for both jobs by name, so a job that does not run would make it wait until its timeout. If you rename a job, update `ci-checks` in `patufet.yml`.
+Runs two jobs: `Backend tests` (`./mvnw test`, Java 21) and `Frontend lint and build` (`yarn lint` and `yarn generate`, Node 22). It has no path filters, so every PR is tested. The patufet review finds this workflow on its own and waits for it (a red job is a `fail`): renaming or adding a job needs no change in `patufet.yml`.
 
 ### `staging.yml` — triggers: push to `master` touching `backend/`, `frontend/` or the workflow file itself, manual
 
@@ -32,14 +32,14 @@ Posts the deploy notifications (success and failure). This is a **separate workf
 
 ### `patufet.yml` / `patufet-mention.yml` — triggers: issue and PR labels, PR pushes, `@claude` mentions
 
-Autonomous issue → PR → review → fix → e2e flow from [patufet](https://github.com/jmformenti/patufet), pinned to `@v1`. The callers only hold project settings; the jobs run in patufet's reusable workflows.
+Autonomous issue → PR → review → fix → e2e flow from [patufet](https://github.com/jmformenti/patufet), pinned to `@v1`. The callers only hold project settings: `patufet.yml` has two jobs, `implement` (issues) and `pull-request` (PRs), and the stages run in patufet's reusable workflows.
 
 | Event | Job | What it does |
 |---|---|---|
 | `ready-to-implement` added to an issue | `implement` | Implements the approved plan on `agent/issue-<n>`, reproduces `ci.yml` (backend tests, frontend lint + `yarn generate`) and opens a PR |
-| PR opened / pushed (non-draft) | `review` | Reviews the PR and labels it `pass`, `warning` or `fail` |
-| `warning` or `fail` added to a PR | `fix-review` | Applies the review, pushes (which re-runs `review`); after 10 cycles labels `needs-human-review` and mentions the reviewer |
-| `pass` added to a PR | `e2e` | Serves the PR's frontend on the runner and tests it live, read-only (see below). On failure it relabels the PR `fail`, which starts `fix-review`; on success it mentions the reviewer |
+| PR opened / pushed (non-draft) | `pull-request / review` | Waits for `ci.yml`, reviews the PR and labels it `pass`, `warning` or `fail`; the stage that follows runs in the same run |
+| review `warning` / `fail`, or that label added by hand | `pull-request / fix-review` | Applies the review, pushes (which re-runs `review`); after 10 cycles labels `needs-human-review` and mentions the reviewer |
+| review `pass`, or `pass` added by hand | `pull-request / e2e` | Serves the PR's frontend on the runner and tests it live, read-only (see below). On failure it labels the PR `fail` and `pull-request / fix-e2e` applies the report in the same run; on success it mentions the reviewer |
 | `@claude` in an issue, comment or review | `patufet-mention` | Answers the mention |
 
 These labels are triggers, not just tags: adding `ready-to-implement`, `warning` or `fail` by hand starts an agent that pushes code, and adding `pass` starts the e2e run. `ready-to-implement` is only added by a human after approving the plan (`/plan-issue <n>` from Claude Code). `in-progress`, `to-refine`, `blocked`, `pass` and `needs-human-review` are set by the flow. Project-specific instructions for the agents live in `.github/patufet/*.md`.
