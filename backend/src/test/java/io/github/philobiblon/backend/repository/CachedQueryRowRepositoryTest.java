@@ -156,4 +156,17 @@ class CachedQueryRowRepositoryTest {
                         CacheLang.GL, searchEn, CacheLang.PT, searchEn),
                 "{}");
     }
+
+    @Test
+    void findsQueryHashesAndPayloadsByItemId() {
+        CachedQueryRow withItem = new CachedQueryRow("itemhash", 1L, "Label", "label", "{\"pbid\":\"BETA manid 1\"}");
+        withItem.setItemId("Q10");
+        CachedQueryRow other = new CachedQueryRow("itemhash2", 1L, "Label", "label", "{}");
+        other.setItemId("Q11");
+        repository.saveAll(List.of(withItem, other));
+
+        assertEquals(List.of("itemhash"), repository.findQueryHashesByItemIdIn(List.of("Q10", "Q99")));
+        assertEquals(List.of("{\"pbid\":\"BETA manid 1\"}"), repository.findPayloadsByItemIdIn(List.of("Q10")));
+        assertTrue(repository.findQueryHashesByItemIdIn(List.of("Q1")).isEmpty());
+    }
 }

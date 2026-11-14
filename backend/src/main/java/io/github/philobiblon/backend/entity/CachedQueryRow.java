@@ -23,7 +23,8 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "cached_query_row", indexes = {
-        @Index(name = "idx_cached_row_hash_generation", columnList = "query_hash,generation")
+        @Index(name = "idx_cached_row_hash_generation", columnList = "query_hash,generation"),
+        @Index(name = "idx_cached_row_item_id", columnList = "item_id")
 })
 public class CachedQueryRow {
 
@@ -89,6 +90,10 @@ public class CachedQueryRow {
      */
     @Column(name = "bitagap_groups", length = 16)
     private String bitagapGroups;
+
+    /** Q-ID of the item the row represents (first non-null of item / target_item / analytic_item); null if none. */
+    @Column(name = "item_id", length = 32)
+    private String itemId;
 
     /** JSON of the full value map (all result vars: literals as strings, resources as Q-numbers). */
     @Lob
@@ -196,6 +201,14 @@ public class CachedQueryRow {
 
     public void setBitagapGroups(String bitagapGroups) {
         this.bitagapGroups = bitagapGroups;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getPayload() {

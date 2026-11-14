@@ -8,6 +8,7 @@ import io.github.philobiblon.backend.helper.CacheLang;
 import io.github.philobiblon.backend.repository.CachedQueryRepository;
 import io.github.philobiblon.backend.repository.CachedQueryRowRepository;
 import io.github.philobiblon.backend.representation.Option;
+import io.github.philobiblon.backend.service.CacheChangeTracker;
 import io.github.philobiblon.backend.representation.SearchResponse;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
@@ -149,6 +150,7 @@ class SparqlCacheServiceImplTest {
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
         CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false, false, false);
         cq.setGeneration(42L);
+        cq.setDirty(true);
         when(queryRepository.findById("hash1")).thenReturn(Optional.of(cq));
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
             @Override
@@ -160,11 +162,10 @@ class SparqlCacheServiceImplTest {
         assertTrue(service.loadQuery("hash1"));
 
         assertEquals(42L, cq.getGeneration());
-        // This cycle's demand was still served (from the unchanged data), so usageSinceRefresh
-        // resets even though the generation doesn't change — hence save() IS called now.
-        assertEquals(0L, cq.getUsageSinceRefresh());
+        // Kept dirty so the query is retried the next night.
+        assertTrue(cq.isDirty());
         verify(rowRepository, never()).saveAll(any());
-        verify(queryRepository).save(cq);
+        verify(queryRepository, never()).save(any());
     }
 
     @Test
@@ -213,12 +214,12 @@ class SparqlCacheServiceImplTest {
     }
 
     @Test
-    void successfulLoadResetsUsageSinceRefreshButNotTotal() {
+    void successfulLoadClearsDirtyAndKeepsUsageTotal() {
         CachedQueryRepository queryRepository = mockQueryRepository();
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
         CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false, false, false);
         cq.setGeneration(42L);
-        cq.setUsageSinceRefresh(5L);
+        cq.setDirty(true);
         cq.setUsageTotal(20L);
         when(queryRepository.findById("hash1")).thenReturn(Optional.of(cq));
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
@@ -230,102 +231,164 @@ class SparqlCacheServiceImplTest {
 
         assertTrue(service.loadQuery("hash1"));
 
-        assertEquals(0L, cq.getUsageSinceRefresh());
+        assertFalse(cq.isDirty());
         assertEquals(20L, cq.getUsageTotal());
     }
 
-    // --- Selective nightly refresh (usage-based) ---
-
     @Test
-    void refreshAllOnlyReloadsQueriesUsedSinceLastRefresh() {
-        CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
-        CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
-        when(queryRepository.findByLastAccessedAtBefore(any())).thenReturn(List.of());
-
-        CachedQuery used = new CachedQuery("used", "SELECT ...", "label", null, Instant.now(), false, false, false);
-        used.setGeneration(1L);
-        used.setUsageSinceRefresh(3L);
-        CachedQuery unused = new CachedQuery("unused", "SELECT ...", "label", null, Instant.now(), false, false, false);
-        unused.setGeneration(1L);
-        unused.setUsageSinceRefresh(0L);
-        when(queryRepository.findAll()).thenReturn(List.of(used, unused));
-
-        Set<String> reloaded = new HashSet<>();
-        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
+    void failedLoadKeepsDirty() {
+        CachedQueryRepository queryRepository = mockQueryRepository();
+        CachedQuery cq = new CachedQuery("hash1", "SELECT ...", "label", null, Instant.now(), false, false, false);
+        cq.setGeneration(42L);
+        cq.setDirty(true);
+        when(queryRepository.findById("hash1")).thenReturn(Optional.of(cq));
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, mock(CachedQueryRowRepository.class)) {
             @Override
-            boolean loadQuery(String queryHash) {
-                reloaded.add(queryHash);
-                return true;
+            List<CachedQueryRow> fetchRows(CachedQuery query, long newGeneration) {
+                throw new RuntimeException("boom");
             }
         };
         service.retryMaxAttempts = 1;
-        service.requireUsageForRefresh = true;
-        service.init();
 
-        service.refreshAll();
+        assertFalse(service.loadQueryWithRetry("hash1"));
 
-        assertEquals(Set.of("used"), reloaded);
+        assertTrue(cq.isDirty());
+        assertEquals(42L, cq.getGeneration());
     }
 
-    @Test
-    void refreshAllAlwaysRetriesNeverLoadedQueriesRegardlessOfUsage() {
-        CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
-        CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
+    // --- Change-driven nightly refresh ---
+
+    private static CachedQuery loadedQuery(String hash, String sourceTables, boolean dirty) {
+        CachedQuery cq = new CachedQuery(hash, "SELECT ...", "label", null, Instant.now(), false, false, false);
+        cq.setGeneration(1L);
+        cq.setSourceTables(sourceTables);
+        cq.setDirty(dirty);
+        return cq;
+    }
+
+    private static Set<String> refreshWith(CacheChangeTracker.Mode mode, CacheChangeTracker tracker,
+                                           CachedQueryRepository queryRepository, CachedQuery... queries) {
         when(queryRepository.findByLastAccessedAtBefore(any())).thenReturn(List.of());
-
-        // Never successfully loaded: generation stays 0, and since usage only increments on the
-        // warm path, a stuck query can never accrue usage — it must always get another attempt.
-        CachedQuery stuck = new CachedQuery("stuck", "SELECT ...", "label", null, Instant.now(), false, false, false);
-        when(queryRepository.findAll()).thenReturn(List.of(stuck));
-
+        when(queryRepository.findAll()).thenReturn(List.of(queries));
+        when(tracker.detect(any())).thenReturn(new CacheChangeTracker.Detection(mode, 3));
         Set<String> reloaded = new HashSet<>();
-        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository,
+                mock(CachedQueryRowRepository.class), tracker) {
             @Override
             boolean loadQuery(String queryHash) {
                 reloaded.add(queryHash);
-                return true;
+                return !queryHash.startsWith("fail");
             }
         };
         service.retryMaxAttempts = 1;
-        service.requireUsageForRefresh = true;
         service.init();
-
         service.refreshAll();
-
-        assertEquals(Set.of("stuck"), reloaded);
+        return reloaded;
     }
 
     @Test
-    void requireUsageDisabledRefreshesEverythingRegardlessOfUsage() {
+    void fullRefreshReloadsEveryQueryAndRecordsIt() {
         CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
-        CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
-        when(queryRepository.findByLastAccessedAtBefore(any())).thenReturn(List.of());
+        CacheChangeTracker tracker = mock(CacheChangeTracker.class);
 
-        CachedQuery a = new CachedQuery("a", "SELECT ...", "label", null, Instant.now(), false, false, false);
-        a.setGeneration(1L);
-        CachedQuery b = new CachedQuery("b", "SELECT ...", "label", null, Instant.now(), false, false, false);
-        b.setGeneration(1L);
-        when(queryRepository.findAll()).thenReturn(List.of(a, b));
+        Set<String> reloaded = refreshWith(CacheChangeTracker.Mode.FULL_REFRESH, tracker, queryRepository,
+                loadedQuery("a", " manid ", false), loadedQuery("b", " texid ", false), loadedQuery("fail1", "", false));
 
-        Set<String> reloaded = new HashSet<>();
-        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
-            @Override
-            boolean loadQuery(String queryHash) {
-                reloaded.add(queryHash);
-                return true;
-            }
-        };
-        service.retryMaxAttempts = 1;
-        service.requireUsageForRefresh = false;
-        service.init();
-
-        service.refreshAll();
-
-        assertEquals(Set.of("a", "b"), reloaded);
+        assertEquals(Set.of("a", "b", "fail1"), reloaded);
+        verify(tracker).recordFullRefresh(any());
+        verify(queryRepository).markDirtyByHashes(List.of("fail1"));
     }
 
     @Test
-    void refreshAllFlushesAccumulatedPendingUsageBeforeReadingCandidates() {
+    void markedRefreshReloadsDirtyNeverLoadedAndUnknownSourceQueries() {
+        CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
+        CacheChangeTracker tracker = mock(CacheChangeTracker.class);
+        CachedQuery neverLoaded = new CachedQuery("never", "SELECT ...", "label", null, Instant.now(), false, false, false);
+        neverLoaded.setSourceTables(" manid ");
+
+        Set<String> reloaded = refreshWith(CacheChangeTracker.Mode.MARKED, tracker, queryRepository,
+                loadedQuery("dirty", " manid ", true), loadedQuery("clean", " manid ", false),
+                loadedQuery("empty", "", false), loadedQuery("nulltables", null, false), neverLoaded);
+
+        assertEquals(Set.of("dirty", "empty", "nulltables", "never"), reloaded);
+        verify(tracker, never()).recordFullRefresh(any());
+    }
+
+    @Test
+    void unavailableDetectionOnlyReloadsAlreadyDirtyAndNeverLoadedQueries() {
+        CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
+        CacheChangeTracker tracker = mock(CacheChangeTracker.class);
+        CachedQuery neverLoaded = new CachedQuery("never", "SELECT ...", "label", null, Instant.now(), false, false, false);
+        neverLoaded.setSourceTables(" manid ");
+
+        Set<String> reloaded = refreshWith(CacheChangeTracker.Mode.UNAVAILABLE, tracker, queryRepository,
+                loadedQuery("dirty", " manid ", true), loadedQuery("clean", " manid ", false),
+                loadedQuery("empty", "", false), neverLoaded);
+
+        assertEquals(Set.of("dirty", "never"), reloaded);
+        verify(tracker, never()).recordFullRefresh(any());
+    }
+
+    // --- Source tables ---
+
+    @Test
+    void derivesSourceTablesFromPbidPatterns() {
+        assertEquals(" manid copid ", SparqlCacheServiceImpl.deriveSourceTables(
+                "?item wdt:P476 ?pbid . FILTER regex(?pbid, '(.*) manid ') ?c wdt:P476 ?x FILTER(?t = \"copid\")"));
+        assertEquals(" texid cnum ", SparqlCacheServiceImpl.deriveSourceTables(
+                "FILTER regex(?p, '(.*) texid ') . FILTER regex(?a, '(.*) cnum ') . FILTER regex(?b, '(.*) cnum ')"));
+        assertEquals(" bioid geoid ", SparqlCacheServiceImpl.deriveSourceTables(
+                "regex(?p, '(.*) bioid ') regex(?q, '(.*) geoid ')"));
+        assertEquals(" manid ", SparqlCacheServiceImpl.deriveSourceTables(
+                "regex(?p, '(.*) manid ') FILTER(?bg = 'BITAGAP subid ')"));
+        assertEquals("", SparqlCacheServiceImpl.deriveSourceTables("SELECT ?label WHERE { ?item wdt:P2 ?label }"));
+        assertEquals("", SparqlCacheServiceImpl.deriveSourceTables(null));
+    }
+
+    @Test
+    void globalQueryDerivesAllEightTables() {
+        StringBuilder query = new StringBuilder("SELECT * WHERE {");
+        for (String table : List.of("bibid", "bioid", "geoid", "insid", "libid", "manid", "subid", "texid")) {
+            query.append(" FILTER regex(?p, '(.*) ").append(table).append(" ')");
+        }
+        assertEquals(" bibid bioid geoid insid libid manid subid texid ",
+                SparqlCacheServiceImpl.deriveSourceTables(query.toString()));
+    }
+
+    @Test
+    void registrationStoresSourceTables() {
+        CachedQueryRepository queryRepository = mockQueryRepository();
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, null) {
+            @Override
+            CompletableFuture<Boolean> scheduleLoad(String queryHash) {
+                return CompletableFuture.completedFuture(true);
+            }
+        };
+
+        service.search("SELECT ?label WHERE { ?item <http://x/p> ?pbid . FILTER regex(?pbid, '(.*) manid ') }",
+                "x", "label", null, null, null, null, null);
+
+        ArgumentCaptor<CachedQuery> saved = ArgumentCaptor.forClass(CachedQuery.class);
+        verify(queryRepository).save(saved.capture());
+        assertEquals(" manid ", saved.getValue().getSourceTables());
+    }
+
+    @Test
+    void initBackfillsSourceTablesOfExistingRows() {
+        CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
+        CachedQuery old = new CachedQuery("old", "regex(?p, '(.*) texid ')", "label", null, Instant.now(), false, false, false);
+        CachedQuery current = loadedQuery("current", " manid ", false);
+        when(queryRepository.findAll()).thenReturn(List.of(old, current));
+
+        new SparqlCacheServiceImpl(queryRepository, null).init();
+
+        assertEquals(" texid ", old.getSourceTables());
+        verify(queryRepository).save(old);
+        verify(queryRepository, never()).save(current);
+    }
+
+    @Test
+    void refreshAllFlushesAccumulatedPendingUsageBeforeEvicting() {
         CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
         CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
         CachedQuery cq = new CachedQuery("hash1", "SELECT ?label WHERE {}", "label", null, Instant.now(), false, false, false);
@@ -335,7 +398,9 @@ class SparqlCacheServiceImplTest {
         when(queryRepository.findByLastAccessedAtBefore(any())).thenReturn(List.of());
         when(rowRepository.searchCandidates(any(), anyLong(), any(), anyInt(), any(), any(), any())).thenReturn(List.of());
 
-        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository) {
+        CacheChangeTracker tracker = mock(CacheChangeTracker.class);
+        when(tracker.detect(any())).thenReturn(new CacheChangeTracker.Detection(CacheChangeTracker.Mode.MARKED, 0));
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository, tracker) {
             @Override
             boolean loadQuery(String queryHash) {
                 return true;
@@ -354,7 +419,7 @@ class SparqlCacheServiceImplTest {
         service.refreshAll();
 
         // refreshAll's flushPendingUsage() persists the 2 remaining accumulated increments
-        // before deciding what to reload — without it, they'd stay invisible to the DB.
+        // before the eviction decision — without it, they'd stay invisible to the DB.
         verify(queryRepository).touch(anyString(), any(), eq(2L));
     }
 
@@ -453,6 +518,53 @@ class SparqlCacheServiceImplTest {
                 """);
 
         assertEquals(1, service.buildRows(resultSet, List.of("label"), "hash1", 7L).size());
+    }
+
+    // --- item_id ---
+
+    @Test
+    void plainRowsCarryTheItemId() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["item", "label"] },
+                  "results": { "bindings": [
+                    { "item": { "type": "uri", "value": "http://philobiblon.org/entity/Q42" },
+                      "label": { "type": "literal", "value": "Cervantes" } },
+                    { "label": { "type": "literal", "value": "No item" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label"), "hash1", 7L);
+
+        assertEquals("Q42", rows.get(0).getItemId());
+        assertNull(rows.get(1).getItemId());
+    }
+
+    @Test
+    void pivotedRowsTakeTheFirstNonNullOfItemTargetItemAndAnalyticItem() {
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(null, null);
+        ResultSet resultSet = resultSet("""
+                {
+                  "head": { "vars": ["target_item", "analytic_item", "lang", "label"] },
+                  "results": { "bindings": [
+                    { "target_item": { "type": "uri", "value": "http://philobiblon.org/entity/Q1" },
+                      "analytic_item": { "type": "uri", "value": "http://philobiblon.org/entity/Q2" },
+                      "lang": { "type": "literal", "value": "en" },
+                      "label": { "type": "literal", "value": "Both" } },
+                    { "analytic_item": { "type": "uri", "value": "http://philobiblon.org/entity/Q3" },
+                      "lang": { "type": "literal", "value": "en" },
+                      "label": { "type": "literal", "value": "Analytic only" } }
+                  ]}
+                }
+                """);
+
+        List<CachedQueryRow> rows = service.buildRows(resultSet, List.of("label"), "hash1", 7L);
+
+        assertEquals(2, rows.size());
+        assertEquals("Q1", rows.get(0).getItemId());
+        assertEquals("Q3", rows.get(1).getItemId());
     }
 
     // --- Lang-aware pivot (queries projecting ?lang) ---

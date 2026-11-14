@@ -1,5 +1,6 @@
 package io.github.philobiblon.backend.service.impl;
 
+import io.github.philobiblon.backend.helper.UpstreamHttp;
 import io.github.philobiblon.backend.service.SparqlProxyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +27,6 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
 
     private static final Logger logger = LoggerFactory.getLogger(SparqlProxyServiceImpl.class);
 
-    private static final String USER_AGENT = "PhiloBiblon-UI/1.0 (+https://philobiblon.cog.berkeley.edu)";
-    private static final String REPUTATION_CHALLENGE_PATH = "rep-pow-challenge";
     private static final int LOG_BODY_SNIPPET_LENGTH = 300;
     private static final Set<Integer> PASS_THROUGH_STATUSES = Set.of(400, 413, 414);
 
@@ -56,7 +55,7 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
                 .timeout(requestTimeout)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .header("Accept", "application/sparql-results+json")
-                .header("User-Agent", USER_AGENT)
+                .header("User-Agent", UpstreamHttp.USER_AGENT)
                 .POST(HttpRequest.BodyPublishers.ofString(
                         "query=" + URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8) + "&format=json"))
                 .build();
@@ -99,7 +98,7 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
         int status = response.statusCode();
         String location = response.headers().firstValue("Location").orElse("");
         String snippet = new String(in.readNBytes(LOG_BODY_SNIPPET_LENGTH), StandardCharsets.UTF_8);
-        if (location.contains(REPUTATION_CHALLENGE_PATH)) {
+        if (location.contains(UpstreamHttp.REPUTATION_CHALLENGE_PATH)) {
             logger.warn("SPARQL endpoint answered {} with a reputation challenge ({})", status, location);
             return new ResponseStatusException(HttpStatus.BAD_GATEWAY, "SPARQL endpoint reputation challenge");
         }

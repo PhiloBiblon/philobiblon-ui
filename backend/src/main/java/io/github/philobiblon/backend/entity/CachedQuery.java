@@ -55,11 +55,6 @@ public class CachedQuery {
     @Column(name = "label_hint", length = 255)
     private String labelHint;
 
-    /** Requests served since the last successful load; reset to 0 by loadQuery(). Drives the nightly refresh decision. */
-    @Column(name = "usage_since_refresh")
-    @ColumnDefault("0")
-    private long usageSinceRefresh;
-
     /** Requests served over the query's whole lifetime; never reset. Observability only. */
     @Column(name = "usage_total")
     @ColumnDefault("0")
@@ -91,6 +86,18 @@ public class CachedQuery {
     @Column(name = "bg_aware")
     @ColumnDefault("false")
     private boolean bgAware;
+
+    /**
+     * Source tables the query walks, as padded tokens (" manid copid "), matched with LIKE '% manid %'.
+     * Null only on rows created before the column existed; backfilled at startup. Empty means
+     * unknown (the query is always reloaded).
+     */
+    @Column(name = "source_tables", length = 255)
+    private String sourceTables;
+
+    /** True when the query must be reloaded; set by change detection, cleared by a successful load. */
+    @ColumnDefault("false")
+    private boolean dirty;
 
     public CachedQuery() {
     }
@@ -165,14 +172,6 @@ public class CachedQuery {
         this.labelHint = labelHint;
     }
 
-    public long getUsageSinceRefresh() {
-        return usageSinceRefresh;
-    }
-
-    public void setUsageSinceRefresh(long usageSinceRefresh) {
-        this.usageSinceRefresh = usageSinceRefresh;
-    }
-
     public long getUsageTotal() {
         return usageTotal;
     }
@@ -191,5 +190,21 @@ public class CachedQuery {
 
     public boolean isBgAware() {
         return bgAware;
+    }
+
+    public String getSourceTables() {
+        return sourceTables;
+    }
+
+    public void setSourceTables(String sourceTables) {
+        this.sourceTables = sourceTables;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 }

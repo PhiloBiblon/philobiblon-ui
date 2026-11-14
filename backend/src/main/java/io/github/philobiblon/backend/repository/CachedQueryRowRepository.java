@@ -4,8 +4,10 @@ import io.github.philobiblon.backend.entity.CachedQueryRow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface CachedQueryRowRepository extends JpaRepository<CachedQueryRow, Long>, CachedQueryRowSearchRepository {
@@ -26,4 +28,12 @@ public interface CachedQueryRowRepository extends JpaRepository<CachedQueryRow, 
     /** (queryHash, generation, rowCount) triples for the status endpoint. */
     @Query("SELECT r.queryHash, r.generation, COUNT(r) FROM CachedQueryRow r GROUP BY r.queryHash, r.generation")
     List<Object[]> countByQueryAndGeneration();
+
+    /** Hashes of the queries having a row (any generation) for one of the given items. */
+    @Query("SELECT DISTINCT r.queryHash FROM CachedQueryRow r WHERE r.itemId IN :itemIds")
+    List<String> findQueryHashesByItemIdIn(@Param("itemIds") Collection<String> itemIds);
+
+    /** Payloads of the rows of the given items; used to learn the table of an item deleted upstream. */
+    @Query("SELECT r.payload FROM CachedQueryRow r WHERE r.itemId IN :itemIds")
+    List<String> findPayloadsByItemIdIn(@Param("itemIds") Collection<String> itemIds);
 }
