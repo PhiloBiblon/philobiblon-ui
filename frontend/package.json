@@ -12,7 +12,10 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint:js": "eslint .",
-    "lint": "npm run lint:js"
+    "lint": "npm run lint:js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@fontsource/roboto": "^5.2.10",
@@ -35,8 +38,10 @@
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
     "@types/node": "^25.8.0",
+    "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^10.2.1",
     "eslint-plugin-vue": "^10.9.0",
-    "sass-embedded": "^1.99.0"
+    "sass-embedded": "^1.99.0",
+    "vitest": "^4.1.11"
   }
 }
