@@ -59,28 +59,23 @@
       </v-col>
       <v-col cols="12" class="text-center">
         <v-container fluid>
-          <v-row density="comfortable">
-            <v-col>
-              <a href="https://www.ub.edu" target="_blank" rel="noopener noreferrer">
-                <img src="/img/footer/universitat_barcelona.png" alt="Universitat de Barcelona">
-              </a>
-            </v-col>
-            <v-col>
-              <a href="https://www.upf.edu" target="_blank" rel="noopener noreferrer">
-                <img src="/img/footer/upf.png" alt="Universitat Pompeu Fabra">
-              </a>
-            </v-col>
-            <v-col>
-              <a href="https://bancroft.berkeley.edu" target="_blank" rel="noopener noreferrer">
-                <img src="/img/footer/the_bancroft.png" alt="The Bancroft Library">
-              </a>
-            </v-col>
-            <v-col>
-              <a href="https://larramendi.es/fundacion/" target="_blank" rel="noopener noreferrer">
-                <img src="/img/footer/ilf.png" alt="Fundación Ignacio Larramendi">
-              </a>
-            </v-col>
-          </v-row>
+          <div class="d-flex flex-wrap justify-space-evenly align-center ga-6">
+            <a href="https://www.ub.edu" target="_blank" rel="noopener noreferrer">
+              <img src="/img/footer/universitat_barcelona.png" alt="Universitat de Barcelona">
+            </a>
+            <a href="https://www.upf.edu" target="_blank" rel="noopener noreferrer">
+              <img src="/img/footer/upf.png" alt="Universitat Pompeu Fabra">
+            </a>
+            <a href="https://bancroft.berkeley.edu" target="_blank" rel="noopener noreferrer">
+              <img src="/img/footer/the_bancroft.png" alt="The Bancroft Library">
+            </a>
+            <a href="https://larramendi.es/fundacion/" target="_blank" rel="noopener noreferrer">
+              <img src="/img/footer/ilf.png" alt="Fundación Ignacio Larramendi">
+            </a>
+            <a href="https://fds.es" target="_blank" rel="noopener noreferrer">
+              <img src="/img/footer/fds.png" alt="Fundación Duques de Soria" height="30">
+            </a>
+          </div>
         </v-container>
       </v-col>
       <v-col class="text-center text-caption">
