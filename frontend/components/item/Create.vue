@@ -465,7 +465,7 @@ async function create () {
       for (const value of extraAliases) {
         aliases[entityLocale.value].push(value)
         if (entityLocale.value !== 'en') {
-          aliases.en = [value]
+          (aliases.en ??= []).push(value)
         }
       }
 

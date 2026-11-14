@@ -56,9 +56,14 @@ describe('normalizeClaims', () => {
     expect(getQualifierEntry(snapshot, 'P329', 'P1054').text).toBe('Collection')
   })
 
-  it('treats a missing time string as invalid without throwing', () => {
-    const snapshot = normalizeClaims([claim('P49', { time: 'not-a-real-time', precision: 11 }, { datatype: 'time' })])
-    expect(() => getEntry(snapshot, 'P49')).not.toThrow()
+  it.each([
+    ['not shaped like a date', 'not-a-real-time'],
+    ['date-shaped but out of range', '+2020-13-45T00:00:00Z']
+  ])('keeps a time value %s as present but with no display text', (_case, time) => {
+    const value = { time, precision: 11 }
+    const entry = getEntry(normalizeClaims([claim('P49', value, { datatype: 'time' })]), 'P49')
+    expect(entry.raw).toEqual(value)
+    expect(entry.text).toBeUndefined()
   })
 
   it('skips claims with no property id', () => {

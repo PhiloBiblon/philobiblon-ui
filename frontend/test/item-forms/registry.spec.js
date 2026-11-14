@@ -41,10 +41,24 @@ describe('item-forms registry', () => {
     expect(getItemForm(undefined)).toBeNull()
   })
 
-  it('every module is plain, serializable data (no functions, no class instances)', () => {
-    for (const table of ALL_TABLES) {
-      expect(() => JSON.stringify(getItemForm(table))).not.toThrow()
+  it.each(ALL_TABLES)('%s: the module is plain data (no functions, no class instances)', (table) => {
+    // JSON.stringify can't check this: it silently drops functions instead of throwing.
+    const offending = []
+    const walk = (value, path) => {
+      if (value === null || ['string', 'number', 'boolean', 'undefined'].includes(typeof value)) return
+      if (Array.isArray(value)) {
+        value.forEach((item, i) => walk(item, `${path}[${i}]`))
+        return
+      }
+      const proto = typeof value === 'object' ? Object.getPrototypeOf(value) : undefined
+      if (proto !== Object.prototype && proto !== null) {
+        offending.push(`${path}: ${typeof value}`)
+        return
+      }
+      for (const [key, item] of Object.entries(value)) walk(item, `${path}.${key}`)
     }
+    walk(getItemForm(table), table)
+    expect(offending).toEqual([])
   })
 
   it.each(ALL_TABLES)('%s: getRequiredProperties matches the legacy Create.vue derivation exactly', (table) => {
