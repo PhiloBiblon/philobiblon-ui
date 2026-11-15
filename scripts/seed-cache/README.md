@@ -51,5 +51,10 @@ Env: `SPARQL_QUERY_PREFIX` overrides the prefix fetched from `/api/config`;
 - **Initial seed** after deploying the DB-backed cache, per environment.
 - **After adding/changing filters** in the frontend (a changed template is a new
   cache key; the old entry ages out via eviction).
-- Not needed periodically: the backend's nightly cron (`search.index.refreshCron`)
-  reloads the registered queries affected by FactGrid changes by itself (and all of them weekly).
+- Not needed periodically: the backend's nightly cron (`search.index.refreshCron`) is
+  change-driven. It reads FactGrid's RecentChanges, marks as `dirty` the registered queries
+  whose `source_tables` contain a changed or deleted item, and reloads only those (plus
+  never-loaded queries and ones whose last load failed). It does a full reload of every
+  query weekly, or when too many changes piled up or RecentChanges is unavailable.
+  Queries unused for 30 days are evicted. Check `dirty` / `sourceTables` per query in
+  `GET /api/search/cache/status`; see `docs/backend/caching.md` for the details.
