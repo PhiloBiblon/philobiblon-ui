@@ -12,6 +12,11 @@ public class CacheStatusResponse {
     public long failedCount;
     /** Size on disk of the H2 MVStore file — watch for unbounded growth from generation-swap churn. */
     public long dbFileSizeBytes;
+    /** Watermark of the last successful change detection. */
+    public Instant lastChangePollAt;
+    public Instant lastFullRefreshAt;
+    public String lastChangeDetectionError;
+    public Instant lastChangeDetectionErrorAt;
     public List<QueryStatus> queries;
 
     public static class QueryStatus {
@@ -29,7 +34,8 @@ public class CacheStatusResponse {
         public boolean langAware;
         public boolean dbAware;
         public boolean bgAware;
-        public long usageSinceRefresh;
+        public boolean dirty;
+        public String sourceTables;
         public long usageTotal;
     }
 }

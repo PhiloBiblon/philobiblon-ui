@@ -23,7 +23,7 @@ public interface SparqlCacheService {
     SearchResponse search(String sparqlQuery, String q, String searchVars, String hint, Integer limit, String lang,
                           String group, String bitagapGroup);
 
-    /** Re-executes every registered query (nightly cron) after evicting unused ones. */
+    /** Nightly cron: evicts unused queries, then reloads the ones FactGrid changes made dirty (all of them weekly). */
     void refreshAll();
 
     CacheStatusResponse status();

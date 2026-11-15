@@ -32,8 +32,9 @@ flowchart LR
 
 | Table | Purpose |
 |---|---|
-| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, `lang_aware` (query projects `?lang`), `db_aware` (query projects `?db`), current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint`, `usage_since_refresh` / `usage_total` |
-| `cached_query_row` | One row per query result. Lang-aware queries fill one `label_xx` / `search_text_xx` column pair per UI language (en, ca, es, gl, pt); legacy per-language queries fill the single `label` / `search_text` pair. `search_text_xx` is the normalized composition of the query's `searchVars` values in that language; the full value map is stored as JSON `payload` (per-language values under `label_xx` / `aliases_xx` / `desc_xx` keys). Db-aware queries additionally fill `db_groups` — the row's database-group membership as space-delimited padded tokens (`" BETA BITECA "`). Indexed by `(query_hash, generation)` |
+| `cached_query` | Registry of every query ever received: SHA-256 hash (PK, over `searchVars + "\n" + queryText`), the **full query text** (so the backend can re-execute it without any client), `search_vars`, `lang_aware` (query projects `?lang`), `db_aware` (query projects `?db`), current `generation` (0 = never loaded), `created_at` / `last_refreshed_at` / `last_accessed_at`, `last_error`, `label_hint`, `usage_total`, `source_tables` (padded tokens like `" manid copid "`: the tables the query walks, derived from its text at registration and backfilled at startup), `dirty` (must be reloaded; set by change detection, cleared only by a successful load) |
+| `cached_query_row` | One row per query result. Lang-aware queries fill one `label_xx` / `search_text_xx` column pair per UI language (en, ca, es, gl, pt); legacy per-language queries fill the single `label` / `search_text` pair. `search_text_xx` is the normalized composition of the query's `searchVars` values in that language; the full value map is stored as JSON `payload` (per-language values under `label_xx` / `aliases_xx` / `desc_xx` keys). Db-aware queries additionally fill `db_groups` — the row's database-group membership as space-delimited padded tokens (`" BETA BITECA "`). `item_id` is the Q-ID the row represents (first non-null of `item` / `target_item` / `analytic_item`). Indexed by `(query_hash, generation)` and by `item_id` |
+| `cache_refresh_state` | Single row: `last_change_poll_at` (watermark of the change detection), `last_full_refresh_at` (weekly full-refresh clock), `last_change_detection_error` / `_at` (last detection failure) |
 
 The cache key is the **exact query text** — the frontend and the seed tooling
 (`scripts/seed-cache/`) share the same template code (`frontend/service/query.templates.js`)
@@ -109,21 +110,31 @@ ORIG/CARTAS selection returned zero subject options.
 
 - **Loads** execute with a forced HTTP/1.1 client, a 15-minute timeout and exponential
   backoff retries (`search.index.retry.*`). Results swap in under a new *generation*;
-  on failure or an empty re-load the previous generation keeps serving. On success,
-  `usage_since_refresh` resets to 0 (this cycle's demand has been satisfied); `usage_total`
-  never resets.
-- **Usage tracking**: every warm hit increments an in-memory per-query counter, persisted
-  to `usage_since_refresh`/`usage_total` with the same throttling (at most once per hour)
-  as `last_accessed_at`. All pending in-memory counts are flushed to the DB before the
-  nightly refresh reads them, so a query touched only minutes ago is never mistaken for
-  unused.
+  on failure or an empty re-load the previous generation keeps serving. A successful load
+  clears the query's `dirty` flag; a failed or empty one leaves it set, so the query is
+  retried the next night.
+- **Usage tracking** (observability and eviction only): every warm hit increments an in-memory
+  per-query counter, persisted to `usage_total` with the same throttling (at most once per
+  hour) as `last_accessed_at`. Pending counts are flushed before the nightly eviction, so a
+  query touched only minutes ago is never mistaken for unused.
 - **Nightly cron** (`search.index.refreshCron`, default 03:00): flushes pending usage,
-  evicts queries not accessed for `search.cache.evictAfterDays` (default 30), then
-  re-executes only the queries used at least once since their last refresh
-  (`usage_since_refresh > 0`) — plus any query that has never completed a load, which
-  always gets another attempt regardless of usage. Set
-  `search.cache.refresh.requireUsage=false` to revert to refreshing every registered
-  query every night.
+  evicts queries not accessed for `search.cache.evictAfterDays` (default 30), then asks the
+  change tracker what to reload:
+  - **Change detection**: FactGrid's `list=recentchanges` (edits/new) and `list=logevents`
+    (deletions) in the item namespace since the last watermark (minus `overlapMinutes`).
+    A query is marked `dirty` when a changed item belongs to one of its `source_tables`
+    (tables resolved from the items' pbid with a light SPARQL lookup; deleted items from
+    their cached payload), or when one of its cached rows represents a changed item
+    (`item_id`).
+  - `full` mode (first run, `fullEveryDays` since the last full refresh, or more than
+    `maxChangedItems` changed items): every registered query is reloaded.
+  - `changes` mode: dirty queries, never-loaded queries and queries with unknown
+    `source_tables` are reloaded.
+  - `detection-unavailable` mode (the feed could not be read: error logged, stored in
+    `cache_refresh_state`, watermark untouched): only queries already dirty from previous
+    nights and never-loaded ones. There is no usage-based fallback; the weekly full refresh
+    still runs, so staleness is bounded by `fullEveryDays`.
+  Cross-table `?bg` and `owl:sameAs` dependencies are only covered by the weekly full refresh.
 - **Startup**: no full refresh (the H2 file persists); only orphan-row cleanup and
   resuming queries that never completed a load.
 
@@ -134,7 +145,10 @@ search.cache.evictAfterDays=30      # drop queries unused for N days
 search.cache.candidateLimit=1000    # SQL LIKE candidate window before re-ranking
 search.cache.maxResultLimit=300     # server-side cap for returned options
 search.cache.loadConcurrency=2      # background loader threads
-search.cache.refresh.requireUsage=true  # nightly cron only reloads queries used since their last refresh
+search.cache.refresh.fullEveryDays=7        # reload every query at least this often
+search.cache.refresh.maxChangedItems=30000  # more changed items than this triggers a full refresh
+search.cache.refresh.overlapMinutes=60      # change window starts this long before the last poll
+wikibase.itemNamespace=120                  # namespace of items in the change feeds
 search.index.refreshCron=0 0 3 * * *
 search.index.retry.maxAttempts=5
 search.index.retry.initialBackoffMs=10000
@@ -144,8 +158,9 @@ search.index.retry.backoffMultiplier=4
 ### Observability
 
 `GET /api/search/cache/status` reports, per registered query: hint, snippet, generation,
-row count, last refresh/access, last error, usage counters (since last refresh and
-lifetime total) and whether a load is in flight, plus totals — including `dbFileSizeBytes`,
+row count, last refresh/access, last error, `dirty`, `sourceTables`, the lifetime usage counter and whether a load is in
+flight, plus the change-detection state (`lastChangePollAt`, `lastFullRefreshAt`,
+`lastChangeDetectionError`, `lastChangeDetectionErrorAt`) and totals — including `dbFileSizeBytes`,
 the actual size of the H2 MVStore file on disk (also logged at the end of every nightly
 refresh). Every generation swap deletes a batch of rows and inserts a similarly-sized
 new one; H2 doesn't rewrite deleted space in place, so this delete/insert churn is
@@ -187,3 +202,9 @@ pre-unification SPA (which calls the removed `/quick` and param-less endpoints, 
 breaks until the browser reloads it) to the final model. Queries that don't project
 the reserved `?lang`/`?db` vars still work through the plain single-column path —
 that is the v=2 base case for arbitrary SPARQL, not a compatibility shim.
+
+The nightly refresh used to reload only the queries used since their last refresh
+(`usage_since_refresh`, `search.cache.refresh.requireUsage`). It was replaced by the
+change-driven refresh above and the usage-based strategy was removed entirely. The
+`usage_since_refresh` column is left behind by `ddl-auto=update` and is unused; it can be
+dropped manually with `ALTER TABLE cached_query DROP COLUMN usage_since_refresh`.

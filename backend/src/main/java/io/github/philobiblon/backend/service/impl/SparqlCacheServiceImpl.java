@@ -9,11 +9,13 @@ import io.github.philobiblon.backend.helper.CacheBitagapGroup;
 import io.github.philobiblon.backend.helper.CacheDb;
 import io.github.philobiblon.backend.helper.CacheLang;
 import io.github.philobiblon.backend.helper.QueryHasher;
+import io.github.philobiblon.backend.entity.CacheRefreshState;
 import io.github.philobiblon.backend.repository.CachedQueryRepository;
 import io.github.philobiblon.backend.repository.CachedQueryRowRepository;
 import io.github.philobiblon.backend.representation.CacheStatusResponse;
 import io.github.philobiblon.backend.representation.Option;
 import io.github.philobiblon.backend.representation.SearchResponse;
+import io.github.philobiblon.backend.service.CacheChangeTracker;
 import io.github.philobiblon.backend.service.SparqlCacheService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -26,6 +28,7 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.RDFNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -42,6 +45,7 @@ import java.net.http.HttpClient;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -49,6 +53,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -88,6 +94,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private static final Set<String> PER_LANG_KEYS = PER_LANG_VARS.stream()
             .flatMap(var -> Arrays.stream(CacheLang.values()).map(lang -> var + "_" + lang.getCode()))
             .collect(Collectors.toUnmodifiableSet());
+    private static final Pattern SOURCE_TABLE_PATTERN = Pattern.compile("\\(\\.\\*\\) (\\w+) ");
+    private static final List<String> ITEM_VARS = List.of("item", "target_item", "analytic_item");
     private static final String DEFAULT_SEARCH_VARS = LABEL_VAR;
     private static final int LABEL_MAX_LENGTH = 1000;
     private static final int SEARCH_TEXT_MAX_LENGTH = 10000;
@@ -105,8 +113,6 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     private int loadConcurrency;
     @Value("${search.cache.evictAfterDays:30}")
     private int evictAfterDays;
-    @Value("${search.cache.refresh.requireUsage:true}")
-    boolean requireUsageForRefresh;
     @Value("${search.cache.dbFilePath}")
     String dbFilePath;
     @Value("${search.index.retry.maxAttempts:3}")
@@ -118,6 +124,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
 
     private final CachedQueryRepository queryRepository;
     private final CachedQueryRowRepository rowRepository;
+    private final CacheChangeTracker changeTracker;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /** Pivot capabilities of a registered query, mirrored from cached_query for the warm path. */
@@ -137,9 +144,17 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             .connectTimeout(Duration.ofSeconds(30))
             .build();
 
-    public SparqlCacheServiceImpl(CachedQueryRepository queryRepository, CachedQueryRowRepository rowRepository) {
+    @Autowired
+    public SparqlCacheServiceImpl(CachedQueryRepository queryRepository, CachedQueryRowRepository rowRepository,
+                                  CacheChangeTracker changeTracker) {
         this.queryRepository = queryRepository;
         this.rowRepository = rowRepository;
+        this.changeTracker = changeTracker;
+    }
+
+    /** Without change detection: the nightly refresh is unavailable (searches and loads work as usual). */
+    SparqlCacheServiceImpl(CachedQueryRepository queryRepository, CachedQueryRowRepository rowRepository) {
+        this(queryRepository, rowRepository, null);
     }
 
     @PostConstruct
@@ -150,6 +165,10 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             return thread;
         });
         for (CachedQuery cq : queryRepository.findAll()) {
+            if (cq.getSourceTables() == null) {
+                cq.setSourceTables(deriveSourceTables(cq.getSparqlText()));
+                queryRepository.save(cq);
+            }
             generationByHash.put(cq.getQueryHash(), cq.getGeneration());
             traitsByHash.put(cq.getQueryHash(), new QueryTraits(cq.isLangAware(), cq.isDbAware(), cq.isBgAware()));
         }
@@ -264,15 +283,18 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             flushPendingUsage();
             int evicted = evictUnused();
 
-            List<CachedQuery> candidates = queryRepository.findAll();
+            Instant cycleStart = Instant.now();
+            CacheChangeTracker.Detection detection = changeTracker.detect(cycleStart);
+            boolean full = detection.mode() == CacheChangeTracker.Mode.FULL_REFRESH;
+
             List<String> hashes = new ArrayList<>();
             int skipped = 0;
-            for (CachedQuery cq : candidates) {
-                // Never-loaded queries (generation 0) always get another attempt: the usage-based
-                // skip only makes sense for queries that already have data to keep fresh, and
-                // touch()/usage is only ever incremented on the warm (already-loaded) path.
-                boolean neverLoaded = cq.getGeneration() == 0L;
-                if (neverLoaded || !requireUsageForRefresh || cq.getUsageSinceRefresh() > 0L) {
+            int dirtyCount = 0;
+            for (CachedQuery cq : queryRepository.findAll()) {
+                if (cq.isDirty()) {
+                    dirtyCount++;
+                }
+                if (full || mustReload(cq, detection.mode())) {
                     hashes.add(cq.getQueryHash());
                 } else {
                     skipped++;
@@ -280,27 +302,73 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             }
 
             int succeeded = 0;
-            int failed = 0;
+            List<String> failedHashes = new ArrayList<>();
             for (String hash : hashes) {
                 // Sequential on purpose: the nightly refresh should not hammer the SPARQL endpoint.
                 if (Boolean.TRUE.equals(scheduleLoad(hash).join())) {
                     succeeded++;
                 } else {
-                    failed++;
+                    failedHashes.add(hash);
                 }
+            }
+            int failed = failedHashes.size();
+            if (full) {
+                if (!failedHashes.isEmpty()) {
+                    // Keep them retried every night until one load succeeds.
+                    queryRepository.markDirtyByHashes(failedHashes);
+                }
+                changeTracker.recordFullRefresh(cycleStart);
             }
             long elapsedMs = System.currentTimeMillis() - startedAt;
             long dbFileSizeMb = currentDbFileSizeBytes() / (1024 * 1024);
-            String summary = "SPARQL cache refresh finished in {} ms: {} queries succeeded, {} failed, "
-                    + "{} skipped (unused since last refresh), {} evicted, db file size {} MB";
+            String mode = switch (detection.mode()) {
+                case FULL_REFRESH -> "full";
+                case MARKED -> "changes";
+                case UNAVAILABLE -> "detection-unavailable";
+            };
+            String summary = "SPARQL cache refresh ({}) finished in {} ms: {} changed items, {} dirty queries, "
+                    + "{} queries succeeded, {} failed, {} skipped (unchanged), {} evicted, db file size {} MB";
             if (failed == 0) {
-                logger.info(summary, elapsedMs, succeeded, failed, skipped, evicted, dbFileSizeMb);
+                logger.info(summary, mode, elapsedMs, detection.changedItems(), dirtyCount, succeeded, failed, skipped,
+                        evicted, dbFileSizeMb);
             } else {
-                logger.warn(summary, elapsedMs, succeeded, failed, skipped, evicted, dbFileSizeMb);
+                logger.warn(summary, mode, elapsedMs, detection.changedItems(), dirtyCount, succeeded, failed, skipped,
+                        evicted, dbFileSizeMb);
             }
         } finally {
             refreshing.set(false);
         }
+    }
+
+    /**
+     * Reload decision outside a full refresh. Dirty and never-loaded queries always reload; queries
+     * with unknown source tables are treated as dirty whenever change detection ran, but not while it is
+     * unavailable (nothing new was learned that night).
+     */
+    private static boolean mustReload(CachedQuery cq, CacheChangeTracker.Mode mode) {
+        if (cq.isDirty() || cq.getGeneration() == 0L) {
+            return true;
+        }
+        return mode == CacheChangeTracker.Mode.MARKED
+                && (cq.getSourceTables() == null || cq.getSourceTables().isBlank());
+    }
+
+    /**
+     * Tables a query walks, as padded tokens (" manid copid "): every {@code '(.*) <table> '} pbid
+     * pattern in its text, plus copid when the text mentions {@code "copid"}. Empty when none is found.
+     */
+    static String deriveSourceTables(String sparqlText) {
+        Set<String> tables = new LinkedHashSet<>();
+        if (sparqlText != null) {
+            Matcher matcher = SOURCE_TABLE_PATTERN.matcher(sparqlText);
+            while (matcher.find()) {
+                tables.add(matcher.group(1));
+            }
+            if (sparqlText.contains("\"copid\"")) {
+                tables.add("copid");
+            }
+        }
+        return tables.isEmpty() ? "" : membershipToken(tables, table -> table);
     }
 
     @Override
@@ -328,7 +396,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             status.langAware = cq.isLangAware();
             status.dbAware = cq.isDbAware();
             status.bgAware = cq.isBgAware();
-            status.usageSinceRefresh = cq.getUsageSinceRefresh();
+            status.dirty = cq.isDirty();
+            status.sourceTables = cq.getSourceTables() == null ? null : cq.getSourceTables().trim();
             status.usageTotal = cq.getUsageTotal();
             response.queries.add(status);
             response.totalRows += status.rowCount;
@@ -338,6 +407,13 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             if (status.lastError != null) {
                 response.failedCount++;
             }
+        }
+        if (changeTracker != null) {
+            CacheRefreshState state = changeTracker.currentState();
+            response.lastChangePollAt = state.getLastChangePollAt();
+            response.lastFullRefreshAt = state.getLastFullRefreshAt();
+            response.lastChangeDetectionError = state.getLastChangeDetectionError();
+            response.lastChangeDetectionErrorAt = state.getLastChangeDetectionErrorAt();
         }
         response.totalQueries = response.queries.size();
         response.dbFileSizeBytes = currentDbFileSizeBytes();
@@ -381,8 +457,10 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             } catch (QueryException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid SPARQL query: " + e.getMessage(), e);
             }
-            queryRepository.save(new CachedQuery(hash, sparqlQuery, searchVars, truncate(hint, 255), Instant.now(),
-                    traits.langAware(), traits.dbAware(), traits.bgAware()));
+            CachedQuery registered = new CachedQuery(hash, sparqlQuery, searchVars, truncate(hint, 255), Instant.now(),
+                    traits.langAware(), traits.dbAware(), traits.bgAware());
+            registered.setSourceTables(deriveSourceTables(sparqlQuery));
+            queryRepository.save(registered);
             traitsByHash.put(hash, traits);
             logger.info("SPARQL cache: registered new query {} (hint: {})", hash, hint);
             return 0L;
@@ -434,16 +512,14 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         if (rows.isEmpty() && cq.getGeneration() > 0L) {
             logger.warn("SPARQL cache: query {} produced no rows; keeping previous generation {}",
                     queryHash, cq.getGeneration());
-            // This cycle's demand has still been served with the (unchanged) current data.
-            cq.setUsageSinceRefresh(0L);
-            queryRepository.save(cq);
+            // dirty stays set (if it was) so the query is retried the next night.
             return true;
         }
         rowRepository.saveAll(rows);
         cq.setGeneration(newGeneration);
         cq.setLastRefreshedAt(Instant.now());
         cq.setLastError(null);
-        cq.setUsageSinceRefresh(0L);
+        cq.setDirty(false);
         queryRepository.save(cq);
         generationByHash.put(queryHash, newGeneration);
         long removed = rowRepository.deleteByQueryHashAndGenerationNot(queryHash, newGeneration);
@@ -493,10 +569,12 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             }
             String payload = toJson(valueMap);
             if (seen.add(label + ' ' + payload)) {
-                rows.add(new CachedQueryRow(queryHash, generation,
+                CachedQueryRow row = new CachedQueryRow(queryHash, generation,
                         truncate(label, LABEL_MAX_LENGTH),
                         truncate(SearchServiceImpl.normalize(searchSource.toString()), SEARCH_TEXT_MAX_LENGTH),
-                        payload));
+                        payload);
+                row.setItemId(itemIdOf(valueMap));
+                rows.add(row);
             }
         }
         return rows;
@@ -567,6 +645,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
                     ? buildLangAwareRow(group, searchVars, resultVars, queryHash, generation)
                     : buildDbOnlyRow(group, searchVars, queryHash, generation);
             if (row != null) {
+                row.setItemId(itemIdOf(group.neutral));
                 row.setDbGroups(membershipToken(group.dbs, CacheDb::getCode));
                 row.setBitagapGroups(membershipToken(group.bgs, CacheBitagapGroup::getCode));
                 rows.add(row);
@@ -720,8 +799,19 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
         }
     }
 
+    /** Q-ID the row represents: first non-null among item / target_item / analytic_item; null if none. */
+    private static String itemIdOf(Map<String, String> values) {
+        for (String var : ITEM_VARS) {
+            String value = values.get(var);
+            if (value != null && !value.isBlank()) {
+                return truncate(value, 32);
+            }
+        }
+        return null;
+    }
+
     /** Space-delimited padded membership tokens (" BETA BITECA "), matched with LIKE '% BETA %'. */
-    private static <T> String membershipToken(Set<T> members, java.util.function.Function<T, String> code) {
+    private static <T> String membershipToken(Collection<T> members, java.util.function.Function<T, String> code) {
         if (members.isEmpty()) {
             return null;
         }
@@ -851,8 +941,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     }
 
     /**
-     * Records a usage for the nightly refresh decision, and updates last_accessed_at.
-     * The usage increment is always counted in memory; the DB write (both counters plus
+     * Records a usage (observability) and updates last_accessed_at (eviction input).
+     * The usage increment is always counted in memory; the DB write (counter plus
      * last_accessed_at) is throttled to at most once per hour per query.
      */
     private void touch(String queryHash) {
@@ -873,9 +963,8 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     }
 
     /**
-     * Persists every pending usage delta. Called before the nightly refresh decides what to
-     * reload, so a query touched only in memory since the last throttled flush isn't
-     * mistaken for unused.
+     * Persists every pending usage delta. Called before the nightly refresh evicts unused queries,
+     * so a query touched only in memory since the last throttled flush isn't mistaken for unused.
      */
     private void flushPendingUsage() {
         for (String queryHash : List.copyOf(pendingUsage.keySet())) {
