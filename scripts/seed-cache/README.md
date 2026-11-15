@@ -55,6 +55,7 @@ Env: `SPARQL_QUERY_PREFIX` overrides the prefix fetched from `/api/config`;
   change-driven. It reads FactGrid's RecentChanges, marks as `dirty` the registered queries
   whose `source_tables` contain a changed or deleted item, and reloads only those (plus
   never-loaded queries and ones whose last load failed). It does a full reload of every
-  query weekly, or when too many changes piled up or RecentChanges is unavailable.
-  Queries unused for 30 days are evicted. Check `dirty` / `sourceTables` per query in
+  query weekly, or when too many changes piled up. If RecentChanges is unavailable, only
+  already-dirty and never-loaded queries are reloaded, and the weekly full reload bounds
+  staleness while detection is down. Queries unused for 30 days are evicted. Check `dirty` / `sourceTables` per query in
   `GET /api/search/cache/status`; see `docs/backend/caching.md` for the details.
