@@ -6,7 +6,7 @@ Welcome to the technical documentation for the PhiloBiblon UI project. This docu
 
 PhiloBiblon UI is a modern web application for querying and editing items in a Wikibase instance. It consists of two main modules:
 
-- **Frontend**: A Nuxt 3 (Vue 3) single-page application with client-side rendering, using Vuetify 4 and Pinia
+- **Frontend**: A Nuxt 4 (Vue 3) single-page application with client-side rendering, using Vuetify 4 and Pinia
 - **Backend**: A Spring Boot 4 middleware service handling OAuth authentication and API proxying
 
 ## Architecture Diagram
@@ -16,7 +16,7 @@ General overview:
 ```mermaid
 flowchart LR
     Browser["Browser"]
-    Frontend["Frontend\n(Nuxt 3)"]
+    Frontend["Frontend\n(Nuxt 4)"]
     Backend["Backend\n(Spring Boot 4)"]
     Wikibase["Wikibase API"]
     SPARQL["SPARQL Endpoint"]
@@ -42,7 +42,7 @@ graph TB
     subgraph Docker["Docker Compose"]
         Nginx["nginx\n(reverse proxy)"]
 
-        subgraph FE["Frontend — Nuxt 3 / Vue 3 / Vuetify 4"]
+        subgraph FE["Frontend — Nuxt 4 / Vue 3 / Vuetify 4"]
             Pages["Pages\nindex · search/* · item/* · create/* · wiki/*\noauth_callback"]
             Store["Pinia Store\nauth · breadcrumb\nitemCache · queryCache · queryStatus"]
             Services["Services\nquery.service · wikibase.service\noauth.service · notification.service"]
@@ -94,7 +94,7 @@ graph TB
 
 **Architecture Summary**:
 - **nginx**: reverse proxy that routes `/(api|w|./w)/` to the backend and `/` to the frontend
-- **Frontend (Nuxt 3)**: SPA served as static files; routes Wikibase reads/writes and SPARQL through the backend
+- **Frontend (Nuxt 4)**: SPA served as static files; routes Wikibase reads/writes and SPARQL through the backend
 - **Backend (Spring Boot 4)**: OAuth 1.0a proxy for writes, DB-backed SPARQL result cache serving the search API
 - **Wikibase API**: reads and writes are proxied through the backend (writes are signed with OAuth)
 - **SPARQL Endpoint**: search/autocomplete queries are served from the backend's DB cache (materialized rows, nightly refresh); the result grids go through `POST /api/sparql` (pass-through) with a short-lived frontend cache (2 min)
@@ -145,7 +145,7 @@ cd backend
 ## Key Technologies
 
 ### Frontend
-- **Nuxt 3** - Vue.js framework (SSR disabled, SPA mode)
+- **Nuxt 4** - Vue.js framework (SSR disabled, SPA mode)
 - **Vue 3** - Composition API
 - **Vuetify 4** - Material Design component library
 - **Pinia** - State management
