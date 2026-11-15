@@ -4,7 +4,7 @@ This guide will help you set up the PhiloBiblon UI frontend for local developmen
 
 ## Prerequisites
 
-- **Node.js**: v18 or later (v20 LTS recommended)
+- **Node.js**: `^22.22.3 || ^24.15.0 || >=26` (required by Nuxt 4.6)
 - **Yarn**: v4 (Berry) — managed via `packageManager` field in `package.json`
 - **Git**: For version control
 

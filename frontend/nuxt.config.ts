@@ -4,13 +4,6 @@ import { en as vuetifyEn, ca as vuetifyCa, es as vuetifyEs, pt as vuetifyPt } fr
 export default defineNuxtConfig({
   ssr: false,
 
-  experimental: {
-    // Required fix for Nuxt 3.21 + Vite 7 + ssr:false: without this, the Vite Node IPC
-    // socket is never initialized (the SSR server that sets it up is never created when
-    // ssr:false), causing a 500 "Vite Node IPC socket path not configured" on every request.
-    viteEnvironmentApi: true
-  },
-
   app: {
     baseURL: process.env.BASE_URL || '/',
     head: {
@@ -67,7 +60,8 @@ export default defineNuxtConfig({
 
   vuetify: {
     moduleOptions: {
-      styles: true
+      styles: true,
+      importComposables: false
     },
     vuetifyOptions: {
       defaults: {
@@ -158,5 +152,5 @@ export default defineNuxtConfig({
     }
   },
 
-  compatibilityDate: '2026-04-20'
+  compatibilityDate: '2026-11-15'
 })

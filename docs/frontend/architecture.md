@@ -4,7 +4,7 @@ This document explains the architecture and structure of the PhiloBiblon UI fron
 
 ## Technology Stack
 
-- **Nuxt 3**: Vue.js framework with SPA mode (SSR disabled)
+- **Nuxt 4**: Vue.js framework with SPA mode (SSR disabled)
 - **Vue 3**: Progressive JavaScript framework (Composition API)
 - **Vuetify 4**: Material Design component framework (`vuetify-nuxt-module`)
 - **Pinia**: State management library (replaces Vuex)
@@ -77,7 +77,7 @@ frontend/
 
 ## Plugin System
 
-Plugins use Nuxt 3's `defineNuxtPlugin` API and the `.client.js` suffix to run client-side only. They are loaded in filename order (numbered prefix).
+Plugins use Nuxt 4's `defineNuxtPlugin` API and the `.client.js` suffix to run client-side only. They are loaded in filename order (numbered prefix).
 
 ### `01.config.client.js`
 Fetches backend configuration and merges it into `useRuntimeConfig().public`:
@@ -136,7 +136,7 @@ Forces a page reload when the deployed version changes (detected via `localStora
 
 ## Routing
 
-Nuxt 3 uses bracket syntax for dynamic routes:
+Nuxt 4 uses bracket syntax for dynamic routes:
 
 | File | Route | Purpose |
 |------|-------|---------|
@@ -234,7 +234,7 @@ Configuration is split between `nuxt.config.ts` (module config) and `i18n.config
 
 ## Build Process
 
-The build tool is **Vite** (Nuxt 3 default), replacing Webpack.
+The build tool is **Vite** (Nuxt 4 default), replacing Webpack.
 
 ### Development
 

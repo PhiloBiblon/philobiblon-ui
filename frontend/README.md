@@ -1,6 +1,6 @@
 # frontend
 
-Nuxt 3 SPA (SSR disabled) — Vue 3 + Vuetify 3 + Pinia + vue-i18n 10.
+Nuxt 4 SPA (SSR disabled) — Vue 3 + Vuetify 3 + Pinia + vue-i18n 10.
 
 ## Setup
 

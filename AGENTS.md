@@ -4,7 +4,7 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## Commands
 
-### Frontend (Nuxt 3 / Vue 3 / Vuetify 4)
+### Frontend (Nuxt 4 / Vue 3 / Vuetify 4)
 
 ```bash
 cd frontend
@@ -40,7 +40,7 @@ docker compose down -v   # Remove everything including volumes
 
 Two modules behind an nginx reverse proxy:
 
-- **Frontend** (`frontend/`) — Nuxt 3 SPA (SSR disabled), Vue 3 + Vuetify 4 + Pinia. Talks only to the backend: Wikibase reads/writes through the `/w/**` proxy (writes signed with OAuth), cached search through `/api/search`, and other SPARQL through the `/api/sparql` pass-through. Direct browser calls to FactGrid fail when its reputation check redirects them to a PoW challenge page (no CORS).
+- **Frontend** (`frontend/`) — Nuxt 4 SPA (SSR disabled), Vue 3 + Vuetify 4 + Pinia. Talks only to the backend: Wikibase reads/writes through the `/w/**` proxy (writes signed with OAuth), cached search through `/api/search`, and other SPARQL through the `/api/sparql` pass-through. Direct browser calls to FactGrid fail when its reputation check redirects them to a PoW challenge page (no CORS).
 - **Backend** (`backend/`) — Spring Boot 4 middleware. Handles OAuth 1.0a with Wikibase, proxies edit requests, and serves search/autocomplete from a DB-backed SPARQL result cache (H2).
 
 ### Two-level SPARQL caching
