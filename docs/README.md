@@ -107,6 +107,8 @@ graph TB
 - [State Management](frontend/state-management.md) - Vuex store modules
 - [Services](frontend/services.md) - API and business logic services
 - [Components](frontend/components.md) - Component architecture
+- [item-forms](frontend/item-forms.md) - Item-creation label/validation/defaults engine
+- [Testing](frontend/testing.md) - Vitest setup and scope
 
 ### Backend Documentation
 - [Setup Guide](backend/setup.md) - Getting started with the backend

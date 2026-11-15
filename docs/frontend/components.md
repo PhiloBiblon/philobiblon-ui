@@ -225,3 +225,4 @@ Vuetify utility classes work as before:
 
 - [Services](services.md) — How components use services
 - [State Management](state-management.md) — How components use Pinia stores
+- [item-forms](item-forms.md) — `components/item/Create.vue`'s label/validation/defaults engine

@@ -32,7 +32,7 @@ jobs:
         working-directory: backend
 
   frontend:
-    name: Frontend lint and build
+    name: Frontend lint, test and build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -56,6 +56,9 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
+      - name: Test
+        run: yarn test
 
       - name: Generate
         run: yarn generate
