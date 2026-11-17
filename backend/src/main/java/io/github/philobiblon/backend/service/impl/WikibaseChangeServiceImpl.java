@@ -17,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -54,8 +55,8 @@ public class WikibaseChangeServiceImpl implements WikibaseChangeService {
         params.put("rcprop", "title");
         params.put("rclimit", String.valueOf(PAGE_SIZE));
         // Default direction is newest first: "rcstart" is the newer bound, "rcend" the older one.
-        params.put("rcstart", until.toString());
-        params.put("rcend", since.toString());
+        params.put("rcstart", apiTimestamp(until));
+        params.put("rcend", apiTimestamp(since));
         return collect(params, "recentchanges", "rccontinue");
     }
 
@@ -67,9 +68,18 @@ public class WikibaseChangeServiceImpl implements WikibaseChangeService {
         params.put("lenamespace", String.valueOf(itemNamespace));
         params.put("leprop", "title");
         params.put("lelimit", String.valueOf(PAGE_SIZE));
-        params.put("lestart", until.toString());
-        params.put("leend", since.toString());
+        params.put("lestart", apiTimestamp(until));
+        params.put("leend", apiTimestamp(since));
         return collect(params, "logevents", "lecontinue");
+    }
+
+    /**
+     * MediaWiki rejects ISO 8601 timestamps with fractional seconds ("badtimestamp"), which
+     * {@link Instant#toString()} emits whenever there are any. Truncating floors both bounds; the
+     * tracker's overlap window already absorbs the sub-second shift.
+     */
+    static String apiTimestamp(Instant instant) {
+        return instant.truncatedTo(ChronoUnit.SECONDS).toString();
     }
 
     private Set<String> collect(Map<String, String> params, String listName, String continueKey) {
