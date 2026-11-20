@@ -90,6 +90,24 @@ class WikibaseChangeServiceImplTest {
     }
 
     @Test
+    void sendsTimestampsWithoutFractionalSeconds() {
+        // MediaWiki rejects fractional seconds with "badtimestamp"; Instant.now() always carries them.
+        Instant since = Instant.parse("2026-11-16T02:00:00.153615Z");
+        Instant until = Instant.parse("2026-11-17T03:00:00.005671178Z");
+        handler = query -> query.contains("list=recentchanges")
+                ? new Response(200, "{\"query\":{\"recentchanges\":[]}}")
+                : new Response(200, "{\"query\":{\"logevents\":[]}}");
+
+        service().changedItems(since, until);
+        service().deletedItems(since, until);
+
+        assertTrue(queries.get(0).contains("rcstart=2026-11-17T03%3A00%3A00Z&"), queries.get(0));
+        assertTrue(queries.get(0).contains("rcend=2026-11-16T02%3A00%3A00Z"), queries.get(0));
+        assertTrue(queries.get(1).contains("lestart=2026-11-17T03%3A00%3A00Z&"), queries.get(1));
+        assertTrue(queries.get(1).contains("leend=2026-11-16T02%3A00%3A00Z"), queries.get(1));
+    }
+
+    @Test
     void reputationChallengeRedirectIsAnError() {
         handler = query -> new Response(302, "", "https://example.org/rep-pow-challenge?x=1");
 
