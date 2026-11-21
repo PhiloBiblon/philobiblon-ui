@@ -118,6 +118,9 @@ public class CacheChangeTrackerImpl implements CacheChangeTracker {
         CacheRefreshState state = loadState();
         state.setLastFullRefreshAt(cycleStart);
         state.setLastChangePollAt(cycleStart);
+        // The watermark restarts here, so an error from an earlier detection window no longer applies.
+        state.setLastChangeDetectionError(null);
+        state.setLastChangeDetectionErrorAt(null);
         stateRepository.save(state);
     }
 
