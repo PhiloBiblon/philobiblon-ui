@@ -198,6 +198,18 @@ class CacheChangeTrackerImplTest {
     }
 
     @Test
+    void recordFullRefreshClearsThePreviousError() {
+        // A full refresh resets the watermark, so an error from an earlier window no longer applies.
+        state.setLastChangeDetectionError("old");
+        state.setLastChangeDetectionErrorAt(now.minus(Duration.ofDays(1)));
+
+        tracker().recordFullRefresh(now);
+
+        assertNull(state.getLastChangeDetectionError());
+        assertNull(state.getLastChangeDetectionErrorAt());
+    }
+
+    @Test
     void extractsTheTableFromAPbid() {
         assertEquals("manid", CacheChangeTrackerImpl.tableOfPbid("BETA manid 1234"));
         assertNull(CacheChangeTrackerImpl.tableOfPbid("garbage"));
