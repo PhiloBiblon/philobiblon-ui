@@ -168,6 +168,18 @@ String query(@RequestParam String query);
 
 `SparqlProxyServiceImpl` POSTs the query to `sparql.endpoint` over HTTP/1.1 with an identifying `User-Agent` and returns the JSON body as-is. Redirects are not followed, so FactGrid's reputation challenge (a `302` to `/rep-pow-challenge`) is logged and answered as `502`. Requests that get no answer within `sparql.proxy.timeoutSeconds` (default 45, kept below nginx's 60 s `proxy_read_timeout`), other 5xx, unreachable endpoints and responses larger than `sparql.proxy.maxResponseBytes` (default 10 MB) are also `502`; only 400, 413 and 414 from the endpoint (the query itself is at fault) pass through with the same status, while 401/403/429 and other 4xx describe how the endpoint sees the backend and are answered `502`. The endpoint's body is logged, never returned. Nothing is cached on the backend; the frontend keeps its own 2-minute cache.
 
+Before anything is sent upstream, the query goes through `SparqlQueryValidator` (shared with `/api/search` registration). It is parsed exactly as received, with no prefix added (every frontend query carries its own `PREFIX` lines), and rejected with `400` when:
+
+- it does not parse (`Invalid SPARQL query: …`, which also covers SPARQL Update and undeclared prefixes);
+- it is not a `SELECT` or `ASK` (`Only SELECT and ASK queries are allowed`);
+- it uses a `SERVICE` other than `wikibase:label` (`SERVICE <iri> is not allowed`). The check walks the compiled algebra, so subqueries, nested `SERVICE` blocks and `EXISTS` patterns in expressions are covered too.
+
+There is no length cap: the concurrency cap and Tomcat's 2 MB form limit already bound size.
+
+Valid queries then take one of `sparql.proxy.maxConcurrent` upstream slots (default 8, fair semaphore). When all slots are busy the request waits up to `sparql.proxy.queueTimeoutSeconds` (default 10), then gets `503` (`SPARQL proxy busy`, logged as WARN). A rejected query never waits in the queue. The slot is released on every outcome. Queuing rather than rejecting at once matters because an item page fires about 30 queries at once and the frontend turns errors into empty data. `queueTimeoutSeconds + timeoutSeconds` (10 + 45 = 55 s) must stay below nginx's 60 s `proxy_read_timeout`.
+
+Each proxied query logs one INFO line with the outcome, the upstream time and the time spent waiting for a slot, never the query text, e.g. `SPARQL proxy: 200 in 312 ms (queued 0 ms)` or `SPARQL proxy: 502 (SPARQL endpoint timed out) in 45003 ms (queued 0 ms)`.
+
 #### ProxyController
 
 Proxies all other Wikibase API requests, signing them with OAuth.
@@ -281,6 +293,8 @@ wikibase.apiUrl=${WIKIBASE_API_URL}
 
 # SPARQL
 sparql.endpoint=${SPARQL_ENDPOINT}
+sparql.proxy.maxConcurrent=${SPARQL_PROXY_MAX_CONCURRENT:8}
+sparql.proxy.queueTimeoutSeconds=${SPARQL_PROXY_QUEUE_TIMEOUT_SECONDS:10}
 
 # CORS
 allowed.origins=${ALLOWED_ORIGINS}

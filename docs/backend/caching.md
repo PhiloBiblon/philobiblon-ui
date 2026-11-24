@@ -94,7 +94,12 @@ ORIG/CARTAS selection returned zero subject options.
 ### Request flow (v=2 contract)
 
 1. Hash the incoming `searchVars` + `sparqlQuery`.
-2. Unknown query → validate it parses (400 otherwise), register it (detecting
+2. Unknown query → validate it with `SparqlQueryValidator` (it must parse, be a
+   `SELECT`/`ASK` and use no `SERVICE` other than `wikibase:label`; 400 otherwise,
+   nothing persisted; see the `/api/sparql` section of [architecture.md](architecture.md)),
+   check the registration cap (503 `Search cache is full` when `cached_query` already
+   holds `search.cache.maxRegisteredQueries` rows, failed ones included; logged as WARN
+   with the hint and count), register it (detecting
    `lang_aware` from the projection), schedule a **background load** (single-flight:
    concurrent misses share one execution) and answer immediately with
    `{"indexLoading": true, "results": []}`. The frontend shows a loading message and
@@ -104,7 +109,8 @@ ORIG/CARTAS selection returned zero subject options.
    `search_text`), plus a `db_groups` membership filter when a `group` was requested
    on a db-aware query; re-rank the candidates in Java (`SearchServiceImpl.rank`),
    rebuild `Option`s from the JSON payload with the per-language keys resolved for
-   the requested language.
+   the requested language. Already-registered queries are not re-validated and keep
+   being served and refreshed when the cap is reached; eviction frees slots.
 
 ### Loading, refresh and eviction
 
@@ -145,6 +151,7 @@ search.cache.evictAfterDays=30      # drop queries unused for N days
 search.cache.candidateLimit=1000    # SQL LIKE candidate window before re-ranking
 search.cache.maxResultLimit=300     # server-side cap for returned options
 search.cache.loadConcurrency=2      # background loader threads
+search.cache.maxRegisteredQueries=500  # registered queries (all replayed by the refresh); new ones beyond get 503
 search.cache.refresh.fullEveryDays=7        # reload every query at least this often
 search.cache.refresh.maxChangedItems=30000  # more changed items than this triggers a full refresh
 search.cache.refresh.overlapMinutes=60      # change window starts this long before the last poll
