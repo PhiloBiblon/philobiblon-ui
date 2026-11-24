@@ -48,6 +48,18 @@ class SparqlQueryValidatorTest {
     }
 
     @Test
+    void acceptsBuiltinPrefixesWithOnlyTheDevPrefixDeclared() {
+        String devPrefix = "PREFIX wd: <https://database.factgrid.de/entity/>\n"
+                + "PREFIX wdt: <https://database.factgrid.de/prop/direct/>\n";
+        assertDoesNotThrow(() -> validator.validate(devPrefix + """
+                SELECT ?item ?itemLabel WHERE {
+                  ?item wdt:P2 wd:Q1 ; wdt:P3 ?d .
+                  FILTER(xsd:integer(?d) > 3)
+                  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+                } ORDER BY xsd:dateTime(?d)"""));
+    }
+
+    @Test
     void rejectsConstruct() {
         assertEquals("Only SELECT and ASK queries are allowed",
                 rejected("CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }").getReason());
@@ -81,7 +93,7 @@ class SparqlQueryValidatorTest {
 
     @Test
     void rejectsUndeclaredPrefix() {
-        assertTrue(rejected("SELECT ?s WHERE { ?s ?p wd:Q1 }").getReason().startsWith("Invalid SPARQL query: "));
+        assertTrue(rejected("SELECT ?s WHERE { ?s ?p nope:Q1 }").getReason().startsWith("Invalid SPARQL query: "));
     }
 
     @Test
