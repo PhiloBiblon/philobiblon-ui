@@ -30,8 +30,11 @@ public class SparqlQueryValidator {
 
     static final String ALLOWED_SERVICE_IRI = "http://wikiba.se/ontology#label";
 
-    /** Throws a 400 {@link ResponseStatusException} if the query is not acceptable. */
-    public void validate(String sparqlQuery) {
+    /**
+     * Throws a 400 {@link ResponseStatusException} if the query is not acceptable; otherwise returns the
+     * parsed query, so callers that need it do not parse it again.
+     */
+    public Query validate(String sparqlQuery) {
         Query query;
         try {
             query = QueryFactory.create(sparqlQuery);
@@ -42,6 +45,7 @@ public class SparqlQueryValidator {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only SELECT and ASK queries are allowed");
         }
         rejectForeignServices(query);
+        return query;
     }
 
     /**

@@ -460,8 +460,7 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
             // Parse errors and disallowed query shapes are not transient: reject them (400) before persisting
             // so the registry never accumulates queries that every retry, startup and nightly refresh would fail on.
             // Throwing inside computeIfAbsent leaves no mapping.
-            queryValidator.validate(sparqlQuery);
-            List<String> resultVars = QueryFactory.create(sparqlQuery).getResultVars();
+            List<String> resultVars = queryValidator.validate(sparqlQuery).getResultVars();
             QueryTraits traits = new QueryTraits(resultVars.contains(LANG_VAR), resultVars.contains(DB_VAR),
                     resultVars.contains(BG_VAR));
             // Counts every cached_query row, failed ones included: the refresh replays them all.
