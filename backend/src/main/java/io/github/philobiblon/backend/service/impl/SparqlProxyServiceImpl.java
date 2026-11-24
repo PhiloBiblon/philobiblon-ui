@@ -1,5 +1,6 @@
 package io.github.philobiblon.backend.service.impl;
 
+import io.github.philobiblon.backend.helper.SparqlQueryValidator;
 import io.github.philobiblon.backend.helper.UpstreamHttp;
 import io.github.philobiblon.backend.service.SparqlProxyService;
 import org.slf4j.Logger;
@@ -21,6 +22,8 @@ import java.net.http.HttpTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SparqlProxyServiceImpl implements SparqlProxyService {
@@ -33,6 +36,10 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
     private final String sparqlEndpoint;
     private final long maxResponseBytes;
     private final Duration requestTimeout;
+    private final SparqlQueryValidator queryValidator;
+    /** Bounds the concurrent upstream queries; fair so that queued requests are served in arrival order. */
+    private final Semaphore upstreamPermits;
+    private final long queueTimeoutSeconds;
     // Redirects are not followed (HttpClient default): a reputation challenge must surface as an error.
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
@@ -43,14 +50,55 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
                                   @Value("${sparql.proxy.maxResponseBytes:10485760}") long maxResponseBytes,
                                   // Keep it below the nginx proxy_read_timeout (60 s by default) so that the
                                   // backend answers a readable 502 before a proxy answers a bare 504.
-                                  @Value("${sparql.proxy.timeoutSeconds:45}") long timeoutSeconds) {
+                                  @Value("${sparql.proxy.timeoutSeconds:45}") long timeoutSeconds,
+                                  @Value("${sparql.proxy.maxConcurrent:8}") int maxConcurrent,
+                                  // queueTimeoutSeconds + timeoutSeconds must also stay below proxy_read_timeout.
+                                  @Value("${sparql.proxy.queueTimeoutSeconds:10}") long queueTimeoutSeconds,
+                                  SparqlQueryValidator queryValidator) {
         this.sparqlEndpoint = sparqlEndpoint;
         this.maxResponseBytes = maxResponseBytes;
         this.requestTimeout = Duration.ofSeconds(timeoutSeconds);
+        this.upstreamPermits = new Semaphore(Math.max(1, maxConcurrent), true);
+        this.queueTimeoutSeconds = queueTimeoutSeconds;
+        this.queryValidator = queryValidator;
     }
 
     @Override
     public String query(String sparqlQuery) {
+        // Validate first: a rejected query never waits in the queue nor reaches the endpoint.
+        queryValidator.validate(sparqlQuery);
+        long queueStart = System.nanoTime();
+        try {
+            if (!upstreamPermits.tryAcquire(queueTimeoutSeconds, TimeUnit.SECONDS)) {
+                logger.warn("SPARQL proxy busy: no upstream slot freed within {} s", queueTimeoutSeconds);
+                throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "SPARQL proxy busy");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "SPARQL request interrupted", e);
+        }
+        long queuedMs = elapsedMs(queueStart);
+        long upstreamStart = System.nanoTime();
+        String outcome = "error";
+        try {
+            String body = send(sparqlQuery);
+            outcome = "200";
+            return body;
+        } catch (ResponseStatusException e) {
+            outcome = e.getReason() != null ? e.getStatusCode().value() + " (" + e.getReason() + ")"
+                    : String.valueOf(e.getStatusCode().value());
+            throw e;
+        } finally {
+            upstreamPermits.release();
+            logger.info("SPARQL proxy: {} in {} ms (queued {} ms)", outcome, elapsedMs(upstreamStart), queuedMs);
+        }
+    }
+
+    private static long elapsedMs(long startNanos) {
+        return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
+    }
+
+    private String send(String sparqlQuery) {
         HttpRequest request = HttpRequest.newBuilder(URI.create(sparqlEndpoint))
                 .timeout(requestTimeout)
                 .header("Content-Type", "application/x-www-form-urlencoded")
