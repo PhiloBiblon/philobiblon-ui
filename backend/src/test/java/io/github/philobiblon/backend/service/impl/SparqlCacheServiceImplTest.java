@@ -731,6 +731,59 @@ class SparqlCacheServiceImplTest {
         assertFalse(saved.getAllValues().get(1).isLangAware());
     }
 
+    // --- Registration guards ---
+
+    @Test
+    void newQueryIsRefusedWithServiceUnavailableOnceTheRegistryIsFull() {
+        CachedQueryRepository queryRepository = mockQueryRepository();
+        when(queryRepository.count()).thenReturn(3L);
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, mock(CachedQueryRowRepository.class));
+        service.maxRegisteredQueries = 3;
+        service.init();
+
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+                () -> service.search("SELECT ?label WHERE {}", "x", "label", null, null, null, null, null));
+
+        assertEquals(503, e.getStatusCode().value());
+        assertEquals("Search cache is full", e.getReason());
+        verify(queryRepository, never()).save(any());
+    }
+
+    @Test
+    void registeredQueryIsStillServedOnceTheRegistryIsFull() {
+        CachedQueryRepository queryRepository = mock(CachedQueryRepository.class);
+        CachedQueryRowRepository rowRepository = mock(CachedQueryRowRepository.class);
+        String sparql = "SELECT ?item ?label WHERE {}";
+        String hash = io.github.philobiblon.backend.helper.QueryHasher.hash("label", sparql);
+        CachedQuery cq = new CachedQuery(hash, sparql, "label", null, Instant.now(), false, false, false);
+        cq.setGeneration(7L);
+        when(queryRepository.findById(hash)).thenReturn(Optional.of(cq));
+        when(queryRepository.count()).thenReturn(10L);
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, rowRepository);
+        service.maxRegisteredQueries = 1;
+        service.init();
+
+        SearchResponse response = service.search(sparql, "x", "label", null, null, null, null, null);
+
+        assertFalse(response.isIndexLoading());
+        verify(queryRepository, never()).save(any());
+    }
+
+    @Test
+    void disallowedQueriesAreRejectedWithBadRequestAndNotPersisted() {
+        CachedQueryRepository queryRepository = mockQueryRepository();
+        SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(queryRepository, mock(CachedQueryRowRepository.class));
+        service.init();
+
+        for (String query : new String[] {"CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }",
+                "SELECT ?label WHERE { SERVICE <http://example.org/sparql> { ?s ?p ?label } }"}) {
+            ResponseStatusException e = assertThrows(ResponseStatusException.class,
+                    () -> service.search(query, "x", "label", null, null, null, null, null));
+            assertEquals(400, e.getStatusCode().value(), query);
+        }
+        verify(queryRepository, never()).save(any());
+    }
+
     @Test
     void rejectsUnknownLangWithBadRequest() {
         SparqlCacheServiceImpl service = new SparqlCacheServiceImpl(mockQueryRepository(), mock(CachedQueryRowRepository.class));

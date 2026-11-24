@@ -9,6 +9,7 @@ import io.github.philobiblon.backend.helper.CacheBitagapGroup;
 import io.github.philobiblon.backend.helper.CacheDb;
 import io.github.philobiblon.backend.helper.CacheLang;
 import io.github.philobiblon.backend.helper.QueryHasher;
+import io.github.philobiblon.backend.helper.SparqlQueryValidator;
 import io.github.philobiblon.backend.entity.CacheRefreshState;
 import io.github.philobiblon.backend.repository.CachedQueryRepository;
 import io.github.philobiblon.backend.repository.CachedQueryRowRepository;
@@ -20,7 +21,6 @@ import io.github.philobiblon.backend.service.SparqlCacheService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryException;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
@@ -121,10 +121,14 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
     long retryInitialBackoffMs;
     @Value("${search.index.retry.backoffMultiplier:3}")
     double retryBackoffMultiplier;
+    /** Every registered query is replayed against the endpoint by the refresh, so their number is bounded. */
+    @Value("${search.cache.maxRegisteredQueries:500}")
+    int maxRegisteredQueries = 500;
 
     private final CachedQueryRepository queryRepository;
     private final CachedQueryRowRepository rowRepository;
     private final CacheChangeTracker changeTracker;
+    private final SparqlQueryValidator queryValidator;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /** Pivot capabilities of a registered query, mirrored from cached_query for the warm path. */
@@ -146,10 +150,16 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
 
     @Autowired
     public SparqlCacheServiceImpl(CachedQueryRepository queryRepository, CachedQueryRowRepository rowRepository,
-                                  CacheChangeTracker changeTracker) {
+                                  CacheChangeTracker changeTracker, SparqlQueryValidator queryValidator) {
         this.queryRepository = queryRepository;
         this.rowRepository = rowRepository;
         this.changeTracker = changeTracker;
+        this.queryValidator = queryValidator;
+    }
+
+    SparqlCacheServiceImpl(CachedQueryRepository queryRepository, CachedQueryRowRepository rowRepository,
+                           CacheChangeTracker changeTracker) {
+        this(queryRepository, rowRepository, changeTracker, new SparqlQueryValidator());
     }
 
     /** Without change detection: the nightly refresh is unavailable (searches and loads work as usual). */
@@ -447,15 +457,18 @@ public class SparqlCacheServiceImpl implements SparqlCacheService {
                         existing.get().isBgAware()));
                 return existing.get().getGeneration();
             }
-            // Parse errors are not transient: reject before persisting so the registry never
-            // accumulates queries that every retry, startup and nightly refresh would fail on.
-            QueryTraits traits;
-            try {
-                List<String> resultVars = QueryFactory.create(sparqlQuery).getResultVars();
-                traits = new QueryTraits(resultVars.contains(LANG_VAR), resultVars.contains(DB_VAR),
-                        resultVars.contains(BG_VAR));
-            } catch (QueryException e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid SPARQL query: " + e.getMessage(), e);
+            // Parse errors and disallowed query shapes are not transient: reject them (400) before persisting
+            // so the registry never accumulates queries that every retry, startup and nightly refresh would fail on.
+            // Throwing inside computeIfAbsent leaves no mapping.
+            List<String> resultVars = queryValidator.validate(sparqlQuery).getResultVars();
+            QueryTraits traits = new QueryTraits(resultVars.contains(LANG_VAR), resultVars.contains(DB_VAR),
+                    resultVars.contains(BG_VAR));
+            // Counts every cached_query row, failed ones included: the refresh replays them all.
+            long registeredCount = queryRepository.count();
+            if (registeredCount >= maxRegisteredQueries) {
+                logger.warn("SPARQL cache: refusing new query (hint: {}): {} queries registered, limit {}",
+                        hint, registeredCount, maxRegisteredQueries);
+                throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Search cache is full");
             }
             CachedQuery registered = new CachedQuery(hash, sparqlQuery, searchVars, truncate(hint, 255), Instant.now(),
                     traits.langAware(), traits.dbAware(), traits.bgAware());
