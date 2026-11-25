@@ -176,7 +176,7 @@ Before anything is sent upstream, the query goes through `SparqlQueryValidator` 
 
 There is no length cap: the concurrency cap and Tomcat's 2 MB form limit already bound size.
 
-Valid queries then take one of `sparql.proxy.maxConcurrent` upstream slots (default 8, fair semaphore). When all slots are busy the request waits up to `sparql.proxy.queueTimeoutSeconds` (default 10), then gets `503` (`SPARQL proxy busy`, logged as WARN). A rejected query never waits in the queue. The slot is released on every outcome. Queuing rather than rejecting at once matters because an item page fires about 30 queries at once and the frontend turns errors into empty data. `queueTimeoutSeconds + timeoutSeconds` (10 + 45 = 55 s) must stay below nginx's 60 s `proxy_read_timeout`.
+Valid queries then take one of `sparql.proxy.maxConcurrent` upstream slots (default 16, fair semaphore). When all slots are busy the request waits up to `sparql.proxy.queueTimeoutSeconds` (default 10), then gets `503` (`SPARQL proxy busy`, logged as WARN). A rejected query never waits in the queue. The slot is released on every outcome. Queuing rather than rejecting at once matters because an item page fires about 30–35 queries at once (with 8 slots, staging logs showed the last ones of a page queued for about 2 s; 16 resolves a page in 2–3 rounds) and the frontend turns errors into empty data. `queueTimeoutSeconds + timeoutSeconds` (10 + 45 = 55 s) must stay below nginx's 60 s `proxy_read_timeout`.
 
 Each proxied query logs one INFO line with the outcome, the upstream time and the time spent waiting for a slot, never the query text, e.g. `SPARQL proxy: 200 in 312 ms (queued 0 ms)` or `SPARQL proxy: 502 (SPARQL endpoint timed out) in 45003 ms (queued 0 ms)`.
 
@@ -293,7 +293,7 @@ wikibase.apiUrl=${WIKIBASE_API_URL}
 
 # SPARQL
 sparql.endpoint=${SPARQL_ENDPOINT}
-sparql.proxy.maxConcurrent=${SPARQL_PROXY_MAX_CONCURRENT:8}
+sparql.proxy.maxConcurrent=${SPARQL_PROXY_MAX_CONCURRENT:16}
 sparql.proxy.queueTimeoutSeconds=${SPARQL_PROXY_QUEUE_TIMEOUT_SECONDS:10}
 
 # CORS

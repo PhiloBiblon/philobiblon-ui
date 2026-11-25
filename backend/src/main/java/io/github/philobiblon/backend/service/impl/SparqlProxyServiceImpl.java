@@ -51,7 +51,7 @@ public class SparqlProxyServiceImpl implements SparqlProxyService {
                                   // Keep it below the nginx proxy_read_timeout (60 s by default) so that the
                                   // backend answers a readable 502 before a proxy answers a bare 504.
                                   @Value("${sparql.proxy.timeoutSeconds:45}") long timeoutSeconds,
-                                  @Value("${sparql.proxy.maxConcurrent:8}") int maxConcurrent,
+                                  @Value("${sparql.proxy.maxConcurrent:16}") int maxConcurrent,
                                   // queueTimeoutSeconds + timeoutSeconds must also stay below proxy_read_timeout.
                                   @Value("${sparql.proxy.queueTimeoutSeconds:10}") long queueTimeoutSeconds,
                                   SparqlQueryValidator queryValidator) {
